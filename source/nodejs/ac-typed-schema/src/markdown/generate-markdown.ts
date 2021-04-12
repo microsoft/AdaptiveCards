@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+import { I18n } from "i18n";
 import { defined } from "./defined";
 import { defaultValue } from "./defaultValue";
 import { SchemaClass } from "../SchemaClass";
@@ -7,8 +8,38 @@ import { SchemaEnum } from "../SchemaEnum";
 import { SchemaLiteral } from "../SchemaLiteral";
 import { SchemaProperty } from "../SchemaProperty";
 import { SchemaPropertyType } from "../SchemaPropertyType";
+import * as path from "path";
+import * as console from "console";
 import * as mdTable from "markdown-table";
 import * as style from "./style";
+
+class MarkdownConfig {
+    i18n : I18n;
+
+    constructor() {
+        this.i18n = new I18n();
+        this.i18n.configure({
+            locales: ['en', 'de', 'sp'],
+            directory: path.join(__dirname, '../../src/markdown/languages'),
+            syncFiles: true
+        });
+    }
+
+    _locale : string = "en";
+    get locale() {
+        return this._locale;
+    }
+
+    set locale(value: string) {
+        this._locale = value;
+        this.i18n.setLocale(this.locale);
+    }
+}
+
+let markdownConfig = new MarkdownConfig();
+export { markdownConfig };
+
+const __ = markdownConfig.i18n.__;
 
 export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
 	var md = '';
@@ -21,7 +52,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		properties = sortProperties(properties);
 
 		if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
-			md += "**Introduced in version " + elementVersion + "**\n\n";
+			md += __("**Introduced in version %s**\n\n", elementVersion);
 		}
 
 		var formattedProperties = [];
@@ -41,8 +72,8 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			var formattedTypeProperty: any = {
 				Property: "**type**",
 				Type: "`\"" + classDefinition.type + "\"`",
-				Required: "Yes",
-				Description: "Must be `\"" + classDefinition.type + "\"`."
+				Required: __("Yes"),
+				Description: __("Must be `\"%s\"`.", classDefinition.type)
 			};
 
 			if (includeVersion) {
@@ -61,7 +92,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 				Property: style.propertyNameSummary(name),
 				Type: summary.formattedType,
 				Required: summary.required,
-				Description: summary.description
+				Description: __(summary.description)
 			};
 
 			// If we haven't reached the start of the inherited properties...
@@ -74,7 +105,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			// It's actually not required in ShowCard, so in schema it's not required,
 			// but for docs we want to show it as required
 			if (classDefinition.type == "AdaptiveCard" && name == "version") {
-				formattedProperty.Required = "Yes";
+				formattedProperty.Required = __("Yes");
 			}
 
 			if (includeVersion) {
@@ -104,7 +135,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		}
 
 		if (inheritedFormattedProperties.length > 0) {
-			md += "\n### Inherited properties\n\n";
+			md += "\n" + __("### Inherited properties") + "\n\n";
 			md += createTable(inheritedFormattedProperties);
 			md += "\n";
 		}
@@ -125,7 +156,7 @@ function createTable(formattedProperties: any[]) {
 	var tableData = [];
 	var headerRow = [];
 	for (var propName in formattedProperties[0]) {
-		headerRow.push(propName);
+		headerRow.push(__(propName));
 	}
 	tableData.push(headerRow);
 
@@ -170,7 +201,7 @@ export function createEnumSummary(enumType: SchemaEnum) {
 	enumType.values.forEach(val => {
 		var row = {
 			Value: "`\"" + val.value + "\"`",
-			Description: val.description
+			Description: __(val.description)
 		};
 
 		rows.push(row);
@@ -224,17 +255,18 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink, elem
 
 	var formattedType = formattedTypes.join(", ");
 
-	var description = property.description;
+	var description = __(property.description);
 
-	var required;
+	var required: string;
+
 	if (defined(property.required) && (property.required)) {
-		required = 'Yes';
+		required = __("Yes");
 	} else {
 		var propertyDefault = property.default;
 		if (defined(propertyDefault)) {
-			required = 'No, default: ' + style.defaultValue(propertyDefault);
+			required = __("No, default: %s", style.defaultValue(propertyDefault));
 		} else {
-			required = 'No';
+			required = __("No");
 		}
 	}
 
@@ -253,14 +285,10 @@ function getPropertySummary(property: SchemaProperty, knownTypes, autoLink, elem
 	return {
 		type: types.join("|"),
 		formattedType: formattedType,
-		description: description,
+		description: __(description),
 		required: required,
 		version: version
 	};
-}
-
-function replacePipes(type: string) {
-	return type.replace("|", ", ");
 }
 
 export function createPropertiesDetails(classDefinition: SchemaClass, headerLevel: number, knownTypes, autoLink, includeVersion: boolean, elementVersion: string) {
@@ -278,34 +306,33 @@ export function createPropertyDetails(property: SchemaProperty, headerLevel: num
 	var md = '';
 
 	var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
-	var type = summary.type;
 
 	md += style.getHeaderMarkdown(property.name, headerLevel); // Includes ending newlines
 
 	// TODO: Add plugin point for custom JSON schema properties like gltf_*
 	var detailedDescription = property.description;
 	if (defined(detailedDescription)) {
-		md += detailedDescription + '\n\n';
+		md += __(detailedDescription) + '\n\n';
 	} else if (defined(summary.description)) {
-		md += summary.description + '\n\n';
+		md += __(summary.description) + '\n\n';
 	}
 
-	md += '* ' + style.propertyDetails('Type') + ': ' + summary.formattedType + '\n';
+	md += __("* %s: %s\n", style.propertyDetails('Type'), summary.formattedType);
 
 	if (includeVersion) {
 		if (summary.version != elementVersion) {
-			md += `* ${style.propertyDetails("Version")} : ${summary.version}\n`;
+			md += __("* %s : %s\n", style.propertyDetails("Version"), summary.version);
 		}
 	}
 
-	md += '* ' + style.propertyDetails('Required') + ': ' + summary.required + '\n';
+	md += __("* %s: %s\n", style.propertyDetails('Required'), summary.required);
 
 	var hasComplexTypes = propertyHasComplexTypes(property);
 
 	if (hasComplexTypes) {
 		var allowedValues: string[] = getAllowedValuesForProperty(property, summary, includeVersion);
 		if (allowedValues.length > 0) {
-			md += '* ' + style.propertyDetails('Allowed values') + ':';
+			md += __("* %s:", style.propertyDetails('Allowed values'));
 			allowedValues.forEach(allowedValue => {
 				md += `\n  * ${allowedValue}`;
 			});
@@ -347,16 +374,16 @@ function getAllowedValuesForPropertyType(propertyType: SchemaPropertyType, summa
 
 			if (includeVersion) {
 				if (enumValue.original.version && enumValue.original.version !== summary.version) {
-					descriptions.push(`Added in version ${enumValue.original.version}.`);
+					descriptions.push(__("Added in version %s.", enumValue.original.version));
 				}
 			}
 
 			if (enumValue.description && enumValue.description.length > 0) {
-				descriptions.push(enumValue.description);
+				descriptions.push(__(enumValue.description));
 			}
 
 			if (descriptions.length > 0) {
-				allowedValues.push(style.enumValue(enumValue.value) + ": " + descriptions.join(" "));
+				allowedValues.push(__("%s: %s", style.enumValue(enumValue.value), descriptions.join(" ")));
 			} else {
 				allowedValues.push(style.enumValue(enumValue.value));
 			}
