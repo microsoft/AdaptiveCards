@@ -935,13 +935,7 @@ export class TextBlock extends BaseTextBlock {
                     }
                 }
 
-                element.tabIndex = 0
-                element.setAttribute("role", this.selectAction.getAriaRole());
-
-                if (this.selectAction.effectiveTooltip) {
-                    element.setAttribute("aria-label", this.selectAction.effectiveTooltip);
-                    element.title = this.selectAction.effectiveTooltip;
-                }
+                this.selectAction.setupElementForAccessibility(element);
 
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
@@ -1222,10 +1216,7 @@ export class TextRun extends BaseTextBlock {
                     }
                 }
 
-                if (this.selectAction.effectiveTooltip) {
-                    anchor.setAttribute("aria-label", this.selectAction.effectiveTooltip);
-                    anchor.title = this.selectAction.effectiveTooltip;
-                }
+                this.selectAction.setupElementForAccessibility(anchor);
 
                 anchor.innerText = formattedText;
 
@@ -1763,13 +1754,7 @@ export class Image extends CardElement {
                     }
                 }
 
-                element.tabIndex = 0
-                element.setAttribute("role", this.selectAction.getAriaRole());
-
-                if (this.selectAction.effectiveTooltip) {
-                    element.setAttribute("aria-label", this.selectAction.effectiveTooltip);
-                    element.title = this.selectAction.effectiveTooltip;
-                }
+                this.selectAction.setupElementForAccessibility(element);
 
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
@@ -1818,13 +1803,7 @@ export class Image extends CardElement {
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
-                imageElement.tabIndex = 0
-                imageElement.setAttribute("role", this.selectAction.getAriaRole());
-
-                if (this.selectAction.effectiveTooltip) {
-                    imageElement.setAttribute("aria-label", <string>this.selectAction.effectiveTooltip);
-                    imageElement.title = this.selectAction.effectiveTooltip;
-                }
+                this.selectAction.setupElementForAccessibility(imageElement);
 
                 imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
@@ -1987,13 +1966,7 @@ export abstract class CardElementContainer extends CardElement {
                     }
                 }
                 
-                element.tabIndex = 0;
-                element.setAttribute("role", this._selectAction.getAriaRole());
-
-                if (this._selectAction.effectiveTooltip) {
-                    element.setAttribute("aria-label", this._selectAction.effectiveTooltip);
-                    element.title = this._selectAction.effectiveTooltip;
-                }
+                this._selectAction.setupElementForAccessibility(element);
 
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
 
@@ -3812,6 +3785,7 @@ export abstract class Action extends CardObject {
             { value: Enums.ActionMode.Secondary }
         ],
         Enums.ActionMode.Primary);
+    static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip");
 
     @property(Action.titleProperty)
     title?: string;
@@ -3824,6 +3798,9 @@ export abstract class Action extends CardObject {
 
     @property(Action.modeProperty)
     mode: string = Enums.ActionMode.Primary;
+
+    @property(Action.tooltipProperty)
+    tooltip?: string;
 
     //#endregion
 
@@ -3873,7 +3850,6 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
-    accessibleTitle?: string;
     expanded?: boolean;
 
     onExecute: (sender: Action) => void;
@@ -3884,6 +3860,21 @@ export abstract class Action extends CardObject {
 
     getAriaRole(): string {
         return "button";
+    }
+
+    setupElementForAccessibility(element: HTMLElement) {
+        element.tabIndex = 0;
+        element.setAttribute("role", this.getAriaRole());
+
+        if (this.title) {
+            element.setAttribute("aria-label", this.title);
+            element.title = this.title;
+        }
+
+        if (this.tooltip) {
+            element.setAttribute("aria-description", this.tooltip);
+            element.title = this.tooltip;
+        }
     }
 
     updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
@@ -3914,15 +3905,6 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (this.accessibleTitle) {
-            buttonElement.setAttribute("aria-label", this.accessibleTitle);
-            buttonElement.title = this.accessibleTitle;
-        }
-        else if (this.effectiveTooltip) {
-            buttonElement.setAttribute("aria-label", this.effectiveTooltip);
-            buttonElement.title = this.effectiveTooltip;
-        }
-
         if (this.expanded != undefined) {
             buttonElement.setAttribute("aria-expanded", this.expanded.toString())
         }
@@ -3943,7 +3925,13 @@ export abstract class Action extends CardObject {
         }
 
         if (this.title) {
+            buttonElement.setAttribute("aria-label", this.title);
             titleElement.innerText = this.title;
+        }
+
+        if (this.tooltip) {
+            buttonElement.setAttribute("aria-description", this.tooltip);
+            buttonElement.title = this.tooltip;
         }
 
         if (!this.iconUrl) {
@@ -4037,10 +4025,6 @@ export abstract class Action extends CardObject {
      */
     validateInputs(): Input[] {
         return this.internalValidateInputs(this.getReferencedInputs());
-    }
-
-    get effectiveTooltip(): string | undefined {
-        return this.title;
     }
 
     get shouldPromoteAsPrimaryOnExecute(): boolean {
