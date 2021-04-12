@@ -23,22 +23,31 @@ public interface IOverflowActionRenderer {
      * @param isRootLevelActions indicates action is part of root level actions or action set elements in body.
      * @return custom rendered view or null to render the default Overflow "..." action view.
      */
-    View onRenderOverflowAction(@NonNull ViewGroup viewGroup, boolean isRootLevelActions);
+    default View onRenderOverflowAction(@NonNull ViewGroup viewGroup, boolean isRootLevelActions)
+    {
+        return null;
+    }
 
     /**
-     * This implementation is invoked when {@link IOverflowActionRenderer#shouldDisplayCustomOverflowActionMenu()} is true, then rendered secondary view elements can be shown by the client.
+     * This implementation is invoked when Overflow action view ("...") is pressed and rendered secondary view elements will be shown.
      *
      * @param actionViewList list of view of rendered secondary action elements.
      * @param view           Overflow action view.
+     * @return false will show the elements in default {@link android.widget.PopupWindow}, while true indicates client can customize the display behaviour.
      */
-    void onDisplayOverflowActionMenu(@NonNull List<View> actionViewList, @NonNull View view);
+    default boolean onDisplayOverflowActionMenu(@NonNull List<View> actionViewList, @NonNull View view)
+    {
+        return false;
+    }
 
 
     /**
-     * This implementation indicates whether to show default {@link android.support.design.widget.BottomSheetDialog} or to invoke {@link IOverflowActionRenderer#onDisplayOverflowActionMenu(List, View)} based on the returned flag.
+     * This implementation indicates whether to add the excess elements (i.e id primary elements exceeds the MaxActions) to the secondary elements or not.
      *
-     * @return false to show the default {@link android.support.design.widget.BottomSheetDialog}, while true to display customized action menu.
+     * @return false not to add the excess elements to the secondary elements, otherwise true.
      */
-    boolean shouldDisplayCustomOverflowActionMenu();
-
+    default boolean shouldAllowMoreThanMaxActionsInOverflowMenu()
+    {
+        return false;
+    }
 }

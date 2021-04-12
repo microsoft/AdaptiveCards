@@ -19,7 +19,6 @@ namespace AdaptiveSharedNamespace
         AdaptiveCard,
         AllowCustomStyle,
         AllowInlinePlayback,
-        AllowMoreThanMaxActionsInOverflowMenu,
         AltText,
         AssociatedInputs,
         Attention,
