@@ -55,6 +55,36 @@ void configSeparatorVisibility(ACRSeparator *view,
     view.isVisibilityObserved = YES;
 }
 
+ACRRtl getiOSRtl(std::optional<bool> const rtl)
+{
+    ACRRtl acrtl = ACRRtlNone;
+    if (rtl.has_value()) {
+        BOOL doSetRTL = rtl.value_or(false);
+        if (doSetRTL) {
+            acrtl = ACRRtlRTL;
+        } else {
+            acrtl = ACRRtlLTR;
+        }
+    }
+    return acrtl;
+}
+
+void configRtl(UIView *view, ACORenderContext *context)
+{
+    if (!view || !context) {
+        return;
+    }
+
+    ACRRtl rtl = context.rtl;
+    if (rtl == ACRRtlNone) {
+        return;
+    } else if (rtl == ACRRtlRTL) {
+        view.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+    } else if (rtl == ACRRtlRTL) {
+        view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+}
+
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
                            ACRContentStackView *containerView, ACRView *rootView)
 {

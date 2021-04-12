@@ -155,6 +155,14 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetMinHeight(swigCPtr, this, value);
   }
 
+  public Boolean GetRtl() {
+  return AdaptiveCardObjectModelJNI.AdaptiveCard_GetRtl(swigCPtr, this);
+}
+
+  public void SetRtl(Boolean value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetRtl(swigCPtr, this, value);
+  }
+
   public BaseActionElement GetSelectAction() {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetSelectAction(swigCPtr, this);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);

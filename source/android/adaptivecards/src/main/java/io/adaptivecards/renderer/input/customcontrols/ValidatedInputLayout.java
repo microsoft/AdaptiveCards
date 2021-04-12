@@ -6,7 +6,7 @@ package io.adaptivecards.renderer.input.customcontrols;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.R;

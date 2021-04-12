@@ -943,6 +943,7 @@ AdaptiveNamespaceStart
         VerticalContentAlignment VerticalContentAlignment;
         Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
         AdaptiveBackgroundImage BackgroundImage;
+        Windows.Foundation.IReference<Boolean> Rtl;
     };
 
     [
@@ -961,6 +962,7 @@ AdaptiveNamespaceStart
         VerticalContentAlignment VerticalContentAlignment;
         Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
         AdaptiveBackgroundImage BackgroundImage;
+        Windows.Foundation.IReference<Boolean> Rtl;
     };
 
     [
@@ -1495,6 +1497,18 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHeadingsConfig", 4131B10F-76F6-4278-8A9B-FBFA2FE226CA),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveHeadingsConfig {
+        AdaptiveHeadingsConfig();
+
+        UInt32 Level;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfig", 15ae7240-f9b0-47e4-b444-62da42b8b863),
         static_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfigStatics", 11a659ac-a28d-42fc-ab0e-f103b3f5c4fd),
         contract(InternalContract, 1),
@@ -1522,6 +1536,7 @@ AdaptiveNamespaceStart
         AdaptiveActionsConfig Actions;
         AdaptiveMediaConfig Media;
         AdaptiveInputsConfig Inputs;
+        AdaptiveHeadingsConfig Headings;
 
         static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
         static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);
@@ -1957,6 +1972,7 @@ AdaptiveNamespaceStart
         AdaptiveMediaEventInvoker MediaEventInvoker { get; };
         Windows.UI.Xaml.ResourceDictionary OverrideStyles { get; };
         AdaptiveInputs UserInputs { get; };
+        Windows.Foundation.IReference<Boolean> Rtl;
 
         void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
         void LinkSubmitActionToCard(IAdaptiveActionElement submitAction, AdaptiveRenderArgs renderArgs);

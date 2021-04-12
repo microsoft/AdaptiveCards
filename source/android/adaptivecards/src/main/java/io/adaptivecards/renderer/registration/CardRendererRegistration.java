@@ -3,9 +3,8 @@
 package io.adaptivecards.renderer.registration;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.google.android.flexbox.FlexboxLayout;
 
 import io.adaptivecards.objectmodel.ActionType;
-import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.AdaptiveCardObjectModel;
 import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
@@ -25,7 +23,6 @@ import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSet;
-import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.BaseCardElementRenderer;

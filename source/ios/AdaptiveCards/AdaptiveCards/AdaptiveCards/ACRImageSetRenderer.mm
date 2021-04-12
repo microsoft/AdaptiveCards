@@ -47,6 +47,8 @@ using namespace AdaptiveCards;
 
     [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
 
+    configRtl(view, rootView.context);
+
     configVisibility(view, elem);
 
     return view;
