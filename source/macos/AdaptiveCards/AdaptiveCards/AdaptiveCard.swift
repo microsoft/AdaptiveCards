@@ -38,11 +38,53 @@ open class AdaptiveCard {
 }
 
 public struct RenderConfig {
-    public static let `default` = RenderConfig(isDarkMode: false)
-    
+    public static let `default` = RenderConfig(isDarkMode: false, buttonConfig: .default)
     let isDarkMode: Bool
+    let buttonConfig: ButtonConfig
     
-    public init(isDarkMode: Bool) {
+    public init(isDarkMode: Bool, buttonConfig: ButtonConfig) {
         self.isDarkMode = isDarkMode
+        self.buttonConfig = buttonConfig
+    }
+}
+
+public struct ButtonColorConfig {
+    // buttonColor
+    let buttonColor: NSColor
+    let selectedButtonColor: NSColor
+    let hoverButtonColor: NSColor
+    
+    // textColor
+    let textColor: NSColor
+    let selectedTextColor: NSColor
+    
+    // borderColor
+    let borderColor: NSColor
+    let selectedBorderColor: NSColor
+        
+    public init(buttonColor: NSColor, selectedButtonColor: NSColor, hoverButtonColor: NSColor, textColor: NSColor, selectedTextColor: NSColor, borderColor: NSColor, selectedBorderColor: NSColor) {
+        self.buttonColor = buttonColor
+        self.selectedButtonColor = selectedButtonColor
+        self.hoverButtonColor = hoverButtonColor
+        self.textColor = textColor
+        self.selectedTextColor = selectedTextColor
+        self.borderColor = borderColor
+        self.selectedBorderColor = selectedBorderColor
+    }
+}
+
+public struct ButtonConfig {
+    public static let `default` = ButtonConfig(positive: .init(buttonColor: .green, selectedButtonColor: .systemGreen, hoverButtonColor: .systemGreen, textColor: .white, selectedTextColor: .white, borderColor: .green, selectedBorderColor: .systemGreen), destructive: .init(buttonColor: .systemRed, selectedButtonColor: .red, hoverButtonColor: .red, textColor: .white, selectedTextColor: .white, borderColor: .systemRed, selectedBorderColor: .red), default: .init(buttonColor: .systemBlue, selectedButtonColor: .blue, hoverButtonColor: .blue, textColor: .white, selectedTextColor: .white, borderColor: .systemBlue, selectedBorderColor: .blue), inline: .init(buttonColor: .clear, selectedButtonColor: .gray, hoverButtonColor: .darkGray, textColor: .black, selectedTextColor: .black, borderColor: .clear, selectedBorderColor: .clear))
+    
+    let positive: ButtonColorConfig
+    let destructive: ButtonColorConfig
+    let `default`: ButtonColorConfig
+    let inline: ButtonColorConfig
+    
+    public init(positive: ButtonColorConfig, destructive: ButtonColorConfig, default: ButtonColorConfig, inline: ButtonColorConfig) {
+        self.positive = positive
+        self.destructive = destructive
+        self.default = `default`
+        self.inline = inline
     }
 }

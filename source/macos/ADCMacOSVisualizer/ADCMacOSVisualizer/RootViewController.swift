@@ -12,6 +12,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     private var hostConfigString = sampleHostConfig // default config string
     private let webexConfig: String = "webex_light_config.json"
     private var darkTheme = false
+    private var buttonConfig: ButtonConfig = .default
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,10 +59,10 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             print("RENDER FAILED")
             return
         }
-
+        setupButtonConfig()
         switch AdaptiveCard.parseHostConfig(from: hostConfigString) {
         case .success(let config):
-            let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme))
+            let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme, buttonConfig: buttonConfig))
             // This changes the appearance of the native components depending on the hostConfig
             if #available(OSX 10.14, *) {
                 cardView.appearance = NSAppearance(named: darkTheme ? .darkAqua : .aqua)
@@ -101,6 +102,31 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
 
     @IBAction private func handleRenderAction(_ sender: Any) {
         renderCard(with: textView.string)
+    }
+    
+    private func setupButtonConfig() {
+        let lightThemePositiveColor = NSColor.color(from: Constants.lightThemePositive) ?? .clear
+        let lightThemePositivePressedColor = NSColor.color(from: Constants.lightThemePositivePressed) ?? .clear
+        let lightThemeDestructiveColor = NSColor.color(from: Constants.lightThemeDestructive) ?? .clear
+        let lightThemeDestructivePressedColor = NSColor.color(from: Constants.lightThemeDestructivePressed) ?? .clear
+        let lightThemeDefaultColor = NSColor.color(from: Constants.lightThemeDefault) ?? .clear
+        let lightThemeDefaultPressedColor = NSColor.color(from: Constants.lightThemeDefaultPressed) ?? .clear
+        let lightThemeInlineColor = NSColor.color(from: Constants.lightThemeInline) ?? .clear
+        let lightThemeInlinePressedColor = NSColor.color(from: Constants.lightThemeInlinePressed) ?? .clear
+        let darkThemeDefaultColor = NSColor.color(from: Constants.darkThemePrimary) ?? .clear
+        let darkThemeDefaultPressedColor = NSColor.color(from: Constants.darkThemePressed) ?? .clear
+        let darkThemePositiveColor = NSColor.color(from: Constants.darkThemePositive) ?? .clear
+        let darkThemeDestructiveColor = NSColor.color(from: Constants.darkThemeDestructive) ?? .clear
+        let darkThemeDestructiveHover = NSColor.color(from: Constants.darkThemeDestructiveHover) ?? .clear
+        let darkThemeDestructivePressed = NSColor.color(from: Constants.darkThemeDestructivePressed) ?? .clear
+        
+        let positive = ButtonColorConfig(buttonColor: darkTheme ? darkThemePositiveColor : .white, selectedButtonColor: lightThemePositivePressedColor, hoverButtonColor: lightThemePositiveColor, textColor: darkTheme ? .white : lightThemePositiveColor, selectedTextColor: .white, borderColor: darkTheme ? darkThemePositiveColor : lightThemePositiveColor, selectedBorderColor: lightThemePositivePressedColor)
+        let destructive = ButtonColorConfig(buttonColor: darkTheme ? darkThemeDestructiveColor : .white, selectedButtonColor: darkTheme ? darkThemeDestructivePressed : lightThemeDestructivePressedColor, hoverButtonColor: darkTheme ? darkThemeDestructiveHover : lightThemeDestructiveColor, textColor: darkTheme ? .white : lightThemeDestructiveColor, selectedTextColor: .white, borderColor: darkTheme ? darkThemeDestructiveColor : lightThemeDestructiveColor, selectedBorderColor: darkTheme ? darkThemeDestructivePressed : lightThemeDestructivePressedColor)
+        let `default` = ButtonColorConfig(buttonColor: darkTheme ? darkThemeDefaultColor : .white, selectedButtonColor: darkTheme ? darkThemeDefaultPressedColor : lightThemeDefaultPressedColor, hoverButtonColor: darkTheme ? darkThemeDefaultPressedColor : lightThemeDefaultColor, textColor: darkTheme ? .white : lightThemeDefaultColor, selectedTextColor: .white, borderColor: darkTheme ? darkThemeDefaultColor : lightThemeDefaultColor, selectedBorderColor: darkTheme ? darkThemeDefaultPressedColor : lightThemeDefaultPressedColor)
+        let inline = ButtonColorConfig(buttonColor: .clear, selectedButtonColor: lightThemeInlinePressedColor, hoverButtonColor: lightThemeInlineColor, textColor: .black, selectedTextColor: .black, borderColor: .clear, selectedBorderColor: .clear)
+       
+        let buttonConfig = ButtonConfig(positive: positive, destructive: destructive, default: `default`, inline: inline)
+        self.buttonConfig = buttonConfig
     }
     
     // MARK: TableView Datasource

@@ -66,7 +66,7 @@ open class FlatButton: NSButton, CALayerDelegate {
             animateColor(state == .on)
         }
     }
-    public var activeBorderColor: NSColor = .white {
+    public var selectedBorderColor: NSColor = .white {
         didSet {
             animateColor(state == .on)
         }
@@ -76,7 +76,7 @@ open class FlatButton: NSButton, CALayerDelegate {
             animateColor(state == .on)
         }
     }
-    public var activeButtonColor: NSColor = .white {
+    public var selectedButtonColor: NSColor = .white {
         didSet {
             animateColor(state == .on)
         }
@@ -86,7 +86,7 @@ open class FlatButton: NSButton, CALayerDelegate {
             animateColor(state == .on)
         }
     }
-    public var activeIconColor: NSColor = .black {
+    public var selectedIconColor: NSColor = .black {
         didSet {
             animateColor(state == .on)
         }
@@ -96,7 +96,7 @@ open class FlatButton: NSButton, CALayerDelegate {
             animateColor(state == .on)
         }
     }
-    public var activeTextColor: NSColor = .gray {
+    public var selectedTextColor: NSColor = .gray {
         didSet {
             animateColor(state == .on)
         }
@@ -388,10 +388,10 @@ open class FlatButton: NSButton, CALayerDelegate {
     public func animateColor(_ isOn: Bool) {
         removeAnimations()
         let duration = isOn ? onAnimationDuration : offAnimationDuration
-        let bgColor = isOn ? activeButtonColor : buttonColor
-        let titleColor = isOn ? activeTextColor : textColor
-        let imageColor = isOn ? activeIconColor : iconColor
-        let borderColor = isOn ? activeBorderColor : self.borderColor
+        let bgColor = isOn ? selectedButtonColor : buttonColor
+        let titleColor = isOn ? selectedTextColor : textColor
+        let imageColor = isOn ? selectedIconColor : iconColor
+        let borderColor = isOn ? selectedBorderColor : self.borderColor
         layer?.backgroundColor = bgColor.cgColor
         layer?.borderColor = borderColor.cgColor
         titleLayer.foregroundColor = titleColor.cgColor
@@ -400,13 +400,13 @@ open class FlatButton: NSButton, CALayerDelegate {
             iconLayer.backgroundColor = imageColor.cgColor
         } else {
             iconLayer.backgroundColor = iconColor.cgColor
-            alternateIconLayer.animate(color: isOn ? activeIconColor.cgColor : NSColor.clear.cgColor, keyPath: "backgroundColor", duration: duration)
+            alternateIconLayer.animate(color: isOn ? selectedIconColor.cgColor : NSColor.clear.cgColor, keyPath: "backgroundColor", duration: duration)
         }
         
         // Shadows
         
         if glowRadius > 0, glowOpacity > 0 {
-            containerLayer.animate(color: isOn ? activeIconColor.cgColor : NSColor.clear.cgColor, keyPath: "shadowColor", duration: duration)
+            containerLayer.animate(color: isOn ? selectedIconColor.cgColor : NSColor.clear.cgColor, keyPath: "shadowColor", duration: duration)
         }
         
         drawsChevron(state == .on ? "arrowup" : "arrowdown")

@@ -4,47 +4,30 @@ enum ActionStyle: String {
     case positive
     case `default`
     case destructive
-    case none
     case inline
 }
 
 class ACRButton: FlatButton, ImageHoldingView {
-    struct Constants {
-        static let blueColorCode = "#007EA8"
-        static let darkBlueColorCode = "#0A5E7D"
-        
-        static let greenColorCode = "#1B8728"
-        static let darkGreenColorCode = "#196323"
-        
-        static let redColorCode = "#D93829"
-        static let darkRedColorCode = "#A12C23"
-        
-        static let grayColorCode = "#E6E8E8"
-        static let darkGrayColorCode = "#B4B6B8"
-    }
+    public var backgroundColor: NSColor = .clear
     
-    public var backgroundColor: NSColor = .init(red: 0.35216, green: 0.823529412, blue: 1, alpha: 1)
-    public var hoverBackgroundColor: NSColor = .linkColor
-    public var activeBackgroundColor: NSColor = .linkColor
-    
-    private var inActiveTextColor: NSColor = .linkColor
-    private var inActiveborderColor: NSColor = .linkColor
+    private var disabledTextColor: NSColor = .linkColor
+    private var disabledBorderColor: NSColor = .linkColor
     private var hoverButtonColor: NSColor = .linkColor
-    private var buttonStyle: ActionStyle = .default
-    
+    private var buttonActionStyle: ActionStyle = .default
+        
     override init(frame: NSRect) {
         super.init(frame: frame)
         initialize()
-        setupButtonStyle()
+        setupButtonStyle(style: .default, buttonConfig: .default)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         initialize()
-        setupButtonStyle()
+        setupButtonStyle(style: .default, buttonConfig: .default)
     }
     
-    init(frame: NSRect = .zero, wantsChevron: Bool = false, wantsIcon: Bool = false, iconNamed: String = "", iconImageFileType: String = "", iconPosition: NSControl.ImagePosition = .imageLeft, style: ActionStyle = .default) {
+    init(frame: NSRect = .zero, wantsChevron: Bool = false, wantsIcon: Bool = false, iconNamed: String = "", iconImageFileType: String = "", iconPosition: NSControl.ImagePosition = .imageLeft, style: ActionStyle = .default, buttonConfig: ButtonConfig = .default) {
         super.init(frame: frame)
         if wantsChevron {
             showsChevron = wantsChevron
@@ -56,8 +39,8 @@ class ACRButton: FlatButton, ImageHoldingView {
             iconPositioned = iconPosition
         }
         initialize()
-        buttonStyle = style
-        setupButtonStyle(style: style)
+        buttonActionStyle = style
+        setupButtonStyle(style: style, buttonConfig: buttonConfig)
     }
     
     private func initialize() {
@@ -78,120 +61,66 @@ class ACRButton: FlatButton, ImageHoldingView {
     
     override open func layout() {
         super.layout()
-        if buttonStyle != .inline {
+        if buttonActionStyle != .inline {
             cornerRadius = bounds.height / 2
         }
     }
     
     func setImage(_ image: NSImage) {
         iconColor = NSColor(patternImage: image)
-        activeIconColor = iconColor
+        selectedIconColor = iconColor
         self.image = image
         mouseExited(with: NSEvent()) // this is to force trigger the event for image updation
     }
 
     override open func mouseEntered(with event: NSEvent) {
         buttonColor = hoverButtonColor
-        borderColor = activeBorderColor
-        textColor = activeTextColor
+        borderColor = selectedBorderColor
+        textColor = selectedTextColor
         super.mouseEntered(with: event)
     }
     
     override open func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
         buttonColor = backgroundColor
-        borderColor = inActiveborderColor
-        textColor = inActiveTextColor
+        borderColor = disabledBorderColor
+        textColor = disabledTextColor
     }
     
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
-        buttonColor = activeButtonColor
-        borderColor = activeBorderColor
-        textColor = activeTextColor
+        buttonColor = selectedButtonColor
+        borderColor = selectedBorderColor
+        textColor = selectedTextColor
     }
     
-    private func setupButtonStyle(style: ActionStyle = .default) {
+    private func setupButtonStyle(style: ActionStyle, buttonConfig: ButtonConfig) {
         // Common styling b/w all Action Style
-        backgroundColor = .white
-        buttonColor = .white
-        activeTextColor = .white
-        
-        switch style {
+        let colorConfig: ButtonColorConfig
+        switch buttonActionStyle {
         case .default:
-            // borderColor
-            borderColor = ColorUtils.color(from: Constants.blueColorCode) ?? .clear
-            inActiveborderColor = borderColor
-            activeBorderColor = ColorUtils.color(from: Constants.darkBlueColorCode) ?? .clear
-            
-            // button color
-            activeButtonColor = activeBorderColor
-            hoverButtonColor = borderColor
-            
-            // textColor
-            textColor = activeBorderColor
-            inActiveTextColor = textColor
-            
+            colorConfig = buttonConfig.default
         case .positive:
-            // borderColor
-            borderColor = ColorUtils.color(from: Constants.greenColorCode) ?? .clear
-            inActiveborderColor = borderColor
-            activeBorderColor = ColorUtils.color(from: Constants.darkGreenColorCode) ?? .clear
-            
-            // button color
-            activeButtonColor = activeBorderColor
-            hoverButtonColor = borderColor
-            
-            // textColor
-            textColor = activeBorderColor
-            inActiveTextColor = textColor
-            
+            colorConfig = buttonConfig.positive
         case .destructive:
-            // borderColor
-            borderColor = ColorUtils.color(from: Constants.redColorCode) ?? .clear
-            inActiveborderColor = borderColor
-            activeBorderColor = ColorUtils.color(from: Constants.darkRedColorCode) ?? .clear
-            
-            // button color
-            activeButtonColor = activeBorderColor
-            hoverButtonColor = borderColor
-            
-            // textColor
-            textColor = activeBorderColor
-            inActiveTextColor = textColor
-            
+            colorConfig = buttonConfig.destructive
         case .inline:
-            borderColor = .clear
-            inActiveborderColor = .clear
-            activeBorderColor = .clear
-            backgroundColor = .clear
-            // button color
-            buttonColor = backgroundColor
-            activeButtonColor = ColorUtils.color(from: Constants.darkGrayColorCode) ?? .clear
-            hoverButtonColor = ColorUtils.color(from: Constants.grayColorCode) ?? .clear
-            
-            // textColor
-            textColor = .black
-            activeTextColor = .black
-            inActiveTextColor = textColor
+            colorConfig = buttonConfig.inline
             contentInsets.left = 5
             contentInsets.right = 5
-            
-        case .none:
-            backgroundColor = .init(red: 0.35216, green: 0.823529412, blue: 1, alpha: 1)
-            // borderColor
-            borderColor = backgroundColor
-            inActiveborderColor = backgroundColor
-            activeBorderColor = activeBackgroundColor
-            
-            // button color
-            buttonColor = backgroundColor
-            activeButtonColor = activeBackgroundColor
-            hoverButtonColor = activeBackgroundColor
-            
-            // textColor
-            textColor = .white
-            inActiveTextColor = textColor
         }
+        
+        backgroundColor = colorConfig.buttonColor
+        borderColor = colorConfig.borderColor
+        selectedBorderColor = colorConfig.selectedBorderColor
+        disabledBorderColor = borderColor
+        
+        buttonColor = colorConfig.buttonColor
+        hoverButtonColor = colorConfig.hoverButtonColor
+        selectedButtonColor = colorConfig.selectedButtonColor
+        
+        textColor = colorConfig.textColor
+        selectedTextColor = colorConfig.selectedTextColor
+        disabledTextColor = textColor
     }
 }

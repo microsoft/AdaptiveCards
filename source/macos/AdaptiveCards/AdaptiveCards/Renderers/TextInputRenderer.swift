@@ -55,7 +55,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             rootView.addInputHandler(multilineView)
             if renderButton {
                 stackview.addArrangedSubview(multilineView)
-                addInlineButton(parentview: stackview, view: multilineView, element: inputBlock, style: style, with: hostConfig, rootview: rootView)
+                addInlineButton(parentview: stackview, view: multilineView, element: inputBlock, style: style, with: hostConfig, rootview: rootView, config: config)
                 return stackview
             }
             return multilineView
@@ -85,21 +85,21 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         rootView.addInputHandler(textView)
         if renderButton {
             stackview.addArrangedSubview(textView)
-            addInlineButton(parentview: stackview, view: textView, element: inputBlock, style: style, with: hostConfig, rootview: rootView)
+            addInlineButton(parentview: stackview, view: textView, element: inputBlock, style: style, with: hostConfig, rootview: rootView, config: config)
             return stackview
         }
         return textView
     }
     
-    private func addInlineButton(parentview: NSStackView, view: NSView, element: ACSTextInput, style: ACSContainerStyle, with hostConfig: ACSHostConfig, rootview: ACRView) {
+    private func addInlineButton(parentview: NSStackView, view: NSView, element: ACSTextInput, style: ACSContainerStyle, with hostConfig: ACSHostConfig, rootview: ACRView, config: RenderConfig) {
         let action = element.getInlineAction()
         let button: ACRButton
         if let iconUrl = action?.getIconUrl(), !iconUrl.isEmpty {
-            button = ACRButton(wantsIcon: true, style: .inline)
+            button = ACRButton(wantsIcon: true, style: .inline, buttonConfig: config.buttonConfig)
             button.title = "" // no button title when iconUrl available
             rootview.registerImageHandlingView(button, for: iconUrl)
         } else {
-            button = ACRButton(wantsIcon: false, style: .inline)
+            button = ACRButton(wantsIcon: false, style: .inline, buttonConfig: config.buttonConfig)
             button.title = action?.getTitle() ?? ""
         }
         

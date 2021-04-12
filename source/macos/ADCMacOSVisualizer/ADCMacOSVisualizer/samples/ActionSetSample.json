@@ -14,12 +14,14 @@
                 {
                     "type": "Action.OpenUrl",
                     "title": "OpenUrl",
-                    "url": "https://adaptivecards.io"
+                    "url": "https://adaptivecards.io",
+                    "style": "positive"
                 },
                 {
                     "type": "Action.OpenUrl",
                     "title": "OpenUrl",
-                    "url": "https://adaptivecards.io"
+                    "url": "https://adaptivecards.io",
+                    "style": "destructive"
                 },
                 {
                     "type": "Action.OpenUrl",
