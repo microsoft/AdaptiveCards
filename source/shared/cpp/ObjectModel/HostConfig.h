@@ -293,8 +293,7 @@ namespace AdaptiveSharedNamespace
         Spacing spacing = Spacing::Default;
         IconPlacement iconPlacement = IconPlacement::AboveTitle;
         unsigned int iconSize = 30;
-        bool allowMoreThanMaxActionsInOverflowMenu = false;
-        
+
         static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
     };
 

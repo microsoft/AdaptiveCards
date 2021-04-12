@@ -20,7 +20,6 @@ public enum AdaptiveCardSchemaKey {
   AdaptiveCard,
   AllowCustomStyle,
   AllowInlinePlayback,
-  AllowMoreThanMaxActionsInOverflowMenu,
   AltText,
   AssociatedInputs,
   Attention,

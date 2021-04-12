@@ -41,6 +41,7 @@ import io.adaptivecards.objectmodel.SubmitActionParser;
 import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextBlockParser;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public final class Util {
 
@@ -473,8 +474,9 @@ public final class Util {
         if (primaryElementsSize > maxActions)
         {
             List<BaseActionElement> excessElements = primaryActionElementVector.subList((int) maxActions, primaryElementsSize);
+            IOverflowActionRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionRenderer();
             //Add excess elements to the secondary list if flag is enabled.
-            if (hostConfig.GetActions().getAllowMoreThanMaxActionsInOverflowMenu())
+            if (overflowActionRenderer != null && overflowActionRenderer.shouldAllowMoreThanMaxActionsInOverflowMenu())
             {
                 secondaryActionElementVector.addAll(excessElements);
             }

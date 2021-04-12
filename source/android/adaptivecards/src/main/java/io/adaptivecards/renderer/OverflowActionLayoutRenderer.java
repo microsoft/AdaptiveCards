@@ -3,27 +3,21 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.support.annotation.AttrRes;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +38,11 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
  */
 public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
 
-    private static final int MARGIN = 7;
-    private static final int HORIZONTAL_PADDING = 6;
+    private static final int OVERFLOW_BUTTON_WIDTH = 48;
+    private static final int OVERFLOW_BUTTON_TEXT_SIZE = 18;
+    private static final String OVERFLOW_TEXT = "•••";
+    private static final int POPUP_CONTENT_SEPARATOR_STROKE_WIDTH = 1;
+    private static final int POPUP_CONTENT_SEPARATOR_BORDER_WIDTH = 2;
 
     protected OverflowActionLayoutRenderer()
     {
@@ -53,7 +50,8 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
 
     public static OverflowActionLayoutRenderer getInstance()
     {
-        if (s_instance == null) {
+        if (s_instance == null)
+        {
             s_instance = new OverflowActionLayoutRenderer();
         }
 
@@ -72,8 +70,12 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
         {
             overflowActionView = renderDefaultOverflowAction(context, viewGroup, hostConfig);
         }
-        renderBottomSheet(context, viewGroup, menuItemList, overflowActionRenderer, overflowActionView);
-        actionForOverflowView(menuItemList, overflowActionView, overflowActionRenderer);
+
+        final LinearLayout contentLayout = new LinearLayout(context);
+        contentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        contentLayout.setOrientation(LinearLayout.VERTICAL);
+        setDrawables(contentLayout);
+        overflowActionView.setOnClickListener(new OverflowActionOnClickListener(contentLayout, overflowActionRenderer, menuItemList));
 
         return overflowActionView;
     }
@@ -86,139 +88,46 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
      * @param hostConfig hostConfig
      * @return rendered view
      */
-    private ImageButton renderDefaultOverflowAction(@NonNull Context context, @NonNull ViewGroup viewGroup, @NonNull HostConfig hostConfig)
+    private Button renderDefaultOverflowAction(@NonNull Context context, @NonNull ViewGroup viewGroup, @NonNull HostConfig hostConfig)
     {
-        final ImageButton overflowActionView = new ImageButton(context);
+        final Button overflowActionView = new Button(context);
         LinearLayout.LayoutParams layoutParams;
         final ActionsOrientation orientation = hostConfig.GetActions().getActionsOrientation();
 
+        final int width = Util.dpToPixels(context, OVERFLOW_BUTTON_WIDTH);
         if (orientation == ActionsOrientation.Horizontal)
         {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            layoutParams = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT);
             long spacing = hostConfig.GetActions().getButtonSpacing();
             layoutParams.setMarginEnd(Util.dpToPixels(context, spacing));
         }
         else
         {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            layoutParams = new LinearLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT);
         }
-        layoutParams.topMargin = Util.dpToPixels(context, MARGIN);
-        layoutParams.bottomMargin = Util.dpToPixels(context, MARGIN);
 
-        overflowActionView.setPadding(Util.dpToPixels(context, HORIZONTAL_PADDING), 0, Util.dpToPixels(context, HORIZONTAL_PADDING), 0);
-        overflowActionView.setImageResource(R.drawable.overlow_horizontal);
+        overflowActionView.setText(OVERFLOW_TEXT);
+        overflowActionView.setMinWidth(0);
+        overflowActionView.setMinimumWidth(0);
+        overflowActionView.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
         overflowActionView.setLayoutParams(layoutParams);
-        overflowActionView.setAdjustViewBounds(true);
-        overflowActionView.setScaleType(ImageView.ScaleType.FIT_END);
-        applyBackgroundDrawables(context, overflowActionView);
+        overflowActionView.setTextSize(TypedValue.COMPLEX_UNIT_SP, OVERFLOW_BUTTON_TEXT_SIZE);
         viewGroup.addView(overflowActionView);
 
         return overflowActionView;
     }
 
     /**
-     * Sets {@link View.OnClickListener} on the rendered Overflow view.
-     *
-     * @param menuItemViewList       list of rendered secondary action element view.
-     * @param overflowActionView     rendered Overflow view
-     * @param overflowActionRenderer instance of IOverflowActionRenderer
-     */
-    private void actionForOverflowView(@NonNull final List<View> menuItemViewList, @NonNull final View overflowActionView, @Nullable final IOverflowActionRenderer overflowActionRenderer)
-    {
-        overflowActionView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if (overflowActionRenderer == null || !overflowActionRenderer.shouldDisplayCustomOverflowActionMenu())
-                {
-                    if (v.getTag() instanceof BottomSheetDialog)
-                    {
-                        ((BottomSheetDialog) v.getTag()).show();
-                    }
-                }
-                else
-                {
-                    overflowActionRenderer.onDisplayOverflowActionMenu(menuItemViewList, overflowActionView);
-                }
-            }
-        });
-    }
-
-    /**
-     * Creates {@link BottomSheetDialog} when {@link IOverflowActionRenderer#shouldDisplayCustomOverflowActionMenu()} returns false.
-     *
-     * @param context                context
-     * @param viewGroup              root view of the action set elements
-     * @param overflowActionRenderer instance of IOverflowActionRenderer
-     * @param overflowActionView     rendered Overflow view
-     */
-    private void renderBottomSheet(@NonNull final Context context, @NonNull final ViewGroup viewGroup, @NonNull final List<View> menuItemViewList, @Nullable final IOverflowActionRenderer overflowActionRenderer, @NonNull final View overflowActionView)
-    {
-        //Make sure BottomSheet created on UI Thread.
-        viewGroup.post(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                if (overflowActionRenderer == null || !overflowActionRenderer.shouldDisplayCustomOverflowActionMenu())
-                {
-                    final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialogTheme);
-                    final LinearLayout contentLayout = new LinearLayout(context);
-                    contentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    contentLayout.setOrientation(LinearLayout.VERTICAL);
-                    contentLayout.setGravity(Gravity.START);
-                    addSeparator(contentLayout);
-                    for (View child : menuItemViewList)
-                    {
-                        contentLayout.addView(child);
-                    }
-                    bottomSheetDialog.setContentView(contentLayout);
-                    overflowActionView.setTag(bottomSheetDialog);
-                }
-            }
-        });
-    }
-
-    /**
-     * Applies backgrounds drawables to the Overflow view.
-     *
-     * @param context context
-     * @param view    drawables to be applied on view.
-     */
-    private void applyBackgroundDrawables(Context context, @NonNull ImageButton view)
-    {
-        TypedValue colorValue = new TypedValue();
-        //Apply colorButtonNormal for border tp match with existing action buttons;
-        int color = context.getResources().getColor(android.R.color.darker_gray);
-        if (context.getTheme().resolveAttribute(android.R.attr.colorButtonNormal, colorValue, true))
-        {
-            color = getAttributeColor(context, R.attr.colorButtonNormal);
-        }
-        else if (context.getTheme().resolveAttribute(android.R.attr.colorPrimary, colorValue, true))
-        {
-            color = getAttributeColor(context, R.attr.colorPrimary);
-        }
-
-        ShapeDrawable shapedrawable = getShapeDrawable(context, color, 2);
-        view.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
-        Drawable backGroundDrawable = ContextCompat.getDrawable(context, outValue.resourceId);
-        Drawable[] layers = {backGroundDrawable, shapedrawable};
-        LayerDrawable layerDrawable = new LayerDrawable(layers);
-        view.setBackground(layerDrawable);
-    }
-
-    /**
-     * Adds divider to the BottomSheet's content layout.
+     * Adds divider and background to the content layout.
      *
      * @param linearLayout BottomSheet's root layout
      */
-    private void addSeparator(@NonNull LinearLayout linearLayout)
+    private void setDrawables(@NonNull LinearLayout linearLayout)
     {
-        ShapeDrawable shapedrawable = getShapeDrawable(linearLayout.getContext(), linearLayout.getContext().getResources().getColor(R.color.bottomSheet_divider_color), 1);
-        linearLayout.setDividerDrawable(shapedrawable);
+        ColorDrawable colorDrawable = new ColorDrawable(linearLayout.getContext().getResources().getColor(android.R.color.white));
+        Drawable borderDrawable = getShapeDrawable(linearLayout.getContext(), linearLayout.getContext().getResources().getColor(R.color.menu_border_color), POPUP_CONTENT_SEPARATOR_BORDER_WIDTH);
+        linearLayout.setBackground(new LayerDrawable(new Drawable[]{colorDrawable, borderDrawable}));
+        linearLayout.setDividerDrawable(getShapeDrawable(linearLayout.getContext(), linearLayout.getContext().getResources().getColor(R.color.menu_divider_color), POPUP_CONTENT_SEPARATOR_STROKE_WIDTH));
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
     }
 
@@ -238,6 +147,70 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
         shapedrawable.getPaint().setStrokeWidth(Util.dpToPixels(context, strokeWidth));
         shapedrawable.getPaint().setStyle(Paint.Style.STROKE);
         return shapedrawable;
+    }
+
+    /**
+     * Class responsible handling action event for Overflow view.
+     */
+    private static final class OverflowActionOnClickListener implements View.OnClickListener
+    {
+
+        private final LinearLayout contentLayout;
+        private final IOverflowActionRenderer overflowActionRenderer;
+        private final List<View> menuItemViewList;
+        private PopupWindow popupWindow;
+        private int contentWidth;
+        private int contentHeight;
+
+        public OverflowActionOnClickListener(LinearLayout contentLayout, IOverflowActionRenderer overflowActionRenderer, List<View> menuItemViewList)
+        {
+            this.contentLayout = contentLayout;
+            this.overflowActionRenderer = overflowActionRenderer;
+            this.menuItemViewList = menuItemViewList;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            if (overflowActionRenderer == null || !overflowActionRenderer.onDisplayOverflowActionMenu(menuItemViewList, v))
+            {
+                // Add & measure PopupWindow.
+                if (popupWindow == null)
+                {
+                    for (View child : menuItemViewList)
+                    {
+                        contentLayout.addView(child);
+                    }
+                    contentLayout.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                    contentWidth = contentLayout.getMeasuredWidth();
+                    contentHeight = contentLayout.getMeasuredHeight();
+                    popupWindow = new PopupWindow(contentLayout, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    popupWindow.setBackgroundDrawable(new ColorDrawable());
+                    contentLayout.setTag(popupWindow);
+                }
+
+                int[] location = new int[2];
+                v.getLocationOnScreen(location);
+                int xPos = location[0];
+                int yPos = location[1];
+                int screenHeight = v.getContext().getResources().getDisplayMetrics().heightPixels;
+                int screenWidth = v.getContext().getResources().getDisplayMetrics().widthPixels;
+                int gravity = Gravity.BOTTOM | Gravity.END;
+                int yOffset = 0;
+                //If content can not be shown in the bottom, then show in on the top of view.
+                if (yPos + contentHeight + v.getHeight() > screenHeight)
+                {
+                    yOffset = -v.getHeight() - contentHeight - contentLayout.getPaddingBottom();
+                }
+                //If content can not be shown on the right, then set gravity to start of the view.
+                if (xPos + contentWidth + v.getWidth() > screenWidth)
+                {
+                    gravity = Gravity.START | Gravity.TOP;
+                }
+
+                popupWindow.showAsDropDown(v, 0, yOffset, gravity);
+            }
+        }
     }
 
     private List<View> renderSecondaryActionElements(@NonNull BaseActionElementVector elementVector, RenderedAdaptiveCard renderedCard,
@@ -276,23 +249,6 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
         }
 
         return menuItemViewList;
-    }
-
-    /**
-     * Gets color for a given color attribute.
-     *
-     * @param context        context.
-     * @param colorAttribute attribute name.
-     * @return Id of a color resource or -1 id resource not found.
-     */
-    @ColorInt
-    public static int getAttributeColor(Context context, @AttrRes int colorAttribute)
-    {
-        int[] attrs = {colorAttribute};
-        TypedArray typedArray = context.obtainStyledAttributes(attrs);
-        @ColorInt int color = ContextCompat.getColor(context, typedArray.getResourceId(0, -1));
-        typedArray.recycle();
-        return color;
     }
 
     private static OverflowActionLayoutRenderer s_instance = null;

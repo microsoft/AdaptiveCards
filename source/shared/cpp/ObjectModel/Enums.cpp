@@ -18,7 +18,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::AssociatedInputs, "associatedInputs"},
             {AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle"},
             {AdaptiveCardSchemaKey::AllowInlinePlayback, "allowInlinePlayback"},
-            {AdaptiveCardSchemaKey::AllowMoreThanMaxActionsInOverflowMenu, "allowMoreThanMaxActionsInOverflowMenu"},
             {AdaptiveCardSchemaKey::AltText, "altText"},
             {AdaptiveCardSchemaKey::Attention, "attention"},
             {AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor"},

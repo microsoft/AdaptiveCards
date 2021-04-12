@@ -5,16 +5,13 @@ package io.adaptivecards.renderer.action;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentManager;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.BaseActionElement;
@@ -23,21 +20,17 @@ import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
-import io.adaptivecards.renderer.IOverflowActionRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 /**
  * Responsible for rendering dropdown element.
  */
 public class DropdownElementRenderer extends BaseActionElementRenderer {
 
-    private final static int VERTICAL_PADDING = 8;
-    private final static int HORIZONTAL_PADDING = 16;
-    private final static int TEXT_SIZE = 12;
+    private final static int HORIZONTAL_MARGIN = 12;
 
     protected DropdownElementRenderer()
     {
@@ -45,7 +38,8 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
 
     public static DropdownElementRenderer getInstance()
     {
-        if (s_instance == null) {
+        if (s_instance == null)
+        {
             s_instance = new DropdownElementRenderer();
         }
 
@@ -64,32 +58,28 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
         }
         button.setText(baseActionElement.GetTitle());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        button.setLayoutParams(layoutParams);
-        int verticalPadding = Util.dpToPixels(context, VERTICAL_PADDING);
-        int horizontalPadding = Util.dpToPixels(context, HORIZONTAL_PADDING);
-        button.setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding);
-        button.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-        button.setTextSize(TypedValue.COMPLEX_UNIT_SP,TEXT_SIZE);
+        int hMargin = Util.dpToPixels(context, HORIZONTAL_MARGIN);
+        layoutParams.setMargins(hMargin, 0, hMargin, 0);
+        layoutParams.gravity = Gravity.CENTER;
+        button.setGravity(Gravity.CENTER);
         button.setTextColor(context.getResources().getColor(R.color.dropdown_text_color));
         button.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+        button.setLayoutParams(layoutParams);
+        button.setMinWidth(0);
+        button.setMinimumWidth(Util.dpToPixels(context, 60));
 
         ActionOnClickListener actionOnClickListener = new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs)
         {
             @Override
             public void onClick(View view)
             {
-                super.onClick(view);
                 try
                 {
-                    final IOverflowActionRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionRenderer();
-                    if(overflowActionRenderer==null || !overflowActionRenderer.shouldDisplayCustomOverflowActionMenu())
+                    super.onClick(view);
+                    if (view.getParent() instanceof ViewGroup && ((ViewGroup) view.getParent()).getTag() instanceof PopupWindow)
                     {
-                        //Gets  BottomSheet's behavior with default content view.
-                        ViewParent parent = view.getParent();
-                        FrameLayout bottomSheetLayout = (FrameLayout) parent.getParent();
-                        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheetLayout);
-                        behavior.setHideable(true);
-                        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        PopupWindow popupWindow = (PopupWindow) ((ViewGroup) view.getParent()).getTag();
+                        popupWindow.dismiss();
                     }
                 }
                 catch(Exception e)
