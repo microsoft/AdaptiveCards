@@ -1018,9 +1018,6 @@
       },
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "choices"
-      ],
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Input"
