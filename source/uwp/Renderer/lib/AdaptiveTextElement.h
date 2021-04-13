@@ -10,35 +10,65 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text);
         IFACEMETHODIMP put_Text(_In_ HSTRING text);
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* textSize);
-        IFACEMETHODIMP put_Size(ABI::AdaptiveNamespace::TextSize textSize);
+        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextSize>** textSize);
+        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextSize>* textSize);
 
-        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveNamespace::TextWeight* textWeight);
-        IFACEMETHODIMP put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight);
+        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextWeight>** textWeight);
+        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextWeight>* textWeight);
 
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* textColor);
-        IFACEMETHODIMP put_Color(ABI::AdaptiveNamespace::ForegroundColor textColor);
+        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::ForegroundColor>** textColor);
+        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::ForegroundColor>* textColor);
 
-        IFACEMETHODIMP get_IsSubtle(_Out_ boolean* isSubtle);
-        IFACEMETHODIMP put_IsSubtle(boolean isSubtle);
+        IFACEMETHODIMP get_IsSubtle(_Outptr_ ABI::Windows::Foundation::IReference<bool>** isSubtle);
+        IFACEMETHODIMP put_IsSubtle(_In_ ABI::Windows::Foundation::IReference<bool>* isSubtle);
 
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
-        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* fontType);
-        IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType fontType);
-
-        IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
-        IFACEMETHODIMP put_Underline(_In_ boolean underline);
+        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::FontType>** fontType);
+        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::FontType>* fontType);
 
     protected:
         template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
-            m_subtle = sharedModel->GetIsSubtle();
-            m_fontType = static_cast<ABI::AdaptiveNamespace::FontType>(sharedModel->GetFontType());
-            m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(sharedModel->GetTextSize());
-            m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(sharedModel->GetTextWeight());
-            m_foregroundColor = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(sharedModel->GetTextColor());
+            if (sharedModel->GetIsSubtle().has_value())
+            {
+                m_subtle = winrt::box_value(sharedModel->GetIsSubtle().value())
+                               .as<ABI::Windows::Foundation::IReference<bool>>()
+                               .get();
+            }
+
+            if (sharedModel->GetFontType().has_value())
+            {
+                m_fontType =
+                    winrt::box_value(static_cast<winrt::AdaptiveNamespace::FontType>(sharedModel->GetFontType().value()))
+                        .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>>()
+                        .get();
+            }
+
+            if (sharedModel->GetTextSize().has_value())
+            {
+                m_textSize =
+                    winrt::box_value(static_cast<winrt::AdaptiveNamespace::TextSize>(sharedModel->GetTextSize().value()))
+                        .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextSize>>()
+                        .get();
+            }
+
+            if (sharedModel->GetTextWeight().has_value())
+            {
+                m_textWeight =
+                    winrt::box_value(static_cast<winrt::AdaptiveNamespace::TextWeight>(sharedModel->GetTextWeight().value()))
+                        .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextWeight>>()
+                        .get();
+            }
+
+            if (sharedModel->GetTextColor().has_value())
+            {
+                m_foregroundColor =
+                    winrt::box_value(static_cast<winrt::AdaptiveNamespace::ForegroundColor>(sharedModel->GetTextColor().value()))
+                        .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::ForegroundColor>>()
+                        .get();
+            }
 
             RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetText(), m_text.GetAddressOf()));
             RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetLanguage(), m_language.GetAddressOf()));
@@ -47,11 +77,38 @@ namespace AdaptiveNamespace
 
         template<typename T> HRESULT CopyTextElementProperties(T& sharedCardElement)
         {
-            sharedCardElement.SetIsSubtle(m_subtle);
-            sharedCardElement.SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(m_fontType));
-            sharedCardElement.SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
-            sharedCardElement.SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
-            sharedCardElement.SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));
+            if (m_subtle != nullptr)
+            {
+                sharedCardElement.SetIsSubtle(m_subtle);
+            }
+
+            if (m_fontType != nullptr)
+            {
+                ABI::AdaptiveNamespace::FontType fontTypeValue;
+                RETURN_IF_FAILED(m_fontType->get_Value(&fontTypeValue));
+                sharedCardElement.SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(fontTypeValue));
+            }
+
+            if (m_textSize != nullptr)
+            {
+                ABI::AdaptiveNamespace::TextSize textSizeValue;
+                RETURN_IF_FAILED(m_textSize->get_Value(&textSizeValue));
+                sharedCardElement.SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(textSizeValue));
+            }
+
+            if (m_textWeight != nullptr)
+            {
+                ABI::AdaptiveNamespace::TextWeight textWeightValue;
+                RETURN_IF_FAILED(m_textWeight->get_Value(&textWeightValue));
+                sharedCardElement.SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(textWeightValue));
+            }
+
+            if (m_foregroundColor != nullptr)
+            {
+                ABI::AdaptiveNamespace::ForegroundColor foregroundColorValue;
+                RETURN_IF_FAILED(m_foregroundColor->get_Value(&foregroundColorValue));
+                sharedCardElement.SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(foregroundColorValue));
+            }
 
             std::string text;
             RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));
@@ -67,12 +124,12 @@ namespace AdaptiveNamespace
         }
 
     private:
-        boolean m_subtle;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<bool>> m_subtle;
         Microsoft::WRL::Wrappers::HString m_text;
         Microsoft::WRL::Wrappers::HString m_language;
-        ABI::AdaptiveNamespace::FontType m_fontType;
-        ABI::AdaptiveNamespace::TextSize m_textSize;
-        ABI::AdaptiveNamespace::TextWeight m_textWeight;
-        ABI::AdaptiveNamespace::ForegroundColor m_foregroundColor;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::FontType>> m_fontType;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextSize>> m_textSize;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextWeight>> m_textWeight;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::ForegroundColor>> m_foregroundColor;
     };
 }
