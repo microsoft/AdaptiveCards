@@ -42,6 +42,10 @@
     border-right: 1px solid #D2D2D2;
 }
 
+.acd-treeView {
+    margin: 0;
+}
+
 .acd-treeView-pane {
     display: flex;
     flex: 0 0 auto;
@@ -715,6 +719,7 @@
 .acd-tree-item-expandCollapseButton {
     font-family: 'FabricMDL2Icons';
     font-size: 10px;
+    width: 16px;
 }
 
 .acd-tree-item-text {

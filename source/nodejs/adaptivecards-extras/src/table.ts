@@ -51,7 +51,6 @@ export class ColumnDefinition extends SerializableObject {
     @property(ColumnDefinition.widthProperty)
     width: SizeAndUnit = new SizeAndUnit(1, SizeUnit.Weight);
 
-
     getSchemaKey(): string {
         return "ColumnDefinition";
     }
@@ -281,7 +280,7 @@ export class TableRow extends StylableContainer<TableCell> {
 
         let isFirstRow = this.getIsFirstRow();
 
-        for (let i = 0; i < this.getItemCount(); i++) {
+        for (let i = 0; i < Math.min(this.getItemCount(), this.parentTable.getColumnCount()); i++) {
             let cell = this.getItemAt(i);
 
             cell.cellType = (this.parentTable.firstRowAsHeaders && isFirstRow) ? "header" : "data";
@@ -306,6 +305,12 @@ export class TableRow extends StylableContainer<TableCell> {
 
     addCell(cell: TableCell) {
         this.internalAddItem(cell);
+    }
+
+    ensureHasEnoughCells(cellCount: number) {
+        while (this.getItemCount() < cellCount) {
+            this.addCell(new TableCell());
+        }
     }
 
     getJsonTypeName(): string {
@@ -369,12 +374,24 @@ export class Table extends StylableContainer<TableRow> {
 
     //#endregion
 
+    private ensureRowsHaveEnoughCells() {
+        for (let i = 0; i < this.getItemCount(); i++) {
+            this.getItemAt(i).ensureHasEnoughCells(this.getColumnCount());
+        }
+    }
+
     protected getCollectionPropertyName(): string {
         return "rows";
     }
 
     protected createItemInstance(typeName: string): TableRow | undefined {
         return !typeName || typeName === "TableRow" ? new TableRow() : undefined;
+    }
+
+    protected internalParse(source: PropertyBag, context: SerializationContext) {
+        super.internalParse(source, context);
+
+        this.ensureRowsHaveEnoughCells();
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -448,6 +465,8 @@ export class Table extends StylableContainer<TableRow> {
 
     addColumn(column: ColumnDefinition) {
         this._columns.push(column);
+
+        this.ensureRowsHaveEnoughCells();
     }
 
     getColumnCount(): number {
@@ -457,9 +476,7 @@ export class Table extends StylableContainer<TableRow> {
     addRow(row: TableRow) {
         this.internalAddItem(row);
 
-        while (row.getItemCount() < this.getColumnCount()) {
-            row.addCell(new TableCell());
-        }
+        row.ensureHasEnoughCells(this.getColumnCount());
     }
 
     getJsonTypeName(): string {
