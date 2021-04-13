@@ -145,7 +145,7 @@
         ++renderedBtnNum;
 
         ACRBaseActionElementRenderer *actionRenderer =
-            [reg getActionRenderer:[NSNumber numberWithInt:(int)ActionType::Overflow]];
+            [reg getActionRenderer:[ACOBaseActionElement getKey:(ACRActionType::ACROverflow)]];
 
         ACOBaseActionElement *overflow =
             [[ACOActionOverflow alloc] initWithBaseActionElements:secondary

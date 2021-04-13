@@ -105,3 +105,5 @@ void partitionActions(
     std::vector<std::shared_ptr<BaseActionElement>> &secondary,
     unsigned int maxActions,
     ACRView *rootView);
+
+UIImage *scaleImageToSize(UIImage *image, CGSize newSize);

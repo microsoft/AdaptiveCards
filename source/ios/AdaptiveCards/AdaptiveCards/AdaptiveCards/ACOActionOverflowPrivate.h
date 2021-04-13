@@ -6,7 +6,10 @@
 //
 
 #import "ACOBaseActionElement.h"
+#import "BaseActionElement.h"
 #import <Foundation/Foundation.h>
+
+using namespace AdaptiveCards;
 
 @interface ACOActionOverflow : ACOBaseActionElement
 

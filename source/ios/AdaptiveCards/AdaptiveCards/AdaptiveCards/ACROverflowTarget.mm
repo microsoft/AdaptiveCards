@@ -13,16 +13,19 @@
 #import "UtiliOS.h"
 
 @implementation ACROverflowMenuItem {
+    __weak ACRView *_rootView;
     std::shared_ptr<AdaptiveCards::BaseActionElement> _action;
     NSObject<ACRSelectActionDelegate> *_target;
 }
 
 + (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement
                                target:(NSObject<ACRSelectActionDelegate> *)target
+                             rootView:(ACRView *)rootView
 {
     ACROverflowMenuItem *item = [[ACROverflowMenuItem alloc] init];
     item->_action = actionElement.element;
     item->_target = target;
+    item->_rootView = rootView;
     return item;
 }
 
@@ -43,23 +46,33 @@
 
 - (UIImage *)iconImageWithSize:(CGSize)size
 {
-    auto &iconUrl = _action->GetIconUrl();
-    if (!iconUrl.empty()) {
-        NSString *url = [NSString stringWithUTF8String:iconUrl.c_str()];
-        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-        image = [self imageWithImage:image scaledToSize:size];
+    UIImage *image = [self loadIconImage];
+    if (image) {
+        image = scaleImageToSize(image, size);
         return image;
     }
     return nil;
 }
 
-- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize
+- (UIImage *)loadIconImage
 {
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
+    auto &iconUrl = _action->GetIconUrl();
+    NSDictionary *imageViewMap = [_rootView getImageMap];
+    NSString *key = [NSString stringWithCString:iconUrl.c_str()
+                                       encoding:[NSString defaultCStringEncoding]];
+    UIImage *img = imageViewMap[key];
+
+    if (img) {
+        return img;
+    } else if (key.length) {
+        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)_action.get()];
+        NSString *key = [number stringValue];
+        UIImageView *view = [_rootView getImageView:key];
+        if (view.image) {
+            return view.image;
+        }
+    }
+    return nil;
 }
 
 @end
@@ -99,7 +112,9 @@
         // call buildTargetForButton since ACRShowCardTargetBuilder only responds to this callback
         // set nil button since the action is triggered from alert action not from a real button
         if (ACRRenderingStatus::ACROk == buildTargetForButton(director, action, nil, &target)) {
-            ACROverflowMenuItem *menuItem = [ACROverflowMenuItem initWithActionElement:action target:target];
+            ACROverflowMenuItem *menuItem = [ACROverflowMenuItem initWithActionElement:action
+                                                                                target:target
+                                                                              rootView:_rootView];
             [_menuItems addObject:menuItem];
             UIAlertAction *menuAction = [UIAlertAction actionWithTitle:title
                                                                  style:UIAlertActionStyleDefault
