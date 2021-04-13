@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,9 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
  */
 public class DropdownElementRenderer extends BaseActionElementRenderer {
 
-    private final static int HORIZONTAL_MARGIN = 8;
-    private final static int VERTICAL_MARGIN = 6;
+    private final static int HORIZONTAL_MARGIN = 12;
+    private final static int VERTICAL_MARGIN = 8;
+
 
 
     protected DropdownElementRenderer()
@@ -51,7 +53,7 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
     @Override
     public Button render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElement baseActionElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, RenderArgs renderArgs) throws AdaptiveFallbackException
     {
-        Button button = new Button(context);
+        Button button = new Button(context, null, R.style.Widget_AppCompat_Light_ActionButton_Overflow);
         SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
         if (action != null)
         {
@@ -64,12 +66,13 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
         int vMargin = Util.dpToPixels(context, VERTICAL_MARGIN);
         layoutParams.setMargins(hMargin, vMargin, hMargin, vMargin);
         layoutParams.gravity = Gravity.CENTER;
+        button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         button.setGravity(Gravity.CENTER);
         button.setTextColor(context.getResources().getColor(R.color.dropdown_text_color));
         button.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         button.setLayoutParams(layoutParams);
-        button.setMinWidth(0);
-        button.setMinimumWidth(Util.dpToPixels(context, 60));
+        button.setMinWidth(Util.dpToPixels(context, 80));
+        button.setMinimumWidth(0);
 
         ActionOnClickListener actionOnClickListener = new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs)
         {
@@ -106,6 +109,8 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
             if (!renderArgs.getAllowAboveTitleIconPlacement())
             {
                 iconPlacement = IconPlacement.LeftOfTitle;
+                button.setMinWidth(0);
+                button.setMinimumWidth(0);
             }
 
             ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(
