@@ -20,7 +20,7 @@ namespace RendererQml
     public:
         QmlTag(const std::string& element);
         QmlTag& AddImports(const std::string& import);
-        QmlTag& Property(const std::string& name, const std::string& value);
+        QmlTag& Property(const std::string& name, const std::string& value, bool isString=false);
 		QmlTag& RemoveProperty(const std::string& name);
 		QmlTag& AddFunctions(const std::string& function);
         void AddChild(const std::shared_ptr<QmlTag>& child);

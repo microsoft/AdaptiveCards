@@ -83,7 +83,7 @@ namespace RendererQml
 			auto uiFrame = std::make_shared<QmlTag>("Frame");
             uiFrame->Property("id", Formatter() << uiCard->GetId() << "_frame");
 			uiFrame->Property("readonly property bool hasBackgroundImage", "true");
-            uiFrame->Property("property var imgSource", "\"" + card->GetBackgroundImage()->GetUrl() + "\"");
+            uiFrame->Property("property var imgSource", card->GetBackgroundImage()->GetUrl(), true);
 			uiFrame->Property("anchors.fill", "parent");
 			uiFrame->Property("background", AdaptiveCardQmlRenderer::GetBackgroundImage(card->GetBackgroundImage(), context, "parent.imgSource")->ToString());
 			uiCard->Property("clip", "true");
@@ -358,7 +358,7 @@ namespace RendererQml
         auto uiColumn = std::make_shared<QmlTag>("ColumnLayout");
         uiColumn->Property("id", layoutId);
         uiColumn->AddFunctions("property var card");
-        uiColumn->Property("property string showCard", "\"" + uiCard_string + "\"");
+        uiColumn->Property("property string showCard", uiCard_string, true);
         uiColumn->Property("Component.onCompleted", "reload(showCard)");
         uiColumn->AddFunctions(Formatter() << "function reload(mCard)\n{\n");
         uiColumn->AddFunctions(Formatter() << "if (card)\n{ \ncard.destroy()\n }\n");
@@ -391,7 +391,7 @@ namespace RendererQml
 
 		std::string text = TextUtils::ApplyTextFunctions(textBlock->GetText(), context->GetLang());
 		text = Utils::HandleEscapeSequences(text);
-		uiTextBlock->Property("text", Formatter() << "\"" << text << "\"");
+		uiTextBlock->Property("text", text, true);
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
 
@@ -427,7 +427,7 @@ namespace RendererQml
 
 		if (!fontFamily.empty())
 		{
-            uiTextBlock->Property("font.family", Formatter() << "\"" << fontFamily << "\"");
+            uiTextBlock->Property("font.family", fontFamily, true);
         }
 
 		return uiTextBlock;
@@ -499,12 +499,12 @@ namespace RendererQml
 
 		if (!input->GetValue().empty())
 		{
-			uiTextInput->Property("text", "\"" + input->GetValue() + "\"");
+			uiTextInput->Property("text", input->GetValue(), true);
 		}
 
 		if (!input->GetPlaceholder().empty())
 		{
-			uiTextInput->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
+			uiTextInput->Property("placeholderText", input->GetPlaceholder(), true);
 		}
 
 		//TODO: Add stretch property
@@ -565,7 +565,7 @@ namespace RendererQml
                 }
                 else
                 {
-                    buttonElement->Property("text", "\"" + input->GetInlineAction()->GetTitle() + "\"");
+                    buttonElement->Property("text", input->GetInlineAction()->GetTitle(), true);
                 }
 
                 if (input->GetIsMultiline())
@@ -624,7 +624,7 @@ namespace RendererQml
 		contentItemTag->Property("text", Formatter() << inputId << ".value");
 		if (!input->GetPlaceholder().empty())
 		{
-			contentItemTag->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
+			contentItemTag->Property("placeholderText", input->GetPlaceholder(), true);
 		}
 
 		auto textBackgroundTag = std::make_shared<QmlTag>("Rectangle");
@@ -646,7 +646,7 @@ namespace RendererQml
 		upIndicatorTag->Property("color", inputId + ".up.pressed ? '#08000000' : 'transparent'");
 
 		auto upIndicatorImage = std::make_shared<QmlTag>("Image");
-		upIndicatorImage->Property("source", Formatter() << "\"" << RendererQml::arrow_up_12 << "\"");
+		upIndicatorImage->Property("source", RendererQml::arrow_up_12, true);
 		upIndicatorImage->Property("anchors.centerIn", "parent");
 		upIndicatorImage->AddChild(colorOverlayTag);
 		upIndicatorTag->AddChild(upIndicatorImage);
@@ -660,7 +660,7 @@ namespace RendererQml
 		downIndicatorTag->Property("color", inputId + ".down.pressed ? '#08000000' : 'transparent'");
 
 		auto downIndicatorImage = std::make_shared<QmlTag>("Image");
-		downIndicatorImage->Property("source", Formatter() << "\"" << RendererQml::arrow_down_12 << "\"");
+		downIndicatorImage->Property("source", RendererQml::arrow_down_12, true);
 		downIndicatorImage->Property("anchors.centerIn", "parent");
 		downIndicatorImage->AddChild(colorOverlayTag);
 		downIndicatorTag->AddChild(downIndicatorImage);
@@ -755,7 +755,7 @@ namespace RendererQml
 		uiTextBlock->Property("width", "parent.width");
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
-		std::string textrun_all = "\"";
+		std::string textrun_all = "";
 
 		if (!richTextBlock->GetIsVisible())
 		{
@@ -780,8 +780,7 @@ namespace RendererQml
 				textrun_all.append(TextRunRender(textRun, context, selectActionId));
 			}
 		}
-		textrun_all = textrun_all.append("\"");
-		uiTextBlock->Property("text", textrun_all);
+		uiTextBlock->Property("text", textrun_all, true);
 
         context->addToTextRunSelectActionList(uiTextBlock, selectActionList);
 
@@ -928,7 +927,7 @@ namespace RendererQml
 		//TODO : Add Height
 
 		auto dropIcon = std::make_shared<QmlTag>("Image");
-		dropIcon->Property("source", Formatter() << "\"" << RendererQml::arrow_down_12 << "\"");
+		dropIcon->Property("source", RendererQml::arrow_down_12, true);
 		dropIcon->Property("anchors.right", "parent.right");
 		dropIcon->Property("anchors.verticalCenter", "parent.verticalCenter");
 		dropIcon->Property("anchors.margins", "5");
@@ -1119,8 +1118,8 @@ namespace RendererQml
 
 		if (checkbox.type == CheckBoxType::Toggle)
 		{
-			uiButton->Property("readonly property string valueOn", "\"" + checkbox.valueOn + "\"");
-			uiButton->Property("readonly property string valueOff", "\"" + checkbox.valueOff + "\"");
+			uiButton->Property("readonly property string valueOn", checkbox.valueOn, true);
+			uiButton->Property("readonly property string valueOff", checkbox.valueOff, true);
             uiButton->Property("property string value", "checked ? valueOn : valueOff");
 			uiButton->Property("width", "parent.width");
 		}
@@ -1130,7 +1129,7 @@ namespace RendererQml
 			uiButton->Property("Layout.maximumWidth", "parent.parent.parent.width");
         }
 		        
-		uiButton->Property("text", "\"" + checkbox.text + "\"");
+		uiButton->Property("text", checkbox.text, true);
 		uiButton->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default)));
 
 		if (!checkbox.isVisible)
@@ -1179,7 +1178,7 @@ namespace RendererQml
 			uiInnerSegment->Property("height", "parent.height - 3");
 			uiInnerSegment->Property("visible", checkbox.id + ".checked");
 
-			uiInnerSegment->Property("source", Formatter() << "\"" << RendererQml::check_icon_12 << "\"");
+			uiInnerSegment->Property("source", RendererQml::check_icon_12, true);
 		}
 			
 		uiOuterRectangle->AddChild(uiInnerSegment);
@@ -1219,13 +1218,13 @@ namespace RendererQml
         uiDateInput->Property("width", "parent.width");
         const int fontSize = context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default);
 
-        uiDateInput->Property("font.family", "\"" + context->GetConfig()->GetFontFamily(AdaptiveCards::FontType::Default) + "\"");
+        uiDateInput->Property("font.family", context->GetConfig()->GetFontFamily(AdaptiveCards::FontType::Default), true);
         uiDateInput->Property("font.pixelSize", std::to_string(fontSize));
 		uiDateInput->Property("selectByMouse", "true");
 		uiDateInput->Property("selectedTextColor", "'white'");
         uiDateInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
-        uiDateInput->Property("property string selectedDate", "\"" + input->GetValue() + "\"");
+        uiDateInput->Property("property string selectedDate", input->GetValue(), true);
 		uiDateInput->AddFunctions(Formatter() << "signal " << uiDateInput->GetId() << "TextChanged(var dateText)");
 
 		//TODO: Add stretch property
@@ -1256,7 +1255,7 @@ namespace RendererQml
         imageTag->Property("anchors.margins", "5");
 		imageTag->Property("fillMode", "Image.PreserveAspectFit");
 		imageTag->Property("mipmap", "true");
-        imageTag->Property("source", Formatter() << "\"" << RendererQml::calendar_icon_32 << "\"");
+        imageTag->Property("source", RendererQml::calendar_icon_32, true);
 
 		auto ColorOverlayTag = std::make_shared<QmlTag>("ColorOverlay");
 		ColorOverlayTag->Property("anchors.fill", "parent");
@@ -1384,7 +1383,7 @@ namespace RendererQml
 			uiDateInput->Property("text", Formatter() << Utils::GetDate(input->GetValue()) << ".toLocaleString(Qt.locale(\"en_US\")," << "\"" << StringDateFormat << "\"" << ")" );
 		}
 
-		uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? "\"" + input->GetPlaceholder() : "\"Select date") << " in " << Utils::ConvertToLowerIdValue(StringDateFormat) << "\"");
+		uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? input->GetPlaceholder() : "Select date") << " in " << Utils::ConvertToLowerIdValue(StringDateFormat), true);
 		uiDateInput->Property("validator", Formatter() << "RegExpValidator { regExp: " << DateRegex << "}");
 		uiDateInput->Property("onFocusChanged", Formatter() << "{" << "if(focus===true) inputMask=\"" << inputMask << "\";" <<
 			"if(focus === false){ z=0;" << "if(text === \""<< std::string(dateSeparator) + std::string(dateSeparator) << "\"){ inputMask = \"\" ; } " <<"if( " << calendar_box_id << ".visible === true){ " << calendar_box_id << ".visible=false}}} ");
@@ -1483,7 +1482,7 @@ namespace RendererQml
 		uiImage->Property("id", Formatter() << image->GetId() << "_img");
 		uiImage->Property("readonly property bool isImage", "true");
         uiImage->Property("cache", "false");
-		uiImage->Property("source", "\"" + image->GetUrl() + "\"");
+		uiImage->Property("source", image->GetUrl(), true);
 		uiImage->Property("anchors.fill", "parent");
 		uiImage->Property("visible", "parent.visible");
 
@@ -1608,9 +1607,9 @@ namespace RendererQml
 		uiTimeInput->Property("id", id);
 		uiTimeInput->Property("selectByMouse", "true");
 		uiTimeInput->Property("selectedTextColor", "'white'");
-        uiTimeInput->Property("property string selectedTime", "\"""\"");
+        uiTimeInput->Property("property string selectedTime", "", true);
 		uiTimeInput->Property("width", "parent.width");
-		uiTimeInput->Property("placeholderText", Formatter() << "\"" << (!input->GetPlaceholder().empty() ? input->GetPlaceholder() : "Select time") << "\"");
+		uiTimeInput->Property("placeholderText", !input->GetPlaceholder().empty() ? input->GetPlaceholder() : "Select time", true);
         uiTimeInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
 		uiTimeInput->Property("validator", "RegExpValidator { regExp: /^(--|[01][0-9|-]|2[0-3|-]):(--|[0-5][0-9|-])$/}");
@@ -1628,8 +1627,8 @@ namespace RendererQml
             {
                 defaultTime = defaultSelectedTime = Utils::defaultTimeto24hour(defaultTime);
             }
-			uiTimeInput->Property("text", Formatter() << "\"" << defaultTime << "\"");
-            uiTimeInput->Property("property string selectedTime", Formatter() << "\"" << defaultSelectedTime << "\"");
+			uiTimeInput->Property("text", defaultTime, true);
+            uiTimeInput->Property("property string selectedTime", defaultSelectedTime, true);
 		}
 
 		if (!input->GetIsVisible())
@@ -1669,7 +1668,7 @@ namespace RendererQml
 		imageTag->Property("anchors.margins", "5");
 		imageTag->Property("fillMode", "Image.PreserveAspectFit");
 		imageTag->Property("mipmap", "true");
-        imageTag->Property("source", Formatter() << "\"" << RendererQml::clock_icon_30 << "\"");
+        imageTag->Property("source", RendererQml::clock_icon_30, true);
 
 		auto ColorOverlayTag = std::make_shared<QmlTag>("ColorOverlay");
 		ColorOverlayTag->Property("anchors.fill", "parent");
@@ -1913,7 +1912,7 @@ namespace RendererQml
 			}
 			
 			uiLine->Property("anchors.centerIn", "parent");
-			uiLine->Property("color", Formatter() << "\"" << separator.lineColor << "\"");
+			uiLine->Property("color", separator.lineColor, true);
 
 			uiSep->AddChild(uiLine);
 		}
@@ -2003,7 +2002,7 @@ namespace RendererQml
 		if (columnSet->GetStyle() != AdaptiveCards::ContainerStyle::None)
 		{
 			const auto color = context->GetConfig()->GetBackgroundColor(columnSet->GetStyle());
-            uiFrame->Property("readonly property string bgColor", "\"" + color + "\"");
+            uiFrame->Property("readonly property string bgColor", color, true);
             backgroundRect->Property("border.width", "0");
 		}
 		else
@@ -2189,14 +2188,14 @@ namespace RendererQml
         if (hasBackgroundImage)
         {
             uiContainer->Property("readonly property bool hasBackgroundImage", "true");
-            uiContainer->Property("property var imgSource", "\"" + cardElement->GetBackgroundImage()->GetUrl() + "\"");
+            uiContainer->Property("property var imgSource", cardElement->GetBackgroundImage()->GetUrl(), true);
 			auto backgroundImg = AdaptiveCardQmlRenderer::GetBackgroundImage(cardElement->GetBackgroundImage(), context, id + ".imgSource");
             backgroundRect->AddChild(backgroundImg);            
         }
         else if (cardElement->GetStyle() != AdaptiveCards::ContainerStyle::None)
         {
             const auto color = context->GetConfig()->GetBackgroundColor(cardElement->GetStyle());
-            uiContainer->Property("readonly property string bgColor", "\"" + color + "\"");
+            uiContainer->Property("readonly property string bgColor", color, true);
             backgroundRect->Property("border.width", "0");
         }
         else
@@ -2322,7 +2321,7 @@ namespace RendererQml
             if (!action->GetIconUrl().empty())
             {
 				buttonElement->Property("readonly property bool hasIconUrl", "true");
-                buttonElement->Property("property var imgSource", "\"" + action->GetIconUrl() + "\"");
+                buttonElement->Property("property var imgSource", action->GetIconUrl(), true);
 
                 auto contentImage = std::make_shared<QmlTag>("Image");
                 contentImage->Property("id", Formatter() << buttonId << "_img");
@@ -2352,7 +2351,7 @@ namespace RendererQml
             auto contentText = std::make_shared<QmlTag>("Text");
             if (!action->GetTitle().empty())
             {
-                contentText->Property("text", "\"" + action->GetTitle() + "\"");
+                contentText->Property("text", action->GetTitle(), true);
             }
             contentText->Property("font.pixelSize", Formatter() << fontSize);
 
@@ -2439,7 +2438,7 @@ namespace RendererQml
                 showCardIcon->Property("fillMode", "Image.PreserveAspectFit");
                 showCardIcon->Property("mipmap", "true");
                 showCardIcon->Property("anchors.verticalCenter", "parent.verticalCenter");
-                showCardIcon->Property("source", Formatter() << "\"" << RendererQml::arrow_down_12 << "\"");
+                showCardIcon->Property("source", RendererQml::arrow_down_12, true);
 
 				ColorOverlayTag->Property("anchors.fill", "parent");
 				ColorOverlayTag->Property("source", "parent");
