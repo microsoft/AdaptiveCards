@@ -192,10 +192,10 @@ public class AdaptiveCardRenderer
 
                         if (!secondaryElementVector.isEmpty())
                         {
-                            IActionLayoutRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
+                            IActionLayoutRenderer secondaryActionLayoutRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
                             //if the actionButtonsLayout is not a viewGroup, then use cardLayout as a root.
                             ViewGroup rootActionLayout = actionButtonsLayout instanceof ViewGroup ? (ViewGroup) actionButtonsLayout : cardLayout;
-                            overflowActionRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
+                            secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
                         }
                     }
                     // Catches the exception as the method throws it for performing fallback with elements inside the card,
