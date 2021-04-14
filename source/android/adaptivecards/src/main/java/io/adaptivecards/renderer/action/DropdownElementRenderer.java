@@ -4,8 +4,6 @@ package io.adaptivecards.renderer.action;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -13,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.BaseActionElement;
@@ -32,7 +33,7 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 public class DropdownElementRenderer extends BaseActionElementRenderer {
 
     private final static int HORIZONTAL_MARGIN = 12;
-    private final static int VERTICAL_MARGIN = 8;
+    private final static int VERTICAL_MARGIN = 10;
 
 
 

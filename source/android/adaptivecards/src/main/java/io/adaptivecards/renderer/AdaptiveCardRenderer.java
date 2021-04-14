@@ -4,7 +4,8 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import android.util.Pair;
 import android.view.View;
