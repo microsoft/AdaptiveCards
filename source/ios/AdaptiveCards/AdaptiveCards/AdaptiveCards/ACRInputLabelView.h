@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ACRIBaseInputHandler.h"
+#import "ACOEnums.h"
 
 @interface ACRInputLabelView : UIView <ACRIBaseInputHandler>
 @property (weak, nonatomic) IBOutlet UILabel *errorMessage;

@@ -133,7 +133,32 @@
             [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"There exist required input, but there is no associated label with it, consider adding label to the input"];
         }
     }
+    [self setRtl:rootView.context.rtl];
     return self;
+}
+
+- (void)setRtl:(ACRRtl)rtl
+{
+    if (rtl == ACRRtlNone) {
+        return;
+    }
+    UISemanticContentAttribute semanticAttribute = (rtl == ACRRtlRTL) ? UISemanticContentAttributeForceRightToLeft : UISemanticContentAttributeForceLeftToRight;
+
+    if (self.errorMessage) {
+        self.errorMessage.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.label) {
+        self.label.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.stack) {
+        self.stack.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.inputView) {
+        self.inputView.semanticContentAttribute = semanticAttribute;
+    }
 }
 
 - (BOOL)validate:(NSError **)error
@@ -235,6 +260,21 @@
         return [predicate evaluateWithObject:text];
     }
     return YES;
+}
+
+// returns intrinsic content size for inputs
+- (CGSize)intrinsicContentSize
+{
+    CGFloat width = 0.0f, height = 0.0f;
+    for (UIView *view in self.stack.arrangedSubviews) {
+        if (!view.hidden) {
+            CGSize size = [view intrinsicContentSize];
+            width = MAX(size.width, width);
+            height += size.height;
+        }
+    }
+
+    return CGSizeMake(width, height);
 }
 
 @synthesize hasValidationProperties;

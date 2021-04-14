@@ -13,6 +13,7 @@
 #include "AdaptiveContainerRenderer.h"
 #include "AdaptiveDateInputRenderer.h"
 #include "AdaptiveElementRendererRegistration.h"
+#include "AdaptiveExecuteActionRenderer.h"
 #include "AdaptiveFactSetRenderer.h"
 #include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveHostConfig.h"
@@ -335,14 +336,14 @@ namespace AdaptiveNamespace
                                                   false, // highlight
                                                   &attentionColor));
 
-        ABI::Windows::UI::Color lighterAccentColor = GenerateLighterColor(accentColor);
-        ABI::Windows::UI::Color lighterAttentionColor = GenerateLighterColor(attentionColor);
+        ABI::Windows::UI::Color hoverAccentColor = GenerateLHoverColor(accentColor);
+        ABI::Windows::UI::Color hoverAttentionColor = GenerateLHoverColor(attentionColor);
 
         ComPtr<IBrush> accentColorBrush = XamlHelpers::GetSolidColorBrush(accentColor);
         THROW_IF_FAILED(TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.Static.Background",
                                                                        accentColorBrush.Get()));
 
-        ComPtr<IBrush> lightAccentColorBrush = XamlHelpers::GetSolidColorBrush(lighterAccentColor);
+        ComPtr<IBrush> lightAccentColorBrush = XamlHelpers::GetSolidColorBrush(hoverAccentColor);
         THROW_IF_FAILED(TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Positive.Button.MouseOver.Background",
                                                                        lightAccentColorBrush.Get()));
 
@@ -350,7 +351,7 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.Foreground",
                                                                        attentionColorBrush.Get()));
 
-        ComPtr<IBrush> lightAttentionColorBrush = XamlHelpers::GetSolidColorBrush(lighterAttentionColor);
+        ComPtr<IBrush> lightAttentionColorBrush = XamlHelpers::GetSolidColorBrush(hoverAttentionColor);
         THROW_IF_FAILED(TryInsertResourceToSentimentResourceDictionary(L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
                                                                        lightAttentionColorBrush.Get()));
     }

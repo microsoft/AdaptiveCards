@@ -201,6 +201,7 @@ const CGFloat padding = 16.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     NSString *textString = nil;
 
@@ -221,8 +222,6 @@ const CGFloat padding = 16.0f;
                               attributes:@{NSFontAttributeName : cell.textLabel.font}
                                  context:nil]
             .size;
-
-    [tableView layoutIfNeeded];
 
     return labelStringSize.height + _spacing;
 }

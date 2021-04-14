@@ -3,7 +3,7 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;

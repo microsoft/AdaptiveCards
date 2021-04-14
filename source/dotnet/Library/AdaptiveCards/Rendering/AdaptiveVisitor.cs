@@ -146,6 +146,9 @@ namespace AdaptiveCards.Rendering
 
             if (action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
                 Visit(toggleVisibilityAction);
+
+            if (action is AdaptiveExecuteAction executeAction)
+                Visit(executeAction);
         }
 
         public virtual void Visit(AdaptiveSubmitAction action)
@@ -162,6 +165,9 @@ namespace AdaptiveCards.Rendering
         }
 
         public virtual void Visit(AdaptiveToggleVisibilityAction action)
+        {
+        }
+        public virtual void Visit(AdaptiveExecuteAction action)
         {
         }
 

@@ -4,7 +4,7 @@ package io.adaptivecards.renderer.action;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,10 +87,10 @@ public class ActionSetRenderer extends BaseCardElementRenderer
             View actionButtonsLayout = ActionLayoutRenderer.getInstance().renderActions(renderedCard, context, fragmentManager, actionsLayout, primaryElementVector, cardActionHandler, hostConfig, renderArgs);
             if (!secondaryElementVector.isEmpty())
             {
-                IActionLayoutRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
+                IActionLayoutRenderer secondaryActionLayoutRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
                 //if the actionButtonsLayout is not a viewGroup, then use actionsLayout as a root.
                 ViewGroup rootActionLayout = actionButtonsLayout instanceof ViewGroup ? (ViewGroup) actionButtonsLayout : actionsLayout;
-                overflowActionRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
+                secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
             }
         }
         catch (Exception e) {}

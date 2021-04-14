@@ -48,6 +48,7 @@ namespace AdaptiveNamespace::ActionHelpers
                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                            bool fullWidth,
                            const std::wstring& style,
+                           HSTRING altText,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
     void HandleSelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,

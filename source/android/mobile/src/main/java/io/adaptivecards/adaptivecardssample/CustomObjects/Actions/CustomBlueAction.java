@@ -1,9 +1,8 @@
 package io.adaptivecards.adaptivecardssample.CustomObjects.Actions;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.view.ContextThemeWrapper;
+import androidx.fragment.app.FragmentManager;
+
 import android.view.ViewGroup;
 import android.widget.Button;
 

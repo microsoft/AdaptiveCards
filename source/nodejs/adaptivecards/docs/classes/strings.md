@@ -326,3 +326,27 @@ ___
 ▸ **dontUseWeightedAndStrecthedColumnsInSameSet**(): *string*
 
 **Returns:** *string*
+
+___
+
+### `Static` runtime
+
+### ▪ **runtime**: *object*
+
+###  automaticRefreshPaused
+
+▸ **automaticRefreshPaused**(): *string*
+
+**Returns:** *string*
+
+###  clckToRestartAutomaticRefresh
+
+▸ **clckToRestartAutomaticRefresh**(): *string*
+
+**Returns:** *string*
+
+###  refreshThisCard
+
+▸ **refreshThisCard**(): *string*
+
+**Returns:** *string*

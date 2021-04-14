@@ -6,6 +6,8 @@
 #include "BaseCardElement.h"
 #include "BaseActionElement.h"
 #include "ParseResult.h"
+#include "Refresh.h"
+#include "Authentication.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -61,12 +63,30 @@ namespace AdaptiveSharedNamespace
                      std::vector<std::shared_ptr<BaseCardElement>>& body,
                      std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
+        AdaptiveCard(std::string const& version,
+                     std::string const& fallbackText,
+                     std::shared_ptr<BackgroundImage> backgroundImage,
+                     std::shared_ptr<Refresh> refresh,
+                     std::shared_ptr<Authentication> authentication,
+                     ContainerStyle style,
+                     std::string const& speak,
+                     std::string const& language,
+                     VerticalContentAlignment verticalContentAlignment,
+                     HeightType height,
+                     unsigned int minHeight,
+                     std::vector<std::shared_ptr<BaseCardElement>>& body,
+                     std::vector<std::shared_ptr<BaseActionElement>>& actions);
+
         std::string GetVersion() const;
         void SetVersion(const std::string& value);
         std::string GetFallbackText() const;
         void SetFallbackText(const std::string& value);
         std::shared_ptr<BackgroundImage> GetBackgroundImage() const;
         void SetBackgroundImage(const std::shared_ptr<BackgroundImage> value);
+        std::shared_ptr<Refresh> GetRefresh() const;
+        void SetRefresh(const std::shared_ptr<Refresh> value);
+        std::shared_ptr<Authentication> GetAuthentication() const;
+        void SetAuthentication(const std::shared_ptr<Authentication> value);
         std::string GetSpeak() const;
         void SetSpeak(const std::string& value);
         ContainerStyle GetStyle() const;
@@ -79,6 +99,8 @@ namespace AdaptiveSharedNamespace
         void SetHeight(const HeightType value);
         unsigned int GetMinHeight() const;
         void SetMinHeight(const unsigned int value);
+        std::optional<bool> GetRtl() const;
+        void SetRtl(const std::optional<bool>& value);
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
@@ -87,6 +109,11 @@ namespace AdaptiveSharedNamespace
         const std::vector<std::shared_ptr<BaseCardElement>>& GetBody() const;
         std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
         const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
+
+        const std::unordered_set<std::string>& GetKnownProperties() const;
+        const Json::Value& GetAdditionalProperties() const;
+        void SetAdditionalProperties(Json::Value&& additionalProperties);
+        void SetAdditionalProperties(const Json::Value& additionalProperties);
 
         std::vector<RemoteResourceInformation> GetResourceInformation();
 
@@ -136,17 +163,23 @@ namespace AdaptiveSharedNamespace
 
     private:
         static void _ValidateLanguage(const std::string& language, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
+        void PopulateKnownPropertiesSet();
 
         std::string m_version;
         std::string m_fallbackText;
         std::shared_ptr<BackgroundImage> m_backgroundImage;
+        std::shared_ptr<Refresh> m_refresh;
+        std::shared_ptr<Authentication> m_authentication;
         std::string m_speak;
         ContainerStyle m_style;
         std::string m_language;
         VerticalContentAlignment m_verticalContentAlignment;
         HeightType m_height;
         unsigned int m_minHeight;
+        std::optional<bool> m_rtl;
         InternalId m_internalId;
+        std::unordered_set<std::string> m_knownProperties;
+        Json::Value m_additionalProperties;
 
         std::vector<std::shared_ptr<BaseCardElement>> m_body;
         std::vector<std::shared_ptr<BaseActionElement>> m_actions;

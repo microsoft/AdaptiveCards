@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
-import android.support.annotation.NonNull;
+
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import java.util.List;
 

@@ -86,8 +86,8 @@ namespace AdaptiveSharedNamespace
 
     // TODO: microsoft/AdaptiveCards#3460 each ColorConfig below needs a HighlightColorConfig initializer
 #ifdef __clang__
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
     struct ColorsConfig
     {
@@ -102,7 +102,7 @@ namespace AdaptiveSharedNamespace
         static ColorsConfig Deserialize(const Json::Value& json, const ColorsConfig& defaultValue);
     };
 #ifdef __clang__
-    #pragma clang diagnostic pop
+#pragma clang diagnostic pop
 #endif
 
     struct TextConfig
@@ -343,6 +343,12 @@ namespace AdaptiveSharedNamespace
         static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
     };
 
+    struct HeadingsConfig
+    {
+        unsigned int level = 2;
+        static HeadingsConfig Deserialize(const Json::Value& json, const HeadingsConfig& defaultValue);
+    };
+
     class HostConfig
     {
     public:
@@ -412,6 +418,9 @@ namespace AdaptiveSharedNamespace
         InputsConfig GetInputs() const;
         void SetInputs(const InputsConfig value);
 
+        HeadingsConfig GetHeadings() const;
+        void SetHeadings(const HeadingsConfig value);
+
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
         const ColorConfig& GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const;
@@ -433,5 +442,6 @@ namespace AdaptiveSharedNamespace
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
         InputsConfig _inputs;
+        HeadingsConfig _headings;
     };
 }

@@ -307,16 +307,19 @@ ul.action-list {
   margin: 0;
 }
 
-.toc-todo > div > ul > li {
+.toc-todo > div > ul > li,
+.toc-todo > div > ul > a {
   padding-left: 30px;
 }
 
 /* For samples, since there's no heirarchy, don't indent the left as much */
-.toc-todo .samples-sidebar-list li {
+.toc-todo .samples-sidebar-list li,
+.toc-todo .samples-sidebar-list a {
   padding-left: 12px;
 }
 
-.toc-todo li {
+.toc-todo li,
+.toc-todo a {
   padding-left: 30px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -333,8 +336,11 @@ s {
     background-color: #0050c5;
 }
 
+.toc-todo .selectedHolder,
 .toc-todo .selectedHolder > a,
-.toc-todo .selectedHolder > a:hover {
+.toc-todo .selectedHolder > a:hover,
+.toc-todo a.selectedHolder:hover
+{
     color: #fff;
 }
 

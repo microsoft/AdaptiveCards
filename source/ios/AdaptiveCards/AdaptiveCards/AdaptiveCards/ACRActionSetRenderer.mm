@@ -55,7 +55,7 @@
                      card:(ACOAdaptiveCard *)card
                hostConfig:(ACOHostConfig *)config
 {
-    std::vector<std::shared_ptr<BaseActionElement>> elems = [card card] -> GetActions();
+    std::vector<std::shared_ptr<BaseActionElement>> elems = [card card]->GetActions();
     return [self renderButtons:rootView
                         inputs:inputs
                      superview:superview
@@ -73,8 +73,11 @@
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
     UIStackView *childview = [[UIStackView alloc] init];
+
+    configRtl(childview, rootView.context);
+
     childview.distribution = UIStackViewDistributionFillProportionally;
-    AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig] -> GetActions();
+    AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig]->GetActions();
 
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         childview.axis = UILayoutConstraintAxisHorizontal;
@@ -99,6 +102,8 @@
 
     // set width
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
+
+    configRtl(containingView, rootView.context);
 
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing,
           maxWidth = 0, maxHeight = 0;
@@ -209,27 +214,30 @@
 
     UIButton *button = nil;
 
-    @try {
-        if ([acoElem meetsRequirements:featureReg] == NO) {
-            @throw [ACOFallbackException fallbackException];
-        }
-        button = [actionRenderer renderButton:rootView
-                                       inputs:inputs
-                                    superview:superview
-                            baseActionElement:acoElem
-                                   hostConfig:config];
-        [childview addArrangedSubview:button];
-    } @catch (ACOFallbackException *exception) {
-        handleActionFallbackException(exception, superview, rootView, inputs, acoElem, config,
-                                      childview);
-        NSUInteger count = [childview.arrangedSubviews count];
-        if (count > numElem) {
-            UIView *view = [childview.arrangedSubviews lastObject];
-            if (view && [view isKindOfClass:[UIButton class]]) {
-                button = (UIButton *)view;
-            }
-        }
-    }
+	@try {
+		if ([acoElem meetsRequirements:featureReg] == NO) {
+			@throw [ACOFallbackException fallbackException];
+		}
+		button = [actionRenderer renderButton:rootView
+										inputs:inputs
+									superview:superview
+							baseActionElement:acoElem
+									hostConfig:config];
+
+		configRtl(button, rootView.context);
+
+		[childview addArrangedSubview:button];
+	} @catch (ACOFallbackException *exception) {
+		handleActionFallbackException(exception, superview, rootView, inputs, acoElem, config,
+										childview);
+		NSUInteger count = [childview.arrangedSubviews count];
+		if (count > numElem) {
+			UIView *view = [childview.arrangedSubviews lastObject];
+			if (view && [view isKindOfClass:[UIButton class]]) {
+				button = (UIButton *)view;
+			}
+		}
+	}
 
     accumulatedWidth += [button intrinsicContentSize].width;
     accumulatedHeight += [button intrinsicContentSize].height;

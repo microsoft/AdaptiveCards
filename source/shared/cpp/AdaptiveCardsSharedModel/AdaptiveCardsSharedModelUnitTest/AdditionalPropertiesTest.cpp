@@ -14,6 +14,112 @@ namespace AdaptiveCardsSharedModelUnitTest
     TEST_CLASS(AdditionalPropertyTest)
     {
     public:
+        TEST_METHOD(CanGetAdditionalProperitesAtCardLevelTest)
+        {
+            std::string testJsonString =
+            "{\
+                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\": \"AdaptiveCard\",\
+                \"version\": \"1.0\",\
+                \"unknown\": \"testing unknown\",\
+                \"body\": [\
+                    {\
+                        \"type\": \"TextBlock\",\
+                        \"text\": \"You can even draw attention to certain text with color\",\
+                        \"wrap\": true,\
+                        \"color\": \"attention\",\
+                        \"unknown\": \"testing unknown\"\
+                    }\
+                ]\
+            }";
+
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            Json::Value value = parseResult->GetAdaptiveCard()->GetAdditionalProperties();
+            Assert::AreEqual("{\"unknown\":\"testing unknown\"}\n"s, ParseUtil::JsonToString(value));
+        }
+
+        TEST_METHOD(CanGetCorrectAdditionalPropertiesAtCardLevelTest)
+        {
+            std::string testJsonString =
+            "{\
+                \"type\": \"AdaptiveCard\",\
+                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"version\": \"1.0\",\
+                \"unknown\": \"testing unknown\",\
+                \"lang\": \"en\",\
+                \"fallbackText\": \"test\",\
+                \"speak\": \"test\",\
+                \"minHeight\": \"1px\",\
+                \"verticalContentAlignment\": \"Center\",\
+                \"backgroundImage\": {\
+                    \"url\": \"bing.com\",\
+                    \"fillMode\": \"RepeatHorizontally\",\
+                    \"horizontalAlignment\": \"Center\",\
+                    \"verticalAlignment\": \"Center\"\
+                },\
+                \"selectAction\": {\
+                    \"type\": \"Action.OpenUrl\",\
+                    \"id\": \"hello\",\
+                    \"title\": \"world\",\
+                    \"url\": \"www.bing.com\"\
+                },\
+                \"body\": [\
+                    {\
+                        \"type\": \"TextBlock\",\
+                        \"text\": \"You can even draw attention to certain text with color\"\
+                    }\
+                ],\
+                \"actions\": [\
+                    {\
+                        \"type\": \"Action.Submit\",\
+                        \"MyAdditionalProperty\": \"Foo\"\
+                    }\
+                ]\
+            }";
+
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            Json::Value value = parseResult->GetAdaptiveCard()->GetAdditionalProperties();
+            Assert::AreEqual("{\"unknown\":\"testing unknown\"}\n"s, ParseUtil::JsonToString(value));
+        }
+
+        TEST_METHOD(RoundtrippingWithAdditionalPropertiesAtCardLevel)
+        {
+            std::string testJsonString =
+            "{\
+                \"type\": \"AdaptiveCard\",\
+                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"version\": \"1.0\",\
+                \"unknown\": \"testing unknown\",\
+                \"lang\": \"en\",\
+                \"fallbackText\": \"test\",\
+                \"speak\": \"test\",\
+                \"minHeight\": \"1px\",\
+                \"verticalContentAlignment\": \"Center\",\
+                \"backgroundImage\": {\
+                    \"url\": \"bing.com\",\
+                    \"fillMode\": \"RepeatHorizontally\",\
+                    \"horizontalAlignment\": \"Center\",\
+                    \"verticalAlignment\": \"Center\"\
+                },\
+                \"body\": [\
+                    {\
+                        \"type\": \"TextBlock\",\
+                        \"text\": \"You can even draw attention to certain text with color\"\
+                    }\
+                ],\
+                \"actions\": [\
+                    {\
+                        \"type\": \"Action.Submit\",\
+                        \"MyAdditionalProperty\": \"Foo\"\
+                    }\
+                ]\
+            }";
+
+            ;
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            const auto outputCard = parseResult->GetAdaptiveCard()->Serialize();
+            Assert::AreEqual("{\"actions\":[{\"MyAdditionalProperty\":\"Foo\",\"type\":\"Action.Submit\"}],\"backgroundImage\":{\"fillMode\":\"repeatHorizontally\",\"horizontalAlignment\":\"center\",\"url\":\"bing.com\",\"verticalAlignment\":\"center\"},\"body\":[{\"text\":\"You can even draw attention to certain text with color\",\"type\":\"TextBlock\"}],\"fallbackText\":\"test\",\"lang\":\"en\",\"minHeight\":\"1px\",\"speak\":\"test\",\"type\":\"AdaptiveCard\",\"unknown\":\"testing unknown\",\"version\":\"1.0\",\"verticalContentAlignment\":\"Center\"}\n"s, outputCard);
+        }
         TEST_METHOD(CanGetAdditionalProperitesTest)
         {
             std::string testJsonString =

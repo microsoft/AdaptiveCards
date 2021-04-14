@@ -3,7 +3,7 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -178,6 +178,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, context, hostConfig);
         ContainerRenderer.ApplyBleed(column, columnLayout, context, hostConfig);
+        BaseCardElementRenderer.applyRtl(column.GetRtl(), columnLayout);
 
         ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler, renderArgs);
 

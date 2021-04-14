@@ -4,8 +4,9 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +135,7 @@ public class AdaptiveCardRenderer
         cardLayout.setClipToPadding(false);
 
         BaseCardElementRenderer.setMinHeight(cardMinHeight, rootLayout, context);
+        BaseCardElementRenderer.applyRtl(adaptiveCard.GetRtl(), cardLayout);
         ContainerRenderer.applyVerticalContentAlignment(cardLayout, adaptiveCard.GetVerticalContentAlignment());
 
         cardLayout.setOrientation(LinearLayout.VERTICAL);
@@ -192,10 +194,10 @@ public class AdaptiveCardRenderer
 
                         if (!secondaryElementVector.isEmpty())
                         {
-                            IActionLayoutRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
+                            IActionLayoutRenderer secondaryActionLayoutRenderer = CardRendererRegistration.getInstance().getOverflowActionLayoutRenderer();
                             //if the actionButtonsLayout is not a viewGroup, then use cardLayout as a root.
                             ViewGroup rootActionLayout = actionButtonsLayout instanceof ViewGroup ? (ViewGroup) actionButtonsLayout : cardLayout;
-                            overflowActionRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
+                            secondaryActionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, rootActionLayout, secondaryElementVector, cardActionHandler, hostConfig, renderArgs);
                         }
                     }
                     // Catches the exception as the method throws it for performing fallback with elements inside the card,

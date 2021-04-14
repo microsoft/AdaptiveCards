@@ -1,15 +1,12 @@
 package io.adaptivecards.objectmodel;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.support.test.InstrumentationRegistry;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+
+import androidx.test.InstrumentationRegistry;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import junit.framework.Assert;
 
@@ -25,7 +22,6 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class APITest

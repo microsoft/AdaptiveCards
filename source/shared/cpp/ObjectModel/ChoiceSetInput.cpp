@@ -46,11 +46,14 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap;
     }
 
-    const std::string& propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
-    root[propertyName] = Json::Value(Json::arrayValue);
-    for (const auto& choice : m_choices)
+    if (m_choices.size())
     {
-        root[propertyName].append(choice->SerializeToJsonValue());
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
+        root[propertyName] = Json::Value(Json::arrayValue);
+        for (const auto& choice : m_choices)
+        {
+            root[propertyName].append(choice->SerializeToJsonValue());
+        }
     }
 
     return root;
@@ -121,7 +124,7 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
 
     // Parse Choices
     auto choices =
-        ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, true);
+        ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, false);
     choiceSet->m_choices = std::move(choices);
 
     return choiceSet;

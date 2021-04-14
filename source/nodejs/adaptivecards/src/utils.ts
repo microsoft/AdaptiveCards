@@ -252,3 +252,9 @@ export function getScrollX(): number {
 export function getScrollY(): number {
     return window.pageYOffset;
 }
+
+export function clearElementChildren(element: HTMLElement) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}
