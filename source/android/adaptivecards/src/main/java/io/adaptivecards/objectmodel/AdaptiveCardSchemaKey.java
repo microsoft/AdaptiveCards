@@ -120,6 +120,7 @@ public enum AdaptiveCardSchemaKey {
   MimeType,
   Min,
   MinHeight,
+  Mode,
   Monospace,
   NumberInput,
   OptionalInputs,

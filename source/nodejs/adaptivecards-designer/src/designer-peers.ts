@@ -143,16 +143,17 @@ export class PropertySheet {
         targetVersion: Adaptive.Version,
         peer: DesignerPeer,
         action: Adaptive.Action,
-        category: string) {
+        category: string,
+        excludeProperties: PropertySheetEntry[] = [ ActionPeer.iconUrlProperty, ActionPeer.styleProperty, ActionPeer.modeProperty ]) {
         let actionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(peer.designerSurface, null, action);
         actionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { peer.changed(updatePropertySheet); };
 
         let subPropertySheet = new PropertySheet(false);
         actionPeer.populatePropertySheet(subPropertySheet, category);
 
-        subPropertySheet.remove(
-            ActionPeer.iconUrlProperty,
-            ActionPeer.styleProperty);
+        if (excludeProperties.length > 0) {
+            subPropertySheet.remove(...excludeProperties);
+        }
 
         this.add(
             category,
@@ -292,7 +293,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
                 let action = new Adaptive.SubmitAction();
                 action.id = command.id;
                 action.title = command.caption;
-                action.accessibleTitle = command.altText;
+                action.tooltip = command.altText;
                 action.expanded = command.expanded;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
@@ -400,7 +401,7 @@ export class StringArrayPropertyEditor extends BaseStringPropertyEditor {
 
             context.target[this.propertyName] = result.length > 0 ? result : undefined;
         }
-    }    
+    }
 
     constructor(
         readonly targetVersion: Adaptive.TargetVersion,
@@ -822,7 +823,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 
                 let removeAction = new Adaptive.SubmitAction();
                 removeAction.title = "X";
-                removeAction.accessibleTitle = "Remove";
+                removeAction.tooltip = "Remove";
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
 
@@ -1282,7 +1283,15 @@ export abstract class DesignerPeer extends DraggableElement {
 }
 
 export class ActionPeer extends DesignerPeer {
-    static readonly titleProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "title", "Title");
+    static readonly titleProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "title", "Title", true);
+    static readonly modeProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_5,
+        "mode",
+        "Mode",
+        [
+            { targetVersion: Adaptive.Versions.v1_5, name: "Primary", value: Adaptive.ActionMode.Primary },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Secondary", value: Adaptive.ActionMode.Secondary }
+        ]);
     static readonly styleProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_2,
         "style",
@@ -1293,6 +1302,7 @@ export class ActionPeer extends DesignerPeer {
             { targetVersion: Adaptive.Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle.Destructive }
         ]);
     static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
+    static readonly tooltipProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "tooltip", "Tooltip");
 
     protected doubleClick(e: MouseEvent) {
         super.doubleClick(e);
@@ -1355,6 +1365,8 @@ export class ActionPeer extends DesignerPeer {
             defaultCategory,
             ActionPeer.idProperty,
             ActionPeer.titleProperty,
+            ActionPeer.tooltipProperty,
+            ActionPeer.modeProperty,
             ActionPeer.styleProperty,
             ActionPeer.iconUrlProperty);
     }
@@ -1822,7 +1834,8 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                 Adaptive.Versions.v1_4,
                 this,
                 this.cardElement.refresh.action,
-                PropertySheetCategory.Refresh);
+                PropertySheetCategory.Refresh,
+                [ BaseSubmitActionPeer.associatedInputsProperty, ActionPeer.iconUrlProperty, ActionPeer.styleProperty, ActionPeer.modeProperty ]);
         }
 
         propertySheet.add(
@@ -2396,7 +2409,8 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
                 Adaptive.Versions.v1_2,
                 this,
                 this.cardElement.inlineAction,
-                PropertySheetCategory.SelectionAction);
+                PropertySheetCategory.InlineAction,
+                [ ActionPeer.styleProperty, ActionPeer.modeProperty ]);
         }
 
         propertySheet.add(
@@ -2602,6 +2616,14 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     static readonly weightProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "weight", "Weight", Adaptive.TextWeight);
     static readonly colorProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "color", "Color", Adaptive.TextColor);
     static readonly subtleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isSubtle", "Subtle");
+    static readonly styleProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_5,
+        "style",
+        "Style",
+        [
+            { targetVersion: Adaptive.Versions.v1_5, name: "Paragraph", value: "paragraph" },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Heading", value: "heading" }
+        ]);
 
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
         return new TextBlockPeerInplaceEditor(this.cardElement);
@@ -2655,7 +2677,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             TextBlockPeer.sizeProperty,
             TextBlockPeer.weightProperty,
             TextBlockPeer.colorProperty,
-            TextBlockPeer.subtleProperty);
+            TextBlockPeer.subtleProperty,
+            TextBlockPeer.styleProperty);
     }
 
     getToolTip(): string {
