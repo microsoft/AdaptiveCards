@@ -143,16 +143,17 @@ export class PropertySheet {
         targetVersion: Adaptive.Version,
         peer: DesignerPeer,
         action: Adaptive.Action,
-        category: string) {
+        category: string,
+        excludeProperties: PropertySheetEntry[] = [ ActionPeer.iconUrlProperty, ActionPeer.styleProperty, ActionPeer.modeProperty ]) {
         let actionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(peer.designerSurface, null, action);
         actionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { peer.changed(updatePropertySheet); };
 
         let subPropertySheet = new PropertySheet(false);
         actionPeer.populatePropertySheet(subPropertySheet, category);
 
-        subPropertySheet.remove(
-            ActionPeer.iconUrlProperty,
-            ActionPeer.styleProperty);
+        if (excludeProperties.length > 0) {
+            subPropertySheet.remove(...excludeProperties);
+        }
 
         this.add(
             category,
@@ -1833,7 +1834,8 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
                 Adaptive.Versions.v1_4,
                 this,
                 this.cardElement.refresh.action,
-                PropertySheetCategory.Refresh);
+                PropertySheetCategory.Refresh,
+                [ BaseSubmitActionPeer.associatedInputsProperty, ActionPeer.iconUrlProperty, ActionPeer.styleProperty, ActionPeer.modeProperty ]);
         }
 
         propertySheet.add(
@@ -2407,7 +2409,8 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
                 Adaptive.Versions.v1_2,
                 this,
                 this.cardElement.inlineAction,
-                PropertySheetCategory.SelectionAction);
+                PropertySheetCategory.InlineAction,
+                [ ActionPeer.styleProperty, ActionPeer.modeProperty ]);
         }
 
         propertySheet.add(

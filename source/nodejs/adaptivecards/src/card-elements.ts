@@ -2835,6 +2835,8 @@ export class TextInput extends Input {
                 button.textContent = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
             }
 
+            this.inlineAction.setupElementForAccessibility(button, true);
+
             button.style.marginLeft = "8px";
 
             this.inputControlContainerElement.appendChild(button);
@@ -3862,7 +3864,7 @@ export abstract class Action extends CardObject {
         return "button";
     }
 
-    setupElementForAccessibility(element: HTMLElement) {
+    setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
         element.tabIndex = 0;
         element.setAttribute("role", this.getAriaRole());
 
@@ -3872,7 +3874,9 @@ export abstract class Action extends CardObject {
         }
 
         if (this.tooltip) {
-            element.setAttribute("aria-description", this.tooltip);
+            let targetAriaAttribute = promoteTooltipToLabel ? (this.title ? "aria-description" : "aria-label") : "aria-description";
+
+            element.setAttribute(targetAriaAttribute, this.tooltip);
             element.title = this.tooltip;
         }
     }
@@ -3914,8 +3918,6 @@ export abstract class Action extends CardObject {
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
 
-        buttonElement.setAttribute("role", this.getAriaRole());
-
         let titleElement = document.createElement("div");
         titleElement.style.overflow = "hidden";
         titleElement.style.textOverflow = "ellipsis";
@@ -3925,14 +3927,10 @@ export abstract class Action extends CardObject {
         }
 
         if (this.title) {
-            buttonElement.setAttribute("aria-label", this.title);
             titleElement.innerText = this.title;
         }
 
-        if (this.tooltip) {
-            buttonElement.setAttribute("aria-description", this.tooltip);
-            buttonElement.title = this.tooltip;
-        }
+        this.setupElementForAccessibility(buttonElement, true);
 
         if (!this.iconUrl) {
             buttonElement.classList.add("noIcon");
