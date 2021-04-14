@@ -344,6 +344,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getContainerStyleEnum();
   public final static native String ContainerStyleToString(int jarg1);
   public final static native int ContainerStyleFromString(String jarg1);
+  public final static native long getModeEnum();
+  public final static native String ModeToString(int jarg1);
+  public final static native int ModeFromString(String jarg1);
   public final static native long getIconPlacementEnum();
   public final static native String IconPlacementToString(int jarg1);
   public final static native int IconPlacementFromString(String jarg1);
@@ -504,6 +507,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseActionElement_SetStyle__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
   public final static native void BaseActionElement_SetStyle__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
+  public final static native int BaseActionElement_GetMode(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetMode(long jarg1, BaseActionElement jarg1_, int jarg2);
   public final static native void BaseActionElement_GetResourceInformation(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseActionElement_GetResourceInformationSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long BaseActionElement_SerializeToJsonValue(long jarg1, BaseActionElement jarg1_);

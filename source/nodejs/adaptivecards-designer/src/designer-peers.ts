@@ -401,7 +401,7 @@ export class StringArrayPropertyEditor extends BaseStringPropertyEditor {
 
             context.target[this.propertyName] = result.length > 0 ? result : undefined;
         }
-    }    
+    }
 
     constructor(
         readonly targetVersion: Adaptive.TargetVersion,

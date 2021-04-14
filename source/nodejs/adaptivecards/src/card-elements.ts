@@ -1965,7 +1965,7 @@ export abstract class CardElementContainer extends CardElement {
                         this._selectAction.execute();
                     }
                 }
-                
+
                 this._selectAction.setupElementForAccessibility(element);
 
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));

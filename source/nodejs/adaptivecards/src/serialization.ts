@@ -134,7 +134,7 @@ export abstract class BaseSerializationContext {
     toJSONOriginalParam: any;
 
     constructor(public targetVersion: Version = Versions.latest) {}
-    
+
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined, forceDeleteIfNullOrDefault: boolean = false) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
             if (!GlobalSettings.enableFullJsonRoundTrip || forceDeleteIfNullOrDefault) {
@@ -672,7 +672,7 @@ export class SerializableObjectProperty extends PropertyDefinition {
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: SerializableObject | undefined, context: BaseSerializationContext) {
         let serializedValue: object | undefined = undefined;
-        
+
         if (value !== undefined && !value.hasAllDefaultValues()) {
             serializedValue = value.toJSON(context);
         }
