@@ -45,9 +45,8 @@ namespace AdaptiveSharedNamespace
     {
     public:
         BaseElement() :
-            m_typeString{}, m_additionalProperties{},
-            m_requires{},
-            m_fallbackContent(nullptr), m_id{}, m_internalId{ InternalId::Current() }, m_fallbackType(FallbackType::None),
+            m_typeString{}, m_additionalProperties{}, m_requires{},
+            m_fallbackContent(nullptr), m_id{}, m_internalId{InternalId::Current()}, m_fallbackType(FallbackType::None),
             m_canFallbackToAncestor(false)
         {
             PopulateKnownPropertiesSet();
@@ -142,7 +141,7 @@ namespace AdaptiveSharedNamespace
                     return;
                 }
                 throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                    "The only valid string value for the fallback property is 'drop'.");
+                                                 "The only valid string value for the fallback property is 'drop'.");
             }
             else if (fallbackValue.isObject())
             {

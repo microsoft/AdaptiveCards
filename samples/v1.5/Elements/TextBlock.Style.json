@@ -1,0 +1,24 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Style: Heading",
+			"style": "heading",
+			"weight": "bolder"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style: Paragraph",
+			"style": "paragraph",
+			"weight": "default"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style: Default",
+			"weight": "default"
+		}
+	]
+}

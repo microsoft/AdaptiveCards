@@ -37,10 +37,15 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
 
+    [rootView.context pushBaseCardElementContext:acoElem];
+
+
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style]
                                                          hostConfig:acoConfig
                                                           superview:viewGroup];
+    container.rtl = rootView.context.rtl;
+
     [viewGroup addArrangedSubview:container];
 
     configBleed(rootView, elem, container, acoConfig);
@@ -93,21 +98,22 @@
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     [container configureForSelectAction:acoSelectAction rootView:rootView];
-
     configVisibility(container, elem);
 
     [container hideIfSubviewsAreAllHidden];
 
+    [rootView.context popBaseCardElementContext:acoElem];
+
     return viewGroup;
 }
 
-- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
     auto backgroundImageProperties = containerElem->GetBackgroundImage();
 
-    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
+    renderBackgroundImage(rootView, backgroundImageProperties.get(), imageView, image);
 }
 
 @end

@@ -1,15 +1,9 @@
 {
-            "type": "AdaptiveCard",
-            "body": [
-              {
-                "type": "Container",
-                "items": [
-                  {
-                    "$data": "${$root.LineItems}",
-                    "type": "TextBlock",
-                    "text": "Class: ${$root.Class}, Mileage: ${$data.Mileage}"
-                  }
-                ]
-              }
-            ]
+	"type" : "AdaptiveCard",
+	"body": [
+	{
+		"type": "TextBlock",
+		"text": "**{{DATE(${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}**"
+	}
+	]
 }

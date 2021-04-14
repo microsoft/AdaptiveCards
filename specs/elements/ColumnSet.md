@@ -43,6 +43,7 @@ An Action that will be invoked when the `ColumnSet` is tapped or selected. `Acti
 * **Version** : 1.1
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.Submit`
   * `Action.ToggleVisibility`

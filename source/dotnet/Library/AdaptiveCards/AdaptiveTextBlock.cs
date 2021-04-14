@@ -139,5 +139,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveFontType), "default")]
         public AdaptiveFontType FontType { get; set; }
+
+        /// <summary>
+        /// The style (<see cref="AdaptiveTextBlockStyle"/>) of text.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveTextBlockStyle), "paragraph")]
+        public AdaptiveTextBlockStyle Style { get; set; }
     }
 }

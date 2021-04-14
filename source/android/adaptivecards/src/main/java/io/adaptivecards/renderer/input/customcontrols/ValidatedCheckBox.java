@@ -6,8 +6,8 @@ package io.adaptivecards.renderer.input.customcontrols;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatCheckBox;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.R;

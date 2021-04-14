@@ -58,6 +58,18 @@
     self.combinedContentSize = CGSizeMake(self.combinedContentSize.width - size.width, newHeight);
 }
 
+- (void)updateIntrinsicContentSize
+{
+    self.combinedContentSize = CGSizeZero;
+    [super updateIntrinsicContentSize:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        CGSize size = [view intrinsicContentSize];
+        if (size.width >= 0 && size.height >= 0) {
+            CGSize combinedSize = CGSizeMake(self.combinedContentSize.width + size.width, MAX(self.combinedContentSize.height, size.height));
+            self.combinedContentSize = combinedSize;
+        }
+    }];
+}
+
 - (void)adjustHuggingForLastElement
 {
     UIView *view = [self getLastArrangedSubview];

@@ -83,6 +83,14 @@ public class Column extends CollectionTypeElement {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Column_GetItems__SWIG_0(swigCPtr, this), false);
   }
 
+  public Boolean GetRtl() {
+  return AdaptiveCardObjectModelJNI.Column_GetRtl(swigCPtr, this);
+}
+
+  public void SetRtl(Boolean value) {
+    AdaptiveCardObjectModelJNI.Column_SetRtl(swigCPtr, this, value);
+  }
+
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.Column_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }

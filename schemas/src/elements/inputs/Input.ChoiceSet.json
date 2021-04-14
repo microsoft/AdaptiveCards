@@ -5,8 +5,7 @@
   "properties": {
     "choices": {
       "type": "Input.Choice[]",
-      "description": "`Choice` options.",
-      "required": true
+      "description": "`Choice` options."
     },
     "isMultiSelect": {
       "type": "boolean",

@@ -137,7 +137,7 @@ namespace AdaptiveNamespace::ActionHelpers
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(
                     Callback<IRoutedEventHandler>([buttonIconAsFrameworkElement,
-                                                   buttonText](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                                                   buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
                         ComPtr<IFrameworkElement> buttonTextAsFrameworkElement;
                         RETURN_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
 
@@ -355,7 +355,7 @@ namespace AdaptiveNamespace::ActionHelpers
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
         EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
+        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                      /*args*/) -> HRESULT {
                                                    return actionInvoker->SendActionEvent(action.Get());
                                                }).Get(),
@@ -442,11 +442,9 @@ namespace AdaptiveNamespace::ActionHelpers
             return;
         }
 
-        if (actionType == ABI::AdaptiveNamespace::ActionType::Submit)
+        if ((actionType == ABI::AdaptiveNamespace::ActionType::Submit) || (actionType == ABI::AdaptiveNamespace::ActionType::Execute))
         {
-            ComPtr<IAdaptiveSubmitAction> submitAction;
-            THROW_IF_FAILED(localInlineAction.As(&submitAction));
-            THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(submitAction.Get(), renderArgs));
+            THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
         }
 
         // Create a grid to hold the text box and the action button
@@ -560,7 +558,7 @@ namespace AdaptiveNamespace::ActionHelpers
         // Make the action the same size as the text box
         EventRegistrationToken eventToken;
         THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
-            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
+            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                 /*args*/) -> HRESULT {
                 ComPtr<IFrameworkElement> actionFrameworkElement;
                 RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
@@ -571,7 +569,7 @@ namespace AdaptiveNamespace::ActionHelpers
 
         // Wrap the action in a button
         ComPtr<IUIElement> touchTargetUIElement;
-        WrapInTouchTarget(nullptr, actionUIElement.Get(), localInlineAction.Get(), renderContext, false, L"Adaptive.Input.Text.InlineAction", &touchTargetUIElement);
+        WrapInTouchTarget(nullptr, actionUIElement.Get(), localInlineAction.Get(), renderContext, false, L"Adaptive.Input.Text.InlineAction", nullptr, &touchTargetUIElement);
 
         ComPtr<IFrameworkElement> touchTargetFrameworkElement;
         THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetFrameworkElement));
@@ -613,6 +611,7 @@ namespace AdaptiveNamespace::ActionHelpers
                            _In_ IAdaptiveRenderContext* renderContext,
                            bool fullWidth,
                            const std::wstring& style,
+                           HSTRING altText,
                            _COM_Outptr_ IUIElement** finalElement)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -674,11 +673,19 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, style.c_str(), buttonAsFrameworkElement.Get()));
 
-        if (action != nullptr)
+        if ((action != nullptr) || (altText != nullptr))
         {
-            // If we have an action, use the title for the AutomationProperties.Name and tooltip
+            // If we have an action, use the title for the AutomationProperties.Name and tooltip.
+            // Otherwise use the altText.
             HString title;
-            THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+            if (action)
+            {
+                THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+            }
+            else
+            {
+                THROW_IF_FAILED(title.Set(altText));
+            }
 
             if (title.IsValid())
             {
@@ -712,7 +719,10 @@ namespace AdaptiveNamespace::ActionHelpers
 
                 THROW_IF_FAILED(toolTipService->SetToolTip(buttonAsDependencyObject.Get(), toolTip.Get()));
             }
+        }
 
+        if (action != nullptr)
+        {
             WireButtonClickToAction(button.Get(), action, renderContext);
         }
 
@@ -733,7 +743,7 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(localButton.As(&buttonBase));
 
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                           /*args*/) -> HRESULT {
                                                   THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
                                                   return S_OK;
@@ -751,7 +761,7 @@ namespace AdaptiveNamespace::ActionHelpers
     {
         if (selectAction != nullptr && supportsInteractivity)
         {
-            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", outUiElement);
+            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", nullptr, outUiElement);
         }
         else
         {
