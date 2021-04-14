@@ -5,7 +5,7 @@ package io.adaptivecards.renderer;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +134,7 @@ public class AdaptiveCardRenderer
         cardLayout.setClipToPadding(false);
 
         BaseCardElementRenderer.setMinHeight(cardMinHeight, rootLayout, context);
+        BaseCardElementRenderer.applyRtl(adaptiveCard.GetRtl(), cardLayout);
         ContainerRenderer.applyVerticalContentAlignment(cardLayout, adaptiveCard.GetVerticalContentAlignment());
 
         cardLayout.setOrientation(LinearLayout.VERTICAL);

@@ -2,11 +2,12 @@
 //  ACOBaseCardElement
 //  ACOBaseCardElement.mm
 //
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 #import "ACOBaseCardElement.h"
 #import "ACRRegistrationPrivate.h"
 #import "BaseCardElement.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -38,6 +39,7 @@ using namespace AdaptiveCards;
 
 - (void)setElem:(std::shared_ptr<BaseCardElement> const &)elem
 {
+    _type = (ACRCardElementType)elem->GetElementType();
     _elem = elem;
 }
 
@@ -48,15 +50,7 @@ using namespace AdaptiveCards;
         if (blob.empty()) {
             return nil;
         }
-        Json::StreamWriterBuilder streamWriterBuilder;
-        auto writer = streamWriterBuilder.newStreamWriter();
-        std::stringstream sstream;
-        writer->write(blob, &sstream);
-        delete writer;
-        NSString *jsonString =
-            [[NSString alloc] initWithCString:sstream.str().c_str()
-                                     encoding:NSUTF8StringEncoding];
-        return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+        return JsonToNSData(blob);
     }
     return nil;
 }

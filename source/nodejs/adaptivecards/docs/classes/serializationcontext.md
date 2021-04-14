@@ -43,6 +43,7 @@
 * [serializeValue](serializationcontext.md#serializevalue)
 * [setActionRegistry](serializationcontext.md#setactionregistry)
 * [setElementRegistry](serializationcontext.md#setelementregistry)
+* [shouldSerialize](serializationcontext.md#shouldserialize)
 
 ## Constructors
 
@@ -371,3 +372,19 @@ Name | Type |
 `value` | [CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)› &#124; undefined |
 
 **Returns:** *void*
+
+___
+
+###  shouldSerialize
+
+▸ **shouldSerialize**(`o`: [SerializableObject](serializableobject.md)): *boolean*
+
+*Overrides [BaseSerializationContext](baseserializationcontext.md).[shouldSerialize](baseserializationcontext.md#shouldserialize)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`o` | [SerializableObject](serializableobject.md) |
+
+**Returns:** *boolean*

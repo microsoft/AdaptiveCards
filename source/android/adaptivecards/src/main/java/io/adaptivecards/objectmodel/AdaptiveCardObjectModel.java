@@ -49,6 +49,18 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return InlineElementType.swigToEnum(AdaptiveCardObjectModelJNI.InlineElementTypeFromString(t));
   }
 
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextStyle_t getTextStyleEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextStyle_t(AdaptiveCardObjectModelJNI.getTextStyleEnum(), false);
+  }
+
+  public static String TextStyleToString(TextStyle t) {
+    return AdaptiveCardObjectModelJNI.TextStyleToString(t.swigValue());
+  }
+
+  public static TextStyle TextStyleFromString(String t) {
+    return TextStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextStyleFromString(t));
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextSize_t getTextSizeEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextSize_t(AdaptiveCardObjectModelJNI.getTextSizeEnum(), false);
   }

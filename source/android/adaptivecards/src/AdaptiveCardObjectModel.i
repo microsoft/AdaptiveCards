@@ -92,6 +92,7 @@ namespace std {
     return $jnicall;
   }
 
+#pragma region
 // Map C++ "std::optional<double>" and "std::optional<double>&" types to Java "Double" objects
 
 %template() std::optional<double>;
@@ -143,6 +144,61 @@ namespace std {
 %typemap(javaout) std::optional<double>& {
   return $jnicall;
 }
+#pragma endregion
+
+#pragma region
+// Map C++ "std::optional<bool>" and "std::optional<bool>&" types to Java "Boolean" objects
+
+%template() std::optional<bool>;
+
+%typemap(jni) std::optional<bool> "jobject"
+%typemap(jtype) std::optional<bool> "Boolean"
+%typemap(jstype) std::optional<bool> "Boolean"
+%typemap(in, noblock=1) std::optional<bool> {
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "booleanValue", "()Z");
+    jboolean val = (jboolean)JCALL2(CallBooleanMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    $1 = (bool)val;
+  }
+}
+%typemap(out, noblock=1) std::optional<bool> {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Boolean");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(Z)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<bool> "$javainput"
+%typemap(javaout) std::optional<bool> {
+  return $jnicall;
+}
+
+%typemap(jni) std::optional<bool>& "jobject"
+%typemap(jtype) std::optional<bool>& "Boolean"
+%typemap(jstype) std::optional<bool>& "Boolean"
+%typemap(in, noblock=1) std::optional<bool>& {
+  std::optional<bool> optVal = std::nullopt;
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "booleanValue", "()Z");
+    jboolean val = (jboolean)JCALL2(CallBooleanMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    optVal = std::optional<bool>(val);
+  }
+  $1 = &optVal;
+}
+%typemap(out, noblock=1) std::optional<bool>& {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Boolean");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(Z)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<bool>& "$javainput"
+%typemap(javaout) std::optional<bool>& {
+  return $jnicall;
+}
+#pragma endregion
 
 %include <typemaps.i>
 %include <std_string.i>
@@ -222,6 +278,11 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 #include "../../../shared/cpp/ObjectModel/TextRun.h"
 #include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
+#include "../../../shared/cpp/ObjectModel/ExecuteAction.h"
+#include "../../../shared/cpp/ObjectModel/Refresh.h"
+#include "../../../shared/cpp/ObjectModel/Authentication.h"
+#include "../../../shared/cpp/ObjectModel/TokenExchangeResource.h"
+#include "../../../shared/cpp/ObjectModel/AuthCardButton.h"
 %}
 
 
@@ -256,6 +317,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextInput)
 %shared_ptr(AdaptiveCards::TimeInput)
 %shared_ptr(AdaptiveCards::ToggleInput)
+%shared_ptr(AdaptiveCards::ExecuteAction)
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
@@ -273,6 +335,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextInputParser)
 %shared_ptr(AdaptiveCards::TimeInputParser)
 %shared_ptr(AdaptiveCards::ToggleInputParser)
+%shared_ptr(AdaptiveCards::ExecuteActionParser)
 %shared_ptr(AdaptiveCards::OpenUrlActionParser)
 %shared_ptr(AdaptiveCards::ShowCardActionParser)
 %shared_ptr(AdaptiveCards::SubmitActionParser)
@@ -297,6 +360,10 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextRun)
 %shared_ptr(AdaptiveCards::TextElementProperties)
 %shared_ptr(AdaptiveCards::RichTextElementProperties)
+%shared_ptr(AdaptiveCards::Refresh)
+%shared_ptr(AdaptiveCards::Authentication)
+%shared_ptr(AdaptiveCards::TokenExchangeResource)
+%shared_ptr(AdaptiveCards::AuthCardButton)
 
 %apply unsigned int& INOUT { unsigned int& };
 
@@ -513,6 +580,7 @@ namespace Json {
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
 %template(InlineVector) std::vector<std::shared_ptr<AdaptiveCards::Inline>>;
+%template(AuthCardButtonVector) std::vector<std::shared_ptr<AdaptiveCards::AuthCardButton>>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -771,6 +839,21 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::ExecuteAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ExecuteAction {
+    static AdaptiveCards::ExecuteAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::ExecuteAction *>(baseActionElement);
+    }
+};
+
 %exception AdaptiveCards::OpenUrlAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
     $action
     if (!result) {
@@ -924,6 +1007,11 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/TextInput.h"
 %include "../../../shared/cpp/ObjectModel/TimeInput.h"
 %include "../../../shared/cpp/ObjectModel/ToggleInput.h"
+%include "../../../shared/cpp/ObjectModel/ExecuteAction.h"
+%include "../../../shared/cpp/ObjectModel/TokenExchangeResource.h"
+%include "../../../shared/cpp/ObjectModel/AuthCardButton.h"
+%include "../../../shared/cpp/ObjectModel/Refresh.h"
+%include "../../../shared/cpp/ObjectModel/Authentication.h"
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
@@ -949,3 +1037,4 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 %include "../../../shared/cpp/ObjectModel/TextRun.h"
 %include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
+

@@ -8,6 +8,7 @@ namespace AdaptiveSharedNamespace
 {
     DEFINE_ADAPTIVECARD_ENUM_THROW(AdaptiveCardSchemaKey, {
             {AdaptiveCardSchemaKey::Accent, "accent"},
+            {AdaptiveCardSchemaKey::Action, "action"},
             {AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment"},
             {AdaptiveCardSchemaKey::ActionMode, "actionMode"},
             {AdaptiveCardSchemaKey::ActionSet, "ActionSet"},
@@ -20,6 +21,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::AllowInlinePlayback, "allowInlinePlayback"},
             {AdaptiveCardSchemaKey::AltText, "altText"},
             {AdaptiveCardSchemaKey::Attention, "attention"},
+            {AdaptiveCardSchemaKey::Authentication, "authentication"},
             {AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor"},
             {AdaptiveCardSchemaKey::BackgroundImage, "backgroundImage"},
             {AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl"},
@@ -31,6 +33,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::BorderColor, "borderColor"},
             {AdaptiveCardSchemaKey::BorderThickness, "borderThickness"},
             {AdaptiveCardSchemaKey::Bottom, "bottom"},
+            {AdaptiveCardSchemaKey::Buttons, "buttons"},
             {AdaptiveCardSchemaKey::ButtonSpacing, "buttonSpacing"},
             {AdaptiveCardSchemaKey::Card, "card"},
             {AdaptiveCardSchemaKey::Center, "center"},
@@ -41,6 +44,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Column, "column"},
             {AdaptiveCardSchemaKey::ColumnSet, "columnSet"},
             {AdaptiveCardSchemaKey::Columns, "columns"},
+            {AdaptiveCardSchemaKey::ConnectionName, "connectionName"},
             {AdaptiveCardSchemaKey::Container, "container"},
             {AdaptiveCardSchemaKey::ContainerStyles, "containerStyles"},
             {AdaptiveCardSchemaKey::Dark, "dark"},
@@ -65,6 +69,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ForegroundColor, "foregroundColor"},
             {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
             {AdaptiveCardSchemaKey::Good, "good"},
+            {AdaptiveCardSchemaKey::Headings, "headings"},
             {AdaptiveCardSchemaKey::Height, "height"},
             {AdaptiveCardSchemaKey::Highlight, "highlight"},
             {AdaptiveCardSchemaKey::HighlightColor, "highlightColor"},
@@ -93,10 +98,11 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IsVisible, "isVisible"},
             {AdaptiveCardSchemaKey::Italic, "italic"},
             {AdaptiveCardSchemaKey::Items, "items"},
-			{AdaptiveCardSchemaKey::Label, "label"},
+            {AdaptiveCardSchemaKey::Label, "label"},
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
             {AdaptiveCardSchemaKey::Left, "left"},
+            {AdaptiveCardSchemaKey::Level, "level"},
             {AdaptiveCardSchemaKey::Light, "light"},
             {AdaptiveCardSchemaKey::Lighter, "lighter"},
             {AdaptiveCardSchemaKey::LineColor, "lineColor"},
@@ -121,6 +127,8 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},
             {AdaptiveCardSchemaKey::Poster, "poster"},
+            {AdaptiveCardSchemaKey::ProviderId, "providerId"},
+            {AdaptiveCardSchemaKey::Refresh, "refresh"},
             {AdaptiveCardSchemaKey::Regex, "regex"},
             {AdaptiveCardSchemaKey::Repeat, "repeat"},
             {AdaptiveCardSchemaKey::RepeatHorizontally, "repeatHorizontally"},
@@ -129,6 +137,8 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Requires, "requires"},
             {AdaptiveCardSchemaKey::RichTextBlock, "richTextBlock"},
             {AdaptiveCardSchemaKey::Right, "right"},
+            {AdaptiveCardSchemaKey::Rtl, "rtl"},
+            {AdaptiveCardSchemaKey::Schema, "$schema"},
             {AdaptiveCardSchemaKey::SelectAction, "selectAction"},
             {AdaptiveCardSchemaKey::Separator, "separator"},
             {AdaptiveCardSchemaKey::ShowActionMode, "showActionMode"},
@@ -157,12 +167,16 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Title, "title"},
             {AdaptiveCardSchemaKey::ToggleInput, "toggleInput"},
             {AdaptiveCardSchemaKey::Top, "top"},
+            {AdaptiveCardSchemaKey::TokenExchangeResource, "tokenExchangeResource"},
             {AdaptiveCardSchemaKey::Type, "type"},
             {AdaptiveCardSchemaKey::Underline, "underline"},
             {AdaptiveCardSchemaKey::Url, "url"},
+            {AdaptiveCardSchemaKey::Uri, "uri"},
+            {AdaptiveCardSchemaKey::UserIds, "userIds"},
             {AdaptiveCardSchemaKey::Value, "value"},
             {AdaptiveCardSchemaKey::ValueOff, "valueOff"},
             {AdaptiveCardSchemaKey::ValueOn, "valueOn"},
+            {AdaptiveCardSchemaKey::Verb, "verb"},
             {AdaptiveCardSchemaKey::Version, "version"},
             {AdaptiveCardSchemaKey::VerticalAlignment, "verticalAlignment"},
             {AdaptiveCardSchemaKey::VerticalContentAlignment, "verticalContentAlignment"},
@@ -195,6 +209,7 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionType, ActionType::Unsupported, {
             {ActionType::Unsupported, "Unsupported"},
+            {ActionType::Execute, "Action.Execute"},
             {ActionType::OpenUrl, "Action.OpenUrl"},
             {ActionType::ShowCard, "Action.ShowCard"},
             {ActionType::Submit, "Action.Submit"},
@@ -259,6 +274,10 @@ namespace AdaptiveSharedNamespace
             {ForegroundColor::Good, "Good"},
             {ForegroundColor::Light, "Light"},
             {ForegroundColor::Warning, "Warning"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(TextStyle , TextStyle::Paragraph, {
+            {TextStyle::Paragraph, "paragraph"},
+            {TextStyle::Heading, "heading"}});
 
     DEFINE_ADAPTIVECARD_ENUM(TextWeight, {
             {

@@ -16,6 +16,7 @@ using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows;
 
 namespace AdaptiveNamespace
 {
@@ -42,6 +43,33 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(columnBorder->put_Child(columnPanelAsUIElement.Get()));
 
+        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
+        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
+
+        ComPtr<IReference<bool>> previousContextRtl;
+        RETURN_IF_FAILED(renderContext->get_Rtl(&previousContextRtl));
+        ComPtr<IReference<bool>> currentRtl = previousContextRtl;
+
+        ComPtr<IReference<bool>> containerRtl;
+        RETURN_IF_FAILED(adaptiveColumn->get_Rtl(&containerRtl));
+
+        bool updatedRtl = false;
+        if (containerRtl != nullptr)
+        {
+            currentRtl = containerRtl;
+            RETURN_IF_FAILED(renderContext->put_Rtl(currentRtl.Get()));
+            updatedRtl = true;
+        }
+
+        if (currentRtl)
+        {
+            boolean rtlValue;
+            RETURN_IF_FAILED(currentRtl->get_Value(&rtlValue));
+
+            RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft :
+                                                                                         FlowDirection_LeftToRight));
+        }
+
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumn.As(&columnAsContainerBase));
 
@@ -62,6 +90,12 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
             childItems.Get(), columnAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
 
+        // If we changed the context's rtl setting, set it back after rendering the children
+        if (updatedRtl)
+        {
+            RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
+        }
+
         ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
         RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
 
@@ -69,8 +103,6 @@ namespace AdaptiveNamespace
 
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
-        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
-        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
         RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         RETURN_IF_FAILED(

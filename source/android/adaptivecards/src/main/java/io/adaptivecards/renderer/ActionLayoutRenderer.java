@@ -3,12 +3,13 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionsOrientation;
@@ -61,7 +62,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         int actionButtonsAlignment = Gravity.START | Gravity.TOP; // default gravity
         if (alignment == ActionAlignment.Right.swigValue())
         {
-            actionButtonsAlignment = Gravity.RIGHT;
+            actionButtonsAlignment = Gravity.END;
         }
         else if (alignment == ActionAlignment.Center.swigValue())
         {

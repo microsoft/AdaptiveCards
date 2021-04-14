@@ -11037,6 +11037,37 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestDateFormatTest()
+        {
+            string jsonTemplate = @"{
+            ""type"" : ""AdaptiveCard"",
+            ""$data"": {
+                ""date"" : ""03/15/2018 12:00:00""
+             },
+            ""body"" : [
+                {
+                ""type"" : ""TextBlock"",
+                ""text"" : ""**{{DATE(${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}**""
+                }
+            ]
+            }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+
+            string cardJson = transformer.Expand(null);
+
+            AssertJsonEqual(@"{
+    ""type"" : ""AdaptiveCard"",
+    ""body"" : [
+        {
+        ""type"" : ""TextBlock"",
+        ""text"" : ""**{{DATE(2018-03-15T12:00:00Z, SHORT)}}**""
+        }
+    ]
+    }", cardJson);
+        }
+
+        [TestMethod]
         public void TestBoolConversion()
         {
             string jsonTemplate = @"{
@@ -12927,6 +12958,7 @@ namespace AdaptiveCards.Templating.Test
         class Data
         { 
             public string title { get; set; }
+            public int IntTemplateProperty { get; internal set; }
         };
         [TestMethod]
         public void TestDoubleQuote()
@@ -12952,6 +12984,27 @@ namespace AdaptiveCards.Templating.Test
                 Console.Error.WriteLine(ex.Message);
                 Assert.Fail();
             }
+        }
+
+        [TestMethod]
+        public void TestWithUnicode()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\"," +
+                "\"text\": \"${if(IntTemplateProperty >= 0, IntTemplateProperty + ' % \u25b2', IntTemplateProperty + '%  \u25bc')}\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.2\"}";
+
+            string expectedJson = "{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\"," +
+                "\"text\": \"5 % \u25b2\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.2\"}";
+
+            Data dt = new Data()
+            {
+                IntTemplateProperty = 5
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+            AssertJsonEqual(expectedJson, st);
         }
     }
     [TestClass]

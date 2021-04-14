@@ -128,6 +128,7 @@ ___
         Versions.v1_2,
         "requires",
         HostCapabilities,
+        false,
         new HostCapabilities())
 
 ___

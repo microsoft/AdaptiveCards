@@ -32,6 +32,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment);
         IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
 
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::TextStyle* style);
+        IFACEMETHODIMP put_Style(ABI::AdaptiveNamespace::TextStyle style);
+
         // IAdaptiveTextElement
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) { return AdaptiveTextElement::get_Text(text); }
         IFACEMETHODIMP put_Text(_In_ HSTRING text) { return AdaptiveTextElement::put_Text(text); }
@@ -167,6 +170,7 @@ namespace AdaptiveNamespace
         boolean m_wrap;
         UINT32 m_maxLines;
         ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
+        ABI::AdaptiveNamespace::TextStyle m_style;
     };
 
     ActivatableClass(AdaptiveTextBlock);

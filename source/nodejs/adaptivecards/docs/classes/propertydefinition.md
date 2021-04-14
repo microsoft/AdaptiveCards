@@ -14,6 +14,8 @@
 
   ↳ [PixelSizeProperty](pixelsizeproperty.md)
 
+  ↳ [StringArrayProperty](stringarrayproperty.md)
+
   ↳ [ValueSetProperty](valuesetproperty.md)
 
   ↳ [EnumProperty](enumproperty.md)

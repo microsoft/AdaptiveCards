@@ -69,7 +69,8 @@ namespace AdaptiveCards.Rendering.Wpf
         public AdaptiveInputValueNonEmptyValidation(AdaptiveInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
 
         public AdaptiveInputValueNonEmptyValidation(AdaptiveInput input, UIElement renderedInput, UIElement visualElementForAccessibility) :
-            base(input, renderedInput, visualElementForAccessibility) { }
+            base(input, renderedInput, visualElementForAccessibility)
+        { }
 
         public override bool Validate()
         {
@@ -129,7 +130,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             AdaptiveTextInput textInput = InputElement as AdaptiveTextInput;
 
-            if (!String.IsNullOrEmpty(textInput.Regex))
+            if (!String.IsNullOrEmpty(textInput.Regex) && !String.IsNullOrEmpty(GetValue()))
             {
                 isValid = isValid && Regex.IsMatch(GetValue(), textInput.Regex);
             }
@@ -153,10 +154,10 @@ namespace AdaptiveCards.Rendering.Wpf
 
             AdaptiveNumberInput numberInput = InputElement as AdaptiveNumberInput;
             double inputValue = 0.0;
-            
+
             if (isValid && Double.TryParse(GetValue(), out inputValue))
             {
-                
+
 
                 bool isMinValid = true, isMaxValid = true;
                 if (!Double.IsNaN(numberInput.Min))

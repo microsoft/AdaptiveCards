@@ -9,12 +9,11 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	Picker,
 	TouchableOpacity,
 	Image,
 	Platform
 } from 'react-native';
-
+import { Picker } from '@react-native-picker/picker';
 import ElementWrapper from '../../elements/element-wrapper';
 import Checkbox from './check-box';
 import { InputContextConsumer } from '../../../utils/context';

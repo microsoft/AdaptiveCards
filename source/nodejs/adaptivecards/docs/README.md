@@ -9,6 +9,8 @@
 * [ActionAlignment](enums/actionalignment.md)
 * [ActionButtonState](enums/actionbuttonstate.md)
 * [ActionIconPlacement](enums/actioniconplacement.md)
+* [ActivityInvocationTrigger](enums/activityinvocationtrigger.md)
+* [ActivityStatus](enums/activitystatus.md)
 * [ContainerFitStatus](enums/containerfitstatus.md)
 * [FillMode](enums/fillmode.md)
 * [FontType](enums/fonttype.md)
@@ -16,7 +18,9 @@
 * [ImageSize](enums/imagesize.md)
 * [ImageStyle](enums/imagestyle.md)
 * [InputTextStyle](enums/inputtextstyle.md)
+* [LogLevel](enums/loglevel.md)
 * [Orientation](enums/orientation.md)
+* [RefreshMode](enums/refreshmode.md)
 * [ShowCardActionMode](enums/showcardactionmode.md)
 * [Size](enums/size.md)
 * [SizeUnit](enums/sizeunit.md)
@@ -39,6 +43,8 @@
 * [ActionSet](classes/actionset.md)
 * [ActionStyle](classes/actionstyle.md)
 * [ActionsConfig](classes/actionsconfig.md)
+* [AdaptiveApplet](classes/adaptiveapplet.md)
+* [AdaptiveAppletCard](classes/adaptiveappletcard.md)
 * [AdaptiveCard](classes/adaptivecard.md)
 * [AdaptiveCardConfig](classes/adaptivecardconfig.md)
 * [BackgroundImage](classes/backgroundimage.md)
@@ -51,6 +57,7 @@
 * [CardElementContainer](classes/cardelementcontainer.md)
 * [CardObject](classes/cardobject.md)
 * [CardObjectRegistry](classes/cardobjectregistry.md)
+* [ChannelAdapter](classes/channeladapter.md)
 * [Choice](classes/choice.md)
 * [ChoiceSetInput](classes/choicesetinput.md)
 * [ColorDefinition](classes/colordefinition.md)
@@ -66,6 +73,7 @@
 * [DateFormatter](classes/dateformatter.md)
 * [DateInput](classes/dateinput.md)
 * [EnumProperty](classes/enumproperty.md)
+* [ExecuteAction](classes/executeaction.md)
 * [Fact](classes/fact.md)
 * [FactSet](classes/factset.md)
 * [FactSetConfig](classes/factsetconfig.md)
@@ -78,6 +86,7 @@
 * [HostCapabilities](classes/hostcapabilities.md)
 * [HostConfig](classes/hostconfig.md)
 * [HttpAction](classes/httpaction.md)
+* [HttpChannelAdapter](classes/httpchanneladapter.md)
 * [HttpHeader](classes/httpheader.md)
 * [Image](classes/image.md)
 * [ImageDimensionProperty](classes/imagedimensionproperty.md)
@@ -96,6 +105,8 @@
 * [PaddingDefinition](classes/paddingdefinition.md)
 * [PixelSizeProperty](classes/pixelsizeproperty.md)
 * [PropertyDefinition](classes/propertydefinition.md)
+* [RefreshActionProperty](classes/refreshactionproperty.md)
+* [RefreshDefinition](classes/refreshdefinition.md)
 * [RequiredInputLabelTextDefinition](classes/requiredinputlabeltextdefinition.md)
 * [RichTextBlock](classes/richtextblock.md)
 * [SerializableObject](classes/serializableobject.md)
@@ -108,6 +119,7 @@
 * [SimpleSerializationContext](classes/simpleserializationcontext.md)
 * [SizeAndUnit](classes/sizeandunit.md)
 * [SpacingDefinition](classes/spacingdefinition.md)
+* [StringArrayProperty](classes/stringarrayproperty.md)
 * [StringProperty](classes/stringproperty.md)
 * [StringWithSubstitutionProperty](classes/stringwithsubstitutionproperty.md)
 * [StringWithSubstitutions](classes/stringwithsubstitutions.md)
@@ -131,6 +143,8 @@
 
 ### Interfaces
 
+* [ActivityRequest](interfaces/activityrequest.md)
+* [ActivityResponse](interfaces/activityresponse.md)
 * [IAction](interfaces/iaction.md)
 * [IAdaptiveCard](interfaces/iadaptivecard.md)
 * [IBackgroundImage](interfaces/ibackgroundimage.md)
@@ -164,15 +178,18 @@
 * [IValidationEvent](interfaces/ivalidationevent.md)
 * [IVersion](interfaces/iversion.md)
 * [IVersionedValue](interfaces/iversionedvalue.md)
+* [InvokeActivity](interfaces/invokeactivity.md)
 
 ### Type aliases
 
 * [ActionType](README.md#actiontype)
+* [AppletsSettings](README.md#appletssettings)
 * [CardElementHeight](README.md#cardelementheight)
 * [CardObjectType](README.md#cardobjecttype)
 * [ColumnWidth](README.md#columnwidth)
 * [Dictionary](README.md#dictionary)
 * [PropertyBag](README.md#propertybag)
+* [Refresh](README.md#refresh)
 * [SerializableObjectType](README.md#serializableobjecttype)
 * [TargetVersion](README.md#targetversion)
 
@@ -225,6 +242,30 @@
 
 ___
 
+###  AppletsSettings
+
+Ƭ **AppletsSettings**: *object*
+
+#### Type declaration:
+
+* **authPromptHeight**: *number*
+
+* **authPromptWidth**: *number*
+
+* **defaultTimeBetweenRetryAttempts**: *number*
+
+* **logEnabled**: *boolean*
+
+* **logLevel**: *[LogLevel](enums/loglevel.md)*
+
+* **maximumRetryAttempts**: *number*
+
+* **onLogEvent**? : *undefined | function*
+
+* **refresh**: *[Refresh](README.md#refresh)*
+
+___
+
 ###  CardElementHeight
 
 Ƭ **CardElementHeight**: *"auto" | "stretch"*
@@ -264,6 +305,20 @@ ___
 #### Type declaration:
 
 * \[ **propertyName**: *string*\]: any
+
+___
+
+###  Refresh
+
+Ƭ **Refresh**: *object*
+
+#### Type declaration:
+
+* **maximumConsecutiveRefreshes**: *number*
+
+* **mode**: *[RefreshMode](enums/refreshmode.md)*
+
+* **timeBetweenAutomaticRefreshes**: *number*
 
 ___
 

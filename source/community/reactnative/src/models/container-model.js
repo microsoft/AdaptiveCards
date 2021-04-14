@@ -26,6 +26,7 @@ export class AdaptiveCardModel extends BaseContainerModel {
         this.speak = payload.speak;
         this.children = [];
         this.actions = [];
+        this.height = undefined;
         this.children.push(...ModelFactory.createGroup(payload.body, this));
         this.actions.push(...ModelFactory.createGroup(payload.actions, this));
         this.show = true;
