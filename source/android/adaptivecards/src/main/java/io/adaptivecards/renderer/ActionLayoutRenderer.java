@@ -40,14 +40,14 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
     }
 
     public View renderActions(
-                RenderedAdaptiveCard renderedCard,
-                Context context,
-                FragmentManager fragmentManager,
-                ViewGroup viewGroup,
-                BaseActionElementVector baseActionElementList,
-                ICardActionHandler cardActionHandler,
-                HostConfig hostConfig,
-                RenderArgs renderArgs) throws AdaptiveFallbackException
+        RenderedAdaptiveCard renderedCard,
+        Context context,
+        FragmentManager fragmentManager,
+        ViewGroup viewGroup,
+        BaseActionElementVector baseActionElementList,
+        ICardActionHandler cardActionHandler,
+        HostConfig hostConfig,
+        RenderArgs renderArgs) throws AdaptiveFallbackException
     {
         long size;
         if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
@@ -104,28 +104,21 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             }
         }
 
-        int i = 0;
-        long maxActions = hostConfig.GetActions().getMaxActions();
 
         // Allow the actions to have the icon drawn at the top as long as all actions have an icon
         renderArgs.setAllowAboveTitleIconPlacement(true);
-        for(; i < size && i < maxActions; ++i)
+        for (int i = 0; i < size; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
-            if(actionElement.GetIconUrl().isEmpty())
+            if (actionElement.GetIconUrl().isEmpty())
             {
                 renderArgs.setAllowAboveTitleIconPlacement(false);
                 break;
             }
         }
 
-        if (i >= maxActions && size != maxActions)
-        {
-            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
-        }
-
         FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
-        for (i = 0; i < size && i < maxActions; i++)
+        for (int i = 0; i < size; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
 

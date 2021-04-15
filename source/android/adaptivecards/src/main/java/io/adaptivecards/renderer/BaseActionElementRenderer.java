@@ -31,6 +31,8 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
+    protected final static int BOTTOM_SHEET_TAG = 0xffffffff;
+
     protected static int getColor(String colorCode)
     {
         return android.graphics.Color.parseColor(colorCode);
@@ -238,7 +240,16 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
 
             v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
             // Reset all other buttons
-            ViewGroup parentContainer = (ViewGroup)v.getParent();
+            ViewGroup parentContainer;
+            if (v.getTag(BOTTOM_SHEET_TAG) != null)
+            {
+                parentContainer = (ViewGroup) v.getTag(BOTTOM_SHEET_TAG);
+            }
+            else
+            {
+                parentContainer = (ViewGroup) v.getParent();
+            }
+
             for (int i = 0; i < parentContainer.getChildCount(); ++i)
             {
                 View actionInActionSet = parentContainer.getChildAt(i);

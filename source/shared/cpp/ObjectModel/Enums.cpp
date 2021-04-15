@@ -119,6 +119,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::MimeType, "mimeType"},
             {AdaptiveCardSchemaKey::Min, "min"},
             {AdaptiveCardSchemaKey::MinHeight, "minHeight"},
+            {AdaptiveCardSchemaKey::Mode, "mode"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::OptionalInputs, "optionalInputs"},
@@ -351,4 +352,8 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
             {InlineElementType::TextRun, "TextRun"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(Mode, Mode::Primary, {
+            {Mode::Primary, "primary"},
+            {Mode::Secondary, "secondary"}});
 }
