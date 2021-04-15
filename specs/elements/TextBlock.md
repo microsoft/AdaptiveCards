@@ -12,9 +12,9 @@
 | **isSubtle** | `boolean` | No | If `true`, displays text slightly toned down to appear less prominent. | 1.0 |
 | **maxLines** | `number` | No | Specifies the maximum number of lines to display. | 1.0 |
 | **size** | `FontSize` | No | Controls size of text. | 1.0 |
-| **style** | `TextBlockStyle` | No, default: `"paragraph"` | Determines the style of this text block | vNext |
 | **weight** | `FontWeight` | No | Controls the weight of `TextBlock` elements. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.0 |
+| **style** | `TextBlockStyle` | No, default: `"paragraph"` | The style of this TextBlock for accessibility purposes. | 1.0 |
 
 **Inherited properties**
 
@@ -83,18 +83,6 @@ Controls size of text.
   * `"extraLarge"`
 
 
-## style
-
-Determines the style of this text block
-
-* **Type**: `TextBlockStyle`
-* **Version** : vNext
-* **Required**: No, default: `"paragraph"`
-* **Allowed values**:
-  * `"paragraph"`
-  * `"heading"`
-
-
 ## weight
 
 Controls the weight of `TextBlock` elements.
@@ -105,6 +93,17 @@ Controls the weight of `TextBlock` elements.
   * `"default"`
   * `"lighter"`
   * `"bolder"`
+
+
+## style
+
+The style of this TextBlock for accessibility purposes.
+
+* **Type**: `TextBlockStyle`
+* **Required**: No, default: `"paragraph"`
+* **Allowed values**:
+  * `"paragraph"`: This is the default style. The TextBlock behaves as standard content and will be read as such by accessibility software.
+  * `"heading"`: The TextBlock behaves as a heading which impacts how accessibility software handles navigation and narration.
 
 
 ## fallback
