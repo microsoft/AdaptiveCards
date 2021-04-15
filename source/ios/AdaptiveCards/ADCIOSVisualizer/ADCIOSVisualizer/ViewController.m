@@ -551,8 +551,7 @@ CGFloat kAdaptiveCardsWidth = 0;
 
 - (void)update:(NSString *)jsonStr
 {
-    NSInteger lastRowIndex = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
-    NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+    NSInteger prevCount = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
     // resources such as images may not be ready when AdaptiveCard is added to its super view
     // AdaptiveCard can notify when its resources are all loaded via - (void)didLoadElements delegate
     // but the notification can come at any time
@@ -562,8 +561,19 @@ CGFloat kAdaptiveCardsWidth = 0;
         self.editableStr = jsonStr;
         // the data source will parse & render the card, and update its store for AdaptiveCards
         [self->_dataSource insertCard:jsonStr];
-        // tell the table view UI to add a row
-        [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationBottom];
+        // tell the table view UI to add N rows.
+        // The delta change might be > 1 since [_dataSource insertView] might have been called to
+        // insert additional non-card views (such as overflow button)
+        NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
+        NSInteger postCount = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
+        NSInteger rowsToAdd = postCount - prevCount;
+        NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:rowsToAdd];
+        for (int i = 0; i < rowsToAdd; ++i) {
+            NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:(lastRowIndex + i) inSection:0];
+            [indexPaths addObject:pathToLastRow];
+        }
+        [self.chatWindow insertRowsAtIndexPaths:indexPaths
+                               withRowAnimation:UITableViewRowAnimationNone];
     });
 }
 
