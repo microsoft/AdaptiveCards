@@ -11,7 +11,7 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
     ACRShowCard,
     ACRSubmit,
     ACRToggleVisibility,
-	ACROverflow,
+    ACROverflow,
     ACRUnknownAction = 7,
 };
 
