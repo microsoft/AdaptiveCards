@@ -399,9 +399,9 @@ CGFloat kAdaptiveCardsWidth = 0;
                  forControlEvents:UIControlEventTouchUpInside];
         extOverflowBtn.contentEdgeInsets = UIEdgeInsetsMake(5, 8, 5, 8);
         [_dataSource insertView:extOverflowBtn];
-        return YES;
+        return YES; // skip SDK defult render
     }
-    return NO;
+    return NO; // continue SDK defult render
 }
 
 - (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
@@ -434,7 +434,7 @@ CGFloat kAdaptiveCardsWidth = 0;
                                                 style:UIAlertActionStyleCancel
                                               handler:nil]];
     [self presentViewController:myAlert animated:YES completion:nil];
-    return NO;
+    return YES; // skip SDK defult display
 }
 
 - (UIView *)renderButtons:(ACRView *)rootView
