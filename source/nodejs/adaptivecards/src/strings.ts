@@ -51,6 +51,7 @@ export class Strings {
     };
     static readonly defaults = {
         inlineActionTitle: () => "Inline Action",
+        overflowButtonText: () => "...",
         mediaPlayerAriaLabel: () => "Media content",
         mediaPlayerPlayMedia: () => "Play media"
     };

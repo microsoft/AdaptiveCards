@@ -1,0 +1,18 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "Container",
+			"rtl": true,
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "يتم عرض هذه الحاوية من اليمين إلى اليسار",
+					"wrap": true
+				}
+			]
+		}
+	]
+}

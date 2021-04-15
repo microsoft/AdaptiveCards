@@ -6,26 +6,12 @@
 //
 
 #import "ACOParseContext.h"
+#import "ACOEnums.h"
 #import <Foundation/Foundation.h>
 
 @class ACOFeatureRegistration;
 
 @interface ACOBaseActionElement : NSObject
-
-typedef NS_ENUM(NSInteger, ACRActionType) {
-    ACRExecute = 1,
-    ACROpenUrl,
-    ACRShowCard,
-    ACRSubmit,
-    ACRToggleVisibility,
-    ACRUnknownAction = 7,
-};
-
-typedef NS_ENUM(NSInteger, ACRIconPlacement) {
-    ACRAboveTitle = 0,
-    ACRLeftOfTitle,
-    ACRNoTitle,
-};
 
 @property ACRActionType type;
 @property NSString *sentiment;

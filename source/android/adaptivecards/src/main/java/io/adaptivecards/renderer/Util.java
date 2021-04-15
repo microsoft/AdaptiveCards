@@ -6,15 +6,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import java.lang.reflect.Method;
+import java.util.List;
 
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
@@ -24,10 +28,12 @@ import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.ColumnSet;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.FactSet;
+import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSet;
 import io.adaptivecards.objectmodel.JsonValue;
 import io.adaptivecards.objectmodel.Media;
+import io.adaptivecards.objectmodel.Mode;
 import io.adaptivecards.objectmodel.ParseContext;
 import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.SubmitAction;
@@ -35,6 +41,7 @@ import io.adaptivecards.objectmodel.SubmitActionParser;
 import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextBlockParser;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public final class Util {
 
@@ -442,6 +449,45 @@ public final class Util {
             view.setId(View.generateViewId());
         }
         return view.getId();
+    }
+
+    public static Pair<BaseActionElementVector,BaseActionElementVector> splitActionsByMode(@NonNull BaseActionElementVector actionElements, @NonNull HostConfig hostConfig, @NonNull RenderedAdaptiveCard renderedCard)
+    {
+        //Splits "Primary" and "Secondary" actions.
+        long maxActions = hostConfig.GetActions().getMaxActions();
+        BaseActionElementVector primaryActionElementVector = new BaseActionElementVector();
+        BaseActionElementVector secondaryActionElementVector = new BaseActionElementVector();
+
+        for (BaseActionElement actionElement : actionElements)
+        {
+            if (actionElement.GetMode() == Mode.Secondary)
+            {
+                secondaryActionElementVector.add(actionElement);
+            }
+            else
+            {
+                primaryActionElementVector.add(actionElement);
+            }
+        }
+
+        int primaryElementsSize = primaryActionElementVector.size();
+        if (primaryElementsSize > maxActions)
+        {
+            List<BaseActionElement> excessElements = primaryActionElementVector.subList((int) maxActions, primaryElementsSize);
+            IOverflowActionRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionRenderer();
+            //Add excess elements to the secondary list if flag is enabled.
+            if (overflowActionRenderer != null && overflowActionRenderer.shouldAllowMoreThanMaxActionsInOverflowMenu())
+            {
+                secondaryActionElementVector.addAll(excessElements);
+            }
+            else
+            {
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
+            }
+            excessElements.clear();
+        }
+
+        return new Pair<>(primaryActionElementVector,secondaryActionElementVector);
     }
 
 }

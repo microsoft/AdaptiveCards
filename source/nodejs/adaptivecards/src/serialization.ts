@@ -108,6 +108,7 @@ export class Versions {
     static readonly v1_2 = new Version(1, 2);
     static readonly v1_3 = new Version(1, 3);
     static readonly v1_4 = new Version(1, 4);
+    static readonly v1_5 = new Version(1, 5, "1.5 (Preview)");
     static readonly latest = Versions.v1_4;
 }
 
@@ -133,12 +134,15 @@ export abstract class BaseSerializationContext {
     toJSONOriginalParam: any;
 
     constructor(public targetVersion: Version = Versions.latest) {}
-    
+
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined, forceDeleteIfNullOrDefault: boolean = false) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
             if (!GlobalSettings.enableFullJsonRoundTrip || forceDeleteIfNullOrDefault) {
                 delete target[propertyName];
             }
+        }
+        else if (propertyValue === defaultValue) {
+            delete target[propertyName];
         }
         else {
             target[propertyName] = propertyValue;
@@ -668,7 +672,7 @@ export class SerializableObjectProperty extends PropertyDefinition {
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: SerializableObject | undefined, context: BaseSerializationContext) {
         let serializedValue: object | undefined = undefined;
-        
+
         if (value !== undefined && !value.hasAllDefaultValues()) {
             serializedValue = value.toJSON(context);
         }
@@ -968,7 +972,7 @@ export abstract class SerializableObject {
 
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
         let effectiveContext: BaseSerializationContext;
-        
+
         if (context && context instanceof BaseSerializationContext) {
             effectiveContext = context;
         }

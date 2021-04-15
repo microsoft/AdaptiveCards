@@ -63,6 +63,12 @@
     numberOfCards += 1;
 }
 
+- (void)insertView:(UIView *)view
+{
+    [adaptiveCardsPayloads addObject:@""];
+    [adaptiveCardsViews addObject:view];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return adaptiveCardsViews.count;

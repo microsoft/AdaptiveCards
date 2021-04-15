@@ -71,6 +71,9 @@
         return wrappingView;
     }
 
+    configRtl(view, rootView.context);
+    configRtl(wrappingView, rootView.context);
+
     view.clipsToBounds = YES;
 
     std::string backgroundColor = imgElem->GetBackgroundColor();

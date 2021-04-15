@@ -344,6 +344,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getContainerStyleEnum();
   public final static native String ContainerStyleToString(int jarg1);
   public final static native int ContainerStyleFromString(String jarg1);
+  public final static native long getModeEnum();
+  public final static native String ModeToString(int jarg1);
+  public final static native int ModeFromString(String jarg1);
   public final static native long getIconPlacementEnum();
   public final static native String IconPlacementToString(int jarg1);
   public final static native int IconPlacementFromString(String jarg1);
@@ -504,6 +507,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseActionElement_SetStyle__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
   public final static native void BaseActionElement_SetStyle__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
+  public final static native int BaseActionElement_GetMode(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetMode(long jarg1, BaseActionElement jarg1_, int jarg2);
   public final static native void BaseActionElement_GetResourceInformation(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseActionElement_GetResourceInformationSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long BaseActionElement_SerializeToJsonValue(long jarg1, BaseActionElement jarg1_);
@@ -591,6 +596,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long Container_SerializeToJsonValue(long jarg1, Container jarg1_);
   public final static native void Container_DeserializeChildren(long jarg1, Container jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long Container_GetItems__SWIG_0(long jarg1, Container jarg1_);
+  public final static native Boolean Container_GetRtl(long jarg1, Container jarg1_);
+  public final static native void Container_SetRtl(long jarg1, Container jarg1_, Boolean jarg2);
   public final static native void Container_GetResourceInformation(long jarg1, Container jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long Container_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_ContainerParser__SWIG_0();
@@ -652,6 +659,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int Column_GetPixelWidth(long jarg1, Column jarg1_);
   public final static native void Column_SetPixelWidth(long jarg1, Column jarg1_, int jarg2);
   public final static native long Column_GetItems__SWIG_0(long jarg1, Column jarg1_);
+  public final static native Boolean Column_GetRtl(long jarg1, Column jarg1_);
+  public final static native void Column_SetRtl(long jarg1, Column jarg1_, Boolean jarg2);
   public final static native void Column_GetResourceInformation(long jarg1, Column jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long Column_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Column(long jarg1);
@@ -953,6 +962,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void AdaptiveCard_SetHeight(long jarg1, AdaptiveCard jarg1_, int jarg2);
   public final static native long AdaptiveCard_GetMinHeight(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetMinHeight(long jarg1, AdaptiveCard jarg1_, long jarg2);
+  public final static native Boolean AdaptiveCard_GetRtl(long jarg1, AdaptiveCard jarg1_);
+  public final static native void AdaptiveCard_SetRtl(long jarg1, AdaptiveCard jarg1_, Boolean jarg2);
   public final static native long AdaptiveCard_GetSelectAction(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetSelectAction(long jarg1, AdaptiveCard jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long AdaptiveCard_GetBody__SWIG_0(long jarg1, AdaptiveCard jarg1_);

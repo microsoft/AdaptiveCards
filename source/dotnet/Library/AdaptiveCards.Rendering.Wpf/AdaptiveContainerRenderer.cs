@@ -18,6 +18,22 @@ namespace AdaptiveCards.Rendering.Wpf
             uiContainer.Style = context.GetStyle("Adaptive.Container");
             uiContainer.SetBackgroundSource(container.BackgroundImage, context);
 
+            bool? previousContextRtl = context.Rtl;
+            bool? currentRtl = previousContextRtl;
+
+            bool updatedRtl = false;
+            if (container.Rtl.HasValue)
+            {
+                currentRtl = container.Rtl;
+                context.Rtl = currentRtl;
+                updatedRtl = true;
+            }
+
+            if (currentRtl.HasValue)
+            {
+                uiContainer.FlowDirection = currentRtl.Value ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+            }
+
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
             // This is the renderArgs that will be passed down to the children
@@ -72,6 +88,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Revert context's value to that of outside the Container
             context.RenderArgs = parentRenderArgs;
+
+            if (updatedRtl)
+            {
+                context.Rtl = previousContextRtl;
+            }
 
             return RendererUtil.ApplySelectAction(border, container, context);
         }
@@ -212,7 +233,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             context.ResetSeparatorVisibilityInsideContainer(uiContainer);
         }
-        
+
         /// <summary>
         /// Adds spacing as a grid element to the container
         /// </summary>
@@ -370,7 +391,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
 
-                AutomationProperties.SetIsRequiredForForm(GetVisualElementForAccessibility(context, inputElement)?? elementForAccessibility, inputElement.IsRequired);
+                AutomationProperties.SetIsRequiredForForm(GetVisualElementForAccessibility(context, inputElement) ?? elementForAccessibility, inputElement.IsRequired);
 
                 if ((!String.IsNullOrEmpty(inputElement.Label)) || (!String.IsNullOrEmpty(inputElement.ErrorMessage)))
                 {
@@ -496,7 +517,8 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <returns>The rendered error message</returns>
         public static TextBlock RenderErrorMessage(AdaptiveRenderContext context, AdaptiveInput input)
         {
-            TextBlock uiTextBlock = new TextBlock() {
+            TextBlock uiTextBlock = new TextBlock()
+            {
                 Text = input.ErrorMessage,
                 TextWrapping = TextWrapping.Wrap,
                 Visibility = Visibility.Collapsed

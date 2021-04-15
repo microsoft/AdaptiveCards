@@ -2,11 +2,12 @@
 //  ACRView.h
 //  ACRView
 //
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
+#import "ACORenderContext.h"
 #import "ACOWarning.h"
 #import "ACRActionDelegate.h"
 #import "ACRColumnView.h"
@@ -19,6 +20,7 @@
 @property (weak) id<ACRActionDelegate> acrActionDelegate;
 @property (weak) id<ACRMediaDelegate> mediaDelegate;
 @property NSArray<ACOWarning *> *warnings;
+@property (readonly) ACORenderContext *context;
 
 - (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config widthConstraint:(float)width;
 - (instancetype)init:(ACOAdaptiveCard *)card
