@@ -101,6 +101,22 @@ export class MediaConfig {
     }
 }
 
+export class TableConfig {
+    cellSpacing: number = 4;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.cellSpacing = obj.cellSpacing && typeof obj.cellSpacing === "number" ? obj.cellSpacing : this.cellSpacing;
+        }
+    }
+
+    toJSON() {
+        return {
+            cellSpacing: this.cellSpacing
+        }
+    }
+}
+
 export class BaseTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
     color: Enums.TextColor = Enums.TextColor.Default;;
@@ -589,6 +605,7 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
+    readonly table: TableConfig = new TableConfig();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;

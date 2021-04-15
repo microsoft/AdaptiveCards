@@ -55,7 +55,9 @@ export class ColumnDefinition extends SerializableObject {
         return "ColumnDefinition";
     }
 
-    //#endregion   
+    //#endregion
+
+    computedWidth: SizeAndUnit;
 }
 
 export abstract class StylableContainer<T extends CardElement> extends StylableCardElementContainer {
@@ -168,7 +170,8 @@ export class TableCell extends Container {
                 const borderColor = <string>stringToCssColor(styleDefinition.borderColor);
 
                 if (borderColor) {
-                    this.renderedElement.style.border = "1px solid " + borderColor;
+                    this.renderedElement.style.borderRight = "1px solid " + borderColor;
+                    this.renderedElement.style.borderBottom = "1px solid " + borderColor;
                 }
             }
         }
@@ -184,35 +187,18 @@ export class TableCell extends Container {
     }
 
     protected internalRender(): HTMLElement | undefined {
-        let element = super.internalRender();
+        let cellElement = super.internalRender();
 
-        if (element) {
-            let cellElement = document.createElement(this.cellType === "data" ? "td" : "th");
+        if (cellElement) {
+            cellElement.setAttribute("role", this.cellType === "data" ? "cell" : "columnheader");
+            cellElement.style.minWidth = "0";
 
             if (this.cellType === "header") {
                 cellElement.setAttribute("scope", "col");
             }
-
-            let verticalAlignment = this.parentTable.verticalCellContentAlignment ? this.parentTable.verticalCellContentAlignment : this.verticalContentAlignment;
-
-            switch (verticalAlignment) {
-                case VerticalAlignment.Center:
-                    cellElement.style.verticalAlign = "center";
-                    break;
-                case VerticalAlignment.Bottom:
-                    cellElement.style.verticalAlign = "bottom";
-                    break;
-                default:
-                    cellElement.style.verticalAlign = "top";
-                    break;                                
-            }
-
-            cellElement.appendChild(element);
-
-            return cellElement;
         }
 
-        return undefined;
+        return cellElement;
     }
 
     protected shouldSerialize(context: SerializationContext): boolean {
@@ -256,6 +242,14 @@ export class TableRow extends StylableContainer<TableCell> {
 
     //#endregion
 
+    protected getDefaultPadding(): PaddingDefinition {
+        return new PaddingDefinition(
+            Spacing.None,
+            Spacing.None,
+            Spacing.None,
+            Spacing.None);
+    }
+
     protected applyBackground() {
         if (this.renderedElement) {
             let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
@@ -276,9 +270,13 @@ export class TableRow extends StylableContainer<TableCell> {
     }
     
     protected internalRender(): HTMLElement | undefined {
-        let rowElement = document.createElement("tr");
-
         let isFirstRow = this.getIsFirstRow();
+        let cellSpacing = this.hostConfig.table.cellSpacing;
+
+        let rowElement = document.createElement("div");
+        rowElement.setAttribute("role", "row");
+        rowElement.style.display = "flex";
+        rowElement.style.flexDirection = "row";
 
         for (let i = 0; i < Math.min(this.getItemCount(), this.parentTable.getColumnCount()); i++) {
             let cell = this.getItemAt(i);
@@ -288,8 +286,17 @@ export class TableRow extends StylableContainer<TableCell> {
             let renderedCell = cell.render();
 
             if (renderedCell) {
-                if (i > 0 && !this.parentTable.showGridLines && this.parentTable.cellSpacing > 0) {
-                    renderedCell.style.paddingLeft = this.parentTable.cellSpacing + "px";
+                let column = this.parentTable.getColumnAt(i);
+
+                if (column.computedWidth.unit === SizeUnit.Pixel) {
+                    renderedCell.style.flex = "0 0 " + column.computedWidth.physicalSize + "px";
+                }
+                else {
+                    renderedCell.style.flex = "1 1 " + column.computedWidth.physicalSize + "%";
+                }
+
+                if (i > 0 && !this.parentTable.showGridLines && cellSpacing > 0) {
+                    renderedCell.style.marginLeft = cellSpacing + "px";
                 }
 
                 rowElement.appendChild(renderedCell);
@@ -336,16 +343,12 @@ export class Table extends StylableContainer<TableRow> {
     private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "columns", ColumnDefinition);
 
     static readonly firstRowAsHeadersProperty = new BoolProperty(Versions.v1_0, "firstRowAsHeaders", true);
-    static readonly cellSpacingProperty = new NumProperty(Versions.v1_0, "cellSpacing", 4);
     static readonly showGridLinesProperty = new BoolProperty(Versions.v1_0, "showGridLines", true);
     static readonly gridStyleProperty = new ContainerStyleProperty(Versions.v1_0, "gridStyle");
     static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "verticalCellContentAlignment", VerticalAlignment);
 
     @property(Table.columnsProperty)
     private _columns: ColumnDefinition[] = [];
-
-    @property(Table.cellSpacingProperty)
-    cellSpacing: number = 4;
 
     @property(Table.firstRowAsHeadersProperty)
     firstRowAsHeaders: boolean = true;
@@ -404,58 +407,50 @@ export class Table extends StylableContainer<TableRow> {
                 }
             }
 
-            let colGroup = document.createElement("colgroup");
-
             for (let column of this._columns) {
-                let col = document.createElement("col");
-
                 if (column.width.unit === SizeUnit.Pixel) {
-                    col.style.width = column.width.physicalSize + "px";
+                    column.computedWidth = new SizeAndUnit(column.width.physicalSize, SizeUnit.Pixel);
                 }
                 else {
-                    col.style.width = (100 / totalWeights * column.width.physicalSize) + "%";
+                    column.computedWidth = new SizeAndUnit(100 / totalWeights * column.width.physicalSize, SizeUnit.Weight);
                 }
-
-                colGroup.appendChild(col);
             }
 
-            let tableElement = document.createElement("table");
+            let tableElement = document.createElement("div");
+            tableElement.setAttribute("role", "table");
+            tableElement.style.display = "flex";
+            tableElement.style.flexDirection = "column";
 
-            // Layout must be fixed and width must be 100%, otherwise cells will not
-            // shrink below the width of their content
-            tableElement.style.tableLayout = "fixed";
-            tableElement.style.width = "100%";
-            tableElement.style.borderCollapse = "collapse";
+            if (this.showGridLines) {
+                let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.gridStyle);
 
-            tableElement.appendChild(colGroup);
+                if (styleDefinition.borderColor) {
+                    const borderColor = <string>stringToCssColor(styleDefinition.borderColor);
+    
+                    if (borderColor) {
+                        tableElement.style.borderTop = "1px solid " + borderColor;
+                        tableElement.style.borderLeft = "1px solid " + borderColor;
+                    }
+                }
+            }
 
-            let tableBody = document.createElement("tbody");
+            let cellSpacing = this.hostConfig.table.cellSpacing;
 
             for (let i = 0; i < this.getItemCount(); i++) {
                 let renderedRow = this.getItemAt(i).render();
 
                 if (renderedRow) {
-                    if (i > 0 && !this.showGridLines && this.cellSpacing > 0) {
-                        let separatorRow = document.createElement("tr");
+                    if (i > 0 && !this.showGridLines && cellSpacing > 0) {
+                        let separatorRow = document.createElement("div");
                         separatorRow.setAttribute("aria-hidden", "true");
-                        separatorRow.style.height = this.cellSpacing + "px";
+                        separatorRow.style.height = cellSpacing + "px";
 
-                        tableBody.appendChild(separatorRow);
+                        tableElement.appendChild(separatorRow);
                     }
 
-                    if (i === 0) {
-                        let theadElement = document.createElement("thead");
-                        theadElement.appendChild(renderedRow);
-
-                        tableElement.appendChild(theadElement);
-                    }
-                    else {
-                        tableBody.appendChild(renderedRow);
-                    }
+                    tableElement.appendChild(renderedRow);
                 }
             }
-
-            tableElement.appendChild(tableBody);
 
             return tableElement;
         }
@@ -471,6 +466,10 @@ export class Table extends StylableContainer<TableRow> {
 
     getColumnCount(): number {
         return this._columns.length;
+    }
+
+    getColumnAt(index: number): ColumnDefinition {
+        return this._columns[index];
     }
 
     addRow(row: TableRow) {
