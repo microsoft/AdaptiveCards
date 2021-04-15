@@ -71,7 +71,7 @@ class ACRColumnView: ACRContentStackView {
         // Because - column can be empty                        -> should have zero content size
         //         - image can have dimensions less than 30 pts -> should match image content size
         let contentStackView = subview as? ACRContentStackView
-        if !(contentStackView?.arrangedSubviews.first is ACRContentHoldingView || subview is ACRContentHoldingView) {
+        if !(contentStackView?.arrangedSubviews.first is ACRImageWrappingView || subview is ACRImageWrappingView) {
             minWidthConstraint.isActive = true
         }
         

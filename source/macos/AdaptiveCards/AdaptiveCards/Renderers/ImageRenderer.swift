@@ -25,7 +25,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         
         rootView.registerImageHandlingView(imageView, for: url)
       
-        let imageProperties = ACRImageProperties(element: imageElement, config: hostConfig, image: imageView.image, parentView: parentView)
+        let imageProperties = ACRImageProperties(element: imageElement, config: hostConfig, parentView: parentView)
         let cgsize = imageProperties.contentSize
 
         // Setting up ImageView based on Image Properties
@@ -43,7 +43,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         
         // Setting up content holder view
-        let wrappingView = ACRContentHoldingView(imageProperties: imageProperties, imageView: imageView, viewgroup: rootView)
+        let wrappingView = ACRImageWrappingView(imageProperties: imageProperties, imageView: imageView, viewgroup: rootView)
         wrappingView.translatesAutoresizingMaskIntoConstraints = false
     
         // Background color attribute
@@ -74,7 +74,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
             }
         }
     
-        let imagePriority = NSLayoutConstraint.Priority.defaultHigh // TODO: Possible need to revisit this
+        let imagePriority = NSLayoutConstraint.Priority.defaultHigh
         if imageProperties.acsImageSize != ACSImageSize.stretch {
             imageView.setContentHuggingPriority(imagePriority, for: .horizontal)
             imageView.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -90,14 +90,13 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
             wrappingView.isPersonStyle = true
         }
         
-        wrappingView.isVisible = imageElement.getIsVisible()
         wrappingView.setupSelectAction(imageElement.getSelectAction(), rootView: rootView)
         
         return wrappingView
     }
     
     func configUpdateForImage(image: NSImage?, imageView: NSImageView) {
-        guard let superView = imageView.superview as? ACRContentHoldingView, let imageSize = image?.absoluteSize else {
+        guard let superView = imageView.superview as? ACRImageWrappingView, let imageSize = image?.absoluteSize else {
                 logError("superView or image is nil")
                 return
         }
@@ -110,7 +109,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         let cgSize = imageProperties.contentSize
         superView.isImageSet = true
         
-        let priority = NSLayoutConstraint.Priority.defaultHigh // TODO Need to revisit this for a more generalised logic
+        let priority = NSLayoutConstraint.Priority.defaultHigh
         
         var constraints: [NSLayoutConstraint] = []
         
@@ -124,19 +123,11 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         if !imageProperties.hasExplicitDimensions {
             constraints.append(imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: cgSize.width / cgSize.height, constant: 0))
             constraints.append(imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: cgSize.height / cgSize.width, constant: 0))
-            constraints[2].priority = priority + 2
-            constraints[3].priority = priority + 2
         }
         
         NSLayoutConstraint.activate(constraints)
                     
         superView.invalidateIntrinsicContentSize()
-    }
-    
-    func getImageViewLayoutPriority(_ wrappingView: NSView) -> NSLayoutConstraint.Priority {
-        let ACRColumnWidthPriorityStretch = 249
-        let priority = wrappingView.contentHuggingPriority(for: .horizontal)
-        return (Int(priority.rawValue) > ACRColumnWidthPriorityStretch) ? NSLayoutConstraint.Priority.defaultHigh : priority
     }
 }
 
