@@ -16,7 +16,8 @@
 @property (readonly) NSString *title;
 @property (readonly) NSString *iconUrl;
 @property (readonly) NSObject<ACRSelectActionDelegate> *target;
-- (UIImage *)iconImageWithSize:(CGSize)size;
+- (void)loadIconImageWithSize:(CGSize)size
+                 onIconLoaded:(void (^)(UIImage *))onIconLoaded;
 
 @end
 

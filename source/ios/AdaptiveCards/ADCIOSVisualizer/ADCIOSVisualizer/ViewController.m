@@ -124,11 +124,14 @@ CGFloat kAdaptiveCardsWidth = 0;
         // enum will be part of API in next iterations when custom renderer extended to non-action
         // type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance]
-                      actionElementType:ACROpenUrl useResourceResolver:YES];
+                      actionElementType:ACROpenUrl
+                    useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance]
-                                 cardElementType:ACRTextBlock useResourceResolver:YES];
+                                 cardElementType:ACRTextBlock
+                             useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance]
-                                 cardElementType:ACRNumberInput useResourceResolver:YES];
+                                 cardElementType:ACRNumberInput
+                             useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet useResourceResolver:YES];
 
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
@@ -297,12 +300,12 @@ CGFloat kAdaptiveCardsWidth = 0;
             [fetchedInputList addObject:[[NSString alloc] initWithData:userInputsAsJson
                                                               encoding:NSUTF8StringEncoding]];
         }
-        
+
         NSString *data = [action data];
         if (data && data.length) {
             [fetchedInputList addObject:[NSString stringWithFormat:@"\"data\" : %@", data]];
         }
-        
+
         if (action.type == ACRExecute) {
             if (action.verb && action.verb.length) {
                 [fetchedInputList addObject:[NSString stringWithFormat:@"\"verb\" : %@", action.verb]];
@@ -422,11 +425,13 @@ CGFloat kAdaptiveCardsWidth = 0;
                                                            [item.target doSelectAction];
                                                        }];
 
-        UIImage *image = [item iconImageWithSize:CGSizeMake(40, 40)];
-        if (image) {
-            [action setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                      forKey:@"image"];
-        }
+        [item loadIconImageWithSize:CGSizeMake(40, 40)
+                       onIconLoaded:^(UIImage *image) {
+                           if (image) {
+                               [action setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                         forKey:@"image"];
+                           }
+                       }];
 
         [myAlert addAction:action];
     }

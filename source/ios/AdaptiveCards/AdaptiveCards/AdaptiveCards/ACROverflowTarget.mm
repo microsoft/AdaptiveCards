@@ -16,6 +16,7 @@
     __weak ACRView *_rootView;
     std::shared_ptr<AdaptiveCards::BaseActionElement> _action;
     NSObject<ACRSelectActionDelegate> *_target;
+    void (^_onIconLoaded)(UIImage *);
 }
 
 + (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement
@@ -44,17 +45,20 @@
     return _target;
 }
 
-- (UIImage *)iconImageWithSize:(CGSize)size
+- (void)loadIconImageWithSize:(CGSize)size
+                 onIconLoaded:(void (^)(UIImage *))onIconLoaded
 {
-    UIImage *image = [self loadIconImage];
-    if (image) {
-        image = scaleImageToSize(image, size);
-        return image;
-    }
-    return nil;
+    [self loadIconImage:^(UIImage *image) {
+        if (image) {
+            image = scaleImageToSize(image, size);
+            if (onIconLoaded) {
+                onIconLoaded(image);
+            }
+        }
+    }];
 }
 
-- (UIImage *)loadIconImage
+- (void)loadIconImage:(void (^)(UIImage *))completion
 {
     auto &iconUrl = _action->GetIconUrl();
     NSDictionary *imageViewMap = [_rootView getImageMap];
@@ -63,18 +67,37 @@
     UIImage *img = imageViewMap[key];
 
     if (img) {
-        return img;
+        completion(img);
     } else if (key.length) {
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)_action.get()];
         NSString *key = [number stringValue];
         UIImageView *view = [_rootView getImageView:key];
         if (view.image) {
-            return view.image;
+            completion(view.image);
+        } else {
+            _onIconLoaded = completion;
+            [view addObserver:self
+                   forKeyPath:@"image"
+                      options:NSKeyValueObservingOptionNew
+                      context:_action.get()];
         }
     }
-    return nil;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSKeyValueChangeKey, id> *)change
+                       context:(void *)key
+{
+    if ([keyPath isEqualToString:@"image"] && key == _action.get()) {
+        // image that was loaded
+        UIImage *image = [change objectForKey:NSKeyValueChangeNewKey];
+        if (_onIconLoaded) {
+            _onIconLoaded(image);
+        }
+        [object removeObserver:self forKeyPath:@"image"];
+    }
+}
 @end
 
 @implementation ACROverflowTarget {
@@ -124,9 +147,11 @@
 
             auto &iconUrl = action.element->GetIconUrl();
             if (!iconUrl.empty()) {
-                UIImage *image = [menuItem iconImageWithSize:CGSizeMake(40, 40)];
-                [menuAction setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                              forKey:@"image"];
+                [menuItem loadIconImageWithSize:CGSizeMake(40, 40)
+                                   onIconLoaded:^(UIImage *image) {
+                                       [menuAction setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                     forKey:@"image"];
+                                   }];
             }
 
             [_alert addAction:menuAction];
@@ -159,8 +184,7 @@
 {
     BOOL shouldDisplay = YES;
     if ([_rootView.acrActionDelegate
-        respondsToSelector:@selector(onDisplayOverflowActionMenu:alertController:)])
-    {
+            respondsToSelector:@selector(onDisplayOverflowActionMenu:alertController:)]) {
         shouldDisplay = ![_rootView.acrActionDelegate onDisplayOverflowActionMenu:_menuItems
                                                                   alertController:_alert];
     }
