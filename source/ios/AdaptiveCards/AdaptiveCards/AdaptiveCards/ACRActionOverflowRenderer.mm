@@ -56,16 +56,16 @@
 
         BOOL shouldRender = YES;
         if ([rootView.acrActionDelegate
-                respondsToSelector:@selector(shouldRenderOverflowActionButton:
-                                                                    forTarget:
-                                                                    isAtRootLevelActions:)]) {
+                respondsToSelector:@selector(onRenderOverflowAction:
+                                             forTarget:
+                                             isAtRootLevelActions:)]) {
 
             BOOL isAtRootLevelActions = ((ACOActionOverflow *)acoElem).isAtRootLevel;
 
             shouldRender =
-                [rootView.acrActionDelegate shouldRenderOverflowActionButton:(ACRButton *)button
-                                                                   forTarget:target
-                                                        isAtRootLevelActions:isAtRootLevelActions];
+                ![rootView.acrActionDelegate onRenderOverflowAction:(ACRButton *)button
+                                                          forTarget:target
+                                               isAtRootLevelActions:isAtRootLevelActions];
         }
 
         if (shouldRender) {

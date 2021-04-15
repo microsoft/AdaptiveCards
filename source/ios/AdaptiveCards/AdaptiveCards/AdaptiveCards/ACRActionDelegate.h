@@ -35,17 +35,18 @@
     - "target": the target to trigger popup menu or current "..." overflow button. Client can access its associated menu item actions through target.menuItems, or add this target to any UIButton to trigger the popup
     - "isRootLevelActions":  indicates if the current "..." overflow action belongs to root level actions array. If it's NO then it indicates it's ActionSet as body elements.
  
- - Client callback requires to return a BOOL value. Returning YES means let SDK continue to render "..." button, while NO informs SDK don't render the current "..." button (which implies client code might grab those flyout actions (target.menuItems) and render / handle overflow actions by itself).
+ - Client callback requires to return a BOOL value. Returning NO means let SDK continue to render "..." button, while YES informs SDK don't render the current "..." button (which implies client code might grab those flyout actions (target.menuItems) and render / handle overflow actions by itself).
  */
-- (BOOL)shouldRenderOverflowActionButton:(UIButton *)button
-                               forTarget:(ACROverflowTarget *)target
-                    isAtRootLevelActions:(BOOL)isAtRootLevelActions;
+- (BOOL)onRenderOverflowAction:(UIButton *)button
+                     forTarget:(ACROverflowTarget *)target
+          isAtRootLevelActions:(BOOL)isAtRootLevelActions;
 
 /**
- - It'll be called when overflow context menu (action sheet) will be shown. If client responds to this callback, SDK won't present default overlow menu in action sheet. It implies client can implement this method to render custom overlow menu
+ - It'll be called when overflow context menu (action sheet) will be shown. If client returns NO, SDK will continue to present default overlow menu in action sheet, while returning YES informs SDK don't display the popup overflow menu.
+ - By using this callbak client can implement its own custom overlow menu to display
     - "menuItems": the action items on the overflow menu associated with the current triggered overflow "..." button
     - "alert": presentable-ready alert controller. Client can just use its view controller to present this. Or client can grab "menuItems" to prepare its own overflow menu
  */
-- (void)displayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
-                  alertController:(UIAlertController *)alert;
+- (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
+                    alertController:(UIAlertController *)alert;
 @end

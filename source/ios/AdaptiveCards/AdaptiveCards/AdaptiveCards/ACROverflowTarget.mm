@@ -157,10 +157,15 @@
 
 - (void)doSelectAction
 {
-    if ([_rootView.acrActionDelegate respondsToSelector:@selector(displayOverflowActionMenu:alertController:)]) {
-        [_rootView.acrActionDelegate displayOverflowActionMenu:_menuItems
-                                               alertController:_alert];
-    } else {
+    BOOL shouldDisplay = YES;
+    if ([_rootView.acrActionDelegate
+        respondsToSelector:@selector(onDisplayOverflowActionMenu:alertController:)])
+    {
+        shouldDisplay = ![_rootView.acrActionDelegate onDisplayOverflowActionMenu:_menuItems
+                                                                  alertController:_alert];
+    }
+
+    if (shouldDisplay) {
         // find first UIViewController responds to rootView as default controller
         UIViewController *controller = [self traverseResponderChainForUIViewController:_rootView];
         if (controller) {

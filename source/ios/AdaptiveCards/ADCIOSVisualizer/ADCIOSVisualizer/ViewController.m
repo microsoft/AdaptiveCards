@@ -380,9 +380,9 @@ CGFloat kAdaptiveCardsWidth = 0;
     return YES;
 }
 
-- (BOOL)shouldRenderOverflowActionButton:(UIButton *)button
-                               forTarget:(ACROverflowTarget *)target
-                    isAtRootLevelActions:(BOOL)isAtRootLevelActions
+- (BOOL)onRenderOverflowAction:(UIButton *)button
+                     forTarget:(ACROverflowTarget *)target
+          isAtRootLevelActions:(BOOL)isAtRootLevelActions
 {
     if (isAtRootLevelActions) {
         UIButton *extOverflowBtn = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -399,13 +399,13 @@ CGFloat kAdaptiveCardsWidth = 0;
                  forControlEvents:UIControlEventTouchUpInside];
         extOverflowBtn.contentEdgeInsets = UIEdgeInsetsMake(5, 8, 5, 8);
         [_dataSource insertView:extOverflowBtn];
-        return NO;
+        return YES;
     }
-    return YES;
+    return NO;
 }
 
-- (void)displayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
-                  alertController:(UIAlertController *)alert
+- (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
+                    alertController:(UIAlertController *)alert
 {
     // [Option 1] the easiest way is to just present the alert view. It's prepared and presentable ready.
     //    [self presentViewController: alert];
@@ -434,6 +434,7 @@ CGFloat kAdaptiveCardsWidth = 0;
                                                 style:UIAlertActionStyleCancel
                                               handler:nil]];
     [self presentViewController:myAlert animated:YES completion:nil];
+    return NO;
 }
 
 - (UIView *)renderButtons:(ACRView *)rootView
