@@ -11,6 +11,7 @@
 #import "ADCResolver.h"
 #import "AdaptiveCards/ACRAggregateTarget.h"
 #import "AdaptiveCards/ACRButton.h"
+#import "AdaptiveCards/ACROverflowTarget.h"
 #import "AdaptiveFileBrowserSource.h"
 #import "CustomActionNewType.h"
 #import "CustomActionOpenURLRenderer.h"
@@ -123,11 +124,14 @@ CGFloat kAdaptiveCardsWidth = 0;
         // enum will be part of API in next iterations when custom renderer extended to non-action
         // type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance]
-                      actionElementType:ACROpenUrl useResourceResolver:YES];
+                      actionElementType:ACROpenUrl
+                    useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance]
-                                 cardElementType:ACRTextBlock useResourceResolver:YES];
+                                 cardElementType:ACRTextBlock
+                             useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance]
-                                 cardElementType:ACRNumberInput useResourceResolver:YES];
+                                 cardElementType:ACRNumberInput
+                             useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet useResourceResolver:YES];
 
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
@@ -296,12 +300,12 @@ CGFloat kAdaptiveCardsWidth = 0;
             [fetchedInputList addObject:[[NSString alloc] initWithData:userInputsAsJson
                                                               encoding:NSUTF8StringEncoding]];
         }
-        
+
         NSString *data = [action data];
         if (data && data.length) {
             [fetchedInputList addObject:[NSString stringWithFormat:@"\"data\" : %@", data]];
         }
-        
+
         if (action.type == ACRExecute) {
             if (action.verb && action.verb.length) {
                 [fetchedInputList addObject:[NSString stringWithFormat:@"\"verb\" : %@", action.verb]];
@@ -372,6 +376,70 @@ CGFloat kAdaptiveCardsWidth = 0;
 {
     [self addChildViewController:controller];
     [controller didMoveToParentViewController:self];
+}
+
+- (BOOL)shouldAllowMoreThanMaxActionsInOverflowMenu
+{
+    return YES;
+}
+
+- (BOOL)onRenderOverflowAction:(UIButton *)button
+                     forTarget:(ACROverflowTarget *)target
+          isAtRootLevelActions:(BOOL)isAtRootLevelActions
+{
+    if (isAtRootLevelActions) {
+        UIButton *extOverflowBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        CGRect buttonFrame = extOverflowBtn.frame;
+        buttonFrame.size = CGSizeMake(250, 40);
+        extOverflowBtn.frame = buttonFrame;
+        extOverflowBtn.layer.cornerRadius = 10;
+        extOverflowBtn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        [extOverflowBtn setTitle:@"Root Overflow Actions (...)" forState:UIControlStateNormal];
+        [extOverflowBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [extOverflowBtn setBackgroundColor:[UIColor orangeColor]];
+        [extOverflowBtn addTarget:target
+                           action:@selector(doSelectAction)
+                 forControlEvents:UIControlEventTouchUpInside];
+        extOverflowBtn.contentEdgeInsets = UIEdgeInsetsMake(5, 8, 5, 8);
+        [_dataSource insertView:extOverflowBtn];
+        return YES; // skip SDK defult render
+    }
+    return NO; // continue SDK defult render
+}
+
+- (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
+                    alertController:(UIAlertController *)alert
+{
+    // [Option 1] the easiest way is to just present the alert view. It's prepared and presentable ready.
+    //    [self presentViewController: alert];
+
+    // [Option 2] client can prepare its own presentation by direclty employing menuItems
+    UIAlertController *myAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                     message:nil
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+
+    for (ACROverflowMenuItem *item in menuItems) {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:item.title
+                                                         style:UIAlertActionStyleDestructive
+                                                       handler:^(UIAlertAction *_Nonnull action) {
+                                                           [item.target doSelectAction];
+                                                       }];
+
+        [item loadIconImageWithSize:CGSizeMake(40, 40)
+                       onIconLoaded:^(UIImage *image) {
+                           if (image) {
+                               [action setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                         forKey:@"image"];
+                           }
+                       }];
+
+        [myAlert addAction:action];
+    }
+    [myAlert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                                style:UIAlertActionStyleCancel
+                                              handler:nil]];
+    [self presentViewController:myAlert animated:YES completion:nil];
+    return YES; // skip SDK defult display
 }
 
 - (UIView *)renderButtons:(ACRView *)rootView
@@ -489,8 +557,7 @@ CGFloat kAdaptiveCardsWidth = 0;
 
 - (void)update:(NSString *)jsonStr
 {
-    NSInteger lastRowIndex = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
-    NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+    NSInteger prevCount = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
     // resources such as images may not be ready when AdaptiveCard is added to its super view
     // AdaptiveCard can notify when its resources are all loaded via - (void)didLoadElements delegate
     // but the notification can come at any time
@@ -500,8 +567,19 @@ CGFloat kAdaptiveCardsWidth = 0;
         self.editableStr = jsonStr;
         // the data source will parse & render the card, and update its store for AdaptiveCards
         [self->_dataSource insertCard:jsonStr];
-        // tell the table view UI to add a row
-        [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationBottom];
+        // tell the table view UI to add N rows.
+        // The delta change might be > 1 since [_dataSource insertView] might have been called to
+        // insert additional non-card views (such as overflow button)
+        NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
+        NSInteger postCount = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
+        NSInteger rowsToAdd = postCount - prevCount;
+        NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:rowsToAdd];
+        for (int i = 0; i < rowsToAdd; ++i) {
+            NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:(lastRowIndex + i) inSection:0];
+            [indexPaths addObject:pathToLastRow];
+        }
+        [self.chatWindow insertRowsAtIndexPaths:indexPaths
+                               withRowAnimation:UITableViewRowAnimationNone];
     });
 }
 
