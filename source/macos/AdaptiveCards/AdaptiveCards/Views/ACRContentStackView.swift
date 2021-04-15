@@ -210,6 +210,10 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
         guard let columnView = event.trackingArea?.owner as? ACRContentStackView, target != nil else { return }
         columnView.layer?.backgroundColor = previousBackgroundColor ?? .clear
     }
+    
+    func setVerticalHuggingPriority(_ rawValue: Float) {
+        stackView.setHuggingPriority(NSLayoutConstraint.Priority(rawValue), for: .vertical)
+    }
 }
 
 class NoClippingLayer: CALayer {

@@ -99,8 +99,10 @@ class BaseCardElementRenderer {
                     let directionParent = parent.getBleedDirection()
                     parentBottomBleedDirection = (directionParent.rawValue & ACRBleedDirection.ACRBleedToBottomEdge.rawValue) != 0
                 }
-                paddingBottom = parentView.style == ACSContainerStyle.none || (parentView.bleed && parentBottomBleedDirection
-                ) ? padding : 0
+                if let parentCollection = parentElement as? ACSCollectionTypeElement {
+                    paddingBottom = !parentCollection.getPadding() || (parentView.bleed && parentBottomBleedDirection
+                    ) ? padding : 0
+                }
                 bottomAnchor = parentView.bottomAnchor
             }
             

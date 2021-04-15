@@ -100,7 +100,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
                 }
             }
         }
-        
+        columnSetView.setVerticalHuggingPriority(100)
         return columnSetView
     }
     
