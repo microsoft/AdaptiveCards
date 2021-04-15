@@ -328,6 +328,7 @@ namespace AdaptiveSharedNamespace
         ToggleVisibility,
         Custom,
         UnknownAction,
+        Overflow
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionType);
 

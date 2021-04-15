@@ -107,3 +107,12 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
 void printSize(NSString *msg, CGSize size);
 
 NSData *JsonToNSData(const Json::Value &blob);
+
+void partitionActions(
+    const std::vector<std::shared_ptr<BaseActionElement>> &elems,
+    std::vector<std::shared_ptr<BaseActionElement>> &primary,
+    std::vector<std::shared_ptr<BaseActionElement>> &secondary,
+    unsigned int maxActions,
+    ACRView *rootView);
+
+UIImage *scaleImageToSize(UIImage *image, CGSize newSize);
