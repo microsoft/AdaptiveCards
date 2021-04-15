@@ -36,12 +36,15 @@ class AdaptiveCardRenderer {
         }
         rootView.delegate = self
         rootView.resolverDelegate = self
+        if card.getVersion() == "1.3", !config.supportsSchemeV1_3 {
+            logError("CardVersion 1.3 not supported, Card properties of this version and above won't be rendered")
+        }
            
         for (index, element) in card.getBody().enumerated() {
             let isFirstElement = index == 0
             let renderer = RendererManager.shared.renderer(for: element.getType())
             let view = renderer.render(element: element, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [], config: config)
-            let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: element, rootView: rootView, style: style, hostConfig: hostConfig, isfirstElement: isFirstElement)
+            let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: element, rootView: rootView, style: style, hostConfig: hostConfig, config: config, isfirstElement: isFirstElement)
             rootView.addArrangedSubview(viewWithInheritedProperties)
             BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: rootView, with: hostConfig, element: element, parentElement: nil)
         }

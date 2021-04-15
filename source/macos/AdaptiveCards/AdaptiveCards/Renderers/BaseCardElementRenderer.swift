@@ -4,7 +4,7 @@ import AppKit
 class BaseCardElementRenderer {
     static let shared = BaseCardElementRenderer()
     
-    func updateView(view: NSView, element: ACSBaseCardElement, rootView: ACRView, style: ACSContainerStyle, hostConfig: ACSHostConfig, isfirstElement: Bool) -> NSView {
+    func updateView(view: NSView, element: ACSBaseCardElement, rootView: ACRView, style: ACSContainerStyle, hostConfig: ACSHostConfig, config: RenderConfig, isfirstElement: Bool) -> NSView {
         let updatedView = ACRContentStackView(style: style, hostConfig: hostConfig)
         
         // For Spacing
@@ -36,7 +36,7 @@ class BaseCardElementRenderer {
         updatedView.isHidden = !element.getIsVisible()
         
         // Input label handling
-        if let inputElement = element as? ACSBaseInputElement, let label = inputElement.getLabel(), !label.isEmpty {
+        if config.supportsSchemeV1_3, let inputElement = element as? ACSBaseInputElement, let label = inputElement.getLabel(), !label.isEmpty {
             let attributedString = NSMutableAttributedString(string: label)
             if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: false), let textColor = ColorUtils.color(from: colorHex) {
                 attributedString.addAttributes([.foregroundColor: textColor], range: NSRange(location: 0, length: attributedString.length))

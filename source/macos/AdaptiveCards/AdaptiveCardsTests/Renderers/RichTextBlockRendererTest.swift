@@ -7,6 +7,7 @@ class RichTextBlockRendererTests: XCTestCase {
     private var richTextBlock: FakeRichTextBlock!
     private var richTextBlockRenderer: RichTextBlockRenderer!
     private let sampleText = "Hello world!"
+    private let renderConfig: RenderConfig = .default
     
     
     override func setUpWithError() throws {
@@ -58,7 +59,9 @@ class RichTextBlockRendererTests: XCTestCase {
         richTextBlock = .make(textRun: textRun)
         let textView = renderTextView()
         
-        XCTAssert(isStringAttributePresent(attrString: textView.attributedString(), attr: .underlineStyle))
+        if renderConfig.supportsSchemeV1_3 {
+            XCTAssert(isStringAttributePresent(attrString: textView.attributedString(), attr: .underlineStyle))
+        }
     }
     
     func testRendererSetsStrikethrough() {

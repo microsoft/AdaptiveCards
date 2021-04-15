@@ -71,7 +71,7 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
             }
                     
             // apply underline to textrun
-            if textRun.getUnderline() {
+            if config.supportsSchemeV1_3, textRun.getUnderline() {
                 textRunContent.addAttributes([.underlineStyle: NSUnderlineStyle.single.rawValue], range: NSRange(location: 0, length: textRunContent.length))
             }
             content.append(textRunContent)

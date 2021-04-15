@@ -29,7 +29,7 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
             let isFirstElement = index == 0
             let renderer = RendererManager.shared.renderer(for: item.getType())
             let view = renderer.render(element: item, with: hostConfig, style: container.getStyle(), rootView: rootView, parentView: containerView, inputs: [], config: config)
-            let viewWithInheritedProperties = BaseCardElementRenderer().updateView(view: view, element: item, rootView: rootView, style: container.getStyle(), hostConfig: hostConfig, isfirstElement: isFirstElement)
+            let viewWithInheritedProperties = BaseCardElementRenderer().updateView(view: view, element: item, rootView: rootView, style: container.getStyle(), hostConfig: hostConfig, config: config, isfirstElement: isFirstElement)
             containerView.addArrangedSubview(viewWithInheritedProperties)
             BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: containerView, with: hostConfig, element: item, parentElement: container)
         }
