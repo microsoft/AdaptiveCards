@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum.j2
 
 #import "ACSIsVisibleConvertor.h"
-#import "../../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
+#import "ToggleVisibilityTarget.h"
 // #import "ConversionUtils.h"
 #import "SwiftInterfaceHeader.h"
 #import "ACSIsVisible.h"

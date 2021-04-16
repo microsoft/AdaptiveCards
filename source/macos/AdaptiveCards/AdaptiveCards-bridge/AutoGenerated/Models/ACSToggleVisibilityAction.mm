@@ -7,11 +7,11 @@
 #import "ACSToggleVisibilityTarget.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
+#import "ToggleVisibilityTarget.h"
 
 
 #import "ACSToggleVisibilityAction.h"
-#import "../../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
+#import "ToggleVisibilityAction.h"
 
 
 @implementation  ACSToggleVisibilityAction {

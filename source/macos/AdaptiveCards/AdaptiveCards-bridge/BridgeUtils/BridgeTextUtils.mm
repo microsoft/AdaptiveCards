@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 #import "SwiftInterfaceHeader.h"
-#import "BridgeTextUtils.h"
+#import <AdaptiveCards_bridge/BridgeTextUtils.h>
 #import "MarkDownParser.h"
 #import "DateTimePreparsedToken.h"
 #import "Enums.h"

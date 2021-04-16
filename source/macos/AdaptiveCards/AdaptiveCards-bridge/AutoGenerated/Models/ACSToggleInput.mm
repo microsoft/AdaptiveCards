@@ -9,7 +9,7 @@
 
 
 #import "ACSToggleInput.h"
-#import "../../../../../shared/cpp/ObjectModel/ToggleInput.h"
+#import "ToggleInput.h"
 
 
 @implementation  ACSToggleInput {

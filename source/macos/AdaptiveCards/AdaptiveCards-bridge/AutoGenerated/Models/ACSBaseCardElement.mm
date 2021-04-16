@@ -9,11 +9,11 @@
 #import "ACSSpacingConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "Enums.h"
 
 
 #import "ACSBaseCardElement.h"
-#import "../../../../../shared/cpp/ObjectModel/BaseCardElement.h"
+#import "BaseCardElement.h"
 
 
 @implementation  ACSBaseCardElement {

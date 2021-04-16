@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "SwiftInterfaceHeader.h"
-#import "BridgeConverter.h"
+#import <AdaptiveCards_bridge/BridgeConverter.h>
 
 using namespace AdaptiveCards;
 using namespace std;

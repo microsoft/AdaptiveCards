@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum.j2
 
 #import "ACSInlineElementTypeConvertor.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "Enums.h"
 // #import "ConversionUtils.h"
 #import "SwiftInterfaceHeader.h"
 #import "ACSInlineElementType.h"

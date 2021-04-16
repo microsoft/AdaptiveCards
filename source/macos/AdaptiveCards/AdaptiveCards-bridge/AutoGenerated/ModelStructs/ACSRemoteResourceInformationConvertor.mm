@@ -2,7 +2,7 @@
 // Generated with objc_convertor.j2
 
 //cpp includes 
-#import "../../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#import "RemoteResourceInformation.h"
 
 #import "ACSRemoteResourceInformationConvertor.h"
 #import "SwiftInterfaceHeader.h"

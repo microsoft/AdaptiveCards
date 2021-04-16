@@ -9,7 +9,7 @@
 
 
 #import "ACSTimeInput.h"
-#import "../../../../../shared/cpp/ObjectModel/TimeInput.h"
+#import "TimeInput.h"
 
 
 @implementation  ACSTimeInput {

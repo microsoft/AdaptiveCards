@@ -7,11 +7,11 @@
 #import "ACSWarningStatusCodeConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "Enums.h"
 
 
 #import "ACSAdaptiveCardParseWarning.h"
-#import "../../../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
+#import "AdaptiveCardParseWarning.h"
 
 
 @implementation  ACSAdaptiveCardParseWarning {

@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum_header.j2
 
 #ifdef __cplusplus
-#import "../../../../../shared/cpp/ObjectModel/MarkDownHtmlGenerator.h"
+#import "MarkDownHtmlGenerator.h"
 #endif
 #import <Foundation/Foundation.h>
 #import "ACSDelimiterType.h"

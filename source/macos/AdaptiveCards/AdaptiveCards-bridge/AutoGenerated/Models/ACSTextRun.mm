@@ -12,13 +12,13 @@
 #import "ACSTextWeightConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/BaseActionElement.h"
-#import "../../../../../shared/cpp/ObjectModel/DateTimePreparser.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "BaseActionElement.h"
+#import "DateTimePreparser.h"
+#import "Enums.h"
 
 
 #import "ACSTextRun.h"
-#import "../../../../../shared/cpp/ObjectModel/TextRun.h"
+#import "TextRun.h"
 
 
 @implementation  ACSTextRun {

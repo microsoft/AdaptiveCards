@@ -9,7 +9,7 @@
 
 
 #import "ACSOpenUrlAction.h"
-#import "../../../../../shared/cpp/ObjectModel/OpenUrlAction.h"
+#import "OpenUrlAction.h"
 
 
 @implementation  ACSOpenUrlAction {

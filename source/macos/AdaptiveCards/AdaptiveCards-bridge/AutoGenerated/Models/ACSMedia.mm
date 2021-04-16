@@ -8,12 +8,12 @@
 #import "ACSRemoteResourceInformationConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/MediaSource.h"
-#import "../../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#import "MediaSource.h"
+#import "RemoteResourceInformation.h"
 
 
 #import "ACSMedia.h"
-#import "../../../../../shared/cpp/ObjectModel/Media.h"
+#import "Media.h"
 
 
 @implementation  ACSMedia {

@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum.j2
 
 #import "ACSTextInputStyleConvertor.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "Enums.h"
 // #import "ConversionUtils.h"
 #import "SwiftInterfaceHeader.h"
 #import "ACSTextInputStyle.h"

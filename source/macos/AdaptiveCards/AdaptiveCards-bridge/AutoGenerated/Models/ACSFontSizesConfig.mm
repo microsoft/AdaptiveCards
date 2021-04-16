@@ -7,11 +7,11 @@
 #import "ACSTextSizeConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "Enums.h"
 
 
 #import "ACSFontSizesConfig.h"
-#import "../../../../../shared/cpp/ObjectModel/HostConfig.h"
+#import "HostConfig.h"
 
 
 @implementation  ACSFontSizesConfig {

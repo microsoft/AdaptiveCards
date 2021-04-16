@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum.j2
 
 #import "ACSDelimiterTypeConvertor.h"
-#import "../../../../../shared/cpp/ObjectModel/MarkDownHtmlGenerator.h"
+#import "MarkDownHtmlGenerator.h"
 // #import "ConversionUtils.h"
 #import "SwiftInterfaceHeader.h"
 #import "ACSDelimiterType.h"

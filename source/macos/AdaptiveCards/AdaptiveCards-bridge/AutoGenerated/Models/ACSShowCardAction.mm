@@ -8,12 +8,12 @@
 #import "ACSRemoteResourceInformationConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
-#import "../../../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
+#import "RemoteResourceInformation.h"
+#import "SharedAdaptiveCard.h"
 
 
 #import "ACSShowCardAction.h"
-#import "../../../../../shared/cpp/ObjectModel/ShowCardAction.h"
+#import "ShowCardAction.h"
 
 
 @implementation  ACSShowCardAction {

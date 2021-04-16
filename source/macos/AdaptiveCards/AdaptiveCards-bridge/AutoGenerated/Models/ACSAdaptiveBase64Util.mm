@@ -9,7 +9,7 @@
 
 
 #import "ACSAdaptiveBase64Util.h"
-#import "../../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
+#import "AdaptiveBase64Util.h"
 
 
 @implementation  ACSAdaptiveBase64Util {

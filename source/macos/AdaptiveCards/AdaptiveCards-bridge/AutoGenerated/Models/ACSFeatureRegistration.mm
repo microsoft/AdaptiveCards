@@ -7,11 +7,11 @@
 #import "ACSSemanticVersion.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/SemanticVersion.h"
+#import "SemanticVersion.h"
 
 
 #import "ACSFeatureRegistration.h"
-#import "../../../../../shared/cpp/ObjectModel/FeatureRegistration.h"
+#import "FeatureRegistration.h"
 
 
 @implementation  ACSFeatureRegistration {

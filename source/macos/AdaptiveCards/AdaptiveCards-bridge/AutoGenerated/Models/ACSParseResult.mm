@@ -8,12 +8,12 @@
 #import "ACSAdaptiveCardParseWarning.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
-#import "../../../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
+#import "AdaptiveCardParseWarning.h"
+#import "SharedAdaptiveCard.h"
 
 
 #import "ACSParseResult.h"
-#import "../../../../../shared/cpp/ObjectModel/ParseResult.h"
+#import "ParseResult.h"
 
 
 @implementation  ACSParseResult {

@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum.j2
 
 #import "ACSEmphasisStateConvertor.h"
-#import "../../../../../shared/cpp/ObjectModel/MarkDownBlockParser.h"
+#import "MarkDownBlockParser.h"
 // #import "ConversionUtils.h"
 #import "SwiftInterfaceHeader.h"
 #import "ACSEmphasisState.h"

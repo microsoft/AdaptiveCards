@@ -8,12 +8,12 @@
 #import "ACSRemoteResourceInformationConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
-#import "../../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#import "Enums.h"
+#import "RemoteResourceInformation.h"
 
 
 #import "ACSBaseActionElement.h"
-#import "../../../../../shared/cpp/ObjectModel/BaseActionElement.h"
+#import "BaseActionElement.h"
 
 
 @implementation  ACSBaseActionElement {

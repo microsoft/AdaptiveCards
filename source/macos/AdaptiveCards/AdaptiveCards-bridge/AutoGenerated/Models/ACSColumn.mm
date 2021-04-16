@@ -10,14 +10,14 @@
 // #import "ACSValue.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
-#import "../../../../../shared/cpp/ObjectModel/json/json.h"
-#import "../../../../../shared/cpp/ObjectModel/ParseContext.h"
-#import "../../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#import "AdaptiveCardParseWarning.h"
+#import "json.h"
+#import "ParseContext.h"
+#import "RemoteResourceInformation.h"
 
 
 #import "ACSColumn.h"
-#import "../../../../../shared/cpp/ObjectModel/Column.h"
+#import "Column.h"
 
 
 @implementation  ACSColumn {

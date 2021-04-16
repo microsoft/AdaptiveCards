@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum_header.j2
 
 #ifdef __cplusplus
-#import "../../../../../shared/cpp/ObjectModel/MarkDownBlockParser.h"
+#import "MarkDownBlockParser.h"
 #endif
 #import <Foundation/Foundation.h>
 #import "ACSEmphasisState.h"

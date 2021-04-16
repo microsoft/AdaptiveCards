@@ -8,12 +8,12 @@
 // #import "ACSValue.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/json/json.h"
-#import "../../../../../shared/cpp/ObjectModel/ParseContext.h"
+#import "json.h"
+#import "ParseContext.h"
 
 
 #import "ACSRichTextElementProperties.h"
-#import "../../../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
+#import "RichTextElementProperties.h"
 
 
 @implementation  ACSRichTextElementProperties {

@@ -8,12 +8,12 @@
 // #import "ACSValue.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
-#import "../../../../../shared/cpp/ObjectModel/json/json.h"
+#import "Enums.h"
+#import "json.h"
 
 
 #import "ACSSubmitAction.h"
-#import "../../../../../shared/cpp/ObjectModel/SubmitAction.h"
+#import "SubmitAction.h"
 
 
 @implementation  ACSSubmitAction {

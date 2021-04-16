@@ -9,7 +9,7 @@
 
 
 #import "ACSNumberInput.h"
-#import "../../../../../shared/cpp/ObjectModel/NumberInput.h"
+#import "NumberInput.h"
 
 
 @implementation  ACSNumberInput {

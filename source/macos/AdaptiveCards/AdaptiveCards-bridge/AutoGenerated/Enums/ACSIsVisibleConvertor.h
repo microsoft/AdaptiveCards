@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum_header.j2
 
 #ifdef __cplusplus
-#import "../../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
+#import "ToggleVisibilityTarget.h"
 #endif
 #import <Foundation/Foundation.h>
 #import "ACSIsVisible.h"

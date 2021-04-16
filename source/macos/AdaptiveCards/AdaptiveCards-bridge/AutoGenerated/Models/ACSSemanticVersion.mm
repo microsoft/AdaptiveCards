@@ -9,7 +9,7 @@
 
 
 #import "ACSSemanticVersion.h"
-#import "../../../../../shared/cpp/ObjectModel/SemanticVersion.h"
+#import "SemanticVersion.h"
 
 
 @implementation  ACSSemanticVersion {

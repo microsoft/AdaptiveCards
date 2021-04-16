@@ -58,9 +58,6 @@ enum ACSVerticalContentAlignment: NSUInteger;
 - (void)setBackgroundImage:(ACSBackgroundImage * _Nonnull)value;
 - (NSNumber * _Nullable)getMinHeight;
 - (void)setMinHeight:(NSNumber * _Nonnull)value;
-- (void)configPadding:(ACSParseContext * _Nonnull)context;
-- (void)configBleed:(ACSParseContext * _Nonnull)context;
-- (void)setBleedDirection:(enum ACSContainerBleedDirection)bleedDirection;
 
 
 @end

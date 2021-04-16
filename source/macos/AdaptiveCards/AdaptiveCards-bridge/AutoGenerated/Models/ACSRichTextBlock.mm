@@ -8,12 +8,12 @@
 #import "ACSInline.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
-#import "../../../../../shared/cpp/ObjectModel/Inline.h"
+#import "Enums.h"
+#import "Inline.h"
 
 
 #import "ACSRichTextBlock.h"
-#import "../../../../../shared/cpp/ObjectModel/RichTextBlock.h"
+#import "RichTextBlock.h"
 
 
 @implementation  ACSRichTextBlock {

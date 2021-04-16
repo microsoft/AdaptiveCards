@@ -9,11 +9,11 @@
 #import "ACSVerticalAlignmentConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "Enums.h"
 
 
 #import "ACSBackgroundImage.h"
-#import "../../../../../shared/cpp/ObjectModel/BackgroundImage.h"
+#import "BackgroundImage.h"
 
 
 @implementation  ACSBackgroundImage {

@@ -7,11 +7,11 @@
 #import "ACSDateTimePreparsedTokenFormatConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "Enums.h"
 
 
 #import "ACSDateTimePreparsedToken.h"
-#import "../../../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
+#import "DateTimePreparsedToken.h"
 
 
 @implementation  ACSDateTimePreparsedToken {

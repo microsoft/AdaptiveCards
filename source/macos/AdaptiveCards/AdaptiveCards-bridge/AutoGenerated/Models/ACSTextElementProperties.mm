@@ -13,14 +13,14 @@
 // #import "ACSValue.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/DateTimePreparser.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
-#import "../../../../../shared/cpp/ObjectModel/json/json.h"
-#import "../../../../../shared/cpp/ObjectModel/ParseContext.h"
+#import "DateTimePreparser.h"
+#import "Enums.h"
+#import "json.h"
+#import "ParseContext.h"
 
 
 #import "ACSTextElementProperties.h"
-#import "../../../../../shared/cpp/ObjectModel/TextElementProperties.h"
+#import "TextElementProperties.h"
 
 
 @implementation  ACSTextElementProperties {

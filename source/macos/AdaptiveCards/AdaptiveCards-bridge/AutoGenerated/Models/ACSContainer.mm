@@ -9,13 +9,13 @@
 // #import "ACSValue.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/json/json.h"
-#import "../../../../../shared/cpp/ObjectModel/ParseContext.h"
-#import "../../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#import "json.h"
+#import "ParseContext.h"
+#import "RemoteResourceInformation.h"
 
 
 #import "ACSContainer.h"
-#import "../../../../../shared/cpp/ObjectModel/Container.h"
+#import "Container.h"
 
 
 @implementation  ACSContainer {

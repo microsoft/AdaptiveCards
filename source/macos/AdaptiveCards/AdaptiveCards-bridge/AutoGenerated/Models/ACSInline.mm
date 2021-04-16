@@ -8,12 +8,12 @@
 // #import "ACSValue.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
-#import "../../../../../shared/cpp/ObjectModel/json/json.h"
+#import "Enums.h"
+#import "json.h"
 
 
 #import "ACSInline.h"
-#import "../../../../../shared/cpp/ObjectModel/Inline.h"
+#import "Inline.h"
 
 
 @implementation  ACSInline {

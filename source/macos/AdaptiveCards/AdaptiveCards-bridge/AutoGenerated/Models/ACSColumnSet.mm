@@ -11,14 +11,14 @@
 // #import "ACSValue.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Column.h"
-#import "../../../../../shared/cpp/ObjectModel/json/json.h"
-#import "../../../../../shared/cpp/ObjectModel/ParseContext.h"
-#import "../../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#import "Column.h"
+#import "json.h"
+#import "ParseContext.h"
+#import "RemoteResourceInformation.h"
 
 
 #import "ACSColumnSet.h"
-#import "../../../../../shared/cpp/ObjectModel/ColumnSet.h"
+#import "ColumnSet.h"
 
 
 @implementation  ACSColumnSet {

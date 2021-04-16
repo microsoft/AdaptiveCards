@@ -14,16 +14,16 @@
 #import "ACSVerticalContentAlignmentConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/BackgroundImage.h"
-#import "../../../../../shared/cpp/ObjectModel/BaseActionElement.h"
-#import "../../../../../shared/cpp/ObjectModel/BaseElement.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
-#import "../../../../../shared/cpp/ObjectModel/json/json.h"
-#import "../../../../../shared/cpp/ObjectModel/ParseContext.h"
+#import "BackgroundImage.h"
+#import "BaseActionElement.h"
+#import "BaseElement.h"
+#import "Enums.h"
+#import "json.h"
+#import "ParseContext.h"
 
 
 #import "ACSCollectionTypeElement.h"
-#import "../../../../../shared/cpp/ObjectModel/CollectionTypeElement.h"
+#import "CollectionTypeElement.h"
 
 
 @implementation  ACSCollectionTypeElement {

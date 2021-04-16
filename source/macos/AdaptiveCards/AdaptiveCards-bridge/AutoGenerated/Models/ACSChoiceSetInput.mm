@@ -8,12 +8,12 @@
 #import "ACSChoiceSetStyleConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/ChoiceInput.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "ChoiceInput.h"
+#import "Enums.h"
 
 
 #import "ACSChoiceSetInput.h"
-#import "../../../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
+#import "ChoiceSetInput.h"
 
 
 @implementation  ACSChoiceSetInput {

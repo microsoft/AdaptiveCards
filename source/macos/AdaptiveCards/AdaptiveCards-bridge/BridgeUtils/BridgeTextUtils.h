@@ -11,6 +11,5 @@
 + (ACSMarkdownParserResult * _Nonnull)processTextFromRichTextBlock:(ACSTextRun * _Nullable)textBlock hostConfig:(ACSHostConfig * _Nonnull)config;
 + (ACSRichTextElementProperties * _Nonnull)convertTextBlockToRichTextElementProperties:(ACSTextBlock * _Nonnull)textBlock;
 + (ACSMarkdownParserResult * _Nonnull)processTextFromFact:(ACSFact * _Nullable)fact hostConfig:(ACSHostConfig * _Nonnull)config;
-+ (ACSTextRun * _Nonnull)getTextRunFromInline:(ACSInline const *_Nonnull)inlineText;
 
 @end

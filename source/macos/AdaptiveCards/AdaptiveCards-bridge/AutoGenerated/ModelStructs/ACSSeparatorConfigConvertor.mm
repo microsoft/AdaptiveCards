@@ -2,7 +2,7 @@
 // Generated with objc_convertor.j2
 
 //cpp includes 
-#import "../../../../../shared/cpp/ObjectModel/HostConfig.h"
+#import "HostConfig.h"
 
 #import "ACSSeparatorConfigConvertor.h"
 #import "SwiftInterfaceHeader.h"

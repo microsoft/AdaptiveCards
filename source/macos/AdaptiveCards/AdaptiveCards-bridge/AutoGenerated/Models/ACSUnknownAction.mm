@@ -9,7 +9,7 @@
 
 
 #import "ACSUnknownAction.h"
-#import "../../../../../shared/cpp/ObjectModel/UnknownAction.h"
+#import "UnknownAction.h"
 
 
 @implementation  ACSUnknownAction {

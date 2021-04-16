@@ -8,12 +8,12 @@
 #import "ACSTextInputStyleConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/BaseActionElement.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "BaseActionElement.h"
+#import "Enums.h"
 
 
 #import "ACSTextInput.h"
-#import "../../../../../shared/cpp/ObjectModel/TextInput.h"
+#import "TextInput.h"
 
 
 @implementation  ACSTextInput {

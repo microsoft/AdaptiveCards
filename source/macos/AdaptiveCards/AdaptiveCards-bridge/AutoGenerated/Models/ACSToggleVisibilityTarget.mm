@@ -10,7 +10,7 @@
 
 
 #import "ACSToggleVisibilityTarget.h"
-#import "../../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
+#import "ToggleVisibilityTarget.h"
 
 
 @implementation  ACSToggleVisibilityTarget {

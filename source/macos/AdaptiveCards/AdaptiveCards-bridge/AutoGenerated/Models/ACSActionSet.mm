@@ -9,7 +9,7 @@
 
 
 #import "ACSActionSet.h"
-#import "../../../../../shared/cpp/ObjectModel/ActionSet.h"
+#import "ActionSet.h"
 #import "ACSHorizontalAlignmentConvertor.h"
 
 

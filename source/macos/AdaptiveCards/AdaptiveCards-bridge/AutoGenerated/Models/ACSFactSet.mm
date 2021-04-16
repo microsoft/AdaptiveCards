@@ -7,11 +7,11 @@
 #import "ACSFact.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/Fact.h"
+#import "Fact.h"
 
 
 #import "ACSFactSet.h"
-#import "../../../../../shared/cpp/ObjectModel/FactSet.h"
+#import "FactSet.h"
 
 
 @implementation  ACSFactSet {

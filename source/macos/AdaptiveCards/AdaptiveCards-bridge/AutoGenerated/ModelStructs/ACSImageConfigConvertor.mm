@@ -2,8 +2,8 @@
 // Generated with objc_convertor.j2
 
 //cpp includes 
-#import "../../../../../shared/cpp/ObjectModel/HostConfig.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "HostConfig.h"
+#import "Enums.h"
 
 #import "ACSImageConfigConvertor.h"
 #import "ACSImageSizeConvertor.h"

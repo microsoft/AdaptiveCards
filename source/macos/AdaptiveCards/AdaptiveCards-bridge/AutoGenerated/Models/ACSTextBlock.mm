@@ -12,12 +12,12 @@
 #import "ACSTextWeightConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/DateTimePreparser.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "DateTimePreparser.h"
+#import "Enums.h"
 
 
 #import "ACSTextBlock.h"
-#import "../../../../../shared/cpp/ObjectModel/TextBlock.h"
+#import "TextBlock.h"
 
 
 @implementation  ACSTextBlock {

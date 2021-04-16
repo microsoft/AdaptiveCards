@@ -11,13 +11,13 @@
 #import "ACSRemoteResourceInformationConvertor.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/BaseActionElement.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
-#import "../../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#import "BaseActionElement.h"
+#import "Enums.h"
+#import "RemoteResourceInformation.h"
 
 
 #import "ACSImage.h"
-#import "../../../../../shared/cpp/ObjectModel/Image.h"
+#import "Image.h"
 
 
 @implementation  ACSImage {

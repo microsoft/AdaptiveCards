@@ -9,7 +9,7 @@
 
 
 #import "ACSChoiceInput.h"
-#import "../../../../../shared/cpp/ObjectModel/ChoiceInput.h"
+#import "ChoiceInput.h"
 
 
 @implementation  ACSChoiceInput {

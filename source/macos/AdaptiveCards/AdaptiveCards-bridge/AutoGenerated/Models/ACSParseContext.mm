@@ -10,13 +10,13 @@
 #import "ACSInternalId.h"
 
 //cpp includes
-#import "../../../../../shared/cpp/ObjectModel/BaseElement.h"
-#import "../../../../../shared/cpp/ObjectModel/CollectionTypeElement.h"
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "BaseElement.h"
+#import "CollectionTypeElement.h"
+#import "Enums.h"
 
 
 #import "ACSParseContext.h"
-#import "../../../../../shared/cpp/ObjectModel/ParseContext.h"
+#import "ParseContext.h"
 
 
 @implementation  ACSParseContext {

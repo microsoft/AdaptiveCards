@@ -2,7 +2,7 @@
 // Generated with objc_convertor_enum_header.j2
 
 #ifdef __cplusplus
-#import "../../../../../shared/cpp/ObjectModel/Enums.h"
+#import "Enums.h"
 #endif
 #import <Foundation/Foundation.h>
 #import "ACSActionMode.h"
