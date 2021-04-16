@@ -148,7 +148,7 @@ export abstract class PopupControl {
             this._popupElement.style.left = left + "px";
             this._popupElement.style.top = top + "px";
 
-            this._popupElement.focus();
+            this.focus();
 
             this._isOpen = true;
         }
