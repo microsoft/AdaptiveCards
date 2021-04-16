@@ -20,12 +20,6 @@ class ContainerRendererTests: XCTestCase {
         XCTAssertEqual(containerView.layer?.backgroundColor, nil)
     }
     
-    func testRendererSetsMinHeight() {
-        container = .make(minHeight: 200)
-        let containerView = renderContainerView()
-        XCTAssertEqual(containerView.fittingSize.height, 200)
-    }
-    
     func testRendererSetsVerticalContentAlignment() {
         container = .make(verticalContentAlignment: .top)
         var containerView = renderContainerView()

@@ -486,6 +486,8 @@
 		2910CF112600D2CC000910C8 /* ActionSetRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2910CF102600D2CC000910C8 /* ActionSetRendererTests.swift */; };
 		2910CF162600D610000910C8 /* FakeSubmitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2910CF152600D610000910C8 /* FakeSubmitAction.swift */; };
 		29430A5C25F216AA00CBA72E /* ContainerRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29430A5B25F216AA00CBA72E /* ContainerRenderer.swift */; };
+		2982B3F72628933C00E7561C /* BaseCardElementRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2982B3F62628933C00E7561C /* BaseCardElementRendererTests.swift */; };
+		2982B3FF26289F1700E7561C /* FakeBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2982B3FE26289F1700E7561C /* FakeBackgroundImage.swift */; };
 		299DE17C26048FBB00605DAD /* ActionsRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299DE17B26048FBB00605DAD /* ActionsRendererTests.swift */; };
 		29BA82D725E265F4000B7578 /* ChoiceSetInputRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */; };
 		29C3AD38260C7C6A00467069 /* BleedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C3AD37260C7C6A00467069 /* BleedUtils.swift */; };
@@ -1035,6 +1037,8 @@
 		2910CF102600D2CC000910C8 /* ActionSetRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSetRendererTests.swift; sourceTree = "<group>"; };
 		2910CF152600D610000910C8 /* FakeSubmitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSubmitAction.swift; sourceTree = "<group>"; };
 		29430A5B25F216AA00CBA72E /* ContainerRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRenderer.swift; sourceTree = "<group>"; };
+		2982B3F62628933C00E7561C /* BaseCardElementRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCardElementRendererTests.swift; sourceTree = "<group>"; };
+		2982B3FE26289F1700E7561C /* FakeBackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeBackgroundImage.swift; sourceTree = "<group>"; };
 		299DE17B26048FBB00605DAD /* ActionsRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsRendererTests.swift; sourceTree = "<group>"; };
 		29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceSetInputRenderer.swift; sourceTree = "<group>"; };
 		29C3AD37260C7C6A00467069 /* BleedUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleedUtils.swift; sourceTree = "<group>"; };
@@ -1328,6 +1332,7 @@
 				082E59A82604E76E00741958 /* FakeShowCardAction.swift */,
 				082E59AD2604E96E00741958 /* FakeAdaptiveCard.swift */,
 				08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */,
+				2982B3FE26289F1700E7561C /* FakeBackgroundImage.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -1354,6 +1359,7 @@
 				299DE17B26048FBB00605DAD /* ActionsRendererTests.swift */,
 				082E59B22604EE1F00741958 /* ActionShowCardRendererTests.swift */,
 				08FFAC2C2608DB6B00296D62 /* ActionOpenURLRendererTests.swift */,
+				2982B3F62628933C00E7561C /* BaseCardElementRendererTests.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -2324,6 +2330,7 @@
 				082D913425D67455000226C4 /* TextBlockRendererTests.swift in Sources */,
 				2871B11825DD20A30040AB27 /* FakeTextInput.swift in Sources */,
 				28CE1A7025E4B96300BFCFD9 /* FactSetRendererTest.swift in Sources */,
+				2982B3F72628933C00E7561C /* BaseCardElementRendererTests.swift in Sources */,
 				29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */,
 				29F712EE25F73A360052DC41 /* FakeContainer.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
@@ -2333,6 +2340,7 @@
 				2806E8F62608886F00CF7A40 /* ActionSubmitRendererTests.swift in Sources */,
 				29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */,
 				2910CF162600D610000910C8 /* FakeSubmitAction.swift in Sources */,
+				2982B3FF26289F1700E7561C /* FakeBackgroundImage.swift in Sources */,
 				13C41B0925F257C3008A1F2E /* FakeInputTime.swift in Sources */,
 				2871B13F25DD41D80040AB27 /* InputNumberRendererTest.swift in Sources */,
 				0801EDB925F78EC800D64C86 /* FakeColumn.swift in Sources */,

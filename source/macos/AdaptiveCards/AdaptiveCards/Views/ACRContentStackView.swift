@@ -214,6 +214,11 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     func setVerticalHuggingPriority(_ rawValue: Float) {
         stackView.setHuggingPriority(NSLayoutConstraint.Priority(rawValue), for: .vertical)
     }
+    
+    func setMinimumHeight(_ height: NSNumber?) {
+        guard let height = height, let heightPt = CGFloat(exactly: height), heightPt > 0 else { return }
+        heightAnchor.constraint(greaterThanOrEqualToConstant: heightPt).isActive = true
+    }
 }
 
 class NoClippingLayer: CALayer {

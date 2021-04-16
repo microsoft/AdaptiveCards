@@ -9,6 +9,9 @@ class FakeContainer: ACSContainer {
     public var selectAction: ACSBaseActionElement?
     public var items: [ACSBaseCardElement] = []
     public var padding: Bool = false
+    public var separator: Bool = false
+    public var id: String = ""
+    public var visible: Bool = true
     
     open override func getStyle() -> ACSContainerStyle {
         return style
@@ -65,9 +68,21 @@ class FakeContainer: ACSContainer {
     open override func getPadding() -> Bool {
         return padding
     }
+    
+    override func getSeparator() -> Bool {
+        return separator
+    }
+    
+    override func getId() -> String? {
+        return id
+    }
+    
+    override func getIsVisible() -> Bool {
+        return visible
+    }
 }
 extension FakeContainer {
-    static func make(style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, bleed: Bool = false, backgroundImage: ACSBackgroundImage? = nil, minHeight: NSNumber? = 0, selectAction: ACSBaseActionElement? = .none, items: [ACSBaseCardElement] = [], padding: Bool = false) -> FakeContainer {
+    static func make(style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, bleed: Bool = false, backgroundImage: ACSBackgroundImage? = nil, minHeight: NSNumber? = 0, selectAction: ACSBaseActionElement? = .none, items: [ACSBaseCardElement] = [], padding: Bool = false, separator: Bool = false, id: String = "", visible: Bool = false) -> FakeContainer {
         let fakeContainer = FakeContainer()
         fakeContainer.style = style
         fakeContainer.verticalContentAlignment = verticalContentAlignment
@@ -77,6 +92,9 @@ extension FakeContainer {
         fakeContainer.selectAction = selectAction
         fakeContainer.items = items
         fakeContainer.padding = padding
+        fakeContainer.separator = separator
+        fakeContainer.visible = visible
+        fakeContainer.id = id
         return fakeContainer
     }
 }

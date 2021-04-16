@@ -119,11 +119,6 @@ class ACRColumnView: ACRContentStackView {
         manageWidth(of: stackView)
     }
     
-    func setMinimumHeight(_ height: NSNumber?) {
-        guard let height = height, let heightPt = CGFloat(exactly: height), heightPt > 0 else { return }
-        heightAnchor.constraint(greaterThanOrEqualToConstant: heightPt).isActive = true
-    }
-    
     private func manageWidth(of view: NSView) {
         switch columnWidth {
         case .fixed(let widthSize):
