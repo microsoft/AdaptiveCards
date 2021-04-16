@@ -47,7 +47,7 @@
 
 			<h2><%= page.element.name %></h2>
 
-			<p><%= page.element.description %></p>
+			<p><%- markdown(page.element.description) %></p>
 
 			<div class="ac-properties w3-margin-top w3-responsive">
 				<%- markdown(page.propertiesSummary) %>

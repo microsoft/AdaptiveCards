@@ -1130,7 +1130,7 @@ namespace AdaptiveCards.Test
       ""type"": ""TextBlock"",
       ""text"": ""Text3"",
       ""style"": ""heading""
-    },
+    }
   ]
 }";
             var card = new AdaptiveCard("1.5")
