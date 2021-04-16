@@ -36,6 +36,7 @@ export class FieldPicker extends Controls.PopupControl {
     render(rootElementBounds: ClientRect): HTMLElement {
         const rootElement = super.render(rootElementBounds);
         rootElement.tabIndex = -1;
+
         return rootElement;
     }
 
