@@ -6,7 +6,7 @@ import { SchemaClass } from "../SchemaClass";
 import { SchemaProperty } from "../SchemaProperty";
 import * as glob from "glob";
 import { defaultValue } from "./defaultValue";
-import { markdownConfig } from "./generate-markdown";
+import { __ } from "./generate-markdown";
 
 var fs = require('fs');
 var path = require('path');
@@ -52,7 +52,7 @@ export function buildModel(options: BuildModelOptions) {
 			definition.version = defaultValue(objSchema.original.version, "1.0");
 			definition.examples = [];
 
-			definition.description = markdownConfig.i18n.__(objSchema.description);
+			definition.description = __(objSchema.description);
 			if (objSchema instanceof SchemaClass) {
 				definition.properties = objSchema.getAllProperties();
 			}

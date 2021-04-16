@@ -14,18 +14,22 @@ import * as mdTable from "markdown-table";
 import * as style from "./style";
 
 class MarkdownConfig {
-    i18n : I18n;
+    private _locale : string = "en";
+    private _i18n : I18n;
 
     constructor() {
-        this.i18n = new I18n();
-        this.i18n.configure({
+        this._i18n = new I18n();
+        this._i18n.configure({
             locales: ['en', 'de', 'sp'],
             directory: path.join(__dirname, '../../src/markdown/languages'),
             syncFiles: true
         });
     }
 
-    _locale : string = "en";
+    get i18n() {
+        return this._i18n;
+    }
+    
     get locale() {
         return this._locale;
     }
@@ -40,6 +44,7 @@ let markdownConfig = new MarkdownConfig();
 export { markdownConfig };
 
 const __ = markdownConfig.i18n.__;
+export { __ };
 
 export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
 	var md = '';
