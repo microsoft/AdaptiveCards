@@ -417,18 +417,26 @@ module.exports = {
             }
         ],
 
-        // require empty line before/after blocks
+        // require empty lines
         "padding-line-between-statements": [
             "error",
+            // before block
             {
                 "blankLine": "always",
                 "prev": "*",
                 "next": "multiline-block-like"
             },
+            // after block
             {
                 "blankLine": "always",
                 "prev": "multiline-block-like",
                 "next": "*"
+            },
+            // before return
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "return"
             }
         ],
 
