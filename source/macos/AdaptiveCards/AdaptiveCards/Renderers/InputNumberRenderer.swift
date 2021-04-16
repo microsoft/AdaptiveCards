@@ -33,6 +33,7 @@ open class InputNumberRenderer: NSObject, BaseCardElementRendererProtocol {
 // MARK: - ACRNumericTextField Class
 open class ACRNumericTextField: NSView, NSTextFieldDelegate {
     var id: String?
+    private var previousValue = ""
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         setupViews()
@@ -46,7 +47,7 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var textField: NSTextField = {
+    private (set) lazy var textField: NSTextField = {
         let view = NSTextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
@@ -67,7 +68,16 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
     public func controlTextDidChange(_ obj: Notification) {
         guard let textView = obj.object as? NSTextField else { return }
         // updating the stepper value when text field value change
-        stepper.doubleValue = Double(textView.stringValue) ?? stepper.doubleValue
+        stepper.doubleValue = Double(textView.accessibilityValue() ?? "") ?? stepper.doubleValue
+        guard let stringValue = textView.accessibilityValue() else { return }
+        if Double(stringValue) != nil {
+            textView.stringValue = stringValue
+        } else if Int(stringValue) == nil && !stringValue.isEmpty {
+            textView.stringValue = previousValue
+        } else if stringValue.isEmpty {
+            textView.stringValue = ""
+        }
+        previousValue = textView.accessibilityValue() ?? ""
     }
     
     func setupViews() {
@@ -129,6 +139,7 @@ extension ACRNumericTextField: InputHandlingViewProtocol {
         set {
             if !newValue.isEmpty, let doubleVal = Double(newValue) {
                 inputValue = doubleVal
+                previousValue = inputString
             }
         }
     }

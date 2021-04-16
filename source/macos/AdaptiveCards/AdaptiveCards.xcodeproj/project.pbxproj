@@ -502,6 +502,7 @@
 		81A94A7025FF80D60018213A /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A6F25FF80D60018213A /* arrowdown.png */; };
 		81A94A7925FF86E70018213A /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A7725FF86E70018213A /* attachment.png */; };
 		81A94A7A25FF86E70018213A /* arrowup.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A7825FF86E70018213A /* arrowup.png */; };
+		81AFEA7626281B9400DD47E0 /* ACRNumericTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AFEA7526281B9400DD47E0 /* ACRNumericTextFieldTests.swift */; };
 		81C0371B26047C1E00B33324 /* ACRBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C0371A26047C1E00B33324 /* ACRBackgroundImageView.swift */; };
 		81C037242604AB9D00B33324 /* BackgroundImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */; };
 		81C037292604B1F700B33324 /* cisco.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81C037282604B1F700B33324 /* cisco.jpg */; };
@@ -1050,6 +1051,7 @@
 		81A94A6F25FF80D60018213A /* arrowdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowdown.png; sourceTree = "<group>"; };
 		81A94A7725FF86E70018213A /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attachment.png; sourceTree = "<group>"; };
 		81A94A7825FF86E70018213A /* arrowup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowup.png; sourceTree = "<group>"; };
+		81AFEA7526281B9400DD47E0 /* ACRNumericTextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRNumericTextFieldTests.swift; sourceTree = "<group>"; };
 		81C0371A26047C1E00B33324 /* ACRBackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRBackgroundImageView.swift; sourceTree = "<group>"; };
 		81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageViewTests.swift; sourceTree = "<group>"; };
 		81C037282604B1F700B33324 /* cisco.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cisco.jpg; sourceTree = "<group>"; };
@@ -1805,6 +1807,7 @@
 			children = (
 				81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */,
 				08C86F47260E0843005252B0 /* ACRViewTests.swift */,
+				81AFEA7526281B9400DD47E0 /* ACRNumericTextFieldTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2309,6 +2312,7 @@
 				082E59A92604E76E00741958 /* FakeShowCardAction.swift in Sources */,
 				28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */,
 				082E59AE2604E96E00741958 /* FakeAdaptiveCard.swift in Sources */,
+				81AFEA7626281B9400DD47E0 /* ACRNumericTextFieldTests.swift in Sources */,
 				0801EDB425F78EB800D64C86 /* FakeColumnSet.swift in Sources */,
 				2871B15025DD4C4D0040AB27 /* TextInputRedererTest.swift in Sources */,
 				299DE17C26048FBB00605DAD /* ActionsRendererTests.swift in Sources */,
