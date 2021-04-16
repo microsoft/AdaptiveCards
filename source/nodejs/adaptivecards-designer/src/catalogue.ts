@@ -1,9 +1,10 @@
 import * as Adaptive from "adaptivecards";
 import { Downloader } from "./downloader";
+import { __ } from './i18n';
 
 export class CatalogueEntry {
     static createEmptyCardEntry(): CatalogueEntry {
-        let result = new CatalogueEntry("Blank card", "");
+        let result = new CatalogueEntry(__("blankCard"), "");
         result._cardPayload = JSON.stringify(
             {
                 type: "AdaptiveCard",
@@ -169,7 +170,7 @@ export class SampleCatalogue {
                 if (this._entries.length === 0) {
                     this._entries = [ CatalogueEntry.createEmptyCardEntry() ];
                 }
-                
+
                 this.downloaded();
             };
             downloader.onSuccess = () => {

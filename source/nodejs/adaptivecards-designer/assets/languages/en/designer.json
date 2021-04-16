@@ -1,0 +1,83 @@
+{
+	"cardElements": "CARD ELEMENTS",
+	"cardEditor": "CARD PAYLOAD EDITOR",
+	"cardPreview": "Card Preview",
+	"sampleEditor": "SAMPLE DATA EDITOR",
+	"sampleData": "Sample data",
+	"elementProperties": "ELEMENT PROPERTIES",
+	"ellipsis": "...",
+	"dataBinding": "Data Binding",
+	"cardStructure": "CARD STRUCTURE",
+	"dataStructure": "DATA STRUCTURE",
+	"loadingEditor": "Loading editor...",
+	"expandCollapseAria": "{{action}} {{label}} element",
+	"collapse": "collapse",
+	"expand": "expand",
+	"remove": "Remove",
+	"dragElement": "Drag to move this element",
+	"returnToDesign": "Return to Design mode",
+	"switchToPreview": "Switch to Preview mode",
+	"noStructure": "The Card Structure isn't available in Preview mode.",
+	"noSelection": "**Nothing is selected**",
+	"selectAnElement": "Select an element in the card to modify its properties.",
+	"clickToSelect": "Click to select this element",
+	"versionWarning": "[Warning] The selected Target Version ({{version}}) is greater than the version supported by {{hostContainerName}} ({{hostVersion}})",
+	"errorPaneMessage": "[{{phase}}] {{message}}",
+	"targetVersion": "Target version:",
+	"genericCloseButtonCaption": "Cancel",
+	"newCard": {
+		"label": "New card",
+		"dialog": {
+			"title": "Pick a sample as a starting point",
+			"cannotLoad": "The sample could not be loaded."
+		}
+	},
+	"undo": {
+		"label": "Undo",
+		"tooltip": "Undo your last change"
+	},
+	"redo": {
+		"label": "Redo",
+		"tooltip": "Redo your last changes"
+	},
+	"preview": {
+		"label": "Preview mode"
+	},
+	"help": {
+		"label": "Help",
+		"tooltip": "Display help"
+	},
+	"blankCard": "Blank card",
+	"enterFullScreen": "Enter full screen",
+	"existFullScreen": "Exit full screen",
+	"copy": {
+		"label": "Copy card payload",
+		"tooltip": "Copy the generated JSON payload of the card (template bound with data) to the clipboard. To copy only the template payload, use the Card Payload Editor."
+	},
+	"hostContainer": {
+		"label": "Select host app:",
+		"names": {
+			"webChat": "Bot Framework WebChat",
+			"outlook": "Outlook Actionable Messages",
+			"darkTeams": "Microsoft Teams - Dark",
+			"lightTeams": "Microsoft Teams - Light",
+			"darkCortana": "Cortana Skills - Dark",
+			"lightCortana": "Cortana Skills - Light",
+			"timeline": "Windows Timeline",
+			"botFramework": "Bot Framework Other Channels (Image render)",
+			"cortanaClassic": "Cortana Skills (Classic)",
+			"toast": "Windows Notifications (Preview)"
+		}
+	},
+	"pic2card":	{
+		"title": "Pic2card Dialog for Image Upload",
+		"notificationLabel": "Pic2Card generated Adaptive Card loaded"
+	},
+	"peerCategory": {
+		"unknown": "Unknown",
+		"containers": "Containers",
+		"elements": "Elements",
+		"inputs": "Inputs",
+		"actions": "Actions"
+	}
+}

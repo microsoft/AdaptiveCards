@@ -108,7 +108,12 @@ module.exports = (env, argv) => {
 					from: 'src/containers/**/*.jpg',
 					to: 'containers/',
 					flatten: true
-				}],
+				},
+                {
+                    from: 'assets/languages/**',
+                    to: '.',
+                    flatten: false
+                }],
 				options: {
 					concurrency: 8
 				}

@@ -1,6 +1,7 @@
 import { DraggableElement } from "./draggable-element";
 import { Constants } from "adaptivecards-controls";
 import { v4 as uuidv4 } from "uuid";
+import { __ } from './i18n';
 
 export abstract class BaseTreeItem extends DraggableElement {
     private static collapsedIconClass = "acd-icon-chevronRight";
@@ -69,7 +70,8 @@ export abstract class BaseTreeItem extends DraggableElement {
     }
 
     private getExpandCollapseAriaText() : string {
-        return (this._isExpanded ? "collapse" : "expand") + " " + this.getLabelText() + " element";
+        const labelText = this.getLabelText();
+        return __("expandCollapseAria", { action:(this._isExpanded ? "$t(collapse)" : "$t(expand)"), label: labelText });
     }
 
     protected internalRender(): HTMLElement {

@@ -9,6 +9,7 @@ import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
 import { HostContainer } from "./containers";
 import { FieldDefinition } from "./data";
+import { __ } from './i18n';
 
 export enum BindingPreviewMode {
     NoPreview,
@@ -36,11 +37,11 @@ export type ActionPeerType = {
 };
 
 class DesignerPeerCategory {
-    static Unknown = "Unknown";
-    static Containers = "Containers";
-    static Elements = "Elements";
-    static Inputs = "Inputs";
-    static Actions = "Actions";
+    static Unknown = __("peerCategory.unknown");
+    static Containers = __("peerCategory.containers");
+    static Elements = __("peerCategory.elements");
+    static Inputs = __("peerCategory.inputs");
+    static Actions = __("peerCategory.actions");
 }
 
 export abstract class DesignerPeerRegistry<TSource, TPeer> {
@@ -155,7 +156,7 @@ class DragHandle extends DraggableElement {
     protected internalRender(): HTMLElement {
         let element = document.createElement("div");
         element.classList.add("acd-peerButton", "acd-peerButton-icon", "fixedWidth", "circular", "acd-icon-drag");
-        element.title = "Drag to move this element";
+        element.title = __("dragElement");
         element.style.visibility = "hidden";
         element.style.position = "absolute";
         element.style.zIndex = "500";
@@ -666,7 +667,7 @@ export class CardDesignerSurface {
 
         this._removeCommandElement = document.createElement("div");
         this._removeCommandElement.classList.add("acd-peerButton", "acd-peerButton-icon", "fixedWidth", "circular", "acd-icon-remove");
-        this._removeCommandElement.title = "Remove";
+        this._removeCommandElement.title = __("remove");
         this._removeCommandElement.style.visibility = "hidden";
         this._removeCommandElement.style.position = "absolute";
         this._removeCommandElement.style.zIndex = "500";

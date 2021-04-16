@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+import { __ } from './i18n';
+
 function shouldUseIndexerSyntax(name: string): boolean {
     let regEx = /[a-zA-Z0-9_$]*/;
     let matches = regEx.exec(name);
@@ -7,7 +9,7 @@ function shouldUseIndexerSyntax(name: string): boolean {
     // If name doesn't only contain letters/digits/_
     // the accessor must use the indexer syntax
     return !(matches && matches[0] === name);
-}   
+}
 
 export type ValueType = "String" | "Boolean" | "Number" | "Array" | "Object";
 
@@ -55,7 +57,7 @@ export abstract class DataType {
     static parse(parent: FieldDefinition, data: IData): DataType {
         switch (data.valueType) {
             case "String":
-                return new ValueTypeData<string>(parent, "Sample data", data.sampleValue);
+                return new ValueTypeData<string>(parent, __("sampleData"), data.sampleValue);
             case "Number":
                 return new ValueTypeData<number>(parent, 123, data.sampleValue);
             case "Boolean":
@@ -69,7 +71,7 @@ export abstract class DataType {
 
     static deriveFrom(parent: FieldDefinition, value: any): DataType {
         if (typeof value === "string") {
-            return new ValueTypeData<string>(parent, "Sample data", value);
+            return new ValueTypeData<string>(parent, __("sampleData"), value);
         }
         else if (typeof value === "boolean") {
             return new ValueTypeData<boolean>(parent, true, value);
