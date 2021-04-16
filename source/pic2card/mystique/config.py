@@ -14,7 +14,9 @@ ENABLE_TF_SERVING = os.environ.get("ENABLE_TF_SERVING",
                                    False)
 TF_FROZEN_MODEL_PATH = os.path.join(os.path.dirname(__file__),
                                     "../model/frozen_inference_graph.pb")
-TF2_FROZEN_MODEL_PATH = os.path.join("/home/haridas/projects/opensource/tf-models/research/object_detection/pic2card_model/frozen_graph.pb")
+TF2_FROZEN_MODEL_PATH = os.path.join(os.path.dirname(__file__),
+                                     "../model/frozen_inference_graph_tf2.pb")
+# TF2_FROZEN_MODEL_PATH = os.path.join("/home/haridas/projects/AdaptiveCards/source/pic2card/out/faster-rcnn-resnet152_new_data-1616667991/exported/frozen_graph.pb")
 
 TF_LABEL_PATH = os.path.join(os.path.dirname(__file__),
                              "training/object-detection.pbtxt")
@@ -79,7 +81,7 @@ TEXTBOX_PADDING = 5
 MODEL_REGISTRY = {
     "tf_faster_rcnn": "mystique.detect_objects.ObjectDetection",
     # "tfs_faster_rcnn": "mystique.detect_objects.TfsObjectDetection",
-    "tf2_faster_rcnn": "mystique.obj_detect.Tf2ObjectDetection",
+    "tf2_faster_rcnn": "mystique.obj_detect.tf2_frcnn.Tf2ObjectDetection",
     "pth_detr": "mystique.obj_detect.DetrOD",
     "pth_detr_cpp": "mystique.obj_detect.DetrCppOD"
 }
