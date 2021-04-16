@@ -21,6 +21,13 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0D3485F126180F8F00614EB9 /* ACOActionOverflow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0D3485F026180F8F00614EB9 /* ACOActionOverflow.mm */; };
+		0D3485FD26193BA500614EB9 /* ACROverflowTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D3485FC26193BA500614EB9 /* ACROverflowTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D34860226193C7900614EB9 /* ACROverflowTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0D34860126193C7900614EB9 /* ACROverflowTarget.mm */; };
+		0D34860A261A859800614EB9 /* ACOActionOverflowPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D348609261A859800614EB9 /* ACOActionOverflowPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D34862D261C606D00614EB9 /* ACOActionOverflow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D3485EC26180E9900614EB9 /* ACOActionOverflow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0D45F59B2617319D00EF03C5 /* ACRActionOverflowRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0D45F59A2617319D00EF03C5 /* ACRActionOverflowRenderer.mm */; };
+		0D45F5A7261731E400EF03C5 /* ACRActionOverflowRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D45F5A6261731E400EF03C5 /* ACRActionOverflowRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		300ECB63219A12D100371DC5 /* AdaptiveBase64Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */; };
 		300ECB64219A12D100371DC5 /* AdaptiveBase64Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B096D4E225431D0006CC034 /* ACRRichTextBlockRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -404,6 +411,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D3485EC26180E9900614EB9 /* ACOActionOverflow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACOActionOverflow.h; sourceTree = "<group>"; };
+		0D3485F026180F8F00614EB9 /* ACOActionOverflow.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOActionOverflow.mm; sourceTree = "<group>"; };
+		0D3485FC26193BA500614EB9 /* ACROverflowTarget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACROverflowTarget.h; sourceTree = "<group>"; };
+		0D34860126193C7900614EB9 /* ACROverflowTarget.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACROverflowTarget.mm; sourceTree = "<group>"; };
+		0D348609261A859800614EB9 /* ACOActionOverflowPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACOActionOverflowPrivate.h; sourceTree = "<group>"; };
+		0D45F59A2617319D00EF03C5 /* ACRActionOverflowRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRActionOverflowRenderer.mm; sourceTree = "<group>"; };
+		0D45F5A6261731E400EF03C5 /* ACRActionOverflowRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRActionOverflowRenderer.h; sourceTree = "<group>"; };
 		300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveBase64Util.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp; sourceTree = "<group>"; };
 		300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveBase64Util.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h; sourceTree = "<group>"; };
 		6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRichTextBlockRenderer.h; sourceTree = "<group>"; };
@@ -1144,6 +1158,8 @@
 				6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */,
 				F4C1F5E51F2ABB0E0018CB78 /* ACRActionOpenURLRenderer.h */,
 				F4C1F5E31F2A62190018CB78 /* ACRActionOpenURLRenderer.mm */,
+				0D45F5A6261731E400EF03C5 /* ACRActionOverflowRenderer.h */,
+				0D45F59A2617319D00EF03C5 /* ACRActionOverflowRenderer.mm */,
 				6BB211FB20FF9FEA009EA1BA /* ACRActionSetRenderer.h */,
 				6BB211FA20FF9FE9009EA1BA /* ACRActionSetRenderer.mm */,
 				F4C1F5FF1F2C23FD0018CB78 /* ACRActionShowCardRenderer.h */,
@@ -1168,6 +1184,11 @@
 				6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */,
 				6B616C3D21CB1878003E29CE /* ACRToggleVisibilityTarget.h */,
 				6B616C3E21CB1878003E29CE /* ACRToggleVisibilityTarget.mm */,
+				0D3485EC26180E9900614EB9 /* ACOActionOverflow.h */,
+				0D3485F026180F8F00614EB9 /* ACOActionOverflow.mm */,
+				0D348609261A859800614EB9 /* ACOActionOverflowPrivate.h */,
+				0D3485FC26193BA500614EB9 /* ACROverflowTarget.h */,
+				0D34860126193C7900614EB9 /* ACROverflowTarget.mm */,
 			);
 			name = Actions;
 			sourceTree = "<group>";
@@ -1424,6 +1445,7 @@
 				6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */,
 				6B7B1A9320B4D2AB00260731 /* MediaSource.h in Headers */,
 				7ECFB641219A3940004727A9 /* ParseContext.h in Headers */,
+				0D34862D261C606D00614EB9 /* ACOActionOverflow.h in Headers */,
 				6BCE4B292108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h in Headers */,
 				6B9D650A21095C7A00BB5C7B /* ACOMediaEvent.h in Headers */,
 				6B5D240D212C89E70010EB07 /* ACORemoteResourceInformation.h in Headers */,
@@ -1455,6 +1477,9 @@
 				6B25D3EB2613D83700A47AFB /* ACORenderContext.h in Headers */,
 				6B250FB2253F5F8F007FFCFB /* ACRTargetBuilder.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
+				0D34860A261A859800614EB9 /* ACOActionOverflowPrivate.h in Headers */,
+				0D3485FD26193BA500614EB9 /* ACROverflowTarget.h in Headers */,
+				0D45F5A7261731E400EF03C5 /* ACRActionOverflowRenderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1648,6 +1673,7 @@
 				F49683551F6CA24600DF0D3A /* ACRRenderResult.mm in Sources */,
 				6BFF9A0526004C580028069F /* ACOAuthentication.mm in Sources */,
 				6BBE841A23CD184D00ECA586 /* ACOWarning.mm in Sources */,
+				0D34860226193C7900614EB9 /* ACROverflowTarget.mm in Sources */,
 				F44873071EE2261F00FCAFAE /* DateInput.cpp in Sources */,
 				F43110461F357487001AAE30 /* ACOHostConfig.mm in Sources */,
 				F4F6BA2F204F18D8003741B6 /* ParseResult.cpp in Sources */,
@@ -1694,6 +1720,7 @@
 				F4F44BA0204CED2400A2F24C /* ACRCustomRenderer.mm in Sources */,
 				F452CD581F68CD6F005394B2 /* HostConfig.cpp in Sources */,
 				6B696CD923202B1B00E1D607 /* ACRTargetBuilderDirector.mm in Sources */,
+				0D3485F126180F8F00614EB9 /* ACOActionOverflow.mm in Sources */,
 				6BCE4B232108EB4E00021A62 /* ACRAVPlayerViewHoldingUIView.mm in Sources */,
 				6B22425F21E80647000ACDA1 /* ACOParseContext.mm in Sources */,
 				F4071C7E1FCCBAEF00AF4FEA /* ActionParserRegistration.cpp in Sources */,
@@ -1709,6 +1736,7 @@
 				6B096D4F225431D0006CC034 /* ACRRichTextBlockRenderer.mm in Sources */,
 				F4F44B6E203FAF9300A2F24C /* ACRUILabel.mm in Sources */,
 				F4F44B7C20478C5C00A2F24C /* DateTimePreparsedToken.cpp in Sources */,
+				0D45F59B2617319D00EF03C5 /* ACRActionOverflowRenderer.mm in Sources */,
 				6BF430782190DDCA0068E432 /* ACRQuickReplyView.mm in Sources */,
 				F44873211EE2261F00FCAFAE /* SubmitAction.cpp in Sources */,
 				F44872FF1EE2261F00FCAFAE /* ChoiceSetInput.cpp in Sources */,

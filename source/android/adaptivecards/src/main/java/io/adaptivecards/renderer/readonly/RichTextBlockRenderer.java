@@ -4,8 +4,6 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -23,8 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Inline;
@@ -122,13 +124,12 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 }
 
                 DateTimeParser parser = new DateTimeParser(textRun.GetLanguage());
-                String textWithFormattedDates = parser.GenerateString(textRun.GetTextForDateParsing());
-                CharSequence text = RendererUtil.handleSpecialText(textWithFormattedDates);
+                String formattedText = parser.GenerateString(textRun.GetTextForDateParsing());
 
-                paragraph.append(text);
+                paragraph.append(formattedText);
 
                 int spanStart = lastStringLength;
-                int spanEnd = lastStringLength + text.length();
+                int spanEnd = lastStringLength + formattedText.length();
 
                 int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
                 paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -162,7 +163,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
 
                 // On API 28, TypefaceSpan(Typeface) was added so we don't have to use the TypefaceSpan(String) constructor
                 String fontName = hostConfig.GetFontFamily(textRun.GetFontType());
-                if (fontName.isEmpty())
+                if (fontName.isEmpty() && textRun.GetFontType() == FontType.Monospace)
                 {
                     fontName = "monospace";
                 }
