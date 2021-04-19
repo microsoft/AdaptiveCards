@@ -1,0 +1,27 @@
+ {
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0",
+	"refresh": {
+		"action": {
+			"type": "Action.Execute",
+			"data": {
+				"HereIs": "Some Data"
+			},
+			"id": "refresh_action_id",
+			"verb": "doStuff"
+		},
+		"userIds": [
+			"user1",
+			"user2",
+			"user3"
+		]
+	},
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Test Card",
+			"wrap": true
+		}
+	]
+}

@@ -1,0 +1,16 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "RichTextBlock",
+			"inlines": [
+				{
+					"type": "TextRun",
+					"text": "\n\nLeading newlines should not be trimmed.\nMarkdown such as **bold** and *italics* should be left as-is, not processed.\nTrailing newlines should not be trimmed.\n\n"
+				}
+			]
+		}
+	]
+}

@@ -38,7 +38,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The latest known schema version supported by this library.
         /// </summary>
-        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 3);
+        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 5);
 
         /// <summary>
         /// Creates an AdaptiveCard using a specific schema version.
@@ -187,6 +187,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveExecuteAction))]
         [XmlElement(typeof(AdaptiveUnknownAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
@@ -236,6 +237,26 @@ namespace AdaptiveCards
         public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
+        /// Defines how the card can be refreshed by making a request to the target Bot.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveRefresh Refresh { get; set; }
+
+        /// <summary>
+        /// Defines authentication information to enable on-behalf-of single sign on or just-in-time OAuth.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveAuthentication Authentication { get; set; }
+
+        /// <summary>
         /// Determines whether the height property of an AdaptiveCard should be serialized.
         /// </summary>
         /// <returns>true iff the height property should be serialized.</returns>
@@ -264,7 +285,7 @@ namespace AdaptiveCards
                 {
                     ContractResolver = new WarningLoggingContractResolver(parseResult, new ParseContext()),
                     Converters = { new StrictIntConverter() },
-                    Error = delegate(object sender, ErrorEventArgs args)
+                    Error = delegate (object sender, ErrorEventArgs args)
                     {
                         if (args.ErrorContext.Error.GetType() == typeof(JsonSerializationException))
                         {

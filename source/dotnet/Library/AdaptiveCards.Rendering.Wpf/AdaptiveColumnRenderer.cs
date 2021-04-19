@@ -15,6 +15,22 @@ namespace AdaptiveCards.Rendering.Wpf
             uiContainer.Style = context.GetStyle("Adaptive.Column");
             uiContainer.SetBackgroundSource(column.BackgroundImage, context);
 
+            bool? previousContextRtl = context.Rtl;
+            bool? currentRtl = previousContextRtl;
+
+            bool updatedRtl = false;
+            if (column.Rtl.HasValue)
+            {
+                currentRtl = column.Rtl;
+                context.Rtl = currentRtl;
+                updatedRtl = true;
+            }
+
+            if (currentRtl.HasValue)
+            {
+                uiContainer.FlowDirection = currentRtl.Value ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+            }
+
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
             // This is the renderArgs that will be passed down to the children
@@ -58,6 +74,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Revert context's value to that of outside the Column
             context.RenderArgs = parentRenderArgs;
+
+            if (updatedRtl)
+            {
+                context.Rtl = previousContextRtl;
+            }
 
             return RendererUtil.ApplySelectAction(border, column, context);
         }

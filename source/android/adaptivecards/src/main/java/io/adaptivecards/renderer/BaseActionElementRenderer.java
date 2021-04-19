@@ -5,7 +5,7 @@ package io.adaptivecards.renderer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -19,6 +19,7 @@ import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.AssociatedInputs;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.objectmodel.ShowCardAction;
@@ -30,6 +31,8 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
+    protected final static int BOTTOM_SHEET_TAG = 0xffffffff;
+
     protected static int getColor(String colorCode)
     {
         return android.graphics.Color.parseColor(colorCode);
@@ -237,7 +240,16 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
 
             v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
             // Reset all other buttons
-            ViewGroup parentContainer = (ViewGroup)v.getParent();
+            ViewGroup parentContainer;
+            if (v.getTag(BOTTOM_SHEET_TAG) != null)
+            {
+                parentContainer = (ViewGroup) v.getTag(BOTTOM_SHEET_TAG);
+            }
+            else
+            {
+                parentContainer = (ViewGroup) v.getParent();
+            }
+
             for (int i = 0; i < parentContainer.getChildCount(); ++i)
             {
                 View actionInActionSet = parentContainer.getChildAt(i);
@@ -331,13 +343,20 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
             else
             {
-                if (m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
+                if (m_action.GetElementType() == ActionType.Execute || m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
                 {
                     // Don't gather inputs or perform validation when AssociatedInputs is None
                     boolean gatherInputs = true;
                     try
                     {
-                        gatherInputs = Util.castTo(m_action, SubmitAction.class).GetAssociatedInputs() != AssociatedInputs.None;
+                        try
+                        {
+                            gatherInputs = Util.castTo(m_action, ExecuteAction.class).GetAssociatedInputs() != AssociatedInputs.None;
+                        }
+                        catch (ClassCastException e)
+                        {
+                            gatherInputs = Util.castTo(m_action, SubmitAction.class).GetAssociatedInputs() != AssociatedInputs.None;
+                        }
                     }
                     catch (ClassCastException e)
                     {

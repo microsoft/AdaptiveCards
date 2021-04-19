@@ -6,11 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,6 +41,7 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ElementParserRegistration;
+import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.OpenUrlAction;
 import io.adaptivecards.objectmodel.ShowCardAction;
@@ -261,6 +262,46 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         this.runOnUiThread(new RunnableExtended(this, text, duration));
     }
 
+    private void onExecute(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
+    {
+        ExecuteAction executeAction = null;
+        if (actionElement instanceof ExecuteAction)
+        {
+            executeAction = (ExecuteAction) actionElement;
+        }
+        else if ((executeAction = ExecuteAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ExecuteAction object model.");
+        }
+
+        String verb = executeAction.GetVerb();
+        String data = executeAction.GetDataJson();
+        Map<String, String> keyValueMap = renderedAdaptiveCard.getInputs();
+        if (!data.isEmpty())
+        {
+            try
+            {
+                JSONObject object = null;
+                if (!data.equals("null\n"))
+                {
+                    object = new JSONObject(data);
+                }
+                else
+                {
+                    object = new JSONObject();
+                }
+                showToast("Execute verb: " + verb + "\nData: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+            }
+            catch (JSONException e) {
+                showToast(e.toString(), Toast.LENGTH_LONG);
+            }
+        }
+        else
+        {
+            showToast("Execute verb: " + verb + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+        }
+    }
+
     private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
     {
         SubmitAction submitAction = null;
@@ -270,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         }
         else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null)
         {
-            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+            throw new InternalError("Unable to convert BaseActionElement to SubmitAction object model.");
         }
 
         String data = submitAction.GetDataJson();
@@ -344,7 +385,11 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
     public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
     {
         ActionType actionType = actionElement.GetElementType();
-        if (actionType == ActionType.Submit)
+        if (actionType == ActionType.Execute)
+        {
+            onExecute(actionElement, renderedAdaptiveCard);
+        }
+        else if (actionType == ActionType.Submit)
         {
             onSubmit(actionElement, renderedAdaptiveCard);
         }

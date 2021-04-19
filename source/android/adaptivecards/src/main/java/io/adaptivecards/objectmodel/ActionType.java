@@ -10,9 +10,10 @@ package io.adaptivecards.objectmodel;
 
 public enum ActionType {
   Unsupported(0),
+  Execute,
+  OpenUrl,
   ShowCard,
   Submit,
-  OpenUrl,
   ToggleVisibility,
   Custom,
   UnknownAction;

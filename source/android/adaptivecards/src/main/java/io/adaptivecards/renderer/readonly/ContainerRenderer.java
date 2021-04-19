@@ -5,7 +5,7 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.CollectionTypeElement;
 import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
@@ -81,6 +82,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         ContainerStyle styleForThis = GetLocalContainerStyle(container, containerStyle);
         ApplyPadding(styleForThis, containerStyle, containerView, context, hostConfig);
         ApplyBleed(container, containerView, context, hostConfig);
+        BaseCardElementRenderer.applyRtl(container.GetRtl(), containerView);
 
         RenderArgs containerRenderArgs = new RenderArgs(renderArgs);
         containerRenderArgs.setContainerStyle(styleForThis);
@@ -135,6 +137,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) collectionElementView.getLayoutParams();
+            // TODO: Check RTL support
             int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin, marginTop = layoutParams.topMargin, marginBottom = layoutParams.bottomMargin;
 
             ContainerBleedDirection bleedDirection = collectionElement.GetBleedDirection();
@@ -217,7 +220,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             view.setFocusable(true);
             view.setClickable(true);
-            if (Util.isOfType(selectAction, SubmitAction.class) || selectAction.GetElementType() == ActionType.Custom)
+            if (Util.isOfType(selectAction, ExecuteAction.class) || Util.isOfType(selectAction, SubmitAction.class) || selectAction.GetElementType() == ActionType.Custom)
             {
                 renderedCard.registerSubmitableAction(view, renderArgs);
             }

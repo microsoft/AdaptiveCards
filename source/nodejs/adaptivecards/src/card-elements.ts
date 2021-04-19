@@ -9,9 +9,10 @@ import * as TextFormatters from "./text-formatters";
 import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
-    NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
+    NumProperty, PropertyBag, CustomProperty, PropertyDefinition, StringArrayProperty } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
+import { MenuItem, PopupMenu } from "./controls";
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -623,7 +624,7 @@ export class ActionProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined, context: SerializationContext) {
-        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
+        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined, undefined, true);
     }
 
     constructor(
@@ -821,17 +822,30 @@ export abstract class BaseTextBlock extends CardElement {
     }
 }
 
+export type TextBlockStyle = "paragraph" | "heading";
+
 export class TextBlock extends BaseTextBlock {
     //#region Schema
 
     static readonly wrapProperty = new BoolProperty(Versions.v1_0, "wrap", false);
     static readonly maxLinesProperty = new NumProperty(Versions.v1_0, "maxLines");
+    static readonly styleProperty = new ValueSetProperty(
+        Versions.v1_5,
+        "style",
+        [
+            { value: "paragraph" },
+            { value: "heading" }
+        ],
+        "paragraph");
 
     @property(TextBlock.wrapProperty)
     wrap: boolean = false;
 
     @property(TextBlock.maxLinesProperty)
     maxLines?: number;
+
+    @property(TextBlock.styleProperty)
+    style: TextBlockStyle = "paragraph";
 
     //#endregion
 
@@ -901,7 +915,17 @@ export class TextBlock extends BaseTextBlock {
 
             this.applyStylesTo(element);
 
-            if (this.selectAction) {
+            if (this.style === "heading") {
+                element.setAttribute("role", "heading");
+
+                let headingLevel = this.hostConfig.headings.level;
+
+                if (headingLevel !== undefined) {
+                    element.setAttribute("aria-level", headingLevel.toString());
+                }
+            }
+
+            if (this.selectAction && hostConfig.supportsInteractivity) {
                 element.onclick = (e) => {
                     e.preventDefault();
                     e.cancelBubble = true;
@@ -911,17 +935,9 @@ export class TextBlock extends BaseTextBlock {
                     }
                 }
 
-                if (hostConfig.supportsInteractivity) {
-                    element.tabIndex = 0
-                    element.setAttribute("role", this.selectAction.getAriaRole());
+                this.selectAction.setupElementForAccessibility(element);
 
-                    if (this.selectAction.title) {
-                        element.setAttribute("aria-label", this.selectAction.title);
-                        element.title = this.selectAction.title;
-                    }
-
-                    element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
-                }
+                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
             if (!this._processedText) {
@@ -1003,11 +1019,21 @@ export class TextBlock extends BaseTextBlock {
                 let anchor = <HTMLAnchorElement>anchors[i];
                 anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
                 anchor.target = "_blank";
-                anchor.onclick = (e) => {
-                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
+                anchor.onclick = (e: MouseEvent) => {
+                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement, e)) {
                         e.preventDefault();
                         e.cancelBubble = true;
                     }
+                }
+                anchor.oncontextmenu = (e: MouseEvent) => {
+                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement, e)) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
+                        return false;
+                    }
+
+                    return true;
                 }
             }
 
@@ -1071,18 +1097,15 @@ export class TextBlock extends BaseTextBlock {
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
 
-        let parentContainer = this.getParentContainer();
-        let isRtl = parentContainer ? parentContainer.isRtl() : false;
-
         switch (this.horizontalAlignment) {
             case Enums.HorizontalAlignment.Center:
                 targetElement.style.textAlign = "center";
                 break;
             case Enums.HorizontalAlignment.Right:
-                targetElement.style.textAlign = isRtl ? "left" : "right";
+                targetElement.style.textAlign = "end";
                 break;
             default:
-                targetElement.style.textAlign = isRtl ? "right" : "left";
+                targetElement.style.textAlign = "start";
                 break;
         }
 
@@ -1193,10 +1216,7 @@ export class TextRun extends BaseTextBlock {
                     }
                 }
 
-                if (this.selectAction.title) {
-                    anchor.setAttribute("aria-label", this.selectAction.title);
-                    anchor.title = this.selectAction.title;
-                }
+                this.selectAction.setupElementForAccessibility(anchor);
 
                 anchor.innerText = formattedText;
 
@@ -1325,18 +1345,15 @@ export class RichTextBlock extends CardElement {
 
             element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
 
-            let parentContainer = this.getParentContainer();
-            let isRtl = parentContainer ? parentContainer.isRtl() : false;
-
             switch (this.horizontalAlignment) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.textAlign = "center";
                     break;
                 case Enums.HorizontalAlignment.Right:
-                    element.style.textAlign = isRtl ? "left" : "right";
+                    element.style.textAlign = "end";
                     break;
                 default:
-                    element.style.textAlign = isRtl ? "right" : "left";
+                    element.style.textAlign = "start";
                     break;
             }
 
@@ -1715,22 +1732,31 @@ export class Image extends CardElement {
             element.style.display = "flex";
             element.style.alignItems = "flex-start";
 
-            element.onkeypress = (e) => {
-                if (this.selectAction && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
-                    e.preventDefault();
-                    e.cancelBubble = true;
+            // Cache hostConfig to avoid walking the parent hierarchy multiple times
+            let hostConfig = this.hostConfig;
 
-                    this.selectAction.execute();
+            if (this.selectAction && hostConfig.supportsInteractivity) {
+                element.onkeypress = (e) => {
+                    if (this.selectAction && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
+                        this.selectAction.execute();
+                    }
                 }
-            }
 
-            element.onclick = (e) => {
-                if (this.selectAction) {
-                    e.preventDefault();
-                    e.cancelBubble = true;
+                element.onclick = (e) => {
+                    if (this.selectAction) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
 
-                    this.selectAction.execute();
+                        this.selectAction.execute();
+                    }
                 }
+
+                this.selectAction.setupElementForAccessibility(element);
+
+                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
             switch (this.horizontalAlignment) {
@@ -1744,9 +1770,6 @@ export class Image extends CardElement {
                     element.style.justifyContent = "flex-start";
                     break;
             }
-
-            // Cache hostConfig to avoid walking the parent hierarchy multiple times
-            let hostConfig = this.hostConfig;
 
             let imageElement = document.createElement("img");
             imageElement.onload = (e: Event) => {
@@ -1779,14 +1802,8 @@ export class Image extends CardElement {
             imageElement.style.minWidth = "0";
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
-            if (this.selectAction !== undefined && hostConfig.supportsInteractivity) {
-                imageElement.tabIndex = 0
-                imageElement.setAttribute("role", this.selectAction.getAriaRole());
-
-                if (this.selectAction.title) {
-                    imageElement.setAttribute("aria-label", <string>this.selectAction.title);
-                    imageElement.title = this.selectAction.title;
-                }
+            if (this.selectAction && hostConfig.supportsInteractivity) {
+                this.selectAction.setupElementForAccessibility(imageElement);
 
                 imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
@@ -1930,15 +1947,6 @@ export abstract class CardElementContainer extends CardElement {
             }
 
             if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
-                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
-                element.tabIndex = 0;
-                element.setAttribute("role", this._selectAction.getAriaRole());
-
-                if (this._selectAction.title) {
-                    element.setAttribute("aria-label", this._selectAction.title);
-                    element.title = this._selectAction.title;
-                }
-
                 element.onclick = (e) => {
                     if (this._selectAction !== undefined) {
                         e.preventDefault();
@@ -1957,6 +1965,11 @@ export abstract class CardElementContainer extends CardElement {
                         this._selectAction.execute();
                     }
                 }
+
+                this._selectAction.setupElementForAccessibility(element);
+
+                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+
             }
         }
 
@@ -2267,7 +2280,7 @@ export class Media extends CardElement {
         let posterRootElement = document.createElement("div");
         posterRootElement.className = this.hostConfig.makeCssClassName("ac-media-poster");
         posterRootElement.setAttribute("role", "contentinfo");
-        posterRootElement.setAttribute("aria-label", this.altText ? this.altText : "Media content");
+        posterRootElement.setAttribute("aria-label", this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel());
         posterRootElement.style.position = "relative";
         posterRootElement.style.display = "flex";
 
@@ -2301,7 +2314,7 @@ export class Media extends CardElement {
             let playButtonOuterElement = document.createElement("div");
             playButtonOuterElement.tabIndex = 0;
             playButtonOuterElement.setAttribute("role", "button");
-            playButtonOuterElement.setAttribute("aria-label", "Play media");
+            playButtonOuterElement.setAttribute("aria-label", Strings.defaults.mediaPlayerPlayMedia());
             playButtonOuterElement.className = this.hostConfig.makeCssClassName("ac-media-playButton");
             playButtonOuterElement.style.display = "flex";
             playButtonOuterElement.style.alignItems = "center";
@@ -2367,6 +2380,7 @@ export class Media extends CardElement {
             mediaElement = document.createElement("audio");
         }
 
+        mediaElement.setAttribute("aria-label", this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel());
         mediaElement.setAttribute("webkit-playsinline", "");
         mediaElement.setAttribute("playsinline", "");
         mediaElement.autoplay = true;
@@ -2820,6 +2834,8 @@ export class TextInput extends Input {
                 button.classList.add("textOnly");
                 button.textContent = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
             }
+
+            this.inlineAction.setupElementForAccessibility(button, true);
 
             button.style.marginLeft = "8px";
 
@@ -3652,6 +3668,7 @@ const enum ActionButtonState {
 }
 
 class ActionButton {
+    private _action: Action;
     private _parentContainerStyle: string;
     private _state: ActionButtonState = ActionButtonState.Normal;
 
@@ -3690,14 +3707,13 @@ class ActionButton {
         }
     }
 
-    readonly action: Action;
-
     constructor(action: Action, parentContainerStyle: string) {
-        this.action = action;
         this._parentContainerStyle = parentContainerStyle;
+
+        this.action = action;
     }
 
-    onClick?: (actionButton: ActionButton) => void;
+    onClick?: (actionButton: ActionButton, event?: MouseEvent) => void;
 
     render() {
         this.action.render();
@@ -3707,16 +3723,32 @@ class ActionButton {
                 e.preventDefault();
                 e.cancelBubble = true;
 
-                this.click();
+                this.click(e);
             };
 
             this.updateCssStyle();
         }
     }
 
-    click() {
+    click(event?: MouseEvent) {
         if (this.onClick !== undefined) {
-            this.onClick(this);
+            this.onClick(this, event);
+        }
+    }
+
+    get action(): Action {
+        return this._action;
+    }
+
+    set action(value: Action) {
+        if (this._action !== value) {
+            if (this._action !== undefined && this._action.renderedElement) {
+                this._action.renderedElement.removeAttribute("onclick");
+            }
+
+            this._action = value;
+
+            this.render();
         }
     }
 
@@ -3747,6 +3779,15 @@ export abstract class Action extends CardObject {
             { value: Enums.ActionStyle.Destructive }
         ],
         Enums.ActionStyle.Default);
+    static readonly modeProperty = new ValueSetProperty(
+        Versions.v1_5,
+        "mode",
+        [
+            { value: Enums.ActionMode.Primary },
+            { value: Enums.ActionMode.Secondary }
+        ],
+        Enums.ActionMode.Primary);
+    static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip");
 
     @property(Action.titleProperty)
     title?: string;
@@ -3756,6 +3797,12 @@ export abstract class Action extends CardObject {
 
     @property(Action.styleProperty)
     style: string = Enums.ActionStyle.Default;
+
+    @property(Action.modeProperty)
+    mode: string = Enums.ActionMode.Primary;
+
+    @property(Action.tooltipProperty)
+    tooltip?: string;
 
     //#endregion
 
@@ -3805,7 +3852,6 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
-    accessibleTitle?: string;
     expanded?: boolean;
 
     onExecute: (sender: Action) => void;
@@ -3818,28 +3864,50 @@ export abstract class Action extends CardObject {
         return "button";
     }
 
+    setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
+        element.tabIndex = 0;
+        element.setAttribute("role", this.getAriaRole());
+
+        if (this.title) {
+            element.setAttribute("aria-label", this.title);
+            element.title = this.title;
+        }
+
+        if (this.tooltip) {
+            let targetAriaAttribute = promoteTooltipToLabel ? (this.title ? "aria-description" : "aria-label") : "aria-description";
+
+            element.setAttribute(targetAriaAttribute, this.tooltip);
+            element.title = this.tooltip;
+        }
+    }
+
     updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
         // Do nothing in base implementation
+    }
+
+    promoteAsPrimary(): Action | undefined {
+        if (this._actionCollection) {
+            let button = this._actionCollection.findActionButton(this);
+
+            if (!button) {
+                return this._actionCollection.promoteAsPrimary(this);
+            }
+        }
+
+        return undefined;
     }
 
     parse(source: any, context?: SerializationContext) {
         return super.parse(source, context ? context : new SerializationContext());
     }
 
-    render(baseCssClass: string = "ac-pushButton") {
+    render() {
         // Cache hostConfig for perf
         let hostConfig = this.hostConfig;
 
         let buttonElement = document.createElement("button");
 
         this.addCssClasses(buttonElement);
-
-        if (this.accessibleTitle) {
-            buttonElement.setAttribute("aria-label", this.accessibleTitle);
-        }
-        else if (this.title) {
-            buttonElement.setAttribute("aria-label", this.title);
-        }
 
         if (this.expanded != undefined) {
             buttonElement.setAttribute("aria-expanded", this.expanded.toString())
@@ -3849,8 +3917,6 @@ export abstract class Action extends CardObject {
         buttonElement.style.display = "flex";
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
-
-        buttonElement.setAttribute("role", this.getAriaRole());
 
         let titleElement = document.createElement("div");
         titleElement.style.overflow = "hidden";
@@ -3863,6 +3929,8 @@ export abstract class Action extends CardObject {
         if (this.title) {
             titleElement.innerText = this.title;
         }
+
+        this.setupElementForAccessibility(buttonElement, true);
 
         if (!this.iconUrl) {
             buttonElement.classList.add("noIcon");
@@ -3957,6 +4025,10 @@ export abstract class Action extends CardObject {
         return this.internalValidateInputs(this.getReferencedInputs());
     }
 
+    get shouldPromoteAsPrimaryOnExecute(): boolean {
+        return this.mode === "primary";
+    }
+
     get isPrimary(): boolean {
         return this.style == Enums.ActionStyle.Positive;
     }
@@ -3981,7 +4053,7 @@ export abstract class Action extends CardObject {
     }
 }
 
-export class SubmitAction extends Action {
+export abstract class SubmitActionBase extends Action {
     //#region Schema
 
     static readonly dataProperty = new PropertyDefinition(Versions.v1_0, "data");
@@ -4001,17 +4073,13 @@ export class SubmitAction extends Action {
             context.serializeValue(target, property.name, value);
         });
 
-    @property(SubmitAction.dataProperty)
+    @property(SubmitActionBase.dataProperty)
     private _originalData?: PropertyBag;
 
-    @property(SubmitAction.associatedInputsProperty)
+    @property(SubmitActionBase.associatedInputsProperty)
     associatedInputs?: "auto" | "none";
 
     //#endregion
-
-    // Note the "weird" way this field is declared is to work around a breaking
-    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
 
     private _isPrepared: boolean = false;
     private _processedData?: PropertyBag;
@@ -4060,10 +4128,6 @@ export class SubmitAction extends Action {
         this._isPrepared = true;
     }
 
-    getJsonTypeName(): string {
-        return SubmitAction.JsonTypeName;
-    }
-
     get data(): object | undefined {
         return this._isPrepared ? this._processedData : this._originalData;
     }
@@ -4071,6 +4135,35 @@ export class SubmitAction extends Action {
     set data(value: object | undefined) {
         this._originalData = value;
         this._isPrepared = false;
+    }
+}
+
+export class SubmitAction extends SubmitActionBase {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
+
+    getJsonTypeName(): string {
+        return SubmitAction.JsonTypeName;
+    }
+}
+
+export class ExecuteAction extends SubmitActionBase {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Execute" = "Action.Execute";
+
+    //#region Schema
+
+    static readonly verbProperty = new StringProperty(Versions.v1_4, "verb");
+
+    @property(ExecuteAction.verbProperty)
+    verb: string;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return ExecuteAction.JsonTypeName;
     }
 }
 
@@ -4185,12 +4278,24 @@ export class ToggleVisibilityAction extends Action {
         }
     }
 
+    internalValidateProperties(context: ValidationResults) {
+        super.internalValidateProperties(context);
+
+        if (!this.targetElements) {
+            context.addFailure(
+                this,
+                Enums.ValidationEvent.PropertyCantBeNull,
+                Strings.errors.propertyMustBeSet("targetElements"));
+        }
+    }
+
     getJsonTypeName(): string {
         return ToggleVisibilityAction.JsonTypeName;
     }
 
-    render(baseCssClass: string = "ac-pushButton") {
-        super.render(baseCssClass);
+    render() {
+        super.render();
+
         this.updateAriaControlsAttribute();
     }
 
@@ -4485,6 +4590,60 @@ export class ShowCardAction extends Action {
 
         return result;
     }
+
+    get shouldPromoteAsPrimaryOnExecute(): boolean {
+        return true;
+    }
+}
+
+class OverflowAction extends Action {
+    static readonly JsonTypeName: "Action.Overflow" = "Action.Overflow";
+
+    constructor(private actions: Action[]) {
+        super();
+
+        this.title = Strings.defaults.overflowButtonText();
+    }
+
+    getActions(): readonly Action[] {
+        return this.actions;
+    }
+
+    getJsonTypeName(): string {
+        return ShowCardAction.JsonTypeName;
+    }
+
+    execute() {
+        const shouldDisplayPopupMenu = !raiseDisplayOverflowActionMenuEvent(this, this.renderedElement);
+
+        if (shouldDisplayPopupMenu && this.renderedElement) {
+            let contextMenu = new PopupMenu();
+            contextMenu.hostConfig = this.hostConfig;
+
+            for (let i = 0; i < this.actions.length; i++) {
+                const menuItem = new MenuItem(i.toString(), this.actions[i].title ?? "");
+                menuItem.onClick = () => {
+                    let actionToExecute = this.actions[i];
+
+                    if (actionToExecute.shouldPromoteAsPrimaryOnExecute) {
+                        let swappedAction = actionToExecute.promoteAsPrimary();
+
+                        if (swappedAction) {
+                            this.actions[i] = swappedAction;
+                        }
+                    }
+
+                    contextMenu.closePopup(false);
+
+                    actionToExecute.execute();
+                };
+
+                contextMenu.items.add(menuItem);
+            };
+
+            contextMenu.popup(this.renderedElement);
+        }
+	}
 }
 
 class ActionCollection {
@@ -4564,7 +4723,7 @@ class ActionCollection {
     }
 
     private collapseExpandedAction() {
-        for (let button of this.buttons) {
+        for (let button of this._buttons) {
             button.state = ActionButtonState.Normal;
         }
 
@@ -4583,7 +4742,7 @@ class ActionCollection {
     }
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
-        for (let button of this.buttons) {
+        for (let button of this._buttons) {
             if (button.action !== action) {
                 button.state = ActionButtonState.Subdued;
             }
@@ -4607,21 +4766,40 @@ class ActionCollection {
         }
     }
 
-    private findActionButton(action: Action): ActionButton | undefined {
-        for (let actionButton of this.buttons) {
-            if (actionButton.action == action) {
-                return actionButton;
+    private _items: Action[] = [];
+    private _buttons: ActionButton[] = [];
+    private _overflowAction?: OverflowAction;
+
+    constructor(owner: CardElement) {
+        this._owner = owner;
+    }
+
+    promoteAsPrimary(action: Action): Action | undefined {
+        if (this._buttons.length > 1) {
+            let button = this._buttons[this._buttons.length - 2];
+
+            let swappedAction = button.action;
+
+            action.render();
+
+            if (swappedAction.renderedElement && swappedAction.renderedElement.parentElement && action.renderedElement) {
+                button.action = action;
+
+                swappedAction.renderedElement.parentElement.replaceChild(action.renderedElement, swappedAction.renderedElement);
+
+                action.renderedElement.setAttribute("aria-posinset", (this._buttons.length - 1).toString());
+                action.renderedElement.setAttribute("aria-setsize", this._buttons.length.toString());
+                action.renderedElement.setAttribute("role", "menuitem");
+
+                swappedAction.renderedElement.removeAttribute("aria-posinset");
+                swappedAction.renderedElement.removeAttribute("aria-setsize");
+                swappedAction.renderedElement.removeAttribute("role");
+
+                return swappedAction;
             }
         }
 
         return undefined;
-    }
-
-    items: Action[] = [];
-    buttons: ActionButton[] = [];
-
-    constructor(owner: CardElement) {
-        this._owner = owner;
     }
 
     actionExecuted(action: Action) {
@@ -4657,13 +4835,21 @@ class ActionCollection {
     }
 
     toJSON(target: PropertyBag, propertyName: string, context: SerializationContext): any {
-        context.serializeArray(target, propertyName, this.items);
+        context.serializeArray(target, propertyName, this._items);
+    }
+
+    getActionAt(id: number): Action | undefined {
+        return this._items[id];
+    }
+
+    getActionCount(): number {
+        return this._items.length;
     }
 
     getActionById(id: string): Action | undefined {
         let result: Action | undefined = undefined;
 
-        for (let item of this.items) {
+        for (let item of this._items) {
             result = item.getActionById(id);
 
             if (result) {
@@ -4675,21 +4861,21 @@ class ActionCollection {
     }
 
     validateProperties(context: ValidationResults) {
-        if (this._owner.hostConfig.actions.maxActions && this.items.length > this._owner.hostConfig.actions.maxActions) {
+        if (this._owner.hostConfig.actions.maxActions && this._items.length > this._owner.hostConfig.actions.maxActions) {
             context.addFailure(
                 this._owner,
                 Enums.ValidationEvent.TooManyActions,
                 Strings.errors.tooManyActions(this._owner.hostConfig.actions.maxActions));
         }
 
-        if (this.items.length > 0 && !this._owner.hostConfig.supportsInteractivity) {
+        if (this._items.length > 0 && !this._owner.hostConfig.supportsInteractivity) {
             context.addFailure(
                 this._owner,
                 Enums.ValidationEvent.InteractivityNotAllowed,
                 Strings.errors.interactivityNotAllowed());
         }
 
-        for (let item of this.items) {
+        for (let item of this._items) {
             if (!this.isActionAllowed(item)) {
                 context.addFailure(
                     this._owner,
@@ -4710,13 +4896,13 @@ class ActionCollection {
         }
 
         let element = document.createElement("div");
-        let maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
+        let maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this._items.length) : this._items.length;
 
         this._actionCardContainer = document.createElement("div");
         this._renderedActionCount = 0;
 
-        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && this.isActionAllowed(this.items[0])) {
-            this.showActionCard(<ShowCardAction>this.items[0], true);
+        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this._items[0] instanceof ShowCardAction && this.isActionAllowed(this._items[0])) {
+            this.showActionCard(<ShowCardAction>this._items[0], true);
             this._renderedActionCount = 1;
         }
         else {
@@ -4794,56 +4980,87 @@ class ActionCollection {
             if (parentContainer) {
                 let parentContainerStyle = parentContainer.getEffectiveStyle();
 
-                const allowedActions = this.items.filter(this.isActionAllowed.bind(this));
+                let primaryActions: Action[] = [];
+                let secondaryActions: Action[] = [];
 
-                for (let i = 0; i < allowedActions.length; i++) {
-                    let actionButton = this.findActionButton(allowedActions[i]);
+                const allowedActions = this._items.filter(this.isActionAllowed.bind(this));
 
-                    if (!actionButton) {
-                        actionButton = new ActionButton(allowedActions[i], parentContainerStyle);
-                        actionButton.onClick = (ab) => { ab.action.execute(); };
+                if (!this._owner.isDesignMode()) {
+                    allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? secondaryActions.push(action) : primaryActions.push(action));
 
-                        this.buttons.push(actionButton);
+                    // given primaryActions.length > maxActions, exceeding actions are forced moved to overflow
+                    const overflowPrimaryActions = primaryActions.splice(hostConfig.actions.maxActions);
+
+                    if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
+                        secondaryActions.push(...overflowPrimaryActions);
                     }
 
-                    actionButton.render();
+                    let shouldRenderOverflowActionButton = true;
 
-                    if (actionButton.action.renderedElement) {
-                        if (allowedActions.length > 1) {
-                            actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-                            actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
-                            actionButton.action.renderedElement.setAttribute("role", "menuitem");
+                    if (secondaryActions.length > 0) {
+                        if (!this._overflowAction) {
+                            this._overflowAction = new OverflowAction(secondaryActions);
+                            this._overflowAction.setParent(this._owner);
+                            this._overflowAction["_actionCollection"] = this;
                         }
 
-                        if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
-                            actionButton.action.renderedElement.style.flex = "0 1 100%";
-                        }
-                        else {
-                            actionButton.action.renderedElement.style.flex = "0 1 auto";
-                        }
+                        let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
+                        shouldRenderOverflowActionButton = !raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
+                    }
 
-                        buttonStrip.appendChild(actionButton.action.renderedElement);
-
-                        this._renderedActionCount++;
-
-                        if (this._renderedActionCount >= hostConfig.actions.maxActions || i == this.items.length - 1) {
-                            break;
-                        }
-                        else if (hostConfig.actions.buttonSpacing > 0) {
-                            let spacer = document.createElement("div");
-
-                            if (orientation === Enums.Orientation.Horizontal) {
-                                spacer.style.flex = "0 0 auto";
-                                spacer.style.width = hostConfig.actions.buttonSpacing + "px";
-                            }
-                            else {
-                                spacer.style.height = hostConfig.actions.buttonSpacing + "px";
-                            }
-
-                            Utils.appendChild(buttonStrip, spacer);
-                        }
+                    if (this._overflowAction && shouldRenderOverflowActionButton) {
+                        primaryActions.push(this._overflowAction);
                     }
                 }
+                else {
+                    primaryActions = allowedActions;
+                }
+
+				for (let i = 0; i < primaryActions.length; i++) {
+					let actionButton = this.findActionButton(primaryActions[i]);
+
+					if (!actionButton) {
+						actionButton = new ActionButton(primaryActions[i], parentContainerStyle);
+						actionButton.onClick = (ab) => { ab.action.execute(); };
+
+						this._buttons.push(actionButton);
+					}
+
+					actionButton.render();
+
+					if (actionButton.action.renderedElement) {
+						if (primaryActions.length > 1) {
+							actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
+							actionButton.action.renderedElement.setAttribute("aria-setsize", primaryActions.length.toString());
+							actionButton.action.renderedElement.setAttribute("role", "menuitem");
+						}
+
+						if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
+							actionButton.action.renderedElement.style.flex = "0 1 100%";
+						}
+						else {
+							actionButton.action.renderedElement.style.flex = "0 1 auto";
+						}
+
+						buttonStrip.appendChild(actionButton.action.renderedElement);
+
+						this._renderedActionCount++;
+
+						if (i < primaryActions.length - 1 && hostConfig.actions.buttonSpacing > 0) {
+							let spacer = document.createElement("div");
+
+							if (orientation === Enums.Orientation.Horizontal) {
+								spacer.style.flex = "0 0 auto";
+								spacer.style.width = hostConfig.actions.buttonSpacing + "px";
+							}
+							else {
+								spacer.style.height = hostConfig.actions.buttonSpacing + "px";
+							}
+
+							Utils.appendChild(buttonStrip, spacer);
+						}
+					}
+				}
             }
 
             let buttonStripContainer = document.createElement("div");
@@ -4855,7 +5072,7 @@ class ActionCollection {
 
         Utils.appendChild(element, this._actionCardContainer);
 
-        for (let button of this.buttons) {
+        for (let button of this._buttons) {
             if (button.state == ActionButtonState.Expanded) {
                 this.expandShowCardAction(<ShowCardAction>button.action, false);
 
@@ -4871,8 +5088,8 @@ class ActionCollection {
             throw new Error("The action parameter cannot be null.");
         }
 
-        if ((!action.parent || action.parent === this._owner) && this.items.indexOf(action) < 0) {
-            this.items.push(action);
+        if ((!action.parent || action.parent === this._owner) && this._items.indexOf(action) < 0) {
+            this._items.push(action);
 
             if (!action.parent) {
                 action.setParent(this._owner);
@@ -4890,18 +5107,18 @@ class ActionCollection {
             this.collapseExpandedAction();
         }
 
-        let actionIndex = this.items.indexOf(action);
+        let actionIndex = this._items.indexOf(action);
 
         if (actionIndex >= 0) {
-            this.items.splice(actionIndex, 1);
+            this._items.splice(actionIndex, 1);
 
             action.setParent(undefined);
 
             action["_actionCollection"] = undefined;
 
-            for (let i = 0; i < this.buttons.length; i++) {
-                if (this.buttons[i].action == action) {
-                    this.buttons.splice(i, 1);
+            for (let i = 0; i < this._buttons.length; i++) {
+                if (this._buttons[i].action == action) {
+                    this._buttons.splice(i, 1);
 
                     break;
                 }
@@ -4914,8 +5131,8 @@ class ActionCollection {
     }
 
     clear() {
-        this.items = [];
-        this.buttons = [];
+        this._items = [];
+        this._buttons = [];
 
         this._expandedAction = undefined;
         this._renderedActionCount = 0;
@@ -4925,7 +5142,7 @@ class ActionCollection {
         let result: Input[] = [];
 
         if (processActions) {
-            for (let action of this.items) {
+            for (let action of this._items) {
                 result = result.concat(action.getAllInputs());
             }
         }
@@ -4933,10 +5150,20 @@ class ActionCollection {
         return result;
     }
 
+    findActionButton(action: Action): ActionButton | undefined {
+        for (let actionButton of this._buttons) {
+            if (actionButton.action == action) {
+                return actionButton;
+            }
+        }
+
+        return undefined;
+    }
+
     getResourceInformation(): IResourceInformation[] {
         let result: IResourceInformation[] = [];
 
-        for (let action of this.items) {
+        for (let action of this._items) {
             result = result.concat(action.getResourceInformation());
         }
 
@@ -4991,7 +5218,7 @@ export class ActionSet extends CardElement {
             return super.isBleedingAtBottom();
         }
         else {
-            if (this._actionCollection.items.length == 1) {
+            if (this._actionCollection.getActionCount() == 1) {
                 return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
             }
             else {
@@ -5005,12 +5232,12 @@ export class ActionSet extends CardElement {
     }
 
     getActionCount(): number {
-        return this._actionCollection.items.length;
+        return this._actionCollection.getActionCount();
     }
 
     getActionAt(index: number): Action | undefined {
         if (index >= 0 && index < this.getActionCount()) {
-            return this._actionCollection.items[index];
+            return this._actionCollection.getActionAt(index);
         }
         else {
             return super.getActionAt(index);
@@ -5047,12 +5274,16 @@ export class ActionSet extends CardElement {
     findDOMNodeOwner(node: Node): CardObject | undefined {
         let target: CardObject | undefined = undefined;
 
-        for (const action of this._actionCollection.items) {
-            // recur through each Action
-            target = action.findDOMNodeOwner(node);
+        for (let i = 0; i < this.getActionCount(); i++) {
+            let action = this.getActionAt(i);
 
-            if (target) {
-                return target;
+            if (action) {
+                // recur through each Action
+                target = action.findDOMNodeOwner(node);
+
+                if (target) {
+                    return target;
+                }
             }
         }
 
@@ -5231,7 +5462,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     isBleeding(): boolean {
-		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
+        return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -5424,8 +5655,8 @@ export class Container extends StylableCardElementContainer {
 
         let element = document.createElement("div");
 
-        if (this.rtl !== undefined && this.rtl) {
-            element.dir = "rtl";
+        if (this.rtl !== undefined) {
+            element.dir = this.rtl ? "rtl" : "ltr";
         }
 
         element.classList.add(hostConfig.makeCssClassName("ac-container"));
@@ -6207,11 +6438,11 @@ function raiseImageLoadedEvent(image: Image) {
     }
 }
 
-function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement): boolean {
+function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent): boolean {
     let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
 
-    return onAnchorClickedHandler !== undefined ? onAnchorClickedHandler(element, anchor) : false;
+    return onAnchorClickedHandler !== undefined ? onAnchorClickedHandler(element, anchor, ev) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
@@ -6254,6 +6485,26 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     if (onElementVisibilityChangedHandler !== undefined) {
         onElementVisibilityChangedHandler(element);
     }
+}
+
+/**
+ * @returns return false to continue with default context menu; return true to skip SDK default context menu
+ */
+function raiseDisplayOverflowActionMenuEvent(action: OverflowAction, target?: HTMLElement): boolean {
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
+    let onDisplayOverflowActionMenuHandler = (card && card.onDisplayOverflowActionMenu) ? card.onDisplayOverflowActionMenu : AdaptiveCard.onDisplayOverflowActionMenu;
+
+    return onDisplayOverflowActionMenuHandler !== undefined ? onDisplayOverflowActionMenuHandler(action.getActions(), target) : false;
+}
+
+/**
+ * @returns return false to continue with default action button; return true to skip SDK default action button
+ */
+function raiseRenderOverflowActionsEvent(action: OverflowAction, isAtRootLevelActions: boolean): boolean {
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
+    let onRenderOverflowActionsHandler = (card && card.onRenderOverflowActions) ? card.onRenderOverflowActions : AdaptiveCard.onRenderOverflowActions;
+
+    return onRenderOverflowActionsHandler !== undefined ? onRenderOverflowActionsHandler(action.getActions(), isAtRootLevelActions) : false;
 }
 
 export abstract class ContainerWithActions extends Container {
@@ -6328,12 +6579,12 @@ export abstract class ContainerWithActions extends Container {
     }
 
     getActionCount(): number {
-        return this._actionCollection.items.length;
+        return this._actionCollection.getActionCount();
     }
 
     getActionAt(index: number): Action | undefined {
         if (index >= 0 && index < this.getActionCount()) {
-            return this._actionCollection.items[index];
+            return this._actionCollection.getActionAt(index);
         }
         else {
             return super.getActionAt(index);
@@ -6355,7 +6606,7 @@ export abstract class ContainerWithActions extends Container {
     }
 
     isLastElement(element: CardElement): boolean {
-        return super.isLastElement(element) && this._actionCollection.items.length == 0;
+        return super.isLastElement(element) && this._actionCollection.getActionCount() == 0;
     }
 
     addAction(action: Action) {
@@ -6387,7 +6638,7 @@ export abstract class ContainerWithActions extends Container {
             return super.isBleedingAtBottom();
         }
         else {
-            if (this._actionCollection.items.length == 1) {
+            if (this._actionCollection.getActionCount() == 1) {
                 return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
             }
             else {
@@ -6404,6 +6655,150 @@ export abstract class ContainerWithActions extends Container {
 export interface IMarkdownProcessingResult {
     didProcess: boolean;
     outputHtml?: any;
+}
+
+export class RefreshActionProperty extends PropertyDefinition {
+    parse(sender: RefreshDefinition, source: PropertyBag, context: SerializationContext): ExecuteAction | undefined {
+        let action = context.parseAction(
+            sender.parent,
+            source[this.name],
+            [],
+            false);
+
+        if (action !== undefined) {
+            if (action instanceof ExecuteAction) {
+                return action;
+            }
+
+            context.logParseEvent(
+                sender,
+                Enums.ValidationEvent.ActionTypeNotAllowed,
+                Strings.errors.actionTypeNotAllowed(action.getJsonTypeName()));
+        }
+
+        context.logParseEvent(
+            sender,
+            Enums.ValidationEvent.PropertyCantBeNull,
+            Strings.errors.propertyMustBeSet("action"));
+
+        return undefined;
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: ExecuteAction | undefined, context: SerializationContext) {
+        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined, undefined, true);
+    }
+
+    constructor(readonly targetVersion: Version, readonly name: string) {
+        super(targetVersion, name, undefined);
+    }
+}
+
+export class RefreshDefinition extends SerializableObject {
+    //#region Schema
+
+    static readonly actionProperty = new RefreshActionProperty(Versions.v1_4, "action");
+    static readonly userIdsProperty = new StringArrayProperty(Versions.v1_4, "userIds");
+
+    @property(RefreshDefinition.actionProperty)
+    get action(): ExecuteAction {
+        return this.getValue(RefreshDefinition.actionProperty);
+    }
+
+    set action(value: ExecuteAction) {
+        this.setValue(RefreshDefinition.actionProperty, value);
+
+        if (value) {
+            value.setParent(this.parent);
+        }
+    }
+
+    @property(RefreshDefinition.userIdsProperty)
+    userIds?: string[];
+
+    protected getSchemaKey(): string {
+        return "RefreshDefinition";
+    }
+
+    //#endregion
+
+    parent: CardElement;
+}
+
+export class AuthCardButton extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(Versions.v1_4, "type");
+    static readonly titleProperty = new StringProperty(Versions.v1_4, "title");
+    static readonly imageProperty = new StringProperty(Versions.v1_4, "image");
+    static readonly valueProperty = new StringProperty(Versions.v1_4, "value");
+
+    protected getSchemaKey(): string {
+        return "AuthCardButton";
+    }
+
+    //#endregion
+
+    @property(AuthCardButton.typeProperty)
+    type: string;
+
+    @property(AuthCardButton.titleProperty)
+    title?: string;
+
+    @property(AuthCardButton.imageProperty)
+    image?: string;
+
+    @property(AuthCardButton.valueProperty)
+    value: string;
+}
+
+export class TokenExchangeResource extends SerializableObject {
+    //#region Schema
+
+    static readonly idProperty = new StringProperty(Versions.v1_4, "id");
+    static readonly uriProperty = new StringProperty(Versions.v1_4, "uri");
+    static readonly providerIdProperty = new StringProperty(Versions.v1_4, "providerId");
+
+    protected getSchemaKey(): string {
+        return "TokenExchangeResource";
+    }
+
+    //#endregion
+
+    @property(TokenExchangeResource.idProperty)
+    id?: string;
+
+    @property(TokenExchangeResource.uriProperty)
+    uri?: string;
+
+    @property(TokenExchangeResource.providerIdProperty)
+    providerId?: string;
+}
+
+export class Authentication extends SerializableObject {
+    //#region Schema
+
+    static readonly textProperty = new StringProperty(Versions.v1_4, "text");
+    static readonly connectionNameProperty = new StringProperty(Versions.v1_4, "connectionName");
+    static readonly buttonsProperty = new SerializableObjectCollectionProperty(Versions.v1_4, "buttons", AuthCardButton);
+    static readonly tokenExchangeResourceProperty = new SerializableObjectProperty(Versions.v1_4, "tokenExchangeResource", TokenExchangeResource, true);
+
+    protected getSchemaKey(): string {
+        return "Authentication";
+    }
+
+    //#endregion
+
+    @property(Authentication.textProperty)
+    text?: string;
+
+    @property(Authentication.connectionNameProperty)
+    connectionName?: string;
+
+    @property(Authentication.buttonsProperty)
+    buttons: AuthCardButton[];
+
+    @property(Authentication.tokenExchangeResourceProperty)
+    tokenExchangeResource?: TokenExchangeResource;
 }
 
 // @dynamic
@@ -6447,6 +6842,8 @@ export class AdaptiveCard extends ContainerWithActions {
         Versions.v1_0);
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
+    static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
+    static readonly authenticationProperty = new SerializableObjectProperty(Versions.v1_4, "authentication", Authentication, true);
 
     @property(AdaptiveCard.versionProperty)
     version: Version;
@@ -6457,15 +6854,33 @@ export class AdaptiveCard extends ContainerWithActions {
     @property(AdaptiveCard.speakProperty)
     speak?: string;
 
+    @property(AdaptiveCard.refreshProperty)
+    get refresh(): RefreshDefinition | undefined {
+        return this.getValue(AdaptiveCard.refreshProperty);
+    }
+
+    set refresh(value: RefreshDefinition | undefined) {
+        this.setValue(AdaptiveCard.refreshProperty, value);
+
+        if (value) {
+            value.parent = this;
+        }
+    }
+
+    @property(AdaptiveCard.authenticationProperty)
+    authentication?: Authentication;
+
     //#endregion
 
-    static onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement) => boolean;
+    static onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent) => boolean;
     static onExecuteAction?: (action: Action) => void;
     static onElementVisibilityChanged?: (element: CardElement) => void;
     static onImageLoaded?: (image: Image) => void;
     static onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     static onInputValueChanged?: (input: Input) => void;
     static onProcessMarkdown?: (text: string, result: IMarkdownProcessingResult) => void;
+    static onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
+    static onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 
     static get processMarkdown(): (text: string) => string {
         throw new Error(Strings.errors.processMarkdownEventRemoved());
@@ -6585,12 +7000,14 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement) => boolean;
+    onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent) => boolean;
     onExecuteAction?: (action: Action) => void;
     onElementVisibilityChanged?: (element: CardElement) => void;
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
+    onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
+    onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 
     designMode: boolean = false;
 
@@ -6760,6 +7177,7 @@ export class GlobalRegistry {
         registry.register(SubmitAction.JsonTypeName, SubmitAction);
         registry.register(ShowCardAction.JsonTypeName, ShowCardAction);
         registry.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
+        registry.register(ExecuteAction.JsonTypeName, ExecuteAction, Versions.v1_4);
     }
 
     static readonly elements = new CardObjectRegistry<CardElement>();
@@ -6852,6 +7270,18 @@ export class SerializationContext extends BaseSerializationContext {
 
     onParseAction?: (action: Action, source: any, context: SerializationContext) => void;
     onParseElement?: (element: CardElement, source: any, context: SerializationContext) => void;
+
+    shouldSerialize(o: SerializableObject): boolean {
+        if (o instanceof Action) {
+            return this.actionRegistry.findByName(o.getJsonTypeName()) !== undefined;
+        }
+        else if (o instanceof CardElement) {
+            return this.elementRegistry.findByName(o.getJsonTypeName()) !== undefined;
+        }
+        else {
+            return true;
+        }
+    }
 
     parseCardObject<T extends CardObject>(
         parent: CardElement | undefined,
