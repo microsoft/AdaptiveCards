@@ -409,7 +409,7 @@ export class HostConfig {
 		lineThickness: 1,
 		lineColor: "#A9A9A9"
 	};
-	
+
 	horizontalAlignment = {
 		left: "left",
 		center: "center",
@@ -500,7 +500,7 @@ export class HostConfig {
 			};
 
 			this.containerStyles = new ContainerStyleSet(obj["containerStyles"]);
-			if(obj.spacing) {
+			if (obj.spacing) {
 				this.spacing = {
 					none: Utils.isaNumber(obj.spacing["none"]) ? obj.spacing["none"] : this.spacing.none,
 					small: Utils.isaNumber(obj.spacing["small"]) ? obj.spacing["small"] : this.spacing.small,
@@ -692,10 +692,10 @@ export class HostCapabilities {
 	}
 
 	constructor(capabilities) {
-		if(capabilities) {
-			for(let capability in capabilities) {
+		if (capabilities) {
+			for (let capability in capabilities) {
 				let version = new Version(capabilities[capability])
-				if(version.isValid) {
+				if (version.isValid) {
 					this.setCapability(capability, version)
 				}
 			}
@@ -703,9 +703,9 @@ export class HostCapabilities {
 	}
 
 	satisfied = (capabilities) => {
-		for(let capability in this.capabilities) {
+		for (let capability in this.capabilities) {
 			let satisfied = capabilities.hasCapability(capability, this.capabilities[capability])
-			if(!satisfied) {
+			if (!satisfied) {
 				return false
 			}
 		}
@@ -714,7 +714,7 @@ export class HostCapabilities {
 
 	hasCapability = (capability, version) => {
 		if (this.capabilities.hasOwnProperty(capability)) {
-			if(version.version == "*") {
+			if (version.version == "*") {
 				return true;
 			} else {
 				return version.compareTo(this.capabilities[capability]) <= 0;
@@ -738,26 +738,26 @@ export class Version {
 		if (matches != null && matches.length == 3) {
 			this.major = parseInt(matches[1])
 			this.minor = parseInt(matches[2])
-		} else if(version != '*') {
+		} else if (version != '*') {
 			this.isValid = false
 		}
 	}
 
 	compareTo(other) {
-        if (!this.isValid || !other.isValid) {
-            return 1
-        }
- 		if (this.major > other.major) {
-            return 1;
-        } else if (this.major < other.major) {
-            return -1;
-        } else if (this.minor > other.minor) {
-            return 1; 
-        } else if (this.minor < other.minor) {
-            return -1;
-        }
-        return 0;
-    }
+		if (!this.isValid || !other.isValid) {
+			return 1
+		}
+		if (this.major > other.major) {
+			return 1;
+		} else if (this.major < other.major) {
+			return -1;
+		} else if (this.minor > other.minor) {
+			return 1;
+		} else if (this.minor < other.minor) {
+			return -1;
+		}
+		return 0;
+	}
 }
 
 export const defaultHostConfig = {
@@ -804,7 +804,7 @@ export const defaultHostConfig = {
 		medium: 20,
 		large: 30,
 		extraLarge: 40,
-		padding: 10
+		padding: 5
 	},
 	separator: {
 		lineThickness: 1,
