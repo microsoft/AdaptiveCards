@@ -175,6 +175,7 @@ namespace UWPUnitTests
                 Language = "en",
                 MaxLines = 3,
                 Size = TextSize.Large,
+                Style = TextStyle.Heading,
                 Text = "This is a text block",
                 Weight = TextWeight.Bolder,
                 Wrap = true,
@@ -196,12 +197,21 @@ namespace UWPUnitTests
             Assert.AreEqual("en", textBlock.Language);
             Assert.AreEqual<uint>(3, textBlock.MaxLines);
             Assert.AreEqual(TextSize.Large, textBlock.Size);
+            Assert.AreEqual(TextStyle.Heading, textBlock.Style);
             Assert.AreEqual("This is a text block", textBlock.Text);
             Assert.AreEqual(TextWeight.Bolder, textBlock.Weight);
             Assert.IsTrue(textBlock.Wrap);
 
-            var jsonString = textBlock.ToJson().ToString();
-            Assert.AreEqual("{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(textBlock);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"style\":\"heading\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -301,6 +311,7 @@ namespace UWPUnitTests
                 Bleed = true,
                 Style = ContainerStyle.Emphasis,
                 VerticalContentAlignment = VerticalContentAlignment.Bottom,
+                Rtl = true,
 
                 // Base Element Properties
                 Height = HeightType.Stretch,
@@ -315,6 +326,8 @@ namespace UWPUnitTests
             Assert.IsTrue(container.Bleed);
             Assert.AreEqual(ContainerStyle.Emphasis, container.Style);
             Assert.AreEqual(VerticalContentAlignment.Bottom, container.VerticalContentAlignment);
+            Assert.IsTrue(container.Rtl.HasValue);
+            Assert.IsTrue(container.Rtl.Value);
 
             container.SelectAction = new AdaptiveSubmitAction
             {
@@ -338,8 +351,16 @@ namespace UWPUnitTests
             Assert.AreEqual("This is a text block", (container.Items[0] as AdaptiveTextBlock).Text);
             Assert.AreEqual("This is another text block", (container.Items[1] as AdaptiveTextBlock).Text);
 
-            var jsonString = container.ToJson().ToString();
-            Assert.AreEqual("{\"bleed\":true,\"height\":\"Stretch\",\"id\":\"ContainerId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"Container\",\"verticalContentAlignment\":\"Bottom\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(container);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"bleed\":true,\"height\":\"Stretch\",\"id\":\"ContainerId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"rtl\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"Container\",\"verticalContentAlignment\":\"Bottom\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -352,6 +373,7 @@ namespace UWPUnitTests
                 Style = ContainerStyle.Emphasis,
                 VerticalContentAlignment = VerticalContentAlignment.Bottom,
                 Width = "50px",
+                Rtl = true,
 
                 // Base Element Properties
                 Height = HeightType.Stretch,
@@ -368,6 +390,8 @@ namespace UWPUnitTests
             Assert.AreEqual(VerticalContentAlignment.Bottom, column1.VerticalContentAlignment);
             Assert.AreEqual("50px", column1.Width);
             Assert.AreEqual<uint>(50, column1.PixelWidth);
+            Assert.IsTrue(column1.Rtl.HasValue);
+            Assert.IsTrue(column1.Rtl.Value);
 
             column1.SelectAction = new AdaptiveSubmitAction
             {
@@ -399,13 +423,24 @@ namespace UWPUnitTests
 
             AdaptiveColumn column2 = new AdaptiveColumn
             {
-                Id = "Column2Id"
+                Id = "Column2Id",
+                Rtl = false
             };
             AdaptiveTextBlock textBlock3 = new AdaptiveTextBlock
             {
                 Text = "This is a text block"
             };
             column2.Items.Add(textBlock3);
+
+            Assert.IsTrue(column2.Rtl.HasValue);
+            Assert.IsFalse(column2.Rtl.Value);
+
+            AdaptiveColumn column3 = new AdaptiveColumn
+            {
+                Id = "Column3Id"
+            };
+
+            Assert.IsFalse(column3.Rtl.HasValue);
 
             AdaptiveColumnSet columnSet = new AdaptiveColumnSet
             {
@@ -428,12 +463,22 @@ namespace UWPUnitTests
 
             columnSet.Columns.Add(column1);
             columnSet.Columns.Add(column2);
+            columnSet.Columns.Add(column3);
 
             Assert.AreEqual("ColumnId", columnSet.Columns[0].Id);
             Assert.AreEqual("Column2Id", columnSet.Columns[1].Id);
+            Assert.AreEqual("Column3Id", columnSet.Columns[2].Id);
 
-            var jsonString = columnSet.ToJson().ToString();
-            Assert.AreEqual("{\"bleed\":true,\"columns\":[{\"bleed\":true,\"fallback\":{\"items\":[],\"type\":\"Column\",\"width\":\"auto\"},\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(columnSet);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"bleed\":true,\"columns\":[{\"bleed\":true,\"fallback\":{\"items\":[],\"type\":\"Column\",\"width\":\"auto\"},\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"rtl\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"rtl\":false,\"type\":\"Column\",\"width\":\"auto\"},{\"id\":\"Column3Id\",\"items\":[],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]

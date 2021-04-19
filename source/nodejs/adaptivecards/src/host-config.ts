@@ -245,6 +245,16 @@ export class FactSetConfig {
     }
 }
 
+export class HeadingsConfig {
+    level?: number;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.level = obj.level !== undefined && obj.level !== null && typeof obj.level === "number" ? obj.level : this.level;
+        }
+    }
+}
+
 export class ShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode = Enums.ShowCardActionMode.Inline;
     inlineTopMargin: number = 16;
@@ -606,6 +616,7 @@ export class HostConfig {
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
     readonly table: TableConfig = new TableConfig();
+    readonly headings: HeadingsConfig = new HeadingsConfig();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;

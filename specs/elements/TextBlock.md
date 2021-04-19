@@ -14,6 +14,7 @@
 | **size** | `FontSize` | No | Controls size of text. | 1.0 |
 | **weight** | `FontWeight` | No | Controls the weight of `TextBlock` elements. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.0 |
+| **style** | `TextBlockStyle` | No, default: `"paragraph"` | The style of this TextBlock for accessibility purposes. | 1.0 |
 
 **Inherited properties**
 
@@ -92,6 +93,17 @@ Controls the weight of `TextBlock` elements.
   * `"default"`
   * `"lighter"`
   * `"bolder"`
+
+
+## style
+
+The style of this TextBlock for accessibility purposes.
+
+* **Type**: `TextBlockStyle`
+* **Required**: No, default: `"paragraph"`
+* **Allowed values**:
+  * `"paragraph"`: This is the default style. The TextBlock behaves as standard content and will be read as such by accessibility software.
+  * `"heading"`: The TextBlock behaves as a heading which impacts how accessibility software handles navigation and narration.
 
 
 ## fallback

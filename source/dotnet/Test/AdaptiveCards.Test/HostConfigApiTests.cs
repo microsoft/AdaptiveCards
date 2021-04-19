@@ -184,6 +184,9 @@ namespace AdaptiveCards.Test
         ""weight"": ""lighter""
       }
     }
+  },
+  ""headings"": {
+    ""level"": 1
   }
 }");
 
@@ -263,6 +266,9 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(AdaptiveTextColor.Good, hostConfig.Inputs.Label.OptionalInputs.Color);
             Assert.AreEqual(AdaptiveTextSize.Default, hostConfig.Inputs.Label.OptionalInputs.Size);
             Assert.AreEqual(true, hostConfig.Inputs.Label.OptionalInputs.IsSubtle);
+
+            // Headings config
+            Assert.AreEqual(1, hostConfig.Headings.Level);
         }
 
         [TestMethod]

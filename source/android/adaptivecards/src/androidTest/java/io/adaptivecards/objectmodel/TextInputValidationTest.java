@@ -1,14 +1,13 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.v4.app.FragmentManager;
+import androidx.test.InstrumentationRegistry;
+
 import android.widget.EditText;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 
 public class TextInputValidationTest

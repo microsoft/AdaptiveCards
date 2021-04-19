@@ -69,6 +69,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ForegroundColor, "foregroundColor"},
             {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
             {AdaptiveCardSchemaKey::Good, "good"},
+            {AdaptiveCardSchemaKey::Headings, "headings"},
             {AdaptiveCardSchemaKey::Height, "height"},
             {AdaptiveCardSchemaKey::Highlight, "highlight"},
             {AdaptiveCardSchemaKey::HighlightColor, "highlightColor"},
@@ -97,10 +98,11 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IsVisible, "isVisible"},
             {AdaptiveCardSchemaKey::Italic, "italic"},
             {AdaptiveCardSchemaKey::Items, "items"},
-			{AdaptiveCardSchemaKey::Label, "label"},
+            {AdaptiveCardSchemaKey::Label, "label"},
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
             {AdaptiveCardSchemaKey::Left, "left"},
+            {AdaptiveCardSchemaKey::Level, "level"},
             {AdaptiveCardSchemaKey::Light, "light"},
             {AdaptiveCardSchemaKey::Lighter, "lighter"},
             {AdaptiveCardSchemaKey::LineColor, "lineColor"},
@@ -117,6 +119,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::MimeType, "mimeType"},
             {AdaptiveCardSchemaKey::Min, "min"},
             {AdaptiveCardSchemaKey::MinHeight, "minHeight"},
+            {AdaptiveCardSchemaKey::Mode, "mode"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::OptionalInputs, "optionalInputs"},
@@ -134,6 +137,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Requires, "requires"},
             {AdaptiveCardSchemaKey::RichTextBlock, "richTextBlock"},
             {AdaptiveCardSchemaKey::Right, "right"},
+            {AdaptiveCardSchemaKey::Rtl, "rtl"},
             {AdaptiveCardSchemaKey::Schema, "$schema"},
             {AdaptiveCardSchemaKey::SelectAction, "selectAction"},
             {AdaptiveCardSchemaKey::Separator, "separator"},
@@ -211,7 +215,8 @@ namespace AdaptiveSharedNamespace
             {ActionType::Submit, "Action.Submit"},
             {ActionType::ToggleVisibility, "Action.ToggleVisibility"},
             {ActionType::Custom, "Custom"},
-            {ActionType::UnknownAction, "UnknownAction"}});
+            {ActionType::UnknownAction, "UnknownAction"},
+            {ActionType::Overflow, "Overflow"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HeightType, HeightType::Stretch, {
             {HeightType::Auto, "Auto"},
@@ -270,6 +275,10 @@ namespace AdaptiveSharedNamespace
             {ForegroundColor::Good, "Good"},
             {ForegroundColor::Light, "Light"},
             {ForegroundColor::Warning, "Warning"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(TextStyle , TextStyle::Paragraph, {
+            {TextStyle::Paragraph, "paragraph"},
+            {TextStyle::Heading, "heading"}});
 
     DEFINE_ADAPTIVECARD_ENUM(TextWeight, {
             {
@@ -344,4 +353,8 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
             {InlineElementType::TextRun, "TextRun"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(Mode, Mode::Primary, {
+            {Mode::Primary, "primary"},
+            {Mode::Secondary, "secondary"}});
 }

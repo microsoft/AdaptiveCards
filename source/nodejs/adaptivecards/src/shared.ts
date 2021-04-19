@@ -32,6 +32,7 @@ export class GlobalSettings {
     static setTabIndexAtCardRoot: boolean = true;
     static enableFallback: boolean = true;
     static useWebkitLineClamp: boolean = true;
+    static allowMoreThanMaxActionsInOverflowMenu: boolean = false;
 
     static readonly applets: AppletsSettings = {
         logEnabled: true,

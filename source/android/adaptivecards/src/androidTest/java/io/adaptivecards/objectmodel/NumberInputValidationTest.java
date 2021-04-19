@@ -1,7 +1,7 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.v4.app.FragmentManager;
+import androidx.test.InstrumentationRegistry;
+import androidx.fragment.app.FragmentManager;
 import android.widget.EditText;
 
 import junit.framework.Assert;

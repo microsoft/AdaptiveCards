@@ -233,6 +233,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     auto result = std::make_shared<AdaptiveCard>(
         version, fallbackText, backgroundImage, refresh, authentication, style, speak, language, verticalContentAlignment, height, minHeight, body, actions);
     result->SetLanguage(language);
+    result->SetRtl(ParseUtil::GetOptionalBool(json, AdaptiveCardSchemaKey::Rtl));
 
     // Parse optional selectAction
     result->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
@@ -319,6 +320,11 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
     if (m_minHeight)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight)] = std::to_string(GetMinHeight()) + "px";
+    }
+
+    if (m_rtl.has_value())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl)] = m_rtl.value_or("");
     }
 
     const HeightType height = GetHeight();
@@ -514,6 +520,17 @@ unsigned int AdaptiveCard::GetMinHeight() const
 void AdaptiveCard::SetMinHeight(const unsigned int value)
 {
     m_minHeight = value;
+}
+
+// value is present if and only if "rtl" property is explicitly set
+std::optional<bool> AdaptiveCard::GetRtl() const
+{
+    return m_rtl;
+}
+
+void AdaptiveCard::SetRtl(const std::optional<bool>& value)
+{
+    m_rtl = value;
 }
 
 void AdaptiveCard::PopulateKnownPropertiesSet()

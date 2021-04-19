@@ -55,6 +55,36 @@ void configSeparatorVisibility(ACRSeparator *view,
     view.isVisibilityObserved = YES;
 }
 
+ACRRtl getiOSRtl(std::optional<bool> const rtl)
+{
+    ACRRtl acrtl = ACRRtlNone;
+    if (rtl.has_value()) {
+        BOOL doSetRTL = rtl.value_or(false);
+        if (doSetRTL) {
+            acrtl = ACRRtlRTL;
+        } else {
+            acrtl = ACRRtlLTR;
+        }
+    }
+    return acrtl;
+}
+
+void configRtl(UIView *view, ACORenderContext *context)
+{
+    if (!view || !context) {
+        return;
+    }
+
+    ACRRtl rtl = context.rtl;
+    if (rtl == ACRRtlNone) {
+        return;
+    } else if (rtl == ACRRtlRTL) {
+        view.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+    } else if (rtl == ACRRtlRTL) {
+        view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+}
+
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
                            ACRContentStackView *containerView, ACRView *rootView)
 {
@@ -886,3 +916,52 @@ NSData *JsonToNSData(const Json::Value &blob)
                                  encoding:NSUTF8StringEncoding];
     return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
 }
+
+void partitionActions(
+    const std::vector<std::shared_ptr<BaseActionElement>> &elems,
+    std::vector<std::shared_ptr<BaseActionElement>> &primary,
+    std::vector<std::shared_ptr<BaseActionElement>> &secondary,
+    unsigned int maxActions,
+    ACRView *rootView)
+{
+    std::partition_copy(std::begin(elems),
+                        std::end(elems),
+                        std::inserter(secondary, std::end(secondary)),
+                        std::inserter(primary, std::end(primary)),
+                        [](std::shared_ptr<BaseActionElement> elem) {
+                            return elem->GetMode() == Mode::Secondary;
+                        });
+
+    unsigned long uMaxActionsToRender = MIN(maxActions, primary.size());
+
+    BOOL allowMoreThanMaxActionsInOverflowMenu = NO;
+    if ([rootView.acrActionDelegate respondsToSelector:@selector(shouldAllowMoreThanMaxActionsInOverflowMenu)]) {
+        allowMoreThanMaxActionsInOverflowMenu =
+            [rootView.acrActionDelegate shouldAllowMoreThanMaxActionsInOverflowMenu];
+    }
+
+    if (uMaxActionsToRender < primary.size()) {
+        auto start = std::begin(primary) + uMaxActionsToRender;
+        auto end = std::end(primary);
+
+        if (allowMoreThanMaxActionsInOverflowMenu) {
+            std::copy(start, end, std::back_inserter(secondary));
+        } else {
+            [rootView addWarnings:ACRWarningStatusCode::ACRMaxActionsExceeded
+                           mesage:@"Some actions were not rendered due to exceeding the maximum number "
+                                  @"of actions allowed"];
+        }
+
+        primary.erase(start, end);
+    }
+}
+
+UIImage *scaleImageToSize(UIImage *image, CGSize newSize)
+{
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+

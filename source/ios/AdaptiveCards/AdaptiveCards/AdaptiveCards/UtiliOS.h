@@ -1,9 +1,10 @@
 //
 //  UtiliOS
 //
-//  Copyfight © 2019 Microsoft. All rights reserved.
+//  Copyfight © 2021 Microsoft. All rights reserved.
 //
 
+#import "ACORenderContext.h"
 #import "ACRErrors.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRSeparator.h"
@@ -24,6 +25,10 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo);
+
+void configRtl(UIView *view, ACORenderContext *context);
+
+ACRRtl getiOSRtl(std::optional<bool> const rtl);
 
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig);
@@ -102,3 +107,12 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
 void printSize(NSString *msg, CGSize size);
 
 NSData *JsonToNSData(const Json::Value &blob);
+
+void partitionActions(
+    const std::vector<std::shared_ptr<BaseActionElement>> &elems,
+    std::vector<std::shared_ptr<BaseActionElement>> &primary,
+    std::vector<std::shared_ptr<BaseActionElement>> &secondary,
+    unsigned int maxActions,
+    ACRView *rootView);
+
+UIImage *scaleImageToSize(UIImage *image, CGSize newSize);

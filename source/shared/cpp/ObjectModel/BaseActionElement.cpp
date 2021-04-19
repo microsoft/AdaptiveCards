@@ -9,7 +9,7 @@ using namespace AdaptiveSharedNamespace;
 
 constexpr const char* const BaseActionElement::defaultStyle;
 
-BaseActionElement::BaseActionElement(ActionType type) : m_style(BaseActionElement::defaultStyle), m_type(type)
+BaseActionElement::BaseActionElement(ActionType type) : m_style(BaseActionElement::defaultStyle), m_type(type), m_mode(Mode::Primary)
 {
     SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -60,9 +60,19 @@ void BaseActionElement::SetStyle(const std::string& value)
     m_style = value;
 }
 
+void BaseActionElement::SetMode(const Mode value)
+{
+    m_mode = value;
+}
+
 ActionType BaseActionElement::GetElementType() const
 {
     return m_type;
+}
+
+Mode BaseActionElement::GetMode() const
+{
+    return m_mode;
 }
 
 Json::Value BaseActionElement::SerializeToJsonValue() const
@@ -83,6 +93,10 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = m_style;
     }
+    if (m_mode != Mode::Primary)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode)] = ModeToString(m_mode);
+    }
 
     return root;
 }
@@ -91,7 +105,8 @@ void BaseActionElement::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode)});
 }
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -132,4 +147,6 @@ void BaseActionElement::DeserializeBaseProperties(ParseContext& context, const J
     element->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
     element->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
     element->SetStyle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Style, defaultStyle, false));
+    element->SetMode(ParseUtil::GetEnumValue<Mode>(json, AdaptiveCardSchemaKey::Mode, Mode::Primary,
+                                                   ModeFromString));
 }

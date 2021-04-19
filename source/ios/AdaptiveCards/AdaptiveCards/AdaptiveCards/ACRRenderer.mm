@@ -77,6 +77,13 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
 
+    // set context
+    ACOAdaptiveCard *wrapperCard = [[ACOAdaptiveCard alloc] init];
+    [wrapperCard setCard:adaptiveCard];
+    [rootView.context pushCardContext:wrapperCard];
+
+    verticalView.rtl = rootView.context.rtl;
+
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
     if (selectAction) {
         ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
@@ -145,6 +152,8 @@ using namespace AdaptiveCards;
 
     // renders background image for AdaptiveCard and an inner AdaptiveCard in a ShowCard
     renderBackgroundImage(backgroundImageProperties, verticalView, rootView);
+
+    [rootView.context popCardContext:wrapperCard];
 
     return verticalView;
 }

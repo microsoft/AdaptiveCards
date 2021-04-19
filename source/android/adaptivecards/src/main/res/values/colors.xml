@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="menu_border_color">#adadad</color>
+    <color name="menu_divider_color">#c9c9c9</color>
+    <color name="dropdown_text_color">#252424</color>
+</resources>

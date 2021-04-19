@@ -132,15 +132,15 @@ using namespace AdaptiveCards;
     return _config->GetFontSize(type, txtSz);
 }
 
-+ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment
++ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment context:(ACORenderContext *)context
 {
     switch (alignment) {
         case HorizontalAlignment::Center:
             return NSTextAlignmentCenter;
         case HorizontalAlignment::Left:
-            return NSTextAlignmentLeft;
+            return (context.rtl == ACRRtlRTL) ? NSTextAlignmentRight : NSTextAlignmentLeft;
         case HorizontalAlignment::Right:
-            return NSTextAlignmentRight;
+            return (context.rtl == ACRRtlRTL) ? NSTextAlignmentLeft : NSTextAlignmentRight;
         default:
             return NSTextAlignmentLeft;
     }
@@ -181,8 +181,7 @@ using namespace AdaptiveCards;
             sz = _config->GetImageSizes().smallSize;
             break;
 
-        case ACRImageSizeExplicit:
-        {
+        case ACRImageSizeExplicit: {
             BOOL isAspectRatioNeeded = !(width && height);
             CGSize imageSizeAsCGSize = CGSizeZero;
             if (width) {
