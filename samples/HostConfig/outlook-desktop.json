@@ -50,6 +50,15 @@
             }
         }
     },
+    "textStyles": {
+        "heading": {
+            "fontType": "default",
+            "size": "large",
+            "weight": "bolder",
+            "color": "default",
+            "isSubtle": false
+        }
+    },
     "containerStyles": {
         "default": {
             "backgroundColor": "#FFFFFF",

@@ -108,15 +108,19 @@ export class BaseTextDefinition {
     weight: Enums.TextWeight = Enums.TextWeight.Default;
 
     constructor(obj?: any) {
+        this.parse(obj);
+    }
+
+    parse(obj: any) {
         if (obj) {
             this.size = parseHostConfigEnum(Enums.TextSize, obj["size"], this.size);
             this.color = parseHostConfigEnum(Enums.TextColor, obj["color"], this.color);
-            this.isSubtle = obj["isSubtle"] || this.isSubtle;
+            this.isSubtle = obj.isSubtle !== undefined && typeof obj.isSubtle === "boolean" ? obj.isSubtle : this.isSubtle;
             this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
         }
     }
 
-    getDefaultWeight() {
+    getDefaultWeight(): Enums.TextWeight {
         return Enums.TextWeight.Default;
     }
 
@@ -130,12 +134,61 @@ export class BaseTextDefinition {
     }
 }
 
+export class TextStyleDefinition extends BaseTextDefinition {
+    private _headingLevel?: number;
+
+    fontType: Enums.FontType = Enums.FontType.Default;
+
+    parse(obj: any) {
+        super.parse(obj);
+
+        if (obj) {
+            this._headingLevel = Utils.parseNumber(obj.headingLevel);
+            this.fontType = parseHostConfigEnum(Enums.FontType, obj.fontType, this.fontType);
+        }
+    }
+
+    toJSON(): any {
+        let result = super.toJSON();
+
+        if (result !== undefined) {
+            result.headingLevel = this._headingLevel;
+        }
+
+        return result;
+    }
+
+    get headingLevel(): number {
+        return this._headingLevel !== undefined ? this._headingLevel : 0;
+    }
+}
+
+export class TextStyleSet {
+    readonly default: TextStyleDefinition = new TextStyleDefinition();
+    readonly heading: TextStyleDefinition = new TextStyleDefinition(
+        {
+            headingLevel: 2,
+            size: "Large",
+            weight: "Bolder"
+        });
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.heading.parse(obj.heading);
+        }
+    }
+
+    getStyleByName(name: string): TextStyleDefinition {
+        return name.toLowerCase() === "heading" ? this.heading : this.default;
+    }
+}
+
 export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
     suffix?: string = " *";
     suffixColor: Enums.TextColor = Enums.TextColor.Attention;
 
-    constructor(obj?: any) {
-        super(obj);
+    parse(obj?: any) {
+        super.parse(obj);
 
         if (obj) {
             this.suffix = obj["suffix"] || this.suffix;
@@ -181,8 +234,8 @@ export class InputConfig {
 export class FactTextDefinition extends BaseTextDefinition {
     wrap: boolean = true;
 
-    constructor(obj?: any) {
-        super(obj);
+    parse(obj?: any) {
+        super.parse(obj);
 
         if (obj) {
             this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
@@ -225,16 +278,6 @@ export class FactSetConfig {
             this.title = new FactTitleDefinition(obj["title"]);
             this.value = new FactTextDefinition(obj["value"]);
             this.spacing = obj.spacing && obj.spacing != null ? obj.spacing && obj.spacing : this.spacing;
-        }
-    }
-}
-
-export class HeadingsConfig {
-    level?: number;
-
-    constructor(obj?: any) {
-        if (obj) {
-            this.level = obj.level !== undefined && obj.level !== null && typeof obj.level === "number" ? obj.level : this.level;
         }
     }
 }
@@ -596,7 +639,7 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
-    readonly headings: HeadingsConfig = new HeadingsConfig();
+    readonly textStyles: TextStyleSet = new TextStyleSet();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;

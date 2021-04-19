@@ -44,6 +44,15 @@
 			}
 		}
 	},
+    "textStyles": {
+        "heading": {
+            "fontType": "default",
+            "size": "large",
+            "weight": "bolder",
+            "color": "default",
+            "isSubtle": false
+        }
+    },
 	"imageSizes": {
 		"small": 20,
 		"medium": 40,
