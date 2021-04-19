@@ -2,32 +2,7 @@ import { ThemeElement } from '../utils/enums';
 import * as Constants from '../utils/constants';
 
 
-export class ThemeConfigManager {
-
-    static themeConfig = null;
-
-	/**
-     * @description Return the theme config
-	 * @returns {ThemeConfigManager}
-	 */
-    static getThemeConfig() {
-        if (!ThemeConfigManager.themeConfig) {
-            ThemeConfigManager.themeConfig = new ThemeConfig(defaultThemeConfig);
-        }
-        return this.themeConfig;
-    }
-
-    /**
-     * @description Set the custom theme config property
-     * @param {object} value 
-     */
-    static setThemeConfig(value) {
-        let newThemeConfig = { ...defaultThemeConfig, ...value }
-        this.themeConfig = new ThemeConfig(newThemeConfig);
-    }
-}
-
-class ThemeConfig {
+export class ThemeConfig {
     constructor(obj = {}) {
         this.button = new Config(ThemeElement.Button, obj);
         this.input = new Config(ThemeElement.Input, obj);
@@ -35,7 +10,10 @@ class ThemeConfig {
         this.inputTime = new Config(ThemeElement.InputTime, obj);
         this.radioButton = new Config(ThemeElement.RadioButton, obj);
         this.checkBox = new Config(ThemeElement.CheckBox, obj);
-        this.choiceSetTitle = new Config(ThemeElement.ChoiceSetTitle, obj);
+        this.radioButtonText = new Config(ThemeElement.RadioButtonText, obj);
+        this.checkBoxText = new Config(ThemeElement.CheckBoxText, obj);
+        this.dropdown = new Config(ThemeElement.Dropdown, obj);
+        this.dropdownText = new Config(ThemeElement.DropdownText, obj);
     }
 }
 
@@ -63,7 +41,7 @@ class Config {
 
 // Open Issue : Setting `textTransform` style in android doesn't render the text itself.
 // Refer : https://github.com/facebook/react-native/issues/21966
-const defaultThemeConfig = {
+export const defaultThemeConfig = {
     button: {
         ios: {
             borderRadius: 15,
@@ -109,16 +87,44 @@ const defaultThemeConfig = {
         borderRadius: 5,
     },
     radioButton: {
-        width: 28,
-        height: 28
+        width: 24,
+        height: 24,
+        activeColor: Constants.BlackColor,
+        inactiveColor: Constants.LightBlack,
+    },
+    radioButtonText: {
+        marginLeft: 8,
+        flexShrink: 1,
+        activeColor: Constants.BlackColor,
+        inactiveColor: Constants.LightBlack,
     },
     checkBox: {
         width: 28,
-        height: 28
+        height: 28,
+        activeColor: Constants.BlackColor,
+        inactiveColor: Constants.LightBlack,
     },
-    choiceSetTitle: {
+    checkBoxText: {
         marginLeft: 8,
-        flexShrink: 1
+        flexShrink: 1,
+        activeColor: Constants.BlackColor,
+        inactiveColor: Constants.LightBlack,
     },
+    dropdown: {
+        flexDirection: Constants.FlexRow,
+        justifyContent: Constants.SpaceBetween,
+        alignItems: Constants.FlexEnd,
+        borderWidth: 1,
+        backgroundColor: Constants.WhiteColor,
+        borderColor: Constants.LightGreyColor,
+        borderRadius: 5,
+    },
+    dropdownText: {
+        color: Constants.BlackColor,
+        textAlign: Constants.LeftAlign,
+        marginTop: 10,
+        marginLeft: 8,
+        height: 30,
+    }
 
 }

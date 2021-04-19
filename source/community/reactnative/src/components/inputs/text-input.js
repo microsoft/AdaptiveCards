@@ -7,7 +7,6 @@
 import React from 'react';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
 import * as Utils from '../../utils/util';
 
@@ -57,7 +56,7 @@ export class InputText extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.props.configManager.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -72,6 +71,7 @@ export class InputText extends React.Component {
 				isError={this.state.isError}
 				styleValue={this.styleValue}
 				textStyle={this.style}
+				configManager={this.props.configManager}
 			/>
 		);
 	}
