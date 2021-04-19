@@ -56,14 +56,6 @@ export default class Renderer extends React.Component {
             medium: 17,
             large: 21,
             extraLarge: 26
-        },
-        spacing: {
-            small: 10,
-            default: 8,
-            medium: 30,
-            large: 40,
-            extraLarge: 50,
-            padding: 20
         }
     }
 
