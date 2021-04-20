@@ -135,31 +135,14 @@ export class BaseTextDefinition {
 }
 
 export class TextStyleDefinition extends BaseTextDefinition {
-    private _headingLevel?: number;
-
     fontType: Enums.FontType = Enums.FontType.Default;
 
     parse(obj: any) {
         super.parse(obj);
 
         if (obj) {
-            this._headingLevel = Utils.parseNumber(obj.headingLevel);
             this.fontType = parseHostConfigEnum(Enums.FontType, obj.fontType, this.fontType);
         }
-    }
-
-    toJSON(): any {
-        let result = super.toJSON();
-
-        if (result !== undefined) {
-            result.headingLevel = this._headingLevel;
-        }
-
-        return result;
-    }
-
-    get headingLevel(): number {
-        return this._headingLevel !== undefined ? this._headingLevel : 0;
     }
 }
 
@@ -167,7 +150,6 @@ export class TextStyleSet {
     readonly default: TextStyleDefinition = new TextStyleDefinition();
     readonly heading: TextStyleDefinition = new TextStyleDefinition(
         {
-            headingLevel: 2,
             size: "Large",
             weight: "Bolder"
         });
@@ -180,6 +162,16 @@ export class TextStyleSet {
 
     getStyleByName(name: string): TextStyleDefinition {
         return name.toLowerCase() === "heading" ? this.heading : this.default;
+    }
+}
+
+export class TextBlockConfig {
+    headingLevel?: number;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.headingLevel = Utils.parseNumber(obj.headingLevel);
+        }
     }
 }
 
@@ -640,6 +632,7 @@ export class HostConfig {
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
     readonly textStyles: TextStyleSet = new TextStyleSet();
+    readonly textBlock: TextBlockConfig = new TextBlockConfig();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;
@@ -695,7 +688,9 @@ export class HostConfig {
             this.actions = new ActionsConfig(obj.actions || this.actions);
             this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
-            this.factSet = new FactSetConfig(obj["factSet"])
+            this.factSet = new FactSetConfig(obj["factSet"]);
+            this.textStyles = new TextStyleSet(obj["textStyles"]);
+            this.textBlock = new TextBlockConfig(obj["textBlock"]);
         }
     }
 

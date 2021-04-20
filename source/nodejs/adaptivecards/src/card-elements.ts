@@ -917,11 +917,14 @@ export class TextBlock extends BaseTextBlock {
 
             this.applyStylesTo(element);
 
-            let headingLevel = this.getEffectiveTextStyleDefinition().headingLevel;
-            
-            if (headingLevel > 0) {
+            if (this.style === "heading") {
                 element.setAttribute("role", "heading");
-                element.setAttribute("aria-level", headingLevel.toString());
+                
+                let headingLevel = this.hostConfig.textBlock.headingLevel;
+                
+                if (headingLevel !== undefined && headingLevel > 0) {
+                    element.setAttribute("aria-level", headingLevel.toString());
+                }
             }
 
             if (this.selectAction && hostConfig.supportsInteractivity) {

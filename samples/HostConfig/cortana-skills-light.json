@@ -57,6 +57,9 @@
             "isSubtle": false
         }
     },
+    "textBlock": {
+        "headingLevel": 2
+    },
     "fontSizes": {
         "small": 12,
         "default": 14,

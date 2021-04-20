@@ -59,6 +59,9 @@
             "isSubtle": false
         }
     },
+    "textBlock": {
+        "headingLevel": 2
+    },
     "containerStyles": {
         "default": {
             "backgroundColor": "#FFFFFF",

@@ -54,6 +54,9 @@
             "isSubtle": false
         }
     },
+    "textBlock": {
+        "headingLevel": 2
+    },
     "imageSizes": {
         "small": 32,
         "medium": 52,
