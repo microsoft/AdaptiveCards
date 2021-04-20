@@ -1,28 +1,27 @@
 ---
-name: Feature request
-about: Suggest an idea or an end-end feature you'd like to enable using AdaptiveCards
-title: "[Platform][Broader Feature Request Category if applicable] Title"
-labels: Request
-assignees: 
+name: Feature Request
+about: Suggest a feature you'd like to enable using AdaptiveCards
+title: "[Feature Request] Feature Title Here"
+labels: Request Triage-Needed
+assignees: ''
 ---
 
-**What platform is your feature request related to? (Delete other platforms).**
+# What is the problem you are attempting to solve with this feature?
 
-- [ ] .NET HTML
-- [ ] .NET WPF
-- [ ] Android
-- [ ] iOS
-- [ ] JavaScript
-- [ ] UWP
+A clear and concise description of what problem you are trying to solve (ex: I'm always frustrated when...)
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+# A high-level summary of your proposed solution to the problem
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Please provide a high-level summary of your proposal
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+# What alternatives or workarounds have you considered
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+A clear and concise description of any alternative solutions or workarounds you've considered
+
+# Cross-Platform Enablement
+
+Would your solution work on every platform currently supported by Adaptive Cards?
+
+# A detailed description of your proposed solution
+
+Please provide as much detail as you can about your proposal
