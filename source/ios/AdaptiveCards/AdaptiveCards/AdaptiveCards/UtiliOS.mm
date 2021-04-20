@@ -965,3 +965,7 @@ UIImage *scaleImageToSize(UIImage *image, CGSize newSize)
     return newImage;
 }
 
+NSNumber *iOSInternalIdHash(const std::size_t internalIdHash)
+{
+    return [NSNumber numberWithLong:internalIdHash];
+}

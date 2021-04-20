@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "ACOBaseActionElement.h"
 #import "ACOBaseCardElement.h"
+#import "ACOHostConfig.h"
 
 @class ACOAdaptiveCard;
 
@@ -15,6 +16,11 @@
 
 @property (readonly) ACRRtl rtl;
 @property (readonly) BOOL hasSelectAction;
+@property (readonly) BOOL allHasActionIcons;
+
+@property (weak) ACOHostConfig *hostConfig;
+
+- (instancetype)init:(ACOHostConfig *)config;
 
 - (void)pushBaseCardElementContext:(ACOBaseCardElement *)element;
 - (void)popBaseCardElementContext:(ACOBaseCardElement *)element;
