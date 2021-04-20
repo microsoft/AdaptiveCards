@@ -67,7 +67,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
         final List<View> menuItemList = renderSecondaryActionElements(baseActionElementList, renderedCard, context, fragmentManager, viewGroup, cardActionHandler, hostConfig, renderArgs);
 
         View overflowActionView;
-        if (overflowActionRenderer == null || (overflowActionView = overflowActionRenderer.onRenderOverflowAction(viewGroup, renderArgs.isRootLevelActions())) == null)
+        if (overflowActionRenderer == null || (overflowActionView = overflowActionRenderer.onRenderOverflowAction(viewGroup, menuItemList, renderArgs.isRootLevelActions())) == null)
         {
             overflowActionView = renderDefaultOverflowAction(context, viewGroup, hostConfig);
         }
