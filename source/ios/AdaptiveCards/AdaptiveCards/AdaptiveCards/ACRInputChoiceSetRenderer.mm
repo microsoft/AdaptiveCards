@@ -61,7 +61,7 @@
     }
 
     // removes leading padding
-    choiceSetView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
+    choiceSetView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
