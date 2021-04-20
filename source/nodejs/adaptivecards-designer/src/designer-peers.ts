@@ -2694,7 +2694,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     static readonly styleProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_5,
         "style",
-        "Style name",
+        "Base style",
         [
             { targetVersion: Adaptive.Versions.v1_5, name: "Default", value: "default" },
             { targetVersion: Adaptive.Versions.v1_5, name: "Heading", value: "heading" }
