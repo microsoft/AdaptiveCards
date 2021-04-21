@@ -77,6 +77,7 @@ export class Registry {
 
 		'Action.ShowCard': ActionButton,
 		'Action.Submit': ActionButton,
+		'Action.Execute': ActionButton,
 		'Action.OpenUrl': ActionButton,
 		'Action.ToggleVisibility': ActionButton,
 		'ActionSet': ActionSet
@@ -122,6 +123,7 @@ export class Registry {
 
 		'Action.ShowCard': { 'type': 'Action.ShowCard', 'card': 'Object' },
 		'Action.Submit': { 'type': 'Action.Submit' },
+		'Action.Execute': { 'type': 'Action.Execute' },
 		'Action.OpenUrl': { 'type': 'Action.OpenUrl', 'url': 'String' },
 		'ActionSet': { 'type': 'ActionSet' },
 	};

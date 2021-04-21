@@ -63,6 +63,14 @@ public class Container extends CollectionTypeElement {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
   }
 
+  public Boolean GetRtl() {
+  return AdaptiveCardObjectModelJNI.Container_GetRtl(swigCPtr, this);
+}
+
+  public void SetRtl(Boolean value) {
+    AdaptiveCardObjectModelJNI.Container_SetRtl(swigCPtr, this, value);
+  }
+
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.Container_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }

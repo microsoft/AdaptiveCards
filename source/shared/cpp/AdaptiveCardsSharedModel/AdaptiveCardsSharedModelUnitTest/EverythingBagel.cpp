@@ -82,15 +82,18 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("speak"s, everythingBagel.GetSpeak());
         Assert::IsTrue(ContainerStyle::None == everythingBagel.GetStyle());
         Assert::AreEqual("1.0"s, everythingBagel.GetVersion());
+        Assert::IsTrue(everythingBagel.GetRtl().has_value());
+        Assert::IsFalse(everythingBagel.GetRtl().value());
         Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel.GetVerticalContentAlignment());
     }
 
-    void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, std::string id)
+    void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, TextStyle style, std::string id)
     {
         Assert::IsTrue(textBlock.GetElementType() == CardElementType::TextBlock);
         Assert::AreEqual(CardElementTypeToString(CardElementType::TextBlock), textBlock.GetElementTypeString());
         Assert::AreEqual(id, textBlock.GetId());
         Assert::AreEqual("TextBlock_text"s, textBlock.GetText());
+        Assert::IsTrue(style == textBlock.GetStyle());
         Assert::IsTrue(ForegroundColor::Default == textBlock.GetTextColor());
         Assert::IsTrue(HorizontalAlignment::Left == textBlock.GetHorizontalAlignment());
         Assert::IsTrue(Spacing::Default == textBlock.GetSpacing());
@@ -148,6 +151,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("auto"s, firstColumn->GetWidth());
             Assert::AreEqual(0, firstColumn->GetPixelWidth());
             Assert::IsTrue(ContainerStyle::Default == firstColumn->GetStyle());
+            Assert::IsTrue(firstColumn->GetRtl().has_value());
+            Assert::IsFalse(firstColumn->GetRtl().value());
 
             auto items = firstColumn->GetItems();
             Assert::AreEqual(size_t{ 1 }, items.size());
@@ -162,6 +167,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("20px"s, secondColumn->GetWidth());
             Assert::AreEqual(20, secondColumn->GetPixelWidth());
             Assert::IsTrue(ContainerStyle::Emphasis == secondColumn->GetStyle());
+            Assert::IsFalse(secondColumn->GetRtl().has_value());
 
             auto items = secondColumn->GetItems();
             Assert::AreEqual(size_t{ 1 }, items.size());
@@ -195,6 +201,8 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Container_id"s, container.GetId());
         Assert::IsTrue(Spacing::Medium == container.GetSpacing());
         Assert::IsTrue(ContainerStyle::Default == container.GetStyle());
+        Assert::IsTrue(container.GetRtl().has_value());
+        Assert::IsTrue(container.GetRtl().value());
 
         // validate container action
         {
@@ -308,7 +316,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Date_placeholder"s, dateInput.GetPlaceholder());
         Assert::IsFalse(dateInput.GetIsRequired());
         Assert::IsTrue(dateInput.GetErrorMessage().empty());
-		Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
+        Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
     }
 
     void ValidateInputTime(const TimeInput &timeInput)
@@ -374,12 +382,13 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(expectedTitle, currChoice->GetTitle());
         }
 
-		Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
+        Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
     }
 
     void ValidateInputContainer(const Container &container)
     {
         Assert::AreEqual("Container_id_inputs"s, container.GetId());
+        Assert::IsFalse(container.GetRtl().has_value());
 
         auto items = container.GetItems();
         Assert::AreEqual(size_t{ 7 }, items.size());
@@ -471,15 +480,15 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         // validate textblock (no fontType)
         auto textBlock = std::static_pointer_cast<TextBlock>(body.at(0));
-        ValidateTextBlock(*textBlock, FontType::Default, "TextBlock_id");
+        ValidateTextBlock(*textBlock, FontType::Default, TextStyle::Heading, "TextBlock_id");
 
         // validate textblock (monospace)
         textBlock = std::static_pointer_cast<TextBlock>(body.at(1));
-        ValidateTextBlock(*textBlock, FontType::Monospace, "TextBlock_id_mono");
+        ValidateTextBlock(*textBlock, FontType::Monospace, TextStyle::Paragraph, "TextBlock_id_mono");
 
         // validate textblock (default)
         textBlock = std::static_pointer_cast<TextBlock>(body.at(2));
-        ValidateTextBlock(*textBlock, FontType::Default, "TextBlock_id_def");
+        ValidateTextBlock(*textBlock, FontType::Default, TextStyle::Paragraph, "TextBlock_id_def");
 
         // validate image
         auto image = std::static_pointer_cast<Image>(body.at(3));

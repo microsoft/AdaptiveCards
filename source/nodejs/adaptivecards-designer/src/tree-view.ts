@@ -21,6 +21,12 @@ export class TreeView {
         }
     }
 
+    focus() {
+        if (this.rootItem) {
+            this.rootItem.focus();
+        }
+    }
+
     render(): HTMLElement {
         let treeRoot = document.createElement("ul");
         treeRoot.style.paddingLeft = "0";

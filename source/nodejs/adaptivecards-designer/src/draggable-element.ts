@@ -148,6 +148,12 @@ export abstract class DraggableElement {
         return this._renderedElement;
     }
 
+    focus() {
+        if (this._renderedElement) {
+            this._renderedElement.focus();
+        }
+    }
+
     get renderedElement(): HTMLElement {
         return this._renderedElement;
     }

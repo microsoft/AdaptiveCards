@@ -1,0 +1,193 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "wrap": true,
+      "size": "Medium",
+      "text": "This column set has some columns RTL and some LTR",
+      "weight": "Bolder"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "rtl": true,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "العمود الأول باللغة العربية",
+              "wrap": true
+            }
+          ],
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column two is in English",
+              "wrap": true
+            }
+          ],
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "rtl": true,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "עמודה 3 בעברית",
+              "wrap": true
+            }
+          ],
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "La columna cuatro está en español",
+              "wrap": true
+            }
+          ],
+          "width": "stretch"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "This Column Set is in a container that is entirely RTL",
+      "wrap": true,
+      "size": "Medium",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "Container",
+      "rtl": true,
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "يتم تعيين هذا العمود بأكمله باللغة العربية ويتم عرضه من اليمين إلى اليسار.",
+                  "wrap": true
+                }
+              ],
+              "width": "stretch"
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "هذا قط",
+                  "wrap": true
+                },
+                {
+                  "type": "Image",
+                  "url": "https://adaptivecards.io/content/cats/1.png",
+                  "size": "Small",
+                  "altText": "صورة قطة"
+                }
+              ],
+              "width": "stretch"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "This Container is RTL, with a single Container inside it that is LTR. The English text and the second cat should display left to right.",
+      "wrap": true,
+      "size": "Medium",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "Container",
+      "rtl": true,
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "كتلة النص واحد",
+          "wrap": true
+        },
+        {
+          "type": "Image",
+          "url": "https://adaptivecards.io/content/cats/2.png",
+          "size": "Small"
+        },
+        {
+          "type": "Container",
+          "rtl": false,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Text Block two",
+              "wrap": true
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/3.png",
+              "size": "Small"
+            }
+          ]
+        },
+        {
+          "type": "TextBlock",
+          "text": "كتلة النص ثلاثة",
+          "wrap": true
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "This Container is RTL, Alignments should be reversed",
+      "wrap": true,
+      "spacing": "Large",
+      "size": "Medium",
+      "weight": "Bolder"
+    },
+    {
+      "type": "Container",
+      "rtl": true,
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "This text box is left aligned",
+          "wrap": true
+        },
+        {
+          "type": "TextBlock",
+          "text": "This text block is right aligned",
+          "wrap": true,
+          "horizontalAlignment": "Right"
+        },
+        {
+          "type": "Image",
+          "url": "https://adaptivecards.io/content/cats/1.png",
+          "size": "Small"
+        },
+        {
+          "type": "Image",
+          "horizontalAlignment": "Right",
+          "url": "https://adaptivecards.io/content/cats/1.png",
+          "size": "Small"
+        }
+      ]
+    }
+  ]
+}

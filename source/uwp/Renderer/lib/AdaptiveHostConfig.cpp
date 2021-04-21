@@ -11,6 +11,7 @@
 #include "AdaptiveFontTypeDefinition.h"
 #include "AdaptiveFontTypesDefinition.h"
 #include "AdaptiveFontWeightsConfig.h"
+#include "AdaptiveHeadingsConfig.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
@@ -94,6 +95,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.GetImage()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaConfig>(m_media.GetAddressOf(), sharedHostConfig.GetMedia()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputsConfig>(m_inputs.GetAddressOf(), sharedHostConfig.GetInputs()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHeadingsConfig>(m_headings.GetAddressOf(), sharedHostConfig.GetHeadings()));
 
         return S_OK;
     }
@@ -261,6 +263,17 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveHostConfig::put_Inputs(_In_ IAdaptiveInputsConfig* inputsConfig)
     {
         m_inputs = inputsConfig;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_Headings(ABI::AdaptiveNamespace::IAdaptiveHeadingsConfig** headingsConfig)
+    {
+        return m_headings.CopyTo(headingsConfig);
+    }
+
+    HRESULT AdaptiveHostConfig::put_Headings(ABI::AdaptiveNamespace::IAdaptiveHeadingsConfig* headingsConfig)
+    {
+        m_headings = headingsConfig;
         return S_OK;
     }
 

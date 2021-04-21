@@ -7,7 +7,7 @@
 | **type** | `"AdaptiveCard"` | Yes | Must be `"AdaptiveCard"`. | 1.0 |
 | **version** | `string` | Yes | Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card. | 1.0 |
 | **refresh** | `Refresh` | No | Defines how the card can be refreshed by making a request to the target Bot. | 1.4 |
-| **authentication** | `Authentication` | No | Defines authentication information to enable on-behalf-f single sign on or just-in-time OAuth. | 1.4 |
+| **authentication** | `Authentication` | No | Defines authentication information to enable on-behalf-of single sign on or just-in-time OAuth. | 1.4 |
 | **body** | `Element[]` | No | The card elements to show in the primary card region. | 1.0 |
 | **actions** | `Action[]` | No | The Actions to show in the card's action bar. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
@@ -33,7 +33,7 @@ Defines how the card can be refreshed by making a request to the target Bot.
 
 ## authentication
 
-Defines authentication information to enable on-behalf-f single sign on or just-in-time OAuth.
+Defines authentication information to enable on-behalf-of single sign on or just-in-time OAuth.
 
 * **Type**: `Authentication`
 * **Version** : 1.4

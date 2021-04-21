@@ -45,6 +45,9 @@ namespace AdaptiveSharedNamespace
 
         ActionType GetElementType() const;
 
+        Mode GetMode() const;
+        void SetMode(const Mode mode);
+
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
         Json::Value SerializeToJsonValue() const override;
 
@@ -70,6 +73,7 @@ namespace AdaptiveSharedNamespace
         std::string m_tooltip;
 
         ActionType m_type;
+        Mode m_mode;
     };
 
     template<typename T>

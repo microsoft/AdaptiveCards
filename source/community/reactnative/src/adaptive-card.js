@@ -13,15 +13,15 @@ import {
 
 import { Registry } from './components/registration/registry';
 import { InputContextProvider } from './utils/context';
-import { HostConfigManager } from './utils/host-config';
-import { StyleManager } from './styles/style-config';
+import { HostConfig, defaultHostConfig } from './utils/host-config';
+import { StyleConfig } from './styles/style-config';
+import { ThemeConfig, defaultThemeConfig } from './utils/theme-config';
 import { ActionWrapper } from './components/actions/action-wrapper';
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
-import { ThemeConfigManager } from './utils/theme-config';
 import { ModelFactory } from './models';
 
 export default class AdaptiveCard extends React.Component {
@@ -36,28 +36,30 @@ export default class AdaptiveCard extends React.Component {
 		this.payload = props.payload;
 
 		// hostConfig
-		if (props.hostConfig) {
-			HostConfigManager.setHostConfig(props.hostConfig);
-		}
+		this.hostConfig = new HostConfig(props.hostConfig || defaultHostConfig);
 
 		// themeConfig
-		if (props.themeConfig) {
-			ThemeConfigManager.setThemeConfig(props.themeConfig);
-		}
+		let themeConfigValues = { ...defaultThemeConfig, ...(props.themeConfig || {}) }
+		this.themeConfig = new ThemeConfig(themeConfigValues);
 
-		if (this.props.isActionShowCard) {
+		//styleConfig
+		this.styleConfig = new StyleConfig(this.hostConfig, this.themeConfig).getStyleConfig();
+
+		if (this.props.isActionShowCard)
 			this.cardModel = props.payload;
-		} else {
-			this.cardModel = ModelFactory.createElement(props.payload);
+		else
+			this.cardModel = ModelFactory.createElement(props.payload, undefined, this.hostConfig);
+
+		this.configManager = {
+			hostConfig: this.hostConfig,
+			themeConfig: this.themeConfig,
+			styleConfig: this.styleConfig
 		}
 		this.state = {
 			showErrors: false,
 			payload: this.payload,
 			cardModel: this.cardModel
 		}
-
-		// commonly used styles
-		this.styleConfig = StyleManager.getManager().styles;
 
 	}
 
@@ -162,7 +164,11 @@ export default class AdaptiveCard extends React.Component {
 		if (this.state.cardModel.children.length === 0)
 			return children;
 		children = Registry.getManager().parseRegistryComponents(this.state.cardModel.children, this.onParseError);
-		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.state.cardModel.style, isFirst: index === 0 }));
+		return children.map((ChildElement, index) => React.cloneElement(ChildElement, {
+			containerStyle: this.state.cardModel.style,
+			isFirst: index === 0,
+			configManager: this.configManager
+		}));
 	}
 
 	getAdaptiveCardContent() {
@@ -183,16 +189,17 @@ export default class AdaptiveCard extends React.Component {
 				<KeyboardAvoidingView behavior={Platform.OS === 'ios'
 					? 'padding'
 					: undefined}>
-					<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
+					<ContainerWrapper configManager={this.configManager} style={containerStyles} json={this.state.cardModel}>
 						<ScrollView
 							contentContainerStyle={this.props.contentContainerStyle}
 							showsHorizontalScrollIndicator={true}
 							showsVerticalScrollIndicator={true}
 							alwaysBounceVertical={false}
-							alwaysBounceHorizontal={false}>
+							alwaysBounceHorizontal={false}
+							scrollEnabled={this.props.cardScrollEnabled}>
 							{this.parsePayload()}
 							{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
-								<ActionWrapper actions={this.state.cardModel.actions} />}
+								<ActionWrapper configManager={this.configManager} actions={this.state.cardModel.actions} />}
 						</ScrollView>
 					</ContainerWrapper>
 				</KeyboardAvoidingView>
@@ -201,7 +208,7 @@ export default class AdaptiveCard extends React.Component {
 		// checks if selectAction option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.selectAction)) {
 			adaptiveCardContent = (
-				<SelectAction selectActionData={this.payload.selectAction}>
+				<SelectAction configManager={this.configManager} selectActionData={this.payload.selectAction}>
 					{adaptiveCardContent}
 				</SelectAction>
 			);
@@ -297,7 +304,12 @@ AdaptiveCard.propTypes = {
 	onParseError: PropTypes.func,
 	contentHeight: PropTypes.number,
 	containerStyle: PropTypes.object,
-	contentContainerStyle: PropTypes.object
+	contentContainerStyle: PropTypes.object,
+	cardScrollEnabled: PropTypes.bool
+};
+
+AdaptiveCard.defaultProps = {
+	cardScrollEnabled: true
 };
 
 const styles = StyleSheet.create({

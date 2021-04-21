@@ -10,13 +10,11 @@ import {
 	Image,
 } from 'react-native';
 
-import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
-import { StyleManager } from '../../styles/style-config';
 import {
 	InputContext,
 	InputContextConsumer
@@ -26,14 +24,14 @@ const ContainResizeMode = 'contain';
 
 export class Img extends React.Component {
 
-	hostConfig = HostConfigManager.getHostConfig();
-	styleConfig = StyleManager.getManager().styles;
 	static contextType = InputContext;
 
 
 	constructor(props) {
 		super(props);
 		this.payload = props.json;
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 		this.addResourceInformation = undefined;
 		this.state = {
 			imageWidth: 0,
@@ -287,7 +285,7 @@ export class Img extends React.Component {
 		let containerContent = (<InputContextConsumer>
 			{({ addResourceInformation }) => {
 				this.addResourceInformation = addResourceInformation;
-				return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}
+				return <ElementWrapper configManager={this.props.configManager} json={this.payload} isFirst={this.props.isFirst}
 					style={wrapperComputedStyle}
 					onPageLayout={this.onPageLayoutHandler}>
 
@@ -300,10 +298,10 @@ export class Img extends React.Component {
 		</InputContextConsumer>);
 
 		if ((this.payload.selectAction === undefined)
-			|| (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+			|| (!this.hostConfig.supportsInteractivity)) {
 			return containerContent;
 		} else {
-			return <SelectAction selectActionData={this.payload.selectAction}>
+			return <SelectAction configManager={this.props.configManager} selectActionData={this.payload.selectAction}>
 				{containerContent}
 			</SelectAction>;
 		}
