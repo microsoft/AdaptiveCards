@@ -169,15 +169,27 @@ export class TextStyleSet {
             size: "Large",
             weight: "Bolder"
         });
-
+    readonly columnHeader: TextStyleDefinition = new TextStyleDefinition(
+        {
+            weight: "Bolder"
+        });
+    
     constructor(obj?: any) {
         if (obj) {
             this.heading.parse(obj.heading);
+            this.columnHeader.parse(obj.columnHeader);
         }
     }
 
     getStyleByName(name: string): TextStyleDefinition {
-        return name.toLowerCase() === "heading" ? this.heading : this.default;
+        switch (name.toLowerCase()) {
+            case "heading":
+                return this.heading;
+            case "columnHeader":
+                return this.columnHeader;
+            default:
+                return this.default;
+        }
     }
 }
 

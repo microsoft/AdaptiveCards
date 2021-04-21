@@ -33,8 +33,7 @@ export abstract class CardElement extends CardObject {
     static readonly horizontalAlignmentProperty = new EnumProperty(
         Versions.v1_0,
         "horizontalAlignment",
-        Enums.HorizontalAlignment,
-        Enums.HorizontalAlignment.Left);
+        Enums.HorizontalAlignment);
     static readonly spacingProperty = new EnumProperty(
         Versions.v1_0,
         "spacing",
@@ -42,7 +41,7 @@ export abstract class CardElement extends CardObject {
         Enums.Spacing.Default);
 
     @property(CardElement.horizontalAlignmentProperty)
-    horizontalAlignment: Enums.HorizontalAlignment;
+    horizontalAlignment?: Enums.HorizontalAlignment;
 
     @property(CardElement.spacingProperty)
     spacing: Enums.Spacing;
@@ -563,6 +562,18 @@ export abstract class CardElement extends CardObject {
         return padding ? padding : this.getDefaultPadding();
     }
 
+    getEffectiveHorizontalAlignment(): Enums.HorizontalAlignment {
+        if (this.horizontalAlignment !== undefined) {
+            return this.horizontalAlignment;
+        }
+
+        if (this.parent) {
+            return this.parent.getEffectiveHorizontalAlignment();
+        }
+
+        return Enums.HorizontalAlignment.Left;
+    }
+
     get hostConfig(): HostConfig {
         if (this._hostConfig) {
             return this._hostConfig;
@@ -825,7 +836,7 @@ export abstract class BaseTextBlock extends CardElement {
     }
 }
 
-export type TextBlockStyle = "default" | "heading";
+export type TextBlockStyle = "default" | "heading" | "columnHeader";
 
 export class TextBlock extends BaseTextBlock {
     //#region Schema
@@ -837,6 +848,7 @@ export class TextBlock extends BaseTextBlock {
         "style",
         [
             { value: "default" },
+            { value: "columnHeader" },
             { value: "heading" }
         ]);
 
@@ -1099,7 +1111,7 @@ export class TextBlock extends BaseTextBlock {
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
 
-        switch (this.horizontalAlignment) {
+        switch (this.getEffectiveHorizontalAlignment()) {
             case Enums.HorizontalAlignment.Center:
                 targetElement.style.textAlign = "center";
                 break;
@@ -1355,7 +1367,7 @@ export class RichTextBlock extends CardElement {
 
             element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
 
-            switch (this.horizontalAlignment) {
+            switch (this.getEffectiveHorizontalAlignment()) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.textAlign = "center";
                     break;
@@ -1769,7 +1781,7 @@ export class Image extends CardElement {
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
-            switch (this.horizontalAlignment) {
+            switch (this.getEffectiveHorizontalAlignment()) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.justifyContent = "center";
                     break;
@@ -5623,7 +5635,10 @@ export class Container extends ContainerBase {
         Versions.v1_0,
         "backgroundImage",
         BackgroundImage);
-    static readonly verticalContentAlignmentProperty = new EnumProperty(Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
+    static readonly verticalContentAlignmentProperty = new EnumProperty(
+        Versions.v1_1,
+        "verticalContentAlignment",
+        Enums.VerticalAlignment);
     static readonly rtlProperty = new BoolProperty(Versions.v1_0, "rtl");
 
     @property(Container.backgroundImageProperty)
@@ -5632,7 +5647,7 @@ export class Container extends ContainerBase {
     }
 
     @property(Container.verticalContentAlignmentProperty)
-    verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
+    verticalContentAlignment?: Enums.VerticalAlignment;
 
     @property(Container.rtlProperty)
     rtl?: boolean;
@@ -5709,7 +5724,7 @@ export class Container extends ContainerBase {
             element.style.minHeight = '-webkit-min-content';
         }
 
-        switch (this.verticalContentAlignment) {
+        switch (this.getEffectiveVerticalContentAlignment()) {
             case Enums.VerticalAlignment.Center:
                 element.style.justifyContent = "center";
                 break;
@@ -5827,6 +5842,16 @@ export class Container extends ContainerBase {
 
     protected get isSelectable(): boolean {
         return true;
+    }
+
+    getEffectiveVerticalContentAlignment(): Enums.VerticalAlignment {
+        if (this.verticalContentAlignment !== undefined) {
+            return this.verticalContentAlignment;
+        }
+
+        let parentContainer = this.getParentContainer();
+
+        return parentContainer ? parentContainer.getEffectiveVerticalContentAlignment() : Enums.VerticalAlignment.Top;
     }
 
     getItemCount(): number {
@@ -6180,7 +6205,7 @@ export class ColumnSet extends ContainerBase {
                 element.style.minHeight = '-webkit-min-content';
             }
 
-            switch (this.horizontalAlignment) {
+            switch (this.getEffectiveHorizontalAlignment()) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.justifyContent = "center";
                     break;

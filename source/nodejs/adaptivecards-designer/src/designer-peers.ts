@@ -2712,7 +2712,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         "Base style",
         [
             { targetVersion: Adaptive.Versions.v1_5, name: "Default", value: "default" },
-            { targetVersion: Adaptive.Versions.v1_5, name: "Heading", value: "heading" }
+            { targetVersion: Adaptive.Versions.v1_5, name: "Heading", value: "heading" },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Column header", value: "columnHeader" }
         ],
         false,
         true);

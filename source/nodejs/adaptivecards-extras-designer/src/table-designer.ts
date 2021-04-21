@@ -1,4 +1,4 @@
-import { Versions, VerticalAlignment } from "adaptivecards";
+import { HorizontalAlignment, Versions, VerticalAlignment } from "adaptivecards";
 import { BooleanPropertyEditor, CardDesignerSurface, ContainerPeer, ContainerStylePropertyEditor, DesignContext,
     EnumPropertyEditor, NumberPropertyEditor, PeerCommand, PropertySheet, PropertySheetCategory,
     TypedCardElementPeer } from "adaptivecards-designer";
@@ -15,6 +15,22 @@ export class TableCellPeer extends ContainerPeer {
 }
 
 export class TableRowPeer extends TypedCardElementPeer<TableRow> {
+    static readonly horizontalCellContentAlignmentProperty = new EnumPropertyEditor(
+        Versions.v1_0,
+        "horizontalCellContentAlignment",
+        "Horizontal cell content alignment",
+        HorizontalAlignment,
+        false,
+        true);
+
+    static readonly verticalCellContentAlignmentProperty = new EnumPropertyEditor(
+        Versions.v1_0,
+        "verticalCellContentAlignment",
+        "Vertical cell content alignment",
+        VerticalAlignment,
+        false,
+        true);
+
     protected isContainer(): boolean {
         return true;
     }
@@ -26,7 +42,14 @@ export class TableRowPeer extends TypedCardElementPeer<TableRow> {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
-        propertySheet.add(PropertySheetCategory.StyleCategory, ContainerPeer.styleProperty);
+        propertySheet.add(
+            PropertySheetCategory.StyleCategory,
+            ContainerPeer.styleProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            TableRowPeer.horizontalCellContentAlignmentProperty,
+            TableRowPeer.verticalCellContentAlignmentProperty);
     }
 }
 
@@ -48,11 +71,21 @@ export class TablePeer extends TypedCardElementPeer<Table> {
 
     static readonly gridStyleProperty = new ContainerStylePropertyEditor(Versions.v1_0, "gridStyle", "Grid style");
 
+    static readonly horizontalCellContentAlignmentProperty = new EnumPropertyEditor(
+        Versions.v1_0,
+        "horizontalCellContentAlignment",
+        "Horizontal cell content alignment",
+        HorizontalAlignment,
+        false,
+        true);
+
     static readonly verticalCellContentAlignmentProperty = new EnumPropertyEditor(
         Versions.v1_0,
         "verticalCellContentAlignment",
-        "Cell vertical content alignment",
-        VerticalAlignment);
+        "Vertical cell content alignment",
+        VerticalAlignment,
+        false,
+        true);
 
     protected isContainer(): boolean {
         return true;
@@ -101,6 +134,7 @@ export class TablePeer extends TypedCardElementPeer<Table> {
 
         propertySheet.add(PropertySheetCategory.LayoutCategory,
             TablePeer.cellSpacingProperty,
+            TablePeer.horizontalCellContentAlignmentProperty,
             TablePeer.verticalCellContentAlignmentProperty);
     }
 }
