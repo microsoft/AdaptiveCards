@@ -31,7 +31,7 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
-    protected final static int BOTTOM_SHEET_TAG = 0xffffffff;
+    public final static int PARENT_DROPDOWN_TAG = 0xffffffff;
 
     protected static int getColor(String colorCode)
     {
@@ -241,9 +241,9 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
             // Reset all other buttons
             ViewGroup parentContainer;
-            if (v.getTag(BOTTOM_SHEET_TAG) != null)
+            if (v.getTag(PARENT_DROPDOWN_TAG) != null)
             {
-                parentContainer = (ViewGroup) v.getTag(BOTTOM_SHEET_TAG);
+                parentContainer = (ViewGroup) v.getTag(PARENT_DROPDOWN_TAG);
             }
             else
             {
