@@ -37,7 +37,7 @@ Item {
                     id: cardContentLoader
                     Layout.fillWidth: true
                     Layout.margins: 5
-                    Layout.preferredHeight: item ? item.height : 25
+                    height: item ? item.height : 25
 
                     onLoaded: {
                         reloadCard.connect(item.reload)

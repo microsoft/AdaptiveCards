@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
     context->setContextProperty("_aModel", &model);
 
     view.setSource(QUrl("qrc:main.qml"));
+	view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.show();
 
     return app.exec();

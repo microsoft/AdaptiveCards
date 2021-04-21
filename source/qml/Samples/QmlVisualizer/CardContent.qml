@@ -4,7 +4,6 @@ Loader{
     id: loader
 
     asynchronous: true
-    height: item ? item.implicitHeight : 0
 
     source: "CardComponent.qml"
 

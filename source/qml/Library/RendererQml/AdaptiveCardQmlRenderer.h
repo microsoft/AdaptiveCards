@@ -104,6 +104,7 @@ namespace RendererQml
 		static const std::string getStretchHeight();
 		static const std::string getMinWidth();
 		static const std::string getMinWidthActionSet();
+		static const std::string getMinWidthFactSet();
 
 		template <typename CardElement>
 		static const std::shared_ptr<QmlTag> applyHorizontalBleed(CardElement cardElement, std::shared_ptr<QmlTag> uiContainer, std::shared_ptr<AdaptiveRenderContext> context);
