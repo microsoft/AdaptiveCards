@@ -8,7 +8,16 @@ assignees: ''
 
 # Target Platform
 
-Please list the platform(s) that your application is running on (ex: Web, iOS, Android, etc)
+Please list the platform(s) that your application is targeting and remove platforms you are not targeting:
+- NodeJS
+- iOS
+- Android
+- WPF
+- UWP
+
+# Target Application
+
+Please provide the name of the application that is rendering the card (ex: Outlook, Teams, etc)
 
 # Problem Description
 
