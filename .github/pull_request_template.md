@@ -15,10 +15,7 @@ page above.
 
 ## Description
 
-Create a [descriptive title and provide all of the relevant details in the description](https://chris.beams.io/posts/git-commit/).
-This information lives with the code and will help future readers (***including yourself***) and will serve as documentation.
-
-At the very least please describe the issue you are addressing, and what your fix entails.
+For non-trivial bug fixes or for new features please describe how the issue was fixed or how the feature was implemented, from a summary level. This information will be used to help provide context to the reviewers of the pull request and should be additive to the issue being closed.
 
 ## Sample Card
 

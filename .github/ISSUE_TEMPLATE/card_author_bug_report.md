@@ -1,6 +1,6 @@
 ---
 name: Card Author Bug Report
-about: Create a bug report for problems authoring Adaptive Crds
+about: Create a bug report for problems creating Adaptive Cards from the JSON Schema
 title: "[Authoring] Bug Title Here"
 labels: Bug Triage-Needed Authoring
 assignees: ''
@@ -26,6 +26,6 @@ Please describe what was the actual outcome
 
 Please enter the steps to reproduce the issue
 
-# Version of SDK
+# Schema Version
 
-What version are you using? Ex: NuGet 1.0.2, or latest main, etc...
+What JSON Schema Version are you targeting?

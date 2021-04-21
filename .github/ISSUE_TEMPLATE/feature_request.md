@@ -10,18 +10,10 @@ assignees: ''
 
 A clear and concise description of what problem you are trying to solve (ex: I'm always frustrated when...)
 
-# A high-level summary of your proposed solution to the problem
+# A description of your proposed solution to the problem
 
-Please provide a high-level summary of your proposal
+Please provide a description of your proposal; please provide as much detail as you can
 
 # What alternatives or workarounds have you considered
 
 A clear and concise description of any alternative solutions or workarounds you've considered
-
-# Cross-Platform Enablement
-
-Would your solution work on every platform currently supported by Adaptive Cards?
-
-# A detailed description of your proposed solution
-
-Please provide as much detail as you can about your proposal
