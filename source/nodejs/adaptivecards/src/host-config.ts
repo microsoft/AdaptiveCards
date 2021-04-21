@@ -102,7 +102,7 @@ export class MediaConfig {
 }
 
 export class TableConfig {
-    cellSpacing: number = 4;
+    cellSpacing: number = 8;
 
     constructor(obj?: any) {
         if (obj) {
