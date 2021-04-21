@@ -4,7 +4,7 @@ import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
     Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation } from "./shared";
 import * as Utils from "./utils";
-import { HostConfig, defaultHostConfig, BaseTextDefinition, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition } from "./host-config";
+import { HostConfig, defaultHostConfig, BaseTextDefinition, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition, TextStyleDefinition } from "./host-config";
 import * as TextFormatters from "./text-formatters";
 import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
@@ -351,6 +351,14 @@ export abstract class CardElement extends CardObject {
         return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
     }
 
+    getEffectiveTextStyleDefinition(): TextStyleDefinition {
+        if (this.parent) {
+            return this.parent.getEffectiveTextStyleDefinition();
+        }
+
+        return this.hostConfig.textStyles.default;
+    }
+
     getForbiddenActionTypes(): ActionType[] {
         return [];
     }
@@ -638,33 +646,12 @@ export class ActionProperty extends PropertyDefinition {
 export abstract class BaseTextBlock extends CardElement {
     //#region Schema
 
-    static readonly textProperty = new StringProperty(
-        Versions.v1_0,
-        "text",
-        true);
-    static readonly sizeProperty = new EnumProperty(
-        Versions.v1_0,
-        "size",
-        Enums.TextSize,
-        Enums.TextSize.Default);
-    static readonly weightProperty = new EnumProperty(
-        Versions.v1_0,
-        "weight",
-        Enums.TextWeight,
-        Enums.TextWeight.Default);
-    static readonly colorProperty = new EnumProperty(
-        Versions.v1_0,
-        "color",
-        Enums.TextColor,
-        Enums.TextColor.Default);
-    static readonly isSubtleProperty = new BoolProperty(
-        Versions.v1_0,
-        "isSubtle",
-        false);
-    static readonly fontTypeProperty = new EnumProperty(
-        Versions.v1_2,
-        "fontType",
-        Enums.FontType);
+    static readonly textProperty = new StringProperty(Versions.v1_0, "text", true);
+    static readonly sizeProperty = new EnumProperty(Versions.v1_0, "size", Enums.TextSize);
+    static readonly weightProperty = new EnumProperty(Versions.v1_0, "weight", Enums.TextWeight);
+    static readonly colorProperty = new EnumProperty(Versions.v1_0, "color", Enums.TextColor);
+    static readonly isSubtleProperty = new BoolProperty(Versions.v1_0, "isSubtle");
+    static readonly fontTypeProperty = new EnumProperty(Versions.v1_2, "fontType", Enums.FontType);
     static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
@@ -676,19 +663,19 @@ export abstract class BaseTextBlock extends CardElement {
     }
 
     @property(BaseTextBlock.sizeProperty)
-    size: Enums.TextSize = Enums.TextSize.Default;
+    size?: Enums.TextSize;
 
     @property(BaseTextBlock.weightProperty)
-    weight: Enums.TextWeight = Enums.TextWeight.Default;
+    weight?: Enums.TextWeight;
 
     @property(BaseTextBlock.colorProperty)
-    color: Enums.TextColor = Enums.TextColor.Default;
+    color?: Enums.TextColor;
 
     @property(BaseTextBlock.fontTypeProperty)
     fontType?: Enums.FontType;
 
     @property(BaseTextBlock.isSubtleProperty)
-    isSubtle: boolean = false;
+    isSubtle?: boolean;
 
     @property(BaseTextBlock.textProperty)
     get text(): string | undefined {
@@ -705,7 +692,7 @@ export abstract class BaseTextBlock extends CardElement {
     //#endregion
 
     protected getFontSize(fontType: FontTypeDefinition): number {
-        switch (this.size) {
+        switch (this.effectiveSize) {
             case Enums.TextSize.Small:
                 return fontType.fontSizes.small;
             case Enums.TextSize.Medium:
@@ -764,7 +751,7 @@ export abstract class BaseTextBlock extends CardElement {
     }
 
     applyStylesTo(targetElement: HTMLElement) {
-        let fontType = this.hostConfig.getFontTypeDefinition(this.fontType);
+        let fontType = this.hostConfig.getFontTypeDefinition(this.effectiveFontType);
 
         if (fontType.fontFamily) {
             targetElement.style.fontFamily = fontType.fontFamily;
@@ -772,7 +759,7 @@ export abstract class BaseTextBlock extends CardElement {
 
         let fontSize: number;
 
-        switch (this.size) {
+        switch (this.effectiveSize) {
             case Enums.TextSize.Small:
                 fontSize = fontType.fontSizes.small;
                 break;
@@ -794,11 +781,11 @@ export abstract class BaseTextBlock extends CardElement {
 
         let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
 
-        targetElement.style.color = <string>Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
+        targetElement.style.color = <string>Utils.stringToCssColor(this.effectiveIsSubtle ? colorDefinition.subtle : colorDefinition.default);
 
         let fontWeight: number;
 
-        switch (this.weight) {
+        switch (this.effectiveWeight) {
             case Enums.TextWeight.Lighter:
                 fontWeight = fontType.fontWeights.lighter;
                 break;
@@ -818,11 +805,27 @@ export abstract class BaseTextBlock extends CardElement {
     }
 
     get effectiveColor(): Enums.TextColor {
-        return this.color ? this.color : Enums.TextColor.Default;
+        return this.color !== undefined ? this.color : this.getEffectiveTextStyleDefinition().color;
+    }
+
+    get effectiveFontType(): Enums.FontType {
+        return this.fontType !== undefined ? this.fontType : this.getEffectiveTextStyleDefinition().fontType;
+    }
+
+    get effectiveIsSubtle(): boolean {
+        return this.isSubtle !== undefined ? this.isSubtle : this.getEffectiveTextStyleDefinition().isSubtle;
+    }
+
+    get effectiveSize(): Enums.TextSize {
+        return this.size !== undefined ? this.size : this.getEffectiveTextStyleDefinition().size;
+    }
+
+    get effectiveWeight(): Enums.TextWeight {
+        return this.weight !== undefined ? this.weight : this.getEffectiveTextStyleDefinition().weight;
     }
 }
 
-export type TextBlockStyle = "paragraph" | "heading";
+export type TextBlockStyle = "default" | "heading";
 
 export class TextBlock extends BaseTextBlock {
     //#region Schema
@@ -833,10 +836,9 @@ export class TextBlock extends BaseTextBlock {
         Versions.v1_5,
         "style",
         [
-            { value: "paragraph" },
+            { value: "default" },
             { value: "heading" }
-        ],
-        "paragraph");
+        ]);
 
     @property(TextBlock.wrapProperty)
     wrap: boolean = false;
@@ -845,7 +847,7 @@ export class TextBlock extends BaseTextBlock {
     maxLines?: number;
 
     @property(TextBlock.styleProperty)
-    style: TextBlockStyle = "paragraph";
+    style?: TextBlockStyle;
 
     //#endregion
 
@@ -917,10 +919,10 @@ export class TextBlock extends BaseTextBlock {
 
             if (this.style === "heading") {
                 element.setAttribute("role", "heading");
-
-                let headingLevel = this.hostConfig.headings.level;
-
-                if (headingLevel !== undefined) {
+                
+                let headingLevel = this.hostConfig.textBlock.headingLevel;
+                
+                if (headingLevel !== undefined && headingLevel > 0) {
                     element.setAttribute("aria-level", headingLevel.toString());
                 }
             }
@@ -1112,7 +1114,7 @@ export class TextBlock extends BaseTextBlock {
         let lineHeights = this.hostConfig.lineHeights;
 
         if (lineHeights) {
-            switch (this.size) {
+            switch (this.effectiveSize) {
                 case Enums.TextSize.Small:
                     this._computedLineHeight = lineHeights.small;
                     break;
@@ -1133,7 +1135,7 @@ export class TextBlock extends BaseTextBlock {
         else {
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
-            this._computedLineHeight = this.getFontSize(this.hostConfig.getFontTypeDefinition(this.fontType)) * 1.33;
+            this._computedLineHeight = this.getFontSize(this.hostConfig.getFontTypeDefinition(this.effectiveFontType)) * 1.33;
         }
 
         targetElement.style.lineHeight = this._computedLineHeight + "px";
@@ -1141,6 +1143,14 @@ export class TextBlock extends BaseTextBlock {
 
     getJsonTypeName(): string {
         return "TextBlock";
+    }
+
+    getEffectiveTextStyleDefinition(): TextStyleDefinition {
+        if (this.style) {
+            return this.hostConfig.textStyles.getStyleByName(this.style);
+        }
+
+        return super.getEffectiveTextStyleDefinition();
     }
 
     updateLayout(processChildren: boolean = false) {
@@ -1247,7 +1257,7 @@ export class TextRun extends BaseTextBlock {
         if (this.highlight) {
             let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
 
-            targetElement.style.backgroundColor = <string>Utils.stringToCssColor(this.isSubtle ? colorDefinition.highlightColors.subtle : colorDefinition.highlightColors.default);
+            targetElement.style.backgroundColor = <string>Utils.stringToCssColor(this.effectiveIsSubtle ? colorDefinition.highlightColors.subtle : colorDefinition.highlightColors.default);
         }
 
         if (this.underline) {
