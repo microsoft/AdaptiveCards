@@ -26,6 +26,7 @@ export const TextRunString = "textrun"
 
 export const ActionOpenUrl = "Action.OpenUrl";
 export const ActionSubmit = "Action.Submit";
+export const ActionExecute = "Action.Execute";
 export const ActionShowCard = "Action.ShowCard";
 export const ActionToggleVisibility = "Action.ToggleVisibility";
 export const OkText = "OK";
@@ -43,7 +44,8 @@ export const PlatformAndroid = 'android';
 export const LightGreyColor = 'lightgrey';
 export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
-export const BlackColor = 'black';
+export const BlackColor = '#000000';
+export const LightBlack = "#404040";
 export const buttonDefaultColor = "#1D9BF6";
 
 export const TrueString = "true";

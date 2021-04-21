@@ -18,8 +18,8 @@ export class ActionSet extends React.Component {
 		let payload = this.props.json;
 
 		return (
-			<ElementWrapper json={payload} isFirst={this.props.isFirst}>
-				<ActionWrapper actions={payload.actions} />
+			<ElementWrapper configManager={this.props.configManager} json={payload} isFirst={this.props.isFirst}>
+				<ActionWrapper configManager={this.props.configManager} actions={payload.actions} />
 			</ElementWrapper>
 		);
 	}
