@@ -649,7 +649,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
             auto card = parseResult->GetAdaptiveCard();
             auto body = card->GetBody();
-            std::vector<TextStyle> expectedStyles = { TextStyle::Heading, TextStyle::Heading, TextStyle::Paragraph, TextStyle::Paragraph };
+            std::vector<std::optional<TextStyle>> expectedStyles = { TextStyle::Heading, TextStyle::Heading, TextStyle::Default, std::nullopt };
 
             auto i = 0;
             for (const auto& elem : body) {

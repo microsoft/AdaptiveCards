@@ -71,7 +71,8 @@ namespace AdaptiveSharedNamespace
         ForegroundColor,
         ForegroundColors,
         Good,
-        Headings,
+        Heading,
+        HeadingLevel,
         Height,
         Highlight,
         HighlightColor,
@@ -163,6 +164,7 @@ namespace AdaptiveSharedNamespace
         TextBlock,
         TextConfig,
         TextInput,
+        TextStyles,
         TextWeight,
         Thickness,
         TimeInput,
@@ -224,7 +226,7 @@ namespace AdaptiveSharedNamespace
 
     enum class TextStyle
     {
-        Paragraph = 0,
+        Default = 0,
         Heading
     };
     DECLARE_ADAPTIVECARD_ENUM(TextStyle);

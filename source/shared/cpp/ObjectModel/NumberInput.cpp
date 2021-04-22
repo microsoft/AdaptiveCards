@@ -87,10 +87,9 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& co
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
 
-    static const std::optional<double> emptyOptionalDouble;
-    numberInput->SetValue(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Value, emptyOptionalDouble));
-    numberInput->SetMax(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Max, emptyOptionalDouble));
-    numberInput->SetMin(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Min, emptyOptionalDouble));
+    numberInput->SetValue(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Value));
+    numberInput->SetMax(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Max));
+    numberInput->SetMin(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Min));
 
     return numberInput;
 }
