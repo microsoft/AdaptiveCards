@@ -169,6 +169,7 @@ namespace AdaptiveSharedNamespace
         Title,
         ToggleInput,
         TokenExchangeResource,
+		Tooltip,
         Top,
         Type,
         Underline,
