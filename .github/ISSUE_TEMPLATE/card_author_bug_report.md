@@ -12,7 +12,7 @@ Please list the application(s) that the card you are authoring is targeting (ex:
 
 # Problem Description
 
-Please enter a dscription of the issue. If you just have a question, please post [on StackOverflow instead](https://stackoverflow.com/questions/tagged/adaptive-cards)
+Please enter a description of the issue. If you just have a question, please post [on StackOverflow instead](https://stackoverflow.com/questions/tagged/adaptive-cards)
 
 # Expected Outcome
 
