@@ -166,6 +166,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::TimeInput, "timeInput"},
             {AdaptiveCardSchemaKey::Title, "title"},
             {AdaptiveCardSchemaKey::ToggleInput, "toggleInput"},
+            {AdaptiveCardSchemaKey::Tooltip, "tooltip"},
             {AdaptiveCardSchemaKey::Top, "top"},
             {AdaptiveCardSchemaKey::TokenExchangeResource, "tokenExchangeResource"},
             {AdaptiveCardSchemaKey::Type, "type"},

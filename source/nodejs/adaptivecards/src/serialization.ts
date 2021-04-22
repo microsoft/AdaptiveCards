@@ -182,24 +182,11 @@ export abstract class BaseSerializationContext {
         propertyName: string,
         propertyValue: number | undefined,
         defaultValue: number | undefined = undefined) {
-        let targetValue = target[propertyName];
-
-        let canDeleteTarget = targetValue == undefined ? true : enumType[targetValue] !== undefined;
-
-        if (propertyValue == defaultValue) {
-            if (canDeleteTarget) {
-                delete target[propertyName];
-            }
+        if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
+            delete target[propertyName];
         }
         else {
-            if (propertyValue == undefined) {
-                if (canDeleteTarget) {
-                    delete target[propertyName];
-                }
-            }
-            else {
-                target[propertyName] = enumType[propertyValue];
-            }
+            target[propertyName] = enumType[propertyValue];
         }
     }
 
@@ -504,37 +491,42 @@ export class ValueSetProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) {
-        let valueFound = false;
+        let invalidValue = false;
 
-        for (let versionedValue of this.values) {
-            if (versionedValue.value === value) {
-                let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
+        if (value !== undefined) {
+            invalidValue = true;
 
-                if (targetVersion.compareTo(context.targetVersion) <= 0) {
-                    valueFound = true;
+            for (let versionedValue of this.values) {
+                if (versionedValue.value === value) {
+                    let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
-                    break;
-                }
-                else {
-                    context.logEvent(
-                        sender,
-                        Enums.ValidationPhase.ToJSON,
-                        Enums.ValidationEvent.InvalidPropertyValue,
-                        Strings.errors.propertyValueNotSupported(
-                            value,
-                            this.name,
-                            targetVersion.toString(),
-                            context.targetVersion.toString()));
+                    if (targetVersion.compareTo(context.targetVersion) <= 0) {
+                        invalidValue = false;
+
+                        break;
+                    }
+                    else {
+                        context.logEvent(
+                            sender,
+                            Enums.ValidationPhase.ToJSON,
+                            Enums.ValidationEvent.InvalidPropertyValue,
+                            Strings.errors.propertyValueNotSupported(
+                                value,
+                                this.name,
+                                targetVersion.toString(),
+                                context.targetVersion.toString()));
+                    }
                 }
             }
         }
 
-        if (valueFound) {
+        if (!invalidValue) {
             context.serializeValue(
                 target,
                 this.name,
                 value,
-                this.defaultValue);
+                this.defaultValue,
+                true);
         }
     }
 
@@ -593,15 +585,17 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined, context: BaseSerializationContext) {
+        let invalidValue = false;
+
         if (value !== undefined) {
-            let valueFound = false;
+            invalidValue = true;
 
             for (let versionedValue of this.values) {
                 if (versionedValue.value === value) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
                     if (targetVersion.compareTo(context.targetVersion) <= 0) {
-                        valueFound = true;
+                        invalidValue = false;
 
                         break;
                     }
@@ -614,15 +608,15 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                     }
                 }
             }
+        }
 
-            if (valueFound) {
-                context.serializeEnum(
-                    this.enumType,
-                    target,
-                    this.name,
-                    value,
-                    this.defaultValue);
-            }
+        if (!invalidValue) {
+            context.serializeEnum(
+                this.enumType,
+                target,
+                this.name,
+                value,
+                this.defaultValue);
         }
     }
 
@@ -829,7 +823,7 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
-    static defaultMaxVersion: Version = Versions.v1_3;
+    static defaultMaxVersion: Version = Versions.latest;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
