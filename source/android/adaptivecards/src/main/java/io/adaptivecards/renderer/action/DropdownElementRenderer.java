@@ -31,8 +31,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
  */
 public class DropdownElementRenderer implements IBaseActionElementRenderer {
 
-    private final static int HORIZONTAL_MARGIN = 12;
-    private final static int VERTICAL_MARGIN = 10;
+    private final static int PADDING = 10;
 
 
 
@@ -71,30 +70,27 @@ public class DropdownElementRenderer implements IBaseActionElementRenderer {
 
         Button dropDownItem = new Button(context, null, R.style.Widget_AppCompat_Light_ActionButton_Overflow);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        int hMargin = Util.dpToPixels(context, HORIZONTAL_MARGIN);
-        int vMargin = Util.dpToPixels(context, VERTICAL_MARGIN);
-        layoutParams.setMargins(hMargin, vMargin, hMargin, vMargin);
+        int padding = Util.dpToPixels(context, PADDING);
         layoutParams.gravity = Gravity.CENTER;
         dropDownItem.setText(button.getText());
+        dropDownItem.setPadding(padding, padding, padding, padding);
         dropDownItem.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         dropDownItem.setGravity(Gravity.CENTER);
         dropDownItem.setTextColor(context.getResources().getColor(R.color.dropdown_text_color));
         dropDownItem.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
         dropDownItem.setLayoutParams(layoutParams);
-        dropDownItem.setMinWidth(Util.dpToPixels(context, 80));
+        dropDownItem.setMinWidth(Util.dpToPixels(context, 100));
         dropDownItem.setMinimumWidth(0);
 
-        dropDownItem.post(() ->
+        if (baseActionElement.GetIconUrl() != null && !baseActionElement.GetIconUrl().isEmpty())
         {
-            Drawable[] drawables;
-
-            if((drawables = button.getCompoundDrawablesRelative()) !=null)
+            dropDownItem.post(() ->
             {
+                Drawable[] drawables = button.getCompoundDrawablesRelative();
                 dropDownItem.setCompoundDrawablePadding(button.getCompoundDrawablePadding());
                 dropDownItem.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
-            }
-
-        });
+            });
+        }
 
         dropDownItem.setOnClickListener(view ->
         {

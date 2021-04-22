@@ -31,6 +31,9 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
+    /**
+     * This tag key is used in {@link io.adaptivecards.renderer.action.DropdownElementRenderer} to get the container view of the Overflow ("...") action, so dropdown view can behave like a primary action element.
+     */
     public final static int PARENT_DROPDOWN_TAG = 0xffffffff;
 
     protected static int getColor(String colorCode)
