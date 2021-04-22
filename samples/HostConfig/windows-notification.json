@@ -44,6 +44,18 @@
             }
         }
     },
+    "textStyles": {
+        "heading": {
+            "fontType": "default",
+            "size": "large",
+            "weight": "bolder",
+            "color": "default",
+            "isSubtle": false
+        }
+    },
+    "textBlock": {
+        "headingLevel": 2
+    },
     "containerStyles": {
         "default": {
             "backgroundColor": "#1F1F1F",
