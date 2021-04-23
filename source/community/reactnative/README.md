@@ -27,6 +27,7 @@ import AdaptiveCard from 'adaptivecards-reactnative'
                     flexGrow: 1, 
                     justifyContent: 'space-between'
                }}
+               cardScrollEnabled={false}
                contentHeight={500} 
                ref="referenceVariable"/>
 ```
@@ -41,6 +42,7 @@ Prop | Type | Description | Required
 **containerStyle** | `{object}` | Style used to override the adaptive card container style | NO
 **contentContainerStyle** | `{object}` | Style used to override the adaptive card content container style | NO
 **contentHeight** | `{number}` | Value used to override the adaptive card height | NO
+**cardScrollEnabled** | `{bool}` | Value used to enable the adaptive card Scroll | NO
 **ref** | `React.createRef()` |  Reference variable used to invoke the methods exposed by AdaptiveCards.(Example: In order to fetch the image & media URLs across the payload, one can use like this `this.refs.referenceVariable.getResourceInformation()`  | NO
 
 ## Extensibility
