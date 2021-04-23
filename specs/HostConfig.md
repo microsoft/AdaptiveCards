@@ -30,7 +30,7 @@
 |**spacing**|`string`| No, default: `"default"`|Controls overall spacing of action element|1.0
 |**showCard**|`object`| No|Controls behavior and styling of `Action.ShowCard`|1.0
 |**iconPlacement**|`string`| No, default: `"aboveTitle"`|Controls where to place the action icon|1.0
-|**iconSize**|`integer`| No, default: `30`|Controls size of action icon|1.0
+|**iconSize**|`integer`| No, default: `16`|Controls size of action icon|1.0
 
 
 
