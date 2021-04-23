@@ -490,7 +490,7 @@ CGFloat kAdaptiveCardsWidth = 0;
 - (void)keyboardWillBeHidden:(NSNotification *)aNotification
 {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    self.chatWindow.contentInset = contentInsets;    
+    self.chatWindow.contentInset = contentInsets;
 }
 
 - (NSArray<UIStackView *> *)buildButtonsLayout:(NSLayoutAnchor *)centerXAnchor
