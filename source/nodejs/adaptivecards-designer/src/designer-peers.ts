@@ -489,12 +489,35 @@ export interface IVersionedChoice {
     value: string;
 }
 
+const NotSetValue = "@@not_set@@";
+
 export class ChoicePropertyEditor extends SingleInputPropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        let currentValue = context.target[this.propertyName];
+
+        return currentValue !== undefined ? currentValue.toString() : NotSetValue;
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        if (value === NotSetValue) {
+            context.target[this.propertyName] = undefined;
+        }
+        else {
+            context.target[this.propertyName] = value;
+        }
+    }
+
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.ChoiceSetInput();
         input.defaultValue = this.getPropertyValue(context);
         input.isCompact = true;
-        input.placeholder = "(not set)";
+
+        if (this.isNullable) {
+            input.choices.push(new Adaptive.Choice("(not set)", NotSetValue));
+        }
+        else {
+            input.placeholder = "(not set)";
+        }
 
         for (let choice of this.choices) {
             if (Adaptive.isVersionLessOrEqual(choice.targetVersion, context.designContext.targetVersion)) {
@@ -510,7 +533,8 @@ export class ChoicePropertyEditor extends SingleInputPropertyEditor {
         readonly propertyName: string,
         readonly label: string,
         readonly choices: IVersionedChoice[],
-        readonly causesPropertySheetRefresh: boolean = false) {
+        readonly causesPropertySheetRefresh: boolean = false,
+        readonly isNullable: boolean = false) {
         super(targetVersion, propertyName, label, causesPropertySheetRefresh);
     }
 }
@@ -519,12 +543,12 @@ export class ContainerStylePropertyEditor extends ChoicePropertyEditor {
     protected getPropertyValue(context: PropertySheetContext): any {
         let currentStyle = context.target[this.propertyName];
 
-        return currentStyle ? currentStyle.toString() : "not_set";
+        return currentStyle ? currentStyle.toString() : NotSetValue;
     }
 
     protected setPropertyValue(context: PropertySheetContext, value: string) {
-        if (value == "not_set") {
-            context.target[this.propertyName] = null;
+        if (value == NotSetValue) {
+            context.target[this.propertyName] = undefined;
         }
         else {
             context.target[this.propertyName] = value;
@@ -537,13 +561,42 @@ export class ContainerStylePropertyEditor extends ChoicePropertyEditor {
             propertyName,
             label,
             [
-                { targetVersion: Adaptive.Versions.v1_0, name: "(not set)", value: "not_set" },
+                { targetVersion: Adaptive.Versions.v1_0, name: "(not set)", value: NotSetValue },
                 { targetVersion: Adaptive.Versions.v1_0, name: "Default", value: "default" },
                 { targetVersion: Adaptive.Versions.v1_0, name: "Emphasis", value: "emphasis" },
                 { targetVersion: Adaptive.Versions.v1_2, name: "Accent", value: "accent" },
                 { targetVersion: Adaptive.Versions.v1_2, name: "Good", value: "good" },
                 { targetVersion: Adaptive.Versions.v1_2, name: "Attention", value: "attention" },
                 { targetVersion: Adaptive.Versions.v1_2, name: "Warning", value: "warning" }
+            ]);
+    }
+}
+
+export class NullableBooleanPropertyEditor extends ChoicePropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        let currentValue = context.target[this.propertyName];
+
+        return typeof currentValue === "boolean" ? currentValue.toString() : NotSetValue;
+    }
+
+    protected setPropertyValue(context: PropertySheetContext, value: string) {
+        if (value === NotSetValue) {
+            context.target[this.propertyName] = undefined;
+        }
+        else {
+            context.target[this.propertyName] = value === "true";
+        }
+    }
+
+    constructor(readonly targetVersion: Adaptive.TargetVersion,readonly propertyName: string, readonly label: string) {
+        super(
+            targetVersion,
+            propertyName,
+            label,
+            [
+                { targetVersion: Adaptive.Versions.v1_0, name: "(not set)", value: NotSetValue },
+                { targetVersion: Adaptive.Versions.v1_0, name: "True", value: "true" },
+                { targetVersion: Adaptive.Versions.v1_0, name: "False", value: "false" }
             ]);
     }
 }
@@ -718,15 +771,36 @@ export class CompoundPropertyEditor extends PropertySheetEntry {
 }
 
 export class EnumPropertyEditor extends SingleInputPropertyEditor {
+    protected getPropertyValue(context: PropertySheetContext): any {
+        let value = context.target[this.propertyName];
+
+        return value !== undefined ? value : "-1";
+    }
+
     protected setPropertyValue(context: PropertySheetContext, value: string) {
-        context.target[this.propertyName] = parseInt(value, 10);
+        let valueAsInt = parseInt(value, 10);
+
+        if (valueAsInt >= 0) {
+            context.target[this.propertyName] = valueAsInt;
+        }
+        else {
+            context.target[this.propertyName] = undefined;
+        }
     }
 
     protected createInput(context: PropertySheetContext): Adaptive.Input {
         let input = new Adaptive.ChoiceSetInput();
-        input.defaultValue = this.getPropertyValue(context);
         input.isCompact = true;
-        input.placeholder = "(not set)";
+
+        let defaultValue = this.getPropertyValue(context);
+        input.defaultValue = defaultValue !== undefined ? defaultValue : "-1";
+
+        if (this.isNullable) {
+            input.choices.push(new Adaptive.Choice("(not set)", "-1"));
+        }
+        else {
+            input.placeholder = "(not set)";
+        }
 
         for (let key in this.enumType) {
             let v = parseInt(key, 10);
@@ -744,7 +818,8 @@ export class EnumPropertyEditor extends SingleInputPropertyEditor {
         readonly propertyName: string,
         readonly label: string,
         readonly enumType: { [s: number]: string },
-        readonly causesPropertySheetRefresh: boolean = false) {
+        readonly causesPropertySheetRefresh: boolean = false,
+        readonly isNullable: boolean = false) {
         super(targetVersion, propertyName, label, causesPropertySheetRefresh);
     }
 }
@@ -2611,19 +2686,21 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     static readonly textProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "text", "Text", true, true);
     static readonly wrapProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "wrap", "Wrap");
     static readonly maxLinesProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "maxLines", "Maximum lines", 0);
-    static readonly fontTypeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_2, "fontType", "Font type", Adaptive.FontType);
-    static readonly sizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "size", "Size", Adaptive.TextSize);
-    static readonly weightProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "weight", "Weight", Adaptive.TextWeight);
-    static readonly colorProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "color", "Color", Adaptive.TextColor);
-    static readonly subtleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isSubtle", "Subtle");
+    static readonly fontTypeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_2, "fontType", "Font type", Adaptive.FontType, false, true);
+    static readonly sizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "size", "Size", Adaptive.TextSize, false, true);
+    static readonly weightProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "weight", "Weight", Adaptive.TextWeight, false, true);
+    static readonly colorProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "color", "Color", Adaptive.TextColor, false, true);
+    static readonly subtleProperty = new NullableBooleanPropertyEditor(Adaptive.Versions.v1_0, "isSubtle", "Subtle");
     static readonly styleProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_5,
         "style",
-        "Style",
+        "Base style",
         [
-            { targetVersion: Adaptive.Versions.v1_5, name: "Paragraph", value: "paragraph" },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Default", value: "default" },
             { targetVersion: Adaptive.Versions.v1_5, name: "Heading", value: "heading" }
-        ]);
+        ],
+        false,
+        true);
 
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
         return new TextBlockPeerInplaceEditor(this.cardElement);
@@ -2673,12 +2750,12 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
 
         propertySheet.add(
             PropertySheetCategory.StyleCategory,
+            TextBlockPeer.styleProperty,
             TextBlockPeer.fontTypeProperty,
             TextBlockPeer.sizeProperty,
             TextBlockPeer.weightProperty,
             TextBlockPeer.colorProperty,
-            TextBlockPeer.subtleProperty,
-            TextBlockPeer.styleProperty);
+            TextBlockPeer.subtleProperty);
     }
 
     getToolTip(): string {

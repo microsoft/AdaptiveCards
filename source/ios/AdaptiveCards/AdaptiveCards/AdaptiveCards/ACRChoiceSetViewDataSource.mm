@@ -17,9 +17,12 @@ NSString *uncheckedCheckboxReuseID = @"unchecked-checkbox";
 NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
 NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
-const CGFloat padding = 16.0f;
+const CGFloat padding = 2.0f;
 
 @implementation ACRChoiceSetCell
+{
+    CGSize _imageSize;
+}
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier
 {
@@ -40,8 +43,17 @@ const CGFloat padding = 16.0f;
         self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.textLabel.adjustsFontSizeToFitWidth = NO;
         self.backgroundColor = UIColor.clearColor;
+        _imageSize = iconImage.size;
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.imageView.frame = CGRectMake(0, 0, _imageSize.width, _imageSize.height);
+    self.imageView.center = CGPointMake(_imageSize.width / 2, self.bounds.size.height / 2);
+    self.textLabel.frame = CGRectMake(_imageSize.width + padding, 0, self.bounds.size.width - _imageSize.width + padding, self.bounds.size.height);
 }
 
 @end

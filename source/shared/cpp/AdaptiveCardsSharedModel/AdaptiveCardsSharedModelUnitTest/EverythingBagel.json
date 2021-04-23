@@ -311,12 +311,14 @@
 					"type": "Action.Submit",
 					"title": "ActionSet.Action.Submit",
 					"id": "ActionSet.Action.Submit_id",
-					"associatedInputs": "none"
+					"associatedInputs": "none",
+					"tooltip": "tooltip"
 				},
 				{
 					"type": "Action.OpenUrl",
 					"title": "ActionSet.Action.OpenUrl",
 					"id": "ActionSet.Action.OpenUrl_id",
+					"tooltip": "tooltip",
 					"url": "https://adaptivecards.io/"
 				}
 			]
@@ -353,6 +355,7 @@
 			"type": "Action.Submit",
 			"title": "Action.Submit",
 			"id": "Action.Submit_id",
+			"tooltip": "tooltip",
 			"data": {
 				"submitValue": true
 			}
@@ -371,6 +374,7 @@
 			"type": "Action.ShowCard",
 			"title": "Action.ShowCard",
 			"id": "Action.ShowCard_id",
+			"tooltip": "tooltip",
 			"card": {
 				"type": "AdaptiveCard",
 				"backgroundImage": {
