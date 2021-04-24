@@ -247,6 +247,8 @@ using namespace AdaptiveCards;
         }
     }
 
+    [view toggleVisibilityOfFirstView];
+
     return view;
 }
 @end
