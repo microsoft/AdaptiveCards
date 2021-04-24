@@ -77,9 +77,16 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
 
+    std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+
+    if (!actions.empty()) {
+        [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config hash:iOSInternalIdHash(adaptiveCard->GetInternalId().Hash())];
+    }
+
     // set context
     ACOAdaptiveCard *wrapperCard = [[ACOAdaptiveCard alloc] init];
     [wrapperCard setCard:adaptiveCard];
+
     [rootView.context pushCardContext:wrapperCard];
 
     verticalView.rtl = rootView.context.rtl;
@@ -124,12 +131,6 @@ using namespace AdaptiveCards;
     [verticalView setStyle:style];
 
     [rootView addBaseCardElementListToConcurrentQueue:body registration:[ACRRegistration getInstance]];
-
-    std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
-
-    if (!actions.empty()) {
-        [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
-    }
 
     UIView *leadingBlankSpace = nil;
     if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||

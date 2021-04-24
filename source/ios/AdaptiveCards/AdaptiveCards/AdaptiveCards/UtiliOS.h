@@ -116,3 +116,5 @@ void partitionActions(
     ACRView *rootView);
 
 UIImage *scaleImageToSize(UIImage *image, CGSize newSize);
+
+NSNumber *iOSInternalIdHash(const std::size_t internalIdHash);
