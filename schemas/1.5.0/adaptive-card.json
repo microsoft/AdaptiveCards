@@ -894,11 +894,25 @@
               "description": "Text to display. Markdown is not supported."
             },
             "color": {
-              "$ref": "#/definitions/Colors",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Colors"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "Controls the color of the text."
             },
             "fontType": {
-              "$ref": "#/definitions/FontType",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontType"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "The type of font to use"
             },
             "highlight": {
@@ -906,7 +920,14 @@
               "description": "If `true`, displays the text highlighted."
             },
             "isSubtle": {
-              "type": "boolean",
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "If `true`, displays text slightly toned down to appear less prominent.",
               "default": false
             },
@@ -919,7 +940,14 @@
               "description": "Action to invoke when this text run is clicked. Visually changes the text run into a hyperlink. `Action.ShowCard` is not supported."
             },
             "size": {
-              "$ref": "#/definitions/FontSize",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontSize"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "Controls size of text."
             },
             "strikethrough": {
@@ -932,7 +960,14 @@
               "version": "1.3"
             },
             "weight": {
-              "$ref": "#/definitions/FontWeight",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontWeight"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "Controls the weight of the text."
             }
           },
@@ -1405,11 +1440,25 @@
           "description": "Text to display. A subset of markdown is supported (https://aka.ms/ACTextFeatures)"
         },
         "color": {
-          "$ref": "#/definitions/Colors",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Colors"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "Controls the color of `TextBlock` elements."
         },
         "fontType": {
-          "$ref": "#/definitions/FontType",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontType"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "Type of font to use for rendering",
           "version": "1.2"
         },
@@ -1418,7 +1467,14 @@
           "description": "Controls the horizontal text alignment."
         },
         "isSubtle": {
-          "type": "boolean",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "If `true`, displays text slightly toned down to appear less prominent.",
           "default": false
         },
@@ -1427,11 +1483,25 @@
           "description": "Specifies the maximum number of lines to display."
         },
         "size": {
-          "$ref": "#/definitions/FontSize",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontSize"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "Controls size of text."
         },
         "weight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "Controls the weight of `TextBlock` elements."
         },
         "wrap": {
@@ -1440,9 +1510,16 @@
           "default": false
         },
         "style": {
-          "$ref": "#/definitions/TextBlockStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBlockStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "description": "The style of this TextBlock for accessibility purposes.",
-          "default": "paragraph"
+          "default": "default"
         },
         "fallback": {},
         "height": {},
@@ -1698,12 +1775,12 @@
       "anyOf": [
         {
           "enum": [
-            "paragraph",
+            "default",
             "heading"
           ]
         },
         {
-          "pattern": "^([p|P][a|A][r|R][a|A][g|G][r|R][a|A][p|P][h|H])|([h|H][e|E][a|A][d|D][i|I][n|N][g|G])$"
+          "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([h|H][e|E][a|A][d|D][i|I][n|N][g|G])$"
         }
       ]
     },
