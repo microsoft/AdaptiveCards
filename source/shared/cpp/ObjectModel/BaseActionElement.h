@@ -48,6 +48,9 @@ namespace AdaptiveSharedNamespace
         Mode GetMode() const;
         void SetMode(const Mode mode);
 
+        bool GetIsEnabled() const;
+        void SetIsEnabled(const bool isEnabled);
+
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
         Json::Value SerializeToJsonValue() const override;
 
@@ -71,6 +74,8 @@ namespace AdaptiveSharedNamespace
         std::string m_iconUrl;
         std::string m_style;
         std::string m_tooltip;
+
+        bool m_isEnabled;
 
         ActionType m_type;
         Mode m_mode;

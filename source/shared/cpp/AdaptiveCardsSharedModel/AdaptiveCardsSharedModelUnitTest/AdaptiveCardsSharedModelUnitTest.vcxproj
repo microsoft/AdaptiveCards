@@ -279,6 +279,9 @@
       <Link>EverythingBagel.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="EverythingBagel.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

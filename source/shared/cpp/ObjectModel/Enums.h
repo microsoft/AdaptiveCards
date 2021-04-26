@@ -92,6 +92,7 @@ namespace AdaptiveSharedNamespace
         InlineTopMargin,
         Inputs,
         InputSpacing,
+        IsEnabled,
         IsMultiSelect,
         IsMultiline,
         IsRequired,
