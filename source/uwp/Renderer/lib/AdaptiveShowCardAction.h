@@ -21,61 +21,79 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction);
 
         // IAdaptiveShowCardAction
-        IFACEMETHODIMP get_Card(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** card);
-        IFACEMETHODIMP put_Card(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card);
+        IFACEMETHODIMP get_Card(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** card) override;
+        IFACEMETHODIMP put_Card(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card) override;
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
-        IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value)
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType) override;
+        IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value) override
         {
             return AdaptiveActionElementBase::get_ActionTypeString(value);
         }
 
-        IFACEMETHODIMP get_Title(_Outptr_ HSTRING* title) { return AdaptiveActionElementBase::get_Title(title); }
-        IFACEMETHODIMP put_Title(_In_ HSTRING title) { return AdaptiveActionElementBase::put_Title(title); }
+        IFACEMETHODIMP get_Title(_Outptr_ HSTRING* title) override
+        {
+            return AdaptiveActionElementBase::get_Title(title);
+        }
+        IFACEMETHODIMP put_Title(_In_ HSTRING title) override { return AdaptiveActionElementBase::put_Title(title); }
 
-        IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveActionElementBase::get_Id(id); }
-        IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveActionElementBase::put_Id(id); }
+        IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) override { return AdaptiveActionElementBase::get_Id(id); }
+        IFACEMETHODIMP put_Id(_In_ HSTRING id) override { return AdaptiveActionElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback) override
         {
             return AdaptiveActionElementBase::get_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** content)
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** content) override
         {
             return AdaptiveActionElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback)
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback) override
         {
             return AdaptiveActionElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* content)
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* content) override
         {
             return AdaptiveActionElementBase::put_FallbackContent(content);
         }
 
-        IFACEMETHODIMP get_IconUrl(_Outptr_ HSTRING* iconUrl)
+        IFACEMETHODIMP get_IconUrl(_Outptr_ HSTRING* iconUrl) override
         {
             return AdaptiveActionElementBase::get_IconUrl(iconUrl);
         }
-        IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl) { return AdaptiveActionElementBase::put_IconUrl(iconUrl); }
+        IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl) override
+        {
+            return AdaptiveActionElementBase::put_IconUrl(iconUrl);
+        }
 
-        IFACEMETHODIMP get_Style(_Outptr_ HSTRING* style) { return AdaptiveActionElementBase::get_Style(style); }
-        IFACEMETHODIMP put_Style(_In_ HSTRING style) { return AdaptiveActionElementBase::put_Style(style); }
+        IFACEMETHODIMP get_Style(_Outptr_ HSTRING* style) override
+        {
+            return AdaptiveActionElementBase::get_Style(style);
+        }
+        IFACEMETHODIMP put_Style(_In_ HSTRING style) override { return AdaptiveActionElementBase::put_Style(style); }
 
-        IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
+        IFACEMETHODIMP put_IsEnabled(boolean isEnabled) override
+        {
+            return AdaptiveActionElementBase::put_IsEnabled(isEnabled);
+        }
+        IFACEMETHODIMP get_IsEnabled(_Out_ boolean* isEnabled) override
+        {
+            return AdaptiveActionElementBase::get_IsEnabled(isEnabled);
+        }
+
+        IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result) override
         {
             return AdaptiveActionElementBase::get_AdditionalProperties(result);
         }
-        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value)
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value) override
         {
             return AdaptiveActionElementBase::put_AdditionalProperties(value);
         }
 
-        IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
+        IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result) override
         {
             return AdaptiveActionElementBase::ToJson(result);
         }

@@ -199,6 +199,7 @@ namespace UWPUnitTests
             public string IconUrl { get; set; }
             public string Style { get; set; }
             public string Title { get; set; }
+            public bool IsEnabled { get; set; }
             IAdaptiveActionElement IAdaptiveActionElement.FallbackContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             FallbackType IAdaptiveActionElement.FallbackType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         };

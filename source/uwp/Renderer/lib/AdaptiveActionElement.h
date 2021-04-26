@@ -31,6 +31,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Style(_Outptr_ HSTRING* style);
         IFACEMETHODIMP put_Style(_In_ HSTRING style);
 
+        IFACEMETHODIMP get_IsEnabled(_Out_ boolean* isEnabled);
+        IFACEMETHODIMP put_IsEnabled(boolean isEnabled);
+
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
@@ -47,6 +50,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::Wrappers::HString m_style;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
+        boolean m_isEnabled;
         InternalId m_internalId;
         ABI::AdaptiveNamespace::FallbackType m_fallbackType;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_fallbackContent;

@@ -24,6 +24,8 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetStyle(), m_style.GetAddressOf()));
 
+        m_isEnabled = sharedModel->GetIsEnabled();
+
         m_internalId = sharedModel->GetInternalId();
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
@@ -82,6 +84,18 @@ namespace AdaptiveNamespace
 
     IFACEMETHODIMP AdaptiveActionElementBase::put_Style(_In_ HSTRING style) { return m_style.Set(style); }
 
+    HRESULT AdaptiveActionElementBase::get_IsEnabled(boolean* isEnabled)
+    {
+        *isEnabled = m_isEnabled;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveActionElementBase::put_IsEnabled(boolean isEnabled)
+    {
+        m_isEnabled = isEnabled;
+        return S_OK;
+    }
+
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         return m_additionalProperties.CopyTo(result);
@@ -113,6 +127,8 @@ namespace AdaptiveNamespace
         sharedCardElement.SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
         sharedCardElement.SetStyle(HStringToUTF8(m_style.Get()));
         sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+        sharedCardElement.SetIsEnabled(m_isEnabled);
+
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {
             std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> fallbackSharedModel;
