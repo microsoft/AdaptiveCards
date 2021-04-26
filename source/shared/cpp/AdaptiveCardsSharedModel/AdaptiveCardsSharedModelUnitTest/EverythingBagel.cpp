@@ -423,9 +423,11 @@ namespace AdaptiveCardsSharedModelUnitTest
         auto submitAction = actions.at(0);
         Assert::AreEqual("ActionSet.Action.Submit_id", submitAction->GetId().c_str());
         Assert::IsTrue(std::static_pointer_cast<SubmitAction>(submitAction)->GetAssociatedInputs() == AssociatedInputs::None);
+        Assert::AreEqual("tooltip", submitAction->GetTooltip().c_str());
 
         auto openUrlAction = actions.at(1);
         Assert::AreEqual("ActionSet.Action.OpenUrl_id", openUrlAction->GetId().c_str());
+        Assert::AreEqual("tooltip", submitAction->GetTooltip().c_str());
     }
 
     void ValidateRichTextBlock(const RichTextBlock &richTextBlock)
@@ -532,6 +534,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             //Logger::WriteMessage("Submit Data: '"s.append(submitAction->GetDataJson()).append("'").c_str());
             Assert::AreEqual("{\"submitValue\":true}\n"s, submitAction->GetDataJson());
             Assert::IsTrue(submitAction->GetAssociatedInputs() == AssociatedInputs::Auto);
+            Assert::AreEqual("tooltip", submitAction->GetTooltip().c_str());
 
             auto additionalProps = submitAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());
@@ -569,6 +572,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(""s, showCardAction->GetIconUrl());
             Assert::AreEqual("Action.ShowCard_id"s, showCardAction->GetId());
             Assert::AreEqual("Action.ShowCard"s, showCardAction->GetTitle());
+            Assert::AreEqual("tooltip", showCardAction->GetTooltip().c_str());
 
             auto additionalProps = showCardAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());
