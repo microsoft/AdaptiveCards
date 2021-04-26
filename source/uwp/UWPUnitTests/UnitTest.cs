@@ -39,6 +39,7 @@ namespace UWPUnitTests
             context.Properties.Add("SourceCardsFolder", await expectedFolder.CreateFolderAsync("SourceCards", CreationCollisionOption.OpenIfExists));
         }
 
+        [TestMethod]
         public async Task TestAllCards()
         {
             _expectedFolder = (TestContext.Properties["ExpectedFolder"] as StorageFolder);
