@@ -59,4 +59,8 @@ using namespace AdaptiveCards;
 + (ContainerStyle)getSharedContainerStyle:(ACRContainerStyle)style;
 
 - (ACRIconPlacement)getIconPlacement;
+
+- (void)setIconPlacement:(NSNumber *)internalId placement:(BOOL)placement;
+
 @end
+

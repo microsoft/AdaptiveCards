@@ -66,17 +66,22 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
         final IOverflowActionRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionRenderer();
         final List<View> menuItemList = renderSecondaryActionElements(baseActionElementList, renderedCard, context, fragmentManager, viewGroup, cardActionHandler, hostConfig, renderArgs);
 
-        View overflowActionView;
-        if (overflowActionRenderer == null || (overflowActionView = overflowActionRenderer.onRenderOverflowAction(viewGroup, menuItemList, renderArgs.isRootLevelActions())) == null)
+        View overflowActionView = null;
+        try
         {
-            overflowActionView = renderDefaultOverflowAction(context, viewGroup, hostConfig);
+            if (overflowActionRenderer == null || (overflowActionView = overflowActionRenderer.onRenderOverflowAction(viewGroup, menuItemList, renderArgs.isRootLevelActions())) == null) {
+                overflowActionView = renderDefaultOverflowAction(context, viewGroup, hostConfig);
+            }
+            final LinearLayout contentLayout = new LinearLayout(context);
+            contentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            contentLayout.setOrientation(LinearLayout.VERTICAL);
+            setDrawables(contentLayout);
+            overflowActionView.setOnClickListener(new OverflowActionOnClickListener(contentLayout, overflowActionRenderer, menuItemList));
         }
-
-        final LinearLayout contentLayout = new LinearLayout(context);
-        contentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        contentLayout.setOrientation(LinearLayout.VERTICAL);
-        setDrawables(contentLayout);
-        overflowActionView.setOnClickListener(new OverflowActionOnClickListener(contentLayout, overflowActionRenderer, menuItemList));
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         return overflowActionView;
     }
