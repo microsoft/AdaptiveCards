@@ -81,6 +81,7 @@ namespace RendererQml
         static const std::string getChoiceSetSelectedValuesFunc(const std::shared_ptr<QmlTag>& btnGroup, const bool isMultiselect);
 		static std::string GetModel(std::vector<Checkbox>& Choices);
 		static std::shared_ptr<QmlTag> GetComponent(const std::string& componentId, const std::shared_ptr<QmlTag>& uiCard);
+        static std::shared_ptr<QmlTag> GetColorOverlay(const std::string& parent, const std::string& color);
 
 		template <typename CardElement>
 		static std::shared_ptr<QmlTag> GetNewColumn(CardElement cardElement, std::shared_ptr<AdaptiveRenderContext> context);
@@ -93,7 +94,7 @@ namespace RendererQml
 
         static void addSubmitActionButtonClickFunc(const std::shared_ptr<AdaptiveRenderContext>& context);
         static void addShowCardButtonClickFunc(const std::shared_ptr<AdaptiveRenderContext>& context);
-        static void addShowCardLoaderComponents(const std::shared_ptr<AdaptiveRenderContext>& context);     
+        static void addShowCardLoaderComponents(const std::shared_ptr<AdaptiveRenderContext>& context);
 
         static const std::string getActionOpenUrlClickFunc(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& action, const std::shared_ptr<AdaptiveRenderContext>& context);
         static const std::string getActionSubmitClickFunc(const std::shared_ptr<AdaptiveCards::SubmitAction>& action, const std::shared_ptr<AdaptiveRenderContext>& context);
