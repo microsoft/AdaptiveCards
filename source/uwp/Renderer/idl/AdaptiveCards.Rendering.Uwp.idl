@@ -1574,6 +1574,7 @@ AdaptiveNamespaceStart
         IAdaptiveActionElement FallbackContent;
         String IconUrl;
         String Style;
+        String Tooltip;
         Windows.Data.Json.JsonObject AdditionalProperties;
 
         Windows.Data.Json.JsonObject ToJson();
