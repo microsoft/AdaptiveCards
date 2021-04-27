@@ -58,9 +58,23 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
                        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_opt_ UINT* characterLength = nullptr);
 
-HRESULT SetXamlInlinesWithTextConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+HRESULT SetXamlInlinesWithTextStyleConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveTextStyleConfig* textConfig,
+                                          _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+
+HRESULT SetXamlInlinesWithTextStyleConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveTextStyleConfig* textStyle,
+                                          _In_opt_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
+                                          _In_ HSTRING language,
+                                          _In_ HSTRING text,
+                                          _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+
+HRESULT SetXamlInlinesWithFactSetTextConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* textConfig,
+                                     _In_ ABI::AdaptiveNamespace::IAdaptiveFactSetTextConfig* textConfig,
                                      _In_ HSTRING language,
                                      _In_ HSTRING text,
                                      _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
@@ -129,14 +143,26 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
     }
 
     // Get the forground color based on text color, subtle, and container style
-    ABI::AdaptiveNamespace::ForegroundColor adaptiveTextColor;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveTextColor));
+    ComPtr<IReference<ABI::AdaptiveNamespace::ForegroundColor>> adaptiveTextColorRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveTextColorRef));
+
+    ABI::AdaptiveNamespace::ForegroundColor adaptiveTextColor = ABI::AdaptiveNamespace::ForegroundColor::Default;
+    if (adaptiveTextColorRef != nullptr)
+    {
+        adaptiveTextColorRef->get_Value(&adaptiveTextColor);
+    }
 
     // If the card author set the default color and we're in a hyperlink, don't change the color and lose the hyperlink styling
     if (adaptiveTextColor != ABI::AdaptiveNamespace::ForegroundColor::Default || !styleProperties.IsInHyperlink())
     {
+        ComPtr<IReference<bool>> isSubtleRef;
+        RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtleRef));
+
         boolean isSubtle = false;
-        RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtle));
+        if (isSubtleRef != nullptr)
+        {
+            isSubtleRef->get_Value(&isSubtle);
+        }
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
@@ -150,14 +176,32 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
     }
 
     // Retrieve the desired FontFamily, FontSize, and FontWeight values
-    ABI::AdaptiveNamespace::TextSize adaptiveTextSize;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Size(&adaptiveTextSize));
+    ComPtr<IReference<ABI::AdaptiveNamespace::TextSize>> adaptiveTextSizeRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Size(&adaptiveTextSizeRef));
 
-    ABI::AdaptiveNamespace::TextWeight adaptiveTextWeight;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Weight(&adaptiveTextWeight));
+    ABI::AdaptiveNamespace::TextSize adaptiveTextSize = ABI::AdaptiveNamespace::TextSize::Default;
+    if (adaptiveTextSizeRef != nullptr)
+    {
+        adaptiveTextSizeRef->get_Value(&adaptiveTextSize);
+    }
 
-    ABI::AdaptiveNamespace::FontType fontType;
-    RETURN_IF_FAILED(adaptiveTextElement->get_FontType(&fontType));
+    ComPtr<IReference<ABI::AdaptiveNamespace::TextWeight>> adaptiveTextWeightRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Weight(&adaptiveTextWeightRef));
+
+    ABI::AdaptiveNamespace::TextWeight adaptiveTextWeight = ABI::AdaptiveNamespace::TextWeight::Default;
+    if (adaptiveTextWeightRef != nullptr)
+    {
+        adaptiveTextWeightRef->get_Value(&adaptiveTextWeight);
+    }
+
+    ComPtr<IReference<ABI::AdaptiveNamespace::FontType>> fontTypeRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_FontType(&fontTypeRef));
+
+    ABI::AdaptiveNamespace::FontType fontType = ABI::AdaptiveNamespace::FontType::Default;
+    if (fontTypeRef != nullptr)
+    {
+        fontTypeRef->get_Value(&fontType);
+    }
 
     UINT32 fontSize;
     Microsoft::WRL::Wrappers::HString fontFamilyName;

@@ -33,7 +33,13 @@ namespace AdaptiveNamespace
         m_wrap = sharedTextBlock->GetWrap();
         m_maxLines = sharedTextBlock->GetMaxLines();
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
-        m_style = static_cast<ABI::AdaptiveNamespace::TextStyle>(sharedTextBlock->GetStyle());
+
+        if (sharedTextBlock->GetStyle().has_value())
+        {
+            m_style = winrt::box_value(static_cast<winrt::AdaptiveNamespace::TextStyle>(sharedTextBlock->GetStyle().value()))
+                          .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextStyle>>()
+                          .get();
+        }
 
         InitializeTextElement(sharedTextBlock);
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
@@ -77,13 +83,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_Style(_Out_ ABI::AdaptiveNamespace::TextStyle* style)
+    HRESULT AdaptiveTextBlock::get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextStyle>** style)
     {
-        *style = m_style;
-        return S_OK;
+        return m_style.CopyTo(style);
     }
 
-    HRESULT AdaptiveTextBlock::put_Style(ABI::AdaptiveNamespace::TextStyle style)
+    HRESULT AdaptiveTextBlock::put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextStyle>* style)
     {
         m_style = style;
         return S_OK;
@@ -106,7 +111,13 @@ namespace AdaptiveNamespace
         textBlock->SetWrap(m_wrap);
         textBlock->SetMaxLines(m_maxLines);
         textBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
-        textBlock->SetStyle(static_cast<AdaptiveSharedNamespace::TextStyle>(m_style));
+
+        if (m_style != nullptr)
+        {
+            ABI::AdaptiveNamespace::TextStyle styleValue;
+            RETURN_IF_FAILED(m_style->get_Value(&styleValue));
+            textBlock->SetStyle(static_cast<AdaptiveSharedNamespace::TextStyle>(styleValue));
+        }
 
         sharedTextBlock = std::move(textBlock);
         return S_OK;
