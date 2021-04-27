@@ -4783,6 +4783,7 @@ class ActionCollection {
             if (afterSelectedAction) {
                 button.focusable = false;
             }
+            
             if (button.action !== action) {
                 button.state = ActionButtonState.Subdued;
             }
