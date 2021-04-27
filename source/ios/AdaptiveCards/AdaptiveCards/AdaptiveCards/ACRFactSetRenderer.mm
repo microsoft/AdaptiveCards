@@ -118,6 +118,11 @@
     valueStack.axis = UILayoutConstraintAxisVertical;
     FactSetConfig factSetConfig = config->GetFactSet();
     ACRColumnSetView *factSetWrapperView = [[ACRColumnSetView alloc] init];
+
+    configRtl(titleStack, rootView.context);
+    configRtl(valueStack, rootView.context);
+    factSetWrapperView.rtl = rootView.rtl;
+
     [factSetWrapperView addArrangedSubview:titleStack];
     [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, factSetConfig.spacing, factSetConfig.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
     [factSetWrapperView addArrangedSubview:valueStack];
@@ -180,6 +185,8 @@
             [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
             nValidFacts++;
         }
+        configRtl(titleLab, rootView.context);
+        configRtl(valueLab, rootView.context);
     }
 
     if (!nValidFacts) {

@@ -3,7 +3,7 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;

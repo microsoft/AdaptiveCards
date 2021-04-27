@@ -15,7 +15,6 @@ import {
     InputContext,
     InputContextConsumer
 } from '../../utils/context';
-import { HostConfigManager } from '../../utils/host-config';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
 import * as Enums from '../../utils/enums';
@@ -23,7 +22,6 @@ import * as Utils from '../../utils/util';
 
 export class RichTextBlock extends React.Component {
 
-    hostConfig = HostConfigManager.getHostConfig();
     static contextType = InputContext;
 
     constructor(props) {
@@ -71,6 +69,7 @@ export class RichTextBlock extends React.Component {
                     align={textRun.horizontalAlignment}
                     maxLines={textRun.maxLines}
                     style={styles.text}
+                    configManager={this.props.configManager}
                     onClick={() => this.onClickHandle(textRun.selectAction)} />
             </Text>
         );
@@ -82,7 +81,10 @@ export class RichTextBlock extends React.Component {
      */
     onClickHandle(selectAction) {
         if (selectAction.type === Constants.ActionSubmit) {
-            let actionObject = { "type": Constants.ActionSubmit, "data": selectAction.data };
+            let actionObject = { "type": Constants.ActionSubmit, "title": selectAction.title, "data": selectAction.data };
+            this.onExecuteAction(actionObject);
+        } else if (selectAction.type === Constants.ActionExecute) {
+            let actionObject = { "type": Constants.ActionExecute, "verb": selectAction.verb, "title": selectAction.title, "data": selectAction.data };
             this.onExecuteAction(actionObject);
         } else if (selectAction.type === Constants.ActionOpenUrl && !Utils.isNullOrEmpty(selectAction.url)) {
             let actionObject = { "type": Constants.ActionOpenUrl, "url": selectAction.url };
@@ -100,7 +102,7 @@ export class RichTextBlock extends React.Component {
         paragraph.inlines && paragraph.inlines.forEach((textRun, index) => {
             if (textRun.type.toLowerCase() == Constants.TextRunString) {
                 index > 0 && textRunElements.push(<Text key={"white-sapce-text" + index}>{" "}</Text>);
-                let textRunStyle = textRun.highlight ? [styles.text, { backgroundColor: this.hostConfig.richTextBlock.highlightColor }] : styles.text;
+                let textRunStyle = textRun.highlight ? [styles.text, { backgroundColor: this.props.configManager.hostConfig.richTextBlock.highlightColor }] : styles.text;
                 textRunElements.push(
                     textRun.selectAction ? this.addActionElement(textRun, index) :
                         <Label
@@ -114,6 +116,7 @@ export class RichTextBlock extends React.Component {
                             align={textRun.horizontalAlignment}
                             maxLines={textRun.maxLines}
                             style={textRunStyle}
+                            configManager={this.props.configManager}
                         />
                 );
             }
@@ -125,7 +128,7 @@ export class RichTextBlock extends React.Component {
         return (<InputContextConsumer>
             {({ onExecuteAction }) => {
                 this.onExecuteAction = onExecuteAction;
-                return <ElementWrapper json={this.payload} style={styles.textContainer} isFirst={this.props.isFirst}>
+                return <ElementWrapper configManager={this.props.configManager} json={this.payload} style={styles.textContainer} isFirst={this.props.isFirst}>
                     {this.getParagraphElements()}
                 </ElementWrapper>
             }}

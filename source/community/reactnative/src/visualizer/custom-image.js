@@ -17,7 +17,7 @@ export class CustomImageRenderer extends React.Component {
         }
 
         return (
-            <Img json={payload} style={{ width: 100, backgroundColor: "green" }} />
+            <Img {...this.props} style={{ width: 100, backgroundColor: "green" }} />
         );
     }
 }

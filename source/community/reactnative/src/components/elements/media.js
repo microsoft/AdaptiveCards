@@ -112,7 +112,7 @@ export class Media extends React.Component {
                     this.addResourceInformation = addResourceInformation;
                     this.onParseError = onParseError;
 
-                    return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}>
+                    return <ElementWrapper configManager={this.props.configManager} json={this.payload} isFirst={this.props.isFirst}>
                         <View
                             accessible={true}
                             accessibilityLabel={this.payload.altText || Constants.EmptyString}

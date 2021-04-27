@@ -1,0 +1,208 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+	"rtl":true,
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Card (rtl: true)",
+            "wrap": true,
+            "weight": "Bolder"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 2",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Input.Text",
+            "label": "Input w/ Inline Action",
+            "id": "0",
+            "inlineAction": {
+                "type": "Action.Submit"
+            }
+        },
+        {
+            "type": "TextBlock",
+            "text": "Lorem ipsum dolor sit amet.",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "لكن لا بد أن أوضح لك أن كل هذه الأفكار.",
+            "wrap": true
+        },
+        {
+            "type": "Container",
+            "rtl": true,
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Container (rtl: true)",
+                    "wrap": true,
+                    "weight": "Bolder"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Column 1",
+                                    "wrap": true
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Column 2",
+                                    "wrap": true
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Column 3",
+                                    "wrap": true
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Input.Text",
+                    "label": "Input w/ Inline Action",
+                    "id": "1",
+                    "inlineAction": {
+                        "type": "Action.Submit"
+                    }
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Lorem ipsum dolor sit amet.",
+                    "wrap": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "لكن لا بد أن أوضح لك أن كل هذه الأفكار.",
+                    "wrap": true
+                }
+            ],
+            "style": "emphasis"
+        },
+        {
+            "type": "Container",
+            "rtl": false,
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Container (rtl: false)",
+                    "wrap": true,
+                    "weight": "Bolder"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Column 1",
+                                    "wrap": true
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Column 2",
+                                    "wrap": true
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Column 3",
+                                    "wrap": true
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Input.Text",
+                    "label": "Input w/ Inline Action",
+                    "id": "2",
+                    "inlineAction": {
+                        "type": "Action.Submit"
+                    }
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Lorem ipsum dolor sit amet.",
+                    "wrap": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "لكن لا بد أن أوضح لك أن كل هذه الأفكار.",
+                    "wrap": true
+                }
+            ],
+            "style": "emphasis"
+        }
+    ]
+}

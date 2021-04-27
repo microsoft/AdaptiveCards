@@ -71,6 +71,7 @@ namespace AdaptiveSharedNamespace
         ForegroundColor,
         ForegroundColors,
         Good,
+        Headings,
         Height,
         Highlight,
         HighlightColor,
@@ -103,6 +104,7 @@ namespace AdaptiveSharedNamespace
         Language,
         Large,
         Left,
+        Level,
         Light,
         Lighter,
         LineColor,
@@ -119,6 +121,7 @@ namespace AdaptiveSharedNamespace
         MimeType,
         Min,
         MinHeight,
+        Mode,
         Monospace,
         NumberInput,
         OptionalInputs,
@@ -136,6 +139,7 @@ namespace AdaptiveSharedNamespace
         Requires,
         RichTextBlock,
         Right,
+        Rtl,
         Schema,
         SelectAction,
         Separator,
@@ -165,6 +169,7 @@ namespace AdaptiveSharedNamespace
         Title,
         ToggleInput,
         TokenExchangeResource,
+		Tooltip,
         Top,
         Type,
         Underline,
@@ -187,7 +192,7 @@ namespace AdaptiveSharedNamespace
 
     enum class CardElementType
     {
-        // When the order of existing enums are changed, coresponding changes are needed in iOS (ACOBaseCardElement.h)
+        // When the order of existing enums are changed, corresponding changes are needed in iOS (ACOBaseCardElement.h)
         ActionSet = 0,
         AdaptiveCard,
         ChoiceInput,
@@ -217,6 +222,13 @@ namespace AdaptiveSharedNamespace
         TextRun = 0
     };
     DECLARE_ADAPTIVECARD_ENUM(InlineElementType);
+
+    enum class TextStyle
+    {
+        Paragraph = 0,
+        Heading
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextStyle);
 
     enum class TextSize
     {
@@ -317,6 +329,7 @@ namespace AdaptiveSharedNamespace
         ToggleVisibility,
         Custom,
         UnknownAction,
+        Overflow
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionType);
 
@@ -387,6 +400,13 @@ namespace AdaptiveSharedNamespace
         Accent
     };
     DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
+
+    enum class Mode
+    {
+        Primary = 0,
+        Secondary
+    };
+    DECLARE_ADAPTIVECARD_ENUM(Mode);
 
     enum class ErrorStatusCode
     {

@@ -27,7 +27,7 @@ exports[`renders correctly 1`] = `
             "borderWidth": 0,
           },
           Object {
-            "padding": 10,
+            "padding": 5,
           },
         ],
         Array [
@@ -41,6 +41,7 @@ exports[`renders correctly 1`] = `
     <RCTScrollView
       alwaysBounceHorizontal={false}
       alwaysBounceVertical={false}
+      scrollEnabled={true}
       showsHorizontalScrollIndicator={true}
       showsVerticalScrollIndicator={true}
     >

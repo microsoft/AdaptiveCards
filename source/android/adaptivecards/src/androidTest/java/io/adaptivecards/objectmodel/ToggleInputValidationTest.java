@@ -1,14 +1,12 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 import android.widget.CheckBox;
-import android.widget.EditText;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import io.adaptivecards.renderer.inputhandler.TimeInputHandler;
 import io.adaptivecards.renderer.inputhandler.ToggleInputHandler;
 
 public class ToggleInputValidationTest

@@ -108,11 +108,43 @@
 			}
 		},
 		{
-			"type": "Action.Submit",
+			"type": "Action.ShowCard",
 			"title": "Dismiss",
 			"iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png",
-			"data": {
-				"2nd icon": "dismiss"
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "Icons should appear above the title if the host config is set to Above Title"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Snooze",
+						"iconUrl": "https://cdn1.iconfinder.com/data/icons/office-22/48/alarm-clock-512.png",
+						"data": {
+							"x": "snooze"
+						}
+					},
+					{
+						"type": "Action.Submit",
+						"title": "Dismiss",
+						"iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png",
+						"data": {
+							"icon": "dismiss"
+						}
+					},
+					{
+						"type": "Action.Submit",
+						"title": "Dismiss",
+						"iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png",
+						"data": {
+							"icon": "dismiss"
+						}
+					}
+				]
 			}
 		}
 	]

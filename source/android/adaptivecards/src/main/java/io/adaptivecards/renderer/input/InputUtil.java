@@ -53,6 +53,7 @@ public class InputUtil
 
         TextView labelView = new TextView(context);
         labelView.setText(paragraph);
+        labelView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
 
         TextBlockRenderer.getInstance().setTextFormat(labelView, hostConfig, FontType.Default, inputLabelConfig.getWeight());
         TextBlockRenderer.setTextSize(labelView, FontType.Default, inputLabelConfig.getSize(), hostConfig);

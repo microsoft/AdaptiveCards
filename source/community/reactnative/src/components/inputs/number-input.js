@@ -6,7 +6,6 @@
 
 import React from 'react';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
 import * as Enums from '../../utils/enums';
 
@@ -29,7 +28,7 @@ export class NumberInput extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.supportsInteractivity() === false) {
+		if (!this.props.configManager.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -42,48 +41,49 @@ export class NumberInput extends React.Component {
 				value={this.state.numberValue}
 				isError={this.state.isError}
 				styleValue={this.styleValue}
+				configManager={this.props.configManager}
 			/>
 		);
 	}
 
-    /**
-     * @description Parse payload specific to this element
-     */
+	/**
+	 * @description Parse payload specific to this element
+	 */
 	parse() {
 		this.id = this.payload.id;
 		this.min = this.payload.min ? this.payload.min : Number.MIN_VALUE;
 		this.max = this.payload.max ? this.payload.max : Number.MAX_VALUE;
 	}
 
-    /**
-     * @description handle text input when in focus
-     */
+	/**
+	 * @description handle text input when in focus
+	 */
 	handleFocus = () => {
 		this.setState({
 			isError: false
 		});
 	}
 
-    /**
-     * @description handle text input when out of focus
-     */
+	/**
+	 * @description handle text input when out of focus
+	 */
 	handleBlur = () => {
 		this.validate(this.state.numberValue);
 	}
 
-    /**
-     * @description validate the input field
-     */
+	/**
+	 * @description validate the input field
+	 */
 	validate = (numberValue) => {
 		this.setState({
 			isError: this.isInvalid(numberValue)
 		})
 	};
 
-    /**
-     * @description Invoked on every change in Input field
-     * @param {string} text
-     */
+	/**
+	 * @description Invoked on every change in Input field
+	 * @param {string} text
+	 */
 	onTextChanged = (text, addInputItem) => {
 		this.setState({
 			numberValue: text
@@ -92,10 +92,10 @@ export class NumberInput extends React.Component {
 	}
 
 	/**
-     * @description Invoked to check whether the entered number falls
+	 * @description Invoked to check whether the entered number falls
 	 * within the range mentioned in the payload.
-     * @param {Integer} value
-     */
+	 * @param {Integer} value
+	 */
 	isInvalid = (numberValue) => {
 		if (NUM_REGEX.test(numberValue)) {
 			var parsedValue = parseFloat(numberValue);

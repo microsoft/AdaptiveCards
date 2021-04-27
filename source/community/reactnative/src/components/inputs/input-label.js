@@ -6,16 +6,11 @@ import {
 } from 'react-native';
 import { Label } from '../elements';
 import { Registry } from '../registration/registry';
-import { StyleManager } from '../../styles/style-config';
-import { HostConfigManager } from '../../utils/host-config';
 import * as Constants from '../../utils/constants';
 import { isNullOrEmpty } from '../../utils/util';
 import { TextColor, ContainerStyle } from '../../utils/enums';
 
 export default class InputLabel extends React.Component {
-
-	styleConfig = StyleManager.getManager().styles;
-	hostConfig = HostConfigManager.getHostConfig();
 
 	constructor(props) {
 		super(props);
@@ -23,6 +18,7 @@ export default class InputLabel extends React.Component {
 		this.wrap = props.wrap || false;
 		this.style = props.style || {};
 		this.isRequired = props.isRequired || false;
+		this.hostConfig = props.configManager.hostConfig;
 	}
 
 	render() {
@@ -33,7 +29,8 @@ export default class InputLabel extends React.Component {
 				inputLabel = (
 					<Label
 						text={label}
-						style={[this.styleConfig.defaultFontConfig, style]}
+						style={[this.props.configManager.styleConfig.defaultFontConfig, style]}
+						configManager={this.props.configManager}
 						wrap={wrap} />
 				);
 			} else if (typeof label == Constants.TypeObject && this.isValidLabelType(label.type)) {
@@ -41,7 +38,7 @@ export default class InputLabel extends React.Component {
 				if (!isNullOrEmpty(label)) {
 					element = Registry.getManager().parseRegistryComponents([label], this.context.onParseError);
 				}
-				if (element.length > 0) inputLabel = React.cloneElement(element[0]);
+				if (element.length > 0) inputLabel = React.cloneElement(element[0], { configManager: this.props.configManager });
 			}
 		}
 		if (inputLabel) {

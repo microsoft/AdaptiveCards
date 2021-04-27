@@ -67,6 +67,14 @@ public class TextBlock extends BaseCardElement {
     return new DateTimePreparser(AdaptiveCardObjectModelJNI.TextBlock_GetTextForDateParsing(swigCPtr, this), true);
   }
 
+  public TextStyle GetStyle() {
+    return TextStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetStyle(swigCPtr, this));
+  }
+
+  public void SetStyle(TextStyle value) {
+    AdaptiveCardObjectModelJNI.TextBlock_SetStyle(swigCPtr, this, value.swigValue());
+  }
+
   public TextSize GetTextSize() {
     return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetTextSize(swigCPtr, this));
   }

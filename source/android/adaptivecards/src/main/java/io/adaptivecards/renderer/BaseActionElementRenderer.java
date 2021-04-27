@@ -5,7 +5,7 @@ package io.adaptivecards.renderer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -31,6 +31,11 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
+    /**
+     * This tag key is used in {@link io.adaptivecards.renderer.action.DropdownElementRenderer} to get the container view of the Overflow ("...") action, so dropdown view can behave like a primary action element.
+     */
+    public final static int PARENT_DROPDOWN_TAG = 0xffffffff;
+
     protected static int getColor(String colorCode)
     {
         return android.graphics.Color.parseColor(colorCode);
@@ -238,7 +243,16 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
 
             v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
             // Reset all other buttons
-            ViewGroup parentContainer = (ViewGroup)v.getParent();
+            ViewGroup parentContainer;
+            if (v.getTag(PARENT_DROPDOWN_TAG) != null)
+            {
+                parentContainer = (ViewGroup) v.getTag(PARENT_DROPDOWN_TAG);
+            }
+            else
+            {
+                parentContainer = (ViewGroup) v.getParent();
+            }
+
             for (int i = 0; i < parentContainer.getChildCount(); ++i)
             {
                 View actionInActionSet = parentContainer.getChildAt(i);
