@@ -70,6 +70,15 @@ namespace AdaptiveNamespace
         }
         IFACEMETHODIMP put_Style(_In_ HSTRING style) override { return AdaptiveActionElementBase::put_Style(style); }
 
+        IFACEMETHODIMP get_Tooltip(_Outptr_ HSTRING* tooltip) override
+        {
+            return AdaptiveActionElementBase::get_Tooltip(tooltip);
+        }
+        IFACEMETHODIMP put_Tooltip(_In_ HSTRING tooltip) override
+        {
+            return AdaptiveActionElementBase::put_Tooltip(tooltip);
+        }
+
         IFACEMETHODIMP put_IsEnabled(boolean isEnabled) override
         {
             return AdaptiveActionElementBase::put_IsEnabled(isEnabled);

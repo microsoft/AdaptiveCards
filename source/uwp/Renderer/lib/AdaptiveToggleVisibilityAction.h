@@ -22,7 +22,7 @@ namespace AdaptiveNamespace
 
         // IAdaptiveToggleVisibilityAction
         IFACEMETHODIMP get_TargetElements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>** facts);
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>** facts) override;
 
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType) override;
@@ -74,6 +74,15 @@ namespace AdaptiveNamespace
             return AdaptiveActionElementBase::get_Style(style);
         }
         IFACEMETHODIMP put_Style(_In_ HSTRING style) override { return AdaptiveActionElementBase::put_Style(style); }
+
+        IFACEMETHODIMP get_Tooltip(_Outptr_ HSTRING* tooltip) override
+        {
+            return AdaptiveActionElementBase::get_Tooltip(tooltip);
+        }
+        IFACEMETHODIMP put_Tooltip(_In_ HSTRING tooltip) override
+        {
+            return AdaptiveActionElementBase::put_Tooltip(tooltip);
+        }
 
         IFACEMETHODIMP put_IsEnabled(boolean isEnabled) override
         {

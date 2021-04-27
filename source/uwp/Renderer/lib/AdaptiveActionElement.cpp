@@ -23,6 +23,7 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetStyle(), m_style.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetTooltip(), m_tooltip.GetAddressOf()));
 
         m_isEnabled = sharedModel->GetIsEnabled();
 
@@ -83,6 +84,10 @@ namespace AdaptiveNamespace
     IFACEMETHODIMP AdaptiveActionElementBase::get_Style(_Outptr_ HSTRING* style) { return m_style.CopyTo(style); }
 
     IFACEMETHODIMP AdaptiveActionElementBase::put_Style(_In_ HSTRING style) { return m_style.Set(style); }
+	
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Tooltip(HSTRING* tooltip) { return m_tooltip.CopyTo(tooltip); }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Tooltip(HSTRING tooltip) { return m_tooltip.Set(tooltip); }
 
     HRESULT AdaptiveActionElementBase::get_IsEnabled(boolean* isEnabled)
     {
@@ -126,6 +131,7 @@ namespace AdaptiveNamespace
         sharedCardElement.SetTitle(HStringToUTF8(m_title.Get()));
         sharedCardElement.SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
         sharedCardElement.SetStyle(HStringToUTF8(m_style.Get()));
+        sharedCardElement.SetTooltip(HStringToUTF8(m_tooltip.Get()));
         sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
         sharedCardElement.SetIsEnabled(m_isEnabled);
 
