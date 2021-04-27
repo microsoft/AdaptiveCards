@@ -85,7 +85,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         _paddingMap = [[NSMutableDictionary alloc] init];
         _inputHandlerLookupTable = [[NSMapTable alloc] initWithKeyOptions:NSMapTableWeakMemory valueOptions:NSMapTableWeakMemory capacity:5];
         _showcards = [[NSMutableArray alloc] init];
-        _context = [[ACORenderContext alloc] init];
+        _context = [[ACORenderContext alloc] init:_hostConfig];
     }
     return self;
 }
@@ -103,6 +103,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         // override default host config if user host config is provided
         if (config) {
             _hostConfig = config;
+            _context.hostConfig = config;
         }
         _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
         _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
@@ -377,7 +378,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         case CardElementType::ActionSet: {
             std::shared_ptr<ActionSet> actionSet = std::static_pointer_cast<ActionSet>(elem);
             auto actions = actionSet->GetActions();
-            [self loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:_hostConfig];
+            [self loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:_hostConfig hash:iOSInternalIdHash(actionSet->GetInternalId().Hash())];
             break;
         }
         case AdaptiveCards::CardElementType::AdaptiveCard:
@@ -420,8 +421,9 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 
 // Walk through the actions found and process them concurrently
-- (void)loadImagesForActionsAndCheckIfAllActionsHaveIconImages:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions hostconfig:(ACOHostConfig *)hostConfig;
+- (void)loadImagesForActionsAndCheckIfAllActionsHaveIconImages:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions hostconfig:(ACOHostConfig *)hostConfig hash:(NSNumber *)hash
 {
+    [hostConfig setIconPlacement:hash placement:YES];
     for (auto &action : actions) {
         if (!action->GetIconUrl().empty()) {
             ObserverActionBlockForBaseAction observerAction =
@@ -437,7 +439,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 };
             [self loadImageAccordingToResourceResolverIFForBaseAction:action key:nil observerAction:observerAction];
         } else {
-            hostConfig.allActionsHaveIcons = NO;
+            [hostConfig setIconPlacement:hash placement:NO];
         }
     }
 }

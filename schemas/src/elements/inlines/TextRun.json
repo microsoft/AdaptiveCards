@@ -10,11 +10,11 @@
       "required": true
     },
     "color": {
-      "type": "Colors",
+      "type": "Colors?",
       "description": "Controls the color of the text."
     },
     "fontType": {
-      "type": "FontType",
+      "type": "FontType?",
       "description": "The type of font to use"
     },
     "highlight": {
@@ -22,7 +22,7 @@
       "description": "If `true`, displays the text highlighted."
     },
     "isSubtle": {
-      "type": "boolean",
+      "type": "boolean?",
       "description": "If `true`, displays text slightly toned down to appear less prominent.",
       "default": false
     },
@@ -35,7 +35,7 @@
       "description": "Action to invoke when this text run is clicked. Visually changes the text run into a hyperlink. `Action.ShowCard` is not supported."
     },
     "size": {
-      "type": "FontSize",
+      "type": "FontSize?",
       "description": "Controls size of text."
     },
     "strikethrough": {
@@ -48,7 +48,7 @@
       "version":"1.3"
     },
     "weight": {
-      "type": "FontWeight",
+      "type": "FontWeight?",
       "description": "Controls the weight of the text."
     }
   },

@@ -189,7 +189,7 @@ public class AdaptiveCardRenderer
                 {
                     try
                     {
-                        renderArgs.setRootLevelActions(true);
+                        renderArgs.setRootLevelActions(!isInlineShowCard);
                         View actionButtonsLayout = actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, cardLayout, primaryElementVector, cardActionHandler, hostConfig, renderArgs);
 
                         if (!secondaryElementVector.isEmpty())
