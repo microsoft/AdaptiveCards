@@ -9,7 +9,8 @@
 			"text": "Adaptive Card design session",
 			"size": "large",
 			"weight": "bolder",
-			"wrap": true
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "TextBlock",
