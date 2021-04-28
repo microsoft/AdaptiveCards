@@ -4,7 +4,12 @@
 		<% if(locals.learnMoreLink) { %>
 			<a href="<%- locals.learnMoreLink %>">
 		<% } %>
-		<img src="<%- smallImage %>" style="max-height: 150px; padding-right: 8px" alt="Product logo"
+		<img src="<%- url_for(smallImage) %>" style="max-height: 150px; padding-right: 8px"
+             <% if (typeof smallImageAlt !== 'undefined') { %>
+             alt="<%- smallImageAlt %>"
+             <% } else { %>
+             aria-role="presentation"
+             <% } %>
 			class="w3-image w3-margin-right" />
 		<% if(locals.learnMoreLink) { %>
 			</a>

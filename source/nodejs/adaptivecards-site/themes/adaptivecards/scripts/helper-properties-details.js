@@ -7,10 +7,13 @@ var marked = require("marked");
 var fs = require("fs");
 var path = require("path");
 
-hexo.extend.helper.register('properties_details', function (properties, elementVersion, isSpec) {
+hexo.extend.helper.register('properties_details', function (locals, properties, elementVersion, isSpec) {
 	const codeAndCard = hexo.extend.helper.get('code_and_card').bind(hexo);
 
-	var html = '<h2 class="w3-container">Properties</h2>';
+    // TODO: actually pass locale
+    typedschema.markdownConfig.locale = "en";
+
+	var html = '<h2 class="w3-container">' + locals.data.explorer.en.properties + '</h2>';
 
 	properties.forEach((property, name) => {
 
@@ -26,7 +29,7 @@ hexo.extend.helper.register('properties_details', function (properties, elementV
 			property.cardExamples.forEach(function (example, i) {
 				var sampleHtml = "";
 				try {
-					sampleHtml += codeAndCard(example);
+					sampleHtml += codeAndCard(locals, example);
 					html += sampleHtml;
 				} catch (err) {
 					// Do nothing

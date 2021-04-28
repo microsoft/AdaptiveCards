@@ -1,0 +1,20 @@
+en:
+  learn_links:
+    - title: Check out sample cards
+      href: /samples
+    - title: Explore the schema
+      href: /explorer
+    - title: Embed the Card Designer
+      href: https://docs.microsoft.com/adaptive-cards/sdk/designer
+    - title: Host App Status
+      href: https://docs.microsoft.com/adaptive-cards/resources/partners
+    - title: Take advantage of Templating
+      href: https://docs.microsoft.com/adaptive-cards/templating/
+    - title: Join our monthly Community Calls
+      href: /community-calls
+    - title: Find us on GitHub
+      href: https://github.com/Microsoft/AdaptiveCards
+    - title: Roadmap
+      href: https://aka.ms/ACRoadmap
+    - title: Watch the Build 2020 video
+      href: https://aka.ms/m365sk134
