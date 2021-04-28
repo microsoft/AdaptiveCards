@@ -15,7 +15,8 @@
 									"type": "TextBlock",
 									"size": "large",
 									"weight": "bolder",
-									"text": "**EXPENSE APPROVAL**"
+									"text": "**EXPENSE APPROVAL**",
+									"style": "heading"
 								}
 							],
 							"width": "stretch"
@@ -50,7 +51,8 @@
 									"type": "TextBlock",
 									"size": "ExtraLarge",
 									"text": "${purpose}",
-									"wrap": true
+									"wrap": true,
+									"style": "heading"
 								}
 							],
 							"width": "stretch"
@@ -162,7 +164,7 @@
 		},
 		{
 			"$data": "${expenses}",
-			"type" : "Container",
+			"type": "Container",
 			"items": [
 				{
 					"type": "ColumnSet",
