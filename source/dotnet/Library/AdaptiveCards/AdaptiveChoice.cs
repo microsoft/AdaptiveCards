@@ -45,6 +45,12 @@ namespace AdaptiveCards
         public bool IsSelected { get; set; } = false;
 
         /// <summary>
+        ///     Is this input enabled ?
+        /// </summary>
+        [DefaultValue(true)]
+        public bool IsEnabled { get; set; } = true;
+
+        /// <summary>
         ///     (OPTIONAL) Speech description of the choice
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

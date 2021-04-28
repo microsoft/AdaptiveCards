@@ -41,6 +41,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     SetContent(uiCheckbox, choice.Title, input.Wrap);
                     uiCheckbox.IsChecked = chosen.Contains(choice.Value);
                     uiCheckbox.DataContext = choice;
+                    uiCheckbox.IsEnabled = choice.IsEnabled;
                     uiCheckbox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.CheckBox");
                     uiChoices.Children.Add(uiCheckbox);
                 }
