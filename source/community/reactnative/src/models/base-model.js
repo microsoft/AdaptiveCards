@@ -14,7 +14,7 @@ export class BaseModel {
     fallbackType;
     requires;
 
-    constructor(payload, parent) {
+    constructor(payload, parent, hostConfig) {
         this.parent = parent;
         this.id = payload.id;
         this.spacing = payload.spacing;
@@ -31,7 +31,7 @@ export class BaseModel {
             if (payload.fallback == "drop") {
                 this.fallbackType = "drop"
             } else {
-                this.fallback = ModelFactory.createElement(payload.fallback, parent);
+                this.fallback = ModelFactory.createElement(payload.fallback, parent, hostConfig);
             }
         }
     }

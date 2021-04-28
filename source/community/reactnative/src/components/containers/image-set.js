@@ -41,7 +41,7 @@ export class ImageSet extends React.PureComponent {
 			element[ImageSetKey] = true;
 			const Element = register.getComponentOfType(element.type);
 			if (Element) {
-				renderedElement.push(<Element json={element}
+				renderedElement.push(<Element json={element} configManager={this.props.configManager}
 					key={`ELEMENT-${index}`} isFirst={index == 0} />);
 			} else {
 				let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
@@ -55,7 +55,7 @@ export class ImageSet extends React.PureComponent {
 	internalRenderer(imageSetJson) {
 		return (
 			(<InputContextConsumer>
-				{({ onParseError }) => <ElementWrapper json={imageSetJson} style={[styles.container, styles.defaultBGStyle]} isFirst={this.props.isFirst}>
+				{({ onParseError }) => <ElementWrapper configManager={this.props.configManager} json={imageSetJson} style={[styles.container, styles.defaultBGStyle]} isFirst={this.props.isFirst}>
 					{this.parsePayload(imageSetJson, onParseError)}
 				</ElementWrapper>}
 			</InputContextConsumer>)

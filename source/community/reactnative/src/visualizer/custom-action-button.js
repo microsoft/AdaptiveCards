@@ -17,7 +17,7 @@ export class CustomActionButtonRenderer extends React.Component {
         }
 
         return (
-            <ActionButton json={payload} style={{ backgroundColor: "transparent" }} titleStyle={{color: "#147efb"}} />
+            <ActionButton {...this.props} style={{ backgroundColor: "transparent" }} titleStyle={{color: "#147efb"}} />
         );
     }
 }

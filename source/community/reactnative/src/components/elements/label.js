@@ -6,7 +6,6 @@
 
 import React from 'react';
 
-import { HostConfigManager } from '../../utils/host-config';
 import MarkDownFormatter from '../../utils/markdown-formatter';
 import { TextFormatter } from '../../utils/text-formatters';
 import { InputContext } from '../../utils/context';
@@ -17,9 +16,9 @@ export class Label extends React.Component {
 
 	static contextType = InputContext;
 
-	hostConfig = HostConfigManager.getHostConfig();
-
 	render() {
+		this.hostConfig = this.props.configManager.hostConfig;
+
 		let { text, altText, wrap, maxLines, onDidLayout } = this.props;
 
 		// parse & format DATE/TIME values
@@ -49,9 +48,9 @@ export class Label extends React.Component {
 		)
 	}
 
-    /**
-     * @description Parse the host config specific props 
-     */
+	/**
+	 * @description Parse the host config specific props 
+	 */
 	getComputedStyle = () => {
 		const { size, weight, color, isSubtle, fontStyle, align } = this.props;
 		let { containerStyle } = this.props;

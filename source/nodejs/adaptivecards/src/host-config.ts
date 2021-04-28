@@ -108,15 +108,19 @@ export class BaseTextDefinition {
     weight: Enums.TextWeight = Enums.TextWeight.Default;
 
     constructor(obj?: any) {
+        this.parse(obj);
+    }
+
+    parse(obj: any) {
         if (obj) {
             this.size = parseHostConfigEnum(Enums.TextSize, obj["size"], this.size);
             this.color = parseHostConfigEnum(Enums.TextColor, obj["color"], this.color);
-            this.isSubtle = obj["isSubtle"] || this.isSubtle;
+            this.isSubtle = obj.isSubtle !== undefined && typeof obj.isSubtle === "boolean" ? obj.isSubtle : this.isSubtle;
             this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
         }
     }
 
-    getDefaultWeight() {
+    getDefaultWeight(): Enums.TextWeight {
         return Enums.TextWeight.Default;
     }
 
@@ -130,12 +134,53 @@ export class BaseTextDefinition {
     }
 }
 
+export class TextStyleDefinition extends BaseTextDefinition {
+    fontType: Enums.FontType = Enums.FontType.Default;
+
+    parse(obj: any) {
+        super.parse(obj);
+
+        if (obj) {
+            this.fontType = parseHostConfigEnum(Enums.FontType, obj.fontType, this.fontType);
+        }
+    }
+}
+
+export class TextStyleSet {
+    readonly default: TextStyleDefinition = new TextStyleDefinition();
+    readonly heading: TextStyleDefinition = new TextStyleDefinition(
+        {
+            size: "Large",
+            weight: "Bolder"
+        });
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.heading.parse(obj.heading);
+        }
+    }
+
+    getStyleByName(name: string): TextStyleDefinition {
+        return name.toLowerCase() === "heading" ? this.heading : this.default;
+    }
+}
+
+export class TextBlockConfig {
+    headingLevel?: number;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.headingLevel = Utils.parseNumber(obj.headingLevel);
+        }
+    }
+}
+
 export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
     suffix?: string = " *";
     suffixColor: Enums.TextColor = Enums.TextColor.Attention;
 
-    constructor(obj?: any) {
-        super(obj);
+    parse(obj?: any) {
+        super.parse(obj);
 
         if (obj) {
             this.suffix = obj["suffix"] || this.suffix;
@@ -181,8 +226,8 @@ export class InputConfig {
 export class FactTextDefinition extends BaseTextDefinition {
     wrap: boolean = true;
 
-    constructor(obj?: any) {
-        super(obj);
+    parse(obj?: any) {
+        super.parse(obj);
 
         if (obj) {
             this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
@@ -225,16 +270,6 @@ export class FactSetConfig {
             this.title = new FactTitleDefinition(obj["title"]);
             this.value = new FactTextDefinition(obj["value"]);
             this.spacing = obj.spacing && obj.spacing != null ? obj.spacing && obj.spacing : this.spacing;
-        }
-    }
-}
-
-export class HeadingsConfig {
-    level?: number;
-
-    constructor(obj?: any) {
-        if (obj) {
-            this.level = obj.level !== undefined && obj.level !== null && typeof obj.level === "number" ? obj.level : this.level;
         }
     }
 }
@@ -596,7 +631,8 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
-    readonly headings: HeadingsConfig = new HeadingsConfig();
+    readonly textStyles: TextStyleSet = new TextStyleSet();
+    readonly textBlock: TextBlockConfig = new TextBlockConfig();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;
@@ -652,7 +688,9 @@ export class HostConfig {
             this.actions = new ActionsConfig(obj.actions || this.actions);
             this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
-            this.factSet = new FactSetConfig(obj["factSet"])
+            this.factSet = new FactSetConfig(obj["factSet"]);
+            this.textStyles = new TextStyleSet(obj["textStyles"]);
+            this.textBlock = new TextBlockConfig(obj["textBlock"]);
         }
     }
 
