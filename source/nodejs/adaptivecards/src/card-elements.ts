@@ -4791,7 +4791,7 @@ class ActionCollection {
                 button.state = ActionButtonState.Expanded;
                 afterSelectedAction = true;
                 button.onBlur = (e) => {
-                    for (const b of this.buttons) {
+                    for (const b of this._buttons) {
                         b.focusable = true;
                     }
                 };
