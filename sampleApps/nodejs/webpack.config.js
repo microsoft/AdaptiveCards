@@ -38,6 +38,7 @@ module.exports = (env, argv) => {
 				title: "AC Sample Site",
 				template: "./index.html",
 				filename: "index.html",
+                showErrors: false,
 				chunks: ["ac-sample"]
 			})
 		]

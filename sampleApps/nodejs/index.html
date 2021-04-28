@@ -1,1 +1,27 @@
-Hello world
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>AC Sample</title>
+  <style type="text/css">
+    body {
+        font-family: segoe-ui_normal, Segoe UI, Segoe, Segoe WP, Helvetica Neue, Helvetica, sans-serif;
+        background-color: #DDD;
+    }
+    
+    .ac-adaptiveCard {
+        width: 600px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>AdaptiveCard NodeJS Client Sample</h1>
+
+  <h2>File selection</h2>
+  <label for="file-picker">Choose a card to render (see <a href="https://adaptivecards.io/samples/">samples</a>):</label><br />
+  <input id="file-picker" type="file" accept="application/json" />
+
+  <h2>Rendered card</h2>
+  <div id="card-target"></div>
+</body>
+</html>
