@@ -220,4 +220,20 @@ public class HostConfig {
     AdaptiveCardObjectModelJNI.HostConfig_SetInputs(swigCPtr, this, InputsConfig.getCPtr(value), value);
   }
 
+  public TextStylesConfig GetTextStyles() {
+    return new TextStylesConfig(AdaptiveCardObjectModelJNI.HostConfig_GetTextStyles(swigCPtr, this), true);
+  }
+
+  public void SetTextStyles(TextStylesConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetTextStyles(swigCPtr, this, TextStylesConfig.getCPtr(value), value);
+  }
+
+  public TextBlockConfig GetTextBlock() {
+    return new TextBlockConfig(AdaptiveCardObjectModelJNI.HostConfig_GetTextBlock(swigCPtr, this), true);
+  }
+
+  public void SetTextBlock(TextBlockConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetTextBlock(swigCPtr, this, TextBlockConfig.getCPtr(value), value);
+  }
+
 }

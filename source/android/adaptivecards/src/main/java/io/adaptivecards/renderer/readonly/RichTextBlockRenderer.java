@@ -34,6 +34,9 @@ import io.adaptivecards.objectmodel.InlineElementType;
 import io.adaptivecards.objectmodel.InlineVector;
 import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.TextRun;
+import io.adaptivecards.objectmodel.TextSize;
+import io.adaptivecards.objectmodel.TextStyle;
+import io.adaptivecards.objectmodel.TextWeight;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -123,6 +126,12 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                     throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
                 }
 
+                TextSize textSize = TextRendererUtil.getTextSizeFromStyle(hostConfig, TextStyle.Default, textRun.GetTextSize());
+                ForegroundColor textColor = TextRendererUtil.getTextColorFromStyle(hostConfig, TextStyle.Default, textRun.GetTextColor());
+                TextWeight textWeight = TextRendererUtil.getTextWeightFromStyle(hostConfig, TextStyle.Default, textRun.GetTextWeight());
+                boolean isSubtle = TextRendererUtil.getIsSubtleFromStyle(hostConfig, TextStyle.Default, textRun.GetIsSubtle());
+                FontType fontType = TextRendererUtil.getFontTypeFromStyle(hostConfig, TextStyle.Default, textRun.GetFontType());
+
                 DateTimeParser parser = new DateTimeParser(textRun.GetLanguage());
                 String formattedText = parser.GenerateString(textRun.GetTextForDateParsing());
 
@@ -131,12 +140,12 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 int spanStart = lastStringLength;
                 int spanEnd = lastStringLength + formattedText.length();
 
-                int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
+                int color = getColor(TextRendererUtil.getTextColor(textColor, hostConfig, isSubtle, renderArgs.getContainerStyle()));
                 paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 if (textRun.GetHighlight())
                 {
-                    int highlightColor = getColor(TextRendererUtil.getHighlightColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
+                    int highlightColor = getColor(TextRendererUtil.getHighlightColor(textColor, hostConfig, isSubtle, renderArgs.getContainerStyle()));
                     paragraph.setSpan(new BackgroundColorSpan(highlightColor), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
@@ -151,19 +160,19 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 }
 
                 // This line sets the bold or lighter weight
-                paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textRun.GetTextWeight())), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textWeight)), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 if (textRun.GetItalic())
                 {
                     paragraph.setSpan(new StyleSpan(Typeface.ITALIC), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
-                long textSize = TextRendererUtil.getTextSize(textRun.GetFontType(), textRun.GetTextSize(), hostConfig);
-                paragraph.setSpan(new AbsoluteSizeSpan((int)textSize, true), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                long size = TextRendererUtil.getTextSize(fontType, textSize, hostConfig);
+                paragraph.setSpan(new AbsoluteSizeSpan((int)size, true), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 // On API 28, TypefaceSpan(Typeface) was added so we don't have to use the TypefaceSpan(String) constructor
-                String fontName = hostConfig.GetFontFamily(textRun.GetFontType());
-                if (fontName.isEmpty() && textRun.GetFontType() == FontType.Monospace)
+                String fontName = hostConfig.GetFontFamily(fontType);
+                if (fontName.isEmpty() && fontType == FontType.Monospace)
                 {
                     fontName = "monospace";
                 }

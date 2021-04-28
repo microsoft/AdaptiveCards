@@ -67,44 +67,64 @@ public class TextBlock extends BaseCardElement {
     return new DateTimePreparser(AdaptiveCardObjectModelJNI.TextBlock_GetTextForDateParsing(swigCPtr, this), true);
   }
 
-  public TextStyle GetStyle() {
-    return TextStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetStyle(swigCPtr, this));
+  public @androidx.annotation.Nullable TextStyle GetStyle() {
+  StdOptionalTextStyle optvalue = new StdOptionalTextStyle(AdaptiveCardObjectModelJNI.TextBlock_GetStyle(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetStyle(@androidx.annotation.Nullable TextStyle value) {
+    StdOptionalTextStyle optvalue = (value == null) ? new StdOptionalTextStyle() : new StdOptionalTextStyle(value);
+    {
+      AdaptiveCardObjectModelJNI.TextBlock_SetStyle(swigCPtr, this, StdOptionalTextStyle.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public void SetStyle(TextStyle value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetStyle(swigCPtr, this, value.swigValue());
+  public @androidx.annotation.Nullable TextSize GetTextSize() {
+  StdOptionalTextSize optvalue = new StdOptionalTextSize(AdaptiveCardObjectModelJNI.TextBlock_GetTextSize(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetTextSize(@androidx.annotation.Nullable TextSize value) {
+    StdOptionalTextSize optvalue = (value == null) ? new StdOptionalTextSize() : new StdOptionalTextSize(value);
+    {
+      AdaptiveCardObjectModelJNI.TextBlock_SetTextSize(swigCPtr, this, StdOptionalTextSize.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public TextSize GetTextSize() {
-    return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetTextSize(swigCPtr, this));
+  public @androidx.annotation.Nullable TextWeight GetTextWeight() {
+  StdOptionalTextWeight optvalue = new StdOptionalTextWeight(AdaptiveCardObjectModelJNI.TextBlock_GetTextWeight(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetTextWeight(@androidx.annotation.Nullable TextWeight value) {
+    StdOptionalTextWeight optvalue = (value == null) ? new StdOptionalTextWeight() : new StdOptionalTextWeight(value);
+    {
+      AdaptiveCardObjectModelJNI.TextBlock_SetTextWeight(swigCPtr, this, StdOptionalTextWeight.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public void SetTextSize(TextSize value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetTextSize(swigCPtr, this, value.swigValue());
+  public @androidx.annotation.Nullable FontType GetFontType() {
+  StdOptionalFontType optvalue = new StdOptionalFontType(AdaptiveCardObjectModelJNI.TextBlock_GetFontType(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetFontType(@androidx.annotation.Nullable FontType value) {
+    StdOptionalFontType optvalue = (value == null) ? new StdOptionalFontType() : new StdOptionalFontType(value);
+    {
+      AdaptiveCardObjectModelJNI.TextBlock_SetFontType(swigCPtr, this, StdOptionalFontType.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public TextWeight GetTextWeight() {
-    return TextWeight.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetTextWeight(swigCPtr, this));
-  }
+  public @androidx.annotation.Nullable ForegroundColor GetTextColor() {
+  StdOptionalForegroundColor optvalue = new StdOptionalForegroundColor(AdaptiveCardObjectModelJNI.TextBlock_GetTextColor(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
 
-  public void SetTextWeight(TextWeight value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetTextWeight(swigCPtr, this, value.swigValue());
-  }
-
-  public FontType GetFontType() {
-    return FontType.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetFontType(swigCPtr, this));
-  }
-
-  public void SetFontType(FontType value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetFontType(swigCPtr, this, value.swigValue());
-  }
-
-  public ForegroundColor GetTextColor() {
-    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetTextColor(swigCPtr, this));
-  }
-
-  public void SetTextColor(ForegroundColor value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetTextColor(swigCPtr, this, value.swigValue());
+  public void SetTextColor(@androidx.annotation.Nullable ForegroundColor value) {
+    StdOptionalForegroundColor optvalue = (value == null) ? new StdOptionalForegroundColor() : new StdOptionalForegroundColor(value);
+    {
+      AdaptiveCardObjectModelJNI.TextBlock_SetTextColor(swigCPtr, this, StdOptionalForegroundColor.getCPtr(optvalue), optvalue);
+    }
   }
 
   public boolean GetWrap() {
@@ -115,12 +135,16 @@ public class TextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TextBlock_SetWrap(swigCPtr, this, value);
   }
 
-  public boolean GetIsSubtle() {
-    return AdaptiveCardObjectModelJNI.TextBlock_GetIsSubtle(swigCPtr, this);
-  }
+  public @androidx.annotation.Nullable Boolean GetIsSubtle() {
+  StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.TextBlock_GetIsSubtle(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
 
-  public void SetIsSubtle(boolean value) {
-    AdaptiveCardObjectModelJNI.TextBlock_SetIsSubtle(swigCPtr, this, value);
+  public void SetIsSubtle(@androidx.annotation.Nullable Boolean value) {
+    StdOptionalBool optvalue = (value == null) ? new StdOptionalBool() : new StdOptionalBool(value);
+    {
+      AdaptiveCardObjectModelJNI.TextBlock_SetIsSubtle(swigCPtr, this, StdOptionalBool.getCPtr(optvalue), optvalue);
+    }
   }
 
   public long GetMaxLines() {
