@@ -125,7 +125,7 @@ static int kToggleVisibilityContext;
     if (!_stackView || rtl == ACRRtlNone) {
         return;
     }
-    
+
     _stackView.semanticContentAttribute = (rtl == ACRRtlRTL) ? UISemanticContentAttributeForceRightToLeft : UISemanticContentAttributeForceLeftToRight;
 }
 
@@ -575,6 +575,14 @@ static int kToggleVisibilityContext;
 {
     for (UIView *view in _stackView.arrangedSubviews) {
         [view removeObserver:self forKeyPath:@"hidden"];
+    }
+}
+
+- (void)toggleVisibilityOfFirstView
+{
+    if ([_stackView.subviews count] and _stackView.subviews[0].hidden) {
+        _stackView.subviews[0].hidden = NO;
+        _stackView.subviews[0].hidden = YES;
     }
 }
 

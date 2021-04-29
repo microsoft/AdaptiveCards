@@ -31,6 +31,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Style(_Outptr_ HSTRING* style);
         IFACEMETHODIMP put_Style(_In_ HSTRING style);
 
+        IFACEMETHODIMP get_Tooltip(_Outptr_ HSTRING* tooltip);
+        IFACEMETHODIMP put_Tooltip(_In_ HSTRING tooltip);
+
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
@@ -45,6 +48,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::Wrappers::HString m_title;
         Microsoft::WRL::Wrappers::HString m_iconUrl;
         Microsoft::WRL::Wrappers::HString m_style;
+        Microsoft::WRL::Wrappers::HString m_tooltip;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
         InternalId m_internalId;

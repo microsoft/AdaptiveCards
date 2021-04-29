@@ -8,6 +8,8 @@
 #import "ACORenderContext.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ActionSet.h"
 #import "BaseElement.h"
 #import "Column.h"
 #import "ColumnSet.h"
@@ -18,6 +20,7 @@
     NSMutableDictionary<NSNumber *, NSMutableArray *> *_internalIdContext;
     NSMutableArray<NSNumber *> *_rtlContext;
     NSMutableArray<NSNumber *> *_selectActionContext;
+    NSMutableArray<NSNumber *> *_actionIconPlacementContext;
 }
 
 - (instancetype)init
@@ -28,8 +31,18 @@
         _internalIdContext = [[NSMutableDictionary alloc] init];
         _rtlContext = [[NSMutableArray alloc] init];
         _selectActionContext = [[NSMutableArray alloc] init];
+        _actionIconPlacementContext = [[NSMutableArray alloc] init];
     }
 
+    return self;
+}
+
+- (instancetype)init:(ACOHostConfig *)config
+{
+    self = [self init];
+    if (self) {
+        self.hostConfig = config;
+    }
     return self;
 }
 
@@ -51,6 +64,18 @@
     return NO;
 }
 
+- (BOOL)allHasActionIcons
+{
+    if (_actionIconPlacementContext && [_actionIconPlacementContext count]) {
+        NSNumber *number = [_actionIconPlacementContext lastObject];
+        if (number) {
+            return [number boolValue];
+        }
+    }
+    return NO;
+}
+
+
 - (void)pushBaseActionElementContext:(ACOBaseActionElement *)element
 {
     return;
@@ -61,7 +86,7 @@
     return;
 }
 
-- (void)addToANewContext:(const std::optional<bool> &)crtl key:(NSNumber *)key hasSelectAction:(BOOL)hasSelectAction
+- (void)addToANewContext:(const std::optional<bool> &)crtl key:(NSNumber *)key hasSelectAction:(BOOL)hasSelectAction iconPlacement:(NSNumber *)iconPlacement
 {
     NSMutableArray<NSMutableArray *> *contexts = [[NSMutableArray alloc] init];
     ACRRtl rtl = ACRRtlNone;
@@ -79,6 +104,12 @@
         [contexts addObject:_selectActionContext];
     }
 
+    if (iconPlacement) {
+        shouldPush = YES;
+        [_actionIconPlacementContext addObject:iconPlacement];
+        [contexts addObject:_actionIconPlacementContext];
+    }
+
     if (shouldPush) {
         _internalIdContext[key] = contexts;
     }
@@ -93,6 +124,7 @@
     std::optional<bool> crtl;
     BOOL hasSelectAction = NO;
     std::shared_ptr<BaseCardElement> element = [acoElement element];
+    NSNumber *key = iOSInternalIdHash(element->GetInternalId().Hash());
     if (acoElement.type == ACRColumn) {
         std::shared_ptr<Column> column = std::dynamic_pointer_cast<Column>(element);
         crtl = column->GetRtl();
@@ -116,10 +148,14 @@
         }
     }
 
-    std::shared_ptr<BaseElement> baseElement = std::dynamic_pointer_cast<BaseElement>(element);
-    NSNumber *key = [NSNumber numberWithLong:(baseElement->GetInternalId()).Hash()];
+    NSNumber *iconPlacement = nil;
+    if (acoElement.type == ACRActionSet) {
+        iconPlacement = [self.hostConfig getIconPlacement:key];
+    }
 
-    [self addToANewContext:crtl key:key hasSelectAction:hasSelectAction];
+    std::shared_ptr<BaseElement> baseElement = std::dynamic_pointer_cast<BaseElement>(element);
+
+    [self addToANewContext:crtl key:key hasSelectAction:hasSelectAction iconPlacement:iconPlacement];
 }
 
 - (void)removeContext:(NSNumber *)key
@@ -154,7 +190,9 @@
     auto crtl = adaptiveCard->GetRtl();
     NSNumber *key = [NSNumber numberWithLong:(adaptiveCard->GetInternalId()).Hash()];
     BOOL hasSelectAction = adaptiveCard->GetSelectAction() ? YES : NO;
-    [self addToANewContext:crtl key:key hasSelectAction:hasSelectAction];
+    NSNumber *iconPlacement = [self.hostConfig getIconPlacement:key];
+
+    [self addToANewContext:crtl key:key hasSelectAction:hasSelectAction iconPlacement:iconPlacement];
 }
 
 - (void)popCardContext:(ACOAdaptiveCard *)card
