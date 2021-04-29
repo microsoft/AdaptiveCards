@@ -38,6 +38,11 @@ namespace AdaptiveSharedNamespace
         void SetStyle(std::string&& value);
         void SetStyle(const std::string& value);
 
+        const std::string& GetTooltip() const;
+
+        virtual void SetTooltip(std::string&& value);
+        virtual void SetTooltip(const std::string& value);
+
         ActionType GetElementType() const;
 
         Mode GetMode() const;
@@ -46,13 +51,15 @@ namespace AdaptiveSharedNamespace
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
         Json::Value SerializeToJsonValue() const override;
 
-        template <typename T>
-        static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
+        template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
-        static std::shared_ptr<BaseActionElement> DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
+        static std::shared_ptr<BaseActionElement> DeserializeBasePropertiesFromString(ParseContext& context,
+                                                                                      const std::string& jsonString);
         static std::shared_ptr<BaseActionElement> DeserializeBaseProperties(ParseContext& context, const Json::Value& json);
 
-        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
+        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
+                                    const Json::Value& json,
+                                    std::shared_ptr<BaseElement>& element);
 
     private:
         void PopulateKnownPropertiesSet();
@@ -63,12 +70,13 @@ namespace AdaptiveSharedNamespace
         std::string m_title;
         std::string m_iconUrl;
         std::string m_style;
+        std::string m_tooltip;
 
         ActionType m_type;
         Mode m_mode;
     };
 
-    template <typename T>
+    template<typename T>
     std::shared_ptr<T> BaseActionElement::Deserialize(ParseContext& context, const Json::Value& json)
     {
         std::shared_ptr<T> cardElement = std::make_shared<T>();

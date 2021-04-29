@@ -31,7 +31,10 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
-    protected final static int BOTTOM_SHEET_TAG = 0xffffffff;
+    /**
+     * This tag key is used in {@link io.adaptivecards.renderer.action.DropdownElementRenderer} to get the container view of the Overflow ("...") action, so dropdown view can behave like a primary action element.
+     */
+    public final static int PARENT_DROPDOWN_TAG = 0xffffffff;
 
     protected static int getColor(String colorCode)
     {
@@ -241,9 +244,9 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
             // Reset all other buttons
             ViewGroup parentContainer;
-            if (v.getTag(BOTTOM_SHEET_TAG) != null)
+            if (v.getTag(PARENT_DROPDOWN_TAG) != null)
             {
-                parentContainer = (ViewGroup) v.getTag(BOTTOM_SHEET_TAG);
+                parentContainer = (ViewGroup) v.getTag(PARENT_DROPDOWN_TAG);
             }
             else
             {

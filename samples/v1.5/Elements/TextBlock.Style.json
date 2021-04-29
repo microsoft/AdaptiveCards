@@ -5,13 +5,27 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Style: Heading",
-			"style": "heading"
+			"text": "Style set to heading",
+			"style": "heading",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
-			"text": "Style: Default",
-			"style": "default"
+			"text": "Style set to heading, color set to good",
+			"style": "heading",
+			"color": "good",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style set to default",
+			"style": "default",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style unset",
+			"wrap": true
 		}
 	]
 }

@@ -95,12 +95,31 @@ HRESULT SetStrikethroughAndUnderline(const TextRunStyleParameters& styleProperti
     return S_OK;
 }
 
-HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
-                                     _In_ IAdaptiveRenderArgs* renderArgs,
-                                     _In_ IAdaptiveTextConfig* textConfig,
-                                     _In_ HSTRING language,
-                                     _In_ HSTRING text,
-                                     _In_ ITextBlock* textBlock)
+HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveTextElement* textElement,
+                                          _In_ IAdaptiveRenderContext* renderContext,
+                                          _In_ IAdaptiveRenderArgs* renderArgs,
+                                          _In_ IAdaptiveTextStyleConfig* textStyleConfig,
+                                          _In_ ITextBlock* textBlock)
+{
+    HString language;
+    RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
+
+    HString text;
+    RETURN_IF_FAILED(textElement->get_Text(text.GetAddressOf()));
+
+    RETURN_IF_FAILED(
+        SetXamlInlinesWithTextStyleConfig(renderContext, renderArgs, textStyleConfig, textElement, language.Get(), text.Get(), textBlock));
+
+    return S_OK;
+}
+
+HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderContext,
+                                          _In_ IAdaptiveRenderArgs* renderArgs,
+                                          _In_ IAdaptiveTextStyleConfig* textStyle,
+                                          _In_opt_ IAdaptiveTextElement* textElement,
+                                          _In_ HSTRING language,
+                                          _In_ HSTRING text,
+                                          _In_ ITextBlock* textBlock)
 {
     // Create an AdaptiveTextRun with the language, text, and configuration to pass to SetXamlInlines
     ComPtr<AdaptiveNamespace::AdaptiveTextRun> textRun;
@@ -109,21 +128,115 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     RETURN_IF_FAILED(textRun->put_Text(text));
     RETURN_IF_FAILED(textRun->put_Language(language));
 
-    ABI::AdaptiveNamespace::TextWeight weight;
-    RETURN_IF_FAILED(textConfig->get_Weight(&weight));
-    RETURN_IF_FAILED(textRun->put_Weight(weight));
+    // For weight, color, size, fontType, and isSubtle, use the value from the text element if there is one, otherwise use the value from the text style
 
-    ABI::AdaptiveNamespace::ForegroundColor color;
-    RETURN_IF_FAILED(textConfig->get_Color(&color));
-    RETURN_IF_FAILED(textRun->put_Color(color));
+    // TextWeight
+    ComPtr<IReference<ABI::AdaptiveNamespace::TextWeight>> weightToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<ABI::AdaptiveNamespace::TextWeight>> elementWeight;
+        RETURN_IF_FAILED(textElement->get_Weight(&elementWeight));
+        if (elementWeight != nullptr)
+        {
+            weightToSet = elementWeight;
+        }
+    }
+    if (weightToSet == nullptr)
+    {
+        ABI::AdaptiveNamespace::TextWeight weight;
+        RETURN_IF_FAILED(textStyle->get_Weight(&weight));
 
-    ABI::AdaptiveNamespace::TextSize size;
-    RETURN_IF_FAILED(textConfig->get_Size(&size));
-    RETURN_IF_FAILED(textRun->put_Size(size));
+        weightToSet = winrt::box_value(static_cast<winrt::AdaptiveNamespace::TextWeight>(weight))
+                          .as<IReference<ABI::AdaptiveNamespace::TextWeight>>()
+                          .get();
+    }
+    RETURN_IF_FAILED(textRun->put_Weight(weightToSet.Get()));
 
-    boolean isSubtle;
-    RETURN_IF_FAILED(textConfig->get_IsSubtle(&isSubtle));
-    RETURN_IF_FAILED(textRun->put_IsSubtle(isSubtle));
+    // ForegroundColor
+    ComPtr<IReference<ABI::AdaptiveNamespace::ForegroundColor>> colorToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<ABI::AdaptiveNamespace::ForegroundColor>> elementColor;
+        RETURN_IF_FAILED(textElement->get_Color(&elementColor));
+        if (elementColor != nullptr)
+        {
+            colorToSet = elementColor;
+        }
+    }
+    if (colorToSet == nullptr)
+    {
+        ABI::AdaptiveNamespace::ForegroundColor color;
+        RETURN_IF_FAILED(textStyle->get_Color(&color));
+
+        colorToSet = winrt::box_value(static_cast<winrt::AdaptiveNamespace::ForegroundColor>(color))
+                         .as<IReference<ABI::AdaptiveNamespace::ForegroundColor>>()
+                         .get();
+    }
+    RETURN_IF_FAILED(textRun->put_Color(colorToSet.Get()));
+
+    // TextSize
+    ComPtr<IReference<ABI::AdaptiveNamespace::TextSize>> sizeToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<ABI::AdaptiveNamespace::TextSize>> elementSize;
+        RETURN_IF_FAILED(textElement->get_Size(&elementSize));
+        if (elementSize != nullptr)
+        {
+            sizeToSet = elementSize;
+        }
+    }
+    if (sizeToSet == nullptr)
+    {
+        ABI::AdaptiveNamespace::TextSize size;
+        RETURN_IF_FAILED(textStyle->get_Size(&size));
+
+        sizeToSet = winrt::box_value(static_cast<winrt::AdaptiveNamespace::TextSize>(size))
+                        .as<IReference<ABI::AdaptiveNamespace::TextSize>>()
+                        .get();
+    }
+    RETURN_IF_FAILED(textRun->put_Size(sizeToSet.Get()));
+
+    // FontType
+    ComPtr<IReference<ABI::AdaptiveNamespace::FontType>> fontTypeToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<ABI::AdaptiveNamespace::FontType>> elementFontType;
+        RETURN_IF_FAILED(textElement->get_FontType(&elementFontType));
+        if (elementFontType != nullptr)
+        {
+            fontTypeToSet = elementFontType;
+        }
+    }
+    if (fontTypeToSet == nullptr)
+    {
+        ABI::AdaptiveNamespace::FontType fontType;
+        RETURN_IF_FAILED(textStyle->get_FontType(&fontType));
+
+        fontTypeToSet = winrt::box_value(static_cast<winrt::AdaptiveNamespace::FontType>(fontType))
+                            .as<IReference<ABI::AdaptiveNamespace::FontType>>()
+                            .get();
+    }
+    RETURN_IF_FAILED(textRun->put_FontType(fontTypeToSet.Get()));
+
+    // IsSubtle
+    ComPtr<IReference<bool>> isSubtleToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<bool>> elementIsSubtle;
+        RETURN_IF_FAILED(textElement->get_IsSubtle(&elementIsSubtle));
+        if (elementIsSubtle != nullptr)
+        {
+            isSubtleToSet = elementIsSubtle;
+        }
+    }
+    if (isSubtleToSet == nullptr)
+    {
+        boolean isSubtle;
+        RETURN_IF_FAILED(textStyle->get_IsSubtle(&isSubtle));
+
+        isSubtleToSet = winrt::box_value(static_cast<bool>(isSubtle)).as<IReference<bool>>().get();
+    }
+    RETURN_IF_FAILED(textRun->put_IsSubtle(isSubtleToSet.Get()));
 
     ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
     RETURN_IF_FAILED(textBlock->get_Inlines(&inlines));
@@ -134,9 +247,26 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     // Set the inlines
     RETURN_IF_FAILED(SetXamlInlines(textRun.Get(), renderContext, renderArgs, false, inlines.Get()));
 
+    return S_OK;
+}
+
+HRESULT SetXamlInlinesWithFactSetTextConfig(_In_ IAdaptiveRenderContext* renderContext,
+                                            _In_ IAdaptiveRenderArgs* renderArgs,
+                                            _In_ IAdaptiveFactSetTextConfig* factSetTextConfig,
+                                            _In_ HSTRING language,
+                                            _In_ HSTRING text,
+                                            _In_ ITextBlock* textBlock)
+{
+    ComPtr<IAdaptiveFactSetTextConfig> factSetTextConfigLocal(factSetTextConfig);
+    ComPtr<IAdaptiveTextStyleConfig> factSetTextConfigAsTextStyleConfig;
+    RETURN_IF_FAILED(factSetTextConfigLocal.As(&factSetTextConfigAsTextStyleConfig));
+
+    RETURN_IF_FAILED(SetXamlInlinesWithTextStyleConfig(
+        renderContext, renderArgs, factSetTextConfigAsTextStyleConfig.Get(), nullptr, language, text, textBlock));
+
     // Set wrap and maxwidth
     boolean wrap;
-    RETURN_IF_FAILED(textConfig->get_Wrap(&wrap));
+    RETURN_IF_FAILED(factSetTextConfig->get_Wrap(&wrap));
     RETURN_IF_FAILED(SetWrapProperties(textBlock, wrap));
 
     ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
@@ -144,7 +274,7 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     RETURN_IF_FAILED(localTextBlock.As(&textBlockAsFrameworkElement));
 
     UINT32 maxWidth;
-    RETURN_IF_FAILED(textConfig->get_MaxWidth(&maxWidth));
+    RETURN_IF_FAILED(factSetTextConfig->get_MaxWidth(&maxWidth));
     textBlockAsFrameworkElement->put_MaxWidth(maxWidth);
 
     return S_OK;
@@ -492,7 +622,9 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
 
                 if (isBoldResult == 0)
                 {
-                    RETURN_IF_FAILED(textElementToUse->put_Weight(ABI::AdaptiveNamespace::TextWeight::Bolder));
+                    RETURN_IF_FAILED(textElementToUse->put_Weight(winrt::box_value(winrt::AdaptiveNamespace::TextWeight::Bolder)
+                                                                      .as<IReference<ABI::AdaptiveNamespace::TextWeight>>()
+                                                                      .get()));
                 }
             }
 

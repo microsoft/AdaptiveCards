@@ -408,7 +408,7 @@ AdaptiveNamespaceStart
     [contract(InternalContract, 1)][internal]
 #endif
     typedef[v1_enum] enum TextStyle {
-        Paragraph = 0,
+        Default = 0,
         Heading,
     } TextStyle;
 
@@ -508,13 +508,13 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveTextElement
     {
-        TextSize Size;
-        TextWeight Weight;
-        ForegroundColor Color;
+        Windows.Foundation.IReference<TextSize> Size;
+        Windows.Foundation.IReference<TextWeight> Weight;
+        Windows.Foundation.IReference<ForegroundColor> Color;
         String Text;
-        Boolean IsSubtle;
+        Windows.Foundation.IReference<Boolean> IsSubtle;
         String Language;
-        FontType FontType;
+        Windows.Foundation.IReference<FontType> FontType;
     };
 
     [
@@ -531,7 +531,7 @@ AdaptiveNamespaceStart
         Boolean Wrap;
         HAlignment HorizontalAlignment;
         UInt32 MaxLines;
-        TextStyle Style;
+        Windows.Foundation.IReference<TextStyle> Style;
     };
 
     [
@@ -1258,19 +1258,54 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextConfig", 2fa24f2c-843c-4f3f-be65-023528901970),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextStyleConfig", 1F80F977-821C-40EA-8E1A-0622E2F2EFFA),
         contract(InternalContract, 1),
         internal
 #endif
-    ]
-    runtimeclass AdaptiveTextConfig
+    ] 
+    interface IAdaptiveTextStyleConfig
     {
-        AdaptiveTextConfig();
-
         TextWeight Weight;
         TextSize Size;
         ForegroundColor Color;
         Boolean IsSubtle;
+        FontType FontType;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFactSetTextConfig", A0CB550B-5DE4-403B-8CE4-5057431BC0B2),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveTextStyleConfig : [default] IAdaptiveTextStyleConfig
+    {
+        AdaptiveTextStyleConfig();
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextStylesConfig", 0E1630B5-9F09-48DF-88F9-655ADDA99304),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveTextStylesConfig
+    {
+        AdaptiveTextStylesConfig();
+
+        AdaptiveTextStyleConfig Heading;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveFactSetTextConfig", 2fa24f2c-843c-4f3f-be65-023528901970),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveFactSetTextConfig : IAdaptiveTextStyleConfig
+    {
+        AdaptiveFactSetTextConfig();
+
         Boolean Wrap;
         UInt32 MaxWidth;
     };
@@ -1379,8 +1414,8 @@ AdaptiveNamespaceStart
     {
         AdaptiveFactSetConfig();
 
-        AdaptiveTextConfig Title;
-        AdaptiveTextConfig Value;
+        AdaptiveFactSetTextConfig Title;
+        AdaptiveFactSetTextConfig Value;
         UInt32 Spacing;
     };
 
@@ -1497,14 +1532,14 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHeadingsConfig", 4131B10F-76F6-4278-8A9B-FBFA2FE226CA),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTextBlockConfig", 4131B10F-76F6-4278-8A9B-FBFA2FE226CA),
         contract(InternalContract, 1),
         internal
 #endif
-    ] runtimeclass AdaptiveHeadingsConfig {
-        AdaptiveHeadingsConfig();
+    ] runtimeclass AdaptiveTextBlockConfig {
+        AdaptiveTextBlockConfig();
 
-        UInt32 Level;
+        UInt32 HeadingLevel;
     };
 
     [
@@ -1536,7 +1571,8 @@ AdaptiveNamespaceStart
         AdaptiveActionsConfig Actions;
         AdaptiveMediaConfig Media;
         AdaptiveInputsConfig Inputs;
-        AdaptiveHeadingsConfig Headings;
+        AdaptiveTextBlockConfig TextBlock;
+        AdaptiveTextStylesConfig TextStyles;
 
         static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
         static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);
@@ -1574,6 +1610,7 @@ AdaptiveNamespaceStart
         IAdaptiveActionElement FallbackContent;
         String IconUrl;
         String Style;
+        String Tooltip;
         Windows.Data.Json.JsonObject AdditionalProperties;
 
         Windows.Data.Json.JsonObject ToJson();
@@ -2263,7 +2300,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ] runtimeclass AdaptiveExecuteActionRenderer : IAdaptiveElementRenderer,
-                                                  IAdaptiveElementParser
+                                                   IAdaptiveElementParser
     {
         AdaptiveExecuteActionRenderer();
     };

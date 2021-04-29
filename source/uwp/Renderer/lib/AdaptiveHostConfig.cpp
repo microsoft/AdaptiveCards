@@ -11,7 +11,6 @@
 #include "AdaptiveFontTypeDefinition.h"
 #include "AdaptiveFontTypesDefinition.h"
 #include "AdaptiveFontWeightsConfig.h"
-#include "AdaptiveHeadingsConfig.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
@@ -21,6 +20,8 @@
 #include "AdaptiveMediaConfig.h"
 #include "AdaptiveSeparatorConfig.h"
 #include "AdaptiveSpacingConfig.h"
+#include "AdaptiveTextBlockConfig.h"
+#include "AdaptiveTextStylesConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
@@ -95,7 +96,8 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.GetImage()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaConfig>(m_media.GetAddressOf(), sharedHostConfig.GetMedia()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputsConfig>(m_inputs.GetAddressOf(), sharedHostConfig.GetInputs()));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHeadingsConfig>(m_headings.GetAddressOf(), sharedHostConfig.GetHeadings()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextBlockConfig>(m_textBlock.GetAddressOf(), sharedHostConfig.GetTextBlock()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextStylesConfig>(m_textStyles.GetAddressOf(), sharedHostConfig.GetTextStyles()));
 
         return S_OK;
     }
@@ -266,14 +268,14 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_Headings(ABI::AdaptiveNamespace::IAdaptiveHeadingsConfig** headingsConfig)
+    HRESULT AdaptiveHostConfig::get_TextBlock(ABI::AdaptiveNamespace::IAdaptiveTextBlockConfig** textBlockConfig)
     {
-        return m_headings.CopyTo(headingsConfig);
+        return m_textBlock.CopyTo(textBlockConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_Headings(ABI::AdaptiveNamespace::IAdaptiveHeadingsConfig* headingsConfig)
+    HRESULT AdaptiveHostConfig::put_TextBlock(ABI::AdaptiveNamespace::IAdaptiveTextBlockConfig* textBlockConfig)
     {
-        m_headings = headingsConfig;
+        m_textBlock = textBlockConfig;
         return S_OK;
     }
 
@@ -285,6 +287,17 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveHostConfig::put_FontTypes(_In_ IAdaptiveFontTypesDefinition* value)
     {
         m_fontTypes = value;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_TextStyles(ABI::AdaptiveNamespace::IAdaptiveTextStylesConfig** textStylesConfig)
+    {
+        return m_textStyles.CopyTo(textStylesConfig);
+    }
+
+    HRESULT AdaptiveHostConfig::put_TextStyles(ABI::AdaptiveNamespace::IAdaptiveTextStylesConfig* textStylesConfig)
+    {
+        m_textStyles = textStylesConfig;
         return S_OK;
     }
 }
