@@ -30,6 +30,7 @@ CGFloat kAdaptiveCardsWidth = 0;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
     dispatch_queue_t _global_queue;
+    UIGestureRecognizer *_tapGesture;
 }
 
 @end
@@ -240,6 +241,7 @@ CGFloat kAdaptiveCardsWidth = 0;
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    _tapGesture = [[UITapGestureRecognizer alloc] init];
 
     // the width of the AdaptiveCards does not need to be set.
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
@@ -456,6 +458,7 @@ CGFloat kAdaptiveCardsWidth = 0;
     ((UIScrollView *)actionSetView).showsHorizontalScrollIndicator = NO;
     return actionSetView;
 }
+
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -477,10 +480,9 @@ CGFloat kAdaptiveCardsWidth = 0;
     CGSize kbSize = kbFrame.size;
 
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    CGRect scrollViewFrame = _scrView.frame;
-    if (scrollViewFrame.origin.y + scrollViewFrame.size.height > kbFrame.origin.y) {
-        self.scrView.contentInset = contentInsets;
-        self.scrView.scrollIndicatorInsets = contentInsets;
+    CGPoint currentPoint = [_tapGesture locationInView:self.chatWindow];
+    if (currentPoint.y < kbFrame.origin.y) {
+        self.chatWindow.contentInset = contentInsets;
     }
 }
 
@@ -488,8 +490,7 @@ CGFloat kAdaptiveCardsWidth = 0;
 - (void)keyboardWillBeHidden:(NSNotification *)aNotification
 {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    self.scrView.contentInset = contentInsets;
-    self.scrView.scrollIndicatorInsets = contentInsets;
+    self.chatWindow.contentInset = contentInsets;
 }
 
 - (NSArray<UIStackView *> *)buildButtonsLayout:(NSLayoutAnchor *)centerXAnchor

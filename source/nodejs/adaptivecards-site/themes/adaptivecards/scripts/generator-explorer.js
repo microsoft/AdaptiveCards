@@ -7,7 +7,6 @@ var path = require("path");
 hexo.extend.generator.register("generator-explorer", function (locals) {
 
     return new Promise(function (resolve, reject) {
-
 		try {
 			var schemaModel = typedschema.markdown.buildModel({
 				schema: "../../../schemas/src",
@@ -15,7 +14,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 				rootDefinition: "AdaptiveCard",
 				examplesPath: "../../../samples"
 			});
-			
+
 			var pages = [];
 
 			schemaModel.forEach(function (root) {
@@ -25,7 +24,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 						path: child.htmlPath,
 						layout: "explorer",
 						data: {
-							title: "Schema Explorer",
+							title: locals.data.explorer.en.title,
 							schema: schemaModel,
 							element: child,
 							childPath: child.htmlPath,
@@ -41,7 +40,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 							path: "explorer/index.html",
 							layout: "explorer",
 							data: {
-								title: "Schema Explorer",
+								title: locals.data.explorer.en.title,
 								schema: schemaModel,
 								element: child,
 								childPath: child.htmlPath,
