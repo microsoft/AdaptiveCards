@@ -48,16 +48,19 @@
 - (ACSAssociatedInputs)getAssociatedInputs
 {
  
-    auto getAssociatedInputsCpp = mCppObj->GetAssociatedInputs();
-    return [ACSAssociatedInputsConvertor convertCpp:getAssociatedInputsCpp];
+	// TODO: Uncomment once Shared library is updated to 1.3
+	
+    // auto getAssociatedInputsCpp = mCppObj->GetAssociatedInputs();
+    // return [ACSAssociatedInputsConvertor convertCpp:getAssociatedInputsCpp];
 
+    return ACSAssociatedInputsAuto;
 }
 
 - (void)setAssociatedInputs:(enum ACSAssociatedInputs)value
 {
-    auto valueCpp = [ACSAssociatedInputsConvertor convertObj:value];
+    // auto valueCpp = [ACSAssociatedInputsConvertor convertObj:value];
  
-    mCppObj->SetAssociatedInputs(valueCpp);
+    // mCppObj->SetAssociatedInputs(valueCpp);
     
 }
 
