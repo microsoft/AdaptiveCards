@@ -76,8 +76,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setTextSize(TextRendererUtil.getTextSize(fontType, textSize, hostConfig));
     }
 
-    public static void applyAccessibilityHeading(@NonNull final TextView textView,
-                                                    @Nullable final TextStyle textStyle)
+    public static void applyAccessibilityHeading(@NonNull final TextView textView, @Nullable final TextStyle textStyle)
     {
         // Indicate Heading to accessibility service
         // TODO: Refactor to ViewCompat.setAccessibilityHeading after AndroidX upgrade

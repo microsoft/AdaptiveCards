@@ -105,7 +105,6 @@ namespace AdaptiveSharedNamespace
         Language,
         Large,
         Left,
-        Level,
         Light,
         Lighter,
         LineColor,
