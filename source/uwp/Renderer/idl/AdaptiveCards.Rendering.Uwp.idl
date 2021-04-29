@@ -1576,6 +1576,7 @@ AdaptiveNamespaceStart
         String Style;
         String Tooltip;
         Windows.Data.Json.JsonObject AdditionalProperties;
+        Boolean IsEnabled;
 
         Windows.Data.Json.JsonObject ToJson();
     };

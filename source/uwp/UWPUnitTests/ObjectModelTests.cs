@@ -843,6 +843,7 @@ namespace UWPUnitTests
             IAdaptiveActionElement element,
             string iconUrl,
             string id,
+            bool isEnabled,
             string title,
             string style)
         {
@@ -850,6 +851,7 @@ namespace UWPUnitTests
             Assert.AreEqual(id, element.Id);
             Assert.AreEqual(style, element.Style);
             Assert.AreEqual(title, element.Title);
+            Assert.AreEqual(isEnabled, element.IsEnabled);
         }
 
         [TestMethod]
@@ -862,18 +864,19 @@ namespace UWPUnitTests
                 Tooltip = "I am a tooltip",
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
+                IsEnabled = false,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", false, "Title", "Destructive");
             Assert.AreEqual(url, openUrlAction.Url);
             Assert.AreEqual("I am a tooltip", openUrlAction.Tooltip);
 
             AdaptiveCard adaptiveCard = new AdaptiveCard();
             adaptiveCard.Actions.Add(openUrlAction);
 
-            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"isEnabled\":false,\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
 
             var jsonString = adaptiveCard.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);
@@ -892,12 +895,13 @@ namespace UWPUnitTests
                 Tooltip = "I am a tooltip",
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
+                IsEnabled = true,
                 Style = "Destructive",
                 Title = "Title",
                 AssociatedInputs = AssociatedInputs.None
             };
 
-            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", true, "Title", "Destructive");
             Assert.AreEqual(dataJson, submitAction.DataJson);
             Assert.AreEqual("I am a tooltip", submitAction.Tooltip);
 
@@ -924,12 +928,13 @@ namespace UWPUnitTests
                 Tooltip = "I am a tooltip",
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
+                IsEnabled = false,
                 Style = "Destructive",
                 Title = "Title",
                 AssociatedInputs = AssociatedInputs.None
             };
 
-            ValidateBaseActionProperties(executeAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            ValidateBaseActionProperties(executeAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", false, "Title", "Destructive");
             Assert.AreEqual(dataJson, executeAction.DataJson);
             Assert.AreEqual("doStuff", executeAction.Verb);
             Assert.AreEqual("I am a tooltip", executeAction.Tooltip);
@@ -937,7 +942,7 @@ namespace UWPUnitTests
             AdaptiveCard adaptiveCard = new AdaptiveCard();
             adaptiveCard.Actions.Add(executeAction);
 
-            string expectedSerialization = "{\"actions\":[{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.Execute\",\"verb\":\"doStuff\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+            string expectedSerialization = "{\"actions\":[{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"isEnabled\":false,\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.Execute\",\"verb\":\"doStuff\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
 
             var jsonString = adaptiveCard.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);
@@ -954,11 +959,12 @@ namespace UWPUnitTests
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Tooltip = "I am a tooltip",
                 Id = "OpenUrlId",
+                IsEnabled = true,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", true, "Title", "Destructive");
 
             Assert.AreEqual("I am a tooltip", showCardAction.Tooltip);
 
@@ -1001,11 +1007,12 @@ namespace UWPUnitTests
                 Tooltip = "I am a tooltip",
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "ToggleVisibilityId",
+                IsEnabled = false,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", "Title", "Destructive");
+            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", false, "Title", "Destructive");
             Assert.AreEqual("I am a tooltip", toggleAction.Tooltip);
 
             toggleAction.TargetElements.Add(toggleTarget1);
@@ -1017,7 +1024,7 @@ namespace UWPUnitTests
             AdaptiveCard adaptiveCard = new AdaptiveCard();
             adaptiveCard.Actions.Add(toggleAction);
 
-            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"style\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.ToggleVisibility\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"isEnabled\":false,\"style\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.ToggleVisibility\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
 
             var jsonString = adaptiveCard.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);
