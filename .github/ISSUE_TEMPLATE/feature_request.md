@@ -2,8 +2,9 @@
 name: Feature Request
 about: Suggest a feature you'd like to enable using AdaptiveCards
 title: "[Feature Request] Feature Title Here"
-labels: Request Triage-Needed
+labels: ''
 assignees: ''
+
 ---
 
 # What is the problem you are attempting to solve with this feature?
