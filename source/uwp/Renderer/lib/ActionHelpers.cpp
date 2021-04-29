@@ -626,16 +626,16 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         // We don't wrap the element if it's a show card or if the action's not enabled;
-        bool dontWrap = ActionHelpers::WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction");
+        boolean shouldWrap = !ActionHelpers::WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction");
 
         if (action != nullptr)
         {
             boolean isEnabled;
             THROW_IF_FAILED(action->get_IsEnabled(&isEnabled));
-            dontWrap |= !isEnabled;
+            shouldWrap |= isEnabled;
         }
 
-        if (dontWrap)
+        if (!shouldWrap)
         {
             // Just return the element as is
             ComPtr<IUIElement> localElementToWrap(elementToWrap);
