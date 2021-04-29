@@ -34,6 +34,12 @@ namespace AdaptiveCards.Rendering
             if (adaptiveElement is AdaptiveTextInput textInput)
                 Visit(textInput);
 
+            if (adaptiveElement is AdaptiveFileInput fileInput)
+                Visit(fileInput);
+
+            if (adaptiveElement is AdaptiveColorInput colorInput)
+                Visit(colorInput);
+
             if (adaptiveElement is AdaptiveNumberInput numberInput)
                 Visit(numberInput);
 
@@ -104,6 +110,14 @@ namespace AdaptiveCards.Rendering
         }
 
         public virtual void Visit(AdaptiveTextInput inputText)
+        {
+        }
+
+        public virtual void Visit(AdaptiveFileInput inputFile)
+        {
+        }
+
+        public virtual void Visit(AdaptiveColorInput inputColor)
         {
         }
 

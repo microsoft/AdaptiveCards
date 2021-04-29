@@ -36,6 +36,8 @@ namespace AdaptiveCards
                 [AdaptiveFactSet.TypeName] = typeof(AdaptiveFactSet),
                 [AdaptiveImageSet.TypeName] = typeof(AdaptiveImageSet),
                 [AdaptiveTextInput.TypeName] = typeof(AdaptiveTextInput),
+                [AdaptiveFileInput.TypeName] = typeof(AdaptiveFileInput),
+                [AdaptiveColorInput.TypeName] = typeof(AdaptiveColorInput),
                 [AdaptiveDateInput.TypeName] = typeof(AdaptiveDateInput),
                 [AdaptiveTimeInput.TypeName] = typeof(AdaptiveTimeInput),
                 [AdaptiveChoiceSetInput.TypeName] = typeof(AdaptiveChoiceSetInput),

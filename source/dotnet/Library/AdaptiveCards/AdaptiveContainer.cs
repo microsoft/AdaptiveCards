@@ -46,6 +46,8 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveImageSet))]
         [XmlElement(typeof(AdaptiveFactSet))]
         [XmlElement(typeof(AdaptiveTextInput))]
+        [XmlElement(typeof(AdaptiveFileInput))]
+        [XmlElement(typeof(AdaptiveColorInput))]
         [XmlElement(typeof(AdaptiveDateInput))]
         [XmlElement(typeof(AdaptiveTimeInput))]
         [XmlElement(typeof(AdaptiveNumberInput))]

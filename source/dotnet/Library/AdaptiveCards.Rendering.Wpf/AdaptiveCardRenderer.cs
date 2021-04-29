@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -50,6 +49,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
             ElementRenderers.Set<AdaptiveChoiceSetInput>(AdaptiveChoiceSetRenderer.Render);
             ElementRenderers.Set<AdaptiveTextInput>(AdaptiveTextInputRenderer.Render);
+            ElementRenderers.Set<AdaptiveFileInput>(AdaptiveFileInputRenderer.Render);
+            ElementRenderers.Set<AdaptiveColorInput>(AdaptiveColorInputRenderer.Render);
             ElementRenderers.Set<AdaptiveNumberInput>(AdaptiveNumberInputRenderer.Render);
             ElementRenderers.Set<AdaptiveDateInput>(AdaptiveDateInputRenderer.Render);
             ElementRenderers.Set<AdaptiveTimeInput>(AdaptiveTimeInputRenderer.Render);

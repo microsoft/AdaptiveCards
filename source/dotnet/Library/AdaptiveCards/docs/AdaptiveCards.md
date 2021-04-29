@@ -133,7 +133,9 @@
   - [PixelMinHeight](#P-AdaptiveCards-AdaptiveCollectionElement-PixelMinHeight 'AdaptiveCards.AdaptiveCollectionElement.PixelMinHeight')
   - [SelectAction](#P-AdaptiveCards-AdaptiveCollectionElement-SelectAction 'AdaptiveCards.AdaptiveCollectionElement.SelectAction')
   - [Style](#P-AdaptiveCards-AdaptiveCollectionElement-Style 'AdaptiveCards.AdaptiveCollectionElement.Style')
+  - [StyleXml](#P-AdaptiveCards-AdaptiveCollectionElement-StyleXml 'AdaptiveCards.AdaptiveCollectionElement.StyleXml')
   - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveCollectionElement-VerticalContentAlignment 'AdaptiveCards.AdaptiveCollectionElement.VerticalContentAlignment')
+  - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveCollectionElement-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveCollectionElement.ShouldSerializeStyleXml')
 - [AdaptiveColumn](#T-AdaptiveCards-AdaptiveColumn 'AdaptiveCards.AdaptiveColumn')
   - [TypeName](#F-AdaptiveCards-AdaptiveColumn-TypeName 'AdaptiveCards.AdaptiveColumn.TypeName')
   - [Size](#P-AdaptiveCards-AdaptiveColumn-Size 'AdaptiveCards.AdaptiveColumn.Size')
@@ -234,6 +236,15 @@
   - [Get(feature)](#M-AdaptiveCards-AdaptiveFeatureRegistration-Get-System-String- 'AdaptiveCards.AdaptiveFeatureRegistration.Get(System.String)')
   - [Remove(feature)](#M-AdaptiveCards-AdaptiveFeatureRegistration-Remove-System-String- 'AdaptiveCards.AdaptiveFeatureRegistration.Remove(System.String)')
   - [Set(feature,version)](#M-AdaptiveCards-AdaptiveFeatureRegistration-Set-System-String,System-String- 'AdaptiveCards.AdaptiveFeatureRegistration.Set(System.String,System.String)')
+- [AdaptiveFileInput](#T-AdaptiveCards-AdaptiveFileInput 'AdaptiveCards.AdaptiveFileInput')
+  - [TypeName](#F-AdaptiveCards-AdaptiveFileInput-TypeName 'AdaptiveCards.AdaptiveFileInput.TypeName')
+  - [MaxLength](#P-AdaptiveCards-AdaptiveFileInput-MaxLength 'AdaptiveCards.AdaptiveFileInput.MaxLength')
+  - [Placeholder](#P-AdaptiveCards-AdaptiveFileInput-Placeholder 'AdaptiveCards.AdaptiveFileInput.Placeholder')
+  - [Regex](#P-AdaptiveCards-AdaptiveFileInput-Regex 'AdaptiveCards.AdaptiveFileInput.Regex')
+  - [Style](#P-AdaptiveCards-AdaptiveFileInput-Style 'AdaptiveCards.AdaptiveFileInput.Style')
+  - [Type](#P-AdaptiveCards-AdaptiveFileInput-Type 'AdaptiveCards.AdaptiveFileInput.Type')
+  - [Value](#P-AdaptiveCards-AdaptiveFileInput-Value 'AdaptiveCards.AdaptiveFileInput.Value')
+  - [GetNonInteractiveValue()](#M-AdaptiveCards-AdaptiveFileInput-GetNonInteractiveValue 'AdaptiveCards.AdaptiveFileInput.GetNonInteractiveValue')
 - [AdaptiveFontType](#T-AdaptiveCards-AdaptiveFontType 'AdaptiveCards.AdaptiveFontType')
   - [Default](#F-AdaptiveCards-AdaptiveFontType-Default 'AdaptiveCards.AdaptiveFontType.Default')
   - [Monospace](#F-AdaptiveCards-AdaptiveFontType-Monospace 'AdaptiveCards.AdaptiveFontType.Monospace')
@@ -245,11 +256,13 @@
   - [HeightType](#P-AdaptiveCards-AdaptiveHeight-HeightType 'AdaptiveCards.AdaptiveHeight.HeightType')
   - [Stretch](#P-AdaptiveCards-AdaptiveHeight-Stretch 'AdaptiveCards.AdaptiveHeight.Stretch')
   - [Unit](#P-AdaptiveCards-AdaptiveHeight-Unit 'AdaptiveCards.AdaptiveHeight.Unit')
+  - [UnitXml](#P-AdaptiveCards-AdaptiveHeight-UnitXml 'AdaptiveCards.AdaptiveHeight.UnitXml')
   - [Equals()](#M-AdaptiveCards-AdaptiveHeight-Equals-System-Object- 'AdaptiveCards.AdaptiveHeight.Equals(System.Object)')
   - [Equals()](#M-AdaptiveCards-AdaptiveHeight-Equals-AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.Equals(AdaptiveCards.AdaptiveHeight)')
   - [GetHashCode()](#M-AdaptiveCards-AdaptiveHeight-GetHashCode 'AdaptiveCards.AdaptiveHeight.GetHashCode')
   - [IsPixel()](#M-AdaptiveCards-AdaptiveHeight-IsPixel 'AdaptiveCards.AdaptiveHeight.IsPixel')
   - [ShouldSerializeAdaptiveHeight()](#M-AdaptiveCards-AdaptiveHeight-ShouldSerializeAdaptiveHeight 'AdaptiveCards.AdaptiveHeight.ShouldSerializeAdaptiveHeight')
+  - [ShouldSerializeUnitXml()](#M-AdaptiveCards-AdaptiveHeight-ShouldSerializeUnitXml 'AdaptiveCards.AdaptiveHeight.ShouldSerializeUnitXml')
   - [op_Equality()](#M-AdaptiveCards-AdaptiveHeight-op_Equality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.op_Equality(AdaptiveCards.AdaptiveHeight,AdaptiveCards.AdaptiveHeight)')
   - [op_Inequality()](#M-AdaptiveCards-AdaptiveHeight-op_Inequality-AdaptiveCards-AdaptiveHeight,AdaptiveCards-AdaptiveHeight- 'AdaptiveCards.AdaptiveHeight.op_Inequality(AdaptiveCards.AdaptiveHeight,AdaptiveCards.AdaptiveHeight)')
 - [AdaptiveHeightType](#T-AdaptiveCards-AdaptiveHeightType 'AdaptiveCards.AdaptiveHeightType')
@@ -325,6 +338,7 @@
 - [AdaptiveInline](#T-AdaptiveCards-AdaptiveInline 'AdaptiveCards.AdaptiveInline')
   - [AdditionalProperties](#P-AdaptiveCards-AdaptiveInline-AdditionalProperties 'AdaptiveCards.AdaptiveInline.AdditionalProperties')
   - [Type](#P-AdaptiveCards-AdaptiveInline-Type 'AdaptiveCards.AdaptiveInline.Type')
+  - [ShouldSerializeAdditionalProperties()](#M-AdaptiveCards-AdaptiveInline-ShouldSerializeAdditionalProperties 'AdaptiveCards.AdaptiveInline.ShouldSerializeAdditionalProperties')
 - [AdaptiveInput](#T-AdaptiveCards-AdaptiveInput 'AdaptiveCards.AdaptiveInput')
   - [ErrorMessage](#P-AdaptiveCards-AdaptiveInput-ErrorMessage 'AdaptiveCards.AdaptiveInput.ErrorMessage')
   - [IsRequired](#P-AdaptiveCards-AdaptiveInput-IsRequired 'AdaptiveCards.AdaptiveInput.IsRequired')
@@ -419,6 +433,8 @@
   - [#ctor(elementId,isVisible)](#M-AdaptiveCards-AdaptiveTargetElement-#ctor-System-String,System-Boolean- 'AdaptiveCards.AdaptiveTargetElement.#ctor(System.String,System.Boolean)')
   - [ElementId](#P-AdaptiveCards-AdaptiveTargetElement-ElementId 'AdaptiveCards.AdaptiveTargetElement.ElementId')
   - [IsVisible](#P-AdaptiveCards-AdaptiveTargetElement-IsVisible 'AdaptiveCards.AdaptiveTargetElement.IsVisible')
+  - [IsVisibleXml](#P-AdaptiveCards-AdaptiveTargetElement-IsVisibleXml 'AdaptiveCards.AdaptiveTargetElement.IsVisibleXml')
+  - [ShouldSerializeIsVisibleXml()](#M-AdaptiveCards-AdaptiveTargetElement-ShouldSerializeIsVisibleXml 'AdaptiveCards.AdaptiveTargetElement.ShouldSerializeIsVisibleXml')
   - [op_Implicit(elementId)](#M-AdaptiveCards-AdaptiveTargetElement-op_Implicit-System-String-~AdaptiveCards-AdaptiveTargetElement 'AdaptiveCards.AdaptiveTargetElement.op_Implicit(System.String)~AdaptiveCards.AdaptiveTargetElement')
 - [AdaptiveTextBlock](#T-AdaptiveCards-AdaptiveTextBlock 'AdaptiveCards.AdaptiveTextBlock')
   - [#ctor()](#M-AdaptiveCards-AdaptiveTextBlock-#ctor 'AdaptiveCards.AdaptiveTextBlock.#ctor')
@@ -524,6 +540,7 @@
   - [InternalID](#P-AdaptiveCards-AdaptiveTypedElement-InternalID 'AdaptiveCards.AdaptiveTypedElement.InternalID')
   - [Type](#P-AdaptiveCards-AdaptiveTypedElement-Type 'AdaptiveCards.AdaptiveTypedElement.Type')
   - [MeetsRequirements(featureRegistration)](#M-AdaptiveCards-AdaptiveTypedElement-MeetsRequirements-AdaptiveCards-AdaptiveFeatureRegistration- 'AdaptiveCards.AdaptiveTypedElement.MeetsRequirements(AdaptiveCards.AdaptiveFeatureRegistration)')
+  - [ShouldSerializeAdditionalProperties()](#M-AdaptiveCards-AdaptiveTypedElement-ShouldSerializeAdditionalProperties 'AdaptiveCards.AdaptiveTypedElement.ShouldSerializeAdditionalProperties')
 - [AdaptiveTypedElementConverter](#T-AdaptiveCards-AdaptiveTypedElementConverter 'AdaptiveCards.AdaptiveTypedElementConverter')
   - [TypedElementTypes](#F-AdaptiveCards-AdaptiveTypedElementConverter-TypedElementTypes 'AdaptiveCards.AdaptiveTypedElementConverter.TypedElementTypes')
   - [CanRead](#P-AdaptiveCards-AdaptiveTypedElementConverter-CanRead 'AdaptiveCards.AdaptiveTypedElementConverter.CanRead')
@@ -553,7 +570,6 @@
   - [Code](#P-AdaptiveCards-AdaptiveWarning-Code 'AdaptiveCards.AdaptiveWarning.Code')
   - [Message](#P-AdaptiveCards-AdaptiveWarning-Message 'AdaptiveCards.AdaptiveWarning.Message')
 - [BlockRules](#T-Microsoft-MarkedNet-BlockRules 'Microsoft.MarkedNet.BlockRules')
-- [BlockRules](#T-Microsoft-MarkedNet-BlockRules 'Microsoft.MarkedNet.BlockRules')
 - [BreaksInlineRules](#T-Microsoft-MarkedNet-BreaksInlineRules 'Microsoft.MarkedNet.BreaksInlineRules')
 - [ColorUtil](#T-AdaptiveCards-ColorUtil 'AdaptiveCards.ColorUtil')
   - [alphaColorLength](#F-AdaptiveCards-ColorUtil-alphaColorLength 'AdaptiveCards.ColorUtil.alphaColorLength')
@@ -568,7 +584,6 @@
   - [Action](#F-AdaptiveCards-ParseContext-ContextType-Action 'AdaptiveCards.ParseContext.ContextType.Action')
   - [Element](#F-AdaptiveCards-ParseContext-ContextType-Element 'AdaptiveCards.ParseContext.ContextType.Element')
 - [EmojiMarkdownRenderer](#T-Microsoft-MarkedNet-EmojiMarkdownRenderer 'Microsoft.MarkedNet.EmojiMarkdownRenderer')
-- [EmojiMarkdownRenderer](#T-Microsoft-MarkedNet-EmojiMarkdownRenderer 'Microsoft.MarkedNet.EmojiMarkdownRenderer')
 - [ErrorMessageConfig](#T-AdaptiveCards-Rendering-ErrorMessageConfig 'AdaptiveCards.Rendering.ErrorMessageConfig')
   - [Size](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Size 'AdaptiveCards.Rendering.ErrorMessageConfig.Size')
   - [Spacing](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Spacing 'AdaptiveCards.Rendering.ErrorMessageConfig.Spacing')
@@ -580,7 +595,6 @@
 - [FontColorConfig](#T-AdaptiveCards-Rendering-FontColorConfig 'AdaptiveCards.Rendering.FontColorConfig')
   - [Default](#P-AdaptiveCards-Rendering-FontColorConfig-Default 'AdaptiveCards.Rendering.FontColorConfig.Default')
 - [GfmBlockRules](#T-Microsoft-MarkedNet-GfmBlockRules 'Microsoft.MarkedNet.GfmBlockRules')
-- [GfmBlockRules](#T-Microsoft-MarkedNet-GfmBlockRules 'Microsoft.MarkedNet.GfmBlockRules')
 - [GfmInlineRules](#T-Microsoft-MarkedNet-GfmInlineRules 'Microsoft.MarkedNet.GfmInlineRules')
 - [HashColorConverter](#T-AdaptiveCards-HashColorConverter 'AdaptiveCards.HashColorConverter')
   - [CanWrite](#P-AdaptiveCards-HashColorConverter-CanWrite 'AdaptiveCards.HashColorConverter.CanWrite')
@@ -590,7 +604,6 @@
   - [WriteJson()](#M-AdaptiveCards-HashColorConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.HashColorConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
 - [HighlightColorConfig](#T-AdaptiveCards-Rendering-HighlightColorConfig 'AdaptiveCards.Rendering.HighlightColorConfig')
   - [Default](#P-AdaptiveCards-Rendering-HighlightColorConfig-Default 'AdaptiveCards.Rendering.HighlightColorConfig.Default')
-- [HtmlRenderer](#T-Microsoft-MarkedNet-HtmlRenderer 'Microsoft.MarkedNet.HtmlRenderer')
 - [HtmlRenderer](#T-Microsoft-MarkedNet-HtmlRenderer 'Microsoft.MarkedNet.HtmlRenderer')
 - [IAdaptiveTextElement](#T-AdaptiveCards-IAdaptiveTextElement 'AdaptiveCards.IAdaptiveTextElement')
   - [Color](#P-AdaptiveCards-IAdaptiveTextElement-Color 'AdaptiveCards.IAdaptiveTextElement.Color')
@@ -616,11 +629,8 @@
   - [ReadJson()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreNullEnumConverter`1.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
   - [WriteJson()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreNullEnumConverter`1.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
 - [InlineLexer](#T-Microsoft-MarkedNet-InlineLexer 'Microsoft.MarkedNet.InlineLexer')
-  - [Mangle(member,memberSerialization)](#M-Microsoft-MarkedNet-InlineLexer-Mangle-System-String- 'Microsoft.MarkedNet.InlineLexer.Mangle(System.String)')
   - [Mangle()](#M-Microsoft-MarkedNet-InlineLexer-Mangle-System-String- 'Microsoft.MarkedNet.InlineLexer.Mangle(System.String)')
   - [Output()](#M-Microsoft-MarkedNet-InlineLexer-Output-System-String- 'Microsoft.MarkedNet.InlineLexer.Output(System.String)')
-  - [Output()](#M-Microsoft-MarkedNet-InlineLexer-Output-System-String- 'Microsoft.MarkedNet.InlineLexer.Output(System.String)')
-  - [OutputLink()](#M-Microsoft-MarkedNet-InlineLexer-OutputLink-System-Collections-Generic-IList{System-String},Microsoft-MarkedNet-LinkObj- 'Microsoft.MarkedNet.InlineLexer.OutputLink(System.Collections.Generic.IList{System.String},Microsoft.MarkedNet.LinkObj)')
   - [OutputLink()](#M-Microsoft-MarkedNet-InlineLexer-OutputLink-System-Collections-Generic-IList{System-String},Microsoft-MarkedNet-LinkObj- 'Microsoft.MarkedNet.InlineLexer.OutputLink(System.Collections.Generic.IList{System.String},Microsoft.MarkedNet.LinkObj)')
   - [Smartypants()](#M-Microsoft-MarkedNet-InlineLexer-Smartypants-System-String- 'Microsoft.MarkedNet.InlineLexer.Smartypants(System.String)')
 - [InlineRules](#T-Microsoft-MarkedNet-InlineRules 'Microsoft.MarkedNet.InlineRules')
@@ -646,7 +656,6 @@
   - [AllowInlinePlayback](#P-AdaptiveCards-Rendering-MediaConfig-AllowInlinePlayback 'AdaptiveCards.Rendering.MediaConfig.AllowInlinePlayback')
   - [DefaultPoster](#P-AdaptiveCards-Rendering-MediaConfig-DefaultPoster 'AdaptiveCards.Rendering.MediaConfig.DefaultPoster')
   - [PlayButton](#P-AdaptiveCards-Rendering-MediaConfig-PlayButton 'AdaptiveCards.Rendering.MediaConfig.PlayButton')
-- [NormalBlockRules](#T-Microsoft-MarkedNet-NormalBlockRules 'Microsoft.MarkedNet.NormalBlockRules')
 - [NormalBlockRules](#T-Microsoft-MarkedNet-NormalBlockRules 'Microsoft.MarkedNet.NormalBlockRules')
 - [NormalInlineRules](#T-Microsoft-MarkedNet-NormalInlineRules 'Microsoft.MarkedNet.NormalInlineRules')
 - [ParseContext](#T-AdaptiveCards-ParseContext 'AdaptiveCards.ParseContext')
@@ -685,7 +694,6 @@
   - [InlineTopMargin](#P-AdaptiveCards-Rendering-ShowCardConfig-InlineTopMargin 'AdaptiveCards.Rendering.ShowCardConfig.InlineTopMargin')
   - [Style](#P-AdaptiveCards-Rendering-ShowCardConfig-Style 'AdaptiveCards.Rendering.ShowCardConfig.Style')
 - [SpacingsConfig](#T-AdaptiveCards-Rendering-SpacingsConfig 'AdaptiveCards.Rendering.SpacingsConfig')
-- [TablesBlockRules](#T-Microsoft-MarkedNet-TablesBlockRules 'Microsoft.MarkedNet.TablesBlockRules')
 - [TablesBlockRules](#T-Microsoft-MarkedNet-TablesBlockRules 'Microsoft.MarkedNet.TablesBlockRules')
 - [TextBlockConfig](#T-AdaptiveCards-Rendering-TextBlockConfig 'AdaptiveCards.Rendering.TextBlockConfig')
   - [Color](#P-AdaptiveCards-Rendering-TextBlockConfig-Color 'AdaptiveCards.Rendering.TextBlockConfig.Color')
@@ -1924,12 +1932,30 @@ Action for this container. This allows for setting a default action at the conta
 
 The style used to display this element. See [AdaptiveContainerStyle](#T-AdaptiveCards-AdaptiveContainerStyle 'AdaptiveCards.AdaptiveContainerStyle').
 
+<a name='P-AdaptiveCards-AdaptiveCollectionElement-StyleXml'></a>
+### StyleXml `property`
+
+##### Summary
+
+Controls XML serialization of style.
+
 <a name='P-AdaptiveCards-AdaptiveCollectionElement-VerticalContentAlignment'></a>
 ### VerticalContentAlignment `property`
 
 ##### Summary
 
 The content alignment for the element inside the container.
+
+<a name='M-AdaptiveCards-AdaptiveCollectionElement-ShouldSerializeStyleXml'></a>
+### ShouldSerializeStyleXml() `method`
+
+##### Summary
+
+Determines whether to serialize the style for XML.
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveColumn'></a>
 ## AdaptiveColumn `type`
@@ -2876,6 +2902,77 @@ Sets (or registers) a feature to a particular version.
 | feature | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The feature upon which to set a version. |
 | version | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The version to set. |
 
+<a name='T-AdaptiveCards-AdaptiveFileInput'></a>
+## AdaptiveFileInput `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Represents an Input.Text element.
+
+<a name='F-AdaptiveCards-AdaptiveFileInput-TypeName'></a>
+### TypeName `constants`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='P-AdaptiveCards-AdaptiveFileInput-MaxLength'></a>
+### MaxLength `property`
+
+##### Summary
+
+Hint of maximum number of characters to collect (may be ignored by some clients).
+
+<a name='P-AdaptiveCards-AdaptiveFileInput-Placeholder'></a>
+### Placeholder `property`
+
+##### Summary
+
+Placeholder text to display when the input is empty.
+
+<a name='P-AdaptiveCards-AdaptiveFileInput-Regex'></a>
+### Regex `property`
+
+##### Summary
+
+Regular expression used for validating the input.
+
+<a name='P-AdaptiveCards-AdaptiveFileInput-Style'></a>
+### Style `property`
+
+##### Summary
+
+Hint of style of input, if client doesn't support the style it will become simple text input.
+
+<a name='P-AdaptiveCards-AdaptiveFileInput-Type'></a>
+### Type `property`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='P-AdaptiveCards-AdaptiveFileInput-Value'></a>
+### Value `property`
+
+##### Summary
+
+The initial value for the field.
+
+<a name='M-AdaptiveCards-AdaptiveFileInput-GetNonInteractiveValue'></a>
+### GetNonInteractiveValue() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='T-AdaptiveCards-AdaptiveFontType'></a>
 ## AdaptiveFontType `type`
 
@@ -2977,6 +3074,13 @@ Returns a new AdaptiveHeight instance initialized for the [Stretch](#F-AdaptiveC
 
 The specific height to use (only valid for the [Pixel](#F-AdaptiveCards-AdaptiveHeightType-Pixel 'AdaptiveCards.AdaptiveHeightType.Pixel') type).
 
+<a name='P-AdaptiveCards-AdaptiveHeight-UnitXml'></a>
+### UnitXml `property`
+
+##### Summary
+
+Helper to aid in XML serialization of the [Unit](#P-AdaptiveCards-AdaptiveHeight-Unit 'AdaptiveCards.AdaptiveHeight.Unit') property.
+
 <a name='M-AdaptiveCards-AdaptiveHeight-Equals-System-Object-'></a>
 ### Equals() `method`
 
@@ -3027,6 +3131,17 @@ This method has no parameters.
 ##### Summary
 
 Determines whether this [AdaptiveHeight](#T-AdaptiveCards-AdaptiveHeight 'AdaptiveCards.AdaptiveHeight') instance should be serialized.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-AdaptiveHeight-ShouldSerializeUnitXml'></a>
+### ShouldSerializeUnitXml() `method`
+
+##### Summary
+
+Determines whether to serialize the [UnitXml](#P-AdaptiveCards-AdaptiveHeight-UnitXml 'AdaptiveCards.AdaptiveHeight.UnitXml') property.
 
 ##### Parameters
 
@@ -3675,6 +3790,17 @@ Represents a single inline text entry.
 ##### Summary
 
 The type name of the inline.
+
+<a name='M-AdaptiveCards-AdaptiveInline-ShouldSerializeAdditionalProperties'></a>
+### ShouldSerializeAdditionalProperties() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
 
 <a name='T-AdaptiveCards-AdaptiveInput'></a>
 ## AdaptiveInput `type`
@@ -4548,6 +4674,24 @@ Target element Id.
 
 Target element visibility.
 
+<a name='P-AdaptiveCards-AdaptiveTargetElement-IsVisibleXml'></a>
+### IsVisibleXml `property`
+
+##### Summary
+
+Helper to do custom serialization of [IsVisible](#P-AdaptiveCards-AdaptiveTargetElement-IsVisible 'AdaptiveCards.AdaptiveTargetElement.IsVisible') property for XML.
+
+<a name='M-AdaptiveCards-AdaptiveTargetElement-ShouldSerializeIsVisibleXml'></a>
+### ShouldSerializeIsVisibleXml() `method`
+
+##### Summary
+
+Determines whether the [IsVisibleXml](#P-AdaptiveCards-AdaptiveTargetElement-IsVisibleXml 'AdaptiveCards.AdaptiveTargetElement.IsVisibleXml') property should be serialized.
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='M-AdaptiveCards-AdaptiveTargetElement-op_Implicit-System-String-~AdaptiveCards-AdaptiveTargetElement'></a>
 ### op_Implicit(elementId) `method`
 
@@ -5382,6 +5526,17 @@ true iff this element's requirements are met.
 | ---- | ---- | ----------- |
 | featureRegistration | [AdaptiveCards.AdaptiveFeatureRegistration](#T-AdaptiveCards-AdaptiveFeatureRegistration 'AdaptiveCards.AdaptiveFeatureRegistration') | The host's [AdaptiveFeatureRegistration](#T-AdaptiveCards-AdaptiveFeatureRegistration 'AdaptiveCards.AdaptiveFeatureRegistration'). |
 
+<a name='M-AdaptiveCards-AdaptiveTypedElement-ShouldSerializeAdditionalProperties'></a>
+### ShouldSerializeAdditionalProperties() `method`
+
+##### Summary
+
+Determines whether the [AdditionalProperties](#P-AdaptiveCards-AdaptiveTypedElement-AdditionalProperties 'AdaptiveCards.AdaptiveTypedElement.AdditionalProperties') property should be serialized.
+
+##### Parameters
+
+This method has no parameters.
+
 <a name='T-AdaptiveCards-AdaptiveTypedElementConverter'></a>
 ## AdaptiveTypedElementConverter `type`
 
@@ -5650,17 +5805,6 @@ Microsoft.MarkedNet
 
 Block-Level Grammar
 
-<a name='T-Microsoft-MarkedNet-BlockRules'></a>
-## BlockRules `type`
-
-##### Namespace
-
-Microsoft.MarkedNet
-
-##### Summary
-
-Block-Level Grammar
-
 <a name='T-Microsoft-MarkedNet-BreaksInlineRules'></a>
 ## BreaksInlineRules `type`
 
@@ -5806,17 +5950,6 @@ Microsoft.MarkedNet
 
 Renderer which renders emoji markdown to unicode
 
-<a name='T-Microsoft-MarkedNet-EmojiMarkdownRenderer'></a>
-## EmojiMarkdownRenderer `type`
-
-##### Namespace
-
-Microsoft.MarkedNet
-
-##### Summary
-
-Renderer which renders emoji markdown to unicode
-
 <a name='T-AdaptiveCards-Rendering-ErrorMessageConfig'></a>
 ## ErrorMessageConfig `type`
 
@@ -5890,17 +6023,6 @@ AdaptiveCards.Rendering
 ##### Summary
 
 Color in #RRGGBB format
-
-<a name='T-Microsoft-MarkedNet-GfmBlockRules'></a>
-## GfmBlockRules `type`
-
-##### Namespace
-
-Microsoft.MarkedNet
-
-##### Summary
-
-GFM Block Grammar
 
 <a name='T-Microsoft-MarkedNet-GfmBlockRules'></a>
 ## GfmBlockRules `type`
@@ -5995,17 +6117,6 @@ AdaptiveCards.Rendering
 ##### Summary
 
 Color in #RRGGBB format
-
-<a name='T-Microsoft-MarkedNet-HtmlRenderer'></a>
-## HtmlRenderer `type`
-
-##### Namespace
-
-Microsoft.MarkedNet
-
-##### Summary
-
-Renderer which renders to HTML with Emoji Support
 
 <a name='T-Microsoft-MarkedNet-HtmlRenderer'></a>
 ## HtmlRenderer `type`
@@ -6237,24 +6348,6 @@ This method has no parameters.
 Microsoft.MarkedNet
 
 <a name='M-Microsoft-MarkedNet-InlineLexer-Mangle-System-String-'></a>
-### Mangle(member,memberSerialization) `method`
-
-##### Summary
-
-Mangle Links
-        nverter can log warnings, then give it our collection
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| member | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-
-<a name='M-Microsoft-MarkedNet-InlineLexer-Mangle-System-String-'></a>
 ### Mangle() `method`
 
 ##### Summary
@@ -6271,28 +6364,6 @@ This method has no parameters.
 ##### Summary
 
 Lexing/Compiling
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Microsoft-MarkedNet-InlineLexer-Output-System-String-'></a>
-### Output() `method`
-
-##### Summary
-
-Lexing/Compiling
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-Microsoft-MarkedNet-InlineLexer-OutputLink-System-Collections-Generic-IList{System-String},Microsoft-MarkedNet-LinkObj-'></a>
-### OutputLink() `method`
-
-##### Summary
-
-Compile Link
 
 ##### Parameters
 
@@ -6546,17 +6617,6 @@ Default poster URL to use for media thumbnail
 ##### Summary
 
 Play button URL to use for media thumbnail
-
-<a name='T-Microsoft-MarkedNet-NormalBlockRules'></a>
-## NormalBlockRules `type`
-
-##### Namespace
-
-Microsoft.MarkedNet
-
-##### Summary
-
-Normal Block Grammar
 
 <a name='T-Microsoft-MarkedNet-NormalBlockRules'></a>
 ## NormalBlockRules `type`
@@ -6954,17 +7014,6 @@ AdaptiveCards.Rendering
 ##### Summary
 
 Specifies how much spacing should be used for the various spacing options
-
-<a name='T-Microsoft-MarkedNet-TablesBlockRules'></a>
-## TablesBlockRules `type`
-
-##### Namespace
-
-Microsoft.MarkedNet
-
-##### Summary
-
-GFM + Tables Block Grammar
 
 <a name='T-Microsoft-MarkedNet-TablesBlockRules'></a>
 ## TablesBlockRules `type`
