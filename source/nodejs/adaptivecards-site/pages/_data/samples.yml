@@ -1,0 +1,11 @@
+en:
+  title: Samples and Templates
+  sample: sample
+  intro: These samples are <em>just a teaser</em> of the type of cards you can create. Go ahead and tweak them to make any scenario possible!
+  accwarning: |
+    <strong>Important note about accessibility:</strong> 
+    In version 1.3 of the schema we introduced a <a href="https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation#labels"><strong>label</strong></a> property on Inputs to improve accessibility. If the <a href="https://docs.microsoft.com/en-us/adaptive-cards/resources/partners">Host app you are targeting</a> supports v1.3 you should use <strong>label</strong> instead of a <strong>TextBlock</strong> as seen in some samples below. Once most Host apps have updated to the latest version we will update the samples accordingly.</a>
+  choose_sample: "Choose Sample:"
+  use_templating: Use Adaptive Card Templating <span class="w3-tag w3-medium w3-round ac-blue">Updated May 2020</span>
+  templating_info: |
+    Templating enables the separation of <strong>data</strong> from the <strong>layout</strong> in an Adaptive Card. It helps design a card once, and then populate it with real data at runtime. <em>Note:</em> The binding syntax changed in May 2020. <a href="https://docs.microsoft.com/adaptive-cards/templating/">Get started with templating <i class="fas fa-chevron-right"></i></a>
