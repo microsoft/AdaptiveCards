@@ -2,8 +2,9 @@
 name: Application Card Rendering Bug Report
 about: Create a bug report for problems rendering Adaptive Cards in an Application
 title: "[Rendering] Bug Title Here"
-labels: Bug Triage-Needed Area-Renderers
+labels: Bug, Area-Renderers, Triage-Needed
 assignees: ''
+
 ---
 
 # Target Platform
