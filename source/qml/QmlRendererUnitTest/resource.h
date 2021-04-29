@@ -1,0 +1,43 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ generated include file.
+// Used by QmlRendererUnitTest.rc
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        101
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif
+
+#define TEXTFILE 255
+#define EMPTY_ADAPTIVE_CARD 254
+#define SIMPLE_ADAPTIVE_CARD 253
+#define INPUT_TEXT_ONE 252
+#define INPUT_TEXT_MULTIPLE 251
+#define INPUT_TEXT_MULTIPLE_SEPERATOR 250
+#define CARD_ACTIONS 249
+#define COLUMN_SET_ONE 248
+#define TEXT_BLOCK 247
+#define CONTAINERS 246
+#define BACKGROUND_IMAGES 245
+#define FACT_SET 244
+#define CHOICE_SETS 243
+#define DATE_INPUT_ONE 242
+#define TOGGLE_INPUT 241
+#define IMAGE_SET 240
+#define IMAGE 239
+#define TIME 238
+#define DATE_INPUT_TWO 237
+#define NUMBER_INPUT 236
+#define RICH_TEXT_BASIC 235
+#define APPLY_TEXT 234
+#define JIRA_BOT 233
+#define CONCUR_APPROVED 232
+#define CONCUR_ONE_APPROVAL 231
+#define CONCUR_TWO_APPROVAL 230
+#define CONCUR_SEND_BACK_CARD 229
+#define CONCUR_TWO_APPROVAL_ON_CLICK 228
