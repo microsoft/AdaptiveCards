@@ -1,0 +1,8 @@
+###############################################################################
+# Configure Github language/diffs (see github/linguist)
+#
+# Mark SWIG-generated files appropriately
+###############################################################################
+
+/objectmodel_wrap.cpp linguist-generated
+/objectmodel_wrap.h linguist-generated
