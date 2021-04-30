@@ -9,7 +9,8 @@ using namespace AdaptiveSharedNamespace;
 
 constexpr const char* const BaseActionElement::defaultStyle;
 
-BaseActionElement::BaseActionElement(ActionType type) : m_style(BaseActionElement::defaultStyle), m_type(type), m_mode(Mode::Primary)
+BaseActionElement::BaseActionElement(ActionType type) :
+    m_style(BaseActionElement::defaultStyle), m_type(type), m_mode(Mode::Primary), m_isEnabled(true)
 {
     SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -80,6 +81,16 @@ void BaseActionElement::SetMode(const Mode value)
     m_mode = value;
 }
 
+bool BaseActionElement::GetIsEnabled() const
+{
+    return m_isEnabled;
+}
+
+void AdaptiveSharedNamespace::BaseActionElement::SetIsEnabled(const bool isEnabled)
+{
+    m_isEnabled = isEnabled;
+}
+
 ActionType BaseActionElement::GetElementType() const
 {
     return m_type;
@@ -118,6 +129,11 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip)] = m_tooltip;
     }
 
+    if (!m_isEnabled)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled)] = m_isEnabled;
+    }
+
     return root;
 }
 
@@ -126,8 +142,9 @@ void BaseActionElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
-							  AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled)});
 }
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -169,7 +186,7 @@ void BaseActionElement::DeserializeBaseProperties(ParseContext& context, const J
     element->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
     element->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
     element->SetStyle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Style, defaultStyle, false));
-    element->SetMode(ParseUtil::GetEnumValue<Mode>(json, AdaptiveCardSchemaKey::Mode, Mode::Primary,
-                                                   ModeFromString));
-	element->SetTooltip(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Tooltip));												   
+    element->SetMode(ParseUtil::GetEnumValue<Mode>(json, AdaptiveCardSchemaKey::Mode, Mode::Primary, ModeFromString));
+    element->SetTooltip(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Tooltip));
+    element->SetIsEnabled(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsEnabled, true));
 }

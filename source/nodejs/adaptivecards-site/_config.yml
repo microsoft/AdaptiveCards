@@ -7,7 +7,7 @@ title: Adaptive Cards
 subtitle: A new way for developers to exchange card content in a common and consistent way.
 description: 
 author: Adaptive Cards
-language:
+language: [en, sp, de]
 timezone:
 
 # URL
@@ -17,65 +17,6 @@ root: /
 permalink: blog/:title/
 permalink_defaults:
 
-# Home page
-home:
-  made_for:
-    - title: Android
-      fa: fab fa-android
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/android/getting-started
-    - title: iOS
-      fa: fab fa-apple
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started
-    - title: JavaScript
-      fa: fab fa-js
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/getting-started
-    - title: ASP.NET
-      fa: fab fa-html5
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-html/getting-started
-    - title: .NET WPF
-      fa: far fa-window-maximize
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started
-    - title: Windows
-      fa: fab fa-windows
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/uwp/getting-started
-    - title: ReactNative
-      fa: fab fa-react
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/react-native/getting-started
-  releases:
-    - title: v1.3
-      href: https://github.com/microsoft/AdaptiveCards/releases/tag/2020.07
-      fa: fas fa-download
-      tag: 
-      tag_class: ac-blue
-    - title: Roadmap
-      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/5-roadmap
-      fa: far fa-calendar-alt
-      tag: 
-      tag_class: w3-light-gray
-
-# Footer
-footer:
-  learn_links:
-    - title: Check out sample cards
-      href: /samples
-    - title: Explore the schema
-      href: /explorer
-    - title: Embed the Card Designer
-      href: https://docs.microsoft.com/adaptive-cards/sdk/designer
-    - title: Host App Status
-      href: https://docs.microsoft.com/en-us/adaptive-cards/resources/partners
-    - title: Take advantage of Templating
-      href: https://docs.microsoft.com/en-us/adaptive-cards/templating/
-    - title: Join our monthly Community Calls
-      href: /community-calls
-    - title: Find us on GitHub
-      href: https://github.com/Microsoft/AdaptiveCards
-    - title: Roadmap
-      href: https://aka.ms/ACRoadmap
-    - title: Watch the Build 2020 video
-      href: https://aka.ms/m365sk134
-      
-
 # Directory
 source_dir: pages
 public_dir: public
@@ -84,7 +25,9 @@ archive_dir: blog
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render: _posts/**/*.json
+skip_render:
+  - _posts/**/*.json
+  - README.md
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -167,7 +110,6 @@ image_minifier:
 
 js_minifier:
   enable: false
-
 
 html_minifier:
   enable: false

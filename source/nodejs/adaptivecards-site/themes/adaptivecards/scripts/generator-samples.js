@@ -6,7 +6,6 @@ var fs = require("hexo-fs");
 var glob = require("glob");
 var path = require("path");
 var changeCase = require("change-case");
-
 var scenariosSamplesPath = "../../../samples/v1.*/Scenarios/*.json";
 
 hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
@@ -36,7 +35,7 @@ hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
             path: sample.htmlPath,
             layout: "sample",
             data: {
-                title: "Samples and Templates",
+                title: locals.data.samples.en.title,
                 sample: sample,
                 samples: scenarios,
                 samplePath: sample.htmlPath,
@@ -59,7 +58,7 @@ hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
                 path: "samples/index.html",
                 layout: "sample",
                 data: {
-                    title: "Samples and Templates",
+                    title: locals.data.samples.en.title,
                     sample: sample,
                     samples: scenarios,
                     samplePath: sample.htmlPath,

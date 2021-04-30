@@ -2484,6 +2484,10 @@ export abstract class Input extends CardElement implements IInput {
     protected getAllLabelIds(): string[] {
         let labelIds: string[] = [];
 
+        if (this.labelledBy) {
+            labelIds.push(this.labelledBy);
+        }
+
         if (this._renderedLabelElement) {
             labelIds.push(this._renderedLabelElement.id);
         }
@@ -2498,18 +2502,6 @@ export abstract class Input extends CardElement implements IInput {
     protected updateInputControlAriaLabelledBy() {
         if (this._renderedInputControlElement) {
             let labelIds: string[] = this.getAllLabelIds();
-
-            if (this.labelledBy) {
-                labelIds.push(this.labelledBy);
-            }
-
-            if (this._renderedLabelElement) {
-                labelIds.push(this._renderedLabelElement.id);
-            }
-
-            if (this._renderedErrorMessageElement) {
-                labelIds.push(this._renderedErrorMessageElement.id);
-            }
 
             if (labelIds.length > 0) {
                 this._renderedInputControlElement.setAttribute("aria-labelledby", labelIds.join(" "));
@@ -3681,6 +3673,7 @@ class ActionButton {
     private _action: Action;
     private _parentContainerStyle: string;
     private _state: ActionButtonState = ActionButtonState.Normal;
+    private _focusable: boolean = true;
 
     private updateCssStyle() {
         if (this.action.parent && this.action.renderedElement) {
@@ -3693,6 +3686,8 @@ class ActionButton {
             }
 
             this.action.updateActionButtonCssStyle(this.action.renderedElement, this._state);
+
+            this.action.renderedElement.tabIndex = this.focusable ? 0 : -1;
 
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
@@ -3723,6 +3718,7 @@ class ActionButton {
         this.action = action;
     }
 
+    onBlur?: (actionButton: ActionButton) => void;
     onClick?: (actionButton: ActionButton, event?: MouseEvent) => void;
 
     render() {
@@ -3736,7 +3732,17 @@ class ActionButton {
                 this.click(e);
             };
 
+            this.action.renderedElement.onblur = (e) => {
+                this.blur();
+            };
+
             this.updateCssStyle();
+        }
+    }
+
+    blur() {
+        if (this.onBlur !== undefined) {
+            this.onBlur(this);
         }
     }
 
@@ -3770,6 +3776,17 @@ class ActionButton {
         this._state = value;
 
         this.updateCssStyle();
+    }
+
+    get focusable(): boolean {
+        return this._focusable;
+    }
+
+    set focusable(value: boolean) {
+        if(value != this._focusable) {
+            this._focusable = value;
+            this.updateCssStyle();
+        }
     }
 }
 
@@ -4752,12 +4769,24 @@ class ActionCollection {
     }
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
-        for (let button of this._buttons) {
+        let afterSelectedAction = false;
+        for (const button of this._buttons) {
+            // remove actions after selected action from tabOrder, to skip focus directly to expanded card
+            if (afterSelectedAction) {
+                button.focusable = false;
+            }
+            
             if (button.action !== action) {
                 button.state = ActionButtonState.Subdued;
             }
             else {
                 button.state = ActionButtonState.Expanded;
+                afterSelectedAction = true;
+                button.onBlur = (e) => {
+                    for (const b of this._buttons) {
+                        b.focusable = true;
+                    }
+                };
             }
         }
 

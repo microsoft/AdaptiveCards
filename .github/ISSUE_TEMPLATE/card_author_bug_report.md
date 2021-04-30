@@ -2,7 +2,7 @@
 name: Card Author Bug Report
 about: Create a bug report for problems creating Adaptive Cards from the JSON Schema
 title: "[Authoring] Bug Title Here"
-labels: Bug Triage-Needed Area-Schema
+labels: Bug, Triage-Needed, Area-Schema
 assignees: ''
 ---
 
