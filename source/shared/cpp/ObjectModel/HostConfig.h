@@ -292,7 +292,7 @@ namespace AdaptiveSharedNamespace
         unsigned int maxActions = 5;
         Spacing spacing = Spacing::Default;
         IconPlacement iconPlacement = IconPlacement::AboveTitle;
-        unsigned int iconSize = 30;
+        unsigned int iconSize = 16;
 
         static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
     };
