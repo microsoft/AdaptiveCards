@@ -29,10 +29,37 @@ let package = Package(
             name: "AdaptiveCards",
             dependencies: ["ObjectModel"],
             path: "source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards",
-            exclude: ["CMakeLists.txt", "CMakeFiles/CMakeOutput.log", "testcards/ImageAutoInColumnSet.json", "testcards/CustomerCard1.json", "cscope.out", "cscope.files", "Info.plist", "testcards/TextBlock.Issue.json", "CMakeFiles/cmake.check_cache", "cscope.po.out", "testcards/TextBlockStrechInColumnSet.json", "cscope.in.out", "CMakeCache.txt", "CMakeFiles/CMakeError.log", "CMakeFiles/3.11.1"],
-            resources: [ .process("Images/checked.png"), .process("Images/unchecked.png"), .process("Images/checked-checkbox-24.png"), .process("Images/unchecked-checkbox-24.png")],
+            exclude: [
+                "CMakeLists.txt",
+                "CMakeFiles/CMakeOutput.log",
+                "testcards/ImageAutoInColumnSet.json",
+                "testcards/CustomerCard1.json",
+                "cscope.out",
+                "cscope.files",
+                "Info.plist",
+                "testcards/TextBlock.Issue.json",
+                "CMakeFiles/cmake.check_cache",
+                "cscope.po.out",
+                "testcards/TextBlockStrechInColumnSet.json",
+                "cscope.in.out",
+                "CMakeCache.txt",
+                "CMakeFiles/CMakeError.log",
+                "CMakeFiles/3.11.1"
+            ],
+            resources: [
+                .process("Images/checked.png"),
+                .process("Images/unchecked.png"),
+                .process("Images/checked-checkbox-24.png"),
+                .process("Images/unchecked-checkbox-24.png")
+            ],
             cxxSettings: [CXXSetting.headerSearchPath("../../../../shared/cpp/ObjectModel")],
-            linkerSettings:[LinkerSetting.linkedFramework("AVFoundation"), LinkerSetting.linkedFramework("AVKit"), LinkerSetting.linkedFramework("UIKit"), LinkerSetting.linkedFramework("CoreGraphics"), LinkerSetting.linkedFramework("QuartzCore")]
+            linkerSettings:[
+                LinkerSetting.linkedFramework("AVFoundation"),
+                LinkerSetting.linkedFramework("AVKit"),
+                LinkerSetting.linkedFramework("UIKit"),
+                LinkerSetting.linkedFramework("CoreGraphics"),
+                LinkerSetting.linkedFramework("QuartzCore")
+            ]
             )        
     ],
     cxxLanguageStandard: CXXLanguageStandard.cxx17
