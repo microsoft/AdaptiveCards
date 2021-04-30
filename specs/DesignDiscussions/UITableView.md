@@ -1,9 +1,10 @@
 # UITableView
 ## Problem Description
-Using UITableView as a hosting view for AdaptiveCard requires additional considerations. One of the challenges is the height changes in the row. UITableView correctly self sizes most of the times, but it breaks down in a few known cases, for example, if the images are loaded asynchronously causing height changes after the row is drawn, or if the visibility changes in its subviews, the row does not adjust the height dynamically. In such cases, there are a few well known practices in dealing with such occasions. This document covers practical guides in dealing with the height changes. This document will focus on [beginUpdates()](https://developer.apple.com/documentation/uikit/uitableview/1614908-beginupdates) and [reloadRows(at:with:)](https://developer.apple.com/documentation/uikit/uitableview/1614935-reloadrows) methods. It will show how to use the APIs in conjunction with AdaptiveCards' API. The rest of the documents uses the [iOS AdaptiveCard sample app](https://github.com/microsoft/AdaptiveCards/tree/main/source/ios/AdaptiveCards/ADCIOSVisualizer/ADCIOSVisualizer) as an example.
+Using UITableView as a hosting view for AdaptiveCard requires additional considerations. One of the challenges is the height changes in the row. UITableView correctly self sizes most of the times, but it breaks down in a few known cases. For example, if the images are loaded asynchronously, it will cause the height changes in the card. Unfortunately, the row does not adjust the height dynamically if the row is already drawn. The table view also fails to adjust its height when the visibility of its subviews changes. 
+In such cases, there are a few well known practices in dealing with such occasions. This document covers practical guides in dealing with the height changes. This document will focus on [beginUpdates()](https://developer.apple.com/documentation/uikit/uitableview/1614908-beginupdates) and [reloadRows(at:with:)](https://developer.apple.com/documentation/uikit/uitableview/1614935-reloadrows) methods. It will show how to use the APIs in conjunction with AdaptiveCards' API. The rest of the documents uses the [iOS AdaptiveCard sample app](https://github.com/microsoft/AdaptiveCards/tree/main/source/ios/AdaptiveCards/ADCIOSVisualizer/ADCIOSVisualizer) as an example.
 ## Apple API
 1. [beginUpdates()](https://developer.apple.com/documentation/uikit/uitableview/1614908-beginupdates)
-     - As documented in the [Apple Documentation](https://developer.apple.com/documentation/uikit/uitableview/1614908-beginupdates), this method can be used to animate the changes in the row heights **wihtout reloading the cell** followed by endUpdates().
+     - As documented in the [Apple Documentation](https://developer.apple.com/documentation/uikit/uitableview/1614908-beginupdates), this method can be used to animate the changes in the row heights **without reloading the cell** followed by endUpdates().
 	 - The method doesn't reload the table view. Not reloading the cell is one of the most frequently cited reasons for the advocation of the method.
      - It's easier to use this method than using reloadRowsAtIndexPaths method
      - Some of the usage [examples](https://www.raywenderlich.com/8549-self-sizing-table-view-cells)
@@ -20,7 +21,7 @@ The following API is used in conjunction with Apple API.
 	* `- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties` is a delegate when card's layout has changed.
 
 ## Refreshing the Layout Overview
-We want the delegate to be called only once after the card is rendered. Due to asynchronous tasks such as image loading, we have to do due diligence of ensuring the order of execution. In this example, we use GCD to ensure the right order. We create a block that renders an AdaptiveCard and queues it to the main queue. When the delegate is called, we wraps the layout refresh code in a block and queues it. This ensures that the layout refreshing happens after the rendering event. 
+We want the delegate to be called only once after the card is rendered. Due to asynchronous tasks such as image loading, we have to do due diligence of ensuring the order of execution. In this example, we use GCD to ensure the right order. We create a block that renders an AdaptiveCard and queues it to the main queue. When one of the AdaptiveCard delegates is called, we wrap the layout refresh code in a block and queue it. This ensures that the layout refreshing happens after the rendering event. 
 
 1. Render AdaptiveCard 
 2. Update data source
@@ -77,7 +78,7 @@ The adaptive card is pinned to the cell. cell's content view's height is pinned 
     [cell.contentView.widthAnchor constraintEqualToAnchor:adaptiveCardView.widthAnchor].active = YES;
 	...
 ```
-When the cell is returned for the call and the adaptive card appears on the table view, if the height of the card doesn't change and the dynamically set constraints are perfect, the card would be drawn correctly at this point. However, often time the height of the card changes. For example, the height changes when the image is asynchronously loaded. In this case, the layout refresh is necessary.
+When the cell is returned from the call and the adaptive card appears on the table view, if the height of the card doesn't change and the dynamically set constraints are perfect, the card would be drawn correctly at this point. However, often time the height of the card changes. For example, the height changes when the image is asynchronously loaded. In this case, the layout refresh is necessary.
 ### Refreshing Layout
 To refresh the row, [beginUpdates()](https://developer.apple.com/documentation/uikit/uitableview/1614908-beginupdates) or [reloadRowsAtIndexPaths:withRowAnimation](https://developer.apple.com/documentation/uikit/uitableview/1614935-reloadrowsatindexpaths) can be used. If `beginUpdates` is used, the call can be added to `didLoadElements` as shown in the below. 
 ```
@@ -101,7 +102,7 @@ However, this is not sufficient because the order of call for refreshing the lay
 				   });
 }
 ```
-[reloadRowsAtIndexPaths:withRowAnimation](https://developer.apple.com/documentation/uikit/uitableview/1614935-reloadrowsatindexpaths) takes an array of index paths as a parameter. Unlike `beingUpdates` using `reloadRowsAtIndexPaths:withRowAnimation` requires booking of index path and the associated AdaptiveCard. 
+[reloadRowsAtIndexPaths:withRowAnimation](https://developer.apple.com/documentation/uikit/uitableview/1614935-reloadrowsatindexpaths) takes an array of index paths as a parameter. Unlike `beingUpdates` using `reloadRowsAtIndexPaths:withRowAnimation` requires bookkeeping of index path and the associated AdaptiveCard. 
 
 [GitHub sample example](https://github.com/microsoft/AdaptiveCards/blob/d43eb4e2fe84794eec706cea194b0cf213eaacc8/source/ios/AdaptiveCards/ADCIOSVisualizer/ADCIOSVisualizer/ViewController.m#L587) 
 ```   
