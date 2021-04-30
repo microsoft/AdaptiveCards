@@ -1,16 +1,12 @@
 package io.adaptivecards.objectmodel;
 
-import android.graphics.Color;
 import android.util.Pair;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 /**
  * Class for testing RichTextBlock and TextRun properties
@@ -177,7 +173,7 @@ public class RichTextBlockPropertiesTest
         final String richTextBlockFontType =
             "{\"inlines\":[" +
                 "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
+                "{\"fontType\":\"Default\",\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
                 "{\"fontType\":\"Monospace\",\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}]," +
                 "\"type\":\"RichTextBlock\"}\n";
 
@@ -193,19 +189,12 @@ public class RichTextBlockPropertiesTest
 
         Assert.assertEquals(richTextBlockFontType, richTextBlock.Serialize());
 
-        final String richTextBlockFontTypeWithDefaultFontType =
-            "{\"inlines\":[" +
-                "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"fontType\":\"Default\",\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
-                "{\"fontType\":\"Monospace\",\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}]," +
-                "\"type\":\"RichTextBlock\"}\n";
-
-        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(richTextBlockFontTypeWithDefaultFontType), "1.0");
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(richTextBlockFontType), "1.0");
         RichTextBlock parsedRichTextBlock = TestUtil.castToRichTextBlock(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(3, parsedRichTextBlock.GetInlines().size());
 
         TextRun textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(0));
-        Assert.assertEquals(FontType.Default, textRun.GetFontType());
+        Assert.assertNull(textRun.GetFontType());
 
         textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(1));
         Assert.assertEquals(FontType.Default, textRun.GetFontType());
@@ -269,10 +258,10 @@ public class RichTextBlockPropertiesTest
     @Test
     public void IsSubtleTest() throws Exception
     {
-        final String richTextBlockIsSubtleSerializeExpected =
+        final String richTextBlockIsSubtle =
             "{\"inlines\":[" +
                 "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
+                "{\"isSubtle\":false,\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
                 "{\"isSubtle\":true,\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}]," +
                 "\"type\":\"RichTextBlock\"}\n";
 
@@ -286,28 +275,20 @@ public class RichTextBlockPropertiesTest
 
         RichTextBlock richTextBlock = TestUtil.createMockRichTextBlock(textRun1, textRun2, textRun3);
 
-        Assert.assertEquals(richTextBlockIsSubtleSerializeExpected, richTextBlock.Serialize());
-
-
-        final String richTextBlockIsSubtle =
-            "{\"inlines\":[" +
-                "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"isSubtle\":false,\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
-                "{\"isSubtle\":true,\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}]," +
-                "\"type\":\"RichTextBlock\"}\n";
+        Assert.assertEquals(richTextBlockIsSubtle, richTextBlock.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(richTextBlockIsSubtle), "1.0");
         RichTextBlock parsedRichTextBlock = TestUtil.castToRichTextBlock(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(3, parsedRichTextBlock.GetInlines().size());
 
         TextRun textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(0));
-        Assert.assertEquals(false, textRun.GetIsSubtle());
+        Assert.assertNull(textRun.GetIsSubtle());
 
         textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(1));
-        Assert.assertEquals(false, textRun.GetIsSubtle());
+        Assert.assertEquals(Boolean.FALSE, textRun.GetIsSubtle());
 
         textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(2));
-        Assert.assertEquals(true, textRun.GetIsSubtle());
+        Assert.assertEquals(Boolean.TRUE, textRun.GetIsSubtle());
     }
 
     /**
@@ -512,10 +493,10 @@ public class RichTextBlockPropertiesTest
     @Test
     public void TextColorTest() throws Exception
     {
-        final String richTextBlockTextColorSerializeExpected =
+        final String richTextBlockTextColor =
             "{\"inlines\":[" +
                 "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
+                "{\"color\":\"Default\",\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
                 "{\"color\":\"Dark\",\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}," +
                 "{\"color\":\"Light\",\"text\":\"This is the fourth TextRun\",\"type\":\"TextRun\"}," +
                 "{\"color\":\"Accent\",\"text\":\"This is the fifth TextRun\",\"type\":\"TextRun\"}," +
@@ -550,26 +531,14 @@ public class RichTextBlockPropertiesTest
         RichTextBlock richTextBlock = TestUtil.createMockRichTextBlock(textRun1, textRun2, textRun3,
             textRun4, textRun5, textRun6, textRun7, textRun8);
 
-        Assert.assertEquals(richTextBlockTextColorSerializeExpected, richTextBlock.Serialize());
-
-        final String richTextBlockTextColor =
-            "{\"inlines\":[" +
-                "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"color\":\"Default\",\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
-                "{\"color\":\"Dark\",\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}," +
-                "{\"color\":\"Light\",\"text\":\"This is the fourth TextRun\",\"type\":\"TextRun\"}," +
-                "{\"color\":\"Accent\",\"text\":\"This is the fifth TextRun\",\"type\":\"TextRun\"}," +
-                "{\"color\":\"Good\",\"text\":\"This is the sixth TextRun\",\"type\":\"TextRun\"}," +
-                "{\"color\":\"Warning\",\"text\":\"This is the seventh TextRun\",\"type\":\"TextRun\"}," +
-                "{\"color\":\"Attention\",\"text\":\"This is the eighth TextRun\",\"type\":\"TextRun\"}]," +
-                "\"type\":\"RichTextBlock\"}\n";
+        Assert.assertEquals(richTextBlockTextColor, richTextBlock.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(richTextBlockTextColor), "1.0");
         RichTextBlock parsedRichTextBlock = TestUtil.castToRichTextBlock(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(8, parsedRichTextBlock.GetInlines().size());
 
         TextRun textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(0));
-        Assert.assertEquals(ForegroundColor.Default, textRun.GetTextColor());
+        Assert.assertNull(textRun.GetTextColor());
 
         textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(1));
         Assert.assertEquals(ForegroundColor.Default, textRun.GetTextColor());
@@ -600,11 +569,11 @@ public class RichTextBlockPropertiesTest
     @Test
     public void TextSizeTest() throws Exception
     {
-        final String richTextBlockTextSizeSerializeExpected =
+        final String richTextBlockTextSize =
             "{\"inlines\":[" +
                 "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
-                "{\"size\":\"Small\",\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}," +
+                "{\"size\":\"Small\",\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
+                "{\"size\":\"Default\",\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}," +
                 "{\"size\":\"Medium\",\"text\":\"This is the fourth TextRun\",\"type\":\"TextRun\"}," +
                 "{\"size\":\"Large\",\"text\":\"This is the fifth TextRun\",\"type\":\"TextRun\"}," +
                 "{\"size\":\"ExtraLarge\",\"text\":\"This is the sixth TextRun\",\"type\":\"TextRun\"}]," +
@@ -613,10 +582,10 @@ public class RichTextBlockPropertiesTest
         TextRun textRun1 = TestUtil.createMockTextRun("This is the first TextRun");
 
         TextRun textRun2 = TestUtil.createMockTextRun("This is the second TextRun");
-        textRun2.SetTextSize(TextSize.Default);
+        textRun2.SetTextSize(TextSize.Small);
 
         TextRun textRun3 = TestUtil.createMockTextRun("This is the third TextRun");
-        textRun3.SetTextSize(TextSize.Small);
+        textRun3.SetTextSize(TextSize.Default);
 
         TextRun textRun4 = TestUtil.createMockTextRun("This is the fourth TextRun");
         textRun4.SetTextSize(TextSize.Medium);
@@ -630,24 +599,14 @@ public class RichTextBlockPropertiesTest
         RichTextBlock richTextBlock = TestUtil.createMockRichTextBlock(textRun1, textRun2, textRun3,
             textRun4, textRun5, textRun6);
 
-        Assert.assertEquals(richTextBlockTextSizeSerializeExpected, richTextBlock.Serialize());
-
-        final String richTextBlockTextSize =
-            "{\"inlines\":[" +
-                "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"size\":\"Small\",\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
-                "{\"size\":\"Default\",\"text\":\"This is the third TextRun\",\"type\":\"TextRun\"}," +
-                "{\"size\":\"Medium\",\"text\":\"This is the fourth TextRun\",\"type\":\"TextRun\"}," +
-                "{\"size\":\"Large\",\"text\":\"This is the fifth TextRun\",\"type\":\"TextRun\"}," +
-                "{\"size\":\"ExtraLarge\",\"text\":\"This is the sixth TextRun\",\"type\":\"TextRun\"}]," +
-                "\"type\":\"RichTextBlock\"}\n";
+        Assert.assertEquals(richTextBlockTextSize, richTextBlock.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(richTextBlockTextSize), "1.0");
         RichTextBlock parsedRichTextBlock = TestUtil.castToRichTextBlock(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(6, parsedRichTextBlock.GetInlines().size());
 
         TextRun textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(0));
-        Assert.assertEquals(TextSize.Default, textRun.GetTextSize());
+        Assert.assertNull(textRun.GetTextSize());
 
         textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(1));
         Assert.assertEquals(TextSize.Small, textRun.GetTextSize());
@@ -672,10 +631,10 @@ public class RichTextBlockPropertiesTest
     @Test
     public void TextWeightTest() throws Exception
     {
-        final String richTextBlockTextWeightSerializeExpected =
+        final String richTextBlockTextWeight =
             "{\"inlines\":[" +
                 "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\"}," +
+                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\",\"weight\":\"Default\"}," +
                 "{\"text\":\"This is the third TextRun\",\"type\":\"TextRun\",\"weight\":\"Lighter\"}," +
                 "{\"text\":\"This is the fourth TextRun\",\"type\":\"TextRun\",\"weight\":\"Bolder\"}]," +
                 "\"type\":\"RichTextBlock\"}\n";
@@ -693,22 +652,14 @@ public class RichTextBlockPropertiesTest
 
         RichTextBlock richTextBlock = TestUtil.createMockRichTextBlock(textRun1, textRun2, textRun3, textRun4);
 
-        Assert.assertEquals(richTextBlockTextWeightSerializeExpected, richTextBlock.Serialize());
-
-        final String richTextBlockTextWeight =
-            "{\"inlines\":[" +
-                "{\"text\":\"This is the first TextRun\",\"type\":\"TextRun\"}," +
-                "{\"text\":\"This is the second TextRun\",\"type\":\"TextRun\",\"weight\":\"Default\"}," +
-                "{\"text\":\"This is the third TextRun\",\"type\":\"TextRun\",\"weight\":\"Lighter\"}," +
-                "{\"text\":\"This is the fourth TextRun\",\"type\":\"TextRun\",\"weight\":\"Bolder\"}]," +
-                "\"type\":\"RichTextBlock\"}\n";
+        Assert.assertEquals(richTextBlockTextWeight, richTextBlock.Serialize());
 
         ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(richTextBlockTextWeight), "1.0");
         RichTextBlock parsedRichTextBlock = TestUtil.castToRichTextBlock(result.GetAdaptiveCard().GetBody().get(0));
         Assert.assertEquals(4, parsedRichTextBlock.GetInlines().size());
 
         TextRun textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(0));
-        Assert.assertEquals(TextWeight.Default, textRun.GetTextWeight());
+        Assert.assertNull(textRun.GetTextWeight());
 
         textRun = TestUtil.castToTextRun(parsedRichTextBlock.GetInlines().get(1));
         Assert.assertEquals(TextWeight.Default, textRun.GetTextWeight());

@@ -63,28 +63,40 @@ public class NumberInput extends BaseInputElement {
     AdaptiveCardObjectModelJNI.NumberInput_SetPlaceholder(swigCPtr, this, value);
   }
 
-  public Double GetValue() {
-  return AdaptiveCardObjectModelJNI.NumberInput_GetValue(swigCPtr, this);
+  public @androidx.annotation.Nullable Double GetValue() {
+  StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetValue(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
 }
 
-  public void SetValue(Double value) {
-    AdaptiveCardObjectModelJNI.NumberInput_SetValue(swigCPtr, this, value);
+  public void SetValue(@androidx.annotation.Nullable Double value) {
+    StdOptionalDouble optvalue = (value == null) ? new StdOptionalDouble() : new StdOptionalDouble(value);
+    {
+      AdaptiveCardObjectModelJNI.NumberInput_SetValue(swigCPtr, this, StdOptionalDouble.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public Double GetMax() {
-  return AdaptiveCardObjectModelJNI.NumberInput_GetMax(swigCPtr, this);
+  public @androidx.annotation.Nullable Double GetMax() {
+  StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetMax(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
 }
 
-  public void SetMax(Double value) {
-    AdaptiveCardObjectModelJNI.NumberInput_SetMax(swigCPtr, this, value);
+  public void SetMax(@androidx.annotation.Nullable Double value) {
+    StdOptionalDouble optvalue = (value == null) ? new StdOptionalDouble() : new StdOptionalDouble(value);
+    {
+      AdaptiveCardObjectModelJNI.NumberInput_SetMax(swigCPtr, this, StdOptionalDouble.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public Double GetMin() {
-  return AdaptiveCardObjectModelJNI.NumberInput_GetMin(swigCPtr, this);
+  public @androidx.annotation.Nullable Double GetMin() {
+  StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetMin(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
 }
 
-  public void SetMin(Double value) {
-    AdaptiveCardObjectModelJNI.NumberInput_SetMin(swigCPtr, this, value);
+  public void SetMin(@androidx.annotation.Nullable Double value) {
+    StdOptionalDouble optvalue = (value == null) ? new StdOptionalDouble() : new StdOptionalDouble(value);
+    {
+      AdaptiveCardObjectModelJNI.NumberInput_SetMin(swigCPtr, this, StdOptionalDouble.getCPtr(optvalue), optvalue);
+    }
   }
 
   public static NumberInput dynamic_cast(BaseCardElement baseCardElement) {

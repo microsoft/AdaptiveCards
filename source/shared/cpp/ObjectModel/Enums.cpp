@@ -103,7 +103,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
             {AdaptiveCardSchemaKey::Left, "left"},
-            {AdaptiveCardSchemaKey::Level, "level"},
             {AdaptiveCardSchemaKey::Light, "light"},
             {AdaptiveCardSchemaKey::Lighter, "lighter"},
             {AdaptiveCardSchemaKey::LineColor, "lineColor"},
