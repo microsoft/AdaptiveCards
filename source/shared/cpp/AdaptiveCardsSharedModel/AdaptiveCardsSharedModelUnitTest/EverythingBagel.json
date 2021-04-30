@@ -312,14 +312,16 @@
 					"title": "ActionSet.Action.Submit",
 					"id": "ActionSet.Action.Submit_id",
 					"associatedInputs": "none",
-					"tooltip": "tooltip"
+					"tooltip": "tooltip",
+					"isEnabled": false
 				},
 				{
 					"type": "Action.OpenUrl",
 					"title": "ActionSet.Action.OpenUrl",
 					"id": "ActionSet.Action.OpenUrl_id",
 					"tooltip": "tooltip",
-					"url": "https://adaptivecards.io/"
+					"url": "https://adaptivecards.io/",
+					"isEnabled": true
 				}
 			]
 		},
@@ -356,6 +358,7 @@
 			"title": "Action.Submit",
 			"id": "Action.Submit_id",
 			"tooltip": "tooltip",
+			"isEnabled": true,
 			"data": {
 				"submitValue": true
 			}
@@ -366,6 +369,7 @@
 			"title": "Action.Execute_title",
 			"id": "Action.Execute_id",
 			"associatedInputs": "none",
+			"isEnabled": false,
 			"data": {
 				"Action.Execute_data_keyA": "Action.Execute_data_valueA"
 			}
