@@ -46,9 +46,15 @@ namespace AdaptiveSharedNamespace
 
         int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
 
-        std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<int> defaultValue, bool isRequired = false);
+        std::optional<int> GetOptionalInt(const Json::Value& json,
+                                          AdaptiveCardSchemaKey key,
+                                          std::optional<int> defaultValue,
+                                          bool isRequired = false);
 
-        std::optional<double> GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<double> defaultValue, bool isRequired = false);
+        std::optional<double> GetOptionalDouble(const Json::Value& json,
+                                                AdaptiveCardSchemaKey key,
+                                                std::optional<double> defaultValue,
+                                                bool isRequired = false);
 
         CardElementType GetCardElementType(const Json::Value& json);
 
@@ -67,11 +73,7 @@ namespace AdaptiveSharedNamespace
         Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
 
         template<typename T, typename Fn>
-        T GetEnumValue(const Json::Value& json,
-                       AdaptiveCardSchemaKey key,
-                       T defaultEnumValue,
-                       Fn enumConverter,
-                       bool isRequired = false);
+        T GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, Fn enumConverter, bool isRequired = false);
 
         template<typename T>
         std::shared_ptr<T> DeserializeValue(const Json::Value& json,
@@ -102,21 +104,19 @@ namespace AdaptiveSharedNamespace
 
         template<typename T>
         std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
-            ParseContext & context,
+            ParseContext& context,
             const Json::Value& json,
             AdaptiveCardSchemaKey key,
-            const std::function<std::shared_ptr<T>(ParseContext & context, const Json::Value&)>& deserializer,
+            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer,
             bool isRequired = false);
 
-        std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(ParseContext & context,
+        std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(ParseContext& context,
                                                                             const Json::Value& json,
                                                                             AdaptiveCardSchemaKey key,
                                                                             bool isRequired = false);
 
-        std::shared_ptr<BaseActionElement> GetAction(ParseContext & context,
-                                                     const Json::Value& json,
-                                                     AdaptiveCardSchemaKey key,
-                                                     bool isRequired = false);
+        std::shared_ptr<BaseActionElement>
+        GetAction(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
         template<typename T>
         T ExtractJsonValueAndMergeWithDefault(const Json::Value& rootJson,
@@ -124,7 +124,7 @@ namespace AdaptiveSharedNamespace
                                               const T& defaultValue,
                                               const std::function<T(const Json::Value&, const T&)>& deserializer);
 
-        std::shared_ptr<BaseActionElement> GetActionFromJsonValue(ParseContext & context, const Json::Value& json);
+        std::shared_ptr<BaseActionElement> GetActionFromJsonValue(ParseContext& context, const Json::Value& json);
 
         void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
         void ExpectTypeString(const Json::Value& json, const std::string& expectedTypeStr);
@@ -140,11 +140,7 @@ namespace AdaptiveSharedNamespace
     };
 
     template<typename T, typename Fn>
-    T ParseUtil::GetEnumValue(const Json::Value& json,
-                              AdaptiveCardSchemaKey key,
-                              T defaultEnumValue,
-                              Fn enumConverter,
-                              bool isRequired)
+    T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, Fn enumConverter, bool isRequired)
     {
         std::string propertyValueStr = "";
         try
@@ -202,11 +198,10 @@ namespace AdaptiveSharedNamespace
     }
 
     template<typename T>
-    std::shared_ptr<T> ParseUtil::GetElementOfType(
-        ParseContext& context,
-        const Json::Value& json,
-        AdaptiveCardSchemaKey key,
-        const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer)
+    std::shared_ptr<T> ParseUtil::GetElementOfType(ParseContext& context,
+                                                   const Json::Value& json,
+                                                   AdaptiveCardSchemaKey key,
+                                                   const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer)
     {
         auto el = deserializer(context, json);
         return el;
