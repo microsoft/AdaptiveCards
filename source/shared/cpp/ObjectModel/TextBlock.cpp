@@ -44,7 +44,7 @@ Json::Value TextBlock::SerializeToJsonValue() const
 
     if (m_textStyle.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextStyleToString(m_textStyle.value());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextStyleToString(m_textStyle.value_or(TextStyle::Default));
     }
 
     return root;

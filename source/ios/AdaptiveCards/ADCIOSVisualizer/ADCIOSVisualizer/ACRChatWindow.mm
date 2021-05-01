@@ -29,7 +29,7 @@
 {
     self = [super init];
     if (self) {
-        adaptiveCardsWidth = width;
+        adaptiveCardsWidth = 0;
         adaptiveCardsPayloads = [[NSMutableArray alloc] init];
         adaptiveCardsViews = [[NSMutableArray alloc] init];
         NSBundle *main = [NSBundle mainBundle];
