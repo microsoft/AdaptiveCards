@@ -95,8 +95,8 @@
         paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment() context:rootView.context];
 
         auto sharedStyle = txtBlck->GetStyle();
-        auto backUpColor = sharedStyle.has_value() ? config->GetTextStyles().heading.color : txtBlck->GetTextColor().value_or(ForegroundColor::Default);
-        auto backUpIsSubtle = sharedStyle.has_value() ? config->GetTextStyles().heading.isSubtle : txtBlck->GetIsSubtle().value_or(false);
+        auto backUpColor = sharedStyle.has_value() ? txtBlck->GetTextColor().value_or(config->GetTextStyles().heading.color) : txtBlck->GetTextColor().value_or(ForegroundColor::Default);
+        auto backUpIsSubtle = sharedStyle.has_value() ? txtBlck->GetIsSubtle().value_or(config->GetTextStyles().heading.isSubtle) : txtBlck->GetIsSubtle().value_or(false);
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
