@@ -120,12 +120,12 @@ using namespace AdaptiveCards;
             std::shared_ptr<SubmitAction> submitAction = std::dynamic_pointer_cast<SubmitAction>(_elem);
             data = submitAction->GetDataJson();
         }
-        
+
         if (_type == ACRExecute) {
             std::shared_ptr<ExecuteAction> executeAction = std::dynamic_pointer_cast<ExecuteAction>(_elem);
             data = executeAction->GetDataJson();
         }
-    
+
         if (!data.empty()) {
             return [NSString stringWithCString:data.c_str() encoding:NSUTF8StringEncoding];
         }
@@ -170,6 +170,9 @@ using namespace AdaptiveCards;
         case ACRExecute:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::Execute)];
             break;
+        case ACROverflow:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::Overflow)];
+			break;
         case ACRUnknownAction:
         default:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];

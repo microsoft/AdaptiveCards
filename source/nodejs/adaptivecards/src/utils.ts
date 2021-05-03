@@ -274,6 +274,14 @@ export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.
     }
 }
 
+export function getScrollX(): number {
+    return window.pageXOffset;
+}
+
+export function getScrollY(): number {
+    return window.pageYOffset;
+}
+
 export function clearElementChildren(element: HTMLElement) {
     while (element.firstChild) {
         element.removeChild(element.firstChild);

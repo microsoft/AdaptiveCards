@@ -360,6 +360,18 @@ export default payloads = [
     "json": require('./TypeIsRequired.json')
   },
   {
+    "title": "Universal.Action.json",
+    "json": require('./Universal.Action.json')
+  },
+  {
+    "title": "Universal.Select.Action.json",
+    "json": require('./Universal.Select.Action.json')
+  },
+  {
+    "title": "Universal.Inline.Action.json",
+    "json": require('./Universal.Inline.Action.json')
+  },
+  {
     "title": "VerticalStretch.json",
     "json": require('./VerticalStretch.json')
   },

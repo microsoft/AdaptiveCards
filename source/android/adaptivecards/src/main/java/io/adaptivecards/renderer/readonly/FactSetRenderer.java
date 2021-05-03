@@ -3,7 +3,7 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
@@ -56,6 +56,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
 
         textView.setPaddingRelative(0, 0, (int)spacing,0);
         return textView;

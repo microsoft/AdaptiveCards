@@ -11,7 +11,6 @@
 
 @interface ACOHostConfig : NSObject
 
-@property BOOL allActionsHaveIcons;
 @property CGFloat buttonPadding;
 @property ACOResourceResolvers *resolvers;
 @property NSURL *baseURL;
@@ -25,5 +24,7 @@
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers;
+
+- (NSNumber *)getIconPlacement:(NSNumber *)internalId;
 
 @end

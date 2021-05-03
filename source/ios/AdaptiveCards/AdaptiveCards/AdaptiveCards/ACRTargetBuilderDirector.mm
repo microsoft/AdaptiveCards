@@ -33,6 +33,7 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRErrors.h"
+#import "ACROverflowTarget.h"
 #import "ACRRegistration.h"
 #import "ACRShowCardTarget.h"
 #import "ACRToggleVisibilityTarget.h"
@@ -147,6 +148,40 @@
             forControlEvents:UIControlEventTouchUpInside];
     }
     return target;
+}
+
+@end
+
+@implementation ACROverflowActionTargetBuilder
+
++ (ACROverflowActionTargetBuilder *)getInstance
+{
+    static ACROverflowActionTargetBuilder *singletonInstance = [[self alloc] init];
+    return singletonInstance;
+}
+
+- (NSObject *)build:(ACOBaseActionElement *)action
+           director:(ACRTargetBuilderDirector *)director
+{
+    return [self build:action director:director ForButton:nil];
+}
+
+- (NSObject *)build:(ACOBaseActionElement *)action
+           director:(ACRTargetBuilderDirector *)director
+          ForButton:(UIButton *)button
+{
+    if (director.rootView && [action isKindOfClass:[ACOActionOverflow class]]) {
+        NSObject *target = [[ACROverflowTarget alloc]
+            initWithActionElement:(ACOActionOverflow *)action
+                         rootView:director.rootView];
+        if (target) {
+            [button addTarget:target
+                          action:@selector(doSelectAction)
+                forControlEvents:UIControlEventTouchUpInside];
+        }
+        return target;
+    }
+    return nil;
 }
 
 @end

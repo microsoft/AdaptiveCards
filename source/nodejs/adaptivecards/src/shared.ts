@@ -58,6 +58,7 @@ export class GlobalSettings {
      */
     static getUndefinedFieldValueSubstitutionString?: (path: string) => string | undefined = undefined;
     static useWebkitLineClamp: boolean = true;
+    static allowMoreThanMaxActionsInOverflowMenu: boolean = false;
 
     static readonly applets: AppletsSettings = {
         logEnabled: true,

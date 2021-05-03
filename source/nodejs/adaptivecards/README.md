@@ -20,7 +20,9 @@ In previous releases of this SDK (`1.x`), the package version would match an off
 
 | SDK Version | Can parse from schema versions | Can serialize to schema versions |
 | --- | --- | --- |
-| `2.4` ... `2.6` | `1.0` ... `1.3` | `1.0` ... `1.3` |
+| `2.10` | `1.0` ... `1.5` | `1.0` ... `1.5` |
+| `2.9` | `1.0` ... `1.4` | `1.0` ... `1.4` |
+| `2.4` ... `2.8` | `1.0` ... `1.3` | `1.0` ... `1.3` |
 | `2.0` ... `2.3` | `1.0` ... `1.2` | `1.0` ... `1.2` |
 | `1.2` | `1.0` ... `1.2` | `1.2` |
 | `1.1` | `1.0` ... `1.1` | `1.1` | 
@@ -34,6 +36,8 @@ Please be aware of the following **breaking changes** in particular versions.
 | In version | Change description |
 |---|---|
 | **vNext** | A new `protected CardElement.internalUpdateLayout(processChildren: boolean = true)` has been introduced. It is called internally by `CardElement.updateLayout()`. In previous versions, descendent classes could override `updateLayout()` to implement custom layout logic; with this change, descendent classes should override `internalUpdateLayout()` instead. Descendent classes that continue to override `updateLayout` will cause degraded rendering performance. |
+| **2.10** | TextBlock has a new `style` property that maps to predefined `fontType`, `size`, `color`, `weight` and `isSubtle` values defined in the new `textStyles` section of HostConfig. When `style` isn't set, the "default" text style is used. |
+|| **BREAKING CHANGE**: The `fontType`, `size`, `weight`, `color` and `isSubtle` properties on TextBlock and TextRun can now be `undefined`. When one of those properties is set to `undefined`, its effective value is determined as per defaults set in HostConfig. When these properties are set to explicit values, they override the defaults.<br><br>To obtain the effective values applied at render time for those properties, application code can use the `effectiveFontType`, `effectiveSize`, `effectiveWeight`, `effectiveColor` and `effectiveIsSubtle` properties. |
 | **2.6** | A new `static SerializableObject.defaultMaxVersion` property is introduced to allow applications to constrain de-serialization to a specific Adaptive Card schema version globally. This new property complements the existing `SerializableObject.maxVersion` member property that does the same on a per-serializable object basis. |
 | **2.5** | The non-standard `ignoreInputValidation` property on `Action.Submit` has been **REMOVED**. Use the new `associatedInputs` property instead. |
 | **2.4** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |

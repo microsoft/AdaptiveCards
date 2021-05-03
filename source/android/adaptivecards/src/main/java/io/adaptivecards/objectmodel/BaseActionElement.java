@@ -119,6 +119,14 @@ public class BaseActionElement extends BaseElement {
     return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.BaseActionElement_GetElementType(swigCPtr, this));
   }
 
+  public Mode GetMode() {
+    return Mode.swigToEnum(AdaptiveCardObjectModelJNI.BaseActionElement_GetMode(swigCPtr, this));
+  }
+
+  public void SetMode(Mode mode) {
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetMode(swigCPtr, this, mode.swigValue());
+  }
+
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
     if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceInformationSwigExplicitBaseActionElement(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris);
   }

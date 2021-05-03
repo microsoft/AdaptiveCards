@@ -58,6 +58,9 @@
 		"transform": {
 			"^.+\\.tsx?$": "ts-jest"
 		},
+		"moduleNameMapper": {
+			"\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/css_stub.ts"
+		},
 		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
 		"moduleFileExtensions": [
 			"ts",

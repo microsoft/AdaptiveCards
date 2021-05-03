@@ -3,15 +3,11 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.graphics.Typeface;
-import android.text.style.TypefaceSpan;
-import android.view.Gravity;
+import android.view.View;
 
-import java.io.File;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontType;
@@ -115,15 +111,15 @@ public class TextRendererUtil
         int alignment;
         if (textAlignment == HorizontalAlignment.Center)
         {
-            alignment = Gravity.CENTER;
+            alignment = View.TEXT_ALIGNMENT_CENTER;
         }
         else if (textAlignment == HorizontalAlignment.Left)
         {
-            alignment = Gravity.LEFT;
+            alignment = View.TEXT_ALIGNMENT_VIEW_START;
         }
         else if (textAlignment == HorizontalAlignment.Right)
         {
-            alignment = Gravity.RIGHT;
+            alignment = View.TEXT_ALIGNMENT_VIEW_END;
         }
         else
         {

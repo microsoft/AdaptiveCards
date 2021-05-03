@@ -17,8 +17,6 @@ import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
 import * as Enums from '../../utils/enums';
 import { SelectAction } from '../actions';
-import { HostConfigManager } from '../../utils/host-config';
-import { StyleManager } from '../../styles/style-config';
 import { ContainerWrapper } from './';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -26,12 +24,11 @@ const deviceWidth = Dimensions.get('window').width;
 export class Column extends React.Component {
 
 	static contextType = InputContext;
-	styleConfig = StyleManager.getManager().styles;
-	hostConfig = HostConfigManager.getHostConfig();
 	spacing = 0;
 
 	constructor(props) {
 		super(props);
+		this.hostConfig = props.configManager.hostConfig;
 		this.column = props.json;
 	}
 
@@ -55,7 +52,11 @@ export class Column extends React.Component {
 		if (!Utils.isNullOrEmpty(this.column.items) && (this.column.isVisible !== false)) {
 			children = Registry.getManager().parseRegistryComponents(this.column.items, this.context.onParseError);
 		}
-		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.column.style, isFirst: index === 0 , columnWidth: this.column.width}));
+		return children.map((ChildElement, index) => React.cloneElement(ChildElement, {
+			containerStyle: this.column.style,
+			isFirst: index === 0, columnWidth: this.column.width, 
+			configManager: this.props.configManager
+		}));
 	}
 
 	/**
@@ -68,10 +69,10 @@ export class Column extends React.Component {
 	}
 
 	/**
-     * @description This function renders a separator between the columns 
+	 * @description This function renders a separator between the columns 
 	 * 				based on the separator property from the payload. 
 	 * @returns {Component|null}
-     */
+	 */
 	renderSeparator = () => {
 		const { lineColor, lineThickness } = this.hostConfig.separator
 		const margin = (this.spacing - lineThickness) / 2
@@ -90,10 +91,10 @@ export class Column extends React.Component {
 	}
 
 	/**
-     * @description This function calculates flex value
+	 * @description This function calculates flex value
 	 * 				based on the column width property from the payload. 
 	 * @returns {flex}
-     */
+	 */
 
 	flex = (containerViewStyle) => {
 		var flex = 0
@@ -153,9 +154,9 @@ export class Column extends React.Component {
 		let actionComponentProps = {};
 
 		// select action
-		if ((!Utils.isNullOrEmpty(this.column.selectAction)) && HostConfigManager.supportsInteractivity()) {
+		if ((!Utils.isNullOrEmpty(this.column.selectAction)) && this.hostConfig.supportsInteractivity) {
 			ActionComponent = SelectAction;
-			actionComponentProps = { selectActionData: this.column.selectAction };
+			actionComponentProps = { selectActionData: this.column.selectAction, configManager: this.props.configManager };
 		}
 
 		let separatorStyles = [spacingStyle];
@@ -164,7 +165,7 @@ export class Column extends React.Component {
 			separatorStyles = [containerViewStyle, styles.separatorStyle];
 		}
 
-		return <ContainerWrapper json={this.column} hasBackgroundImage={this.props.hasBackgroundImage} isFirst={isFirst} isLast={isLast} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
+		return <ContainerWrapper configManager={this.props.configManager} json={this.column} hasBackgroundImage={this.props.hasBackgroundImage} isFirst={isFirst} isLast={isLast} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
 			<ActionComponent {...actionComponentProps}>
 				{separator && this.renderSeparator()}
 				<View style={separatorStyles}>

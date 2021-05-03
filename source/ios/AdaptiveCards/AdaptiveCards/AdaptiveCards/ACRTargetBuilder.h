@@ -43,8 +43,10 @@ typedef NS_ENUM(NSInteger, ACRTargetCapability) {
 @interface ACRToggleVisibilityTargetBuilder : ACRTargetBuilder
 @end
 
+// build target for overflow actions ("..." button)
+@interface ACROverflowActionTargetBuilder : ACRTargetBuilder
+@end
+
 // build target for unknown actions
 @interface ACRUnknownActionTargetBuilder : ACRTargetBuilder
 @end
-
-
