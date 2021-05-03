@@ -9,6 +9,12 @@
 
 using namespace AdaptiveSharedNamespace;
 
+// This ctor used by types that want to be exactly like Container, but with a different name (e.g. TableCell)
+Container::Container(CardElementType derivedType) : CollectionTypeElement(derivedType)
+{
+    PopulateKnownPropertiesSet();
+}
+
 Container::Container() : CollectionTypeElement(CardElementType::Container)
 {
     PopulateKnownPropertiesSet();
