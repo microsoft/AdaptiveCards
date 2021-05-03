@@ -100,7 +100,7 @@ void EmphasisParser::Match(std::stringstream& stream)
     }
 }
 
-bool EmphasisParser::IsEmphasisToken(const int currentChar)
+bool EmphasisParser::IsEmphasisToken(int currentChar)
 {
     return (currentChar == '[' || currentChar == ']' || currentChar == ')' || currentChar == '\n' || currentChar == '\r');
 }

@@ -97,7 +97,7 @@ namespace AdaptiveSharedNamespace
         // Callback function that handles the Emphasis State
         static EmphasisState MatchEmphasis(EmphasisParser&, std::stringstream&, std::string&);
 
-        static bool IsEmphasisToken(const int token);
+        static bool IsEmphasisToken(int token);
 
     protected:
         bool m_checkLookAhead = false;
