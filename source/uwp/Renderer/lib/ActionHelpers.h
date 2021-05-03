@@ -49,6 +49,7 @@ namespace AdaptiveNamespace::ActionHelpers
                            bool fullWidth,
                            const std::wstring& style,
                            HSTRING altText,
+                           bool allowTitleAsTooltip,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
     void HandleSelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
