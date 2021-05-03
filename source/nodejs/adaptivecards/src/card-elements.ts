@@ -3930,8 +3930,16 @@ export abstract class Action extends CardObject {
         return context.actionRegistry.findByName(this.getJsonTypeName()) !== undefined;
     }
 
+    protected raiseExecuteActionEvent() {
+        if (this.onExecute) {
+            this.onExecute(this);
+        }
+
+        raiseExecuteActionEvent(this);
+    }
+
     onExecute: (sender: Action) => void;
-    onClick?: (action: Action) => void;
+    onClick?: (sender: Action) => void;
 
     expanded?: boolean;
 
@@ -3966,10 +3974,6 @@ export abstract class Action extends CardObject {
         }
     }
 
-    updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
-        // Do nothing in base implementation
-    }
-
     promoteAsPrimary(): Action | undefined {
         if (this._actionCollection) {
             return this._actionCollection.promoteAsPrimary(this);
@@ -3995,7 +3999,13 @@ export abstract class Action extends CardObject {
         buttonElement.style.display = "flex";
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
+        buttonElement.onclick = (e) => {
+            e.preventDefault();
+            e.cancelBubble = true;
 
+            this.click();
+        };
+        
         this._renderedElement = buttonElement;
 
         this.renderButtonContent();
@@ -4003,11 +4013,11 @@ export abstract class Action extends CardObject {
     }
 
     execute() {
-        if (this.onExecute) {
-            this.onExecute(this);
+        if (this._actionCollection) {
+            this._actionCollection.actionExecuted(this);
         }
 
-        raiseExecuteActionEvent(this);
+        this.raiseExecuteActionEvent();
     }
 
     prepareForExecution(): boolean {
@@ -4583,14 +4593,6 @@ export class ShowCardAction extends Action {
 
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
-    render() {
-        super.render();
-
-        if (this.renderedElement && this.parent) {
-            this.renderedElement.classList.add(this.parent.hostConfig.makeCssClassName("expandable"));
-        }
-    }
-
     getJsonTypeName(): string {
         return ShowCardAction.JsonTypeName;
     }
@@ -4775,7 +4777,18 @@ class ActionCollection {
             action.state = ActionButtonState.Normal;
         }
 
-        this.hideActionCard();
+        let previouslyExpandedAction = this._expandedAction;
+
+        this._expandedAction = undefined;
+        this._actionCard = undefined;
+
+        this.refreshContainer();
+
+        if (previouslyExpandedAction) {
+            this.layoutChanged();
+
+            raiseInlineCardExpandedEvent(previouslyExpandedAction, false);
+        }
     }
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
@@ -4811,35 +4824,26 @@ class ActionCollection {
             raiseEvent);
     }
 
-    private actionClicked(action: Action) {
-        if (!(action instanceof ShowCardAction)) {
-            for (let renderedAction of this._renderedActions) {
-                renderedAction.state = ActionButtonState.Normal;
-            }
-
-            this.hideActionCard();
-
-            action.execute();
-        }
-        else {
-            if (this._owner.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Popup) {
-                action.execute();
-            }
-            else if (action === this._expandedAction) {
-                this.collapseExpandedAction();
-            }
-            else {
-                this.expandShowCardAction(action, true);
-            }
-        }
-    }
-
     private _items: Action[] = [];
     private _overflowAction?: OverflowAction;
     private _renderedActions: Action[] = [];
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    actionExecuted(action: Action) {
+        if (!(action instanceof ShowCardAction)) {
+            this.collapseExpandedAction();
+        }
+        else {
+            if (action === this._expandedAction) {
+                this.collapseExpandedAction();
+            }
+            else {
+                this.expandShowCardAction(action, true);
+            }
+        }
     }
 
     promoteAsPrimary(action: Action): Action | undefined {
@@ -5062,9 +5066,9 @@ class ActionCollection {
             }
 
             for (let i = 0; i < primaryActions.length; i++) {
-                let action = allowedActions[i];
+                let action = primaryActions[i];
 
-                action.onClick = (ab) => { this.actionClicked(ab); };
+                action.onClick = (a) => { a.execute(); };
                 action.render();
 
                 if (action.renderedElement) {
@@ -5082,6 +5086,8 @@ class ActionCollection {
                     }
 
                     buttonStrip.appendChild(action.renderedElement);
+
+                    this._renderedActions.push(action);
 
                     if (i < primaryActions.length - 1 && hostConfig.actions.buttonSpacing > 0) {
                         let spacer = document.createElement("div");

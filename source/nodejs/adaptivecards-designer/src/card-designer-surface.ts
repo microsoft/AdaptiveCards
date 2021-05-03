@@ -325,7 +325,9 @@ export class CardDesignerSurface {
 
         if (this.isPreviewMode) {
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
-                alert("Action executed\n" + JSON.stringify(action.toJSON(this._serializationContext), undefined, 4));
+                if (!(action instanceof Adaptive.ShowCardAction) && !(action instanceof Adaptive.ToggleVisibilityAction)) {
+                    alert("Action executed\n" + JSON.stringify(action.toJSON(this._serializationContext), undefined, 4));
+                }
             };
         }
 
