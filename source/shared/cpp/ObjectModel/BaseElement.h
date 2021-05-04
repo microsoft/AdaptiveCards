@@ -4,42 +4,19 @@
 
 #include "pch.h"
 #include "json/json.h"
-#include "FeatureRegistration.h"
+#include "InternalId.h"
 #include "ParseContext.h"
 #include "ParseUtil.h"
 #include "SemanticVersion.h"
 #include "RemoteResourceInformation.h"
+#include "FeatureRegistration.h"
 
 namespace AdaptiveSharedNamespace
 {
-    // Used to uniquely identify a single BaseElement-derived object through the course of deserializing. For more
-    // details, refer to the giant comment on ID collision detection in ParseContext.cpp.
-    class InternalId
-    {
-    public:
-        InternalId();
-
-        static InternalId Next();
-        static InternalId Current();
-        static constexpr unsigned int Invalid = 0;
-
-        std::size_t Hash() const { return std::hash<unsigned int>()(m_internalId); }
-
-        bool operator==(const unsigned int other) const { return m_internalId == other; }
-        bool operator!=(const unsigned int other) const { return m_internalId != other; }
-        bool operator==(const InternalId& other) const { return m_internalId == other.m_internalId; }
-        bool operator!=(const InternalId& other) const { return m_internalId != other.m_internalId; }
-
-    private:
-        static unsigned int s_currentInternalId;
-        InternalId(const unsigned int id);
-        unsigned int m_internalId;
-    };
-
-    struct InternalIdKeyHash
-    {
-        std::size_t operator()(const InternalId& internalId) const { return internalId.Hash(); }
-    };
+#ifdef _MSC_VER
+    class ParseContext;
+#endif
+    class FeatureRegistration;
 
     class BaseElement
     {
@@ -69,7 +46,7 @@ namespace AdaptiveSharedNamespace
 
         InternalId GetInternalId() const { return m_internalId; }
 
-        template<typename T> void DeserializeBase(ParseContext& context, const Json::Value& json);
+        template<typename T> void DeserializeBase(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json);
 
         virtual std::string Serialize() const;
         virtual Json::Value SerializeToJsonValue() const;
