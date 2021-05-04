@@ -58,9 +58,9 @@ export class ActionButton extends React.Component {
 	getActionAlignment() {
 		let computedStyles = [];
 		if (this.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
-			computedStyles.push({ flexGrow: 0})
-		} else computedStyles.push({ flexGrow: 1})
-		if(this.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+			computedStyles.push({ flexGrow: 0 })
+		} else computedStyles.push({ flexGrow: 1 })
+		if (this.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
 			computedStyles.push({ maxWidth: this.props.maxWidth })
 		}
 		return computedStyles;
@@ -71,6 +71,8 @@ export class ActionButton extends React.Component {
 			return null;
 		}
 		this.parsePayload();
+		let computedStyle = [this.getActionAlignment()];
+		computedStyle.push({ opacity: this.payload.isEnabled ? 1.0 : 0.4 })
 		const ButtonComponent = Platform.OS === Constants.PlatformAndroid ? TouchableNativeFeedback : TouchableOpacity;
 		return (<InputContextConsumer>
 			{({ onExecuteAction, inputArray, addResourceInformation, toggleVisibilityForElementWithID }) => {
@@ -80,7 +82,8 @@ export class ActionButton extends React.Component {
 				this.toggleVisibilityForElementWithID = toggleVisibilityForElementWithID;
 
 				return <ButtonComponent
-					style={this.getActionAlignment()}
+					style={computedStyle}
+					disabled={!this.payload.isEnabled}
 					accessible={true}
 					accessibilityLabel={this.altText}
 					accessibilityRole={Constants.Button}
