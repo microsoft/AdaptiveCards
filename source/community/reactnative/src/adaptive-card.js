@@ -35,26 +35,37 @@ export default class AdaptiveCard extends React.Component {
 
 		this.payload = props.payload;
 
-		// hostConfig
-		this.hostConfig = new HostConfig(props.hostConfig || defaultHostConfig);
+		if (props.isActionShowCard && props.configManager) {
+			/**
+			 * If it's ActionShowCard then all the config will be already available in props
+			 */
+			this.configManager = props.configManager;
+			this.hostConfig = props.configManager.hostConfig;
+			this.themeConfig = props.configManager.themeConfig;
+			this.styleConfig = props.configManager.styleConfig;
+		} else {
+			// hostConfig
+			this.hostConfig = new HostConfig(props.hostConfig || defaultHostConfig);
 
-		// themeConfig
-		let themeConfigValues = { ...defaultThemeConfig, ...(props.themeConfig || {}) }
-		this.themeConfig = new ThemeConfig(themeConfigValues);
+			// themeConfig
+			let themeConfigValues = { ...defaultThemeConfig, ...(props.themeConfig || {}) }
+			this.themeConfig = new ThemeConfig(themeConfigValues);
 
-		//styleConfig
-		this.styleConfig = new StyleConfig(this.hostConfig, this.themeConfig).getStyleConfig();
+			//styleConfig
+			this.styleConfig = new StyleConfig(this.hostConfig, this.themeConfig).getStyleConfig();
 
-		if (this.props.isActionShowCard)
+			this.configManager = {
+				hostConfig: this.hostConfig,
+				themeConfig: this.themeConfig,
+				styleConfig: this.styleConfig
+			}
+		}
+
+		if (props.isActionShowCard)
 			this.cardModel = props.payload;
 		else
 			this.cardModel = ModelFactory.createElement(props.payload, undefined, this.hostConfig);
 
-		this.configManager = {
-			hostConfig: this.hostConfig,
-			themeConfig: this.themeConfig,
-			styleConfig: this.styleConfig
-		}
 		this.state = {
 			showErrors: false,
 			payload: this.payload,
