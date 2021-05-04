@@ -37,6 +37,7 @@
         "style": {},
         "fallback": {},
         "tooltip": {},
+        "isEnabled": {},
         "requires": {}
       },
       "type": "object",
@@ -66,6 +67,7 @@
         "style": {},
         "fallback": {},
         "tooltip": {},
+        "isEnabled": {},
         "requires": {}
       },
       "type": "object",
@@ -97,6 +99,7 @@
         "style": {},
         "fallback": {},
         "tooltip": {},
+        "isEnabled": {},
         "requires": {}
       },
       "type": "object",
@@ -138,6 +141,7 @@
         "style": {},
         "fallback": {},
         "tooltip": {},
+        "isEnabled": {},
         "requires": {}
       },
       "type": "object",
@@ -170,6 +174,7 @@
         "style": {},
         "fallback": {},
         "tooltip": {},
+        "isEnabled": {},
         "requires": {}
       },
       "type": "object",
@@ -2719,6 +2724,12 @@
         "tooltip": {
           "type": "string",
           "description": "Defines text that should be displayed to the end user as they hover the mouse over the action, and read when using narration software.",
+          "version": "1.5"
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "description": "Determines whether the action should be enabled.",
+          "defaultt": true,
           "version": "1.5"
         },
         "requires": {}
