@@ -22,7 +22,7 @@ parameters:
   default: 'nightly'
 - name: append_build_number
   displayName: Append unique build number after tag? (x.y.z-tag.yy.mm.dd.n)
-  type: string
+  type: boolean
   default: true
 
 variables:
