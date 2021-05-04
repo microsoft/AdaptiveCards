@@ -90,6 +90,15 @@ namespace AdaptiveNamespace
             return AdaptiveActionElementBase::put_Tooltip(tooltip);
         }
 
+        IFACEMETHODIMP put_IsEnabled(boolean isEnabled) override
+        {
+            return AdaptiveActionElementBase::put_IsEnabled(isEnabled);
+        }
+        IFACEMETHODIMP get_IsEnabled(_Out_ boolean* isEnabled) override
+        {
+            return AdaptiveActionElementBase::get_IsEnabled(isEnabled);
+        }
+
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result) override
         {
             return AdaptiveActionElementBase::get_AdditionalProperties(result);

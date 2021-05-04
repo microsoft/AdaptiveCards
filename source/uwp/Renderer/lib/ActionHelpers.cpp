@@ -412,6 +412,14 @@ namespace AdaptiveNamespace::ActionHelpers
                                                }).Get(),
                                                &clickToken));
 
+        boolean isEnabled;
+        RETURN_IF_FAILED(adaptiveActionElement->get_IsEnabled(&isEnabled));
+
+        ComPtr<IControl> buttonAsControl;
+        RETURN_IF_FAILED(buttonBase.As(&buttonAsControl));
+
+        RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(isEnabled));
+
         RETURN_IF_FAILED(HandleActionStyling(adaptiveActionElement, buttonFrameworkElement.Get(), renderContext));
 
         ComPtr<IUIElement> buttonAsUIElement;
@@ -649,7 +657,7 @@ namespace AdaptiveNamespace::ActionHelpers
 
     void WrapInTouchTarget(_In_ IAdaptiveCardElement* adaptiveCardElement,
                            _In_ IUIElement* elementToWrap,
-                           _In_ IAdaptiveActionElement* action,
+                           _In_opt_ IAdaptiveActionElement* action,
                            _In_ IAdaptiveRenderContext* renderContext,
                            bool fullWidth,
                            const std::wstring& style,
@@ -660,9 +668,19 @@ namespace AdaptiveNamespace::ActionHelpers
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        if (ActionHelpers::WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction"))
+        // We don't wrap the element if it's a show card or if the action's not enabled;
+        boolean shouldWrap = !ActionHelpers::WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction");
+
+        if (action != nullptr)
         {
-            // Was inline show card, so don't wrap the element and just return
+            boolean isEnabled;
+            THROW_IF_FAILED(action->get_IsEnabled(&isEnabled));
+            shouldWrap |= isEnabled;
+        }
+
+        if (!shouldWrap)
+        {
+            // Just return the element as is
             ComPtr<IUIElement> localElementToWrap(elementToWrap);
             localElementToWrap.CopyTo(finalElement);
             return;

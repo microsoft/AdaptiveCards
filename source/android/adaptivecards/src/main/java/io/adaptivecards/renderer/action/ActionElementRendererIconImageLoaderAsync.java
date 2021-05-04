@@ -38,16 +38,8 @@ class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
         Button button = (Button) super.m_view;
         float imageHeight;
 
-        if (m_iconPlacement == IconPlacement.AboveTitle)
-        {
-            // If icon is above title, iconSize should be used as the height of the image
-            imageHeight = Util.dpToPixels(m_context.get(), m_iconSize);
-        }
-        else
-        {
-            // Otherwise, the height of the image should be the height of the action's text
-            imageHeight = button.getTextSize();
-        }
+        // iconSize should be used as the height of the image
+        imageHeight = Util.dpToPixels(m_context.get(), m_iconSize);
 
         return Util.scaleBitmapToHeight(imageHeight, bitmap);
     }

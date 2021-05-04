@@ -129,6 +129,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("https://adaptivecards.io/"s, imageAction->GetUrl());
         Assert::IsTrue(ActionType::OpenUrl == imageAction->GetElementType());
         Assert::AreEqual(ActionTypeToString(ActionType::OpenUrl), imageAction->GetElementTypeString());
+        Assert::IsTrue(imageAction->GetIsEnabled());
     }
 
     void ValidateColumnSet(const ColumnSet &columnSet)
@@ -287,6 +288,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Text_Action.Submit"s, inlineAction->GetTitle());
         Assert::AreEqual("https://adaptivecards.io/content/cats/1.png"s, inlineAction->GetIconUrl());
         Assert::IsTrue(inlineAction->GetAssociatedInputs() == AssociatedInputs::Auto);
+        Assert::IsTrue(inlineAction->GetIsEnabled());
     }
 
     void ValidateInputNumber(const NumberInput &numberInput)
@@ -424,10 +426,12 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("ActionSet.Action.Submit_id", submitAction->GetId().c_str());
         Assert::IsTrue(std::static_pointer_cast<SubmitAction>(submitAction)->GetAssociatedInputs() == AssociatedInputs::None);
         Assert::AreEqual("tooltip", submitAction->GetTooltip().c_str());
+        Assert::IsFalse(submitAction->GetIsEnabled());
 
         auto openUrlAction = actions.at(1);
         Assert::AreEqual("ActionSet.Action.OpenUrl_id", openUrlAction->GetId().c_str());
-        Assert::AreEqual("tooltip", submitAction->GetTooltip().c_str());
+        Assert::AreEqual("tooltip", openUrlAction->GetTooltip().c_str());
+        Assert::IsTrue(openUrlAction->GetIsEnabled());
     }
 
     void ValidateRichTextBlock(const RichTextBlock &richTextBlock)
@@ -535,6 +539,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("{\"submitValue\":true}\n"s, submitAction->GetDataJson());
             Assert::IsTrue(submitAction->GetAssociatedInputs() == AssociatedInputs::Auto);
             Assert::AreEqual("tooltip", submitAction->GetTooltip().c_str());
+            Assert::IsTrue(submitAction->GetIsEnabled());
 
             auto additionalProps = submitAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());
@@ -555,6 +560,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("Action.Execute_verb"s, executeAction->GetVerb());
             Assert::AreEqual("{\"Action.Execute_data_keyA\":\"Action.Execute_data_valueA\"}\n"s, executeAction->GetDataJson());
             Assert::IsTrue(executeAction->GetAssociatedInputs() == AssociatedInputs::None);
+            Assert::IsFalse(executeAction->GetIsEnabled());
 
             auto additionalProps = executeAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());
@@ -573,6 +579,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("Action.ShowCard_id"s, showCardAction->GetId());
             Assert::AreEqual("Action.ShowCard"s, showCardAction->GetTitle());
             Assert::AreEqual("tooltip", showCardAction->GetTooltip().c_str());
+            Assert::IsTrue(showCardAction->GetIsEnabled());
 
             auto additionalProps = showCardAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());
