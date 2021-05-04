@@ -584,7 +584,7 @@ namespace AdaptiveNamespace::XamlHelpers
             if (parentWidth >= pixelWidth)
             {
                 // Make sure to keep the aspect ratio of the image
-                maxWidth = min(maxWidth, parentWidth);
+                maxWidth = std::min(maxWidth, parentWidth);
                 double aspectRatio = (double)pixelHeight / pixelWidth;
                 maxHeight = maxWidth * aspectRatio;
             }
@@ -598,12 +598,12 @@ namespace AdaptiveNamespace::XamlHelpers
             // don't need to set both width and height when image size is auto since
             // we want a circle as shape.
             // max value for width should be set since adaptive cards is constrained horizontally
-            RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+            RETURN_IF_FAILED(localElement->put_MaxWidth(std::min(maxWidth, static_cast<DOUBLE>(pixelWidth))));
         }
         else
         {
-            RETURN_IF_FAILED(localElement->put_MaxHeight(min(maxHeight, pixelHeight)));
-            RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+            RETURN_IF_FAILED(localElement->put_MaxHeight(std::min(maxHeight, static_cast<DOUBLE>(pixelHeight))));
+            RETURN_IF_FAILED(localElement->put_MaxWidth(std::min(maxWidth, static_cast<DOUBLE>(pixelWidth))));
         }
 
         if (setVisible)

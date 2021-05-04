@@ -319,10 +319,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
 
-        float x0 = static_cast<float>(-max(margin.Left, s_bleedMargin));
-        float y0 = static_cast<float>(-max(margin.Top, s_bleedMargin));
-        float x1 = static_cast<float>(max(margin.Left, s_bleedMargin) + finalSize.Width + max(margin.Right, s_bleedMargin));
-        float y1 = static_cast<float>(max(margin.Top, s_bleedMargin) + finalSize.Height + max(margin.Bottom, s_bleedMargin));
+        const DOUBLE bleedMargin = static_cast<DOUBLE>(s_bleedMargin);
+        float x0 = static_cast<float>(-max(margin.Left, bleedMargin));
+        float y0 = static_cast<float>(-max(margin.Top, bleedMargin));
+        float x1 = static_cast<float>(max(margin.Left, bleedMargin) + finalSize.Width + max(margin.Right, bleedMargin));
+        float y1 = static_cast<float>(max(margin.Top, bleedMargin) + finalSize.Height + max(margin.Bottom, bleedMargin));
         RETURN_IF_FAILED(spClip->put_Rect({x0, y0, x1, y1}));
 
         *returnValue = {finalSize.Width, finalSize.Height};

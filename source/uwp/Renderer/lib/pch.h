@@ -16,6 +16,11 @@
 #define AdaptivePointerCast dynamic_pointer_cast
 #endif
 
+// don't want windows.h min()/max() definitions as they conflict with std::numeric_limits<T>::min()/max()
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
 #define DISABLE_NS_PREFIX_CHECKS 1
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
