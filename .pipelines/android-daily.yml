@@ -26,7 +26,7 @@ parameters:
   default: true
 
 variables:
-  # Capture build parameters to environment variables, which can be used in build.gradle
+  # Capture build parameters to environment variables, which are used in build.gradle
   AC_PRERELEASE_TAG: ${{ parameters.prerelease_tag }}
   AC_APPEND_BUILD_NUMBER: ${{ parameters.append_build_number }}
 
