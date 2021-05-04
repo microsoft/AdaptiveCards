@@ -94,6 +94,7 @@
 		6B7B1A9420B4D2AB00260731 /* Media.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9020B4D2AB00260731 /* Media.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */; };
 		6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B8C76432641D8D6009548FA /* InternalId.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B8C76422641D8D6009548FA /* InternalId.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B94F2DB24C7997D00E2B310 /* ACRTextInputHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B94F2DE24C7997D00E2B310 /* ACRTextInputHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */; };
 		6B94F2E224C79C2700E2B310 /* ACRTextTelelphoneField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */; };
@@ -481,6 +482,7 @@
 		6B7B1A9020B4D2AB00260731 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Media.h; path = ../../../../shared/cpp/ObjectModel/Media.h; sourceTree = "<group>"; };
 		6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRUIImageView.mm; sourceTree = "<group>"; };
 		6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRUIImageView.h; sourceTree = "<group>"; };
+		6B8C76422641D8D6009548FA /* InternalId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InternalId.h; path = ../../../../shared/cpp/ObjectModel/InternalId.h; sourceTree = "<group>"; };
 		6B94F2DB24C7997D00E2B310 /* ACRTextInputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTextInputHandler.h; sourceTree = "<group>"; };
 		6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTextInputHandler.mm; sourceTree = "<group>"; };
 		6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRTextTelelphoneField.xib; sourceTree = "<group>"; };
@@ -971,6 +973,7 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				6B8C76422641D8D6009548FA /* InternalId.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
 				C8DEDF37220CDEB00001AAED /* ActionSet.cpp */,
@@ -1476,6 +1479,7 @@
 				6B25D3E226138E3700A47AFB /* ACOEnums.h in Headers */,
 				6B25D3EB2613D83700A47AFB /* ACORenderContext.h in Headers */,
 				6B250FB2253F5F8F007FFCFB /* ACRTargetBuilder.h in Headers */,
+				6B8C76432641D8D6009548FA /* InternalId.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 				0D34860A261A859800614EB9 /* ACOActionOverflowPrivate.h in Headers */,
 				0D3485FD26193BA500614EB9 /* ACROverflowTarget.h in Headers */,
