@@ -30,7 +30,7 @@
 		"isEnabled": {
 			"type": "boolean",
 			"description": "Determines whether the action should be enabled.",
-			"defaultt": true,
+			"default": true,
 			"version": "1.5"
 		}
 	}
