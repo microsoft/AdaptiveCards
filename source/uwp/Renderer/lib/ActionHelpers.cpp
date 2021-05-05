@@ -43,6 +43,43 @@ namespace AdaptiveNamespace::ActionHelpers
         return S_OK;
     }
 
+    void SetTooltip(_In_opt_ HSTRING toolTipText, _In_ IDependencyObject* tooltipTarget)
+    {
+        if (toolTipText != nullptr)
+        {
+            ComPtr<ITextBlock> tooltipTextBlock =
+                XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            THROW_IF_FAILED(tooltipTextBlock->put_Text(toolTipText));
+
+            ComPtr<IToolTip> toolTip =
+                XamlHelpers::CreateXamlClass<IToolTip>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTip));
+            ComPtr<IContentControl> toolTipAsContentControl;
+            THROW_IF_FAILED(toolTip.As(&toolTipAsContentControl));
+            THROW_IF_FAILED(toolTipAsContentControl->put_Content(tooltipTextBlock.Get()));
+
+            ComPtr<IToolTipServiceStatics> toolTipService;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTipService).Get(),
+                                                 &toolTipService));
+
+            THROW_IF_FAILED(toolTipService->SetToolTip(tooltipTarget, toolTip.Get()));
+        }
+    }
+
+    void SetAutomationNameAndDescription(_In_ IDependencyObject* dependencyObject, _In_opt_ HSTRING name, _In_opt_ HSTRING description)
+    {
+        // Set the automation properties
+        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+        THROW_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                 &automationPropertiesStatics));
+
+        ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics5;
+        THROW_IF_FAILED(automationPropertiesStatics.As(&automationPropertiesStatics5));
+
+        THROW_IF_FAILED(automationPropertiesStatics->SetName(dependencyObject, name));
+        THROW_IF_FAILED(automationPropertiesStatics5->SetFullDescription(dependencyObject, description));
+    }
+
     void ArrangeButtonContent(_In_ IAdaptiveActionElement* action,
                               _In_ IAdaptiveActionsConfig* actionsConfig,
                               _In_ IAdaptiveRenderContext* renderContext,
@@ -57,14 +94,28 @@ namespace AdaptiveNamespace::ActionHelpers
         HString iconUrl;
         THROW_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
 
+        HString tooltip;
+        THROW_IF_FAILED(action->get_Tooltip(tooltip.GetAddressOf()));
+
+        HString name;
+        HString description;
+        if (title.IsValid())
+        {
+            // If we have a title, use title as the automation name and tooltip as the description
+            name.Set(title.Get());
+            description.Set(tooltip.Get());
+        }
+        else
+        {
+            // If there's no title, use tooltip as the name
+            name.Set(tooltip.Get());
+        }
+
         ComPtr<IButton> localButton(button);
-        ComPtr<IAutomationPropertiesStatics> automationProperties;
-        THROW_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                 &automationProperties));
         ComPtr<IDependencyObject> buttonAsDependencyObject;
         THROW_IF_FAILED(localButton.As(&buttonAsDependencyObject));
-        THROW_IF_FAILED(automationProperties->SetName(buttonAsDependencyObject.Get(), title.Get()));
+        SetAutomationNameAndDescription(buttonAsDependencyObject.Get(), name.Get(), description.Get());
+        SetTooltip(tooltip.Get(), buttonAsDependencyObject.Get());
 
         // Check if the button has an iconUrl
         if (iconUrl != nullptr)
@@ -501,14 +552,6 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(inlineActionColumnDefinition->put_Width({0, GridUnitType::GridUnitType_Auto}));
         THROW_IF_FAILED(columnDefinitions->Append(inlineActionColumnDefinition.Get()));
 
-        // Create a text box with the action title. This will be the tool tip if there's an icon
-        // or the content of the button otherwise
-        ComPtr<ITextBlock> titleTextBlock =
-            XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-        HString title;
-        THROW_IF_FAILED(localInlineAction->get_Title(title.GetAddressOf()));
-        THROW_IF_FAILED(titleTextBlock->put_Text(title.Get()));
-
         HString iconUrl;
         THROW_IF_FAILED(localInlineAction->get_IconUrl(iconUrl.GetAddressOf()));
         ComPtr<IUIElement> actionUIElement;
@@ -529,27 +572,18 @@ namespace AdaptiveNamespace::ActionHelpers
             THROW_IF_FAILED(adaptiveImage.As(&adaptiveImageAsElement));
 
             THROW_IF_FAILED(imageRenderer->Render(adaptiveImageAsElement.Get(), renderContext, renderArgs, &actionUIElement));
-
-            // Add the tool tip
-            ComPtr<IToolTip> toolTip =
-                XamlHelpers::CreateXamlClass<IToolTip>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTip));
-            ComPtr<IContentControl> toolTipAsContentControl;
-            THROW_IF_FAILED(toolTip.As(&toolTipAsContentControl));
-            THROW_IF_FAILED(toolTipAsContentControl->put_Content(titleTextBlock.Get()));
-
-            ComPtr<IToolTipServiceStatics> toolTipService;
-            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTipService).Get(),
-                                                 &toolTipService));
-
-            ComPtr<IDependencyObject> actionAsDependencyObject;
-            THROW_IF_FAILED(actionUIElement.As(&actionAsDependencyObject));
-
-            THROW_IF_FAILED(toolTipService->SetToolTip(actionAsDependencyObject.Get(), toolTip.Get()));
         }
         else
         {
             // If there's no icon, just use the title text. Put it centered in a grid so it is
             // centered relative to the text box.
+            HString title;
+            THROW_IF_FAILED(localInlineAction->get_Title(title.GetAddressOf()));
+
+            ComPtr<ITextBlock> titleTextBlock =
+                XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            THROW_IF_FAILED(titleTextBlock->put_Text(title.Get()));
+
             ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
             THROW_IF_FAILED(titleTextBlock.As(&textBlockAsFrameworkElement));
             THROW_IF_FAILED(textBlockAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Center));
@@ -577,7 +611,15 @@ namespace AdaptiveNamespace::ActionHelpers
 
         // Wrap the action in a button
         ComPtr<IUIElement> touchTargetUIElement;
-        WrapInTouchTarget(nullptr, actionUIElement.Get(), localInlineAction.Get(), renderContext, false, L"Adaptive.Input.Text.InlineAction", nullptr, &touchTargetUIElement);
+        WrapInTouchTarget(nullptr,
+                          actionUIElement.Get(),
+                          localInlineAction.Get(),
+                          renderContext,
+                          false,
+                          L"Adaptive.Input.Text.InlineAction",
+                          nullptr,
+                          (iconUrl != nullptr),
+                          &touchTargetUIElement);
 
         ComPtr<IFrameworkElement> touchTargetFrameworkElement;
         THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetFrameworkElement));
@@ -620,6 +662,7 @@ namespace AdaptiveNamespace::ActionHelpers
                            bool fullWidth,
                            const std::wstring& style,
                            HSTRING altText,
+                           bool allowTitleAsTooltip,
                            _COM_Outptr_ IUIElement** finalElement)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -691,53 +734,46 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, style.c_str(), buttonAsFrameworkElement.Get()));
 
-        if ((action != nullptr) || (altText != nullptr))
+        // Determine tooltip, automation name, and automation description
+        HString tooltip;
+        HString name;
+        HString description;
+        if (action != nullptr)
         {
-            // If we have an action, use the title for the AutomationProperties.Name and tooltip.
-            // Otherwise use the altText.
+            // If we have an action, get it's title and tooltip.
             HString title;
-            if (action)
-            {
-                THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
-            }
-            else
-            {
-                THROW_IF_FAILED(title.Set(altText));
-            }
+            THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+            THROW_IF_FAILED(action->get_Tooltip(tooltip.GetAddressOf()));
 
             if (title.IsValid())
             {
-                // Set the automation properties name
-                ComPtr<IDependencyObject> buttonAsDependencyObject;
-                THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
+                // If we have a title, use title as the name and tooltip as the description
+                name.Set(title.Get());
+                description.Set(tooltip.Get());
 
-                ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-                THROW_IF_FAILED(
-                    GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                         &automationPropertiesStatics));
-
-                THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
-
-                // Also use the title as the tooltip
-                ComPtr<IToolTip> toolTip =
-                    XamlHelpers::CreateXamlClass<IToolTip>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTip));
-                ComPtr<IContentControl> toolTipAsContentControl;
-                THROW_IF_FAILED(toolTip.As(&toolTipAsContentControl));
-
-                // Create a text box with the action title.
-                ComPtr<ITextBlock> titleTextBlock =
-                    XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-                THROW_IF_FAILED(titleTextBlock->put_Text(title.Get()));
-                THROW_IF_FAILED(toolTipAsContentControl->put_Content(titleTextBlock.Get()));
-
-                // Set the tooltip
-                ComPtr<IToolTipServiceStatics> toolTipService;
-                THROW_IF_FAILED(
-                    GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTipService).Get(), &toolTipService));
-
-                THROW_IF_FAILED(toolTipService->SetToolTip(buttonAsDependencyObject.Get(), toolTip.Get()));
+                if (!tooltip.IsValid() && allowTitleAsTooltip)
+                {
+                    // If we don't have a tooltip, set the title to the tooltip if we're allowed
+                    tooltip.Set(title.Get());
+                }
+            }
+            else
+            {
+                // If we don't have a title, use the tooltip as the name
+                name.Set(tooltip.Get());
             }
         }
+        else if (altText != nullptr)
+        {
+            // If we don't have an action but we've been passed altText, use that for name and tooltip
+            name.Set(altText);
+            tooltip.Set(altText);
+        }
+
+        ComPtr<IDependencyObject> buttonAsDependencyObject;
+        THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
+        SetAutomationNameAndDescription(buttonAsDependencyObject.Get(), name.Get(), description.Get());
+        SetTooltip(tooltip.Get(), buttonAsDependencyObject.Get());
 
         if (action != nullptr)
         {
@@ -779,7 +815,7 @@ namespace AdaptiveNamespace::ActionHelpers
     {
         if (selectAction != nullptr && supportsInteractivity)
         {
-            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", nullptr, outUiElement);
+            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", nullptr, true, outUiElement);
         }
         else
         {
