@@ -6,13 +6,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
-import androidx.fragment.app.FragmentManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionAlignment;
@@ -108,6 +108,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
+        button.setEnabled(baseActionElement.GetIsEnabled());
 
         if (Util.isOfType(baseActionElement, ExecuteAction.class) || Util.isOfType(baseActionElement, SubmitAction.class))
         {

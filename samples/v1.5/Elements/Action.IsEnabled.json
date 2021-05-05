@@ -21,7 +21,28 @@
         "title": "Disabled",
         "isEnabled": false
       }
-    }
+    },
+		{
+			"type": "RichTextBlock",
+			"inlines": [
+				{
+					"type": "TextRun",
+					"text": "Do not click "
+				},
+				{
+					"type": "TextRun",
+					"text": "here",
+					"selectAction": {
+						"type": "Action.Submit",
+						"isEnabled": false
+					}
+				},
+				{
+					"type": "TextRun",
+					"text": ", as it is disabled."
+				}
+			]
+		}
   ],
   "actions": [
     {

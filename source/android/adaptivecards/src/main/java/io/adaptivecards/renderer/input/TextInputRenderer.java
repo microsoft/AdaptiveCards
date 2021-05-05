@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import androidx.fragment.app.FragmentManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -26,17 +25,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.FragmentManager;
+
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
-
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.SubmitAction;
+import io.adaptivecards.objectmodel.TextInput;
+import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -44,14 +49,8 @@ import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-
 import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.TextInput;
-import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.TextInputStyle;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
@@ -281,6 +280,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
+                        inlineButton.setEnabled(action.GetIsEnabled());
 
                         InlineActionIconImageLoaderAsync imageLoader = new InlineActionIconImageLoaderAsync(
                             renderedCard,
@@ -315,6 +315,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
                         inlineButton.setText(title);
+                        inlineButton.setEnabled(action.GetIsEnabled());
 
                         if (Util.isOfType(action, ExecuteAction.class) || Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
                         {

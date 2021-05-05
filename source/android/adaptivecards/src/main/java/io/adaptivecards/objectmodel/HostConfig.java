@@ -220,4 +220,12 @@ public class HostConfig {
     AdaptiveCardObjectModelJNI.HostConfig_SetInputs(swigCPtr, this, InputsConfig.getCPtr(value), value);
   }
 
+  public HeadingsConfig GetHeadings() {
+    return new HeadingsConfig(AdaptiveCardObjectModelJNI.HostConfig_GetHeadings(swigCPtr, this), true);
+  }
+
+  public void SetHeadings(HeadingsConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetHeadings(swigCPtr, this, HeadingsConfig.getCPtr(value), value);
+  }
+
 }

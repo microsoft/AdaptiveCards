@@ -506,9 +506,16 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseActionElement_GetStyle(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetStyle__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
   public final static native void BaseActionElement_SetStyle__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native String BaseActionElement_GetTooltip(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetTooltip__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
+  public final static native void BaseActionElement_SetTooltipSwigExplicitBaseActionElement__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
+  public final static native void BaseActionElement_SetTooltip__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetTooltipSwigExplicitBaseActionElement__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
   public final static native int BaseActionElement_GetMode(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetMode(long jarg1, BaseActionElement jarg1_, int jarg2);
+  public final static native boolean BaseActionElement_GetIsEnabled(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetIsEnabled(long jarg1, BaseActionElement jarg1_, boolean jarg2);
   public final static native void BaseActionElement_GetResourceInformation(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseActionElement_GetResourceInformationSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long BaseActionElement_SerializeToJsonValue(long jarg1, BaseActionElement jarg1_);
@@ -574,6 +581,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void CollectionTypeElement_DeserializeChildren(long jarg1, CollectionTypeElement jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long CollectionTypeElement_SerializeToJsonValue(long jarg1, CollectionTypeElement jarg1_);
   public final static native String c_adaptiveCardsFeature_get();
+  public final static native String ToLowercase(String jarg1);
   public final static native long new_CaseInsensitiveKeyHash();
   public final static native void delete_CaseInsensitiveKeyHash(long jarg1);
   public final static native long new_CaseInsensitiveKeyEquals();
@@ -1226,6 +1234,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long MediaConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, MediaConfig jarg2_);
   public final static native long new_MediaConfig();
   public final static native void delete_MediaConfig(long jarg1);
+  public final static native void HeadingsConfig_level_set(long jarg1, HeadingsConfig jarg1_, long jarg2);
+  public final static native long HeadingsConfig_level_get(long jarg1, HeadingsConfig jarg1_);
+  public final static native long HeadingsConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, HeadingsConfig jarg2_);
+  public final static native long new_HeadingsConfig();
+  public final static native void delete_HeadingsConfig(long jarg1);
   public final static native long new_HostConfig();
   public final static native long HostConfig_Deserialize(long jarg1, JsonValue jarg1_);
   public final static native long HostConfig_DeserializeFromString(String jarg1);
@@ -1272,6 +1285,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void HostConfig_SetMedia(long jarg1, HostConfig jarg1_, long jarg2, MediaConfig jarg2_);
   public final static native long HostConfig_GetInputs(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_SetInputs(long jarg1, HostConfig jarg1_, long jarg2, InputsConfig jarg2_);
+  public final static native long HostConfig_GetHeadings(long jarg1, HostConfig jarg1_);
+  public final static native void HostConfig_SetHeadings(long jarg1, HostConfig jarg1_, long jarg2, HeadingsConfig jarg2_);
   public final static native void delete_HostConfig(long jarg1);
   public final static native long new_MarkDownParser(String jarg1);
   public final static native String MarkDownParser_TransformToHtml(long jarg1, MarkDownParser jarg1_);
@@ -1649,6 +1664,12 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseActionElement_SetTitle__SWIG_1(BaseActionElement jself, String value) {
     jself.SetTitle(value);
+  }
+  public static void SwigDirector_BaseActionElement_SetTooltip__SWIG_0(BaseActionElement jself, long value) {
+    jself.SetTooltip(new SWIGTYPE_p_std__string(value, false));
+  }
+  public static void SwigDirector_BaseActionElement_SetTooltip__SWIG_1(BaseActionElement jself, String value) {
+    jself.SetTooltip(value);
   }
 
   private final static native void swig_module_init();
