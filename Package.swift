@@ -51,10 +51,7 @@ let package = Package(
                 "*.orig"
             ],
             resources: [
-                .process("Images/checked.png"),
-                .process("Images/unchecked.png"),
-                .process("Images/checked-checkbox-24.png"),
-                .process("Images/unchecked-checkbox-24.png")
+                .process("Resources")
             ],
             publicHeadersPath: "include",
             cxxSettings: [CXXSetting.headerSearchPath("../../../../shared/cpp/ObjectModel")],
@@ -65,7 +62,12 @@ let package = Package(
                 LinkerSetting.linkedFramework("CoreGraphics"),
                 LinkerSetting.linkedFramework("QuartzCore")
             ]
-            )        
+            ),
+        .testTarget(
+            name:"AdaptiveCardsTest",
+            dependencies: ["AdaptiveCards"],
+            path:"source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCardsTests"
+        )
     ],
     cxxLanguageStandard: CXXLanguageStandard.cxx17
 )

@@ -189,7 +189,7 @@
                                          error:nil];
 
         NSString *fileName = [pathToFile lastPathComponent];
-        
+
         ACOAdaptiveCardParseResult *cardParseResult = nil;
         @try {
             cardParseResult = [ACOAdaptiveCard fromJson:payload];
