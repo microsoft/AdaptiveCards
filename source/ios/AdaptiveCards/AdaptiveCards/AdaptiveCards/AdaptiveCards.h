@@ -13,8 +13,8 @@ FOUNDATION_EXPORT double AdaptiveCardsFrameworkVersionNumber;
 //! Project version string for AFramework.
 FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
-#import "../ACOAdaptiveCardParseResult.h"
 #import "ACOAdaptiveCard.h"
+#import "ACOAdaptiveCardParseResult.h"
 #import "ACOBaseCardElement.h"
 #import "ACOEnums.h"
 #import "ACOHostConfig.h"
