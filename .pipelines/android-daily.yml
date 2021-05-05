@@ -17,13 +17,18 @@ pool:
 
 parameters:
 - name: prerelease_tag
-  displayName: Prerelease Tag (leave empty for final releases)
+  displayName: Prerelease tag after version (x.y.z-tag)
   type: string
   default: 'nightly'
+- name: append_build_number
+  displayName: Append unique build number after tag? (x.y.z-tag.yy.mm.dd.n)
+  type: boolean
+  default: true
 
 variables:
-  # Capture build parameter to use as environment variable
-  prerelease_tag: ${{ parameters.prerelease_tag }}
+  # Capture build parameters to environment variables, which are used in build.gradle
+  AC_PRERELEASE_TAG: ${{ parameters.prerelease_tag }}
+  AC_APPEND_BUILD_NUMBER: ${{ parameters.append_build_number }}
 
 steps:
 # Automated publish to Sonatype is not yet configured, so skip Nexus credentials
