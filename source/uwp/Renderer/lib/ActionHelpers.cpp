@@ -43,7 +43,7 @@ namespace AdaptiveNamespace::ActionHelpers
         return S_OK;
     }
 
-    void SetTooltip(HSTRING toolTipText, IDependencyObject* tooltipTarget)
+    void SetTooltip(_In_opt_ HSTRING toolTipText, _In_ IDependencyObject* tooltipTarget)
     {
         if (toolTipText != nullptr)
         {
@@ -65,7 +65,7 @@ namespace AdaptiveNamespace::ActionHelpers
         }
     }
 
-    void SetAutomationNameAndDescription(IDependencyObject* dependencyObject, HSTRING name, HSTRING description)
+    void SetAutomationNameAndDescription(_In_ IDependencyObject* dependencyObject, _In_opt_ HSTRING name, _In_opt_ HSTRING description)
     {
         // Set the automation properties
         ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
