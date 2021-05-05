@@ -27,27 +27,27 @@ Json::Value TextElementProperties::SerializeToJsonValue(Json::Value& root) const
 {
     if (m_textSize.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(m_textSize.value());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(m_textSize.value_or(TextSize::Default));
     }
 
     if (m_textColor.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(m_textColor.value());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(m_textColor.value_or(ForegroundColor::Default));
     }
 
     if (m_textWeight.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(m_textWeight.value());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(m_textWeight.value_or(TextWeight::Default));
     }
 
     if (m_fontType.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType)] = FontTypeToString(m_fontType.value());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType)] = FontTypeToString(m_fontType.value_or(FontType::Default));
     }
 
     if (m_isSubtle.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = m_isSubtle.value();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = m_isSubtle.value_or(false);
     }
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText();
