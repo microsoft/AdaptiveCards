@@ -70,7 +70,7 @@
 		{
 			"type": "Input.Text",
 			"id": "tooltiptest1",
-			"label": "Inline Action with a title",
+			"label": "Inline Action with a title (title should show on button, no tooltip)",
 			"inlineAction": {
 				"type": "Action.Submit",
 				"title": "Title"
@@ -79,7 +79,7 @@
 		{
 			"type": "Input.Text",
 			"id": "tooltiptest2",
-			"label": "Inline Action with a title and a tooltip",
+			"label": "Inline Action with a title and a tooltip (title should show on button, tooltip in tooltip)",
 			"inlineAction": {
 				"type": "Action.Submit",
 				"title": "Title",
@@ -89,7 +89,7 @@
 		{
 			"type": "Input.Text",
 			"id": "tooltiptest3",
-			"label": "Inline Action with an icon and a tooltip",
+			"label": "Inline Action with an icon and a tooltip (icon should show on button, tooltip in tooltip)",
 			"inlineAction": {
 				"type": "Action.Submit",
 				"tooltip": "Tooltip",
@@ -99,7 +99,7 @@
 		{
 			"type": "Input.Text",
 			"id": "tooltiptest4",
-			"label": "Inline Action with an icon and a title",
+			"label": "Inline Action with an icon and a title (icon should show on button, title in tooltip)",
 			"inlineAction": {
 				"type": "Action.Submit",
 				"title": "Title",
@@ -109,7 +109,7 @@
 		{
 			"type": "Input.Text",
 			"id": "tooltiptest5",
-			"label": "Inline Action with an icon and a title and a tooltip",
+			"label": "Inline Action with an icon and a title and a tooltip (icon should show on button, tooltip in tooltip)",
 			"inlineAction": {
 				"type": "Action.Submit",
 				"title": "Title",
@@ -119,7 +119,7 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "A container with a text block and an image. No title or tooltip.",
+			"text": "A container with a text block and an image. No title or tooltip. (no tooltip)",
 			"weight": "bolder",
 			"wrap": true
 		},
@@ -144,7 +144,7 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "A container with a text block and an image. Action has title.",
+			"text": "A container with a text block and an image. Action has title. (title should be used as tooltip)",
 			"weight": "bolder",
 			"wrap": true
 		},
@@ -170,7 +170,7 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "A container with a text block and an image. Action has tooltip.",
+			"text": "A container with a text block and an image. Action has tooltip. (tooltip should be used as tooltip)",
 			"weight": "bolder",
 			"wrap": true
 		},
@@ -196,7 +196,7 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "A container with a text block and an image. Action has title and tooltip.",
+			"text": "A container with a text block and an image. Action has title and tooltip. (tooltip should be used as tooltip)",
 			"weight": "bolder",
 			"wrap": true
 		},
