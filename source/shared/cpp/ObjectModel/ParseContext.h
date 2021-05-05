@@ -4,14 +4,13 @@
 
 #include "pch.h"
 
+#include "InternalId.h"
 #include "ElementParserRegistration.h"
 #include "ActionParserRegistration.h"
 #include "AdaptiveCardParseWarning.h"
 
 namespace AdaptiveSharedNamespace
 {
-    class BaseElement;
-    class InternalId;
     class CollectionTypeElement;
     class ParseContext
     {

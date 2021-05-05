@@ -9,6 +9,11 @@ namespace AdaptiveSharedNamespace
 {
     constexpr const char* const c_adaptiveCardsFeature = "adaptiveCards";
 
+    namespace ParseUtil
+    {
+        std::string ToLowercase(const std::string& value);
+    }
+
     struct CaseInsensitiveKeyHash
     {
         size_t operator()(const std::string& keyVal) const
