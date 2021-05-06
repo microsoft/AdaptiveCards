@@ -1,0 +1,1 @@
+AdaptiveCardParseException.h
