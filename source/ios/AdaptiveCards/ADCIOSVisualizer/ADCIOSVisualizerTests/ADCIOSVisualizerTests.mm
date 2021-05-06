@@ -36,6 +36,7 @@
     NSString *_defaultHostConfigFile;
     ACOHostConfig *_defaultHostConfig;
     NSSet *_setOfExpectedToFailFiles;
+    NSSet *_setOfExcludedFiles;
 }
 
 - (void)setUp
@@ -52,7 +53,8 @@
         }
     }
 
-    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];
+    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];    
+    _setOfExcludedFiles = [NSSet setWithArray:@[ @"TooltipTestCard.json" ]];
 
     self.continueAfterFailure = NO;
 }
@@ -192,6 +194,9 @@
         
         ACOAdaptiveCardParseResult *cardParseResult = nil;
         @try {
+            if ([_setOfExcludedFiles containsObject:fileName]) {
+                continue;
+            }
             cardParseResult = [ACOAdaptiveCard fromJson:payload];
             if ([_setOfExpectedToFailFiles containsObject:fileName]) {
                 XCTAssertFalse(cardParseResult.isValid);
