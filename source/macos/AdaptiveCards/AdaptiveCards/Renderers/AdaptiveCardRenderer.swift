@@ -85,6 +85,10 @@ extension AdaptiveCardRenderer: ACRViewDelegate {
     func acrView(_ view: ACRView, didSubmitUserResponses dict: [String: Any], actionView: NSView) {
         actionDelegate?.adaptiveCard(view, didSubmitUserResponses: dict, actionView: actionView)
     }
+    
+    func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) {
+        actionDelegate?.adaptiveCard(view, didShowCardWith: actionView, previousHeight: previousHeight, newHeight: newHeight)
+    }
 }
 
 extension AdaptiveCardRenderer: ACRViewResourceResolverDelegate {

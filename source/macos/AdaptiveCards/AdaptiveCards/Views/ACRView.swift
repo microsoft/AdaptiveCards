@@ -4,6 +4,7 @@ import AppKit
 protocol ACRViewDelegate: AnyObject {
     func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView)
     func acrView(_ view: ACRView, didSubmitUserResponses dict: [String: Any], actionView: NSView)
+    func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat)
 }
 
 protocol ACRViewResourceResolverDelegate: AnyObject {
@@ -110,6 +111,7 @@ extension ACRView: TargetHandlerDelegate {
             return
         }
         
+        let currHeight = bounds.height
         if button.state == .on {
             if let currentCardItems = currentShowCardItems {
                 // Has a current open or closed showCard
@@ -128,6 +130,8 @@ extension ACRView: TargetHandlerDelegate {
         } else {
             currentShowCardItems?.showCard.isHidden = true
         }
+        layoutSubtreeIfNeeded()
+        delegate?.acrView(self, didShowCardWith: button, previousHeight: currHeight, newHeight: bounds.height)
     }
     
     func handleOpenURLAction(actionView: NSView, urlString: String) {

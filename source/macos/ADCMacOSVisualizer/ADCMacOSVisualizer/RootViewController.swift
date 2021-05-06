@@ -197,6 +197,10 @@ extension RootViewController: AdaptiveCardActionDelegate {
         alert.addButton(withTitle: "Ok")
         alert.runModal()
     }
+    
+    func adaptiveCard(_ adaptiveCard: NSView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) {
+        print("SHOW CARD ACTION: Height changed from \(previousHeight) to \(newHeight)")
+    }
 }
 
 extension RootViewController: AdaptiveCardResourceResolver {
