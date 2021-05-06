@@ -81,7 +81,6 @@
 					"spacing": "small",
 					"size": "small",
 					"weight": "bolder",
-					"color": "accent",
 					"text": "[ER-13052](https://adaptivecards.io)",
 					"wrap": true
 				},

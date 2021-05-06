@@ -68,7 +68,7 @@ namespace AdaptiveNamespace
 
         ComPtr<IUIElement> touchTargetUIElement;
         ActionHelpers::WrapInTouchTarget(
-            adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, L"Adaptive.SelectAction", altText.Get(), &touchTargetUIElement);
+            adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, L"Adaptive.SelectAction", altText.Get(), false, &touchTargetUIElement);
 
         // Create a panel to hold the poster and the media element
         ComPtr<IStackPanel> mediaStackPanel =
