@@ -166,35 +166,25 @@ namespace AdaptiveNamespace::ActionHelpers
             THROW_IF_FAILED(buttonText->put_Text(title.Get()));
             THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
 
+            ComPtr<IFrameworkElement> buttonTextAsFrameworkElement;
+            THROW_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
+            THROW_IF_FAILED(buttonTextAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment::VerticalAlignment_Center));
+
             // Handle different arrangements inside button
             ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
             THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
+
+            // Set icon height to iconSize (aspect ratio is automatically maintained)
+            THROW_IF_FAILED(buttonIconAsFrameworkElement->put_Height(iconSize));
+
             ComPtr<IUIElement> separator;
             if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
-
-                // Set icon height to iconSize (aspect ratio is automatically maintained)
-                THROW_IF_FAILED(buttonIconAsFrameworkElement->put_Height(iconSize));
             }
             else
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Horizontal));
-
-                // Add event to the image to resize itself when the textblock is rendered
-                ComPtr<IImage> buttonIconAsImage;
-                THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
-
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([buttonIconAsFrameworkElement,
-                                                   buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
-                        ComPtr<IFrameworkElement> buttonTextAsFrameworkElement;
-                        RETURN_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
-
-                        return SetMatchingHeight(buttonIconAsFrameworkElement.Get(), buttonTextAsFrameworkElement.Get());
-                    }).Get(),
-                    &eventToken));
 
                 // Only add spacing when the icon must be located at the left of the title
                 UINT spacingSize;
