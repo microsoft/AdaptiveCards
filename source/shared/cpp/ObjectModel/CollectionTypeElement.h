@@ -113,7 +113,7 @@ namespace AdaptiveSharedNamespace
                 ParseSizeForPixelSize(ParseUtil::GetString(value, AdaptiveCardSchemaKey::MinHeight), &context.warnings);
             minHeight.has_value())
         {
-            collection->SetMinHeight(minHeight.value());
+            collection->SetMinHeight(*minHeight);
         }
 
         // configures for cotainer style

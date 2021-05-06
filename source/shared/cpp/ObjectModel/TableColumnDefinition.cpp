@@ -33,13 +33,13 @@ namespace AdaptiveSharedNamespace
 
         if (m_width.has_value())
         {
-            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = m_width.value();
+            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = *m_width;
         }
 
         if (m_pixelWidth.has_value())
         {
             std::ostringstream pixelStr;
-            pixelStr << m_pixelWidth.value() << "px";
+            pixelStr << *m_pixelWidth << "px";
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = pixelStr.str();
         }
 
@@ -102,7 +102,7 @@ namespace AdaptiveSharedNamespace
                 if (const auto& pixelWidth = ParseSizeForPixelSize(widthValue.asString(), &(context.warnings));
                     pixelWidth.has_value())
                 {
-                    tableColumnDefinition->SetPixelWidth(pixelWidth);
+                    tableColumnDefinition->SetPixelWidth(*pixelWidth);
                 }
                 else if (!pixelWidth.has_value())
                 {
