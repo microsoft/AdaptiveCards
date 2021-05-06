@@ -26,7 +26,8 @@ let package = Package(
             path: "source/shared/cpp/ObjectModel",
             exclude: [
                 "CMakeLists.txt"
-            ]
+            ],
+            publicHeadersPath: "include"
             ),
         .target(
             name: "AdaptiveCards",
