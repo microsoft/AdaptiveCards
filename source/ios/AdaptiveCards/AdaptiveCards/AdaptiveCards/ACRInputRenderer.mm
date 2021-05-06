@@ -45,13 +45,11 @@
     ACRTextField *txtInput = nil;
     switch (inputBlock->GetTextInputStyle()) {
         case TextInputStyle::Email: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-            txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
+            txtInput = [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
             break;
         }
         case TextInputStyle::Tel: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-            txtInput = [bundle loadNibNamed:@"ACRTextTelelphoneField" owner:rootView options:nil][0];
+            txtInput = [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRTextTelelphoneField" owner:rootView options:nil][0];
             CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
             UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
             UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -62,14 +60,12 @@
             break;
         }
         case TextInputStyle::Url: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-            txtInput = [bundle loadNibNamed:@"ACRTextUrlField" owner:rootView options:nil][0];
+            txtInput = [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRTextUrlField" owner:rootView options:nil][0];
             break;
         }
         case TextInputStyle::Text:
         default: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-            txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
+            txtInput = [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
             break;
         }
     }

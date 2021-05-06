@@ -30,13 +30,13 @@ const CGFloat padding = 2.0f;
     if (self) {
         UIImage *iconImage = nil;
         if ([reuseIdentifier isEqualToString:@"checked-checkbox"]) {
-            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
         } else if ([reuseIdentifier isEqualToString:@"checked-radiobutton"]) {
-            iconImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"checked.png" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
         } else if ([reuseIdentifier isEqualToString:@"unchecked-checkbox"]) {
-            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
         } else {
-            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:SWIFTPM_MODULE_BUNDLE compatibleWithTraitCollection:nil];
         }
         self.imageView.image = iconImage;
         self.textLabel.numberOfLines = 0;

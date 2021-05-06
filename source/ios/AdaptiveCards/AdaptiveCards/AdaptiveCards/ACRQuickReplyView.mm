@@ -27,8 +27,7 @@
 
 - (void)commonInit
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    [bundle loadNibNamed:@"ACRQuickActionView" owner:self options:nil];
+    [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRQuickActionView" owner:self options:nil];
     [self addSubview:self.stack];
     self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     self.translatesAutoresizingMaskIntoConstraints = NO;

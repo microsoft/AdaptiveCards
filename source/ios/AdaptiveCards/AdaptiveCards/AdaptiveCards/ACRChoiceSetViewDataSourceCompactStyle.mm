@@ -48,9 +48,8 @@ static NSString *pickerCell = @"pickerCell";
         _showPickerView = NO;
         _defaultString = [NSString stringWithCString:choiceSet->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
         _isValid = YES;
-
-        NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-        [bundle loadNibNamed:@"ACRPickerView" owner:rootView options:nil];
+        
+        [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRPickerView" owner:rootView options:nil];
         _titlesMap = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *valuesMap = [[NSMutableDictionary alloc] init];
 
@@ -134,9 +133,8 @@ static NSString *pickerCell = @"pickerCell";
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
         UIPickerView *pickerView = nil;
-        if (cell == nil) {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-            cell = [bundle loadNibNamed:@"ACRPickerView" owner:_rootView options:nil][0];
+        if (cell == nil) {            
+            cell = [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRPickerView" owner:_rootView options:nil][0];
             pickerView = [cell viewWithTag:pickerViewId];
             _pickerViewHeight = pickerView.frame.size.height;
         } else {

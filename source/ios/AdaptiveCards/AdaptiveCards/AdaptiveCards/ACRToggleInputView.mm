@@ -31,9 +31,8 @@
 
 - (void)commonInit
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     // nib can have more than one view serialized
-    _contentview = [bundle loadNibNamed:@"ACRToggleInputView" owner:self options:nil][0];
+    _contentview = [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRToggleInputView" owner:self options:nil][0];
 
     self.translatesAutoresizingMaskIntoConstraints = NO;
 

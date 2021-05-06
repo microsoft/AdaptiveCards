@@ -28,7 +28,6 @@ using namespace AdaptiveCards;
 - (instancetype)initWithTimeDateInput:(std::shared_ptr<BaseInputElement> const &)elem
                             dateStyle:(NSDateFormatterStyle)dateStyle
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     self = [super init];
     if (self) {
         NSString *valueStr = nil;
@@ -47,7 +46,7 @@ using namespace AdaptiveCards;
             picker.preferredDatePickerStyle = UIDatePickerStyleWheels;
         } else {
             // Fallback on earlier versions
-            picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
+            picker = [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
         }
 
         picker.locale = [NSLocale currentLocale];

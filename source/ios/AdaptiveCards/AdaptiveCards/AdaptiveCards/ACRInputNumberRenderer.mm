@@ -37,8 +37,7 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<NumberInput> numInputBlck = std::dynamic_pointer_cast<NumberInput>(elem);
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    ACRNumericTextField *numInput = [bundle loadNibNamed:@"ACRTextNumberField" owner:rootView options:nil][0];
+    ACRNumericTextField *numInput = [SWIFTPM_MODULE_BUNDLE loadNibNamed:@"ACRTextNumberField" owner:rootView options:nil][0];
     numInput.placeholder = [NSString stringWithCString:numInputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
 
     ACRNumberInputHandler *numberInputHandler = [[ACRNumberInputHandler alloc] init:acoElem];
