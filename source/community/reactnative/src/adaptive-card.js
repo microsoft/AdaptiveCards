@@ -23,6 +23,7 @@ import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
 import { ModelFactory } from './models';
+import { PlatformIOS, BehaviourHeight, BehaviourPadding } from "./utils/constants"
 
 export default class AdaptiveCard extends React.Component {
 
@@ -197,24 +198,29 @@ export default class AdaptiveCard extends React.Component {
 
 		var adaptiveCardContent =
 			(
-				<KeyboardAvoidingView behavior={Platform.OS === 'ios'
-					? 'padding'
-					: undefined}>
-					<ContainerWrapper configManager={this.configManager} style={containerStyles} json={this.state.cardModel}>
-						<ScrollView
-							contentContainerStyle={this.props.contentContainerStyle}
-							showsHorizontalScrollIndicator={true}
-							showsVerticalScrollIndicator={true}
-							alwaysBounceVertical={false}
-							alwaysBounceHorizontal={false}
-							scrollEnabled={this.props.cardScrollEnabled}>
-							{this.parsePayload()}
-							{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
-								<ActionWrapper configManager={this.configManager} actions={this.state.cardModel.actions} />}
-						</ScrollView>
-					</ContainerWrapper>
+				<ContainerWrapper configManager={this.configManager} style={containerStyles} json={this.state.cardModel}>
+					<ScrollView
+						contentContainerStyle={this.props.contentContainerStyle}
+						showsHorizontalScrollIndicator={true}
+						showsVerticalScrollIndicator={true}
+						alwaysBounceVertical={false}
+						alwaysBounceHorizontal={false}
+						scrollEnabled={this.props.cardScrollEnabled}>
+						{this.parsePayload()}
+						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
+							<ActionWrapper configManager={this.configManager} actions={this.state.cardModel.actions} />}
+					</ScrollView>
+				</ContainerWrapper>
+			);
+
+		if (!this.props.isActionShowCard) {
+			adaptiveCardContent = (
+				<KeyboardAvoidingView keyboardVerticalOffset={40}
+					behavior={Platform.OS == PlatformIOS ? BehaviourPadding : BehaviourHeight}>
+					{adaptiveCardContent}
 				</KeyboardAvoidingView>
 			);
+		}
 
 		// checks if selectAction option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.selectAction)) {

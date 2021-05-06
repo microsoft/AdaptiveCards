@@ -69,3 +69,6 @@ export const TypeObject = "object"
 export const InlineAction = "inline-action";
 
 export const Button = "button";
+
+export const BehaviourPadding = "padding";
+export const BehaviourHeight = "height";
