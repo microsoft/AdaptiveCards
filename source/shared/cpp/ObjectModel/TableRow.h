@@ -22,9 +22,9 @@ namespace AdaptiveSharedNamespace
 
         Json::Value SerializeToJsonValue() const override;
 
-        std::vector<std::shared_ptr<TableCell>>& GetCells();
-        const std::vector<std::shared_ptr<TableCell>>& GetCells() const;
-        void SetCells(const std::vector<std::shared_ptr<TableCell>>& value);
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableCell>>& GetCells();
+        const std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableCell>>& GetCells() const;
+        void SetCells(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableCell>>& value);
 
         VerticalAlignment GetVerticalCellContentAlignment() const;
         void SetVerticalCellContentAlignment(VerticalAlignment value);

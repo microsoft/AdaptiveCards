@@ -37,19 +37,19 @@ namespace AdaptiveSharedNamespace
         ContainerStyle GetGridStyle() const;
         void SetGridStyle(ContainerStyle value);
 
-        std::vector<std::shared_ptr<TableColumnDefinition>>& GetColumns();
-        const std::vector<std::shared_ptr<TableColumnDefinition>>& GetColumns() const;
-        void SetColumns(const std::vector<std::shared_ptr<TableColumnDefinition>>& value);
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableColumnDefinition>>& GetColumns();
+        const std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableColumnDefinition>>& GetColumns() const;
+        void SetColumns(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableColumnDefinition>>& value);
 
-        std::vector<std::shared_ptr<TableRow>>& GetRows();
-        const std::vector<std::shared_ptr<TableRow>>& GetRows() const;
-        void SetRows(const std::vector<std::shared_ptr<TableRow>>& value);
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableRow>>& GetRows();
+        const std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableRow>>& GetRows() const;
+        void SetRows(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableRow>>& value);
 
     private:
         void PopulateKnownPropertiesSet();
 
-        std::vector<std::shared_ptr<TableColumnDefinition>> m_columnDefinitions;
-        std::vector<std::shared_ptr<TableRow>> m_rows;
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableColumnDefinition>> m_columnDefinitions;
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableRow>> m_rows;
 
         HorizontalAlignment m_horizontalCellContentAlignment;
         VerticalAlignment m_verticalCellContentAlignment;
