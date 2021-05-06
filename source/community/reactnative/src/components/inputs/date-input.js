@@ -88,7 +88,8 @@ export class DateInput extends React.Component {
 	 */
 	parseDateString(dateString) {
 		elements = dateString.split('-');
-		return new Date(elements[0], elements[1], elements[2])
+		//month ranges from 0 to 11, so subtract 1
+		return new Date(elements[0], elements[1] - 1, elements[2])
 	}
 
 	render() {
