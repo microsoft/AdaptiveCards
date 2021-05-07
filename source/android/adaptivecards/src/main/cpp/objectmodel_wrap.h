@@ -105,12 +105,14 @@ public:
     virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
     virtual void SetTitle(std::string &&value);
     virtual void SetTitle(std::string const &value);
+    virtual void SetTooltip(std::string &&value);
+    virtual void SetTooltip(std::string const &value);
 public:
     bool swig_overrides(int n) {
-      return (n < 7 ? swig_override[n] : false);
+      return (n < 9 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<7> swig_override;
+    Swig::BoolArray<9> swig_override;
 };
 
 
