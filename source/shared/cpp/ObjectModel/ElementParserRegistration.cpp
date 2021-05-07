@@ -14,6 +14,7 @@
 #include "Media.h"
 #include "NumberInput.h"
 #include "RichTextBlock.h"
+#include "Table.h"
 #include "TextBlock.h"
 #include "TextInput.h"
 #include "TimeInput.h"
@@ -46,39 +47,43 @@ namespace AdaptiveSharedNamespace
 
     ElementParserRegistration::ElementParserRegistration()
     {
-        m_knownElements.insert({
-            CardElementTypeToString(CardElementType::ActionSet),
-            CardElementTypeToString(CardElementType::Container),
-            CardElementTypeToString(CardElementType::Column),
-            CardElementTypeToString(CardElementType::ColumnSet),
-            CardElementTypeToString(CardElementType::FactSet),
-            CardElementTypeToString(CardElementType::Image),
-            CardElementTypeToString(CardElementType::ImageSet),
-            CardElementTypeToString(CardElementType::ChoiceSetInput),
-            CardElementTypeToString(CardElementType::DateInput),
-            CardElementTypeToString(CardElementType::Media),
-            CardElementTypeToString(CardElementType::NumberInput),
-            CardElementTypeToString(CardElementType::RichTextBlock),
-            CardElementTypeToString(CardElementType::TextBlock),
-            CardElementTypeToString(CardElementType::TextInput),
-            CardElementTypeToString(CardElementType::TimeInput),
-            CardElementTypeToString(CardElementType::ToggleInput),
-            CardElementTypeToString(CardElementType::Unknown),
-        });
+        m_knownElements.insert({CardElementTypeToString(CardElementType::ActionSet),
+                                CardElementTypeToString(CardElementType::ChoiceSetInput),
+                                CardElementTypeToString(CardElementType::Column),
+                                CardElementTypeToString(CardElementType::ColumnSet),
+                                CardElementTypeToString(CardElementType::Container),
+                                CardElementTypeToString(CardElementType::DateInput),
+                                CardElementTypeToString(CardElementType::FactSet),
+                                CardElementTypeToString(CardElementType::Image),
+                                CardElementTypeToString(CardElementType::ImageSet),
+                                CardElementTypeToString(CardElementType::Media),
+                                CardElementTypeToString(CardElementType::NumberInput),
+                                CardElementTypeToString(CardElementType::RichTextBlock),
+                                CardElementTypeToString(CardElementType::Table),
+                                CardElementTypeToString(CardElementType::TableCell),
+                                CardElementTypeToString(CardElementType::TableRow),
+                                CardElementTypeToString(CardElementType::TextBlock),
+                                CardElementTypeToString(CardElementType::TextInput),
+                                CardElementTypeToString(CardElementType::TimeInput),
+                                CardElementTypeToString(CardElementType::ToggleInput),
+                                CardElementTypeToString(CardElementType::Unknown)});
 
         m_cardElementParsers.insert(
             {{CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>()},
-             {CardElementTypeToString(CardElementType::Container), std::make_shared<ContainerParser>()},
+             {CardElementTypeToString(CardElementType::ChoiceSetInput), std::make_shared<ChoiceSetInputParser>()},
              {CardElementTypeToString(CardElementType::Column), std::make_shared<ColumnParser>()},
              {CardElementTypeToString(CardElementType::ColumnSet), std::make_shared<ColumnSetParser>()},
+             {CardElementTypeToString(CardElementType::Container), std::make_shared<ContainerParser>()},
+             {CardElementTypeToString(CardElementType::DateInput), std::make_shared<DateInputParser>()},
              {CardElementTypeToString(CardElementType::FactSet), std::make_shared<FactSetParser>()},
              {CardElementTypeToString(CardElementType::Image), std::make_shared<ImageParser>()},
              {CardElementTypeToString(CardElementType::ImageSet), std::make_shared<ImageSetParser>()},
-             {CardElementTypeToString(CardElementType::ChoiceSetInput), std::make_shared<ChoiceSetInputParser>()},
-             {CardElementTypeToString(CardElementType::DateInput), std::make_shared<DateInputParser>()},
              {CardElementTypeToString(CardElementType::Media), std::make_shared<MediaParser>()},
              {CardElementTypeToString(CardElementType::NumberInput), std::make_shared<NumberInputParser>()},
              {CardElementTypeToString(CardElementType::RichTextBlock), std::make_shared<RichTextBlockParser>()},
+             {CardElementTypeToString(CardElementType::Table), std::make_shared<TableParser>()},
+             {CardElementTypeToString(CardElementType::TableCell), std::make_shared<TableCellParser>()},
+             {CardElementTypeToString(CardElementType::TableRow), std::make_shared<TableRowParser>()},
              {CardElementTypeToString(CardElementType::TextBlock), std::make_shared<TextBlockParser>()},
              {CardElementTypeToString(CardElementType::TextInput), std::make_shared<TextInputParser>()},
              {CardElementTypeToString(CardElementType::TimeInput), std::make_shared<TimeInputParser>()},
