@@ -2496,6 +2496,10 @@ export abstract class Input extends CardElement implements IInput {
     protected getAllLabelIds(): string[] {
         let labelIds: string[] = [];
 
+        if (this.labelledBy) {
+            labelIds.push(this.labelledBy);
+        }
+
         if (this._renderedLabelElement) {
             labelIds.push(this._renderedLabelElement.id);
         }
@@ -2510,18 +2514,6 @@ export abstract class Input extends CardElement implements IInput {
     protected updateInputControlAriaLabelledBy() {
         if (this._renderedInputControlElement) {
             let labelIds: string[] = this.getAllLabelIds();
-
-            if (this.labelledBy) {
-                labelIds.push(this.labelledBy);
-            }
-
-            if (this._renderedLabelElement) {
-                labelIds.push(this._renderedLabelElement.id);
-            }
-
-            if (this._renderedErrorMessageElement) {
-                labelIds.push(this._renderedErrorMessageElement.id);
-            }
 
             if (labelIds.length > 0) {
                 this._renderedInputControlElement.setAttribute("aria-labelledby", labelIds.join(" "));

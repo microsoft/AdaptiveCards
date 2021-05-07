@@ -273,6 +273,8 @@ product.pbxproj
 
 # Mac
 **/.DS_Store
+.build/
+.swiftpm/
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.Rendering.Uwp.h
