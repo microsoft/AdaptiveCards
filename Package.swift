@@ -52,10 +52,10 @@ let package = Package(
                 "*.orig"
             ],
             resources: [
-                .process("Images/checked.png"),
-                .process("Images/unchecked.png"),
-                .process("Images/checked-checkbox-24.png"),
-                .process("Images/unchecked-checkbox-24.png")
+                .process("Resources/Images/checked.png"),
+                .process("Resources/Images/unchecked.png"),
+                .process("Resources/Images/checked-checkbox-24.png"),
+                .process("Resources/Images/unchecked-checkbox-24.png")
             ],
             publicHeadersPath: "include",
             cxxSettings: [CXXSetting.headerSearchPath("../../../../shared/cpp/ObjectModel")],
