@@ -849,6 +849,32 @@ export function property(property: PropertyDefinition) {
     }
 }
 
+export type PropertyChangeListener = (sender: SerializableObject, property: PropertyDefinition, value: any) => void;
+
+export class PropertyChangeEvent {
+    private _listeners: PropertyChangeListener[] = [];
+
+    addListener(listener: PropertyChangeListener) {
+        if (this._listeners.indexOf(listener) < 0) {
+            this._listeners.push(listener);
+        }
+    }
+
+    removeListener(listener: PropertyChangeListener) {
+        let index = this._listeners.indexOf(listener);
+
+        if (index >= 0) {
+            this._listeners.splice(index, 1);
+        }
+    }
+
+    broadcast(sender: SerializableObject, property: PropertyDefinition, value: any) {
+        for (let listener of this._listeners) {
+            listener(sender, property, value);
+        }
+    }
+}
+
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
     static defaultMaxVersion: Version = Versions.latest;
@@ -861,12 +887,6 @@ export abstract class SerializableObject {
     private _updateCount: number = 0;
 
     protected abstract getSchemaKey(): string;
-
-    protected propertyChanged(property: PropertyDefinition) {
-        if (!this.getIsUpdating() && this.onPropertyChanged) {
-            this.onPropertyChanged(this, property);
-        }
-    }
 
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SimpleSerializationContext();
@@ -910,6 +930,10 @@ export abstract class SerializableObject {
         }
     }
 
+    protected propertyChanged(property: PropertyDefinition, value: any) {
+        this.onPropertyChanged.broadcast(this, property, value);
+    }
+
     protected getValue(property: PropertyDefinition): any {
         let value = this._propertyBag.hasOwnProperty(property.getInternalName()) ? this._propertyBag[property.getInternalName()] : property.defaultValue;
 
@@ -944,7 +968,9 @@ export abstract class SerializableObject {
             this._propertyBag[property.getInternalName()] = value;
         }
 
-        this.propertyChanged(property);
+        if (!this.getIsUpdating()) {
+            this.propertyChanged(property, value);
+        }
     }
 
     protected internalParse(source: PropertyBag, context: BaseSerializationContext) {
@@ -1010,7 +1036,7 @@ export abstract class SerializableObject {
 
     maxVersion: Version = SerializableObject.defaultMaxVersion;
 
-    onPropertyChanged?: (sender: SerializableObject, property: PropertyDefinition) => void;
+    readonly onPropertyChanged = new PropertyChangeEvent();
 
     constructor() {
         let s = this.getSchema();

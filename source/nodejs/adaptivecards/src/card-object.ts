@@ -64,10 +64,10 @@ export abstract class CardObject extends SerializableObject {
 
     protected abstract internalPropertyChanged(property: PropertyDefinition): void;
 
-    protected propertyChanged(property: PropertyDefinition) {
+    protected propertyChanged(property: PropertyDefinition, value: any) {
         this.internalPropertyChanged(property);
 
-        super.propertyChanged(property);
+        super.propertyChanged(property, value);
     }
 
     protected _parent?: CardObject;
