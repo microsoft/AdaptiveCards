@@ -27,7 +27,7 @@ let package = Package(
             exclude: [
                 "CMakeLists.txt"
             ],
-            publicHeadersPath: "include"
+            publicHeadersPath: ""
             ),
         .target(
             name: "AdaptiveCards",
