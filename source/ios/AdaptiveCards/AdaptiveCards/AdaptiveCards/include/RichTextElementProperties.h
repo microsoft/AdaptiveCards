@@ -1,1 +1,0 @@
-RichTextElementProperties.h

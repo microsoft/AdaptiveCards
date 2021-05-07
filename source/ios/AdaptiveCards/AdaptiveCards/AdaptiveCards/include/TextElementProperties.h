@@ -1,1 +1,0 @@
-TextElementProperties.h
