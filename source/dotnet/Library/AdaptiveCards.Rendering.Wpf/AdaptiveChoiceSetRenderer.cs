@@ -2,13 +2,9 @@
 // Licensed under the MIT License.
 using System.Collections.Generic;
 using System.Linq;
-using System.IO;
-using System.Xml;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Data;
-using System;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -17,6 +13,25 @@ namespace AdaptiveCards.Rendering.Wpf
         public static FrameworkElement Render(AdaptiveChoiceSetInput input, AdaptiveRenderContext context)
         {
             return RenderHelper(new Grid(), new ComboBox(), new StackPanel(), input, context);
+        }
+
+        public static void ToggleVisibility(
+            FrameworkElement uiElement,
+            AdaptiveAction inlineAction,
+            AdaptiveRenderContext context,
+            bool isVisible)
+        {
+            if (inlineAction is AdaptiveToggleVisibilityAction iAction)
+            {
+                iAction.TargetElements =
+                    iAction.TargetElements.Select(o =>
+                    {
+                        o.IsVisible = isVisible;
+                        return o;
+                    }).ToList();
+
+                context.InvokeAction(uiElement, new AdaptiveActionEventArgs(iAction));
+            }
         }
 
         public static FrameworkElement RenderHelper(Grid uiGrid, ComboBox uiComboBox, StackPanel uiChoices, AdaptiveChoiceSetInput input, AdaptiveRenderContext context)
@@ -34,7 +49,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             foreach (var choice in input.Choices)
             {
-
                 if (input.IsMultiSelect == true)
                 {
                     var uiCheckbox = new CheckBox();
@@ -44,6 +58,28 @@ namespace AdaptiveCards.Rendering.Wpf
                     uiCheckbox.IsEnabled = choice.IsEnabled;
                     uiCheckbox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.CheckBox");
                     uiChoices.Children.Add(uiCheckbox);
+
+                    uiCheckbox.Checked += (sender, e) =>
+                    {
+                        ToggleVisibility(
+                            uiCheckbox,
+                            choice.InlineAction,
+                            context,
+                            true);
+
+                        e.Handled = true;
+                    };
+
+                    uiCheckbox.Unchecked += (sender, e) =>
+                    {
+                        ToggleVisibility(
+                            uiCheckbox,
+                            choice.InlineAction,
+                            context,
+                            false);
+
+                        e.Handled = true;
+                    };
                 }
                 else
                 {
@@ -70,6 +106,28 @@ namespace AdaptiveCards.Rendering.Wpf
                         {
                             uiComboBox.SelectedItem = uiComboItem;
                         }
+
+                        uiComboItem.Selected += (sender, e) =>
+                        {
+                            ToggleVisibility(
+                                uiComboItem,
+                                choice.InlineAction,
+                                context,
+                                true);
+
+                            e.Handled = true;
+                        };
+
+                        uiComboItem.Unselected += (sender, e) =>
+                        {
+                            ToggleVisibility(
+                                uiComboItem,
+                                choice.InlineAction,
+                                context,
+                                false);
+
+                            e.Handled = true;
+                        };
                     }
                     else
                     {
@@ -86,6 +144,28 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiRadio.DataContext = choice;
                         uiRadio.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.Radio");
                         uiChoices.Children.Add(uiRadio);
+
+                        uiRadio.Checked += (sender, e) =>
+                        {
+                            ToggleVisibility(
+                                uiRadio,
+                                choice.InlineAction,
+                                context,
+                                true);
+
+                            e.Handled = true;
+                        };
+
+                        uiRadio.Unchecked += (sender, e) =>
+                        {
+                            ToggleVisibility(
+                                uiRadio,
+                                choice.InlineAction,
+                                context,
+                                false);
+
+                            e.Handled = true;
+                        };
                     }
                 }
             }

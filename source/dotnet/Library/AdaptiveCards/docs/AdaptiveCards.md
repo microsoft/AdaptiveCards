@@ -110,6 +110,7 @@
   - [SupportedSchemaVersion](#P-AdaptiveCards-Rendering-AdaptiveCardRendererBase`2-SupportedSchemaVersion 'AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.SupportedSchemaVersion')
   - [GetSupportedSchemaVersion()](#M-AdaptiveCards-Rendering-AdaptiveCardRendererBase`2-GetSupportedSchemaVersion 'AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.GetSupportedSchemaVersion')
 - [AdaptiveChoice](#T-AdaptiveCards-AdaptiveChoice 'AdaptiveCards.AdaptiveChoice')
+  - [InlineAction](#P-AdaptiveCards-AdaptiveChoice-InlineAction 'AdaptiveCards.AdaptiveChoice.InlineAction')
   - [IsEnabled](#P-AdaptiveCards-AdaptiveChoice-IsEnabled 'AdaptiveCards.AdaptiveChoice.IsEnabled')
   - [IsSelected](#P-AdaptiveCards-AdaptiveChoice-IsSelected 'AdaptiveCards.AdaptiveChoice.IsSelected')
   - [Speak](#P-AdaptiveCards-AdaptiveChoice-Speak 'AdaptiveCards.AdaptiveChoice.Speak')
@@ -136,6 +137,15 @@
   - [StyleXml](#P-AdaptiveCards-AdaptiveCollectionElement-StyleXml 'AdaptiveCards.AdaptiveCollectionElement.StyleXml')
   - [VerticalContentAlignment](#P-AdaptiveCards-AdaptiveCollectionElement-VerticalContentAlignment 'AdaptiveCards.AdaptiveCollectionElement.VerticalContentAlignment')
   - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveCollectionElement-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveCollectionElement.ShouldSerializeStyleXml')
+- [AdaptiveColorInput](#T-AdaptiveCards-AdaptiveColorInput 'AdaptiveCards.AdaptiveColorInput')
+  - [TypeName](#F-AdaptiveCards-AdaptiveColorInput-TypeName 'AdaptiveCards.AdaptiveColorInput.TypeName')
+  - [MaxLength](#P-AdaptiveCards-AdaptiveColorInput-MaxLength 'AdaptiveCards.AdaptiveColorInput.MaxLength')
+  - [Placeholder](#P-AdaptiveCards-AdaptiveColorInput-Placeholder 'AdaptiveCards.AdaptiveColorInput.Placeholder')
+  - [Regex](#P-AdaptiveCards-AdaptiveColorInput-Regex 'AdaptiveCards.AdaptiveColorInput.Regex')
+  - [Style](#P-AdaptiveCards-AdaptiveColorInput-Style 'AdaptiveCards.AdaptiveColorInput.Style')
+  - [Type](#P-AdaptiveCards-AdaptiveColorInput-Type 'AdaptiveCards.AdaptiveColorInput.Type')
+  - [Value](#P-AdaptiveCards-AdaptiveColorInput-Value 'AdaptiveCards.AdaptiveColorInput.Value')
+  - [GetNonInteractiveValue()](#M-AdaptiveCards-AdaptiveColorInput-GetNonInteractiveValue 'AdaptiveCards.AdaptiveColorInput.GetNonInteractiveValue')
 - [AdaptiveColumn](#T-AdaptiveCards-AdaptiveColumn 'AdaptiveCards.AdaptiveColumn')
   - [TypeName](#F-AdaptiveCards-AdaptiveColumn-TypeName 'AdaptiveCards.AdaptiveColumn.TypeName')
   - [Size](#P-AdaptiveCards-AdaptiveColumn-Size 'AdaptiveCards.AdaptiveColumn.Size')
@@ -1755,6 +1765,13 @@ AdaptiveCards
 
 Choice as part of a Input.AdaptiveChoiceSetInput element
 
+<a name='P-AdaptiveCards-AdaptiveChoice-InlineAction'></a>
+### InlineAction `property`
+
+##### Summary
+
+[AdaptiveAction](#T-AdaptiveCards-AdaptiveAction 'AdaptiveCards.AdaptiveAction') to invoke inline.
+
 <a name='P-AdaptiveCards-AdaptiveChoice-IsEnabled'></a>
 ### IsEnabled `property`
 
@@ -1952,6 +1969,77 @@ The content alignment for the element inside the container.
 ##### Summary
 
 Determines whether to serialize the style for XML.
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-AdaptiveCards-AdaptiveColorInput'></a>
+## AdaptiveColorInput `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Represents an Input.Text element.
+
+<a name='F-AdaptiveCards-AdaptiveColorInput-TypeName'></a>
+### TypeName `constants`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='P-AdaptiveCards-AdaptiveColorInput-MaxLength'></a>
+### MaxLength `property`
+
+##### Summary
+
+Hint of maximum number of characters to collect (may be ignored by some clients).
+
+<a name='P-AdaptiveCards-AdaptiveColorInput-Placeholder'></a>
+### Placeholder `property`
+
+##### Summary
+
+Placeholder text to display when the input is empty.
+
+<a name='P-AdaptiveCards-AdaptiveColorInput-Regex'></a>
+### Regex `property`
+
+##### Summary
+
+Regular expression used for validating the input.
+
+<a name='P-AdaptiveCards-AdaptiveColorInput-Style'></a>
+### Style `property`
+
+##### Summary
+
+Hint of style of input, if client doesn't support the style it will become simple text input.
+
+<a name='P-AdaptiveCards-AdaptiveColorInput-Type'></a>
+### Type `property`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='P-AdaptiveCards-AdaptiveColorInput-Value'></a>
+### Value `property`
+
+##### Summary
+
+The initial value for the field.
+
+<a name='M-AdaptiveCards-AdaptiveColorInput-GetNonInteractiveValue'></a>
+### GetNonInteractiveValue() `method`
+
+##### Summary
+
+*Inherit from parent.*
 
 ##### Parameters
 
