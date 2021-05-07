@@ -1,0 +1,1 @@
+../../../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h
