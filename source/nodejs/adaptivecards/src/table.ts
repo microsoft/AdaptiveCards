@@ -1,16 +1,22 @@
-import { Container, property, SerializableObject, SerializableObjectCollectionProperty, SerializationContext,
-    Strings, ValidationEvent, Versions, TypeErrorType, CardElement, StylableCardElementContainer, PropertyBag, SizeAndUnit,
-    CustomProperty, PropertyDefinition, BaseSerializationContext, SizeUnit, BoolProperty, PaddingDefinition, Spacing,
-    VerticalAlignment, EnumProperty, ContainerStyleProperty, stringToCssColor, NumProperty, TextStyleDefinition, HorizontalAlignment } from "adaptivecards";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+import { CardElement, StylableCardElementContainer, SerializationContext, Container, ContainerStyleProperty } from "./card-elements";
+import { HorizontalAlignment, VerticalAlignment, SizeUnit, ValidationEvent, TypeErrorType, Spacing } from "./enums";
+import { TextStyleDefinition } from "./host-config";
+import { BaseSerializationContext, BoolProperty, CustomProperty, EnumProperty, property, PropertyBag,
+    PropertyDefinition, SerializableObject, SerializableObjectCollectionProperty, Versions } from "./serialization";
+import { SizeAndUnit, PaddingDefinition } from "./shared";
+import { Strings } from "./strings";
+import { stringToCssColor } from "./utils";
 
 export class ColumnDefinition extends SerializableObject {
     //#region Schema
 
-    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "horizontalCellContentAlignment", HorizontalAlignment);
-    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "verticalCellContentAlignment", VerticalAlignment);
+    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "horizontalCellContentAlignment", HorizontalAlignment);
+    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "verticalCellContentAlignment", VerticalAlignment);
 
     static readonly widthProperty = new CustomProperty<SizeAndUnit>(
-        Versions.v1_0,
+        Versions.v1_5,
         "width",
         (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
             let result: SizeAndUnit = property.defaultValue;
@@ -297,9 +303,9 @@ export class TableCell extends Container {
 export class TableRow extends StylableContainer<TableCell> {
     //#region Schema
 
-    static readonly styleProperty = new ContainerStyleProperty(Versions.v1_0, "style");
-    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "horizontalCellContentAlignment", HorizontalAlignment);
-    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "verticalCellContentAlignment", VerticalAlignment);
+    static readonly styleProperty = new ContainerStyleProperty(Versions.v1_5, "style");
+    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "horizontalCellContentAlignment", HorizontalAlignment);
+    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "verticalCellContentAlignment", VerticalAlignment);
 
     @property(TableRow.horizontalCellContentAlignmentProperty)
     horizontalCellContentAlignment?: HorizontalAlignment;
@@ -409,13 +415,13 @@ export class TableRow extends StylableContainer<TableCell> {
 export class Table extends StylableContainer<TableRow> {
     //#region Schema
 
-    private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "columns", ColumnDefinition);
+    private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_5, "columns", ColumnDefinition);
 
-    static readonly firstRowAsHeadersProperty = new BoolProperty(Versions.v1_0, "firstRowAsHeaders", true);
-    static readonly showGridLinesProperty = new BoolProperty(Versions.v1_0, "showGridLines", true);
-    static readonly gridStyleProperty = new ContainerStyleProperty(Versions.v1_0, "gridStyle");
-    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "horizontalCellContentAlignment", HorizontalAlignment);
-    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "verticalCellContentAlignment", VerticalAlignment);
+    static readonly firstRowAsHeadersProperty = new BoolProperty(Versions.v1_5, "firstRowAsHeaders", true);
+    static readonly showGridLinesProperty = new BoolProperty(Versions.v1_5, "showGridLines", true);
+    static readonly gridStyleProperty = new ContainerStyleProperty(Versions.v1_5, "gridStyle");
+    static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "horizontalCellContentAlignment", HorizontalAlignment);
+    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "verticalCellContentAlignment", VerticalAlignment);
 
     @property(Table.columnsProperty)
     private _columns: ColumnDefinition[] = [];

@@ -107,6 +107,9 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.Column, DesignerPeers.ColumnPeer, DesignerPeerCategory.Containers, "acd-icon-column");
         this.registerPeer(Adaptive.ImageSet, DesignerPeers.ImageSetPeer, DesignerPeerCategory.Containers, "acd-icon-imageSet");
         this.registerPeer(Adaptive.FactSet, DesignerPeers.FactSetPeer, DesignerPeerCategory.Containers, "acd-icon-factSet");
+        this.registerPeer(Adaptive.Table, DesignerPeers.TablePeer, DesignerPeerCategory.Containers, "acd-icon-table");
+        this.registerPeer(Adaptive.TableRow, DesignerPeers.TableRowPeer, DesignerPeerCategory.Containers, "acd-icon-tableRow");
+        this.registerPeer(Adaptive.TableCell, DesignerPeers.TableCellPeer, DesignerPeerCategory.Containers, "acd-icon-tableCell");
 
         this.registerPeer(Adaptive.TextBlock, DesignerPeers.TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
         this.registerPeer(Adaptive.RichTextBlock, DesignerPeers.RichTextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-richTextBlock");

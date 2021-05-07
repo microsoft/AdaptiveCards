@@ -6,8 +6,6 @@ import * as ACDesigner from "adaptivecards-designer";
 import * as ACTemplating from "adaptivecards-templating";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
-import { OutlookContainerWithExtras } from "./outlook-container-with-extras";
-import * as ExtrasDesigner from "adaptivecards-extras-designer";
 
 // Uncomment below if you plan to use an empty hostContainers array
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
@@ -63,10 +61,7 @@ window.onload = function() {
     }
     */
 
-    ExtrasDesigner.initializeDesignerSupport();
-
-	// let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
-	let designer = new ACDesigner.CardDesigner([ new OutlookContainerWithExtras("Outlook (with extras)", "containers/outlook-container.css") ]);
+	let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
 	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 	designer.attachTo(document.getElementById("designerRootHost"));
 
@@ -82,7 +77,7 @@ window.onload = function() {
                         type: "Image",
                         size: "Small",
                         style: "Person",
-                        url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                        url: "https://matthidinger.com/images/bio-photo.jpg"
                     }
                 ]
             },
@@ -116,7 +111,7 @@ window.onload = function() {
         description: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
         creator: {
             name: "Matt Hidinger",
-            profileImage: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+            profileImage: "https://matthidinger.com/images/bio-photo.jpg"
         },
         createdUtc: "2017-02-14T06:08:39Z",
         viewUrl: "https://adaptivecards.io",
@@ -158,7 +153,7 @@ window.onload = function() {
                         name: "profileImage",
                         displayName: "Profile image URL",
                         valueType: "String",
-                        sampleValue: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                        sampleValue: "https://matthidinger.com/images/bio-photo.jpg"
                     }
                 ]
             },

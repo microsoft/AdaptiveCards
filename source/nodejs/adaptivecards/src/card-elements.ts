@@ -10,7 +10,7 @@ import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
     NumProperty, PropertyBag, CustomProperty, PropertyDefinition, StringArrayProperty } from "./serialization";
-import { CardObjectRegistry } from "./registry";
+import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 
@@ -7232,49 +7232,6 @@ class InlineAdaptiveCard extends AdaptiveCard {
         return renderedCard;
     }
 }
-
-export class GlobalRegistry {
-    static populateWithDefaultElements(registry: CardObjectRegistry<CardElement>) {
-        registry.clear();
-
-        registry.register("Container", Container);
-        registry.register("TextBlock", TextBlock);
-        registry.register("RichTextBlock", RichTextBlock, Versions.v1_2);
-        registry.register("TextRun", TextRun, Versions.v1_2);
-        registry.register("Image", Image);
-        registry.register("ImageSet", ImageSet);
-        registry.register("Media", Media, Versions.v1_1);
-        registry.register("FactSet", FactSet);
-        registry.register("ColumnSet", ColumnSet);
-        registry.register("ActionSet", ActionSet, Versions.v1_2);
-        registry.register("Input.Text", TextInput);
-        registry.register("Input.Date", DateInput);
-        registry.register("Input.Time", TimeInput);
-        registry.register("Input.Number", NumberInput);
-        registry.register("Input.ChoiceSet", ChoiceSetInput);
-        registry.register("Input.Toggle", ToggleInput);
-    }
-
-    static populateWithDefaultActions(registry: CardObjectRegistry<Action>) {
-        registry.clear();
-
-        registry.register(OpenUrlAction.JsonTypeName, OpenUrlAction);
-        registry.register(SubmitAction.JsonTypeName, SubmitAction);
-        registry.register(ShowCardAction.JsonTypeName, ShowCardAction);
-        registry.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
-        registry.register(ExecuteAction.JsonTypeName, ExecuteAction, Versions.v1_4);
-    }
-
-    static readonly elements = new CardObjectRegistry<CardElement>();
-    static readonly actions = new CardObjectRegistry<Action>();
-
-    static reset() {
-        GlobalRegistry.populateWithDefaultElements(GlobalRegistry.elements);
-        GlobalRegistry.populateWithDefaultActions(GlobalRegistry.actions);
-    }
-}
-
-GlobalRegistry.reset();
 
 export class SerializationContext extends BaseSerializationContext {
     private _elementRegistry?: CardObjectRegistry<CardElement>;

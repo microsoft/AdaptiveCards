@@ -2820,3 +2820,138 @@ export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlo
         this.cardElement.addInline(textRun);
     }
 }
+
+export class TableCellPeer extends ContainerPeer {
+    canBeRemoved(): boolean {
+        return false;
+    }
+
+    isDraggable(): boolean {
+        return false;
+    }
+}
+
+export class TableRowPeer extends TypedCardElementPeer<Adaptive.TableRow> {
+    static readonly horizontalCellContentAlignmentProperty = new EnumPropertyEditor(
+        Adaptive.Versions.v1_5,
+        "horizontalCellContentAlignment",
+        "Horizontal cell content alignment",
+        Adaptive.HorizontalAlignment,
+        false,
+        true);
+
+    static readonly verticalCellContentAlignmentProperty = new EnumPropertyEditor(
+        Adaptive.Versions.v1_5,
+        "verticalCellContentAlignment",
+        "Vertical cell content alignment",
+        Adaptive.VerticalAlignment,
+        false,
+        true);
+
+    protected isContainer(): boolean {
+        return true;
+    }
+
+    isDraggable(): boolean {
+        return false;
+    }
+    
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+
+        propertySheet.add(
+            PropertySheetCategory.StyleCategory,
+            ContainerPeer.styleProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
+            TableRowPeer.horizontalCellContentAlignmentProperty,
+            TableRowPeer.verticalCellContentAlignmentProperty);
+    }
+}
+
+export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
+    static readonly firstRowAsHeadersProperty = new BooleanPropertyEditor(
+        Adaptive.Versions.v1_5,
+        "firstRowAsHeaders",
+        "First row as headers");
+
+    static readonly cellSpacingProperty = new NumberPropertyEditor(
+        Adaptive.Versions.v1_5,
+        "cellSpacing",
+        "Cell spacing (in pixels)");
+
+    static readonly showGridLinesProperty = new BooleanPropertyEditor(
+        Adaptive.Versions.v1_5,
+        "showGridLines",
+        "Grid lines");
+
+    static readonly gridStyleProperty = new ContainerStylePropertyEditor(Adaptive.Versions.v1_5, "gridStyle", "Grid style");
+
+    static readonly horizontalCellContentAlignmentProperty = new EnumPropertyEditor(
+        Adaptive.Versions.v1_5,
+        "horizontalCellContentAlignment",
+        "Horizontal cell content alignment",
+        Adaptive.HorizontalAlignment,
+        false,
+        true);
+
+    static readonly verticalCellContentAlignmentProperty = new EnumPropertyEditor(
+        Adaptive.Versions.v1_5,
+        "verticalCellContentAlignment",
+        "Vertical cell content alignment",
+        Adaptive.VerticalAlignment,
+        false,
+        true);
+
+    protected isContainer(): boolean {
+        return true;
+    }
+
+    initializeCardElement() {
+        super.initializeCardElement();
+
+        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
+        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
+        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
+
+        this.cardElement.addRow(new Adaptive.TableRow());
+        this.cardElement.addRow(new Adaptive.TableRow());
+        this.cardElement.addRow(new Adaptive.TableRow());
+    }
+    
+    protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
+        super.internalAddCommands(context, commands);
+
+        commands.push(
+            new PeerCommand(
+                {
+                    name: "Add a row",
+                    isPromotable: false,
+                    execute: (command: PeerCommand, clickedElement: HTMLElement) => {
+                        let row = new Adaptive.TableRow();
+
+                        this.cardElement.addRow(row);
+
+                        this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, row));
+                    }
+                })
+        );
+    }
+    
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+
+        propertySheet.add(defaultCategory, TablePeer.firstRowAsHeadersProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.StyleCategory,
+            TablePeer.showGridLinesProperty,
+            TablePeer.gridStyleProperty);
+
+        propertySheet.add(PropertySheetCategory.LayoutCategory,
+            TablePeer.cellSpacingProperty,
+            TablePeer.horizontalCellContentAlignmentProperty,
+            TablePeer.verticalCellContentAlignmentProperty);
+    }
+}
