@@ -4,10 +4,9 @@
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
-SubmitAction::SubmitAction() :
-    BaseActionElement(ActionType::Submit), m_associatedInputs(AssociatedInputs::Auto)
+SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit), m_associatedInputs(AssociatedInputs::Auto)
 {
     PopulateKnownPropertiesSet();
 }
@@ -64,7 +63,8 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(ParseContext&
     std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(context, json);
 
     submitAction->SetDataJson(ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::Data));
-    submitAction->SetAssociatedInputs(ParseUtil::GetEnumValue<AssociatedInputs>(json, AdaptiveCardSchemaKey::AssociatedInputs, AssociatedInputs::Auto, AssociatedInputsFromString));
+    submitAction->SetAssociatedInputs(ParseUtil::GetEnumValue<AssociatedInputs>(
+        json, AdaptiveCardSchemaKey::AssociatedInputs, AssociatedInputs::Auto, AssociatedInputsFromString));
 
     return submitAction;
 }

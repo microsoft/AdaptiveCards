@@ -5,10 +5,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     AdaptiveFeatureRegistration::AdaptiveFeatureRegistration() {}
 
@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveFeatureRegistration::RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration> sharedParserRegistration) noexcept
+    HRESULT AdaptiveFeatureRegistration::RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::FeatureRegistration> sharedParserRegistration) noexcept
     try
     {
         m_sharedFeatureRegistration = sharedParserRegistration;

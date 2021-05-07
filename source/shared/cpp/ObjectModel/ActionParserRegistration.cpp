@@ -12,7 +12,7 @@
 #include "ToggleVisibilityAction.h"
 #include "UnknownAction.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     ActionElementParserWrapper::ActionElementParserWrapper(std::shared_ptr<ActionElementParser> parserToWrap) :
         m_parser{parserToWrap}
@@ -22,7 +22,7 @@ namespace AdaptiveSharedNamespace
     std::shared_ptr<BaseActionElement> ActionElementParserWrapper::Deserialize(ParseContext& context, const Json::Value& value)
     {
         const auto& idProperty = ParseUtil::GetString(value, AdaptiveCardSchemaKey::Id);
-        const AdaptiveSharedNamespace::InternalId internalId = AdaptiveSharedNamespace::InternalId::Next();
+        const AdaptiveCards::InternalId internalId = AdaptiveCards::InternalId::Next();
         context.PushElement(idProperty, internalId);
         std::shared_ptr<BaseActionElement> element = m_parser->Deserialize(context, value);
         context.PopElement();

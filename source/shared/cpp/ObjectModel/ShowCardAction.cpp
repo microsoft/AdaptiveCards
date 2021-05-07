@@ -6,7 +6,7 @@
 #include "ShowCardAction.h"
 #include "ParseContext.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 ShowCardAction::ShowCardAction() : BaseActionElement(ActionType::ShowCard)
 {
@@ -57,8 +57,7 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(ParseContex
     return showCardAction;
 }
 
-std::shared_ptr<BaseActionElement>
-ShowCardActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseActionElement> ShowCardActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return ShowCardActionParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

@@ -5,7 +5,7 @@
 #include "ParseContext.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 ChoiceInput::ChoiceInput()
 {

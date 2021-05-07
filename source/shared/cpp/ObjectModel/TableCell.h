@@ -5,7 +5,7 @@
 
 #include "Container.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseCardElement;
 

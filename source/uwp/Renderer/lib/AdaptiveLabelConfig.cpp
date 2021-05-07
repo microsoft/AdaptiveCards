@@ -5,9 +5,9 @@
 #include "AdaptiveLabelConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveLabelConfig::RuntimeClassInitialize() noexcept
     try
@@ -19,7 +19,7 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveLabelConfig::RuntimeClassInitialize(LabelConfig labelConfig) noexcept
     {
-        m_inputSpacing = static_cast<ABI::AdaptiveNamespace::Spacing>(labelConfig.inputSpacing);
+        m_inputSpacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(labelConfig.inputSpacing);
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelConfig>(m_requiredInputs.GetAddressOf(), labelConfig.requiredInputs));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelConfig>(m_optionalInputs.GetAddressOf(), labelConfig.optionalInputs));
@@ -27,35 +27,35 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::get_InputSpacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing)
+    HRESULT AdaptiveLabelConfig::get_InputSpacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
     {
         *spacing = m_inputSpacing;
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::put_InputSpacing(ABI::AdaptiveNamespace::Spacing spacing)
+    HRESULT AdaptiveLabelConfig::put_InputSpacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
     {
         m_inputSpacing = spacing;
         return S_OK;
-    }   
+    }
 
-    HRESULT AdaptiveLabelConfig::get_RequiredInputs(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig** requiredInputs)
+    HRESULT AdaptiveLabelConfig::get_RequiredInputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig** requiredInputs)
     {
         return m_requiredInputs.CopyTo(requiredInputs);
     }
 
-    HRESULT AdaptiveLabelConfig::put_RequiredInputs(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* requiredInputs)
+    HRESULT AdaptiveLabelConfig::put_RequiredInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* requiredInputs)
     {
         m_requiredInputs = requiredInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::get_OptionalInputs(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig** optionalInputs)
+    HRESULT AdaptiveLabelConfig::get_OptionalInputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig** optionalInputs)
     {
         return m_optionalInputs.CopyTo(optionalInputs);
     }
 
-    HRESULT AdaptiveLabelConfig::put_OptionalInputs(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* optionalInputs)
+    HRESULT AdaptiveLabelConfig::put_OptionalInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* optionalInputs)
     {
         m_optionalInputs = optionalInputs;
         return S_OK;

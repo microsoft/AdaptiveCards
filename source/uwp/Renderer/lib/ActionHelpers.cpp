@@ -10,7 +10,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -20,7 +20,7 @@ using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveNamespace::ActionHelpers
+namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 {
     HRESULT GetButtonMargin(_In_ IAdaptiveActionsConfig* actionsConfig, Thickness& buttonMargin) noexcept
     {
@@ -28,10 +28,10 @@ namespace AdaptiveNamespace::ActionHelpers
         UINT32 buttonSpacing;
         RETURN_IF_FAILED(actionsConfig->get_ButtonSpacing(&buttonSpacing));
 
-        ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation actionsOrientation;
         RETURN_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
-        if (actionsOrientation == ABI::AdaptiveNamespace::ActionsOrientation::Horizontal)
+        if (actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal)
         {
             buttonMargin.Left = buttonMargin.Right = buttonSpacing / 2;
         }
@@ -83,8 +83,8 @@ namespace AdaptiveNamespace::ActionHelpers
     void ArrangeButtonContent(_In_ IAdaptiveActionElement* action,
                               _In_ IAdaptiveActionsConfig* actionsConfig,
                               _In_ IAdaptiveRenderContext* renderContext,
-                              ABI::AdaptiveNamespace::ContainerStyle containerStyle,
-                              _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                              ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                               bool allActionsHaveIcons,
                               _In_ IButton* button)
     {
@@ -121,7 +121,7 @@ namespace AdaptiveNamespace::ActionHelpers
         if (iconUrl != nullptr)
         {
             // Get icon configs
-            ABI::AdaptiveNamespace::IconPlacement iconPlacement;
+            ABI::AdaptiveCards::Rendering::Uwp::IconPlacement iconPlacement;
             UINT32 iconSize;
 
             THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
@@ -136,7 +136,7 @@ namespace AdaptiveNamespace::ActionHelpers
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
-            THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment::Center));
+            THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Center));
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
             THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -168,7 +168,8 @@ namespace AdaptiveNamespace::ActionHelpers
 
             ComPtr<IFrameworkElement> buttonTextAsFrameworkElement;
             THROW_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
-            THROW_IF_FAILED(buttonTextAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment::VerticalAlignment_Center));
+            THROW_IF_FAILED(buttonTextAsFrameworkElement->put_VerticalAlignment(
+                ABI::Windows::UI::Xaml::VerticalAlignment::VerticalAlignment_Center));
 
             // Handle different arrangements inside button
             ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
@@ -178,7 +179,7 @@ namespace AdaptiveNamespace::ActionHelpers
             THROW_IF_FAILED(buttonIconAsFrameworkElement->put_Height(iconSize));
 
             ComPtr<IUIElement> separator;
-            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle && allActionsHaveIcons)
+            if (iconPlacement == ABI::AdaptiveCards::Rendering::Uwp::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
             }
@@ -188,7 +189,7 @@ namespace AdaptiveNamespace::ActionHelpers
 
                 // Only add spacing when the icon must be located at the left of the title
                 UINT spacingSize;
-                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
+                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveCards::Rendering::Uwp::Spacing::Default, &spacingSize));
 
                 ABI::Windows::UI::Color color = {0};
                 separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
@@ -233,8 +234,8 @@ namespace AdaptiveNamespace::ActionHelpers
         RETURN_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
         ComPtr<IStyle> styleToApply;
 
-        ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
-            PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
+        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
+            PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
 
         if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault)) &&
              (isSentimentDefault == 0)) ||
@@ -339,13 +340,13 @@ namespace AdaptiveNamespace::ActionHelpers
         RETURN_IF_FAILED(GetButtonMargin(actionsConfig.Get(), buttonMargin));
         RETURN_IF_FAILED(buttonFrameworkElement->put_Margin(buttonMargin));
 
-        ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation actionsOrientation;
         RETURN_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
-        ABI::AdaptiveNamespace::ActionAlignment actionAlignment;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment actionAlignment;
         RETURN_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        if (actionsOrientation == ABI::AdaptiveNamespace::ActionsOrientation::Horizontal)
+        if (actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal)
         {
             // For horizontal alignment, we always use stretch
             RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(
@@ -355,22 +356,22 @@ namespace AdaptiveNamespace::ActionHelpers
         {
             switch (actionAlignment)
             {
-            case ABI::AdaptiveNamespace::ActionAlignment::Center:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Center:
                 RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
                 break;
-            case ABI::AdaptiveNamespace::ActionAlignment::Left:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Left:
                 RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
                 break;
-            case ABI::AdaptiveNamespace::ActionAlignment::Right:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Right:
                 RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
                 break;
-            case ABI::AdaptiveNamespace::ActionAlignment::Stretch:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Stretch:
                 RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Stretch));
                 break;
             }
         }
 
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         boolean allowAboveTitleIconPlacement;
@@ -386,7 +387,7 @@ namespace AdaptiveNamespace::ActionHelpers
 
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-        ABI::AdaptiveNamespace::ActionMode showCardActionMode;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
         // Add click handler which calls IAdaptiveActionInvoker::SendActionEvent
@@ -396,7 +397,7 @@ namespace AdaptiveNamespace::ActionHelpers
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
         EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
                                                                                                      /*args*/) -> HRESULT {
                                                    return actionInvoker->SendActionEvent(action.Get());
                                                }).Get(),
@@ -422,12 +423,12 @@ namespace AdaptiveNamespace::ActionHelpers
     {
         if (action != nullptr)
         {
-            ABI::AdaptiveNamespace::ActionType actionType;
+            ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
             THROW_IF_FAILED(action->get_ActionType(&actionType));
 
-            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
+            if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::ShowCard)
             {
-                THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
+                THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::UnsupportedValue,
                                                           HStringReference(warning.c_str()).Get()));
                 return true;
             }
@@ -478,7 +479,7 @@ namespace AdaptiveNamespace::ActionHelpers
         ComPtr<IUIElement> localTextBoxContainer(textBoxParentContainer);
         ComPtr<IAdaptiveActionElement> localInlineAction(inlineAction);
 
-        ABI::AdaptiveNamespace::ActionType actionType;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
         THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -491,7 +492,8 @@ namespace AdaptiveNamespace::ActionHelpers
             return;
         }
 
-        if ((actionType == ABI::AdaptiveNamespace::ActionType::Submit) || (actionType == ABI::AdaptiveNamespace::ActionType::Execute))
+        if ((actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::Submit) ||
+            (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType::Execute))
         {
             THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
         }
@@ -526,7 +528,7 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
         UINT spacingSize;
-        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
+        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::Rendering::Uwp::Spacing::Default, &spacingSize));
 
         auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0, {0}, false);
 
@@ -590,7 +592,7 @@ namespace AdaptiveNamespace::ActionHelpers
         // Make the action the same size as the text box
         EventRegistrationToken eventToken;
         THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
-            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs*
+            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
                                                                                                 /*args*/) -> HRESULT {
                 ComPtr<IFrameworkElement> actionFrameworkElement;
                 RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
@@ -659,7 +661,8 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         // We don't wrap the element if it's a show card or if the action's not enabled;
-        boolean shouldWrap = !ActionHelpers::WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction");
+        boolean shouldWrap =
+            !ActionHelpers::WarnForInlineShowCard(renderContext, action, L"Inline ShowCard not supported for SelectAction");
 
         if (action != nullptr)
         {
@@ -702,7 +705,7 @@ namespace AdaptiveNamespace::ActionHelpers
         // (padding, margin) for adaptive card elements to avoid adding spacings to card-level selectAction.
         if (adaptiveCardElement != nullptr)
         {
-            ABI::AdaptiveNamespace::Spacing elementSpacing;
+            ABI::AdaptiveCards::Rendering::Uwp::Spacing elementSpacing;
             THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));
             UINT spacingSize;
             THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), elementSpacing, &spacingSize));
@@ -787,7 +790,7 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(localButton.As(&buttonBase));
 
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
                                                                                                           /*args*/) -> HRESULT {
                                                   THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
                                                   return S_OK;
@@ -811,7 +814,7 @@ namespace AdaptiveNamespace::ActionHelpers
         {
             if (selectAction != nullptr)
             {
-                renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
+                renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                                           HStringReference(L"SelectAction present, but Interactivity is not supported").Get());
             }
 
@@ -825,7 +828,7 @@ namespace AdaptiveNamespace::ActionHelpers
                          _In_ IPanel* bodyPanel,
                          bool insertSeparator,
                          _In_ IAdaptiveRenderContext* renderContext,
-                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -835,7 +838,7 @@ namespace AdaptiveNamespace::ActionHelpers
         // Create a separator between the body and the actions
         if (insertSeparator)
         {
-            ABI::AdaptiveNamespace::Spacing spacing;
+            ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing;
             RETURN_IF_FAILED(actionsConfig->get_Spacing(&spacing));
 
             UINT spacingSize;
@@ -853,7 +856,7 @@ namespace AdaptiveNamespace::ActionHelpers
         return S_OK;
     }
 
-    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
                                  _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                  _In_ IVector<IAdaptiveActionElement*>* children,
                                  _In_ IAdaptiveRenderContext* renderContext,
@@ -865,18 +868,18 @@ namespace AdaptiveNamespace::ActionHelpers
         ComPtr<IAdaptiveActionsConfig> actionsConfig;
         RETURN_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
 
-        ABI::AdaptiveNamespace::ActionAlignment actionAlignment;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment actionAlignment;
         RETURN_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation;
+        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation actionsOrientation;
         RETURN_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
         // Declare the panel that will host the buttons
         ComPtr<IPanel> actionsPanel;
         ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
 
-        if (actionAlignment == ABI::AdaptiveNamespace::ActionAlignment::Stretch &&
-            actionsOrientation == ABI::AdaptiveNamespace::ActionsOrientation::Horizontal)
+        if (actionAlignment == ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Stretch &&
+            actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal)
         {
             // If stretch alignment and orientation is horizontal, we use a grid with equal column widths to achieve
             // stretch behavior. For vertical orientation, we'll still just use a stack panel since the concept of
@@ -892,7 +895,7 @@ namespace AdaptiveNamespace::ActionHelpers
             ComPtr<IStackPanel> actionStackPanel =
                 XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
 
-            auto uiOrientation = (actionsOrientation == ABI::AdaptiveNamespace::ActionsOrientation::Horizontal) ?
+            auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal) ?
                 Orientation::Orientation_Horizontal :
                 Orientation::Orientation_Vertical;
 
@@ -903,16 +906,16 @@ namespace AdaptiveNamespace::ActionHelpers
 
             switch (actionAlignment)
             {
-            case ABI::AdaptiveNamespace::ActionAlignment::Center:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Center:
                 RETURN_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
                 break;
-            case ABI::AdaptiveNamespace::ActionAlignment::Left:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Left:
                 RETURN_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
                 break;
-            case ABI::AdaptiveNamespace::ActionAlignment::Right:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Right:
                 RETURN_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
                 break;
-            case ABI::AdaptiveNamespace::ActionAlignment::Stretch:
+            case ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment::Stretch:
                 RETURN_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Stretch));
                 break;
             }
@@ -923,7 +926,7 @@ namespace AdaptiveNamespace::ActionHelpers
 
         Thickness buttonMargin;
         RETURN_IF_FAILED(ActionHelpers::GetButtonMargin(actionsConfig.Get(), buttonMargin));
-        if (actionsOrientation == ABI::AdaptiveNamespace::ActionsOrientation::Horizontal)
+        if (actionsOrientation == ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation::Horizontal)
         {
             // Negate the spacing on the sides so the left and right buttons are flush on the side.
             // We do NOT remove the margin from the individual button itself, since that would cause
@@ -981,17 +984,17 @@ namespace AdaptiveNamespace::ActionHelpers
                     RETURN_IF_FAILED(actionRegistration->Get(actionTypeString.Get(), &renderer));
                     if (!renderer)
                     {
-                        ABI::AdaptiveNamespace::FallbackType actionFallbackType;
+                        ABI::AdaptiveCards::Rendering::Uwp::FallbackType actionFallbackType;
                         action->get_FallbackType(&actionFallbackType);
                         switch (actionFallbackType)
                         {
-                        case ABI::AdaptiveNamespace::FallbackType::Drop:
+                        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Drop:
                         {
                             RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, actionTypeString.Get()));
                             return S_OK;
                         }
 
-                        case ABI::AdaptiveNamespace::FallbackType::Content:
+                        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Content:
                         {
                             ComPtr<IAdaptiveActionElement> actionFallback;
                             RETURN_IF_FAILED(action->get_FallbackContent(&actionFallback));
@@ -1006,7 +1009,7 @@ namespace AdaptiveNamespace::ActionHelpers
                             break;
                         }
 
-                        case ABI::AdaptiveNamespace::FallbackType::None:
+                        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::None:
                         default:
                             return E_FAIL;
                         }
@@ -1018,21 +1021,21 @@ namespace AdaptiveNamespace::ActionHelpers
 
                 XamlHelpers::AppendXamlElementToPanel(actionControl.Get(), actionsPanel.Get());
 
-                ABI::AdaptiveNamespace::ActionType actionType;
+                ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
                 RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
                 // Build inline show cards if needed
-                if (actionType == ABI::AdaptiveNamespace::ActionType_ShowCard)
+                if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType_ShowCard)
                 {
                     ComPtr<IUIElement> uiShowCard;
 
                     ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
                     RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
 
-                    ABI::AdaptiveNamespace::ActionMode showCardActionMode;
+                    ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
                     RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
-                    if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
+                    if (showCardActionMode == ABI::AdaptiveCards::Rendering::Uwp::ActionMode::Inline)
                     {
                         ComPtr<IAdaptiveShowCardAction> showCardAction;
                         RETURN_IF_FAILED(action.As(&showCardAction));
@@ -1054,8 +1057,8 @@ namespace AdaptiveNamespace::ActionHelpers
                         }
                         else
                         {
-                            ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
-                                PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
+                            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
+                                PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
 
                             RETURN_IF_FAILED(
                                 contextImpl->AddInlineShowCard(adaptiveCard, showCardAction.Get(), uiShowCard.Get(), renderArgs));
@@ -1078,7 +1081,7 @@ namespace AdaptiveNamespace::ActionHelpers
             }
             else
             {
-                renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::MaxActionsExceeded,
+                renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::MaxActionsExceeded,
                                           HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed")
                                               .Get());
             }
@@ -1107,15 +1110,15 @@ namespace AdaptiveNamespace::ActionHelpers
         return actionSetAsPanel.CopyTo(actionSetControl);
     }
 
-    void CreateAppropriateButton(ABI::AdaptiveNamespace::IAdaptiveActionElement* action, ComPtr<IButton>& button)
+    void CreateAppropriateButton(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action, ComPtr<IButton>& button)
     {
         if (action != nullptr)
         {
-            ABI::AdaptiveNamespace::ActionType actionType;
+            ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
             THROW_IF_FAILED(action->get_ActionType(&actionType));
 
             // construct an appropriate button for the action type
-            if (actionType == ABI::AdaptiveNamespace::ActionType_OpenUrl)
+            if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType_OpenUrl)
             {
                 // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
                 auto linkButton = winrt::make<LinkButton>();

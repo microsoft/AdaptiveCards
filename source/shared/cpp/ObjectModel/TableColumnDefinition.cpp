@@ -5,7 +5,7 @@
 #include "TableColumnDefinition.h"
 #include "Util.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     TableColumnDefinition::TableColumnDefinition() :
         m_horizontalCellContentAlignment(HorizontalAlignment::Left),

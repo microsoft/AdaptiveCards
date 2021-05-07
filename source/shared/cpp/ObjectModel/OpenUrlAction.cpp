@@ -5,7 +5,7 @@
 #include "ParseContext.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 OpenUrlAction::OpenUrlAction() : BaseActionElement(ActionType::OpenUrl)
 {
@@ -40,8 +40,7 @@ std::shared_ptr<BaseActionElement> OpenUrlActionParser::Deserialize(ParseContext
     return openUrlAction;
 }
 
-std::shared_ptr<BaseActionElement>
-OpenUrlActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseActionElement> OpenUrlActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return OpenUrlActionParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

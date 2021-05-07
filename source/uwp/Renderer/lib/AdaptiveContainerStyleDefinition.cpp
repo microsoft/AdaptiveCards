@@ -7,7 +7,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize() noexcept
     try
@@ -36,22 +36,22 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveContainerStyleDefinition::get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig** colorsConfig)
     {
         return m_foregroundColors.CopyTo(colorsConfig);
     }
 
-    HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig* colorsConfig)
     {
         m_foregroundColors = colorsConfig;
         return S_OK;
     }
-    HRESULT AdaptiveContainerStyleDefinition::get_HighlightColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::get_HighlightColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig** colorsConfig)
     {
         return m_highlightColors.CopyTo(colorsConfig);
     }
 
-    HRESULT AdaptiveContainerStyleDefinition::put_HighlightColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::put_HighlightColors(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig* colorsConfig)
     {
         m_highlightColors = colorsConfig;
         return S_OK;

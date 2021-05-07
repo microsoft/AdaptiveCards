@@ -6,7 +6,7 @@
 #include "BaseInputElement.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class TimeInput : public BaseInputElement
     {
