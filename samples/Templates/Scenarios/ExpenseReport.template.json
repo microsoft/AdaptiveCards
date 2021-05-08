@@ -81,7 +81,6 @@
 					"spacing": "Small",
 					"size": "Small",
 					"weight": "Bolder",
-					"color": "Accent",
 					"text": "[${code}](https://adaptivecards.io)",
 					"wrap": true
 				},

@@ -15,6 +15,7 @@ namespace AdaptiveSharedNamespace
 
     public:
         Container();
+        Container(CardElementType derivedType);
         Container(const Container&) = default;
         Container(Container&&) = default;
         Container& operator=(const Container&) = default;

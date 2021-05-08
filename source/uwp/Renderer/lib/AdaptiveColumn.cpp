@@ -69,7 +69,7 @@ namespace AdaptiveNamespace
     {
         RETURN_IF_FAILED(m_width.Set(width));
 
-        RETURN_IF_FAILED(put_PixelWidth(ParseSizeForPixelSize(HStringToUTF8(width), nullptr)));
+        RETURN_IF_FAILED(put_PixelWidth(ParseSizeForPixelSize(HStringToUTF8(width), nullptr).value_or(0)));
         return S_OK;
     }
 
