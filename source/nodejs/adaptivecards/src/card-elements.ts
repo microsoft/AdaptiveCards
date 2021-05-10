@@ -2892,6 +2892,184 @@ export class TextInput extends Input {
     }
 }
 
+export class FileInput extends Input {
+  //#region Schema
+
+  static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
+  static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
+  static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+  static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.File);
+  static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
+
+  @property(FileInput.valueProperty)
+  defaultValue?: string;
+
+  @property(FileInput.maxLengthProperty)
+  maxLength?: number;
+
+  @property(FileInput.placeholderProperty)
+  placeholder?: string;
+
+  @property(FileInput.styleProperty)
+  style: Enums.InputTextStyle = Enums.InputTextStyle.File;
+
+  @property(FileInput.regexProperty)
+  regex?: string;
+
+  //#endregion
+
+  private setupInput(input: HTMLInputElement) {
+      input.style.flex = "1 1 auto";
+      input.tabIndex = 0;
+
+      if (this.placeholder) {
+          input.placeholder = this.placeholder;
+          input.setAttribute("aria-label", this.placeholder)
+      }
+
+      if (this.maxLength && this.maxLength > 0) {
+          input.maxLength = this.maxLength;
+      }
+
+      input.oninput = () => { this.valueChanged(); }
+  }
+
+  protected internalRender(): HTMLElement | undefined {
+      let result: HTMLInputElement;
+
+      result = document.createElement("input");
+      result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
+      result.type = Enums.InputTextStyle[this.style].toLowerCase();
+
+      this.setupInput(result);
+
+      return result;
+  }
+
+  protected overrideInternalRender(): HTMLElement | undefined {
+      let renderedInputControl = super.overrideInternalRender();
+      return renderedInputControl;
+  }
+
+  getJsonTypeName(): string {
+      return "Input.File";
+  }
+
+  getActionById(id: string) {
+      let result = super.getActionById(id);
+      return result;
+  }
+
+  isSet(): boolean {
+      return this.value ? true : false;
+  }
+
+  isValid(): boolean {
+      if (!this.value) {
+          return true;
+      }
+
+      if (this.regex) {
+          return new RegExp(this.regex, "g").test(this.value);
+      }
+
+      return true;
+  }
+
+  get value(): string | undefined {
+      if (this.renderedInputControlElement) {
+          return (<HTMLInputElement>this.renderedInputControlElement).value;
+      }
+      else {
+          return undefined;
+      }
+  }
+}
+
+export class ColorInput extends Input {
+  //#region Schema
+
+  static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
+  static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
+  static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+  static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Color);
+  static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
+
+  @property(ColorInput.valueProperty)
+  defaultValue?: string;
+
+  @property(ColorInput.maxLengthProperty)
+  maxLength?: number;
+
+  @property(ColorInput.placeholderProperty)
+  placeholder?: string;
+
+  @property(ColorInput.styleProperty)
+  style: Enums.InputTextStyle = Enums.InputTextStyle.Color;
+
+  @property(ColorInput.regexProperty)
+  regex?: string;
+
+  //#endregion
+
+  private setupInput(input: HTMLInputElement) {
+      input.style.flex = "1 1 auto";
+      input.tabIndex = 0;
+      input.oninput = () => { this.valueChanged(); }
+  }
+
+  protected internalRender(): HTMLElement | undefined {
+      let result: HTMLInputElement;
+
+      result = document.createElement("input");
+      result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
+      result.type = Enums.InputTextStyle[this.style].toLowerCase();
+
+      this.setupInput(result);
+
+      return result;
+  }
+
+  protected overrideInternalRender(): HTMLElement | undefined {
+      let renderedInputControl = super.overrideInternalRender();
+      return renderedInputControl;
+  }
+
+  getJsonTypeName(): string {
+      return "Input.Color";
+  }
+
+  getActionById(id: string) {
+      let result = super.getActionById(id);
+      return result;
+  }
+
+  isSet(): boolean {
+      return this.value ? true : false;
+  }
+
+  isValid(): boolean {
+      if (!this.value) {
+          return true;
+      }
+
+      if (this.regex) {
+          return new RegExp(this.regex, "g").test(this.value);
+      }
+
+      return true;
+  }
+
+  get value(): string | undefined {
+      if (this.renderedInputControlElement) {
+          return (<HTMLInputElement>this.renderedInputControlElement).value;
+      }
+      else {
+          return undefined;
+      }
+  }
+}
+
 export class ToggleInput extends Input {
     //#region Schema
 
@@ -3037,6 +3215,15 @@ export class Choice extends SerializableObject {
 
     static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
     static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
+    static readonly isEnabledProperty = new BoolProperty(Versions.v1_0, "isEnabled", true);
+    static readonly inlineActionProperty = new ActionProperty(
+        Versions.v1_0,
+        "inlineAction",
+        [
+            "Action.ShowCard",
+            "Action.Submit",
+            "Action.OpenUrl"
+        ]);
 
     @property(Choice.titleProperty)
     title?: string;
@@ -3044,17 +3231,29 @@ export class Choice extends SerializableObject {
     @property(Choice.valueProperty)
     value?: string;
 
+    @property(Choice.isEnabledProperty)
+    isEnabled?: boolean;
+
+    @property(Choice.inlineActionProperty)
+    inlineAction?: Action;
+
     //#endregion
 
     protected getSchemaKey(): string {
         return "Choice";
     }
 
-    constructor(title?: string, value?: string) {
+    protected isDesignMode(): boolean {
+        return false;
+    }
+
+    constructor(title?: string, value?: string, isEnabled?: boolean, inlineAction?: Action) {
         super();
 
         this.title = title;
         this.value = value;
+        this.isEnabled = isEnabled;
+        this.inlineAction = inlineAction;
     }
 }
 
@@ -3150,6 +3349,7 @@ export class ChoiceSetInput extends Input {
             input.style.display = "inline-block";
             input.style.verticalAlign = "middle";
             input.style.flex = "0 0 auto";
+            input.disabled = !choice.isEnabled!;
             input.name = this.id ? this.id : this._uniqueCategoryName;
 
             if (this.isRequired) {
@@ -3170,7 +3370,24 @@ export class ChoiceSetInput extends Input {
                 }
             }
 
-            input.onchange = () => { this.valueChanged(); }
+            input.onchange = () => {
+                this.valueChanged();
+                if (choice.inlineAction instanceof ToggleVisibilityAction) {
+                    let toggleVisibilityAction = choice.inlineAction as ToggleVisibilityAction;
+                    let newTargetElements: { [key: string]: any } = {};
+                    for (let elementId of Object.keys(toggleVisibilityAction.targetElements)) {
+                        let targetElement = this.getRootElement().getElementById(elementId);
+
+                        if (targetElement) {
+                            targetElement.isVisible = input.checked;
+                        }
+                        newTargetElements[elementId] = targetElement;
+                    }
+
+                    toggleVisibilityAction.targetElements = newTargetElements;
+                    toggleVisibilityAction.execute();
+                }
+            }
 
             this._toggleInputs.push(input);
 
@@ -7202,6 +7419,8 @@ export class GlobalRegistry {
         registry.register("ColumnSet", ColumnSet);
         registry.register("ActionSet", ActionSet, Versions.v1_2);
         registry.register("Input.Text", TextInput);
+        registry.register("Input.File", FileInput);
+        registry.register("Input.Color", ColorInput);
         registry.register("Input.Date", DateInput);
         registry.register("Input.Time", TimeInput);
         registry.register("Input.Number", NumberInput);

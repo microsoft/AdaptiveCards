@@ -326,7 +326,15 @@ export class CardDesignerSurface {
 
         if (this.isPreviewMode) {
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
+              if (action instanceof Adaptive.SubmitAction) {
+                let submitAction = action as Adaptive.SubmitAction;
+                alert(
+                    "Action executed\n" + JSON.stringify(submitAction.toJSON(this._serializationContext), undefined, 4) +
+                    "\nData\n" + JSON.stringify(submitAction.data, null, 1));
+              }
+              else {
                 alert("Action executed\n" + JSON.stringify(action.toJSON(this._serializationContext), undefined, 4));
+              }
             };
         }
 
