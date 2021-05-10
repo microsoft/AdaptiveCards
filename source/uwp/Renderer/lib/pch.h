@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-// TODO: NOT DONE YET
 #define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_##cls, BaseTrust)
 #define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_Rendering_Uwp_##cls, BaseTrust)
 #define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.Rendering.Uwp." L#cls, BaseTrust)
