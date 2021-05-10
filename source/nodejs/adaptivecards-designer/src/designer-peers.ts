@@ -1681,7 +1681,7 @@ export class CardElementPeer extends DesignerPeer {
                 let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
 
                 if (!existingPeer) {
-                    this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, this.cardElement.getItemAt(i)));
+                    this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, this.cardElement.getItemAt(i)), i);
                 }
             }
 
@@ -1689,7 +1689,7 @@ export class CardElementPeer extends DesignerPeer {
                 let existingPeer = this.findActionChild(this.cardElement.getActionAt(i));
 
                 if (!existingPeer) {
-                    this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, this.cardElement.getActionAt(i)));
+                    this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, this.cardElement.getActionAt(i)), i);
                 }
             }
         }
