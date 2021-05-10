@@ -126,6 +126,10 @@
     <ClCompile Include="lib\AdaptiveTokenExchangeResource.cpp" />
     <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
     <ClCompile Include="lib\AdaptiveHeadingsConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveTableCell.cpp" />
+    <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveTableRow.cpp" />
+    <ClCompile Include="lib\AdaptiveTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -258,6 +262,10 @@
     <ClInclude Include="lib\AdaptiveTokenExchangeResource.h" />
     <ClInclude Include="lib\AdaptiveAuthentication.h" />
     <ClInclude Include="lib\AdaptiveHeadingsConfig.h" />
+    <ClInclude Include="lib\AdaptiveTableCell.h" />
+    <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
+    <ClInclude Include="lib\AdaptiveTableRow.h" />
+    <ClInclude Include="lib\AdaptiveTable.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
