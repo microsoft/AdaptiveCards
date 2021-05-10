@@ -115,6 +115,18 @@ public class BaseActionElement extends BaseElement {
     AdaptiveCardObjectModelJNI.BaseActionElement_SetStyle__SWIG_1(swigCPtr, this, value);
   }
 
+  public String GetTooltip() {
+    return AdaptiveCardObjectModelJNI.BaseActionElement_GetTooltip(swigCPtr, this);
+  }
+
+  public void SetTooltip(SWIGTYPE_p_std__string value) {
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetTooltip__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value)); else AdaptiveCardObjectModelJNI.BaseActionElement_SetTooltipSwigExplicitBaseActionElement__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value));
+  }
+
+  public void SetTooltip(String value) {
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetTooltip__SWIG_1(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetTooltipSwigExplicitBaseActionElement__SWIG_1(swigCPtr, this, value);
+  }
+
   public ActionType GetElementType() {
     return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.BaseActionElement_GetElementType(swigCPtr, this));
   }
@@ -125,6 +137,14 @@ public class BaseActionElement extends BaseElement {
 
   public void SetMode(Mode mode) {
     AdaptiveCardObjectModelJNI.BaseActionElement_SetMode(swigCPtr, this, mode.swigValue());
+  }
+
+  public boolean GetIsEnabled() {
+    return AdaptiveCardObjectModelJNI.BaseActionElement_GetIsEnabled(swigCPtr, this);
+  }
+
+  public void SetIsEnabled(boolean isEnabled) {
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetIsEnabled(swigCPtr, this, isEnabled);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
