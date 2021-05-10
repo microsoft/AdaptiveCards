@@ -5,10 +5,10 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include <windows.ui.xaml.shapes.h>
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel
-        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveNamespace::IWholeItemsPanel,
+        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::Uwp::IWholeItemsPanel,
                                               ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
@@ -43,7 +43,7 @@ namespace AdaptiveNamespace
 
         void AddElementToStretchablesList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
         bool IsUIElementInStretchableList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
-        void SetVerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
+        void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
@@ -57,7 +57,7 @@ namespace AdaptiveNamespace
         unsigned int m_stretchableItemCount{};
         float m_calculatedSize{};
         bool m_allElementsRendered{};
-        ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalContentAlignment{};
+        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.
         // Some rules such as images vertical stretching only apply for this panel

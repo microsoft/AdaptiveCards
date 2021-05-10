@@ -12,7 +12,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -21,7 +21,7 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Media;
 
 static const float OutsidePanelY = -1000.0f;
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT WholeItemsPanel::RuntimeClassInitialize()
     {
@@ -258,11 +258,11 @@ namespace AdaptiveNamespace
         }
         else
         {
-            if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Center)
+            if (m_verticalContentAlignment == ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Center)
             {
                 currentHeight = (finalSize.Height - m_calculatedSize) / 2;
             }
-            else if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Bottom)
+            else if (m_verticalContentAlignment == ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Bottom)
             {
                 currentHeight = finalSize.Height - m_calculatedSize;
             }
@@ -438,7 +438,7 @@ namespace AdaptiveNamespace
         boolean isStretchable = false;
         if (tagAsInspectable != nullptr)
         {
-            ComPtr<AdaptiveNamespace::IElementTagContent> tagContent;
+            ComPtr<AdaptiveCards::Rendering::Uwp::IElementTagContent> tagContent;
             THROW_IF_FAILED(tagAsInspectable.As(&tagContent));
             THROW_IF_FAILED(tagContent->get_IsStretchable(&isStretchable));
         }
@@ -446,7 +446,7 @@ namespace AdaptiveNamespace
         return isStretchable;
     }
 
-    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment)
+    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment)
     {
         m_verticalContentAlignment = verticalContentAlignment;
     }

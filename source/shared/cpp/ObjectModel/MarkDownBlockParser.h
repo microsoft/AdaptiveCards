@@ -6,7 +6,7 @@
 #include "BaseCardElement.h"
 #include "MarkDownParsedResult.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class MarkDownBlockParser
     {

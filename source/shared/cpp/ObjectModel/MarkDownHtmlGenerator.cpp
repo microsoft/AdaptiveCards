@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "MarkDownHtmlGenerator.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 std::string MarkDownStringHtmlGenerator::GenerateHtmlString()
 {

@@ -5,15 +5,15 @@
 #include "ChoiceSetInput.h"
 #include "AdaptiveInputElement.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("fa103f57-5d54-48ba-80a5-d8939b85e82d") AdaptiveChoiceSetInput
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput,
-                                              ABI::AdaptiveNamespace::IAdaptiveInputElement,
-                                              ABI::AdaptiveNamespace::IAdaptiveCardElement,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveInputElementBase>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveInputElementBase>>
     {
         AdaptiveRuntime(AdaptiveChoiceSetInput);
 
@@ -21,7 +21,7 @@ namespace AdaptiveNamespace
         AdaptiveChoiceSetInput();
 
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedChoiceSetInput);
 
         // IAdaptiveChoiceSetInput
         IFACEMETHODIMP get_Placeholder(_Outptr_ HSTRING* placeholder);
@@ -36,11 +36,11 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
         IFACEMETHODIMP put_Wrap(boolean wrap);
 
-        IFACEMETHODIMP get_ChoiceSetStyle(_Out_ ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle);
-        IFACEMETHODIMP put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle);
+        IFACEMETHODIMP get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle* choiceSetStyle);
+        IFACEMETHODIMP put_ChoiceSetStyle(ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle);
 
         IFACEMETHODIMP get_Choices(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveChoiceInput*>** columns);
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput*>** columns);
 
         // IAdaptiveInputElement
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired)
@@ -61,33 +61,27 @@ namespace AdaptiveNamespace
             return AdaptiveInputElementBase::put_ErrorMessage(errorMessage);
         }
 
-        IFACEMETHODIMP get_Label(_Outptr_ HSTRING* label)
-        {
-            return AdaptiveInputElementBase::get_Label(label);
-        }
+        IFACEMETHODIMP get_Label(_Outptr_ HSTRING* label) { return AdaptiveInputElementBase::get_Label(label); }
 
-        IFACEMETHODIMP put_Label(_In_ HSTRING label)
-        {
-            return AdaptiveInputElementBase::put_Label(label);
-        }
+        IFACEMETHODIMP put_Label(_In_ HSTRING label) { return AdaptiveInputElementBase::put_Label(label); }
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing)
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
         {
             return AdaptiveCardElementBase::get_Spacing(spacing);
         }
-        IFACEMETHODIMP put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
         {
             return AdaptiveCardElementBase::put_Spacing(spacing);
         }
 
-        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height)
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HeightType* height)
         {
             return AdaptiveCardElementBase::get_Height(height);
         }
-        IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType height)
+        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::Rendering::Uwp::HeightType height)
         {
             return AdaptiveCardElementBase::put_Height(height);
         }
@@ -107,21 +101,21 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FallbackType* fallback)
         {
             return AdaptiveCardElementBase::get_FallbackType(fallback);
         }
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** content)
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** content)
         {
             return AdaptiveCardElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback)
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallback)
         {
             return AdaptiveCardElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* content)
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* content)
         {
             return AdaptiveCardElementBase::put_FallbackContent(content);
         }
@@ -141,7 +135,7 @@ namespace AdaptiveNamespace
         }
 
         IFACEMETHODIMP get_Requirements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements)
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveRequirement*>** requirements)
         {
             return AdaptiveCardElementBase::get_Requirements(requirements);
         }
@@ -151,16 +145,16 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::ToJson(result);
         }
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) override;
+        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveChoiceInput*>> m_choices;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput*>> m_choices;
         boolean m_wrap;
         boolean m_isMultiSelect;
-        ABI::AdaptiveNamespace::ChoiceSetStyle m_choiceSetStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle m_choiceSetStyle;
         Microsoft::WRL::Wrappers::HString m_value;
         Microsoft::WRL::Wrappers::HString m_placeholder;
     };

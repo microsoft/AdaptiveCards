@@ -5,28 +5,28 @@
 #include "TextRun.h"
 #include "AdaptiveTextElement.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveTextRun
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveTextRun,
-                                              ABI::AdaptiveNamespace::IAdaptiveTextElement,
-                                              ABI::AdaptiveNamespace::IAdaptiveInline,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextRun,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveTextElement>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveTextElement>>
     {
         AdaptiveRuntime(AdaptiveTextRun);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedTextRun) noexcept;
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextRun>& sharedTextRun) noexcept;
 
         // IAdaptiveTextRun
         IFACEMETHODIMP get_Highlight(_Out_ boolean* highlight);
         IFACEMETHODIMP put_Highlight(boolean highlight);
 
-        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
-        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
+        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action);
 
         IFACEMETHODIMP get_Italic(_Out_ boolean* italic);
         IFACEMETHODIMP put_Italic(boolean italic);
@@ -41,29 +41,29 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) { return AdaptiveTextElement::get_Text(text); }
         IFACEMETHODIMP put_Text(_In_ HSTRING text) { return AdaptiveTextElement::put_Text(text); }
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* textSize)
+        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextSize* textSize)
         {
             return AdaptiveTextElement::get_Size(textSize);
         }
-        IFACEMETHODIMP put_Size(ABI::AdaptiveNamespace::TextSize textSize)
+        IFACEMETHODIMP put_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize)
         {
             return AdaptiveTextElement::put_Size(textSize);
         }
 
-        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveNamespace::TextWeight* textWeight)
+        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextWeight* textWeight)
         {
             return AdaptiveTextElement::get_Weight(textWeight);
         }
-        IFACEMETHODIMP put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
+        IFACEMETHODIMP put_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight)
         {
             return AdaptiveTextElement::put_Weight(textWeight);
         }
 
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* textColor)
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* textColor)
         {
             return AdaptiveTextElement::get_Color(textColor);
         }
-        IFACEMETHODIMP put_Color(ABI::AdaptiveNamespace::ForegroundColor textColor)
+        IFACEMETHODIMP put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor)
         {
             return AdaptiveTextElement::put_Color(textColor);
         }
@@ -74,22 +74,22 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language) { return AdaptiveTextElement::get_Language(language); }
         IFACEMETHODIMP put_Language(_In_ HSTRING language) { return AdaptiveTextElement::put_Language(language); }
 
-        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* type)
+        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FontType* type)
         {
             return AdaptiveTextElement::get_FontType(type);
         }
-        IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType type)
+        IFACEMETHODIMP put_FontType(ABI::AdaptiveCards::Rendering::Uwp::FontType type)
         {
             return AdaptiveTextElement::put_FontType(type);
         }
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedModel) noexcept;
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::TextRun>& sharedModel) noexcept;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_selectAction;
         boolean m_highlight;
         boolean m_italic;
         boolean m_strikethrough;

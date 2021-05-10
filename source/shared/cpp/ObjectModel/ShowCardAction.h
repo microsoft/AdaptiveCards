@@ -7,7 +7,7 @@
 #include "BaseActionElement.h"
 #include "ActionParserRegistration.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class ShowCardAction : public BaseActionElement
     {
@@ -21,8 +21,8 @@ namespace AdaptiveSharedNamespace
 
         Json::Value SerializeToJsonValue() const override;
 
-        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> GetCard() const;
-        void SetCard(const std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>);
+        std::shared_ptr<AdaptiveCards::AdaptiveCard> GetCard() const;
+        void SetCard(const std::shared_ptr<AdaptiveCards::AdaptiveCard>);
 
         void SetLanguage(const std::string& value);
 

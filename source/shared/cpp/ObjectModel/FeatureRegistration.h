@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "ParseUtil.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     constexpr const char* const c_adaptiveCardsFeature = "adaptiveCards";
 
