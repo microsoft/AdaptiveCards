@@ -4,7 +4,7 @@
 
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseCardElement;
     class ParseContext;
@@ -41,12 +41,12 @@ namespace AdaptiveSharedNamespace
     public:
         ElementParserRegistration();
 
-        void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> parser);
+        void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveCards::BaseCardElementParser> parser);
         void RemoveParser(std::string const& elementType);
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const& elementType) const;
+        std::shared_ptr<AdaptiveCards::BaseCardElementParser> GetParser(std::string const& elementType) const;
 
     private:
         std::unordered_set<std::string> m_knownElements;
-        std::unordered_map<std::string, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
+        std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::BaseCardElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
     };
 }

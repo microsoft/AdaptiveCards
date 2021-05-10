@@ -4,13 +4,12 @@
 #include "CustomActionWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
-    CustomActionWrapper::CustomActionWrapper(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
-        AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom),
-        m_actionElement(actionElement)
+    CustomActionWrapper::CustomActionWrapper(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* actionElement) :
+        AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom), m_actionElement(actionElement)
     {
         BaseElement::SetId(GetActionElementId());
         BaseActionElement::SetTitle(GetActionElementTitle());
@@ -51,14 +50,14 @@ namespace AdaptiveNamespace
         return jsonCppValue;
     }
 
-    HRESULT CustomActionWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement)
+    HRESULT CustomActionWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** actionElement)
     {
         return m_actionElement.CopyTo(actionElement);
     }
 
     void CustomActionWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
     {
-        ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources> remoteResources;
+        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources> remoteResources;
         if (SUCCEEDED(m_actionElement.As(&remoteResources)))
         {
             RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);

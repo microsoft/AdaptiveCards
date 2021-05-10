@@ -5,7 +5,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 DateInput::DateInput() : BaseInputElement(CardElementType::DateInput)
 {

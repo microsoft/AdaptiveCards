@@ -4,7 +4,7 @@
 #include "AuthCardButton.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 std::string AuthCardButton::GetType()
 {

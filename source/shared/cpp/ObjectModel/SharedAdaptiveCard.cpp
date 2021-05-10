@@ -11,7 +11,7 @@
 #include "ParseContext.h"
 #include "BackgroundImage.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 AdaptiveCard::AdaptiveCard() :
     AdaptiveCard("", "", std::shared_ptr<BackgroundImage>(), ContainerStyle::None, "", "", VerticalContentAlignment::Top, HeightType::Auto, 0)
@@ -114,7 +114,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
 
 #ifdef __ANDROID__
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile,
-                                                               std::string rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
+                                                               std::string rendererVersion) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile, const std::string& rendererVersion)
 #endif // __ANDROID__
@@ -128,7 +128,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string
 #pragma GCC diagnostic ignored "-Wdynamic-exception-spec"
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile,
                                                                std::string rendererVersion,
-                                                               ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
+                                                               ParseContext& context) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile,
                                                                const std::string& rendererVersion,
@@ -153,13 +153,13 @@ void AdaptiveCard::_ValidateLanguage(const std::string& language, std::vector<st
         }
         else
         {
-            warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidLanguage,
+            warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveCards::WarningStatusCode::InvalidLanguage,
                                                                           "Invalid language identifier: " + language));
         }
     }
     catch (std::runtime_error)
     {
-        warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidLanguage,
+        warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveCards::WarningStatusCode::InvalidLanguage,
                                                                       "Invalid language identifier: " + language));
     }
 }
@@ -167,7 +167,7 @@ void AdaptiveCard::_ValidateLanguage(const std::string& language, std::vector<st
 #ifdef __ANDROID__
 std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json,
                                                        std::string rendererVersion,
-                                                       ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
+                                                       ParseContext& context) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
 std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, const std::string& rendererVersion, ParseContext& context)
 #endif // __ANDROID__
@@ -214,7 +214,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
                 speak = fallbackText;
             }
 
-            context.warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::UnsupportedSchemaVersion,
+            context.warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveCards::WarningStatusCode::UnsupportedSchemaVersion,
                                                                                   "Schema version not supported"));
             return std::make_shared<ParseResult>(MakeFallbackTextCard(fallbackText, language, speak), context.warnings);
         }
@@ -265,7 +265,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
 
 #ifdef __ANDROID__
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString,
-                                                                 std::string rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
+                                                                 std::string rendererVersion) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString, const std::string& rendererVersion)
 #endif // __ANDROID__
@@ -277,7 +277,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::stri
 #ifdef __ANDROID__
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString,
                                                                  std::string rendererVersion,
-                                                                 ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
+                                                                 ParseContext& context) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString,
                                                                  const std::string& rendererVersion,
@@ -371,7 +371,7 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
 #ifdef __ANDROID__
 std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(const std::string& fallbackText,
                                                                  const std::string& language,
-                                                                 const std::string& speak) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
+                                                                 const std::string& speak) throw(AdaptiveCards::AdaptiveCardParseException)
 #else
 std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(const std::string& fallbackText,
                                                                  const std::string& language,

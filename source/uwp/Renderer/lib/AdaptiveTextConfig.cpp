@@ -5,9 +5,9 @@
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept
     try
@@ -19,9 +19,9 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize(TextConfig textConfig) noexcept
     {
-        m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(textConfig.weight);
-        m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(textConfig.size);
-        m_textColor = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(textConfig.color);
+        m_textWeight = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>(textConfig.weight);
+        m_textSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextSize>(textConfig.size);
+        m_textColor = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>(textConfig.color);
         m_isSubtle = textConfig.isSubtle;
         m_wrap = textConfig.wrap;
         m_maxWidth = textConfig.maxWidth;
@@ -29,37 +29,37 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextConfig::get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* textSize)
+    HRESULT AdaptiveTextConfig::get_Size(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextConfig::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
+    HRESULT AdaptiveTextConfig::put_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextConfig::get_Weight(_Out_ ABI::AdaptiveNamespace::TextWeight* textWeight)
+    HRESULT AdaptiveTextConfig::get_Weight(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextConfig::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
+    HRESULT AdaptiveTextConfig::put_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextConfig::get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* textColor)
+    HRESULT AdaptiveTextConfig::get_Color(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* textColor)
     {
         *textColor = m_textColor;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveNamespace::ForegroundColor textColor)
+    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor)
     {
         m_textColor = textColor;
         return S_OK;

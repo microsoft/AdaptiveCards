@@ -6,7 +6,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 ChoiceSetInput::ChoiceSetInput() :
     BaseInputElement(CardElementType::ChoiceSetInput), m_wrap(false), m_isMultiSelect(false),
