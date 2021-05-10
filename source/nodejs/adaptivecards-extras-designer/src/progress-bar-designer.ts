@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
 import { TypedCardElementPeer, NumberPropertyEditor, PropertySheet, PropertySheetCategory, StringPropertyEditor } from "adaptivecards-designer";
 import { ProgressBar } from "adaptivecards-extras";

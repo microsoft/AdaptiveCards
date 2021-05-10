@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 import { CardDesignerSurface } from "adaptivecards-designer";
 import { ProgressBar } from "adaptivecards-extras";
 import { ProgressBarPeer } from "./progress-bar-designer";
