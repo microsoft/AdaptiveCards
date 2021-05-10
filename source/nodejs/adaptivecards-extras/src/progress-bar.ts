@@ -70,19 +70,19 @@ export class ProgressBar extends Adaptive.CardElement {
             this._leftBarElement = document.createElement("div");
             this._leftBarElement.style.height = "6px";
 
-            let color = Adaptive.stringToCssColor(this.hostConfig.containerStyles.emphasis.foregroundColors.accent.default);
+            let emphasisForegroundAccentColor = Adaptive.stringToCssColor(this.hostConfig.containerStyles.emphasis.foregroundColors.accent.default);
 
-            if (color) {
-                this._leftBarElement.style.backgroundColor = color;
+            if (emphasisForegroundAccentColor) {
+                this._leftBarElement.style.backgroundColor = emphasisForegroundAccentColor;
             }
 
             this._rightBarElement = document.createElement("div");
             this._rightBarElement.style.height = "6px";
 
-            color = Adaptive.stringToCssColor(this.hostConfig.containerStyles.emphasis.backgroundColor);
+            let emphasisBackgroundColor = Adaptive.stringToCssColor(this.hostConfig.containerStyles.emphasis.backgroundColor);
 
-            if (color) {
-                this._rightBarElement.style.backgroundColor = color;
+            if (emphasisBackgroundColor) {
+                this._rightBarElement.style.backgroundColor = emphasisBackgroundColor;
             }
 
             progressBarElement.append(this._leftBarElement, this._rightBarElement);
