@@ -421,6 +421,16 @@ export abstract class CardElement extends CardObject {
         throw new Error(Strings.errors.indexOutOfRange(index));
     }
 
+    indexOfAction(action: Action): number {
+        for (let i = 0; i < this.getActionCount(); i++) {
+            if (this.getActionAt(i) === action) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     remove(): boolean {
         if (this.parent && this.parent instanceof CardElementContainer) {
             return this.parent.removeItem(this);

@@ -1138,10 +1138,6 @@ export abstract class DesignerPeer extends DraggableElement {
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
-    getCardObject(): Adaptive.CardObject {
-        return this._cardObject;
-    }
-
     constructor(
         parent: DesignerPeer,
         designerSurface: CardDesignerSurface,
@@ -1154,11 +1150,21 @@ export abstract class DesignerPeer extends DraggableElement {
         this.registration = registration;
         this.designerSurface = designerSurface;
         this._cardObject = cardObject;
-        this.treeItem = new DesignerPeerTreeItem(this);
+        this.treeItem = new DesignerPeerTreeItem(this, this.isTreeItemExpandedByDefault);
     }
 
     abstract getBoundingRect(): Rect;
     abstract getCardObjectBoundingRect(): Rect;
+
+    getCardObject(): Adaptive.CardObject {
+        return this._cardObject;
+    }
+
+    updateChildren() {
+        for (let i = 0; i < this.getChildCount(); i++) {
+            this.getChildAt(i).updateChildren();
+        }
+    }
 
     changed(updatePropertySheet: boolean) {
         if (this.onChanged) {
@@ -1330,6 +1336,10 @@ export abstract class DesignerPeer extends DraggableElement {
         if (this.treeItem && this.treeItem.renderedElement) {
             this.treeItem.renderedElement.scrollIntoView();
         }
+    }
+
+    get isTreeItemExpandedByDefault(): boolean {
+        return true;
     }
 
     get parent(): DesignerPeer {
@@ -1626,15 +1636,65 @@ export class CardElementPeer extends DesignerPeer {
             this.initializeCardElement();
         }
 
-        if (cardElement instanceof Adaptive.CardElementContainer) {
-            for (var i = 0; i < cardElement.getItemCount(); i++) {
-                this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, cardElement.getItemAt(i)));
+        this.updateChildren();
+    }
+
+    findCardElementChild(element: Adaptive.CardElement) : CardElementPeer | undefined {
+        for (let i = 0; i < this.getChildCount(); i++) {
+            let peer = this.getChildAt(i);
+
+            if (peer instanceof CardElementPeer && peer.cardElement === element) {
+                return peer;
             }
         }
 
-        for (var i = 0; i < this.cardElement.getActionCount(); i++) {
-            this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, cardElement.getActionAt(i)));
+        return undefined;
+    }
+
+    findActionChild(action: Adaptive.Action) : ActionPeer | undefined {
+        for (let i = 0; i < this.getChildCount(); i++) {
+            let peer = this.getChildAt(i);
+
+            if (peer instanceof ActionPeer && peer.action === action) {
+                return peer;
+            }
         }
+
+        return undefined;
+    }
+
+    updateChildren() {
+        if (this.cardElement instanceof Adaptive.CardElementContainer) {
+            for (let i = 0; i < this.getChildCount(); i++) {
+                let existingPeer = this.getChildAt(i);
+
+                if (existingPeer instanceof CardElementPeer && this.cardElement.indexOf(existingPeer.cardElement) < 0) {
+                    this.removeChild(existingPeer);
+                }
+
+                if (existingPeer instanceof ActionPeer && this.cardElement.indexOfAction(existingPeer.action) < 0) {
+                    this.removeChild(existingPeer);
+                }
+            }
+
+            for (var i = 0; i < this.cardElement.getItemCount(); i++) {
+                let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
+
+                if (!existingPeer) {
+                    this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, this.cardElement.getItemAt(i)));
+                }
+            }
+
+            for (var i = 0; i < this.cardElement.getActionCount(); i++) {
+                let existingPeer = this.findActionChild(this.cardElement.getActionAt(i));
+
+                if (!existingPeer) {
+                    this.insertChild(CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, this, this.cardElement.getActionAt(i)));
+                }
+            }
+        }
+
+        super.updateChildren();
     }
 
     getTreeItemText(): string {
@@ -2868,6 +2928,105 @@ export class TableRowPeer extends TypedCardElementPeer<Adaptive.TableRow> {
             TableRowPeer.horizontalCellContentAlignmentProperty,
             TableRowPeer.verticalCellContentAlignmentProperty);
     }
+
+    get isTreeItemExpandedByDefault(): boolean {
+        return false;
+    }
+}
+
+class TableColumnsPropertyEditor extends PropertySheetEntry {
+    private columnsChanged(context: PropertySheetContext, refreshPropertySheet: boolean) {
+        context.peer.updateChildren();
+        context.peer.changed(refreshPropertySheet);
+    }
+
+    render(context: PropertySheetContext): Adaptive.CardElement {
+        let result = new Adaptive.Container();
+        let peer = context.peer as TablePeer;
+
+        if (peer.cardElement.getColumnCount() === 0) {
+            let messageTextBlock = new Adaptive.TextBlock();
+            messageTextBlock.spacing = Adaptive.Spacing.Small;
+            messageTextBlock.text = "No column has been defined";
+
+            result.addItem(messageTextBlock);
+        }
+        else {
+            for (let i = 0; i < peer.cardElement.getColumnCount(); i++) {
+                let columnDefinition = peer.cardElement.getColumnAt(i);
+
+                let widthInput = new Adaptive.NumberInput();
+                widthInput.placeholder = "Width";
+                widthInput.min = 0;
+                widthInput.defaultValue = columnDefinition.width.physicalSize;
+                widthInput.onValueChanged = (sender) => {
+                    columnDefinition.width.physicalSize = sender.value;
+
+                    this.columnsChanged(context, false);
+                };
+
+                let widthColumn = new Adaptive.Column("stretch");
+                widthColumn.addItem(widthInput);
+
+                let unitInput = new Adaptive.ChoiceSetInput();
+                unitInput.placeholder = "Unit";
+                unitInput.choices.push(
+                    new Adaptive.Choice("Pixels", Adaptive.SizeUnit.Pixel.toString()),
+                    new Adaptive.Choice("Weight", Adaptive.SizeUnit.Weight.toString())
+                );
+                unitInput.defaultValue = columnDefinition.width.unit.toString();
+                unitInput.onValueChanged = (sender) => {
+                    columnDefinition.width.unit = parseInt(sender.value);
+
+                    this.columnsChanged(context, false);
+                };
+
+                let unitColumn = new Adaptive.Column("stretch");
+                unitColumn.spacing = Adaptive.Spacing.Small;
+                unitColumn.addItem(unitInput);
+
+                let removeAction = new Adaptive.SubmitAction();
+                removeAction.title = "X";
+                removeAction.tooltip = "Remove";
+                removeAction.onExecute = (sender) => {
+                    peer.cardElement.removeColumn(columnDefinition);
+
+                    this.columnsChanged(context, true);
+                }
+
+                let actionSet = new Adaptive.ActionSet();
+                actionSet.addAction(removeAction);
+
+                let removeActionColumn = new Adaptive.Column("auto");
+                removeActionColumn.spacing = Adaptive.Spacing.Small;
+                removeActionColumn.addItem(actionSet);
+
+                let columnSet = new Adaptive.ColumnSet();
+                columnSet.spacing = Adaptive.Spacing.Small;
+                columnSet.addColumn(widthColumn);
+                columnSet.addColumn(unitColumn);
+                columnSet.addColumn(removeActionColumn);
+
+                result.addItem(columnSet);
+            }
+        }
+
+        let addAction = new Adaptive.SubmitAction();
+        addAction.title = "Add a column";
+        addAction.onExecute = (sender) => {
+            peer.cardElement.addColumn(new Adaptive.ColumnDefinition());
+
+            this.columnsChanged(context, true);
+        }
+
+        let actionSet = new Adaptive.ActionSet();
+        actionSet.spacing = Adaptive.Spacing.Small;
+        actionSet.addAction(addAction);
+
+        result.addItem(actionSet);
+
+        return result;
+    }
 }
 
 export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
@@ -2904,22 +3063,12 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
         false,
         true);
 
+    static readonly columnsProperty = new TableColumnsPropertyEditor(Adaptive.Versions.v1_5);
+
     protected isContainer(): boolean {
         return true;
     }
 
-    initializeCardElement() {
-        super.initializeCardElement();
-
-        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
-        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
-        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
-
-        this.cardElement.addRow(new Adaptive.TableRow());
-        this.cardElement.addRow(new Adaptive.TableRow());
-        this.cardElement.addRow(new Adaptive.TableRow());
-    }
-    
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
 
@@ -2934,22 +3083,42 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
                         this.cardElement.addRow(row);
 
                         this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, row));
+                        this.updateChildren();
                     }
                 })
         );
     }
     
+    initializeCardElement() {
+        super.initializeCardElement();
+
+        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
+        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
+        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
+
+        this.cardElement.addRow(new Adaptive.TableRow());
+        this.cardElement.addRow(new Adaptive.TableRow());
+        this.cardElement.addRow(new Adaptive.TableRow());
+    }
+    
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
-        propertySheet.add(defaultCategory, TablePeer.firstRowAsHeadersProperty);
+        propertySheet.add(
+            defaultCategory,
+            TablePeer.firstRowAsHeadersProperty);
+
+        propertySheet.add(
+            "Columns",
+            TablePeer.columnsProperty);
 
         propertySheet.add(
             PropertySheetCategory.StyleCategory,
             TablePeer.showGridLinesProperty,
             TablePeer.gridStyleProperty);
 
-        propertySheet.add(PropertySheetCategory.LayoutCategory,
+        propertySheet.add(
+            PropertySheetCategory.LayoutCategory,
             TablePeer.cellSpacingProperty,
             TablePeer.horizontalCellContentAlignmentProperty,
             TablePeer.verticalCellContentAlignmentProperty);

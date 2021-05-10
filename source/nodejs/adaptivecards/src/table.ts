@@ -389,6 +389,14 @@ export class TableRow extends StylableContainer<TableCell> {
         this.internalAddItem(cell);
     }
 
+    removeCellAt(columnIndex: number): boolean {
+        if (columnIndex >= 0 && columnIndex < this.getItemCount()) {
+            return this.removeItem(this.getItemAt(columnIndex));
+        }
+
+        return false;
+    }
+
     ensureHasEnoughCells(cellCount: number) {
         while (this.getItemCount() < cellCount) {
             this.addCell(new TableCell());
@@ -458,6 +466,12 @@ export class Table extends StylableContainer<TableRow> {
     private ensureRowsHaveEnoughCells() {
         for (let i = 0; i < this.getItemCount(); i++) {
             this.getItemAt(i).ensureHasEnoughCells(this.getColumnCount());
+        }
+    }
+
+    private removeCellsFromColumn(columnIndex: number) {
+        for (let i = 0; i < this.getItemCount(); i++) {
+            this.getItemAt(i).removeCellAt(columnIndex);
         }
     }
 
@@ -540,6 +554,16 @@ export class Table extends StylableContainer<TableRow> {
         this._columns.push(column);
 
         this.ensureRowsHaveEnoughCells();
+    }
+
+    removeColumn(column: ColumnDefinition) {
+        let index = this._columns.indexOf(column);
+
+        if (index >= 0) {
+            this.removeCellsFromColumn(index);
+
+            this._columns.splice(index, 1);
+        }
     }
 
     getColumnCount(): number {
