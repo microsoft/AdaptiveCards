@@ -323,7 +323,7 @@ namespace AdaptiveCards
                 TextStyle Style;
             };
 
-            [version(NTDDI_WIN10_RS1), uuid(0AC70C29 - FA90 - 4C28 - A6D1 - A6EF58126085)] interface IAdaptiveInline {};
+            [version(NTDDI_WIN10_RS1), uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085")] interface IAdaptiveInline {};
 
             runtimeclass AdaptiveTextRun : IAdaptiveInline, IAdaptiveTextElement
             {
