@@ -88,22 +88,7 @@ public class DropdownElementRenderer implements IBaseActionElementRenderer {
 
         if (!iconUrl.isEmpty())
         {
-            IconPlacement iconPlacement = hostConfig.GetActions().getIconPlacement();
-            if (!renderArgs.getAllowAboveTitleIconPlacement())
-            {
-                iconPlacement = IconPlacement.LeftOfTitle;
-            }
-
-            ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(
-                renderedCard,
-                dropDownItem,
-                hostConfig.GetImageBaseUrl(),
-                iconPlacement,
-                hostConfig.GetActions().getIconSize(),
-                hostConfig.GetSpacing().getDefaultSpacing(),
-                context
-            );
-            imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, iconUrl);
+            Util.loadIcon(context, dropDownItem, iconUrl, hostConfig, renderedCard, IconPlacement.LeftOfTitle);
         }
 
         dropDownItem.setOnClickListener(view ->
