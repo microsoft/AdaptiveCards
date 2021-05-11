@@ -10,7 +10,7 @@ import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
     NumProperty, CustomProperty, PropertyDefinition, StringArrayProperty } from "./serialization";
-import { CardObjectRegistry } from "./registry";
+import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 
@@ -33,8 +33,7 @@ export abstract class CardElement extends CardObject {
     static readonly horizontalAlignmentProperty = new EnumProperty(
         Versions.v1_0,
         "horizontalAlignment",
-        Enums.HorizontalAlignment,
-        Enums.HorizontalAlignment.Left);
+        Enums.HorizontalAlignment);
     static readonly spacingProperty = new EnumProperty(
         Versions.v1_0,
         "spacing",
@@ -42,7 +41,7 @@ export abstract class CardElement extends CardObject {
         Enums.Spacing.Default);
 
     @property(CardElement.horizontalAlignmentProperty)
-    horizontalAlignment: Enums.HorizontalAlignment;
+    horizontalAlignment?: Enums.HorizontalAlignment;
 
     @property(CardElement.spacingProperty)
     spacing: Enums.Spacing;
@@ -326,6 +325,10 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
+    protected getHasBorder(): boolean {
+        return false;
+    }
+
     protected getPadding(): PaddingDefinition | undefined {
         return this._padding;
     }
@@ -344,10 +347,6 @@ export abstract class CardElement extends CardObject {
     }
 
     protected get useDefaultSizing(): boolean {
-        return true;
-    }
-
-    protected get allowCustomPadding(): boolean {
         return true;
     }
 
@@ -454,6 +453,16 @@ export abstract class CardElement extends CardObject {
 
     getActionAt(index: number): Action | undefined {
         throw new Error(Strings.errors.indexOutOfRange(index));
+    }
+
+    indexOfAction(action: Action): number {
+        for (let i = 0; i < this.getActionCount(); i++) {
+            if (this.getActionAt(i) === action) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     remove(): boolean {
@@ -602,7 +611,19 @@ export abstract class CardElement extends CardObject {
     getEffectivePadding(): PaddingDefinition {
         let padding = this.getPadding();
 
-        return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
+        return padding ? padding : this.getDefaultPadding();
+    }
+
+    getEffectiveHorizontalAlignment(): Enums.HorizontalAlignment {
+        if (this.horizontalAlignment !== undefined) {
+            return this.horizontalAlignment;
+        }
+
+        if (this.parent) {
+            return this.parent.getEffectiveHorizontalAlignment();
+        }
+
+        return Enums.HorizontalAlignment.Left;
     }
 
     get hostConfig(): HostConfig {
@@ -867,7 +888,7 @@ export abstract class BaseTextBlock extends CardElement {
     }
 }
 
-export type TextBlockStyle = "default" | "heading";
+export type TextBlockStyle = "default" | "heading" | "columnHeader";
 
 export class TextBlock extends BaseTextBlock {
     //#region Schema
@@ -879,6 +900,7 @@ export class TextBlock extends BaseTextBlock {
         "style",
         [
             { value: "default" },
+            { value: "columnHeader" },
             { value: "heading" }
         ]);
 
@@ -1152,7 +1174,7 @@ export class TextBlock extends BaseTextBlock {
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
 
-        switch (this.horizontalAlignment) {
+        switch (this.getEffectiveHorizontalAlignment()) {
             case Enums.HorizontalAlignment.Center:
                 targetElement.style.textAlign = "center";
                 break;
@@ -1408,7 +1430,7 @@ export class RichTextBlock extends CardElement {
 
             element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
 
-            switch (this.horizontalAlignment) {
+            switch (this.getEffectiveHorizontalAlignment()) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.textAlign = "center";
                     break;
@@ -1821,7 +1843,7 @@ export class Image extends CardElement {
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
-            switch (this.horizontalAlignment) {
+            switch (this.getEffectiveHorizontalAlignment()) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.justifyContent = "center";
                     break;
@@ -5326,22 +5348,32 @@ export class ActionSet extends CardElement {
     }
 }
 
+export class ContainerStyleProperty extends ValueSetProperty {
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: string,
+        readonly onGetInitialValue?: (sender: SerializableObject) => string) {
+        super(
+            targetVersion,
+            name,
+            [
+                { value: Enums.ContainerStyle.Default },
+                { value: Enums.ContainerStyle.Emphasis },
+                { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Accent },
+                { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Good },
+                { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
+                { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
+            ],
+            defaultValue,
+            onGetInitialValue);
+    }
+}
+
 export abstract class StylableCardElementContainer extends CardElementContainer {
     //#region Schema
 
-    static readonly styleProperty = new ValueSetProperty(
-        Versions.v1_0,
-        "style",
-        [
-            { value: Enums.ContainerStyle.Default },
-            { value: Enums.ContainerStyle.Emphasis },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Accent },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Good },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
-        ]);
-    static readonly bleedProperty = new BoolProperty(Versions.v1_2, "bleed", false);
-    static readonly minHeightProperty = new PixelSizeProperty(Versions.v1_2, "minHeight");
+    static readonly styleProperty = new ContainerStyleProperty(Versions.v1_0, "style");
 
     @property(StylableCardElementContainer.styleProperty)
     get style(): string | undefined {
@@ -5360,12 +5392,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         this.setValue(StylableCardElementContainer.styleProperty, value);
     }
 
-    @property(StylableCardElementContainer.bleedProperty)
-    private _bleed: boolean = false;
-
-    @property(StylableCardElementContainer.minHeightProperty)
-    minPixelHeight?: number;
-
     //#endregion
 
     protected adjustRenderedElementSize() {
@@ -5374,6 +5400,10 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         if (this.renderedElement && this.minPixelHeight) {
             this.renderedElement.style.minHeight = this.minPixelHeight + "px";
         }
+    }
+
+    protected applyBorder() {
+        // No border in base implementation
     }
 
     protected applyBackground() {
@@ -5463,7 +5493,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected getDefaultPadding(): PaddingDefinition {
-        return this.getHasBackground() ?
+        return this.getHasBackground() || this.getHasBorder() ?
             new PaddingDefinition(
                 Enums.Spacing.Padding,
                 Enums.Spacing.Padding,
@@ -5527,6 +5557,8 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
         this.applyBackground();
 
+        this.applyBorder();
+
         return renderedElement;
     }
 
@@ -5534,6 +5566,49 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         let effectiveStyle = this.style;
 
         return effectiveStyle ? effectiveStyle : super.getEffectiveStyle();
+    }
+}
+
+export abstract class ContainerBase extends StylableCardElementContainer {
+    //#region Schema
+
+    static readonly bleedProperty = new BoolProperty(Versions.v1_2, "bleed", false);
+    static readonly minHeightProperty = new PixelSizeProperty(Versions.v1_2, "minHeight");
+
+    @property(ContainerBase.bleedProperty)
+    private _bleed: boolean = false;
+
+    @property(ContainerBase.minHeightProperty)
+    minPixelHeight?: number;
+
+    //#endregion
+
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        super.adjustRenderedElementSize(renderedElement);
+
+        if (this.minPixelHeight) {
+            renderedElement.style.minHeight = this.minPixelHeight + "px";
+        }
+    }
+
+    protected getHasExpandedAction(): boolean {
+        return false;
+    }
+
+    protected getBleed(): boolean {
+        return this._bleed;
+    }
+
+    protected setBleed(value: boolean) {
+        this._bleed = value;
+    }
+
+    protected get renderedActionCount(): number {
+        return 0;
+    }
+
+    isBleeding(): boolean {
+		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 }
 
@@ -5619,7 +5694,7 @@ export class BackgroundImage extends SerializableObject {
     }
 }
 
-export class Container extends StylableCardElementContainer {
+export class Container extends ContainerBase {
     //#region Schema
 
     static readonly backgroundImageProperty = new SerializableObjectProperty(
@@ -5628,7 +5703,10 @@ export class Container extends StylableCardElementContainer {
         BackgroundImage,
         false,
         new BackgroundImage());
-    static readonly verticalContentAlignmentProperty = new EnumProperty(Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
+    static readonly verticalContentAlignmentProperty = new EnumProperty(
+        Versions.v1_1,
+        "verticalContentAlignment",
+        Enums.VerticalAlignment);
     static readonly rtlProperty = new BoolProperty(Versions.v1_0, "rtl");
 
     @property(Container.backgroundImageProperty)
@@ -5637,7 +5715,7 @@ export class Container extends StylableCardElementContainer {
     }
 
     @property(Container.verticalContentAlignmentProperty)
-    verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
+    verticalContentAlignment?: Enums.VerticalAlignment;
 
     @property(Container.rtlProperty)
     rtl?: boolean;
@@ -5694,10 +5772,6 @@ export class Container extends StylableCardElementContainer {
         else {
             throw new Error(Strings.errors.elementAlreadyParented());
         }
-    }
-
-    protected supportsExcplitiHeight(): boolean {
-        return true;
     }
 
     protected getItemsCollectionPropertyName(): string {
@@ -5768,7 +5842,7 @@ export class Container extends StylableCardElementContainer {
             element.style.minHeight = '-webkit-min-content';
         }
 
-        switch (this.verticalContentAlignment) {
+        switch (this.getEffectiveVerticalContentAlignment()) {
             case Enums.VerticalAlignment.Center:
                 element.style.justifyContent = "center";
                 break;
@@ -5880,6 +5954,16 @@ export class Container extends StylableCardElementContainer {
 
     protected get isSelectable(): boolean {
         return true;
+    }
+
+    getEffectiveVerticalContentAlignment(): Enums.VerticalAlignment {
+        if (this.verticalContentAlignment !== undefined) {
+            return this.verticalContentAlignment;
+        }
+
+        let parentContainer = this.getParentContainer();
+
+        return parentContainer ? parentContainer.getEffectiveVerticalContentAlignment() : Enums.VerticalAlignment.Top;
     }
 
     getItemCount(): number {
@@ -6205,7 +6289,7 @@ export class Column extends Container {
     }
 }
 
-export class ColumnSet extends StylableCardElementContainer {
+export class ColumnSet extends ContainerBase {
     private _columns: Column[] = [];
     private _renderedColumns: Column[];
 
@@ -6218,7 +6302,7 @@ export class ColumnSet extends StylableCardElementContainer {
             (typeName: string) => {
                 return !typeName || typeName === "Column" ? new Column() : undefined;
             },
-            (typeName: string, errorType: TypeErrorType) => {
+            (typeName: string, errorType: Enums.TypeErrorType) => {
                 context.logParseEvent(
                     undefined,
                     Enums.ValidationEvent.ElementTypeNotAllowed,
@@ -6261,7 +6345,7 @@ export class ColumnSet extends StylableCardElementContainer {
                 element.style.minHeight = '-webkit-min-content';
             }
 
-            switch (this.horizontalAlignment) {
+            switch (this.getEffectiveHorizontalAlignment()) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.justifyContent = "center";
                     break;
@@ -7256,54 +7340,6 @@ class InlineAdaptiveCard extends AdaptiveCard {
     }
 }
 
-export class GlobalRegistry {
-    static populateWithDefaultElements(registry: CardObjectRegistry<CardElement>) {
-        registry.clear();
-
-        registry.register("Container", Container);
-        registry.register("TextBlock", TextBlock);
-        registry.register("RichTextBlock", RichTextBlock, Versions.v1_2);
-        registry.register("TextRun", TextRun, Versions.v1_2);
-        registry.register("Image", Image);
-        registry.register("ImageSet", ImageSet);
-        registry.register("Media", Media, Versions.v1_1);
-        registry.register("FactSet", FactSet);
-        registry.register("ColumnSet", ColumnSet);
-        registry.register("ActionSet", ActionSet, Versions.v1_2);
-        registry.register("Input.Text", TextInput);
-        registry.register("Input.Date", DateInput);
-        registry.register("Input.Time", TimeInput);
-        registry.register("Input.Number", NumberInput);
-        registry.register("Input.ChoiceSet", ChoiceSetInput);
-        registry.register("Input.Toggle", ToggleInput);
-    }
-
-    static populateWithDefaultActions(registry: CardObjectRegistry<Action>) {
-        registry.clear();
-
-        registry.register(OpenUrlAction.JsonTypeName, OpenUrlAction);
-        registry.register(SubmitAction.JsonTypeName, SubmitAction);
-        registry.register(ShowCardAction.JsonTypeName, ShowCardAction);
-        registry.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
-        registry.register(ExecuteAction.JsonTypeName, ExecuteAction, Versions.v1_4);
-    }
-
-    static readonly elements = new CardObjectRegistry<CardElement>();
-    static readonly actions = new CardObjectRegistry<Action>();
-
-    static reset() {
-        GlobalRegistry.populateWithDefaultElements(GlobalRegistry.elements);
-        GlobalRegistry.populateWithDefaultActions(GlobalRegistry.actions);
-    }
-}
-
-GlobalRegistry.reset();
-
-const enum TypeErrorType {
-    UnknownType,
-    ForbiddenType
-}
-
 export class SerializationContext extends BaseSerializationContext {
     private _elementRegistry?: CardObjectRegistry<CardElement>;
     private _actionRegistry?: CardObjectRegistry<Action>;
@@ -7313,52 +7349,50 @@ export class SerializationContext extends BaseSerializationContext {
         source: any,
         forbiddenTypeNames: string[],
         allowFallback: boolean,
-        createInstanceCallback: (typeName: string) => T | undefined,
-        logParseEvent: (typeName: string, errorType: TypeErrorType) => void): T | undefined {
+        createInstanceCallback: (typeName: string | undefined) => T | undefined,
+        logParseEvent: (typeName: string | undefined, errorType: Enums.TypeErrorType) => void): T | undefined {
         let result: T | undefined = undefined;
 
         if (source && typeof source === "object") {
             let typeName = Utils.parseString(source["type"]);
 
-            if (typeName) {
-                if (forbiddenTypeNames.indexOf(typeName) >= 0) {
-                    logParseEvent(typeName, TypeErrorType.ForbiddenType);
+            if (typeName && forbiddenTypeNames.indexOf(typeName) >= 0) {
+                logParseEvent(typeName, Enums.TypeErrorType.ForbiddenType);
+            }
+            else {
+                let tryToFallback = false;
+
+                result = createInstanceCallback(typeName);
+
+                if (!result) {
+                    tryToFallback = GlobalSettings.enableFallback && allowFallback;
+
+                    logParseEvent(typeName, Enums.TypeErrorType.UnknownType);
                 }
                 else {
-                    let tryToFallback = false;
+                    result.setParent(parent);
+                    result.parse(source, this);
 
-                    result = createInstanceCallback(typeName);
+                    tryToFallback = GlobalSettings.enableFallback && allowFallback && result.shouldFallback();
+                }
 
-                    if (!result) {
-                        tryToFallback = GlobalSettings.enableFallback && allowFallback;
+                if (tryToFallback) {
+                    let fallback = source["fallback"];
 
-                        logParseEvent(typeName, TypeErrorType.UnknownType);
+                    if (!fallback && parent) {
+                        parent.setShouldFallback(true);
                     }
-                    else {
-                        result.setParent(parent);
-                        result.parse(source, this);
-
-                        tryToFallback = GlobalSettings.enableFallback && allowFallback && result.shouldFallback();
+                    if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
+                        result = undefined;
                     }
-
-                    if (tryToFallback) {
-                        let fallback = source["fallback"];
-
-                        if (!fallback && parent) {
-                            parent.setShouldFallback(true);
-                        }
-                        if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
-                            result = undefined;
-                        }
-                        else if (typeof fallback === "object") {
-                            result = this.internalParseCardObject<T>(
-                                parent,
-                                fallback,
-                                forbiddenTypeNames,
-                                true,
-                                createInstanceCallback,
-                                logParseEvent);
-                        }
+                    else if (typeof fallback === "object") {
+                        result = this.internalParseCardObject<T>(
+                            parent,
+                            fallback,
+                            forbiddenTypeNames,
+                            true,
+                            createInstanceCallback,
+                            logParseEvent);
                     }
                 }
             }
@@ -7397,7 +7431,7 @@ export class SerializationContext extends BaseSerializationContext {
         forbiddenTypeNames: string[],
         allowFallback: boolean,
         createInstanceCallback: (typeName: string) => T | undefined,
-        logParseEvent: (typeName: string, errorType: TypeErrorType) => void): T | undefined {
+        logParseEvent: (typeName: string, errorType: Enums.TypeErrorType) => void): T | undefined {
         let result = this.internalParseCardObject(
             parent,
             source,
@@ -7422,8 +7456,8 @@ export class SerializationContext extends BaseSerializationContext {
             (typeName: string) => {
                 return this.elementRegistry.createInstance(typeName, this.targetVersion);
             },
-            (typeName: string, errorType: TypeErrorType) => {
-                if (errorType === TypeErrorType.UnknownType) {
+            (typeName: string, errorType: Enums.TypeErrorType) => {
+                if (errorType === Enums.TypeErrorType.UnknownType) {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.UnknownElementType,
@@ -7451,8 +7485,8 @@ export class SerializationContext extends BaseSerializationContext {
             (typeName: string) => {
                 return this.actionRegistry.createInstance(typeName, this.targetVersion);
             },
-            (typeName: string, errorType: TypeErrorType) => {
-                if (errorType == TypeErrorType.UnknownType) {
+            (typeName: string, errorType: Enums.TypeErrorType) => {
+                if (errorType == Enums.TypeErrorType.UnknownType) {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.UnknownActionType,

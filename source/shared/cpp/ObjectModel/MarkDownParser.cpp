@@ -6,7 +6,7 @@
 #include <iostream>
 #include "MarkDownParser.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 MarkDownParser::MarkDownParser(const std::string& txt) : m_text(txt), m_hasHTMLTag(false), m_isEscaped(false)
 {

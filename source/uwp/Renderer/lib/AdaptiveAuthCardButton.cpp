@@ -6,18 +6,17 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveAuthCardButton::RuntimeClassInitialize() noexcept
     {
-        std::shared_ptr<AdaptiveSharedNamespace::AuthCardButton> authCardButton =
-            std::make_shared<AdaptiveSharedNamespace::AuthCardButton>();
+        std::shared_ptr<AdaptiveCards::AuthCardButton> authCardButton = std::make_shared<AdaptiveCards::AuthCardButton>();
         return RuntimeClassInitialize(authCardButton);
     }
 
-    HRESULT AdaptiveAuthCardButton::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::AuthCardButton>& sharedAuthCardButton)
+    HRESULT AdaptiveAuthCardButton::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::AuthCardButton>& sharedAuthCardButton)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedAuthCardButton->GetType(), m_type.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAuthCardButton->GetTitle(), m_title.GetAddressOf()));
@@ -43,10 +42,9 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveAuthCardButton::put_Value(_In_ HSTRING value) { return m_value.Set(value); }
 
-    HRESULT AdaptiveAuthCardButton::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AuthCardButton>& sharedModel)
+    HRESULT AdaptiveAuthCardButton::GetSharedModel(std::shared_ptr<AdaptiveCards::AuthCardButton>& sharedModel)
     {
-        std::shared_ptr<AdaptiveSharedNamespace::AuthCardButton> authCardButton =
-            std::make_shared<AdaptiveSharedNamespace::AuthCardButton>();
+        std::shared_ptr<AdaptiveCards::AuthCardButton> authCardButton = std::make_shared<AdaptiveCards::AuthCardButton>();
 
         std::string type;
         RETURN_IF_FAILED(HStringToUTF8(m_type.Get(), type));

@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "TextRun.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 TextRun::TextRun() :
     Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<RichTextElementProperties>()),

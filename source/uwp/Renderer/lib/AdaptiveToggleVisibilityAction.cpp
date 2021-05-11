@@ -5,22 +5,22 @@
 #include "AdaptiveToggleVisibilityAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction> toggleVisibilityAction =
-            std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityAction>();
+        std::shared_ptr<AdaptiveCards::ToggleVisibilityAction> toggleVisibilityAction =
+            std::make_shared<AdaptiveCards::ToggleVisibilityAction>();
         return RuntimeClassInitialize(toggleVisibilityAction);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction>& sharedToggleVisibilityAction)
+    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleVisibilityAction>& sharedToggleVisibilityAction)
     try
     {
         if (sharedToggleVisibilityAction == nullptr)
@@ -31,14 +31,14 @@ namespace AdaptiveNamespace
         m_targetElements = Microsoft::WRL::Make<Vector<AdaptiveToggleVisibilityTarget*>>();
         GenerateToggleTargetProjection(sharedToggleVisibilityAction->GetTargetElements(), m_targetElements.Get());
 
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedToggleVisibilityAction));
+        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedToggleVisibilityAction));
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespace::ActionType::ToggleVisibility;
+        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::ToggleVisibility;
         return S_OK;
     }
 
@@ -47,11 +47,11 @@ namespace AdaptiveNamespace
         return m_targetElements.CopyTo(targetElements);
     }
 
-    HRESULT AdaptiveToggleVisibilityAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    HRESULT AdaptiveToggleVisibilityAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction> toggleVisibilityAction =
-            std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityAction>();
+        std::shared_ptr<AdaptiveCards::ToggleVisibilityAction> toggleVisibilityAction =
+            std::make_shared<AdaptiveCards::ToggleVisibilityAction>();
         RETURN_IF_FAILED(CopySharedElementProperties(*toggleVisibilityAction));
 
         RETURN_IF_FAILED(GenerateSharedToggleElements(m_targetElements.Get(), toggleVisibilityAction->GetTargetElements()));

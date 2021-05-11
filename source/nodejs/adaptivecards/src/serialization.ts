@@ -111,8 +111,8 @@ export class Versions {
     static readonly v1_2 = new Version(1, 2);
     static readonly v1_3 = new Version(1, 3);
     static readonly v1_4 = new Version(1, 4);
-    static readonly v1_5 = new Version(1, 5, "1.5 (Preview)");
-    static readonly latest = Versions.v1_4;
+    static readonly v1_5 = new Version(1, 5);
+    static readonly latest = Versions.v1_5;
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -298,10 +298,10 @@ export class PropertyDefinition {
         readonly name: string,
         readonly defaultValue?: any,
         readonly onGetInitialValue?: (sender: SerializableObject) => any) {
-            this.sequentialNumber = PropertyDefinition._sequentialNumber;
+        this.sequentialNumber = PropertyDefinition._sequentialNumber;
 
-            PropertyDefinition._sequentialNumber++;
-        }
+        PropertyDefinition._sequentialNumber++;
+    }
 }
 
 export class StringProperty extends PropertyDefinition {
@@ -356,6 +356,14 @@ export class BoolProperty extends PropertyDefinition {
             value,
             this.defaultValue);
     }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: boolean,
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
+    }
 }
 
 export class ObjectProperty extends PropertyDefinition {
@@ -391,6 +399,14 @@ export class NumProperty extends PropertyDefinition {
             this.name,
             value,
             this.defaultValue);
+    }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: number,
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
     }
 }
 

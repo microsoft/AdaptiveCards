@@ -3,13 +3,13 @@
 #include "pch.h"
 #include "UnknownAction.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 UnknownAction::UnknownAction() : BaseActionElement(ActionType::UnknownAction)
 {
 }
 
-Json::Value AdaptiveSharedNamespace::UnknownAction::SerializeToJsonValue() const
+Json::Value AdaptiveCards::UnknownAction::SerializeToJsonValue() const
 {
     return GetAdditionalProperties();
 }
@@ -23,8 +23,7 @@ std::shared_ptr<BaseActionElement> UnknownActionParser::Deserialize(ParseContext
     return unknown;
 }
 
-std::shared_ptr<BaseActionElement>
-UnknownActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseActionElement> UnknownActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return UnknownActionParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

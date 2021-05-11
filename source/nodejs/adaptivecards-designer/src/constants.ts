@@ -63,7 +63,7 @@ export const defaultPayload: string = `{
                         {
                             "type": "Image",
                             "style": "Person",
-                            "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                            "url": "https://matthidinger.com/images/bio-photo.jpg",
                             "size": "Small"
                         }
                     ],
@@ -281,7 +281,7 @@ export const defaultDataPayload: string = `{
     "description": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
     "creator": {
         "name": "Matt Hidinger",
-        "profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+        "profileImage": "https://matthidinger.com/images/bio-photo.jpg"
     },
     "createdUtc": "2017-02-14T06:08:39Z",
     "viewUrl": "https://adaptivecards.io",

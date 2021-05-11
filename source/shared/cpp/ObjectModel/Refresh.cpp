@@ -4,7 +4,7 @@
 #include "Refresh.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 std::shared_ptr<BaseActionElement> Refresh::GetAction()
 {
@@ -55,7 +55,7 @@ Json::Value Refresh::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Action)] = m_action->SerializeToJsonValue();
     }
-    
+
     if (!m_userIds.empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::UserIds)] = Json::Value(Json::arrayValue);

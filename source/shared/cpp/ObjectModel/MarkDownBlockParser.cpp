@@ -4,7 +4,7 @@
 #include <iostream>
 #include "MarkDownBlockParser.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 // Parses according to each key words
 void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
@@ -484,8 +484,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
     if (lookahead.peek() > 0 &&
-        (MarkDownBlockParser::IsSpace(lookahead.peek()) ||
-         MarkDownBlockParser::IsCntrl(lookahead.peek())))
+        (MarkDownBlockParser::IsSpace(lookahead.peek()) || MarkDownBlockParser::IsCntrl(lookahead.peek())))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;

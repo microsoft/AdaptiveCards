@@ -5,10 +5,10 @@
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept
     try
@@ -18,33 +18,33 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveSharedNamespace::ShowCardActionConfig sharedShowCardActionConfig) noexcept
+    HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {
-        m_actionMode = static_cast<ABI::AdaptiveNamespace::ActionMode>(sharedShowCardActionConfig.actionMode);
-        m_containerStyle = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedShowCardActionConfig.style);
+        m_actionMode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ActionMode>(sharedShowCardActionConfig.actionMode);
+        m_containerStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedShowCardActionConfig.style);
         m_inlineTopMargin = sharedShowCardActionConfig.inlineTopMargin;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::get_ActionMode(_Out_ ABI::AdaptiveNamespace::ActionMode* value)
+    HRESULT AdaptiveShowCardActionConfig::get_ActionMode(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionMode* value)
     {
         *value = m_actionMode;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveNamespace::ActionMode value)
+    HRESULT AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Rendering::Uwp::ActionMode value)
     {
         m_actionMode = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style)
+    HRESULT AdaptiveShowCardActionConfig::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
     {
         *style = m_containerStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
     {
         m_containerStyle = style;
         return S_OK;
