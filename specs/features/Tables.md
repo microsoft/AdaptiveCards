@@ -1,8 +1,4 @@
-## Try it for yourself
-- This feature is implemented for JavaScript in this draft PR: https://github.com/microsoft/AdaptiveCards/pull/5705
-- You can use the PR's [test site](https://adaptivecardsci.z5.web.core.windows.net/pr/5705) to try the feature for yourself. Note that it might be buggy and that designer support isn't complete.
-
-## Table element for Adaptive Cards
+# Table element for Adaptive Cards
 This is a proposal for a simple Table element. The main goals of this element are:
 - To allow the creation of table layouts in a straightforward way, as opposed to using a stack of ColumnSet elements which leads to a larger (potentially much larger) payload and potential headaches wrt column sizing
 - To allow accessibility software to present table layouts as such, which is currently impossible
