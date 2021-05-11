@@ -1,27 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>AC Sample</title>
-  <style type="text/css">
-    body {
-        font-family: segoe-ui_normal, Segoe UI, Segoe, Segoe WP, Helvetica Neue, Helvetica, sans-serif;
-        background-color: #DDD;
-    }
-    
-    .ac-adaptiveCard {
-        width: 600px;
-    }
-  </style>
-</head>
+	<head>
+		<title>AC Sample</title>
+		<style type="text/css">
+			html, body {
+				font-family: segoe-ui_normal, Segoe UI, Segoe, Segoe WP, Helvetica Neue, Helvetica, sans-serif;
+				background: linear-gradient(45deg, #FFF, #CCC);
+				height: 100%;
+			}
 
-<body>
-  <h1>AdaptiveCard NodeJS Client Sample</h1>
+			#picker-and-output {
+				display: flex;
+				flex-flow: column nowrap;
+				height: 100%;
+			}
 
-  <h2>File selection</h2>
-  <label for="file-picker">Choose a card to render (see <a href="https://adaptivecards.io/samples/">samples</a>):</label><br />
-  <input id="file-picker" type="file" accept="application/json" />
+			#picker-and-output > div {
+				flex: 1 1 auto;
+			}
 
-  <h2>Rendered card</h2>
-  <div id="card-target"></div>
-</body>
+			#editor-and-card {
+				flex: 1 0 100%;
+				display: flex;
+				flex-wrap: wrap;
+				height: 100%;
+				margin: 15px;
+			}
+
+			#card-target:empty::before {
+				content: 'Please load or write a card.';
+				font-size: 2em;
+				display: block;
+				text-align: center;
+			}
+
+			#card-target:empty {
+				background: linear-gradient(45deg, #CCC, #FFF);
+			}
+
+			#editor-and-card > div {
+				flex: 1 1 45%;
+				margin: 5px;
+			}
+
+			#errors:empty {
+				background: inherit;
+			}
+
+			#errors {
+				background: red;
+				color: white;
+				font-family: 'Cascadia Code', 'Consolas', 'monospace';
+				padding: 5px;
+				margin: 0px;
+			}
+
+			#json-editor {
+				box-shadow: 5px 5px 10px -4px;
+			}
+
+			.ac-adaptiveCard {
+				width: 600px;
+				box-shadow: 5px 5px 10px -4px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="picker-and-output">
+			<div>
+				<h1>AdaptiveCard NodeJS Client Sample</h1>
+
+				<h2>File selection</h2>
+				<label for="file-picker">Choose a card to render (see <a href="https://adaptivecards.io/samples/">samples</a>)</label><br />
+				<input id="file-picker" type="file" accept="application/json" />
+			</div><br />
+			<div id="errors"></div>
+			<div id="editor-and-card">
+				<div id="card-target"></div>
+				<div id="json-editor"></div>
+			</div>
+		</div>
+	</body>
 </html>

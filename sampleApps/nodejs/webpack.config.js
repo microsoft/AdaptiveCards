@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = (env, argv) => {
 	const mode = argv.mode || 'development';
@@ -27,11 +28,21 @@ module.exports = (env, argv) => {
 			extensions: [".ts", ".tsx", ".js"]
 		},
 		module: {
-			rules: [{
-				test: /\.ts$/,
-				loader: "ts-loader",
-				exclude: /(node_modules|__tests__)/
-			}]
+			rules: [
+                {
+				    test: /\.ts$/,
+				    loader: "ts-loader",
+				    exclude: /(node_modules|__tests__)/
+			    },
+                {
+                    test: /\.css$/,
+                    use: ['style-loader', 'css-loader']
+                },
+                {
+                    test: /\.ttf$/,
+                    use: ['file-loader']
+                }
+            ]
 		},
 		plugins: [
 			new HtmlWebpackPlugin({
@@ -40,7 +51,10 @@ module.exports = (env, argv) => {
 				filename: "index.html",
                 showErrors: false,
 				chunks: ["ac-sample"]
-			})
+			}),
+            new MonacoWebpackPlugin({
+                languages: [ 'json' ]
+            })
 		]
     }
 }

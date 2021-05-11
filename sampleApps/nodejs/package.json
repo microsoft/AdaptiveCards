@@ -21,10 +21,14 @@
 		"@types/markdown-it": "^12.0.1",
 		"@typescript-eslint/eslint-plugin": "^4.22.0",
 		"@typescript-eslint/parser": "^4.22.0",
+		"css-loader": "^5.2.4",
 		"eslint": "^7.25.0",
 		"eslint-config-google": "^0.14.0",
+		"file-loader": "^6.2.0",
 		"html-webpack-plugin": "^5.3.1",
+		"monaco-editor-webpack-plugin": "^3.0.1",
 		"rimraf": "^3.0.2",
+		"style-loader": "^2.0.0",
 		"ts-loader": "^9.1.1",
 		"typescript": "^4.2.4",
 		"webpack": "^5.36.0",
@@ -33,6 +37,7 @@
 	},
 	"dependencies": {
 		"adaptivecards": "^2.9.0",
-		"markdown-it": "^12.0.6"
+		"markdown-it": "^12.0.6",
+		"monaco-editor": "^0.23.0"
 	}
 }
