@@ -3374,17 +3374,20 @@ export class ChoiceSetInput extends Input {
                 this.valueChanged();
                 if (choice.inlineAction instanceof ToggleVisibilityAction) {
                     let toggleVisibilityAction = choice.inlineAction as ToggleVisibilityAction;
+
                     let newTargetElements: { [key: string]: any } = {};
                     for (let elementId of Object.keys(toggleVisibilityAction.targetElements)) {
-                        let targetElement = this.getRootElement().getElementById(elementId);
+                        let targetElement = toggleVisibilityAction.targetElements[elementId];
 
-                        if (targetElement) {
-                            targetElement.isVisible = input.checked;
+                        if (input.type !== "radio") {
+                            targetElement = input.checked;
                         }
+
                         newTargetElements[elementId] = targetElement;
                     }
 
                     toggleVisibilityAction.targetElements = newTargetElements;
+                    toggleVisibilityAction.setParent(this);
                     toggleVisibilityAction.execute();
                 }
             }
