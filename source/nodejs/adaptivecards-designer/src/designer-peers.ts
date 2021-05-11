@@ -1628,7 +1628,7 @@ export class CardElementPeer extends DesignerPeer {
             this.initializeCardElement();
         }
 
-        this.updateChildren();
+        this.updateChildren(initializeCardElement);
     }
 
     findCardElementChild(element: Adaptive.CardElement) : CardElementPeer | undefined {
@@ -1655,7 +1655,7 @@ export class CardElementPeer extends DesignerPeer {
         return undefined;
     }
 
-    updateChildren() {
+    updateChildren(initializeCardElement?: boolean) {
         if (this.cardElement instanceof Adaptive.CardElementContainer) {
             for (let i = 0; i < this.getChildCount(); i++) {
                 let existingPeer = this.getChildAt(i);
@@ -1673,7 +1673,13 @@ export class CardElementPeer extends DesignerPeer {
                 let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
 
                 if (!existingPeer) {
-                    this.insertChild(CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, this.cardElement.getItemAt(i)), i);
+                    this.insertChild(
+                        CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(
+                            this.designerSurface,
+                            this,
+                            this.cardElement.getItemAt(i),
+                            initializeCardElement),
+                        i);
                 }
             }
 

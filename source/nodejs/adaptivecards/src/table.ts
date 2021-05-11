@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { CardElement, StylableCardElementContainer, SerializationContext, Container, ContainerStyleProperty } from "./card-elements";
+import { CardElement, StylableCardElementContainer, SerializationContext, Container, ContainerStyleProperty, StylableContainerBase } from "./card-elements";
 import { HorizontalAlignment, VerticalAlignment, SizeUnit, ValidationEvent, TypeErrorType, Spacing } from "./enums";
 import { TextStyleDefinition } from "./host-config";
-import { BaseSerializationContext, BoolProperty, CustomProperty, EnumProperty, property, PropertyBag,
+import { BaseSerializationContext, BoolProperty, CustomProperty, EnumProperty, property,
     PropertyDefinition, SerializableObject, SerializableObjectCollectionProperty, Versions } from "./serialization";
-import { SizeAndUnit, PaddingDefinition } from "./shared";
+import { PropertyBag, SizeAndUnit, PaddingDefinition } from "./shared";
 import { Strings } from "./strings";
 import { stringToCssColor } from "./utils";
 
@@ -75,101 +75,6 @@ export class ColumnDefinition extends SerializableObject {
     computedWidth: SizeAndUnit;
 }
 
-export abstract class StylableContainer<T extends CardElement> extends StylableCardElementContainer {
-    private _items: T[] = [];
-
-    private parseItem(source: any, context: SerializationContext): T | undefined {
-        return context.parseCardObject<T>(
-            this,
-            source,
-            [], // Forbidden types not supported for elements for now
-            !this.isDesignMode(),
-            (typeName: string) => {
-                return this.createItemInstance(typeName);
-            },
-            (typeName: string, errorType: TypeErrorType) => {
-                context.logParseEvent(
-                    undefined,
-                    ValidationEvent.ElementTypeNotAllowed,
-                    Strings.errors.elementTypeNotAllowed(typeName));
-            });
-    }
-
-    protected abstract getCollectionPropertyName(): string;
-    protected abstract createItemInstance(typeName: string): T | undefined;
-
-    protected internalAddItem(item: T) {
-        if (!item.parent) {
-            this._items.push(item);
-
-            item.setParent(this);
-        }
-        else {
-            throw new Error(Strings.errors.elementAlreadyParented());
-        }
-    }
-
-    protected internalRemoveItem(item: T): boolean {
-        let itemIndex = this._items.indexOf(item);
-
-        if (itemIndex >= 0) {
-            this._items.splice(itemIndex, 1);
-
-            item.setParent(undefined);
-
-            this.updateLayout();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    protected internalParse(source: any, context: SerializationContext) {
-        super.internalParse(source, context);
-
-        this._items = [];
-
-        let items = source[this.getCollectionPropertyName()];
-
-        if (Array.isArray(items)) {
-            for (let item of items) {
-                let instance = this.parseItem(item, context);
-
-                if (instance) {
-                    this._items.push(instance);
-                }
-            }
-        }
-    }
-
-    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
-        super.internalToJSON(target, context);
-
-        context.serializeArray(target, this.getCollectionPropertyName(), this._items);
-    }
-
-    removeItem(item: T): boolean {
-        return this.internalRemoveItem(item);
-    }
-
-    getItemCount(): number {
-        return this._items.length;
-    }
-
-    getItemAt(index: number): T {
-        return this._items[index];
-    }
-
-    getFirstVisibleRenderedItem(): T | undefined {
-        return this.getItemCount() > 0 ? this.getItemAt(0) : undefined;
-    }
-
-    getLastVisibleRenderedItem(): T | undefined {
-        return this.getItemCount() > 0 ? this.getItemAt(this.getItemCount() - 1) : undefined;
-    }
-}
-
 export type CellType = "data" | "header";
 
 export class TableCell extends Container {
@@ -196,12 +101,39 @@ export class TableCell extends Container {
     }
 
     protected getDefaultPadding(): PaddingDefinition {
-        return this.getHasBackground() || this.getHasBorder() ?
+        return this.getHasBackground() || this.getHasBorder() || this.parentRow.getHasBackground() ?
             new PaddingDefinition(
                 Spacing.Small,
                 Spacing.Small,
                 Spacing.Small,
                 Spacing.Small) : super.getDefaultPadding();
+    }
+
+    protected adjustRenderedElementSize() {
+        if (this.renderedElement) {
+            let column = this.parentRow.parentTable.getColumnAt(this._columnIndex);
+
+            if (column.computedWidth.unit === SizeUnit.Pixel) {
+                this.renderedElement.style.flex = "0 0 " + column.computedWidth.physicalSize + "px";
+            }
+            else {
+                this.renderedElement.style.flex = "1 1 " + column.computedWidth.physicalSize + "%";
+            }
+        }
+    }
+
+    protected internalRenderSeparator(): HTMLElement | undefined {
+        let cellSpacing = this.hostConfig.table.cellSpacing;
+
+        if (this._columnIndex > 0 && !this.parentRow.parentTable.showGridLines && cellSpacing > 0) {
+            let separatorRow = document.createElement("div");
+            separatorRow.setAttribute("aria-hidden", "true");
+            separatorRow.style.width = cellSpacing + "px";
+
+            return separatorRow;
+        }
+
+        return undefined;
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -214,6 +146,12 @@ export class TableCell extends Container {
             if (this.cellType === "header") {
                 cellElement.setAttribute("scope", "col");
             }
+
+            let cellSpacing = this.hostConfig.table.cellSpacing;
+    
+            if (this._columnIndex > 0 && !this.parentRow.parentTable.showGridLines && cellSpacing > 0) {
+                cellElement.style.marginLeft = cellSpacing + "px";
+            }    
         }
 
         return cellElement;
@@ -300,7 +238,7 @@ export class TableCell extends Container {
     }
 }
 
-export class TableRow extends StylableContainer<TableCell> {
+export class TableRow extends StylableContainerBase<TableCell> {
     //#region Schema
 
     static readonly styleProperty = new ContainerStyleProperty(Versions.v1_5, "style");
@@ -314,6 +252,20 @@ export class TableRow extends StylableContainer<TableCell> {
     verticalCellContentAlignment?: VerticalAlignment;
 
     //#endregion
+
+    protected internalRenderSeparator(): HTMLElement | undefined {
+        let cellSpacing = this.hostConfig.table.cellSpacing;
+
+        if (this.parentTable.indexOf(this) > 0 && !this.parentTable.showGridLines && cellSpacing > 0) {
+            let separatorRow = document.createElement("div");
+            separatorRow.setAttribute("aria-hidden", "true");
+            separatorRow.style.height = cellSpacing + "px";
+
+            return separatorRow;
+        }
+
+        return undefined;
+    }
 
     protected getDefaultPadding(): PaddingDefinition {
         return new PaddingDefinition(
@@ -334,22 +286,38 @@ export class TableRow extends StylableContainer<TableCell> {
         }
     }
 
-    protected getCollectionPropertyName(): string {
+    protected createItemsHostElement(): HTMLElement {
+        let element = document.createElement("div");
+        element.setAttribute("role", "row");
+        element.style.display = "flex";
+        element.style.flexDirection = "row";
+
+        return element;
+    }
+
+    protected getItemsCollectionPropertyName(): string {
         return "cells";
     }
 
-    protected createItemInstance(typeName: string): TableCell | undefined {
-        return !typeName || typeName === "TableCell" ? new TableCell() : undefined;
+    protected parseItem(context: SerializationContext, parent: CardElement | undefined, source: any, allowFallback: boolean): TableCell | undefined {
+        return context.parseCardObject<TableCell>(
+            this,
+            source,
+            [], // Forbidden types not supported for elements for now
+            !this.isDesignMode(),
+            (typeName: string) => {
+                return !typeName || typeName === "TableCell" ? new TableCell() : undefined;
+            },
+            (typeName: string, errorType: TypeErrorType) => {
+                context.logParseEvent(
+                    undefined,
+                    ValidationEvent.ElementTypeNotAllowed,
+                    Strings.errors.elementTypeNotAllowed(typeName));
+            });
     }
     
     protected internalRender(): HTMLElement | undefined {
         let isFirstRow = this.getIsFirstRow();
-        let cellSpacing = this.hostConfig.table.cellSpacing;
-
-        let rowElement = document.createElement("div");
-        rowElement.setAttribute("role", "row");
-        rowElement.style.display = "flex";
-        rowElement.style.flexDirection = "row";
 
         for (let i = 0; i < Math.min(this.getItemCount(), this.parentTable.getColumnCount()); i++) {
             let cell = this.getItemAt(i);
@@ -357,28 +325,9 @@ export class TableRow extends StylableContainer<TableCell> {
             // Cheating a bit in order to keep cellType read-only
             cell["_columnIndex"] = i;
             cell["_cellType"] = (this.parentTable.firstRowAsHeaders && isFirstRow) ? "header" : "data";
-
-            let renderedCell = cell.render();
-
-            if (renderedCell) {
-                let column = this.parentTable.getColumnAt(i);
-
-                if (column.computedWidth.unit === SizeUnit.Pixel) {
-                    renderedCell.style.flex = "0 0 " + column.computedWidth.physicalSize + "px";
-                }
-                else {
-                    renderedCell.style.flex = "1 1 " + column.computedWidth.physicalSize + "%";
-                }
-
-                if (i > 0 && !this.parentTable.showGridLines && cellSpacing > 0) {
-                    renderedCell.style.marginLeft = cellSpacing + "px";
-                }
-
-                rowElement.appendChild(renderedCell);
-            }
         }
 
-        return rowElement.children.length > 0 ? rowElement : undefined;
+        return super.internalRender();
     }
 
     protected shouldSerialize(context: SerializationContext): boolean {
@@ -386,7 +335,7 @@ export class TableRow extends StylableContainer<TableCell> {
     }
 
     addCell(cell: TableCell) {
-        this.internalAddItem(cell);
+        this.internalInsertItemAt(cell, this._items.length, true);
     }
 
     removeCellAt(columnIndex: number): boolean {
@@ -420,7 +369,7 @@ export class TableRow extends StylableContainer<TableCell> {
     }
 }
 
-export class Table extends StylableContainer<TableRow> {
+export class Table extends StylableContainerBase<TableRow> {
     //#region Schema
 
     private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_5, "columns", ColumnDefinition);
@@ -475,12 +424,34 @@ export class Table extends StylableContainer<TableRow> {
         }
     }
 
-    protected getCollectionPropertyName(): string {
+    protected createItemsHostElement(): HTMLElement {
+        let element = document.createElement("div");
+        element.setAttribute("role", "table");
+        element.style.display = "flex";
+        element.style.flexDirection = "column";
+
+        return element;
+    }
+
+    protected getItemsCollectionPropertyName(): string {
         return "rows";
     }
 
-    protected createItemInstance(typeName: string): TableRow | undefined {
-        return !typeName || typeName === "TableRow" ? new TableRow() : undefined;
+    protected parseItem(context: SerializationContext, parent: CardElement | undefined, source: any, allowFallback: boolean): TableRow | undefined {
+        return context.parseCardObject<TableRow>(
+            this,
+            source,
+            [], // Forbidden types not supported for elements for now
+            !this.isDesignMode(),
+            (typeName: string) => {
+                return !typeName || typeName === "TableRow" ? new TableRow() : undefined;
+            },
+            (typeName: string, errorType: TypeErrorType) => {
+                context.logParseEvent(
+                    undefined,
+                    ValidationEvent.ElementTypeNotAllowed,
+                    Strings.errors.elementTypeNotAllowed(typeName));
+            });
     }
 
     protected internalParse(source: PropertyBag, context: SerializationContext) {
@@ -508,43 +479,24 @@ export class Table extends StylableContainer<TableRow> {
                 }
             }
 
-            let tableElement = document.createElement("div");
-            tableElement.setAttribute("role", "table");
-            tableElement.style.display = "flex";
-            tableElement.style.flexDirection = "column";
+            let element = super.internalRender();
 
-            if (this.showGridLines) {
-                let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.gridStyle);
+            if (element) {
+                if (this.showGridLines) {
+                    let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.gridStyle);
 
-                if (styleDefinition.borderColor) {
-                    const borderColor = <string>stringToCssColor(styleDefinition.borderColor);
-    
-                    if (borderColor) {
-                        tableElement.style.borderTop = "1px solid " + borderColor;
-                        tableElement.style.borderLeft = "1px solid " + borderColor;
+                    if (styleDefinition.borderColor) {
+                        const borderColor = <string>stringToCssColor(styleDefinition.borderColor);
+        
+                        if (borderColor) {
+                            element.style.borderTop = "1px solid " + borderColor;
+                            element.style.borderLeft = "1px solid " + borderColor;
+                        }
                     }
                 }
             }
 
-            let cellSpacing = this.hostConfig.table.cellSpacing;
-
-            for (let i = 0; i < this.getItemCount(); i++) {
-                let renderedRow = this.getItemAt(i).render();
-
-                if (renderedRow) {
-                    if (i > 0 && !this.showGridLines && cellSpacing > 0) {
-                        let separatorRow = document.createElement("div");
-                        separatorRow.setAttribute("aria-hidden", "true");
-                        separatorRow.style.height = cellSpacing + "px";
-
-                        tableElement.appendChild(separatorRow);
-                    }
-
-                    tableElement.appendChild(renderedRow);
-                }
-            }
-
-            return tableElement;
+            return element;
         }
 
         return undefined;
@@ -575,9 +527,9 @@ export class Table extends StylableContainer<TableRow> {
     }
 
     addRow(row: TableRow) {
-        this.internalAddItem(row);
-
         row.ensureHasEnoughCells(this.getColumnCount());
+        
+        this.internalInsertItemAt(row, this._items.length, true);
     }
 
     getJsonTypeName(): string {
