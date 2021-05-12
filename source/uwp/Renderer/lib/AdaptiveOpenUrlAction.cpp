@@ -6,21 +6,20 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction =
-            std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();
+        std::shared_ptr<AdaptiveCards::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
         return RuntimeClassInitialize(openUrlAction);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction)
+    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
     try
     {
         if (sharedOpenUrlAction == nullptr)
@@ -38,7 +37,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(uriActivationFactory->CreateUri(asHstring.Get(), m_url.GetAddressOf()));
         }
 
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedOpenUrlAction));
+        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedOpenUrlAction));
         return S_OK;
     }
     CATCH_RETURN;
@@ -53,17 +52,16 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespace::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::OpenUrl;
         return S_OK;
     }
 
-    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction =
-            std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();
+        std::shared_ptr<AdaptiveCards::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
         RETURN_IF_FAILED(CopySharedElementProperties(*openUrlAction));
 
         if (m_url != nullptr)

@@ -7,22 +7,22 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
+        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
         return RuntimeClassInitialize(textBlock);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock)
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock)
     try
     {
         if (sharedTextBlock == nullptr)
@@ -32,8 +32,9 @@ namespace AdaptiveNamespace
 
         m_wrap = sharedTextBlock->GetWrap();
         m_maxLines = sharedTextBlock->GetMaxLines();
-        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
-        m_style = static_cast<ABI::AdaptiveNamespace::TextStyle>(sharedTextBlock->GetStyle());
+        m_horizontalAlignment =
+            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>(sharedTextBlock->GetStyle());
 
         InitializeTextElement(sharedTextBlock);
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
@@ -65,25 +66,25 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_Style(_Out_ ABI::AdaptiveNamespace::TextStyle* style)
+    HRESULT AdaptiveTextBlock::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::put_Style(ABI::AdaptiveNamespace::TextStyle style)
+    HRESULT AdaptiveTextBlock::put_Style(ABI::AdaptiveCards::Rendering::Uwp::TextStyle style)
     {
         m_style = style;
         return S_OK;
@@ -95,18 +96,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedTextBlock)
+    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedTextBlock)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
+        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
 
         RETURN_IF_FAILED(CopySharedElementProperties(*textBlock));
         RETURN_IF_FAILED(CopyTextElementProperties(*textBlock));
 
         textBlock->SetWrap(m_wrap);
         textBlock->SetMaxLines(m_maxLines);
-        textBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
-        textBlock->SetStyle(static_cast<AdaptiveSharedNamespace::TextStyle>(m_style));
+        textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+        textBlock->SetStyle(static_cast<AdaptiveCards::TextStyle>(m_style));
 
         sharedTextBlock = std::move(textBlock);
         return S_OK;

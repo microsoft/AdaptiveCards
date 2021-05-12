@@ -5,7 +5,7 @@
 #include "TimeInput.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 TimeInput::TimeInput() : BaseInputElement(CardElementType::TimeInput)
 {

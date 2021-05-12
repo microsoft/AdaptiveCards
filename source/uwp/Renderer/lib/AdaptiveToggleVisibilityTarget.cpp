@@ -7,12 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize() noexcept
     try
@@ -22,10 +22,10 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedToggleTarget)
+    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget>& sharedToggleTarget)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleTarget->GetElementId(), m_elementId.GetAddressOf()));
-        m_visibilityToggle = (ABI::AdaptiveNamespace::IsVisible)sharedToggleTarget->GetIsVisible();
+        m_visibilityToggle = (ABI::AdaptiveCards::Rendering::Uwp::IsVisible)sharedToggleTarget->GetIsVisible();
         return S_OK;
     }
 
@@ -33,28 +33,28 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveToggleVisibilityTarget::put_ElementId(_In_ HSTRING title) { return m_elementId.Set(title); }
 
-    HRESULT AdaptiveToggleVisibilityTarget::get_IsVisible(_Out_ ABI::AdaptiveNamespace::IsVisible* value)
+    HRESULT AdaptiveToggleVisibilityTarget::get_IsVisible(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IsVisible* value)
     {
         *value = m_visibilityToggle;
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleVisibilityTarget::put_IsVisible(ABI::AdaptiveNamespace::IsVisible value)
+    HRESULT AdaptiveToggleVisibilityTarget::put_IsVisible(ABI::AdaptiveCards::Rendering::Uwp::IsVisible value)
     {
         m_visibilityToggle = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleVisibilityTarget::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedModel)
+    HRESULT AdaptiveToggleVisibilityTarget::GetSharedModel(std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget> toggleTarget =
-            std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityTarget>();
+        std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> toggleTarget =
+            std::make_shared<AdaptiveCards::ToggleVisibilityTarget>();
 
         std::string id;
         RETURN_IF_FAILED(HStringToUTF8(m_elementId.Get(), id));
         toggleTarget->SetElementId(id);
-        toggleTarget->SetIsVisible((AdaptiveSharedNamespace::IsVisible)m_visibilityToggle);
+        toggleTarget->SetIsVisible((AdaptiveCards::IsVisible)m_visibilityToggle);
 
         sharedModel = std::move(toggleTarget);
         return S_OK;

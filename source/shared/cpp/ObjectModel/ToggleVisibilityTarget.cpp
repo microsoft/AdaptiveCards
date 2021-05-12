@@ -4,7 +4,7 @@
 #include "ParseUtil.h"
 #include "ToggleVisibilityTarget.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 ToggleVisibilityTarget::ToggleVisibilityTarget() : m_visibilityToggle(IsVisibleToggle)
 {

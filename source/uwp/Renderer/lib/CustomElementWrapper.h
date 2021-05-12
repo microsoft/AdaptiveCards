@@ -5,12 +5,12 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
-    class CustomElementWrapper : public AdaptiveSharedNamespace::BaseCardElement
+    class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {
     public:
-        CustomElementWrapper(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement);
+        CustomElementWrapper(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement);
 
         bool GetSeparator() const override;
         void SetSeparator(bool value) override;
@@ -25,12 +25,12 @@ namespace AdaptiveNamespace
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement);
+        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** cardElement);
 
     private:
         std::string GetCardElementId() const;
         void SetCardElementId(const std::string& value);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_cardElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement> m_cardElement;
     };
 }

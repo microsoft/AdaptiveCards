@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "AdaptiveCardParseWarning.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseActionElement;
     class ParseContext;
@@ -13,6 +13,7 @@ namespace AdaptiveSharedNamespace
     class ActionElementParser
     {
     public:
+        virtual ~ActionElementParser() = default;
         virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
         virtual std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& value) = 0;
     };
@@ -41,12 +42,12 @@ namespace AdaptiveSharedNamespace
     public:
         ActionParserRegistration();
 
-        void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> parser);
+        void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveCards::ActionElementParser> parser);
         void RemoveParser(std::string const& elementType);
-        std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> GetParser(std::string const& elementType) const;
+        std::shared_ptr<AdaptiveCards::ActionElementParser> GetParser(std::string const& elementType) const;
 
     private:
         std::unordered_set<std::string> m_knownElements;
-        std::unordered_map<std::string, std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
+        std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::ActionElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
     };
 }
