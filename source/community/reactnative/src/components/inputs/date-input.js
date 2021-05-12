@@ -41,14 +41,15 @@ export class DateInput extends React.Component {
 	 */
 	setDate(newDate) {
 		if (newDate !== undefined) {
-			this.setState({ chosenDate: newDate })
 			this.setState({
+				chosenDate: newDate,
 				value: newDate.getFullYear() + "-" +
 					`${newDate.getMonth() + 1}`.padStart(2, '0') + "-" +
-					`${newDate.getDate()}`.padStart(2, '0')
-			})
-		}
-		this.setState({ modalVisibleAndroid: false })
+					`${newDate.getDate()}`.padStart(2, '0'),
+				modalVisibleAndroid: false,
+			});
+		} else
+			this.setState({ modalVisibleAndroid: false })
 	}
 
 	/**

@@ -58,12 +58,13 @@ export class TimeInput extends React.Component {
 
 			this.setState({
 				chosenTime: newTime,
-				value: updatedTime
+				value: updatedTime,
+				modalVisibleAndroid: false
 			});
-		}
-		this.setState({
-			modalVisibleAndroid: false
-		});
+		} else
+			this.setState({
+				modalVisibleAndroid: false
+			});
 	}
 
 	/**
