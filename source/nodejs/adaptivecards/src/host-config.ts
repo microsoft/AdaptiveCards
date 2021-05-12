@@ -101,6 +101,22 @@ export class MediaConfig {
     }
 }
 
+export class TableConfig {
+    cellSpacing: number = 8;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.cellSpacing = obj.cellSpacing && typeof obj.cellSpacing === "number" ? obj.cellSpacing : this.cellSpacing;
+        }
+    }
+
+    toJSON() {
+        return {
+            cellSpacing: this.cellSpacing
+        }
+    }
+}
+
 export class BaseTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
     color: Enums.TextColor = Enums.TextColor.Default;;
@@ -153,15 +169,27 @@ export class TextStyleSet {
             size: "Large",
             weight: "Bolder"
         });
-
+    readonly columnHeader: TextStyleDefinition = new TextStyleDefinition(
+        {
+            weight: "Bolder"
+        });
+    
     constructor(obj?: any) {
         if (obj) {
             this.heading.parse(obj.heading);
+            this.columnHeader.parse(obj.columnHeader);
         }
     }
 
     getStyleByName(name: string): TextStyleDefinition {
-        return name.toLowerCase() === "heading" ? this.heading : this.default;
+        switch (name.toLowerCase()) {
+            case "heading":
+                return this.heading;
+            case "columnHeader":
+                return this.columnHeader;
+            default:
+                return this.default;
+        }
     }
 }
 
@@ -395,6 +423,7 @@ export class ContainerStyleDefinition {
 
     highlightBackgroundColor?: string;
     highlightForegroundColor?: string;
+    borderColor?: string;
 
     parse(obj: any) {
         if (obj) {
@@ -404,6 +433,8 @@ export class ContainerStyleDefinition {
 
             this.highlightBackgroundColor = obj["highlightBackgroundColor"];
             this.highlightForegroundColor = obj["highlightForegroundColor"];
+
+            this.borderColor = obj["borderColor"];
         }
     }
 
@@ -631,6 +662,7 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
+    readonly table: TableConfig = new TableConfig();
     readonly textStyles: TextStyleSet = new TextStyleSet();
     readonly textBlock: TextBlockConfig = new TextBlockConfig();
 
