@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
+import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition, ISeparationDefinition,
     Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation } from "./shared";
 import * as Utils from "./utils";
 import { HostConfig, defaultHostConfig, BaseTextDefinition, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition, TextStyleDefinition } from "./host-config";
@@ -13,6 +13,45 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
 import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
+
+export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
+    if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
+        let separator = document.createElement("div");
+        separator.className = hostConfig.makeCssClassName("ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator");
+        separator.setAttribute("aria-hidden", "true");
+
+        let color = separationDefinition.lineColor ? Utils.stringToCssColor(separationDefinition.lineColor) : "";
+
+        if (orientation == Enums.Orientation.Horizontal) {
+            if (separationDefinition.lineThickness) {
+                separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
+                separator.style.marginBottom = (separationDefinition.spacing / 2) + "px";
+                separator.style.borderBottom = separationDefinition.lineThickness + "px solid " + color;
+            }
+            else {
+                separator.style.height = separationDefinition.spacing + "px";
+            }
+        }
+        else {
+            if (separationDefinition.lineThickness) {
+                separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
+                separator.style.marginRight = (separationDefinition.spacing / 2) + "px";
+                separator.style.borderRight = separationDefinition.lineThickness + "px solid " + color;
+            }
+            else {
+                separator.style.width = separationDefinition.spacing + "px";
+            }
+        }
+
+        separator.style.overflow = "hidden";
+        separator.style.flex = "0 0 auto";
+
+        return separator;
+    }
+    else {
+        return undefined;
+    }
+}
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -110,7 +149,7 @@ export abstract class CardElement extends CardObject {
     private _padding?: PaddingDefinition;
 
     private internalRenderSeparator(): HTMLElement | undefined {
-        let renderedSeparator = Utils.renderSeparation(
+        let renderedSeparator = renderSeparation(
             this.hostConfig,
             {
                 spacing: this.hostConfig.getEffectiveSpacing(this.spacing),
@@ -5422,7 +5461,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             if (styleDefinition.backgroundColor) {
                 const bgColor = <string>Utils.stringToCssColor(styleDefinition.backgroundColor);
                 this.renderedElement.style.backgroundColor = bgColor;
-                this.renderedElement.style.border = "1px solid " + bgColor;
             }
         }
     }
@@ -6626,7 +6664,7 @@ export abstract class ContainerWithActions extends Container {
             if (renderedActions) {
                 Utils.appendChild(
                     element,
-                    Utils.renderSeparation(
+                    renderSeparation(
                         this.hostConfig,
                         {
                             spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing)
@@ -7424,3 +7462,26 @@ export class SerializationContext extends BaseSerializationContext {
         this._actionRegistry = value;
     }
 }
+
+GlobalRegistry.defaultElements.register("Container", Container);
+GlobalRegistry.defaultElements.register("TextBlock", TextBlock);
+GlobalRegistry.defaultElements.register("RichTextBlock", RichTextBlock, Versions.v1_2);
+GlobalRegistry.defaultElements.register("TextRun", TextRun, Versions.v1_2);
+GlobalRegistry.defaultElements.register("Image", Image);
+GlobalRegistry.defaultElements.register("ImageSet", ImageSet);
+GlobalRegistry.defaultElements.register("Media", Media, Versions.v1_1);
+GlobalRegistry.defaultElements.register("FactSet", FactSet);
+GlobalRegistry.defaultElements.register("ColumnSet", ColumnSet);
+GlobalRegistry.defaultElements.register("ActionSet", ActionSet, Versions.v1_2);
+GlobalRegistry.defaultElements.register("Input.Text", TextInput);
+GlobalRegistry.defaultElements.register("Input.Date", DateInput);
+GlobalRegistry.defaultElements.register("Input.Time", TimeInput);
+GlobalRegistry.defaultElements.register("Input.Number", NumberInput);
+GlobalRegistry.defaultElements.register("Input.ChoiceSet", ChoiceSetInput);
+GlobalRegistry.defaultElements.register("Input.Toggle", ToggleInput);
+
+GlobalRegistry.defaultActions.register(OpenUrlAction.JsonTypeName, OpenUrlAction);
+GlobalRegistry.defaultActions.register(SubmitAction.JsonTypeName, SubmitAction);
+GlobalRegistry.defaultActions.register(ShowCardAction.JsonTypeName, ShowCardAction);
+GlobalRegistry.defaultActions.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
+GlobalRegistry.defaultActions.register(ExecuteAction.JsonTypeName, ExecuteAction, Versions.v1_4);

@@ -3,6 +3,7 @@
 import { CardElement, StylableCardElementContainer, SerializationContext, Container, ContainerStyleProperty } from "./card-elements";
 import { HorizontalAlignment, VerticalAlignment, SizeUnit, ValidationEvent, TypeErrorType, Spacing } from "./enums";
 import { TextStyleDefinition } from "./host-config";
+import { GlobalRegistry } from "./registry";
 import { BaseSerializationContext, BoolProperty, CustomProperty, EnumProperty, property, PropertyBag,
     PropertyDefinition, SerializableObject, SerializableObjectCollectionProperty, Versions } from "./serialization";
 import { SizeAndUnit, PaddingDefinition } from "./shared";
@@ -584,3 +585,5 @@ export class Table extends StylableContainer<TableRow> {
         return "Table";
     }
 }
+
+GlobalRegistry.defaultElements.register("Table", Table, Versions.v1_5);
