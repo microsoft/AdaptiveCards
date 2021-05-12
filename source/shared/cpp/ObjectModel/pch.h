@@ -2,14 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#ifdef ADAPTIVE_CARDS_WINDOWS
-#include "winPch.h"
-#endif
-
-#ifndef AdaptiveSharedNamespace
-#define AdaptiveSharedNamespace AdaptiveCards
-#endif
-
 #include <algorithm>
 #include <cctype>
 #include <exception>
@@ -26,7 +18,7 @@
 #include <unordered_set>
 #include <vector>
 
-#if defined(_MSC_BUILD) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(ADAPTIVE_CARDS_WINDOWS)
+#if defined(_MSC_BUILD) && !defined(__ANDROID__) && !defined(__APPLE__)
 #define USE_CPPCORECHECK
 #endif
 
@@ -50,7 +42,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
-    constexpr const char * const c_sharedModelVersion = "1.2";
+    constexpr const char* const c_sharedModelVersion = "1.5";
 }

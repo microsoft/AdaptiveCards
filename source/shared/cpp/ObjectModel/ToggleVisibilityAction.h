@@ -7,7 +7,7 @@
 #include "ActionParserRegistration.h"
 #include "ToggleVisibilityTarget.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class ToggleVisibilityAction : public BaseActionElement
     {

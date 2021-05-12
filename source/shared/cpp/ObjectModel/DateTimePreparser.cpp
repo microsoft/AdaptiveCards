@@ -15,7 +15,7 @@
 #include "DateTimePreparser.h"
 #include <iomanip>
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 DateTimePreparser::DateTimePreparser() : m_hasDateTokens(false)
 {

@@ -23,10 +23,10 @@
 #include "AdaptiveSpacingConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(_In_ HSTRING adaptiveJson,
                                                           _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult) noexcept
@@ -145,12 +145,12 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveHostConfig::put_ImageBaseUrl(_In_ HSTRING imageBaseUrl) { return m_imageBaseUrl.Set(imageBaseUrl); }
 
-    HRESULT AdaptiveHostConfig::get_ContainerStyles(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition** value)
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition** value)
     {
         return m_containerStyles.CopyTo(value);
     }
 
-    HRESULT AdaptiveHostConfig::put_ContainerStyles(_In_ ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
     {
         m_containerStyles = containerStylesDefinition;
         return S_OK;
@@ -167,23 +167,23 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_Spacing(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveSpacingConfig** spacingConfig)
+    HRESULT AdaptiveHostConfig::get_Spacing(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig** spacingConfig)
     {
         return m_spacing.CopyTo(spacingConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_Spacing(_In_ ABI::AdaptiveNamespace::IAdaptiveSpacingConfig* spacingConfig)
+    HRESULT AdaptiveHostConfig::put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig* spacingConfig)
     {
         m_spacing = spacingConfig;
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_Separator(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig** separatorConfig)
+    HRESULT AdaptiveHostConfig::get_Separator(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig** separatorConfig)
     {
         return m_separator.CopyTo(separatorConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_Separator(_In_ ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig* separatorConfig)
+    HRESULT AdaptiveHostConfig::put_Separator(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig* separatorConfig)
     {
         m_separator = separatorConfig;
         return S_OK;
@@ -266,12 +266,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_Headings(ABI::AdaptiveNamespace::IAdaptiveHeadingsConfig** headingsConfig)
+    HRESULT AdaptiveHostConfig::get_Headings(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHeadingsConfig** headingsConfig)
     {
         return m_headings.CopyTo(headingsConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_Headings(ABI::AdaptiveNamespace::IAdaptiveHeadingsConfig* headingsConfig)
+    HRESULT AdaptiveHostConfig::put_Headings(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHeadingsConfig* headingsConfig)
     {
         m_headings = headingsConfig;
         return S_OK;

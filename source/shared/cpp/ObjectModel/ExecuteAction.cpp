@@ -4,7 +4,7 @@
 #include "ParseUtil.h"
 #include "ExecuteAction.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 ExecuteAction::ExecuteAction() : BaseActionElement(ActionType::Execute), m_associatedInputs(AssociatedInputs::Auto)
 {

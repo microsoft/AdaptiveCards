@@ -11,9 +11,10 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
-RichTextBlock::RichTextBlock() : BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(HorizontalAlignment::Left)
+RichTextBlock::RichTextBlock() :
+    BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
 }

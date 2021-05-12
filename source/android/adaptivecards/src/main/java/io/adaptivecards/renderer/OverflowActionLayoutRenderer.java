@@ -76,7 +76,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
             contentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             contentLayout.setOrientation(LinearLayout.VERTICAL);
             setDrawables(contentLayout);
-            overflowActionView.setOnClickListener(new OverflowActionOnClickListener(contentLayout, overflowActionRenderer, menuItemList));
+            overflowActionView.setOnClickListener(new OverflowActionOnClickListener(contentLayout, overflowActionRenderer, menuItemList, renderArgs.isRootLevelActions()));
         }
         catch (Exception e)
         {
@@ -167,18 +167,20 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
         private PopupWindow popupWindow;
         private int contentWidth;
         private int contentHeight;
+        private boolean isRootLevelActions;
 
-        public OverflowActionOnClickListener(LinearLayout contentLayout, IOverflowActionRenderer overflowActionRenderer, List<View> menuItemViewList)
+        public OverflowActionOnClickListener(LinearLayout contentLayout, IOverflowActionRenderer overflowActionRenderer, List<View> menuItemViewList, boolean isRootLevelActions)
         {
             this.contentLayout = contentLayout;
             this.overflowActionRenderer = overflowActionRenderer;
             this.menuItemViewList = menuItemViewList;
+            this.isRootLevelActions = isRootLevelActions;
         }
 
         @Override
         public void onClick(View v) {
 
-            if (overflowActionRenderer == null || !overflowActionRenderer.onDisplayOverflowActionMenu(menuItemViewList, v))
+            if (overflowActionRenderer == null || !overflowActionRenderer.onDisplayOverflowActionMenu(menuItemViewList, v, isRootLevelActions))
             {
                 // Add & measure PopupWindow.
                 if (popupWindow == null)

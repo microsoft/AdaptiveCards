@@ -7,7 +7,7 @@
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class Inline
     {

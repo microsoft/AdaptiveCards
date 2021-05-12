@@ -4,7 +4,7 @@
 #include "CollectionTypeElement.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
     BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment),
@@ -65,7 +65,7 @@ void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& conte
 {
     // We allow bleed when the current container has padding and bleed set, and when the parents don't impose a
     // restiction via bleed direction
-    const AdaptiveSharedNamespace::InternalId id = context.PaddingParentInternalId();
+    const AdaptiveCards::InternalId id = context.PaddingParentInternalId();
     const bool canBleed = GetPadding() && GetBleed();
     if (canBleed && context.GetBleedDirection() != ContainerBleedDirection::BleedRestricted)
     {
@@ -78,12 +78,12 @@ void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& conte
     }
 }
 
-void CollectionTypeElement::SetParentalId(const AdaptiveSharedNamespace::InternalId& id)
+void CollectionTypeElement::SetParentalId(const AdaptiveCards::InternalId& id)
 {
     m_parentalId = id;
 }
 
-AdaptiveSharedNamespace::InternalId CollectionTypeElement::GetParentalId(void) const
+AdaptiveCards::InternalId CollectionTypeElement::GetParentalId(void) const
 {
     return m_parentalId;
 }

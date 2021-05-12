@@ -4,7 +4,7 @@
 
 // Auto-formatting does terrible things to this file, so turn it off.
 // clang-format off
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     DEFINE_ADAPTIVECARD_ENUM_THROW(AdaptiveCardSchemaKey, {
             {AdaptiveCardSchemaKey::Accent, "accent"},

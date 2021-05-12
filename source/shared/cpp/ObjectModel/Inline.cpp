@@ -4,7 +4,7 @@
 #include "Inline.h"
 #include "TextRun.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 Inline::Inline(InlineElementType type) : m_type(type)
 {

@@ -5,21 +5,20 @@
 #include "AdaptiveSubmitAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
-            std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
+        std::shared_ptr<AdaptiveCards::SubmitAction> submitAction = std::make_shared<AdaptiveCards::SubmitAction>();
         return RuntimeClassInitialize(submitAction);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction)
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction)
     try
     {
         if (sharedSubmitAction == nullptr)
@@ -33,16 +32,17 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
         }
 
-        m_associatedInputs = static_cast<ABI::AdaptiveNamespace::AssociatedInputs> (sharedSubmitAction->GetAssociatedInputs());
+        m_associatedInputs =
+            static_cast<ABI::AdaptiveCards::Rendering::Uwp::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
 
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedSubmitAction));
+        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespace::ActionType::Submit;
+        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::Submit;
         return S_OK;
     }
 
@@ -54,23 +54,22 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::get_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs)
+    HRESULT AdaptiveSubmitAction::get_AssociatedInputs(ABI::AdaptiveCards::Rendering::Uwp::AssociatedInputs* associatedInputs)
     {
         *associatedInputs = m_associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::put_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs associatedInputs)
+    HRESULT AdaptiveSubmitAction::put_AssociatedInputs(ABI::AdaptiveCards::Rendering::Uwp::AssociatedInputs associatedInputs)
     {
         m_associatedInputs = associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
-            std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
+        std::shared_ptr<AdaptiveCards::SubmitAction> submitAction = std::make_shared<AdaptiveCards::SubmitAction>();
         RETURN_IF_FAILED(CopySharedElementProperties(*submitAction));
 
         std::string jsonAsString;
@@ -80,7 +79,7 @@ namespace AdaptiveNamespace
             submitAction->SetDataJson(std::move(jsonAsString));
         }
 
-        submitAction->SetAssociatedInputs(static_cast<AdaptiveSharedNamespace::AssociatedInputs> (m_associatedInputs));
+        submitAction->SetAssociatedInputs(static_cast<AdaptiveCards::AssociatedInputs>(m_associatedInputs));
 
         sharedModel = std::move(submitAction);
         return S_OK;

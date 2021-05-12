@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <sstream>
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     DateTimeParser::DateTimeParser(const std::string& language) { m_languageString = language; }
 

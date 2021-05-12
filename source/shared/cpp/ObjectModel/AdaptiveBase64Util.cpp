@@ -12,16 +12,22 @@
 * Copyright (C) 2013 Tomas Kislan
 * Copyright (C) 2013 Adam Rudd
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Portions Copyright Microsoft Corporation
 */
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 namespace
 {
@@ -43,7 +49,7 @@ size_t AdaptiveBase64Util::DecodedLength(const char* in, size_t in_length)
 {
     int numEq{};
 
-    const char* in_end{ in + in_length };
+    const char* in_end{in + in_length};
     while (*--in_end == '=')
     {
         ++numEq;
@@ -55,7 +61,7 @@ size_t AdaptiveBase64Util::DecodedLength(const char* in, size_t in_length)
 size_t AdaptiveBase64Util::DecodedLength(const std::string& in)
 {
     size_t numEq{};
-    size_t n{ in.size() };
+    size_t n{in.size()};
 
     for (auto it = in.rbegin(); (numEq < n) && (*it == '='); ++it)
     {
@@ -112,7 +118,7 @@ bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
 {
     out->resize(EncodedLength(in));
 
-    size_t input_len{ in.size() };
+    size_t input_len{in.size()};
     auto input = in.begin();
 
     int i{};
@@ -137,7 +143,7 @@ bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
 
     if (i)
     {
-        for (int j{ i }; j < 3; ++j)
+        for (int j{i}; j < 3; ++j)
         {
             a3[j] = '\0';
         }
@@ -160,7 +166,7 @@ bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
 
 bool AdaptiveBase64Util::Decode(const std::string& in, std::vector<char>* out)
 {
-    size_t input_len{ in.size() };
+    size_t input_len{in.size()};
     auto input = in.begin();
 
     out->resize(DecodedLength(in));
@@ -197,7 +203,7 @@ bool AdaptiveBase64Util::Decode(const std::string& in, std::vector<char>* out)
 
     if (i)
     {
-        for (int j{ i }; j < 4; ++j)
+        for (int j{i}; j < 4; ++j)
         {
             a4[j] = '\0';
         }

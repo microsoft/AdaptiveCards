@@ -10,7 +10,7 @@
 #include "DateTimePreparser.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 TextElementProperties::TextElementProperties() :
     m_textSize(TextSize::Default), m_textWeight(TextWeight::Default), m_fontType(FontType::Default),
@@ -172,8 +172,9 @@ void TextElementProperties::Deserialize(ParseContext& context, const Json::Value
     SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, false));
     if (GetText().empty())
     {
-        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
-                                                                                  "required property, \"text\", is either empty or missing"));
+        context.warnings.emplace_back(
+            std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
+                                                       "required property, \"text\", is either empty or missing"));
     }
     SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));
     SetTextColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));

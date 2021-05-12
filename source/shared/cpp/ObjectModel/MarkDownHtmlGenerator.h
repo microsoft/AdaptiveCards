@@ -7,7 +7,7 @@
 #include <list>
 #include "BaseCardElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     enum class DelimiterType
     {

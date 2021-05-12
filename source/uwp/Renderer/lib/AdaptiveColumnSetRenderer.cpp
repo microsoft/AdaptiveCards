@@ -11,13 +11,13 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveColumnSetRenderer::RuntimeClassInitialize() noexcept
     try
@@ -50,7 +50,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveContainerBase> columnSetAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsContainerBase));
 
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             columnSetAsContainerBase.Get(), columnSetBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -74,7 +74,7 @@ namespace AdaptiveNamespace
 
         if (columnRenderer == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::NoRendererForType,
+            renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::NoRendererForType,
                                       HStringReference(L"No renderer found for type: Column").Get());
             *columnSetControl = nullptr;
             return S_OK;
@@ -100,18 +100,19 @@ namespace AdaptiveNamespace
             ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
             RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
 
-            ABI::AdaptiveNamespace::FallbackType fallbackType;
+            ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallbackType;
             RETURN_IF_FAILED(columnAsCardElement->get_FallbackType(&fallbackType));
 
             // Build the Column
             RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(
-                ancestorHasFallback || fallbackType != ABI::AdaptiveNamespace::FallbackType::None));
+                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::Rendering::Uwp::FallbackType::None));
 
             ComPtr<IUIElement> xamlColumn;
             HRESULT hr = columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn);
             if (hr == E_PERFORM_FALLBACK)
             {
-                RETURN_IF_FAILED(XamlHelpers::RenderFallback(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn, nullptr));
+                RETURN_IF_FAILED(
+                    XamlHelpers::RenderFallback(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn, nullptr));
             }
 
             RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(ancestorHasFallback));
@@ -199,7 +200,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveCardElement> columnSetAsCardElement;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsCardElement));
 
-        ABI::AdaptiveNamespace::HeightType columnSetHeightType;
+        ABI::AdaptiveCards::Rendering::Uwp::HeightType columnSetHeightType;
         RETURN_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
 
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
@@ -230,13 +231,13 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveColumnSetRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
     try
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumnSet, AdaptiveSharedNamespace::ColumnSet, AdaptiveSharedNamespace::ColumnSetParser>(
+        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveColumnSet, AdaptiveCards::ColumnSet, AdaptiveCards::ColumnSetParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;

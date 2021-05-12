@@ -8,7 +8,7 @@
 #include "DateTimePreparser.h"
 #include "Inline.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class RichTextBlock : public BaseCardElement
     {
