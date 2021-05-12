@@ -12,8 +12,9 @@ This is NOT a proposal for an advanced Table with features such as:
 ## Design
 ### Table
 | Name | Type | Required | Description |
+
 | --- | --- | --- | --- |
-| `columns` | `ColumnDefinition[]` | No | Defines the table's columns (number of columns, and column sizes). See `ColumnDefinition` below. |
+| `columns` | `TableColumnDefinition[]` | No | Defines the table's columns (number of columns, and column sizes). See `TableColumnDefinition` below. |
 | `rows` | `TableRow[]` | No | Defines the rows of the Table, each being a collection of cells. See `TableRow` below. Rows are not required, which allows empty Tables to be generated via templating without breaking the rendering of the whole card. |
 | `showGridLines` | `Boolean` | No | Specifies if grid lines should be displayed around the table and its cells. Defaults to `true`. |
 | `gridStyle` | string | No | When `showGridLines` is set to `true`, `gridStyle` controls the color of the grid. Its value must be a valid container style name (emphasis, accent, etc.). If `gridStyle` isn't specified, the style used is inherited from the Table's parent container.  This feature requires adding support for border colors in HostConfig (see below). |
@@ -40,7 +41,7 @@ Example:
 ![image](https://user-images.githubusercontent.com/1334689/115601270-6e09e800-a292-11eb-9634-8eee7296138d.png)
 
 
-### ColumnDefinition
+### TableColumnDefinition
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
 | `horizontalCellContentAlignment` | `HorizontalAlignment` | No | Specifies how the content of each cell should be horizontally aligned by default within the column. Defaults to `left`. This value override the table setting, and can itself be overridden by setting `horizontalCellContentAlignment` on a row or by setting the `horizontalAlignment` property on each individual element in a cell. |
@@ -196,7 +197,7 @@ Example host config text styles section:
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "ColumnDefinition[]",
+                                    "text": "TableColumnDefinition[]",
                                     "wrap": true
                                 }
                             ]
