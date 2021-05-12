@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { TargetVersion, Version, SerializableObject, BaseSerializationContext, PropertyBag } from "./serialization";
+import { PropertyBag } from "./shared";
+import { TargetVersion, Version, SerializableObject, BaseSerializationContext } from "./serialization";
 
 export class HostCapabilities extends SerializableObject {
     private _capabilities: { [key: string]: TargetVersion } = {};

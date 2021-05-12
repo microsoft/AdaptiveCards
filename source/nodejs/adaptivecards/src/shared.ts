@@ -50,6 +50,8 @@ export class GlobalSettings {
     }
 }
 
+export type PropertyBag = { [propertyName: string]: any };
+
 export const ContentTypes = {
     applicationJson: "application/json",
     applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"

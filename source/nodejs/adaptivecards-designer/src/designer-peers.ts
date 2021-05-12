@@ -294,7 +294,11 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
                 action.id = command.id;
                 action.title = command.caption;
                 action.tooltip = command.altText;
-                action.expanded = command.expanded;
+
+                if (command.expanded) {
+                    action.state = Adaptive.ActionButtonState.Expanded;
+                }
+                
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
                 actionSet.addAction(action);
@@ -1378,6 +1382,7 @@ export class ActionPeer extends DesignerPeer {
         ]);
     static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
     static readonly tooltipProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "tooltip", "Tooltip");
+    static readonly isEnabledProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_5, "isEnabled", "Enabled");
 
     protected doubleClick(e: MouseEvent) {
         super.doubleClick(e);
@@ -1439,6 +1444,7 @@ export class ActionPeer extends DesignerPeer {
         propertySheet.add(
             defaultCategory,
             ActionPeer.idProperty,
+            ActionPeer.isEnabledProperty,
             ActionPeer.titleProperty,
             ActionPeer.tooltipProperty,
             ActionPeer.modeProperty,
