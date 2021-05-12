@@ -10,7 +10,7 @@ import { SizeAndUnit, PaddingDefinition } from "./shared";
 import { Strings } from "./strings";
 import { stringToCssColor } from "./utils";
 
-export class ColumnDefinition extends SerializableObject {
+export class TableColumnDefinition extends SerializableObject {
     //#region Schema
 
     static readonly horizontalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "horizontalCellContentAlignment", HorizontalAlignment);
@@ -58,13 +58,13 @@ export class ColumnDefinition extends SerializableObject {
         },
         new SizeAndUnit(1, SizeUnit.Weight));
 
-    @property(ColumnDefinition.horizontalCellContentAlignmentProperty)
+    @property(TableColumnDefinition.horizontalCellContentAlignmentProperty)
     horizontalCellContentAlignment?: HorizontalAlignment;
 
-    @property(ColumnDefinition.verticalCellContentAlignmentProperty)
+    @property(TableColumnDefinition.verticalCellContentAlignmentProperty)
     verticalCellContentAlignment?: VerticalAlignment;
 
-    @property(ColumnDefinition.widthProperty)
+    @property(TableColumnDefinition.widthProperty)
     width: SizeAndUnit = new SizeAndUnit(1, SizeUnit.Weight);
 
     getSchemaKey(): string {
@@ -424,7 +424,7 @@ export class TableRow extends StylableContainer<TableCell> {
 export class Table extends StylableContainer<TableRow> {
     //#region Schema
 
-    private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_5, "columns", ColumnDefinition);
+    private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_5, "columns", TableColumnDefinition);
 
     static readonly firstRowAsHeadersProperty = new BoolProperty(Versions.v1_5, "firstRowAsHeaders", true);
     static readonly showGridLinesProperty = new BoolProperty(Versions.v1_5, "showGridLines", true);
@@ -433,7 +433,7 @@ export class Table extends StylableContainer<TableRow> {
     static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_5, "verticalCellContentAlignment", VerticalAlignment);
 
     @property(Table.columnsProperty)
-    private _columns: ColumnDefinition[] = [];
+    private _columns: TableColumnDefinition[] = [];
 
     @property(Table.firstRowAsHeadersProperty)
     firstRowAsHeaders: boolean = true;
@@ -551,13 +551,13 @@ export class Table extends StylableContainer<TableRow> {
         return undefined;
     }
 
-    addColumn(column: ColumnDefinition) {
+    addColumn(column: TableColumnDefinition) {
         this._columns.push(column);
 
         this.ensureRowsHaveEnoughCells();
     }
 
-    removeColumn(column: ColumnDefinition) {
+    removeColumn(column: TableColumnDefinition) {
         let index = this._columns.indexOf(column);
 
         if (index >= 0) {
@@ -571,7 +571,7 @@ export class Table extends StylableContainer<TableRow> {
         return this._columns.length;
     }
 
-    getColumnAt(index: number): ColumnDefinition {
+    getColumnAt(index: number): TableColumnDefinition {
         return this._columns[index];
     }
 

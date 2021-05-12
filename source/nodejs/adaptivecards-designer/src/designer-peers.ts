@@ -3025,7 +3025,7 @@ class TableColumnsPropertyEditor extends PropertySheetEntry {
         let addAction = new Adaptive.SubmitAction();
         addAction.title = "Add a column";
         addAction.onExecute = (sender) => {
-            peer.cardElement.addColumn(new Adaptive.ColumnDefinition());
+            peer.cardElement.addColumn(new Adaptive.TableColumnDefinition());
 
             this.columnsChanged(context, true);
         }
@@ -3103,9 +3103,9 @@ export class TablePeer extends TypedCardElementPeer<Adaptive.Table> {
     initializeCardElement() {
         super.initializeCardElement();
 
-        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
-        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
-        this.cardElement.addColumn(new Adaptive.ColumnDefinition());
+        this.cardElement.addColumn(new Adaptive.TableColumnDefinition());
+        this.cardElement.addColumn(new Adaptive.TableColumnDefinition());
+        this.cardElement.addColumn(new Adaptive.TableColumnDefinition());
 
         this.cardElement.addRow(new Adaptive.TableRow());
         this.cardElement.addRow(new Adaptive.TableRow());
