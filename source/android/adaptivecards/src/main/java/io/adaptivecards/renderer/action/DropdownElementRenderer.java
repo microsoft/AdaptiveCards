@@ -4,6 +4,7 @@ package io.adaptivecards.renderer.action;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
@@ -64,7 +66,9 @@ public class DropdownElementRenderer implements IBaseActionElementRenderer {
             throw new AdaptiveFallbackException(baseActionElement, featureRegistration);
         }
 
-        //Remove button so it does not get added to the default viewGroup.
+        //Remove button so it does not get added to the default viewGroup. Also, do not download icon.
+        String iconUrl = baseActionElement.GetIconUrl();
+        baseActionElement.SetIconUrl("");
         Button button = actionRenderer.render(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs);
         viewGroup.removeView(button);
 
@@ -82,14 +86,9 @@ public class DropdownElementRenderer implements IBaseActionElementRenderer {
         dropDownItem.setMinWidth(Util.dpToPixels(context, 100));
         dropDownItem.setMinimumWidth(0);
 
-        if (baseActionElement.GetIconUrl() != null && !baseActionElement.GetIconUrl().isEmpty())
+        if (!iconUrl.isEmpty())
         {
-            dropDownItem.post(() ->
-            {
-                Drawable[] drawables = button.getCompoundDrawablesRelative();
-                dropDownItem.setCompoundDrawablePadding(button.getCompoundDrawablePadding());
-                dropDownItem.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
-            });
+            Util.loadIcon(context, dropDownItem, iconUrl, hostConfig, renderedCard, IconPlacement.LeftOfTitle);
         }
 
         dropDownItem.setOnClickListener(view ->
