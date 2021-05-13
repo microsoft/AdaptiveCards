@@ -21,7 +21,7 @@ namespace
     }
 }
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     std::string ParseUtil::JsonToString(const Json::Value& json)
     {
@@ -165,8 +165,8 @@ namespace AdaptiveSharedNamespace
         return propertyValue.asString();
     }
 
-    [[deprecated("Use generalized DeserializeValue<T> instead")]]
-    std::shared_ptr<BackgroundImage> ParseUtil::GetBackgroundImage(const Json::Value& json)
+    [[deprecated("Use generalized DeserializeValue<T> instead")]] std::shared_ptr<BackgroundImage>
+    ParseUtil::GetBackgroundImage(const Json::Value& json)
     {
         return DeserializeValue<BackgroundImage>(json, AdaptiveCardSchemaKey::BackgroundImage, BackgroundImage::Deserialize);
     }

@@ -4,18 +4,18 @@
 
 #include "TokenExchangeResource.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("8074FA48-AF80-4295-9BB3-D4827FA81CBE") AdaptiveTokenExchangeResource
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveTokenExchangeResource,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTokenExchangeResource,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveTokenExchangeResource);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TokenExchangeResource>& sharedRefresh);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TokenExchangeResource>& sharedRefresh);
 
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
@@ -26,8 +26,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ProviderId(_Outptr_ HSTRING* providerId);
         IFACEMETHODIMP put_ProviderId(_In_ HSTRING providerId);
 
-
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TokenExchangeResource>& sharedModel);
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::TokenExchangeResource>& sharedModel);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }

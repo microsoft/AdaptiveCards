@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #include "stdafx.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 DWORD SetConsoleModeForDisplay()
 {

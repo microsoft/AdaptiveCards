@@ -2,4 +2,4 @@
 // Licensed under the MIT License.
 #pragma once
 
-void RenderToConsole(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> card, size_t columnWidth, std::vector<std::string> &output);
+void RenderToConsole(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, size_t columnWidth, std::vector<std::string> &output);

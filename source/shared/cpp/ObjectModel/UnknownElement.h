@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class UnknownElement : public BaseCardElement
     {

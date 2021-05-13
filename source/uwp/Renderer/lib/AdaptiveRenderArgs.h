@@ -4,10 +4,11 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveRenderArgs
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveRenderArgs>
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs>
     {
         AdaptiveRuntime(AdaptiveRenderArgs);
 
@@ -19,17 +20,17 @@ namespace AdaptiveNamespace
 
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle,
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
                                        _In_opt_ IInspectable* parentElement,
                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept;
 
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle,
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
                                        _In_opt_ IInspectable* parentElement,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveCard* parentCard, 
+                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* parentCard,
                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept;
 
-        IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveNamespace::ContainerStyle* value) override;
-        IFACEMETHODIMP put_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle value) override;
+        IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* value) override;
+        IFACEMETHODIMP put_ContainerStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle value) override;
 
         IFACEMETHODIMP get_ParentElement(_COM_Outptr_ IInspectable** value) override;
         IFACEMETHODIMP put_ParentElement(_In_ IInspectable* value) override;
@@ -43,16 +44,16 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_AncestorHasFallback(_Out_ boolean* hasFallback);
         IFACEMETHODIMP put_AncestorHasFallback(boolean hasFallback);
 
-        IFACEMETHODIMP get_ParentCard(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** value) override;
-        IFACEMETHODIMP put_ParentCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* value) override;
+        IFACEMETHODIMP get_ParentCard(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** value) override;
+        IFACEMETHODIMP put_ParentCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* value) override;
 
     private:
-        ABI::AdaptiveNamespace::ContainerStyle m_containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle m_containerStyle;
         Microsoft::WRL::ComPtr<IInspectable> m_parentElement;
         boolean m_isInShowCard;
         boolean m_allowAboveTitleIconPlacement;
         boolean m_ancestorHasFallback;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_parentCard;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard> m_parentCard;
     };
 
     ActivatableClass(AdaptiveRenderArgs);

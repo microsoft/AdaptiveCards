@@ -6,7 +6,7 @@
 #include "BaseCardElement.h"
 #include "TableCell.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseCardElement;
 
@@ -22,9 +22,9 @@ namespace AdaptiveSharedNamespace
 
         Json::Value SerializeToJsonValue() const override;
 
-        std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableCell>>& GetCells();
-        const std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableCell>>& GetCells() const;
-        void SetCells(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableCell>>& value);
+        std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& GetCells();
+        const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& GetCells() const;
+        void SetCells(const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& value);
 
         VerticalAlignment GetVerticalCellContentAlignment() const;
         void SetVerticalCellContentAlignment(VerticalAlignment value);
@@ -43,7 +43,7 @@ namespace AdaptiveSharedNamespace
         HorizontalAlignment m_horizontalCellContentAlignment;
         VerticalAlignment m_verticalCellContentAlignment;
 
-        std::vector<std::shared_ptr<AdaptiveSharedNamespace::TableCell>> m_cells;
+        std::vector<std::shared_ptr<AdaptiveCards::TableCell>> m_cells;
         std::optional<bool> m_rtl;
     };
 

@@ -8,7 +8,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Globalization::DateTimeFormatting;
@@ -17,7 +17,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Documents;
 using namespace ABI::Windows::UI::Xaml::Automation;
-using namespace AdaptiveNamespace;
+using namespace AdaptiveCards::Rendering::Uwp;
 
 HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
 {
@@ -531,7 +531,7 @@ HRESULT ChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput
 HRESULT ChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 try
 {
-    ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
+    ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
     boolean isMultiSelect;
@@ -614,7 +614,7 @@ CATCH_RETURN;
 
 HRESULT ChoiceSetInputValue::SetFocus()
 {
-    ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
+    ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
     boolean isMultiSelect;

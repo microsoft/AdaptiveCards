@@ -25,6 +25,9 @@ Pic2Card is a solution for converting adaptive cards GUI design image into adapt
     $ . ~/env/bin/activate
     (env)$ pip install -r requirements/requirements.txt
     (env)$ pip install -r requirements/requirements-frozen_graph.txt # tf specific only
+
+	# While Working in the local dev environment, Do install the packages in requirements-dev.txt to make use of the commands utility
+	(env)$ pip install -r requirements/requirements-dev.txt
 ```
 
 **Run the pic2card Servie**
@@ -118,4 +121,22 @@ $ docker run -it -p 8501:8501 <image:tag>
 # provided by the tensorflow serving.
 
 $ docker build -t <image:tag> -f docker/Dockerfile .
+```
+
+##  Tests and Code Quality
+
+The tests are available under `tests/` folder, and it can be run using
+
+```
+python -m unittest discover
+```
+
+We are using [pylint](https://www.pylint.org/) for linting and [black](https://black.readthedocs.io/en/stable/) for code formatting.
+
+```
+# Format the code
+black --line-length 80 .
+
+# Run pylint on all python files.
+find . -type f -name "*.py" | xargs pylint
 ```

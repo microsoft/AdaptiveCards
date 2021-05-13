@@ -8,13 +8,13 @@
 #include "DateTimePreparser.h"
 #include "HostConfig.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class TextElementProperties
     {
     public:
         TextElementProperties();
-        TextElementProperties(const TextConfig &, const std::string &, const std::string &);
+        TextElementProperties(const TextConfig&, const std::string&, const std::string&);
         TextElementProperties(const TextElementProperties&) = default;
         TextElementProperties(TextElementProperties&&) = default;
         TextElementProperties& operator=(const TextElementProperties&) = default;
