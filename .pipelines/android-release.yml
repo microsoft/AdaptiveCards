@@ -9,12 +9,6 @@ pool:
   demands: java
 
 steps:
-  # TODO: Remove when Android Gradle Plugin 4.1 is stable.
-  # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
-# - script: |
-#    setx ANDROID_NDK_HOME ""
-#    "%ANDROID_HOME%\tools\bin\sdkmanager.bat" --verbose "ndk;21.0.6113669"
-#   displayName: 'Get NDK (TODO: Remove this step)'
 
 - task: Gradle@2
   displayName: build
@@ -29,7 +23,7 @@ steps:
   inputs:
     gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
-    tasks: 'adaptivecards:publish'
+    tasks: 'adaptivecards:publishReleasePublicationToLocalDirectoryRepository'
     publishJUnitResults: false
 
 - task: CopyFiles@2
@@ -43,6 +37,25 @@ steps:
     OverWrite: true
   continueOnError: true
   condition: succeededOrFailed()
+
+- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  displayName: 'ESRP CodeSign Artifact'
+  inputs:
+    ConnectedServiceName: 'AdaptiveCards ESRP CodeSigning'
+    FolderPath: $(build.artifactstagingdirectory)
+    Pattern: *.aar,*.pom
+    UseMinimatch: true
+    signConfigType: inlineSignParams
+    inlineOperation: |
+     [
+       {
+         "KeyCode":"CP-450778-Pgp",
+         "OperationCode":"LinuxSign",
+         "Parameters":{},
+         "ToolName":"sign",
+         "ToolVersion":"1.0"
+       }
+     ]
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
