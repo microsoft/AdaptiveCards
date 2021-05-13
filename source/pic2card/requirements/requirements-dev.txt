@@ -1,0 +1,6 @@
+-r requirements-pytorch.txt
+requests
+nltk
+scikit-learn
+black
+pylint
