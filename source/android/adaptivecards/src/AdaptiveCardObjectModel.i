@@ -229,6 +229,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 #include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#include "../../../shared/cpp/ObjectModel/InternalId.h"
 #include "../../../shared/cpp/ObjectModel/BaseElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -265,6 +266,10 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
+#include "../../../shared/cpp/ObjectModel/Table.h"
+#include "../../../shared/cpp/ObjectModel/TableCell.h"
+#include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
+#include "../../../shared/cpp/ObjectModel/TableRow.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/ActionSet.h"
 #include "../../../shared/cpp/ObjectModel/MediaSource.h"
@@ -332,6 +337,9 @@ namespace std {
 %shared_ptr(AdaptiveCards::FactSetParser)
 %shared_ptr(AdaptiveCards::ChoiceSetInputParser)
 %shared_ptr(AdaptiveCards::NumberInputParser)
+%shared_ptr(AdaptiveCards::TableParser)
+%shared_ptr(AdaptiveCards::TableCellParser)
+%shared_ptr(AdaptiveCards::TableRowParser)
 %shared_ptr(AdaptiveCards::TextInputParser)
 %shared_ptr(AdaptiveCards::TimeInputParser)
 %shared_ptr(AdaptiveCards::ToggleInputParser)
@@ -364,6 +372,11 @@ namespace std {
 %shared_ptr(AdaptiveCards::Authentication)
 %shared_ptr(AdaptiveCards::TokenExchangeResource)
 %shared_ptr(AdaptiveCards::AuthCardButton)
+%shared_ptr(AdaptiveCards::Table)
+%shared_ptr(AdaptiveCards::TableCell)
+%shared_ptr(AdaptiveCards::TableColumnDefinition)
+%shared_ptr(AdaptiveCards::TableRow)
+
 
 %apply unsigned int& INOUT { unsigned int& };
 
@@ -576,6 +589,8 @@ namespace Json {
 %template(MediaSourceVector) std::vector<std::shared_ptr<AdaptiveCards::MediaSource> >;
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
+%template(TableCellVector) std::vector<std::shared_ptr<AdaptiveCards::TableCell> >;
+%template(TableRowVector) std::vector<std::shared_ptr<AdaptiveCards::TableRow> >;
 %template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
@@ -980,13 +995,12 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 
-
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ParseContext.h"
 
-
+%include "../../../shared/cpp/ObjectModel/InternalId.h"
 %include "../../../shared/cpp/ObjectModel/BaseElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -1024,6 +1038,9 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
+%include "../../../shared/cpp/ObjectModel/Table.h"
+%include "../../../shared/cpp/ObjectModel/TableCell.h"
+%include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/MediaSource.h"
 %include "../../../shared/cpp/ObjectModel/Media.h"
@@ -1037,4 +1054,3 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 %include "../../../shared/cpp/ObjectModel/TextRun.h"
 %include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
-

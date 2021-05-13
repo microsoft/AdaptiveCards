@@ -192,6 +192,36 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long DateTimePreparsedTokenVector_doSet(long jarg1, DateTimePreparsedTokenVector jarg1_, int jarg2, long jarg3, DateTimePreparsedToken jarg3_);
   public final static native void DateTimePreparsedTokenVector_doRemoveRange(long jarg1, DateTimePreparsedTokenVector jarg1_, int jarg2, int jarg3);
   public final static native void delete_DateTimePreparsedTokenVector(long jarg1);
+  public final static native long new_TableCellVector__SWIG_0();
+  public final static native long new_TableCellVector__SWIG_1(long jarg1, TableCellVector jarg1_);
+  public final static native long TableCellVector_capacity(long jarg1, TableCellVector jarg1_);
+  public final static native void TableCellVector_reserve(long jarg1, TableCellVector jarg1_, long jarg2);
+  public final static native boolean TableCellVector_isEmpty(long jarg1, TableCellVector jarg1_);
+  public final static native void TableCellVector_clear(long jarg1, TableCellVector jarg1_);
+  public final static native long new_TableCellVector__SWIG_2(int jarg1, long jarg2, TableCell jarg2_);
+  public final static native int TableCellVector_doSize(long jarg1, TableCellVector jarg1_);
+  public final static native void TableCellVector_doAdd__SWIG_0(long jarg1, TableCellVector jarg1_, long jarg2, TableCell jarg2_);
+  public final static native void TableCellVector_doAdd__SWIG_1(long jarg1, TableCellVector jarg1_, int jarg2, long jarg3, TableCell jarg3_);
+  public final static native long TableCellVector_doRemove(long jarg1, TableCellVector jarg1_, int jarg2);
+  public final static native long TableCellVector_doGet(long jarg1, TableCellVector jarg1_, int jarg2);
+  public final static native long TableCellVector_doSet(long jarg1, TableCellVector jarg1_, int jarg2, long jarg3, TableCell jarg3_);
+  public final static native void TableCellVector_doRemoveRange(long jarg1, TableCellVector jarg1_, int jarg2, int jarg3);
+  public final static native void delete_TableCellVector(long jarg1);
+  public final static native long new_TableRowVector__SWIG_0();
+  public final static native long new_TableRowVector__SWIG_1(long jarg1, TableRowVector jarg1_);
+  public final static native long TableRowVector_capacity(long jarg1, TableRowVector jarg1_);
+  public final static native void TableRowVector_reserve(long jarg1, TableRowVector jarg1_, long jarg2);
+  public final static native boolean TableRowVector_isEmpty(long jarg1, TableRowVector jarg1_);
+  public final static native void TableRowVector_clear(long jarg1, TableRowVector jarg1_);
+  public final static native long new_TableRowVector__SWIG_2(int jarg1, long jarg2);
+  public final static native int TableRowVector_doSize(long jarg1, TableRowVector jarg1_);
+  public final static native void TableRowVector_doAdd__SWIG_0(long jarg1, TableRowVector jarg1_, long jarg2);
+  public final static native void TableRowVector_doAdd__SWIG_1(long jarg1, TableRowVector jarg1_, int jarg2, long jarg3);
+  public final static native long TableRowVector_doRemove(long jarg1, TableRowVector jarg1_, int jarg2);
+  public final static native long TableRowVector_doGet(long jarg1, TableRowVector jarg1_, int jarg2);
+  public final static native long TableRowVector_doSet(long jarg1, TableRowVector jarg1_, int jarg2, long jarg3);
+  public final static native void TableRowVector_doRemoveRange(long jarg1, TableRowVector jarg1_, int jarg2, int jarg3);
+  public final static native void delete_TableRowVector(long jarg1);
   public final static native long new_ToggleVisibilityTargetVector__SWIG_0();
   public final static native long new_ToggleVisibilityTargetVector__SWIG_1(long jarg1, ToggleVisibilityTargetVector jarg1_);
   public final static native long ToggleVisibilityTargetVector_capacity(long jarg1, ToggleVisibilityTargetVector jarg1_);
@@ -371,10 +401,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int AdaptiveCardParseWarning_GetStatusCode(long jarg1, AdaptiveCardParseWarning jarg1_);
   public final static native String AdaptiveCardParseWarning_GetReason(long jarg1, AdaptiveCardParseWarning jarg1_);
   public final static native void delete_AdaptiveCardParseWarning(long jarg1);
+  public final static native void delete_ActionElementParser(long jarg1);
   public final static native long ActionElementParser_Deserialize(long jarg1, ActionElementParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long ActionElementParser_DeserializeFromString(long jarg1, ActionElementParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
   public final static native long new_ActionElementParser();
-  public final static native void delete_ActionElementParser(long jarg1);
   public final static native void ActionElementParser_director_connect(ActionElementParser obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void ActionElementParser_change_ownership(ActionElementParser obj, long cptr, boolean take_or_release);
   public final static native long new_ActionElementParserWrapper(long jarg1, ActionElementParser jarg1_);
@@ -387,10 +417,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ActionParserRegistration_RemoveParser(long jarg1, ActionParserRegistration jarg1_, String jarg2);
   public final static native long ActionParserRegistration_GetParser(long jarg1, ActionParserRegistration jarg1_, String jarg2);
   public final static native void delete_ActionParserRegistration(long jarg1);
+  public final static native void delete_BaseCardElementParser(long jarg1);
   public final static native long BaseCardElementParser_Deserialize(long jarg1, BaseCardElementParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long BaseCardElementParser_DeserializeFromString(long jarg1, BaseCardElementParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
   public final static native long new_BaseCardElementParser();
-  public final static native void delete_BaseCardElementParser(long jarg1);
   public final static native void BaseCardElementParser_director_connect(BaseCardElementParser obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseCardElementParser_change_ownership(BaseCardElementParser obj, long cptr, boolean take_or_release);
   public final static native long new_BaseCardElementParserWrapper(long jarg1, BaseCardElementParser jarg1_);
@@ -506,9 +536,16 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseActionElement_GetStyle(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetStyle__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
   public final static native void BaseActionElement_SetStyle__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native String BaseActionElement_GetTooltip(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetTooltip__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
+  public final static native void BaseActionElement_SetTooltipSwigExplicitBaseActionElement__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
+  public final static native void BaseActionElement_SetTooltip__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetTooltipSwigExplicitBaseActionElement__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
   public final static native int BaseActionElement_GetMode(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetMode(long jarg1, BaseActionElement jarg1_, int jarg2);
+  public final static native boolean BaseActionElement_GetIsEnabled(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetIsEnabled(long jarg1, BaseActionElement jarg1_, boolean jarg2);
   public final static native void BaseActionElement_GetResourceInformation(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseActionElement_GetResourceInformationSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long BaseActionElement_SerializeToJsonValue(long jarg1, BaseActionElement jarg1_);
@@ -574,6 +611,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void CollectionTypeElement_DeserializeChildren(long jarg1, CollectionTypeElement jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long CollectionTypeElement_SerializeToJsonValue(long jarg1, CollectionTypeElement jarg1_);
   public final static native String c_adaptiveCardsFeature_get();
+  public final static native String ToLowercase(String jarg1);
   public final static native long new_CaseInsensitiveKeyHash();
   public final static native void delete_CaseInsensitiveKeyHash(long jarg1);
   public final static native long new_CaseInsensitiveKeyEquals();
@@ -591,7 +629,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long SemanticVersion_GetRevision(long jarg1, SemanticVersion jarg1_);
   public final static native void delete_SemanticVersion(long jarg1);
   public final static native long new_Container__SWIG_0();
-  public final static native long new_Container__SWIG_1(long jarg1, Container jarg1_);
+  public final static native long new_Container__SWIG_1(int jarg1);
+  public final static native long new_Container__SWIG_2(long jarg1, Container jarg1_);
   public final static native void delete_Container(long jarg1);
   public final static native long Container_SerializeToJsonValue(long jarg1, Container jarg1_);
   public final static native void Container_DeserializeChildren(long jarg1, Container jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
@@ -1226,6 +1265,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long MediaConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, MediaConfig jarg2_);
   public final static native long new_MediaConfig();
   public final static native void delete_MediaConfig(long jarg1);
+  public final static native void HeadingsConfig_level_set(long jarg1, HeadingsConfig jarg1_, long jarg2);
+  public final static native long HeadingsConfig_level_get(long jarg1, HeadingsConfig jarg1_);
+  public final static native long HeadingsConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, HeadingsConfig jarg2_);
+  public final static native long new_HeadingsConfig();
+  public final static native void delete_HeadingsConfig(long jarg1);
   public final static native long new_HostConfig();
   public final static native long HostConfig_Deserialize(long jarg1, JsonValue jarg1_);
   public final static native long HostConfig_DeserializeFromString(String jarg1);
@@ -1272,6 +1316,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void HostConfig_SetMedia(long jarg1, HostConfig jarg1_, long jarg2, MediaConfig jarg2_);
   public final static native long HostConfig_GetInputs(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_SetInputs(long jarg1, HostConfig jarg1_, long jarg2, InputsConfig jarg2_);
+  public final static native long HostConfig_GetHeadings(long jarg1, HostConfig jarg1_);
+  public final static native void HostConfig_SetHeadings(long jarg1, HostConfig jarg1_, long jarg2, HeadingsConfig jarg2_);
   public final static native void delete_HostConfig(long jarg1);
   public final static native long new_MarkDownParser(String jarg1);
   public final static native String MarkDownParser_TransformToHtml(long jarg1, MarkDownParser jarg1_);
@@ -1321,6 +1367,51 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_FactSetParser(long jarg1);
   public final static native long FactSetParser_Deserialize(long jarg1, FactSetParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long FactSetParser_DeserializeFromString(long jarg1, FactSetParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_Table__SWIG_0();
+  public final static native long new_Table__SWIG_1(long jarg1, Table jarg1_);
+  public final static native void delete_Table(long jarg1);
+  public final static native long Table_SerializeToJsonValue(long jarg1, Table jarg1_);
+  public final static native boolean Table_GetShowGridLines(long jarg1, Table jarg1_);
+  public final static native void Table_SetShowGridLines(long jarg1, Table jarg1_, boolean jarg2);
+  public final static native boolean Table_GetFirstRowAsHeaders(long jarg1, Table jarg1_);
+  public final static native void Table_SetFirstRowAsHeaders(long jarg1, Table jarg1_, boolean jarg2);
+  public final static native int Table_GetHorizontalCellContentAlignment(long jarg1, Table jarg1_);
+  public final static native void Table_SetHorizontalCellContentAlignment(long jarg1, Table jarg1_, int jarg2);
+  public final static native int Table_GetVerticalCellContentAlignment(long jarg1, Table jarg1_);
+  public final static native void Table_SetVerticalCellContentAlignment(long jarg1, Table jarg1_, int jarg2);
+  public final static native int Table_GetGridStyle(long jarg1, Table jarg1_);
+  public final static native void Table_SetGridStyle(long jarg1, Table jarg1_, int jarg2);
+  public final static native long Table_GetColumns__SWIG_0(long jarg1, Table jarg1_);
+  public final static native void Table_SetColumns(long jarg1, Table jarg1_, long jarg2);
+  public final static native long Table_GetRows__SWIG_0(long jarg1, Table jarg1_);
+  public final static native void Table_SetRows(long jarg1, Table jarg1_, long jarg2, TableRowVector jarg2_);
+  public final static native long new_TableParser__SWIG_0();
+  public final static native long new_TableParser__SWIG_1(long jarg1, TableParser jarg1_);
+  public final static native void delete_TableParser(long jarg1);
+  public final static native long TableParser_Deserialize(long jarg1, TableParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long TableParser_DeserializeFromString(long jarg1, TableParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_TableCell__SWIG_0();
+  public final static native long new_TableCell__SWIG_1(long jarg1, TableCell jarg1_);
+  public final static native void delete_TableCell(long jarg1);
+  public final static native long new_TableCellParser__SWIG_0();
+  public final static native long new_TableCellParser__SWIG_1(long jarg1, TableCellParser jarg1_);
+  public final static native void delete_TableCellParser(long jarg1);
+  public final static native long TableCellParser_Deserialize(long jarg1, TableCellParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long TableCellParser_DeserializeFromString(long jarg1, TableCellParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_TableColumnDefinition();
+  public final static native String TableColumnDefinition_Serialize(long jarg1, TableColumnDefinition jarg1_);
+  public final static native long TableColumnDefinition_SerializeToJsonValue(long jarg1, TableColumnDefinition jarg1_);
+  public final static native int TableColumnDefinition_GetHorizontalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_);
+  public final static native void TableColumnDefinition_SetHorizontalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_, int jarg2);
+  public final static native int TableColumnDefinition_GetVerticalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_);
+  public final static native void TableColumnDefinition_SetVerticalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_, int jarg2);
+  public final static native long TableColumnDefinition_GetWidth(long jarg1, TableColumnDefinition jarg1_);
+  public final static native void TableColumnDefinition_SetWidth(long jarg1, TableColumnDefinition jarg1_, long jarg2);
+  public final static native long TableColumnDefinition_GetPixelWidth(long jarg1, TableColumnDefinition jarg1_);
+  public final static native void TableColumnDefinition_SetPixelWidth(long jarg1, TableColumnDefinition jarg1_, long jarg2);
+  public final static native long TableColumnDefinition_Deserialize(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native long TableColumnDefinition_DeserializeFromString(long jarg1, ParseContext jarg1_, String jarg2);
+  public final static native void delete_TableColumnDefinition(long jarg1);
   public final static native long new_TextBlock__SWIG_0();
   public final static native long new_TextBlock__SWIG_1(long jarg1, TextBlock jarg1_);
   public final static native void delete_TextBlock(long jarg1);
@@ -1558,6 +1649,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long SubmitActionParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long FactSet_SWIGSmartPtrUpcast(long jarg1);
   public final static native long FactSetParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long Table_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long TableParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long TableCell_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long TableCellParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long TextBlock_SWIGSmartPtrUpcast(long jarg1);
   public final static native long TextBlockParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long Media_SWIGSmartPtrUpcast(long jarg1);
@@ -1649,6 +1744,12 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseActionElement_SetTitle__SWIG_1(BaseActionElement jself, String value) {
     jself.SetTitle(value);
+  }
+  public static void SwigDirector_BaseActionElement_SetTooltip__SWIG_0(BaseActionElement jself, long value) {
+    jself.SetTooltip(new SWIGTYPE_p_std__string(value, false));
+  }
+  public static void SwigDirector_BaseActionElement_SetTooltip__SWIG_1(BaseActionElement jself, String value) {
+    jself.SetTooltip(value);
   }
 
   private final static native void swig_module_init();

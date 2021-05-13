@@ -49,11 +49,10 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
 
 void ValidateUserInputForDimensionWithUnit(const std::string& unit,
                                            const std::string& requestedDimension,
-                                           int& parsedDimension,
+                                           std::optional<int>& parsedDimension,
                                            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
 {
-    const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
-    parsedDimension = 0;
+    constexpr auto warningMessage = "expected input argument to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
     std::string stringPattern = "^([1-9]+\\d*)(\\.\\d+)?";
     stringPattern += ("(" + unit + ")$");
     std::regex pattern(stringPattern);
@@ -121,15 +120,15 @@ bool ShouldParseForExplicitDimension(const std::string& input)
     return false;
 }
 
-int ParseSizeForPixelSize(const std::string& sizeString, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
+std::optional<int> ParseSizeForPixelSize(const std::string& sizeString, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
 {
-    int parsedDimension = 0;
+    std::optional<int> parsedSize{};
     if (ShouldParseForExplicitDimension(sizeString))
     {
         const std::string unit = "px";
-        ValidateUserInputForDimensionWithUnit(unit, sizeString, parsedDimension, warnings);
+        ValidateUserInputForDimensionWithUnit(unit, sizeString, parsedSize, warnings);
     }
-    return parsedDimension;
+    return parsedSize;
 }
 
 void EnsureShowCardVersions(const std::vector<std::shared_ptr<BaseActionElement>>& actions, const std::string& version)

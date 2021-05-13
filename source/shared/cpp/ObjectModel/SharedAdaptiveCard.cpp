@@ -14,8 +14,9 @@
 using namespace AdaptiveSharedNamespace;
 
 AdaptiveCard::AdaptiveCard() :
-    AdaptiveCard("", "", std::shared_ptr<BackgroundImage>(), ContainerStyle::None, "", "",
-        VerticalContentAlignment::Top, HeightType::Auto, 0) {}
+    AdaptiveCard("", "", std::shared_ptr<BackgroundImage>(), ContainerStyle::None, "", "", VerticalContentAlignment::Top, HeightType::Auto, 0)
+{
+}
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::string const& fallbackText,
@@ -26,8 +27,9 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            VerticalContentAlignment verticalContentAlignment,
                            HeightType height,
                            unsigned int minHeight) :
-    AdaptiveCard(version, fallbackText, std::make_shared<BackgroundImage>(backgroundImageUrl),
-        style, speak, language, verticalContentAlignment, height, minHeight) {}
+    AdaptiveCard(version, fallbackText, std::make_shared<BackgroundImage>(backgroundImageUrl), style, speak, language, verticalContentAlignment, height, minHeight)
+{
+}
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::string const& fallbackText,
@@ -40,8 +42,9 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            unsigned int minHeight,
                            std::vector<std::shared_ptr<BaseCardElement>>& body,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    AdaptiveCard(version, fallbackText, std::make_shared<BackgroundImage>(backgroundImageUrl),
-        style, speak, language, verticalContentAlignment, height, minHeight, body, actions) {}
+    AdaptiveCard(version, fallbackText, std::make_shared<BackgroundImage>(backgroundImageUrl), style, speak, language, verticalContentAlignment, height, minHeight, body, actions)
+{
+}
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::string const& fallbackText,
@@ -71,8 +74,21 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            unsigned int minHeight,
                            std::vector<std::shared_ptr<BaseCardElement>>& body,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    AdaptiveCard(version, fallbackText, backgroundImage, std::shared_ptr<Refresh>(), std::shared_ptr<Authentication>(),
-        style, speak, language, verticalContentAlignment, height, minHeight, body, actions) {}
+    AdaptiveCard(version,
+                 fallbackText,
+                 backgroundImage,
+                 std::shared_ptr<Refresh>(),
+                 std::shared_ptr<Authentication>(),
+                 style,
+                 speak,
+                 language,
+                 verticalContentAlignment,
+                 height,
+                 minHeight,
+                 body,
+                 actions)
+{
+}
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::string const& fallbackText,
@@ -87,10 +103,11 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            unsigned int minHeight,
                            std::vector<std::shared_ptr<BaseCardElement>>& body,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    m_version(version), m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_refresh(refresh),
+    m_version(version),
+    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_refresh(refresh),
     m_authentication(authentication), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
-    m_internalId{InternalId::Next()}, m_body(body), m_actions(actions), m_additionalProperties{}
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height),
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_body(body), m_actions(actions), m_additionalProperties{}
 {
     PopulateKnownPropertiesSet();
 }
@@ -203,7 +220,8 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
         }
     }
 
-    auto backgroundImage = ParseUtil::DeserializeValue<BackgroundImage>(json, AdaptiveCardSchemaKey::BackgroundImage, BackgroundImage::Deserialize);
+    auto backgroundImage =
+        ParseUtil::DeserializeValue<BackgroundImage>(json, AdaptiveCardSchemaKey::BackgroundImage, BackgroundImage::Deserialize);
     auto refresh = ParseUtil::DeserializeValue<Refresh>(context, json, AdaptiveCardSchemaKey::Refresh, Refresh::Deserialize);
     auto authentication =
         ParseUtil::DeserializeValue<Authentication>(context, json, AdaptiveCardSchemaKey::Authentication, Authentication::Deserialize);
@@ -221,7 +239,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
         ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString);
 
     unsigned int minHeight =
-        ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MinHeight), &context.warnings);
+        ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MinHeight), &context.warnings).value_or(0);
 
     // Parse body
     auto body = ParseUtil::GetElementCollection<BaseCardElement>(true, context, json, AdaptiveCardSchemaKey::Body, false);
