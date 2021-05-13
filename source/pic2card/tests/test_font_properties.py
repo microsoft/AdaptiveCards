@@ -1,10 +1,20 @@
-from tests.base_test_class import BaseSetUpClass
-from tests.variables import mock_desing_obj, mock_desing_obj_eq_weight
+"""Test Moudle for the Font Properties"""
 from mystique.font_properties import classify_font_weights
+
+# pylint: disable=no-name-in-module
+from tests.base_test_class import BaseSetUpClass
+
+# pylint: disable=no-name-in-module
+from tests.variables import (
+    mock_desing_obj,
+    mock_desing_obj_eq_weight,
+)
+
+# pylint: disable=dangerous-default-value
 
 
 class TestClassifyFont(BaseSetUpClass):
-    """ Tests for the Font weight classification method """
+    """Tests for the Font weight classification method"""
 
     def test_font_weights_default(self, design_objects=mock_desing_obj):
         """

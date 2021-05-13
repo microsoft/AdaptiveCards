@@ -6,9 +6,8 @@
 //
 
 #import "ACRInputTableView.h"
+#import "ACOBundle.h"
 #import <Foundation/Foundation.h>
-
-using namespace AdaptiveCards;
 
 @implementation ACRInputTableView
 
@@ -26,8 +25,7 @@ using namespace AdaptiveCards;
 
 - (instancetype)initWithSuperview:(UIView *)view
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    self = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
+    self = [[[ACOBundle getInstance] getBundle] loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
     if (self) {
         self.frame = CGRectMake(0, 0, view.frame.size.width, view.frame.size.height);
     } else {
