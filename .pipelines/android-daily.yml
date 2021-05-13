@@ -62,3 +62,39 @@ steps:
     workingDirectory: source/android
     tasks: 'adaptivecards:publish'
     publishJUnitResults: false
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)'
+    Contents: |
+     **/io/adaptivecards/**/*.aar
+     **/io/adaptivecards/**/*.pom
+    TargetFolder: '$(build.artifactstagingdirectory)'
+    OverWrite: true
+  continueOnError: true
+  condition: succeededOrFailed()
+
+- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  displayName: 'ESRP CodeSign Artifact'
+  inputs:
+    ConnectedServiceName: 'AdaptiveCards ESRP CodeSigning'
+    FolderPath: $(build.artifactstagingdirectory)
+    Pattern: '*.aar,*.pom'
+    signConfigType: inlineSignParams
+    inlineOperation: |
+     [
+       {
+         "KeyCode":"CP-464385-Pgp",
+         "OperationCode":"LinuxSign",
+         "Parameters":{},
+         "ToolName":"sign",
+         "ToolVersion":"1.0"
+       }
+     ]
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+
