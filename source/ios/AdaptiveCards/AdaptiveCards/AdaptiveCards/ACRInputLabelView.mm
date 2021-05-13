@@ -5,6 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRInputLabelViewPrivate.h"
@@ -28,8 +29,7 @@
 
 - (void)commonInit
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    UIView *contentView = [bundle loadNibNamed:@"ACRInputLabelView" owner:self options:nil][0];
+    UIView *contentView = [[[ACOBundle getInstance] getBundle] loadNibNamed:@"ACRInputLabelView" owner:self options:nil][0];
     [self addSubview:contentView];
     self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     [self.layoutMarginsGuide.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor].active = YES;

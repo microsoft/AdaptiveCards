@@ -7,6 +7,7 @@
 
 #import "CustomActionNewType.h"
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
+#import <AdaptiveCards/ACOBundle.h>
 #import <AdaptiveCards/ACRAggregateTarget.h>
 #import <AdaptiveCards/SharedAdaptiveCard.h>
 
@@ -58,8 +59,7 @@
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    ACRButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
+    ACRButton *button = [[[ACOBundle getInstance] getBundle] loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
     [button setTitle:acoElem.title forState:UIControlStateNormal];
     CustomActionNewType *newType = (CustomActionNewType *)acoElem;
     button.backgroundColor = newType.color;
