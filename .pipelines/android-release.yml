@@ -43,8 +43,7 @@ steps:
   inputs:
     ConnectedServiceName: 'AdaptiveCards ESRP CodeSigning'
     FolderPath: $(build.artifactstagingdirectory)
-    Pattern: *.aar,*.pom
-    UseMinimatch: true
+    Pattern: '*.aar,*.pom'
     signConfigType: inlineSignParams
     inlineOperation: |
      [
