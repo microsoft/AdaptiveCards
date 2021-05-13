@@ -2,15 +2,18 @@
     apis
 """
 import abc
+from typing import Tuple, Dict
 import numpy as np
 from PIL import Image
-from typing import Tuple, Dict
 
 
-class AbstractObjectDetection(metaclass=abc.ABCMeta):
+class AbstractObjectDetection(
+    metaclass=abc.ABCMeta
+):  # pylint: disable=missing-class-docstring
     @abc.abstractmethod
-    def get_objects(self, image_np: np.array,
-                    image: Image) -> Tuple[Dict, object]:
+    def get_objects(
+        self, image_np: np.array, image: Image
+    ) -> Tuple[Dict, object]:
         """
         Return the object detection data from model inference pipeline.
 
@@ -24,11 +27,11 @@ class AbstractObjectDetection(metaclass=abc.ABCMeta):
               "detection_scores": [float, float]
              }
         """
-        pass
+        pass  # pylint: disable=unnecessary-pass
 
     @abc.abstractmethod
     def get_bboxes(self, image_path: str, img_pipeline=None):
         """
         Deprecated method, soon be removed, added for backward compatibility
         """
-        pass
+        pass  # pylint: disable=unnecessary-pass

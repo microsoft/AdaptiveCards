@@ -1,10 +1,12 @@
+# pylint: disable=missing-module-docstring, missing-class-docstring, missing-function-docstring
+
 import torch
 from detecto.core import Model
 from detecto.core import DataLoader
 
 
 class CustomModel(Model):
-
+    # pylint: disable=super-with-arguments
     def __init__(self, classes=None, device=None, log_writer=None):
         self.log_writer = log_writer
         super(CustomModel, self).__init__(classes, device)
@@ -13,15 +15,27 @@ class CustomModel(Model):
         """
         Generate name based on the parameters given.
         """
-        pass
+        pass  # pylint: disable=unnecessary-pass
 
-    def fit(self, dataset, val_dataset=None, epochs=10,
-            learning_rate=0.00002, momentum=0.9,
-            weight_decay=0.00005, gamma=0.1, lr_step_size=3, verbose=False):
+    # pylint: disable=too-many-arguments, too-many-locals, inconsistent-return-statements, unused-argument
+    def fit(
+        self,
+        dataset,
+        val_dataset=None,
+        epochs=10,
+        learning_rate=0.00002,
+        momentum=0.9,
+        weight_decay=0.00005,
+        gamma=0.1,
+        lr_step_size=3,
+        verbose=False,
+    ):
 
         # If doing custom training, the given images will most likely be
         # normalized. This should fix the issue of poor performance on
         # default classes when normalizing, so resume normalizing. TODO
+        # pylint: disable=attribute-defined-outside-init
+
         if epochs > 0:
             self._disable_normalize = False
 
@@ -38,9 +52,9 @@ class CustomModel(Model):
         parameters = [p for p in self._model.parameters() if p.requires_grad]
         # Create an optimizer that uses SGD (stochastic gradient descent)
         # to train the parameters
-        optimizer = torch.optim.SGD(parameters,
-                                    lr=learning_rate,
-                                    momentum=momentum)
+        optimizer = torch.optim.SGD(
+            parameters, lr=learning_rate, momentum=momentum
+        )
         # Create a learning rate scheduler that decreases learning rate
         # by gamma every lr_step_size epochs
         # lr_scheduler = torch.optim.lr_scheduler.StepLR(
@@ -55,10 +69,10 @@ class CustomModel(Model):
         # times (epochs)
         for epoch in range(epochs):
             if verbose:
-                print('Epoch {} of {}'.format(epoch + 1, epochs))
+                print("Epoch {} of {}".format(epoch + 1, epochs))
 
             # Training step
-            avg_train_loss = 0.
+            avg_train_loss = 0.0
             self._model.train()
             for images, targets in dataset:
                 self._convert_to_int_labels(targets)
@@ -82,7 +96,7 @@ class CustomModel(Model):
             avg_train_loss /= len(dataset)
 
             if verbose:
-                print('Train Loss: {}'.format(avg_train_loss))
+                print("Train Loss: {}".format(avg_train_loss))
                 self.log_writer.add_scalar("Loss/train", avg_train_loss, epoch)
 
             # Validation step
@@ -100,7 +114,7 @@ class CustomModel(Model):
                 losses.append(avg_loss)
 
                 if verbose:
-                    print('Loss: {}'.format(avg_loss))
+                    print("Loss: {}".format(avg_loss))
                     self.log_writer.add_scalar("Loss/val", avg_loss, epoch)
 
             # Update the learning rate every few epochs

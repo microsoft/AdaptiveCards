@@ -9,30 +9,43 @@ from PIL import Image
 
 
 # Image Transform before inference.
-transform = T.Compose([
+transform = T.Compose(
+    [
         T.Resize(800),
         T.ToTensor(),
-        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-])
+        T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ]
+)
 
 
-# for output bounding box post-processing
-def box_cxcywh_to_xyxy(x):
-    x_c, y_c, w, h = x.unbind(1)
-    b = [(x_c - 0.5 * w), (y_c - 0.5 * h),
-         (x_c + 0.5 * w), (y_c + 0.5 * h)]
-    return torch.stack(b, dim=1)
+def box_cxcywh_to_xyxy(x_a):  # pylint: disable=no-member
+    """for output bounding box post-processing"""
+
+    x_c, y_c, w_d, h_e = x_a.unbind(1)
+    bbb = [
+        (x_c - 0.5 * w_d),
+        (y_c - 0.5 * h_e),
+        (x_c + 0.5 * w_d),
+        (y_c + 0.5 * h_e),
+    ]
+    return torch.stack(bbb, dim=1)  # pylint: disable=no-member
 
 
 def rescale_bboxes(out_bbox, size):
+    """For Rescaling the bboxes"""
     img_w, img_h = size
-    b = box_cxcywh_to_xyxy(out_bbox)
-    b = b * torch.tensor([img_w, img_h, img_w, img_h], dtype=torch.float32)
-    return b
+    bbb = box_cxcywh_to_xyxy(out_bbox)
+    # pylint: disable=not-callable, disable=no-member
+    bbb = bbb * torch.tensor(
+        [img_w, img_h, img_w, img_h],
+        dtype=torch.float32,
+    )  # pylint: disable=no-member, not-callable
+    return bbb
 
 
-def detect(image: Image, model: Callable,
-           transform: Callable, threshold=0.8):
+def detect(
+    image: Image, model: Callable, transform: Callable, threshold=0.8
+):  # pylint: disable=redefined-outer-name
     """
     @param img: PIL Image
     @param model: A Serialized callable, exported using torchscript.
@@ -47,11 +60,11 @@ def detect(image: Image, model: Callable,
 
     # keep only predictions with 0.7+ confidence
     # Skip the default background class added at train time.
-    probas = outputs['pred_logits'].softmax(-1)[0, :, :-1]
+    probas = outputs["pred_logits"].softmax(-1)[0, :, :-1]
     keep = probas.max(-1).values > threshold
 
     # convert boxes from [0; 1] to image scales
-    bboxes_scaled = rescale_bboxes(outputs['pred_boxes'][0, keep], image.size)
+    bboxes_scaled = rescale_bboxes(outputs["pred_boxes"][0, keep], image.size)
     # bboxes = box_cxcywh_to_xyxy(outputs['pred_boxes'][0, keep])
 
     return probas[keep], bboxes_scaled
