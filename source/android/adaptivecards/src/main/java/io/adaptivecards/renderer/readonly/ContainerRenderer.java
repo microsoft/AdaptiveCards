@@ -217,6 +217,21 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
     }
 
+    public static void applyTitleAndTooltip(BaseActionElement selectAction, View view)
+    {
+        String contentDescription = !TextUtils.isEmpty(selectAction.GetTitle()) ? selectAction.GetTitle() : selectAction.GetTooltip();
+        String tooltip = !TextUtils.isEmpty(selectAction.GetTooltip()) ? selectAction.GetTooltip() : selectAction.GetTitle();
+        if (!TextUtils.isEmpty(contentDescription))
+        {
+            view.setContentDescription(contentDescription);
+        }
+        if (!TextUtils.isEmpty(tooltip))
+        {
+            TooltipCompat.setTooltipText(view, tooltip);
+        }
+    }
+
+
     public static void setSelectAction(RenderedAdaptiveCard renderedCard, BaseActionElement selectAction, View view, ICardActionHandler cardActionHandler, RenderArgs renderArgs)
     {
         if (selectAction != null)
@@ -230,16 +245,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
             view.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, selectAction, cardActionHandler));
 
-            String contentDescription = !TextUtils.isEmpty(selectAction.GetTitle()) ? selectAction.GetTitle() : selectAction.GetTooltip();
-            String tooltip = !TextUtils.isEmpty(selectAction.GetTooltip()) ? selectAction.GetTooltip() : selectAction.GetTitle();
-            if (!TextUtils.isEmpty(tooltip))
-            {
-                view.setContentDescription(contentDescription);
-            }
-            if (!TextUtils.isEmpty(tooltip))
-            {
-                TooltipCompat.setTooltipText(view, tooltip);
-            }
+            applyTitleAndTooltip(selectAction, view);
         }
     }
 

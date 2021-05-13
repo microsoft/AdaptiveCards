@@ -52,6 +52,7 @@ import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
+import io.adaptivecards.renderer.readonly.ContainerRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
@@ -282,16 +283,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
 
-                        String contentDescription = !TextUtils.isEmpty(action.GetTitle()) ? action.GetTitle() : action.GetTooltip();
-                        String tooltip = !TextUtils.isEmpty(action.GetTooltip()) ? action.GetTooltip() : action.GetTitle();
-                        if (!TextUtils.isEmpty(tooltip))
-                        {
-                            inlineButton.setContentDescription(contentDescription);
-                        }
-                        if (!TextUtils.isEmpty(tooltip))
-                        {
-                            TooltipCompat.setTooltipText(inlineButton, tooltip);
-                        }
+                        ContainerRenderer.applyTitleAndTooltip(action, inlineButton);
 
                         InlineActionIconImageLoaderAsync imageLoader = new InlineActionIconImageLoaderAsync(
                             renderedCard,
