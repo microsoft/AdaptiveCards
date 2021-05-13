@@ -217,10 +217,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
     public static void setSelectAction(RenderedAdaptiveCard renderedCard, BaseActionElement selectAction, View view, ICardActionHandler cardActionHandler, RenderArgs renderArgs)
     {
-        if (selectAction != null && selectAction.GetIsEnabled())
+        if (selectAction != null)
         {
             view.setFocusable(true);
             view.setClickable(true);
+            view.setEnabled(selectAction.GetIsEnabled());
             if (Util.isOfType(selectAction, ExecuteAction.class) || Util.isOfType(selectAction, SubmitAction.class) || selectAction.GetElementType() == ActionType.Custom)
             {
                 renderedCard.registerSubmitableAction(view, renderArgs);
