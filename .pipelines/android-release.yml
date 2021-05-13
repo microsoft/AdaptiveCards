@@ -26,24 +26,22 @@ steps:
     tasks: 'adaptivecards:publishReleasePublicationToLocalDirectoryRepository'
     publishJUnitResults: false
 
-- task: CopyFiles@2
+- task: Powershell@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
-    SourceFolder: '$(build.sourcesdirectory)'
-    Contents: |
-     **/io/adaptivecards/**/*.aar
-     **/io/adaptivecards/**/*.pom
-    TargetFolder: '$(build.artifactstagingdirectory)'
-    OverWrite: true
-  continueOnError: true
-  condition: succeededOrFailed()
+    targetType: inline
+    script: |
+     ls (Join-Path $(build.sourcesdirectory) "*.aar"), (Join-Path $(build.sourcesdirectory) "*.pom") -File -Recur | %{
+       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_.BaseName + $_.Extension))
+       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_.BaseName + $_.Extension + ".asc"))
+     }
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP CodeSign Artifact'
   inputs:
     ConnectedServiceName: 'AdaptiveCards ESRP CodeSigning'
     FolderPath: $(build.artifactstagingdirectory)
-    Pattern: '*.aar,*.pom'
+    Pattern: '*.asc'
     signConfigType: inlineSignParams
     inlineOperation: |
      [
@@ -60,3 +58,4 @@ steps:
   displayName: 'Publish Artifact: drop'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
+
