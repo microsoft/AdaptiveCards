@@ -95,6 +95,14 @@
 		6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */; };
 		6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B8C76432641D8D6009548FA /* InternalId.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B8C76422641D8D6009548FA /* InternalId.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B8C765226449B09009548FA /* TableColumnDefinition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C764A26449B07009548FA /* TableColumnDefinition.cpp */; };
+		6B8C765326449B09009548FA /* Table.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B8C764B26449B07009548FA /* Table.h */; };
+		6B8C765426449B09009548FA /* TableCell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C764C26449B08009548FA /* TableCell.cpp */; };
+		6B8C765526449B09009548FA /* TableColumnDefinition.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B8C764D26449B08009548FA /* TableColumnDefinition.h */; };
+		6B8C765626449B09009548FA /* Table.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C764E26449B08009548FA /* Table.cpp */; };
+		6B8C765726449B09009548FA /* TableRow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B8C764F26449B08009548FA /* TableRow.h */; };
+		6B8C765826449B09009548FA /* TableRow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B8C765026449B08009548FA /* TableRow.cpp */; };
+		6B8C765926449B09009548FA /* TableCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B8C765126449B08009548FA /* TableCell.h */; };
 		6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B94F2DB24C7997D00E2B310 /* ACRTextInputHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B94F2DE24C7997D00E2B310 /* ACRTextInputHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */; };
 		6B94F2E224C79C2700E2B310 /* ACRTextTelelphoneField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */; };
@@ -483,6 +491,14 @@
 		6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRUIImageView.mm; sourceTree = "<group>"; };
 		6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRUIImageView.h; sourceTree = "<group>"; };
 		6B8C76422641D8D6009548FA /* InternalId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InternalId.h; path = ../../../../shared/cpp/ObjectModel/InternalId.h; sourceTree = "<group>"; };
+		6B8C764A26449B07009548FA /* TableColumnDefinition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TableColumnDefinition.cpp; path = ../../../../shared/cpp/ObjectModel/TableColumnDefinition.cpp; sourceTree = "<group>"; };
+		6B8C764B26449B07009548FA /* Table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Table.h; path = ../../../../shared/cpp/ObjectModel/Table.h; sourceTree = "<group>"; };
+		6B8C764C26449B08009548FA /* TableCell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TableCell.cpp; path = ../../../../shared/cpp/ObjectModel/TableCell.cpp; sourceTree = "<group>"; };
+		6B8C764D26449B08009548FA /* TableColumnDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableColumnDefinition.h; path = ../../../../shared/cpp/ObjectModel/TableColumnDefinition.h; sourceTree = "<group>"; };
+		6B8C764E26449B08009548FA /* Table.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Table.cpp; path = ../../../../shared/cpp/ObjectModel/Table.cpp; sourceTree = "<group>"; };
+		6B8C764F26449B08009548FA /* TableRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableRow.h; path = ../../../../shared/cpp/ObjectModel/TableRow.h; sourceTree = "<group>"; };
+		6B8C765026449B08009548FA /* TableRow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TableRow.cpp; path = ../../../../shared/cpp/ObjectModel/TableRow.cpp; sourceTree = "<group>"; };
+		6B8C765126449B08009548FA /* TableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableCell.h; path = ../../../../shared/cpp/ObjectModel/TableCell.h; sourceTree = "<group>"; };
 		6B94F2DB24C7997D00E2B310 /* ACRTextInputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTextInputHandler.h; sourceTree = "<group>"; };
 		6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTextInputHandler.mm; sourceTree = "<group>"; };
 		6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRTextTelelphoneField.xib; sourceTree = "<group>"; };
@@ -973,6 +989,14 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				6B8C764E26449B08009548FA /* Table.cpp */,
+				6B8C764B26449B07009548FA /* Table.h */,
+				6B8C764C26449B08009548FA /* TableCell.cpp */,
+				6B8C765126449B08009548FA /* TableCell.h */,
+				6B8C764A26449B07009548FA /* TableColumnDefinition.cpp */,
+				6B8C764D26449B08009548FA /* TableColumnDefinition.h */,
+				6B8C765026449B08009548FA /* TableRow.cpp */,
+				6B8C764F26449B08009548FA /* TableRow.h */,
 				6B8C76422641D8D6009548FA /* InternalId.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
@@ -1314,6 +1338,7 @@
 				6B224279220BAC8B000ACDA1 /* BaseElement.h in Headers */,
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
 				6BC30F7621E5750A00B9FAAE /* EnumMagic.h in Headers */,
+				6B8C765526449B09009548FA /* TableColumnDefinition.h in Headers */,
 				6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,
 				F44873261EE2261F00FCAFAE /* TextInput.h in Headers */,
@@ -1323,6 +1348,7 @@
 				F448731B1EE2261F00FCAFAE /* OpenUrlAction.h in Headers */,
 				F44873191EE2261F00FCAFAE /* NumberInput.h in Headers */,
 				F44873151EE2261F00FCAFAE /* ImageSet.h in Headers */,
+				6B8C765326449B09009548FA /* Table.h in Headers */,
 				F44873131EE2261F00FCAFAE /* Image.h in Headers */,
 				F448730F1EE2261F00FCAFAE /* HostConfig.h in Headers */,
 				F448730E1EE2261F00FCAFAE /* FactSet.h in Headers */,
@@ -1357,6 +1383,7 @@
 				F4F44B9D204A16BC00A2F24C /* ACRTextBlockRenderer.h in Headers */,
 				F4F44B9C204A169D00A2F24C /* ACRErrors.h in Headers */,
 				F4F44B9A204A164100A2F24C /* ACRInputToggleRenderer.h in Headers */,
+				6B8C765926449B09009548FA /* TableCell.h in Headers */,
 				F4F44B99204A162900A2F24C /* ACRInputTimeRenderer.h in Headers */,
 				F4F44B9B204A165F00A2F24C /* ACRIBaseInputHandler.h in Headers */,
 				F4F44B93204A155B00A2F24C /* ACRFactSetRenderer.h in Headers */,
@@ -1443,6 +1470,7 @@
 				6BC30F7A21E6E49E00B9FAAE /* ACRCustomActionRenderer.h in Headers */,
 				6B22425D21E80647000ACDA1 /* ACOParseContextPrivate.h in Headers */,
 				F4C1F5E81F2ABB3C0018CB78 /* ACRIBaseActionElementRenderer.h in Headers */,
+				6B8C765726449B09009548FA /* TableRow.h in Headers */,
 				6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */,
 				C8DEDF3A220CDEB00001AAED /* ActionSet.h in Headers */,
 				6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */,
@@ -1672,10 +1700,12 @@
 				F44873251EE2261F00FCAFAE /* TextInput.cpp in Sources */,
 				8404BA8F226697800091A0AD /* FeatureRegistration.cpp in Sources */,
 				F44873091EE2261F00FCAFAE /* Enums.cpp in Sources */,
+				6B8C765426449B09009548FA /* TableCell.cpp in Sources */,
 				F44873171EE2261F00FCAFAE /* jsoncpp.cpp in Sources */,
 				F42E51781FEC3840008F9642 /* MarkDownHtmlGenerator.cpp in Sources */,
 				F49683551F6CA24600DF0D3A /* ACRRenderResult.mm in Sources */,
 				6BFF9A0526004C580028069F /* ACOAuthentication.mm in Sources */,
+				6B8C765226449B09009548FA /* TableColumnDefinition.cpp in Sources */,
 				6BBE841A23CD184D00ECA586 /* ACOWarning.mm in Sources */,
 				0D34860226193C7900614EB9 /* ACROverflowTarget.mm in Sources */,
 				F44873071EE2261F00FCAFAE /* DateInput.cpp in Sources */,
@@ -1717,6 +1747,7 @@
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
 				6B25D3EC2613D83700A47AFB /* ACORenderContext.mm in Sources */,
 				6BCE4B272108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm in Sources */,
+				6B8C765826449B09009548FA /* TableRow.cpp in Sources */,
 				6BD025EE254784670009B019 /* ACOInputResults.mm in Sources */,
 				6BFF99CB25FFF53E0028069F /* TokenExchangeResource.cpp in Sources */,
 				F495FC0E2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.mm in Sources */,
@@ -1789,6 +1820,7 @@
 				6B22426E2203BE98000ACDA1 /* UnknownAction.cpp in Sources */,
 				6B224278220BAC8B000ACDA1 /* BaseElement.cpp in Sources */,
 				6B9D650F21095CBF00BB5C7B /* ACRMediaTarget.mm in Sources */,
+				6B8C765626449B09009548FA /* Table.cpp in Sources */,
 				6B2242AF22334452000ACDA1 /* TextRun.cpp in Sources */,
 				6BFF99EE2600387A0028069F /* ACOTokenExchangeResource.mm in Sources */,
 				F43110441F357487001AAE30 /* ACRInputTableView.mm in Sources */,

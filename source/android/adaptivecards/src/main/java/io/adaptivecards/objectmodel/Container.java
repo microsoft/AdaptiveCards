@@ -47,8 +47,12 @@ public class Container extends CollectionTypeElement {
     this(AdaptiveCardObjectModelJNI.new_Container__SWIG_0(), true);
   }
 
+  public Container(CardElementType derivedType) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(derivedType.swigValue()), true);
+  }
+
   public Container(Container arg0) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(Container.getCPtr(arg0), arg0), true);
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(Container.getCPtr(arg0), arg0), true);
   }
 
   public JsonValue SerializeToJsonValue() {

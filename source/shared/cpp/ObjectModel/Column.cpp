@@ -27,7 +27,7 @@ void Column::SetWidth(const std::string& value,
                       std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings)
 {
     m_width = ParseUtil::ToLowercase(value);
-    m_pixelWidth = ParseSizeForPixelSize(m_width, warnings);
+    m_pixelWidth = ParseSizeForPixelSize(m_width, warnings).value_or(0);
 }
 
 // explicit width takes precedence over relative width

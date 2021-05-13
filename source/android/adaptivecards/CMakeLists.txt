@@ -73,6 +73,10 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/SharedAdaptiveCard.cpp
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp
              ../../shared/cpp/ObjectModel/SubmitAction.cpp
+             ../../shared/cpp/ObjectModel/Table.cpp
+             ../../shared/cpp/ObjectModel/TableCell.cpp
+             ../../shared/cpp/ObjectModel/TableColumnDefinition.cpp
+             ../../shared/cpp/ObjectModel/TableRow.cpp
              ../../shared/cpp/ObjectModel/TextBlock.cpp
              ../../shared/cpp/ObjectModel/TextElementProperties.cpp
              ../../shared/cpp/ObjectModel/TextInput.cpp
