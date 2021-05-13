@@ -275,7 +275,7 @@ product.pbxproj
 # Mac
 **/.DS_Store
 .build/
-**/xcuserdata
+xcuserdata/
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.Rendering.Uwp.h
