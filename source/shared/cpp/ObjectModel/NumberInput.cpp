@@ -5,7 +5,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 NumberInput::NumberInput() : BaseInputElement(CardElementType::NumberInput)
 {
@@ -95,8 +95,7 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& co
     return numberInput;
 }
 
-std::shared_ptr<BaseCardElement>
-NumberInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return NumberInputParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

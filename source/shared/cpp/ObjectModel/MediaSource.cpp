@@ -4,7 +4,7 @@
 #include "MediaSource.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 MediaSource::MediaSource()
 {

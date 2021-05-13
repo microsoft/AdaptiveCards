@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "CollectionTypeElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class Column;
 

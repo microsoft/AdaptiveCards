@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Shared from "./shared";
-import { HostConfig } from "./host-config";
 
 // To work around TypeScript complaining about documentMode not being declared
 // on type Document
@@ -86,45 +85,6 @@ export function parseEnum(enumType: { [s: number]: string }, name: string, defau
     let enumValue = getEnumValueByName(enumType, name);
 
     return enumValue !== undefined ? enumValue : defaultValue;
-}
-
-export function renderSeparation(hostConfig: HostConfig, separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
-    if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
-        let separator = document.createElement("div");
-        separator.className = hostConfig.makeCssClassName("ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator");
-        separator.setAttribute("aria-hidden", "true");
-
-        let color = separationDefinition.lineColor ? stringToCssColor(separationDefinition.lineColor) : "";
-
-        if (orientation == Enums.Orientation.Horizontal) {
-            if (separationDefinition.lineThickness) {
-                separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
-                separator.style.marginBottom = (separationDefinition.spacing / 2) + "px";
-                separator.style.borderBottom = separationDefinition.lineThickness + "px solid " + color;
-            }
-            else {
-                separator.style.height = separationDefinition.spacing + "px";
-            }
-        }
-        else {
-            if (separationDefinition.lineThickness) {
-                separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
-                separator.style.marginRight = (separationDefinition.spacing / 2) + "px";
-                separator.style.borderRight = separationDefinition.lineThickness + "px solid " + color;
-            }
-            else {
-                separator.style.width = separationDefinition.spacing + "px";
-            }
-        }
-
-        separator.style.overflow = "hidden";
-        separator.style.flex = "0 0 auto";
-
-        return separator;
-    }
-    else {
-        return undefined;
-    }
 }
 
 export function stringToCssColor(color: string | undefined): string | undefined {

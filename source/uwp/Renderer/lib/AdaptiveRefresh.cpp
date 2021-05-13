@@ -5,19 +5,19 @@
 #include "AdaptiveRefresh.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveRefresh::RuntimeClassInitialize() noexcept
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Refresh> refresh = std::make_shared<AdaptiveSharedNamespace::Refresh>();
+        std::shared_ptr<AdaptiveCards::Refresh> refresh = std::make_shared<AdaptiveCards::Refresh>();
         return RuntimeClassInitialize(refresh);
     }
 
-    HRESULT AdaptiveRefresh::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Refresh>& sharedRefresh)
+    HRESULT AdaptiveRefresh::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Refresh>& sharedRefresh)
     {
         RETURN_IF_FAILED(GenerateActionProjection(sharedRefresh->GetAction(), &m_action));
 
@@ -32,12 +32,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveRefresh::get_Action(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action)
+    HRESULT AdaptiveRefresh::get_Action(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** action)
     {
         return m_action.CopyTo(action);
     }
 
-    HRESULT AdaptiveRefresh::put_Action(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action)
+    HRESULT AdaptiveRefresh::put_Action(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action)
     {
         m_action = action;
         return S_OK;
@@ -48,9 +48,9 @@ namespace AdaptiveNamespace
         return m_userIds.CopyTo(userIds);
     }
 
-    HRESULT AdaptiveRefresh::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Refresh>& sharedModel)
+    HRESULT AdaptiveRefresh::GetSharedModel(std::shared_ptr<AdaptiveCards::Refresh>& sharedModel)
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Refresh> refresh = std::make_shared<AdaptiveSharedNamespace::Refresh>();
+        std::shared_ptr<AdaptiveCards::Refresh> refresh = std::make_shared<AdaptiveCards::Refresh>();
 
         if (m_action != nullptr)
         {
@@ -79,4 +79,5 @@ namespace AdaptiveNamespace
 
         sharedModel = std::move(refresh);
         return S_OK;
-    }}
+    }
+}

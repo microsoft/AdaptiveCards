@@ -3,10 +3,11 @@
 #pragma once
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveCardGetResourceStreamArgs
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>, ABI::AdaptiveNamespace::IAdaptiveCardGetResourceStreamArgs>
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardGetResourceStreamArgs>
     {
         AdaptiveRuntime(AdaptiveCardGetResourceStreamArgs);
 

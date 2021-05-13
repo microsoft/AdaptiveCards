@@ -206,8 +206,10 @@ export abstract class BaseTreeItem extends DraggableElement {
 
     onSelectedChange: (sender: BaseTreeItem) => void;
 
-    constructor() {
+    constructor(isExpanded: boolean = true) {
         super();
+
+        this._isExpanded = isExpanded;
     }
 
     abstract getChildCount(): number;
@@ -217,6 +219,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         if (this.getChildCount() > 0) {
             this._rootElement.setAttribute("aria-expanded", this._isExpanded.toString());
             this._expandCollapseElement.setAttribute("aria-label", this.getExpandCollapseAriaText());
+
             if (this._isExpanded) {
                 this._childContainerElement?.classList.remove("acd-hidden");
                 this._expandCollapseElement.classList.remove(BaseTreeItem.collapsedIconClass);
@@ -231,9 +234,19 @@ export abstract class BaseTreeItem extends DraggableElement {
     }
 
     expand() {
-        this._isExpanded = true;
+        if (!this._isExpanded) {
+            this._isExpanded = true;
 
-        this.updateLayout();
+            this.updateLayout();
+        }
+    }
+
+    collpase() {
+        if (this._isExpanded) {
+            this._isExpanded = false;
+
+            this.updateLayout();
+        }
     }
 
     isDraggable(): boolean {

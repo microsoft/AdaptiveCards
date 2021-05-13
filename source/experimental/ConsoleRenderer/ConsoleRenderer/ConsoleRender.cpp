@@ -9,7 +9,7 @@
 #include "ColumnSet.h"
 #include "FactSet.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 using namespace std::string_literals;
 
 size_t RenderElements(std::vector<std::shared_ptr<BaseCardElement>> elements, size_t columnWidth, size_t x, size_t y, std::vector<std::string>& consoleString);
@@ -181,7 +181,7 @@ size_t RenderElement(std::shared_ptr<BaseCardElement> element,  size_t columnWid
     }
     default:
     {
-        auto unimplText = ConvertToVector("Unimplemented: " + AdaptiveSharedNamespace::CardElementTypeToString(element->GetElementType()), columnWidth);
+        auto unimplText = ConvertToVector("Unimplemented: " + AdaptiveCards::CardElementTypeToString(element->GetElementType()), columnWidth);
         CompositeVector(consoleString, unimplText, columnWidth, x, y);
         rowsRendered = unimplText.size();
         break;
@@ -336,7 +336,7 @@ void RenderBorder(std::vector<std::string> &output, size_t columnWidth)
     output.push_back(bottom);
 }
 
-void RenderToConsole(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> card, size_t columnWidth, std::vector<std::string> &output)
+void RenderToConsole(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, size_t columnWidth, std::vector<std::string> &output)
 {
     std::vector<std::string> outputVector;
     auto body = card->GetBody();
