@@ -223,6 +223,10 @@
     <ClCompile Include="..\..\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\Inline.cpp" />
     <ClCompile Include="..\..\ObjectModel\RichTextElementProperties.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Table.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TableCell.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TableColumnDefinition.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TableRow.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextElementProperties.cpp" />
     <ClCompile Include="..\..\ObjectModel\TextRun.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
@@ -298,6 +302,10 @@
     <ClInclude Include="..\..\ObjectModel\Inline.h" />
     <ClInclude Include="..\..\ObjectModel\InternalId.h" />
     <ClInclude Include="..\..\ObjectModel\RichTextElementProperties.h" />
+    <ClInclude Include="..\..\ObjectModel\Table.h" />
+    <ClInclude Include="..\..\ObjectModel\TableCell.h" />
+    <ClInclude Include="..\..\ObjectModel\TableColumnDefinition.h" />
+    <ClInclude Include="..\..\ObjectModel\TableRow.h" />
     <ClInclude Include="..\..\ObjectModel\TextElementProperties.h" />
     <ClInclude Include="..\..\ObjectModel\TextRun.h" />
     <ClInclude Include="..\..\ObjectModel\ParseContext.h" />

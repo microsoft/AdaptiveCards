@@ -109,8 +109,12 @@ namespace AdaptiveSharedNamespace
 
         collection->SetBleed(ParseUtil::GetBool(value, AdaptiveCardSchemaKey::Bleed, false));
 
-        collection->SetMinHeight(
-            ParseSizeForPixelSize(ParseUtil::GetString(value, AdaptiveCardSchemaKey::MinHeight), &context.warnings));
+        if (const auto& minHeight =
+                ParseSizeForPixelSize(ParseUtil::GetString(value, AdaptiveCardSchemaKey::MinHeight), &context.warnings);
+            minHeight.has_value())
+        {
+            collection->SetMinHeight(*minHeight);
+        }
 
         // configures for cotainer style
         collection->ConfigForContainerStyle(context);

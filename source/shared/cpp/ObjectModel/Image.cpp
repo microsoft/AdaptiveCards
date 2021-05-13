@@ -192,21 +192,14 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
 
-    std::vector<std::string> requestedDimensions;
-    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width));
-    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height));
-    std::vector<int> parsedDimensions;
+    const auto& widthDimension = ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width), &context.warnings);
+    const auto& heightDimension = ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height), &context.warnings);
 
-    for (auto eachDimension : requestedDimensions)
+    if (widthDimension.has_value() || heightDimension.has_value())
     {
-        const int parsedDimension = ParseSizeForPixelSize(eachDimension, &context.warnings);
-        parsedDimensions.push_back(parsedDimension);
-    }
-
-    if (parsedDimensions.at(0) != 0 || parsedDimensions.at(1) != 0)
-    {
-        image->SetPixelWidth(parsedDimensions.at(0));
-        image->SetPixelHeight(parsedDimensions.at(1));
+        // Need to take breaking change to only set width/height if parse was successful (see microsoft/AdaptiveCards#5781)
+        image->SetPixelWidth(widthDimension.value_or(0));
+        image->SetPixelHeight(heightDimension.value_or(0));
     }
     else
     {
@@ -220,15 +213,15 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
 
 void Image::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)});
 }
 
 void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -237,5 +230,4 @@ void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resou
     imageResourceInfo.url = GetUrl();
     imageResourceInfo.mimeType = "image";
     resourceInfo.push_back(imageResourceInfo);
-    return;
 }
