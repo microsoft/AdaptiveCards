@@ -4,7 +4,7 @@
 #include "SemanticVersion.h"
 #include "AdaptiveCardParseException.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 SemanticVersion::SemanticVersion(const std::string& version) : _major(0), _minor(0), _build(0), _revision(0)
 {

@@ -7,7 +7,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 // This ctor used by types that want to be exactly like Container, but with a different name (e.g. TableCell)
 Container::Container(CardElementType derivedType) : CollectionTypeElement(derivedType)

@@ -7,7 +7,7 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class Image : public BaseCardElement
     {

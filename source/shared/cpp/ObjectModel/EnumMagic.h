@@ -3,7 +3,7 @@
 #pragma once
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     struct CaseInsensitiveEqualTo
     {
@@ -38,8 +38,7 @@ namespace AdaptiveSharedNamespace
         public:
             // Initialize with a single list -> automatically generate reverse mapping
             EnumMapping(const std::initializer_list<std::pair<T, std::string>>& t) :
-                _enumToString{t.begin(), t.end()},
-                _stringToEnum(t.size())
+                _enumToString{t.begin(), t.end()}, _stringToEnum(t.size())
             {
                 _GenerateStringToEnumMap();
             }

@@ -8,10 +8,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
-using namespace AdaptiveNamespace;
+using namespace AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -51,7 +51,7 @@ void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
     }
 
     ComPtr<IAdaptiveImage> adaptiveImage;
-    THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveImage>(&adaptiveImage));
+    THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveImage>(&adaptiveImage));
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
 
     HString altText;
@@ -103,7 +103,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(rectangleAsUIElement->put_Opacity(c_playIconOpacity));
 
     // Outline it in the Dark color
-    ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+    ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
     THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
     ComPtr<IColorsStatics> colorsStatics;
@@ -145,7 +145,7 @@ void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _I
 {
     // Render the custom play icon using the image renderer
     ComPtr<IAdaptiveImage> playIconAdaptiveImage;
-    THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveImage>(&playIconAdaptiveImage));
+    THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveImage>(&playIconAdaptiveImage));
     THROW_IF_FAILED(playIconAdaptiveImage->put_Url(playIconString));
 
     ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
@@ -340,7 +340,7 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
         {
             // Create the arguments to pass to the resolver
             ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
 
             // Call the resolver to get the media stream
             ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;

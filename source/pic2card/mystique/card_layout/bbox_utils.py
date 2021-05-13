@@ -7,8 +7,7 @@ from typing import List, Dict, Union
 from mystique import config
 
 
-def find_iou(coord1, coord2, inter_object=False,
-             columns_group=False) -> List:
+def find_iou(coord1, coord2, inter_object=False, columns_group=False) -> List:
     """
     Finds the intersecting bounding boxes by finding
        the highest x and y ranges of the 2 coordinates
@@ -39,13 +38,11 @@ def find_iou(coord1, coord2, inter_object=False,
     intersection_area = (iou_xmax - iou_xmin) * (iou_ymax - iou_ymin)
     point1_area = (coord1[2] - coord1[0]) * (coord1[3] - coord1[1])
     point2_area = (coord2[2] - coord2[0]) * (coord2[3] - coord2[1])
-    iou = (intersection_area
-           / (point1_area + point2_area - intersection_area))
+    iou = intersection_area / (point1_area + point2_area - intersection_area)
 
     # find if given 2 objects intersects or not
     if columns_group:
-        if ((point1_area + point2_area - intersection_area == 0)
-                or iou > 0):
+        if (point1_area + point2_area - intersection_area == 0) or iou > 0:
             return [True, abs(iou_xmax - iou_xmin), abs(iou_ymax - iou_ymin)]
         return [True, abs(iou_xmax - iou_xmin), abs(iou_ymax - iou_ymin)]
 
@@ -53,25 +50,31 @@ def find_iou(coord1, coord2, inter_object=False,
     # intersection.
     # -if not for inter objects overlap check for iou >= threshold
     # -if the intersection area covers more than 50% of the smaller object
-    if ((point1_area + point2_area - intersection_area == 0)
-            or (inter_object and iou > 0)
-            or (iou >= config.IOU_THRESHOLD)
-            or (iou <= config.IOU_THRESHOLD
-                and
-                (intersection_area /
-                 min(point1_area, point2_area)) >= 0.50)):
+
+    # pylint: disable=too-many-boolean-expressions
+    if (
+        (point1_area + point2_area - intersection_area == 0)
+        or (inter_object and iou > 0)
+        or (iou >= config.IOU_THRESHOLD)
+        or (
+            iou <= config.IOU_THRESHOLD
+            and (intersection_area / min(point1_area, point2_area)) >= 0.50
+        )
+    ):  # pylint: disable=too-many-boolean-expressions
         return [True, point1_area, point2_area]
 
     return [False]
 
 
-def remove_actionset_textbox_overlapping(design_object1: Dict,
-                                         design_object2: Dict,
-                                         box1: List[float],
-                                         box2: List[float],
-                                         position1: int,
-                                         position2: int) -> Union[int,
-                                                                  None]:
+# pylint: disable=too-many-arguments, inconsistent-return-statements
+def remove_actionset_textbox_overlapping(
+    design_object1: Dict,
+    design_object2: Dict,
+    box1: List[float],
+    box2: List[float],
+    position1: int,
+    position2: int,
+) -> Union[int, None]:
     """
     If the passed 2 design objects are actionset and textbox, then
     returns the position to remove the textboxes detected inside the
@@ -86,22 +89,22 @@ def remove_actionset_textbox_overlapping(design_object1: Dict,
     """
     # TODO: This workaround will be removed once the model is able to
     #       differentiate the text-boxes and action-sets efficiently.
-    if len({design_object1.get("object", ""),
-            design_object2.get("object", "")} & {"actionset",
-                                                 "textbox"}) == 2:
-        contains = (
-            (box2[0] <= box1[0] <= box2[2])
-            and (box2[1] <= box1[1] <= box2[3])
+    if (
+        len(
+            {design_object1.get("object", ""), design_object2.get("object", "")}
+            & {"actionset", "textbox"}
         )
-        intersection = find_iou(box1, box2,
-                                inter_object=True)
+        == 2
+    ):
+        contains = (box2[0] <= box1[0] <= box2[2]) and (
+            box2[1] <= box1[1] <= box2[3]
+        )
+        intersection = find_iou(box1, box2, inter_object=True)
         if contains or intersection[0]:
             if design_object1.get("object") == "textbox":
                 return position1
-            else:
-                return position2
-        else:
-            return None
+            return position2
+        return None
 
 
 def remove_noise_objects(json_objects: Dict):
@@ -123,7 +126,11 @@ def remove_noise_objects(json_objects: Dict):
             position = remove_actionset_textbox_overlapping(
                 json_objects["objects"][ctr],
                 json_objects["objects"][ctr1],
-                box1, box2, ctr, ctr1)
+                box1,
+                box2,
+                ctr,
+                ctr1,
+            )
             if position:
                 positions_to_delete.append(position)
             else:
@@ -131,13 +138,18 @@ def remove_noise_objects(json_objects: Dict):
                 if iou[0]:
                     box1_area = iou[1]
                     box2_area = iou[2]
-                    if (box1_area > box2_area
-                            and ctr1 not in positions_to_delete):
+                    if (
+                        box1_area > box2_area
+                        and ctr1 not in positions_to_delete
+                    ):
                         positions_to_delete.append(ctr1)
                     elif ctr not in positions_to_delete:
                         positions_to_delete.append(ctr)
-    points = [p for ctr, p in enumerate(
-        points) if ctr not in positions_to_delete]
-    json_objects["objects"] = [deisgn_object for deisgn_object in
-                               json_objects["objects"] if
-                               deisgn_object.get("coords") in points]
+    points = [
+        p for ctr, p in enumerate(points) if ctr not in positions_to_delete
+    ]
+    json_objects["objects"] = [
+        deisgn_object
+        for deisgn_object in json_objects["objects"]
+        if deisgn_object.get("coords") in points
+    ]

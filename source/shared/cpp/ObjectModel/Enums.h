@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "EnumMagic.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     enum class AdaptiveCardSchemaKey
     {
@@ -179,7 +179,7 @@ namespace AdaptiveSharedNamespace
         Title,
         ToggleInput,
         TokenExchangeResource,
-		Tooltip,
+        Tooltip,
         Top,
         Type,
         Underline,

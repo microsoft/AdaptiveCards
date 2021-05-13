@@ -4,7 +4,7 @@
 #include "pch.h"
 #include "Table.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     Table::Table() :
         BaseCardElement(CardElementType::Table), m_columnDefinitions({}), m_rows({}),

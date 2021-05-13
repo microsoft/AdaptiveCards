@@ -4,10 +4,11 @@
 
 #include "AdaptiveInputLabelConfig.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveLabelConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveLabelConfig>
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveLabelConfig>
     {
         AdaptiveRuntime(AdaptiveLabelConfig);
 
@@ -15,21 +16,20 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(LabelConfig labelConfig) noexcept;
 
-        IFACEMETHODIMP get_InputSpacing(_Outptr_ ABI::AdaptiveNamespace::Spacing* spacing);
-        IFACEMETHODIMP put_InputSpacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
+        IFACEMETHODIMP get_InputSpacing(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
+        IFACEMETHODIMP put_InputSpacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
 
-        IFACEMETHODIMP get_RequiredInputs(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig** requiredInputs);
-        IFACEMETHODIMP put_RequiredInputs(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* requiredInputs);
+        IFACEMETHODIMP get_RequiredInputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig** requiredInputs);
+        IFACEMETHODIMP put_RequiredInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* requiredInputs);
 
-        IFACEMETHODIMP get_OptionalInputs(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig** optionalInputs);
-        IFACEMETHODIMP put_OptionalInputs(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* optionalInputs);
+        IFACEMETHODIMP get_OptionalInputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig** optionalInputs);
+        IFACEMETHODIMP put_OptionalInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* optionalInputs);
 
     private:
-        ABI::AdaptiveNamespace::Spacing m_inputSpacing;
+        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_inputSpacing;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig> m_requiredInputs;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig> m_optionalInputs;
-
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig> m_requiredInputs;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig> m_optionalInputs;
     };
     ActivatableClass(AdaptiveLabelConfig);
 }

@@ -5,20 +5,20 @@
 #include "AdaptiveTokenExchangeResource.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveTokenExchangeResource::RuntimeClassInitialize() noexcept
     {
-        std::shared_ptr<AdaptiveSharedNamespace::TokenExchangeResource> tokenExchangeResource =
-            std::make_shared<AdaptiveSharedNamespace::TokenExchangeResource>();
+        std::shared_ptr<AdaptiveCards::TokenExchangeResource> tokenExchangeResource =
+            std::make_shared<AdaptiveCards::TokenExchangeResource>();
         return RuntimeClassInitialize(tokenExchangeResource);
     }
 
-    HRESULT AdaptiveTokenExchangeResource::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TokenExchangeResource>& sharedTokenExchangeResource)
+    HRESULT AdaptiveTokenExchangeResource::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TokenExchangeResource>& sharedTokenExchangeResource)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedTokenExchangeResource->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedTokenExchangeResource->GetUri(), m_uri.GetAddressOf()));
@@ -45,10 +45,10 @@ namespace AdaptiveNamespace
         return m_providerId.Set(providerId);
     }
 
-    HRESULT AdaptiveTokenExchangeResource::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::TokenExchangeResource>& sharedModel)
+    HRESULT AdaptiveTokenExchangeResource::GetSharedModel(std::shared_ptr<AdaptiveCards::TokenExchangeResource>& sharedModel)
     {
-        std::shared_ptr<AdaptiveSharedNamespace::TokenExchangeResource> tokenExchangeResource =
-            std::make_shared<AdaptiveSharedNamespace::TokenExchangeResource>();
+        std::shared_ptr<AdaptiveCards::TokenExchangeResource> tokenExchangeResource =
+            std::make_shared<AdaptiveCards::TokenExchangeResource>();
 
         std::string id;
         RETURN_IF_FAILED(HStringToUTF8(m_id.Get(), id));

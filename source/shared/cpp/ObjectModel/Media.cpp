@@ -5,7 +5,7 @@
 #include "ParseUtil.h"
 #include "ParseContext.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 Media::Media() : BaseCardElement(CardElementType::Media)
 {
@@ -110,7 +110,7 @@ std::shared_ptr<BaseCardElement> MediaParser::Deserialize(ParseContext& context,
         else if (mimeBaseType != currentMimeBaseType)
         {
             context.warnings.push_back(
-                std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidMediaMix,
+                std::make_shared<AdaptiveCardParseWarning>(AdaptiveCards::WarningStatusCode::InvalidMediaMix,
                                                            "Media element containing a mix of audio and video was dropped"));
             return nullptr;
         }
