@@ -47,6 +47,11 @@ export class MenuItem {
             this._element = document.createElement("span");
             this._element.innerText = this.value;
             this._element.setAttribute("role", "menuitem");
+
+            if (!this.isEnabled) {
+                this._element.setAttribute("aria-disabled", "true");
+            }
+
             this._element.setAttribute("aria-selected", "false");
             this._element.onmouseup = (e) => { this.click(); };
             this._element.onkeydown = (e) => {

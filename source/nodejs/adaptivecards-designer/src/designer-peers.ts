@@ -1670,19 +1670,19 @@ export class CardElementPeer extends DesignerPeer {
     }
 
     updateChildren(initializeCardElement?: boolean) {
-        if (this.cardElement instanceof Adaptive.CardElementContainer) {
-            for (let i = 0; i < this.getChildCount(); i++) {
-                let existingPeer = this.getChildAt(i);
+        for (let i = 0; i < this.getChildCount(); i++) {
+            let existingPeer = this.getChildAt(i);
 
-                if (existingPeer instanceof CardElementPeer && this.cardElement.indexOf(existingPeer.cardElement) < 0) {
-                    this.removeChild(existingPeer);
-                }
-
-                if (existingPeer instanceof ActionPeer && this.cardElement.indexOfAction(existingPeer.action) < 0) {
-                    this.removeChild(existingPeer);
-                }
+            if (existingPeer instanceof CardElementPeer && this.cardElement.indexOf(existingPeer.cardElement) < 0) {
+                this.removeChild(existingPeer);
             }
 
+            if (existingPeer instanceof ActionPeer && this.cardElement.indexOfAction(existingPeer.action) < 0) {
+                this.removeChild(existingPeer);
+            }
+        }
+
+        if (this.cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < this.cardElement.getItemCount(); i++) {
                 let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
 
@@ -1696,18 +1696,18 @@ export class CardElementPeer extends DesignerPeer {
                         i);
                 }
             }
+        }
 
-            for (var i = 0; i < this.cardElement.getActionCount(); i++) {
-                let existingPeer = this.findActionChild(this.cardElement.getActionAt(i));
+        for (var i = 0; i < this.cardElement.getActionCount(); i++) {
+            let existingPeer = this.findActionChild(this.cardElement.getActionAt(i));
 
-                if (!existingPeer) {
-                    this.insertChild(
-                        CardDesignerSurface.actionPeerRegistry.createPeerInstance(
-                            this.designerSurface,
-                            this,
-                            this.cardElement.getActionAt(i)),
-                        i);
-                }
+            if (!existingPeer) {
+                this.insertChild(
+                    CardDesignerSurface.actionPeerRegistry.createPeerInstance(
+                        this.designerSurface,
+                        this,
+                        this.cardElement.getActionAt(i)),
+                    i);
             }
         }
 

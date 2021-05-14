@@ -1808,32 +1808,6 @@ export class Image extends CardElement {
             // Cache hostConfig to avoid walking the parent hierarchy multiple times
             let hostConfig = this.hostConfig;
 
-            if (this.selectAction && hostConfig.supportsInteractivity) {
-                element.onkeypress = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
-                        e.preventDefault();
-                        e.cancelBubble = true;
-
-                        this.selectAction.execute();
-                    }
-                }
-
-                element.onclick = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled) {
-                        e.preventDefault();
-                        e.cancelBubble = true;
-
-                        this.selectAction.execute();
-                    }
-                }
-
-                this.selectAction.setupElementForAccessibility(element);
-
-                if (this.selectAction.isEnabled) {
-                    element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
-                }
-            }
-
             switch (this.getEffectiveHorizontalAlignment()) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.justifyContent = "center";
@@ -1878,6 +1852,24 @@ export class Image extends CardElement {
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
+                imageElement.onkeypress = (e) => {
+                    if (this.selectAction && this.selectAction.isEnabled && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
+                        this.selectAction.execute();
+                    }
+                }
+
+                imageElement.onclick = (e) => {
+                    if (this.selectAction && this.selectAction.isEnabled) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
+                        this.selectAction.execute();
+                    }
+                }
+
                 this.selectAction.setupElementForAccessibility(imageElement);
 
                 if (this.selectAction.isEnabled) {
@@ -3953,6 +3945,10 @@ export abstract class Action extends CardObject {
         element.tabIndex = 0;
         element.setAttribute("role", this.getAriaRole());
 
+        if (!this.isEnabled) {
+            element.setAttribute("aria-disabled", "true");
+        }
+
         if (this.title) {
             element.setAttribute("aria-label", this.title);
             element.title = this.title;
@@ -3980,7 +3976,6 @@ export abstract class Action extends CardObject {
 
     render() {
         let buttonElement = document.createElement("button");
-        buttonElement.disabled = !this.isEnabled;
         buttonElement.type = "button";
         buttonElement.style.display = "flex";
         buttonElement.style.alignItems = "center";
@@ -3998,6 +3993,7 @@ export abstract class Action extends CardObject {
 
         this.renderButtonContent();
         this.updateCssClasses();
+        this.setupElementForAccessibility(buttonElement);
     }
 
     execute() {
