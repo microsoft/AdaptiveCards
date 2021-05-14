@@ -32,7 +32,7 @@ def build_generated_card_json(images, path, testing_file_path):
     """
     parent = os.path.dirname(testing_file_path)
     generated_images = []
-    # pylint: disable=consider-using-with
+    # pylint: disable=bad-option-value,consider-using-with
     generated_jsonlines_file = open(parent + "/generated_card_json.jl", "w")
     for image in images:
         print(path + image)

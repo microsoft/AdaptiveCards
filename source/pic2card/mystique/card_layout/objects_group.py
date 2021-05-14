@@ -1,5 +1,5 @@
 """Module for grouping deisgn objects into different containers"""
-from typing import List, Dict, Callable, Tuple
+from typing import List, Dict, Callable
 
 from mystique import config
 
@@ -198,41 +198,6 @@ class GroupObjects:
         return False
 
 
-class ImageGrouping(GroupObjects):
-    """
-    Groups the image objects of the adaptive card objects into a imagesets or
-    individual image objects.
-    """
-
-    Y_MIN_THRESHOLD = config.CONTAINER_GROUPING.get("ymin_difference")
-    X_THRESHOLD = config.CONTAINER_GROUPING.get("xmax_xmin_difference")
-
-    def __init__(self, card_arrange=None):
-        self.card_arrange = card_arrange
-
-    def imageset_condition(self, bbox_1: List, bbox_2: List) -> bool:
-        """
-        Returns a boolean value to group the list of images into image-set.
-        @param bbox_1: image object one's coordinates
-        @param bbox_2: image object two's coordinates
-        @return: boolean value
-        """
-        y_min_difference = abs(bbox_1[1] - bbox_2[1])
-
-        if bbox_1[1] < bbox_2[1]:
-            y_min_difference = y_min_difference / (abs(bbox_1[1] - bbox_2[3]))
-        else:
-            y_min_difference = y_min_difference / (abs(bbox_2[1] - bbox_1[3]))
-        x_diff = self.max_min_difference(bbox_1, bbox_2, min_way=0, max_way=2)
-        return (
-            self._check_intersection_over_range(bbox_1, bbox_2, "y")
-            or round(y_min_difference, 2) <= self.Y_MIN_THRESHOLD
-        ) and (
-            self._check_intersection_over_range(bbox_1, bbox_2, "x")
-            or round(x_diff, 2) <= self.X_THRESHOLD
-        )
-
-
 class RowColumnGrouping(GroupObjects):
     """
     Groups the design objects into different columns of a columnset
@@ -245,136 +210,41 @@ class RowColumnGrouping(GroupObjects):
     def __init__(self, card_arrange=None):
         self.card_arrange = card_arrange
 
-    def row_condition(self, bbox_1: List, bbox_2: List) -> bool:
+    # pylint: disable=no-self-use
+    def row_condition(self, bbox_1: List, bbox_2: List, threshold=0.3) -> bool:
         """
-        Returns a boolean value to group different design objects in a row
-        @param bbox_1: design object1 coordinates
-        @param bbox_2: design object2 coordinates
-        @return: boolean value
+        Simplified row grouping condition
+        @param bbox_1: bounding box 1
+        @param bbox_2: bounding box2
+        @param threshold: cut-off threshold
+        @return: boolean value for row candidates
         """
-
-        y_diff = self.max_min_difference(bbox_1, bbox_2, min_way=1, max_way=3)
-        y_min_difference = abs(bbox_1[1] - bbox_2[1])
-        object_one, object_two = self._get_highest_range_object(
-            bbox_1, bbox_2, min_way=1, max_way=3
+        _, y1_, _, y2_, _ = bbox_1
+        _, y11, _, y22, _ = bbox_2
+        intersection = (min(y2_, y22) - max(y1_, y11)) / min(
+            [(y2_ - y1_), (y22 - y11)]
         )
-        y_min_difference = y_min_difference / (
-            abs(object_two[1] - object_one[3])
-        )
-
-        y_minimum_condition = (
-            round(y_min_difference, 2) <= self.Y_MIN_THESHOLD + 0.010
-        )
-
-        vertical_inclusive = False
-        horizontal_inclusive = False
-
-        if bbox_1 and bbox_2:
-            vertical_inclusive = self._check_intersection_over_range(
-                bbox_1, bbox_2, "y"
-            )
-            horizontal_inclusive = self._check_intersection_over_range(
-                bbox_1, bbox_2, "x"
-            )
-        horizontal_inclusive = (
-            round(y_diff, 2) < self.Y_THRESHOLD and horizontal_inclusive
-        )
-
-        return bbox_1 != bbox_2 and (
-            y_minimum_condition or vertical_inclusive or horizontal_inclusive
-        )
+        return intersection >= threshold
 
     # pylint: disable=no-self-use
-    def _get_highest_range_object(
-        self, bbox_1: List, bbox_2: List, min_way: int, max_way: int
-    ) -> Tuple[List, List]:
-        """
-        Returns the (greater, lesser) design objects based on the given x or y
-        range
-        @param bbox_1: design object one
-        @param bbox_2: design object two
-        @param min_way: x or y way minimum position
-        @param max_way: x or y way maximum position
-        @return: Tuple(greater , lesser) among the design objects
-        """
-        if (bbox_1[max_way] - bbox_1[min_way]) >= (
-            bbox_2[max_way] - bbox_2[min_way]
-        ):
-            return bbox_1, bbox_2
-        return bbox_2, bbox_1
-
-    # pylint: disable=inconsistent-return-statements
-    def check_overlap_ties(
-        self,
-        bbox_1: List,
-        bbox_2: List,
-        x_way_overlap_distance: float,
-        y_way_overlap_distance: float,
+    def column_condition(
+        self, bbox_1: List, bbox_2: List, threshold=0.3
     ) -> bool:
         """
-        Checks which way of overlap is greatest and return true i.e should be
-        inside a column of x-way overlap percentage is greater than y-way
-        overlap between the 2 design objects.
-        @param bbox_1: design object one coordinates
-        @param bbox_2: design object two coordinates
-        @param x_way_overlap_distance: overlapping region's width
-        @param y_way_overlap_distance: overlapping region's height
-        @return: a boolean value
+        Simplifies column grouping condition
+        @param bbox_1: bounding box 1
+        @param bbox_2: bounding box2
+        @param threshold: cut-off threshold
+        @return: boolean value for column candidates
         """
-        (
-            object_one,
-            _,
-        ) = self._get_highest_range_object(bbox_1, bbox_2, min_way=0, max_way=2)
-        width = abs(object_one[2] - object_one[0])
-        object_one, _ = self._get_highest_range_object(
-            bbox_1, bbox_2, min_way=1, max_way=3
-        )
-        height = abs(object_one[3] - object_one[1])
+        x1_, _, x2_, _, _ = bbox_1
+        x11, _, x22, _, _ = bbox_2
 
-        if x_way_overlap_distance / width >= y_way_overlap_distance / height:
-            return True
-
-    def column_condition(self, bbox_1: List, bbox_2: List) -> bool:
-        """
-        Returns a boolean value for grouping items into a column of a particular
-        row.
-        @param bbox_1: design object coordinates
-        @param bbox_2: design object coordinates
-        @return: boolean value
-        """
-        x_diff = self.max_min_difference(bbox_1, bbox_2, min_way=0, max_way=2)
-        y_min_difference = abs(bbox_1[1] - bbox_2[1])
-
-        object_one, object_two = self._get_highest_range_object(
-            bbox_1, bbox_2, min_way=1, max_way=3
-        )
-        y_min_difference = y_min_difference / (
-            abs(object_two[1] - object_one[3])
+        intersection = (min(x2_, x22) - max(x1_, x11)) / min(
+            [(x2_ - x1_), (x22 - x11)]
         )
 
-        if bbox_1[1] < bbox_2[1]:
-            object_one = bbox_1
-            object_two = bbox_2
-        else:
-            object_one = bbox_2
-            object_two = bbox_1
-
-        y_minimum_condition = round(y_min_difference, 2) <= self.Y_MIN_THESHOLD
-        x_minimum_condition = round(x_diff, 2) <= self.X_THRESHOLD
-        images_check = (
-            bbox_1[4] == "image"
-            and bbox_2[4] == "image"
-            and y_minimum_condition
-            and x_minimum_condition
-        )
-        horizontal_inclusive = False
-        if object_one and object_two:
-            horizontal_inclusive = self._check_intersection_over_range(
-                bbox_1, bbox_2, "x"
-            )
-        condition = bbox_1 != bbox_2 and (images_check or horizontal_inclusive)
-
-        return condition
+        return intersection >= threshold
 
 
 class ChoicesetGrouping(GroupObjects):
