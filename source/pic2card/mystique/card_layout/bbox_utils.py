@@ -107,14 +107,14 @@ def remove_actionset_textbox_overlapping(
         return None
 
 
-def remove_noise_objects(json_objects: Dict):
+def remove_noise_objects(predicted_objects: Dict):
     """
     Removes all noisy objects by eliminating all smaller and intersecting
             objects within / with the bigger objects.
-    @param json_objects: list of detected objects.
+    @param predicted_objects: list of detected objects.
     """
     points = []
-    for deisgn_object in json_objects["objects"]:
+    for deisgn_object in predicted_objects["objects"]:
         points.append(deisgn_object.get("coords"))
     positions_to_delete = []
     for ctr, point in enumerate(points):
@@ -124,8 +124,8 @@ def remove_noise_objects(json_objects: Dict):
             # check if there's a textbox vs actionset overlap
             # remove the textbox
             position = remove_actionset_textbox_overlapping(
-                json_objects["objects"][ctr],
-                json_objects["objects"][ctr1],
+                predicted_objects["objects"][ctr],
+                predicted_objects["objects"][ctr1],
                 box1,
                 box2,
                 ctr,
@@ -148,8 +148,8 @@ def remove_noise_objects(json_objects: Dict):
     points = [
         p for ctr, p in enumerate(points) if ctr not in positions_to_delete
     ]
-    json_objects["objects"] = [
+    predicted_objects["objects"] = [
         deisgn_object
-        for deisgn_object in json_objects["objects"]
+        for deisgn_object in predicted_objects["objects"]
         if deisgn_object.get("coords") in points
     ]

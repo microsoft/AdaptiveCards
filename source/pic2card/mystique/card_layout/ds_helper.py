@@ -4,7 +4,6 @@ the layout generation"""
 
 from typing import List, Tuple, Dict, Union
 
-from .objects_group import ImageGrouping
 from .objects_group import ChoicesetGrouping
 
 
@@ -15,7 +14,7 @@ class DsHelper:
     """
 
     CONTAINERS = ["columnset", "imageset", "column", "choiceset"]
-    MERGING_CONTAINERS_LIST = ["imageset", "choiceset"]
+    MERGING_CONTAINERS_LIST = ["choiceset"]
 
     def __init__(self):
 
@@ -313,6 +312,7 @@ class DsDesignTemplate:
         return {"choiceset": {"items": []}, "object": "choiceset"}
 
 
+# pylint: disable=too-few-public-methods
 class ContainerTemplate:
     """
     Class to handle different container groupings other than columnset and
@@ -320,27 +320,6 @@ class ContainerTemplate:
     - Handles the functionalies needed for different type of container
     groupings.
     """
-
-    def imageset(
-        self, card_layout: List[Dict], containers_group_object
-    ) -> List[Dict]:
-        """
-        Groups and returns the layout structure with the respective image-sets
-        @param card_layout: Un-grouped layout structure.
-        @param containers_group_object: ContainerGroup object
-        @return: Grouped layout structure
-        """
-        image_grouping = ImageGrouping(self)
-        condition = image_grouping.imageset_condition
-        containers_group_object.merge_column_items(
-            card_layout, 5, "imageset", image_grouping, condition, 0
-        )
-        items, _ = containers_group_object.collect_items_for_container(
-            card_layout, 5
-        )
-        return containers_group_object.add_merged_items(
-            items, card_layout, "imageset", image_grouping, condition
-        )
 
     def choiceset(
         self, card_layout: List[Dict], containers_group_object
@@ -353,14 +332,19 @@ class ContainerTemplate:
         """
         choice_grouping = ChoicesetGrouping(self)
         condition = choice_grouping.choiceset_condition
-        containers_group_object.merge_column_items(
-            card_layout, 2, "choiceset", choice_grouping, condition, 1
-        )
+        merging_payload = {
+            "object_class": 2,
+            "grouping_type": "choiceset",
+            "grouping_object": choice_grouping,
+            "grouping_condition": condition,
+            "order_key": 1,
+        }
+        containers_group_object.merge_column_items(card_layout, merging_payload)
         items, _ = containers_group_object.collect_items_for_container(
             card_layout, 2
         )
         return containers_group_object.add_merged_items(
-            items, card_layout, "choiceset", choice_grouping, condition
+            items, card_layout, merging_payload
         )
 
 

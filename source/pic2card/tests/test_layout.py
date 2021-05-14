@@ -6,7 +6,6 @@ from mystique.extract_properties import CollectProperties
 from mystique.ac_export.adaptive_card_export import AdaptiveCardExport
 from mystique.card_layout.objects_group import (
     RowColumnGrouping,
-    ImageGrouping,
     ChoicesetGrouping,
 )
 from mystique.card_layout import row_column_group
@@ -16,8 +15,6 @@ from mystique.card_layout import bbox_utils
 # pylint: disable=no-name-in-module
 from tests.variables import (
     debug_string_test,
-    test_img_obj1,
-    test_img_obj2,
     test_cset_obj1,
     test_cset_obj2,
 )
@@ -77,7 +74,7 @@ class TestLayoutStructure(BaseSetUpClass):
         """
         Tests the generated layout length and datatype for the given test image
         """
-        new_layout = row_column_group.generate_card_layout(
+        new_layout = row_column_group.generate_card_layout_seq(
             self.json_objects, self.image, self.model_instance
         )
         self.assertEqual(len(new_layout), 13)
@@ -88,7 +85,7 @@ class TestLayoutStructure(BaseSetUpClass):
         Tests the adaptive card builded using the testing Format
         for the given test image
         """
-        final_ds = row_column_group.generate_card_layout(
+        final_ds = row_column_group.generate_card_layout_seq(
             self.json_objects, self.image, self.model_instance
         )
         ds_helper = DsHelper()
@@ -144,22 +141,6 @@ class TestColumnsGrouping(BaseSetUpClass):
         )
         self.assertTrue(column_condition_true)
         self.assertFalse(column_condition_false)
-
-
-class TestImageGrouping(BaseSetUpClass):
-    """Tests for the Image grouping objects"""
-
-    def test_imageset_condition(self):
-        """Tests if images are in imageset"""
-        groupobj = ImageGrouping()
-        condition_true = groupobj.imageset_condition(
-            test_img_obj1, test_img_obj2
-        )
-        condition_false = groupobj.imageset_condition(
-            self.test_coord1, self.test_coord2
-        )
-        self.assertTrue(condition_true)
-        self.assertFalse(condition_false)
 
 
 class TestChoiceSetGrouping(BaseSetUpClass):

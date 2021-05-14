@@ -137,3 +137,7 @@ ALIGNMENT_THRESHOLDS = {
 }
 # LINE BASED ALIGNMENT THRESHOLDS
 LINE_ALIGNMENT_THRESHOLD = {"minimum": 0.20, "maximum": 0.75}
+
+# Multi Process flag to run card-layout and properties extraction as a
+# parallel or sequential tasks, True by default
+MULTI_PROC = False
