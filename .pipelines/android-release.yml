@@ -9,12 +9,6 @@ pool:
   demands: java
 
 steps:
-  # TODO: Remove when Android Gradle Plugin 4.1 is stable.
-  # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
-# - script: |
-#    setx ANDROID_NDK_HOME ""
-#    "%ANDROID_HOME%\tools\bin\sdkmanager.bat" --verbose "ndk;21.0.6113669"
-#   displayName: 'Get NDK (TODO: Remove this step)'
 
 - task: Gradle@2
   displayName: build
@@ -29,22 +23,43 @@ steps:
   inputs:
     gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
-    tasks: 'adaptivecards:publish'
+    tasks: 'adaptivecards:publishReleasePublicationToLocalDirectoryRepository'
     publishJUnitResults: false
 
-- task: CopyFiles@2
+- task: Powershell@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
-    SourceFolder: '$(build.sourcesdirectory)'
-    Contents: |
-     **/io/adaptivecards/**/*.aar
-     **/io/adaptivecards/**/*.pom
-    TargetFolder: '$(build.artifactstagingdirectory)'
-    OverWrite: true
-  continueOnError: true
-  condition: succeededOrFailed()
+    targetType: inline
+    script: |
+     ls $(build.sourcesdirectory) -File -Recur | ?{
+       $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar|.pom)$"
+     } | %{
+       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) $_.Name)
+       
+       # Additional copy to be converted into detached PGP signature by ESRP task
+       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
+     }
+
+- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  displayName: 'ESRP CodeSign (Detached PGP)'
+  inputs:
+    ConnectedServiceName: 'AdaptiveCards ESRP CodeSigning'
+    FolderPath: $(build.artifactstagingdirectory)
+    Pattern: '*.asc'
+    signConfigType: inlineSignParams
+    inlineOperation: |
+     [
+       {
+         "KeyCode":"CP-464385-Pgp",
+         "OperationCode":"LinuxSign",
+         "Parameters":{},
+         "ToolName":"sign",
+         "ToolVersion":"1.0"
+       }
+     ]
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
+
