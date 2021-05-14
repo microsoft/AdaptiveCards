@@ -836,32 +836,6 @@ export function property(property: PropertyDefinition) {
     }
 }
 
-export type PropertyChangeListener = (sender: SerializableObject, property: PropertyDefinition, value: any) => void;
-
-export class PropertyChangeEvent {
-    private _listeners: PropertyChangeListener[] = [];
-
-    addListener(listener: PropertyChangeListener) {
-        if (this._listeners.indexOf(listener) < 0) {
-            this._listeners.push(listener);
-        }
-    }
-
-    removeListener(listener: PropertyChangeListener) {
-        let index = this._listeners.indexOf(listener);
-
-        if (index >= 0) {
-            this._listeners.splice(index, 1);
-        }
-    }
-
-    broadcast(sender: SerializableObject, property: PropertyDefinition, value: any) {
-        for (let listener of this._listeners) {
-            listener(sender, property, value);
-        }
-    }
-}
-
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
     static defaultMaxVersion: Version = Versions.latest;
@@ -870,7 +844,6 @@ export abstract class SerializableObject {
 
     private _propertyBag: PropertyBag = {};
     private _rawProperties: PropertyBag = {};
-    private _updateCount: number = 0;
 
     protected abstract getSchemaKey(): string;
 
@@ -916,10 +889,6 @@ export abstract class SerializableObject {
         }
     }
 
-    protected propertyChanged(property: PropertyDefinition, value: any) {
-        this.onPropertyChanged.broadcast(this, property, value);
-    }
-
     protected getValue(property: PropertyDefinition): any {
         return this._propertyBag.hasOwnProperty(property.getInternalName()) ? this._propertyBag[property.getInternalName()] : property.defaultValue;
     }
@@ -930,10 +899,6 @@ export abstract class SerializableObject {
         }
         else {
             this._propertyBag[property.getInternalName()] = value;
-        }
-
-        if (!this.getIsUpdating()) {
-            this.propertyChanged(property, value);
         }
     }
 
@@ -998,8 +963,6 @@ export abstract class SerializableObject {
 
     maxVersion: Version = SerializableObject.defaultMaxVersion;
 
-    readonly onPropertyChanged = new PropertyChangeEvent();
-
     constructor() {
         let s = this.getSchema();
 
@@ -1012,25 +975,8 @@ export abstract class SerializableObject {
         }
     }
 
-    beginUpdate() {
-        this._updateCount++;
-    }
-
-    endUpdate() {
-        if (this._updateCount > 0) {
-            this._updateCount--;
-        }
-    }
-
     parse(source: PropertyBag, context?: BaseSerializationContext) {
-        this.beginUpdate();
-
-        try {
-            this.internalParse(source, context ? context : new SimpleSerializationContext());
-        }
-        finally {
-            this.endUpdate();
-        }
+        this.internalParse(source, context ? context : new SimpleSerializationContext());
     }
 
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
@@ -1118,9 +1064,5 @@ export abstract class SerializableObject {
         }
 
         return schema;
-    }
-
-    getIsUpdating(): boolean {
-        return this._updateCount > 0;
     }
 }

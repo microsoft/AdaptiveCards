@@ -4,9 +4,9 @@ import { CardElement, StylableCardElementContainer, SerializationContext, Contai
 import { HorizontalAlignment, VerticalAlignment, SizeUnit, ValidationEvent, TypeErrorType, Spacing } from "./enums";
 import { TextStyleDefinition } from "./host-config";
 import { GlobalRegistry } from "./registry";
-import { BaseSerializationContext, BoolProperty, CustomProperty, EnumProperty, property, PropertyBag,
+import { BaseSerializationContext, BoolProperty, CustomProperty, EnumProperty, property,
     PropertyDefinition, SerializableObject, SerializableObjectCollectionProperty, Versions } from "./serialization";
-import { SizeAndUnit, PaddingDefinition } from "./shared";
+import { SizeAndUnit, PaddingDefinition, PropertyBag } from "./shared";
 import { Strings } from "./strings";
 import { stringToCssColor } from "./utils";
 

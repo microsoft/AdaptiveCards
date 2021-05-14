@@ -3899,14 +3899,6 @@ export abstract class Action extends CardObject {
         }
     }
 
-    protected propertyChanged(property: PropertyDefinition, value: any) {
-        super.propertyChanged(property, value);
-
-        if (property === Action.isEnabledProperty) {
-            this.updateCssClasses();
-        }
-    }
-
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SerializationContext();
     }
