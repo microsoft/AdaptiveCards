@@ -33,6 +33,23 @@
     user-select: none;
 }
 
+.ac-pushButton-disabled {
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Calibri", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid #EEEEEE;
+	background-color: #EEEEEE;
+	color: #666666;
+}
+
 .ac-pushButton:hover {
     background-color: #005a9e;
 }
@@ -155,6 +172,23 @@
     background-color: #CCCCCC;
 }
 
+.ac-inlineActionButton-disabled {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+    height: 31px;
+}
+
 /* Popup menu */
 
 .ac-ctrl-overlay {
@@ -231,6 +265,18 @@
     padding: 0px 12px 0px 12px;
     line-height: 30px;
     cursor: pointer;
+}
+  
+.ac-ctrl-dropdown-item-disabled {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    padding: 0px 12px 0px 12px;
+    line-height: 30px;
+    cursor: pointer;
+    color: #666666;
 }
   
 .ac-ctrl-dropdown-item:hover {
