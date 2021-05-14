@@ -32,12 +32,12 @@ steps:
     targetType: inline
     script: |
      ls $(build.sourcesdirectory) -File -Recur | ?{
-       $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar|.pom)"
+       $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar|.pom)$"
      } | %{
        cp $_.FullName (Join-Path $(build.artifactstagingdirectory) $_.Name)
        
        # Additional copy to be converted into detached PGP signature by ESRP task
-       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_Name" + ".asc"))
+       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
      }
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
