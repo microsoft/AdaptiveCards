@@ -68,7 +68,9 @@ steps:
   inputs:
     targetType: inline
     script: |
-     ls (Join-Path $(build.sourcesdirectory) "*.aar"), (Join-Path $(build.sourcesdirectory) "*.pom") -File -Recur | %{
+     ls $(build.sourcesdirectory) -File -Recur | ?{
+       $_.Directory.FullName -Match ".*\\io\\adaptivecards\\.*(.aar|.xml)"
+     } | %{
        cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_.BaseName + $_.Extension))
        cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_.BaseName + $_.Extension + ".asc"))
      }
