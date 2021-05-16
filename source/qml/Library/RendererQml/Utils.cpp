@@ -161,6 +161,13 @@ namespace RendererQml
                         std::string format = "%x";
                         if (oneMatch[1] == "DATE")
                         {
+                            //Check if date before 1970
+                            auto date_split = Utils::splitString(oneMatch[2], '-');
+                            if (date_split.empty() || std::stoi(date_split[0])<1970)
+                            {
+                                return result;
+                            }
+
                             if (oneMatch[4] == "LONG")
                             {
                                 format = "%A, %B %d, %Y"; //There is no equivalent for C# "D" format in C++
