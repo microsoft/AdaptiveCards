@@ -7,7 +7,7 @@
 #include "Inline.h"
 #include "RichTextElementProperties.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class TextRun : public Inline
     {

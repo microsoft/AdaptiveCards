@@ -4,10 +4,10 @@
 #include "AdaptiveActionEventArgs.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize() { return S_OK; }
 

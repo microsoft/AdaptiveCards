@@ -4,28 +4,28 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     constexpr char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";
 
     class DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration>,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::FtmBase>
     {
         AdaptiveRuntime(AdaptiveActionParserRegistration);
 
-        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
+        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
 
     public:
         AdaptiveActionParserRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedParserRegistration) noexcept;
+        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveActionParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveActionParser* Parser) noexcept;
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParser** result) noexcept;
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParser* Parser) noexcept;
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParser** result) noexcept;
         IFACEMETHODIMP Remove(_In_ HSTRING type) noexcept;
 
         // ITypePeek method
@@ -41,16 +41,16 @@ namespace AdaptiveNamespace
 
     ActivatableClass(AdaptiveActionParserRegistration);
 
-    class SharedModelActionParser : public AdaptiveSharedNamespace::ActionElementParser
+    class SharedModelActionParser : public AdaptiveCards::ActionElementParser
     {
     public:
-        SharedModelActionParser(_In_ AdaptiveNamespace::AdaptiveActionParserRegistration* parserRegistration);
+        SharedModelActionParser(_In_ AdaptiveCards::Rendering::Uwp::AdaptiveActionParserRegistration* parserRegistration);
 
-        // AdaptiveSharedNamespace::ActionElementParser
+        // AdaptiveCards::ActionElementParser
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
 
-        HRESULT GetAdaptiveParserRegistration(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration** actionParserRegistration);
+        HRESULT GetAdaptiveParserRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration** actionParserRegistration);
 
     private:
         // This a a weak reference to the UWP level AdaptiveActionParserRegistration for this parse. Store as a weak

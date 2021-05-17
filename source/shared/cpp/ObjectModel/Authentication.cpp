@@ -4,8 +4,7 @@
 #include "Authentication.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
-
+using namespace AdaptiveCards;
 
 std::string Authentication::GetText()
 {
@@ -52,17 +51,17 @@ void Authentication::SetTokenExchangeResource(std::shared_ptr<TokenExchangeResou
     m_tokenExchangeResource = tokenExchangeResource;
 }
 
-std::vector<std::shared_ptr<AuthCardButton>>& AdaptiveSharedNamespace::Authentication::GetButtons()
+std::vector<std::shared_ptr<AuthCardButton>>& AdaptiveCards::Authentication::GetButtons()
 {
     return m_buttons;
 }
 
-const std::vector<std::shared_ptr<AuthCardButton>>& AdaptiveSharedNamespace::Authentication::GetButtons() const
+const std::vector<std::shared_ptr<AuthCardButton>>& AdaptiveCards::Authentication::GetButtons() const
 {
     return m_buttons;
 }
 
-void AdaptiveSharedNamespace::Authentication::SetButtons(std::vector<std::shared_ptr<AuthCardButton>> buttons)
+void AdaptiveCards::Authentication::SetButtons(std::vector<std::shared_ptr<AuthCardButton>> buttons)
 {
     m_buttons = buttons;
 }
@@ -95,7 +94,8 @@ Json::Value Authentication::SerializeToJsonValue() const
 
     if (m_tokenExchangeResource != nullptr && m_tokenExchangeResource->ShouldSerialize())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TokenExchangeResource)] = m_tokenExchangeResource->SerializeToJsonValue();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TokenExchangeResource)] =
+            m_tokenExchangeResource->SerializeToJsonValue();
     }
 
     if (!m_buttons.empty())
@@ -119,10 +119,10 @@ std::shared_ptr<Authentication> Authentication::Deserialize(ParseContext& contex
 
     authentication->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text));
     authentication->SetConnectionName(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ConnectionName));
-    authentication->SetTokenExchangeResource(
-        ParseUtil::DeserializeValue<TokenExchangeResource>(context, json, AdaptiveCardSchemaKey::TokenExchangeResource, TokenExchangeResource::Deserialize));
-    authentication->SetButtons(std::move(
-        ParseUtil::GetElementCollectionOfSingleType<AuthCardButton>(context, json, AdaptiveCardSchemaKey::Buttons, AuthCardButton::Deserialize)));
+    authentication->SetTokenExchangeResource(ParseUtil::DeserializeValue<TokenExchangeResource>(
+        context, json, AdaptiveCardSchemaKey::TokenExchangeResource, TokenExchangeResource::Deserialize));
+    authentication->SetButtons(std::move(ParseUtil::GetElementCollectionOfSingleType<AuthCardButton>(
+        context, json, AdaptiveCardSchemaKey::Buttons, AuthCardButton::Deserialize)));
 
     return authentication;
 }
@@ -131,4 +131,3 @@ std::shared_ptr<Authentication> Authentication::DeserializeFromString(ParseConte
 {
     return Authentication::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
-

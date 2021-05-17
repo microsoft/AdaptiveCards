@@ -4,18 +4,18 @@
 
 #include "Fact.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveFact
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveFact,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveFact);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Fact>& sharedFact);
 
         // IAdaptiveFact
         IFACEMETHODIMP get_Title(_Outptr_ HSTRING* title);
@@ -27,9 +27,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel);
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::Fact>& sharedModel);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }

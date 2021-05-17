@@ -7,7 +7,11 @@ from PIL import Image
 
 from mystique.extract_properties import BaseExtractProperties
 
-from .ds_helper import DsHelper, ContainerDetailTemplate
+# pylint: disable=relative-beyond-top-level
+from .ds_helper import (
+    DsHelper,
+    ContainerDetailTemplate,
+)
 
 
 class DsAlignment:
@@ -26,10 +30,12 @@ class DsAlignment:
         self.base_property = BaseExtractProperties()
 
     def update_or_set_alignment(
-            self, design_object: Union[List, Dict],
-            container_details_object: ContainerDetailTemplate,
-            parent_object=None,
-            image=None) -> None:
+        self,
+        design_object: Union[List, Dict],
+        container_details_object: ContainerDetailTemplate,
+        parent_object=None,
+        image=None,
+    ) -> None:
         """
         traverse the card layout ds recursively and set/update the horizontal
         alignment property based on it's respective parent coordinates.
@@ -43,42 +49,51 @@ class DsAlignment:
             if not parent_object:
                 parent_width = None
                 pil_image = image
-                design_element_xmin = design_object.get("coordinates",
-                                                        [])[0]
-                design_element_xmax = design_object.get("coordinates",
-                                                        [])[2]
+                design_element_xmin = design_object.get("coordinates", [])[0]
+                design_element_xmax = design_object.get("coordinates", [])[2]
 
             else:
-                parent_width = abs(parent_object.get("coordinates")[2] -
-                                   parent_object.get("coordinates")[0])
+                parent_width = abs(
+                    parent_object.get("coordinates")[2]
+                    - parent_object.get("coordinates")[0]
+                )
                 pil_image = None
                 design_element_xmin = abs(
-                    design_object.get("coordinates")[0] -
-                    parent_object.get("coordinates")[0])
+                    design_object.get("coordinates")[0]
+                    - parent_object.get("coordinates")[0]
+                )
                 design_element_width = abs(
-                    design_object.get("coordinates")[2] -
-                    design_object.get("coordinates")[0])
-                design_element_xmax = (abs(
-                    parent_object.get("coordinates")[2] -
                     design_object.get("coordinates")[2]
-                ) + design_element_width)
+                    - design_object.get("coordinates")[0]
+                )
+                design_element_xmax = (
+                    abs(
+                        parent_object.get("coordinates")[2]
+                        - design_object.get("coordinates")[2]
+                    )
+                    + design_element_width
+                )
 
             # update the element's inside the container's
-            design_object.update({
-                "horizontal_alignment": self.base_property.get_alignment(
-                    xmin=design_element_xmin,
-                    xmax=design_element_xmax,
-                    width=parent_width,
-                    image=pil_image)
-                })
+            design_object.update(
+                {
+                    "horizontal_alignment": self.base_property.get_alignment(
+                        xmin=design_element_xmin,
+                        xmax=design_element_xmax,
+                        width=parent_width,
+                        image=pil_image,
+                    )
+                }
+            )
 
             # set the container's alignment
             if design_object.get("object", "") in DsHelper.CONTAINERS:
                 container_details_template_object = getattr(
-                    container_details_object,
-                    design_object.get("object", ""))
+                    container_details_object, design_object.get("object", "")
+                )
                 container_items = container_details_template_object(
-                    design_object)
+                    design_object
+                )
                 # if a container has only one element, then extract the
                 # alignment based on the line numbers and top values from
                 # pytesseract data.
@@ -87,14 +102,17 @@ class DsAlignment:
                     if text_data:
                         if self._get_number_of_lines(text_data) > 1:
                             alignment = self.base_property.get_line_alignment(
-                                text_data)
+                                text_data
+                            )
                             container_items[0].update(
-                                {"horizontal_alignment": alignment})
+                                {"horizontal_alignment": alignment}
+                            )
                 else:
                     self.update_or_set_alignment(
                         container_items,
                         container_details_object,
-                        parent_object=design_object)
+                        parent_object=design_object,
+                    )
 
         elif isinstance(design_object, list):
             for design_obj in design_object:
@@ -103,13 +121,14 @@ class DsAlignment:
                     self.update_or_set_alignment(
                         design_obj,
                         container_details_object,
-                        parent_object=parent_object)
+                        parent_object=parent_object,
+                    )
                 else:
                     self.update_or_set_alignment(
-                        design_obj,
-                        container_details_object,
-                        image=image)
+                        design_obj, container_details_object, image=image
+                    )
 
+    # pylint: disable=no-self-use
     def _get_number_of_lines(self, text_data: Dict) -> int:
         """
         Returns the total number of lines extracted from the pytesseract
@@ -117,16 +136,17 @@ class DsAlignment:
         @param text_data: pytesseract image_to_data o/p
         @return: total number of lines
         """
-        number_of_lines = list(
-            set(text_data.get("line_num", [])))
+        number_of_lines = list(set(text_data.get("line_num", [])))
         if 0 in number_of_lines:
             number_of_lines.remove(0)
         number_of_lines = len(number_of_lines)
         return number_of_lines
 
     def update_conflicting_alignments(
-            self, card_layout: List,
-            container_details_object: ContainerDetailTemplate) -> None:
+        self,
+        card_layout: List,
+        container_details_object: ContainerDetailTemplate,
+    ) -> None:
         """
         Update the alignment property for the element's with conflicting values
         based on the previous or next element's property inside the container.
@@ -138,13 +158,17 @@ class DsAlignment:
         extract the container details from the card layout structure.
         """
 
-        if (isinstance(card_layout, dict) and
-                card_layout.get("object", "") in DsHelper.CONTAINERS):
+        if (
+            isinstance(card_layout, dict)
+            and card_layout.get("object", "") in DsHelper.CONTAINERS
+        ):
             container_details_template_object = getattr(
-                container_details_object, card_layout.get("object", ""))
+                container_details_object, card_layout.get("object", "")
+            )
             self.update_conflicting_alignments(
                 container_details_template_object(card_layout),
-                container_details_object)
+                container_details_object,
+            )
 
         elif isinstance(card_layout, list):
             for ctr, design_obj in enumerate(card_layout):
@@ -152,21 +176,32 @@ class DsAlignment:
 
                     if ctr + 1 < len(card_layout):
                         design_obj.update(
-                            {"horizontal_alignment": card_layout[
-                                ctr + 1].get("horizontal_alignment")})
+                            {
+                                "horizontal_alignment": card_layout[
+                                    ctr + 1
+                                ].get("horizontal_alignment")
+                            }
+                        )
                     elif ctr - 1 >= 0:
                         design_obj.update(
-                            {"horizontal_alignment": card_layout[
-                                ctr - 1].get("horizontal_alignment")})
+                            {
+                                "horizontal_alignment": card_layout[
+                                    ctr - 1
+                                ].get("horizontal_alignment")
+                            }
+                        )
                     if not design_obj.get("horizontal_alignment"):
                         design_obj.update({"horizontal_alignment": "Left"})
-                self.update_conflicting_alignments(design_obj,
-                                                   container_details_object)
+                self.update_conflicting_alignments(
+                    design_obj, container_details_object
+                )
 
 
-def update_properties(card_layout: List,
-                      container_detail_object: ContainerDetailTemplate,
-                      image: Image):
+def update_properties(
+    card_layout: List,
+    container_detail_object: ContainerDetailTemplate,
+    image: Image,
+):
     """
     Entry method handles the calling of different property updations.
     @param card_layout: card layout ds
@@ -176,8 +211,10 @@ def update_properties(card_layout: List,
     @return: card layout with the updated or set properties
     """
     ds_alignment = DsAlignment()
-    ds_alignment.update_or_set_alignment(card_layout, container_detail_object,
-                                         image=image)
-    ds_alignment.update_conflicting_alignments(card_layout,
-                                               container_detail_object)
+    ds_alignment.update_or_set_alignment(
+        card_layout, container_detail_object, image=image
+    )
+    ds_alignment.update_conflicting_alignments(
+        card_layout, container_detail_object
+    )
     return card_layout

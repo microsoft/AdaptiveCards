@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "MarkDownParsedResult.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 void MarkDownParsedResult::Translate()
 {

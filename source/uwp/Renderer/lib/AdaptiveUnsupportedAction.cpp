@@ -6,18 +6,17 @@
 
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::UnknownAction> unknownAction =
-            std::make_shared<AdaptiveSharedNamespace::UnknownAction>();
+        std::shared_ptr<AdaptiveCards::UnknownAction> unknownAction = std::make_shared<AdaptiveCards::UnknownAction>();
         return RuntimeClassInitialize(unknownAction);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::UnknownAction>& sharedUnknown)
+    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::UnknownAction>& sharedUnknown)
     try
     {
         if (sharedUnknown == nullptr)
@@ -30,17 +29,16 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveUnsupportedAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveUnsupportedAction::get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespace::ActionType::Unsupported;
+        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::Unsupported;
         return S_OK;
     }
 
-    HRESULT AdaptiveUnsupportedAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedUnknown)
+    HRESULT AdaptiveUnsupportedAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedUnknown)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::UnknownAction> unknownAction =
-            std::make_shared<AdaptiveSharedNamespace::UnknownAction>();
+        std::shared_ptr<AdaptiveCards::UnknownAction> unknownAction = std::make_shared<AdaptiveCards::UnknownAction>();
 
         HString typeString;
         RETURN_IF_FAILED(get_ActionTypeString(typeString.GetAddressOf()));

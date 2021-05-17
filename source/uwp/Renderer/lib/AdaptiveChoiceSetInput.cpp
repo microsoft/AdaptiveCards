@@ -9,12 +9,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
@@ -24,13 +24,12 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet =
-            std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
+        std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
         return RuntimeClassInitialize(choiceSet);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput)
+    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedChoiceSetInput)
     try
     {
         if (sharedChoiceSetInput == nullptr)
@@ -42,7 +41,8 @@ namespace AdaptiveNamespace
 
         m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
         m_wrap = sharedChoiceSetInput->GetWrap();
-        m_choiceSetStyle = static_cast<ABI::AdaptiveNamespace::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
+        m_choiceSetStyle =
+            static_cast<ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
 
@@ -82,13 +82,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle)
     {
         m_choiceSetStyle = choiceSetStyle;
         return S_OK;
@@ -117,15 +117,14 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet =
-            std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
+        std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
 
         RETURN_IF_FAILED(CopySharedElementProperties(*choiceSet));
 
-        choiceSet->SetChoiceSetStyle(static_cast<AdaptiveSharedNamespace::ChoiceSetStyle>(m_choiceSetStyle));
+        choiceSet->SetChoiceSetStyle(static_cast<AdaptiveCards::ChoiceSetStyle>(m_choiceSetStyle));
         choiceSet->SetIsMultiSelect(m_isMultiSelect);
         choiceSet->SetValue(HStringToUTF8(m_value.Get()));
         choiceSet->SetWrap(m_wrap);

@@ -5,14 +5,16 @@
 #include "pch.h"
 #include "BaseActionElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class Refresh
     {
     public:
         Refresh() {}
         Refresh(std::shared_ptr<BaseActionElement> action, const std::vector<std::string> userIds) :
-            m_action(action), m_userIds(userIds) {}
+            m_action(action), m_userIds(userIds)
+        {
+        }
 
         std::shared_ptr<BaseActionElement> GetAction();
         const std::shared_ptr<BaseActionElement> GetAction() const;

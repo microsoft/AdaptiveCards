@@ -64,6 +64,7 @@
     },
     "containerStyles": {
         "default": {
+            "borderColor": "#CCCCCC",
             "backgroundColor": "#FFFFFF",
             "foregroundColors": {
                 "default": {
@@ -97,6 +98,7 @@
             }
         },
         "emphasis": {
+            "borderColor": "#666666",
             "backgroundColor": "#08000000",
             "foregroundColors": {
                 "default": {
@@ -130,6 +132,7 @@
             }
         },
         "accent": {
+            "borderColor": "#62A8F7",
             "backgroundColor": "#C7DEF9",
             "foregroundColors": {
                 "default": {
@@ -163,6 +166,7 @@
             }
         },
         "good": {
+            "borderColor": "#69E569",
             "backgroundColor": "#CCFFCC",
             "foregroundColors": {
                 "default": {
@@ -196,6 +200,7 @@
             }
         },
         "attention": {
+            "borderColor": "#FF764C",
             "backgroundColor": "#FFC5B2",
             "foregroundColors": {
                 "default": {
@@ -229,6 +234,7 @@
             }
         },
         "warning": {
+            "borderColor": "#FFBC51",
             "backgroundColor": "#FFE2B2",
             "foregroundColors": {
                 "default": {

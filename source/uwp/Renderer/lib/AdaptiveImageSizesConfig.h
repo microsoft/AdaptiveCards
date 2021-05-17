@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveImageSizesConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveImageSizesConfig>
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImageSizesConfig>
     {
         AdaptiveRuntime(AdaptiveImageSizesConfig);
 

@@ -11,7 +11,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(HorizontalAlignment::Left),
@@ -65,12 +65,12 @@ DateTimePreparser TextBlock::GetTextForDateParsing() const
     return m_textElementProperties->GetTextForDateParsing();
 }
 
-TextStyle AdaptiveSharedNamespace::TextBlock::GetStyle() const
+TextStyle AdaptiveCards::TextBlock::GetStyle() const
 {
     return m_textStyle;
 }
 
-void AdaptiveSharedNamespace::TextBlock::SetStyle(const TextStyle value)
+void AdaptiveCards::TextBlock::SetStyle(const TextStyle value)
 {
     m_textStyle = value;
 }

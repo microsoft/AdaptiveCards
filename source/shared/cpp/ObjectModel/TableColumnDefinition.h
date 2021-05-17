@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class AdaptiveCardParseWarning;
     class ParseContext;
@@ -29,10 +29,9 @@ namespace AdaptiveSharedNamespace
         std::optional<unsigned int> GetPixelWidth() const;
         void SetPixelWidth(const std::optional<unsigned int>& value);
 
-        static std::shared_ptr<AdaptiveSharedNamespace::TableColumnDefinition> Deserialize(ParseContext& context,
-                                                                                           const Json::Value& root);
-        static std::shared_ptr<AdaptiveSharedNamespace::TableColumnDefinition> DeserializeFromString(ParseContext& context,
-                                                                                                     const std::string& jsonString);
+        static std::shared_ptr<AdaptiveCards::TableColumnDefinition> Deserialize(ParseContext& context, const Json::Value& root);
+        static std::shared_ptr<AdaptiveCards::TableColumnDefinition> DeserializeFromString(ParseContext& context,
+                                                                                           const std::string& jsonString);
 
     private:
         HorizontalAlignment m_horizontalCellContentAlignment;

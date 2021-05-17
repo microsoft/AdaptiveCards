@@ -41,11 +41,6 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ToggleInput> adaptiveToggleInput = std::dynamic_pointer_cast<ToggleInput>(elem);
 
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    if (!bundle) { // https://github.com/Microsoft/AdaptiveCards/issues/1834
-        return nil;
-    }
-
     ACRToggleInputView *toggleView = [[ACRToggleInputView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height)];
 
     toggleView.title.text = [NSString stringWithCString:adaptiveToggleInput->GetTitle().c_str() encoding:NSUTF8StringEncoding];
@@ -66,7 +61,7 @@
     dataSource.toggleSwitch = toggleView.toggle;
 
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:adaptiveToggleInput inputView:toggleView accessibilityItem:toggleView.toggle viewGroup:viewGroup dataSource:dataSource];
-    
+
     toggleView.isAccessibilityElement = NO;
     if (toggleView.title.text) {
         toggleView.toggle.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", toggleView.toggle.accessibilityLabel, toggleView.title.text];
