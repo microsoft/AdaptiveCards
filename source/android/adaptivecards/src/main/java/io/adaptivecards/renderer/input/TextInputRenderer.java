@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.widget.TooltipCompat;
 import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.R;
@@ -51,6 +52,7 @@ import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
+import io.adaptivecards.renderer.readonly.ContainerRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
@@ -282,6 +284,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
                         }
                         inlineButton.setEnabled(action.GetIsEnabled());
 
+                        ContainerRenderer.applyTitleAndTooltip(action, inlineButton);
+
                         InlineActionIconImageLoaderAsync imageLoader = new InlineActionIconImageLoaderAsync(
                             renderedCard,
                             inlineButton,
@@ -314,8 +318,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setTextColor(Color.BLACK);
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
+
                         inlineButton.setText(title);
                         inlineButton.setEnabled(action.GetIsEnabled());
+
+                        if (!TextUtils.isEmpty(action.GetTooltip()))
+                        {
+                            TooltipCompat.setTooltipText(inlineButton, action.GetTooltip());
+                        }
 
                         if (Util.isOfType(action, ExecuteAction.class) || Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
                         {

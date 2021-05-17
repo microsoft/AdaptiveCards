@@ -5,11 +5,13 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.widget.TooltipCompat;
 import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.objectmodel.ActionType;
@@ -215,6 +217,21 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
     }
 
+    public static void applyTitleAndTooltip(BaseActionElement selectAction, View view)
+    {
+        String contentDescription = !TextUtils.isEmpty(selectAction.GetTitle()) ? selectAction.GetTitle() : selectAction.GetTooltip();
+        String tooltip = !TextUtils.isEmpty(selectAction.GetTooltip()) ? selectAction.GetTooltip() : selectAction.GetTitle();
+        if (!TextUtils.isEmpty(contentDescription))
+        {
+            view.setContentDescription(contentDescription);
+        }
+        if (!TextUtils.isEmpty(tooltip))
+        {
+            TooltipCompat.setTooltipText(view, tooltip);
+        }
+    }
+
+
     public static void setSelectAction(RenderedAdaptiveCard renderedCard, BaseActionElement selectAction, View view, ICardActionHandler cardActionHandler, RenderArgs renderArgs)
     {
         if (selectAction != null)
@@ -228,6 +245,8 @@ public class ContainerRenderer extends BaseCardElementRenderer
             }
 
             view.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, selectAction, cardActionHandler));
+
+            applyTitleAndTooltip(selectAction, view);
         }
     }
 
