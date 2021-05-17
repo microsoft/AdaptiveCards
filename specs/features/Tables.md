@@ -12,7 +12,6 @@ This is NOT a proposal for an advanced Table with features such as:
 ## Design
 ### Table
 | Name | Type | Required | Description |
-
 | --- | --- | --- | --- |
 | `columns` | `TableColumnDefinition[]` | No | Defines the table's columns (number of columns, and column sizes). See `TableColumnDefinition` below. |
 | `rows` | `TableRow[]` | No | Defines the rows of the Table, each being a collection of cells. See `TableRow` below. Rows are not required, which allows empty Tables to be generated via templating without breaking the rendering of the whole card. |
@@ -106,7 +105,7 @@ Example host config text styles section:
 {
     ...
     "textStyles": {
-        "columnHeadet": {
+        "columnHeader": {
             "size": "default",
             "weight": "bolder",
             "color": "default",
