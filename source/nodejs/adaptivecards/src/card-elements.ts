@@ -3835,7 +3835,7 @@ export abstract class Action extends CardObject {
             return this.parent;
         }
 
-        return this.parent?.getParentContainer();
+        return this.parent ? this.parent.getParentContainer() : undefined;
     }
 
     private _state: ActionButtonState = ActionButtonState.Normal;
