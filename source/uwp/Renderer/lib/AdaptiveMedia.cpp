@@ -4,20 +4,20 @@
 #include "AdaptiveMedia.h"
 #include "Vector.h"
 
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveMedia::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
+        std::shared_ptr<AdaptiveCards::Media> media = std::make_shared<AdaptiveCards::Media>();
         return RuntimeClassInitialize(media);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Media>& sharedMedia)
+    HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Media>& sharedMedia)
     try
     {
         if (sharedMedia == nullptr)
@@ -55,10 +55,10 @@ namespace AdaptiveNamespace
         return m_sources.CopyTo(sources);
     }
 
-    HRESULT AdaptiveMedia::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedMedia)
+    HRESULT AdaptiveMedia::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedMedia)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
+        std::shared_ptr<AdaptiveCards::Media> media = std::make_shared<AdaptiveCards::Media>();
 
         RETURN_IF_FAILED(CopySharedElementProperties(*media));
 

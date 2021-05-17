@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 AdaptiveCardParseException::AdaptiveCardParseException(ErrorStatusCode statusCode, const std::string& message) :
     m_statusCode(statusCode), m_message(message)

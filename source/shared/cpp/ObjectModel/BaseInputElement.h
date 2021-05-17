@@ -7,7 +7,7 @@
 #include "BaseCardElement.h"
 #include "TextBlock.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseInputElement : public BaseCardElement
     {
@@ -27,7 +27,8 @@ namespace AdaptiveSharedNamespace
         std::string GetErrorMessage() const;
         void SetErrorMessage(const std::string errorMessage);
 
-        static std::shared_ptr<BaseInputElement> DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
+        static std::shared_ptr<BaseInputElement> DeserializeBasePropertiesFromString(ParseContext& context,
+                                                                                     const std::string& jsonString);
         static std::shared_ptr<BaseInputElement> DeserializeBaseProperties(ParseContext& context, const Json::Value& json);
 
         Json::Value SerializeToJsonValue() const override;

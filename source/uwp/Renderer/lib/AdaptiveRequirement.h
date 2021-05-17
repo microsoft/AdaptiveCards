@@ -4,11 +4,11 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveRequirement
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveRequirement>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRequirement>,
                                               Microsoft::WRL::FtmBase>
     {
         AdaptiveRuntime(AdaptiveRequirement);
@@ -30,7 +30,8 @@ namespace AdaptiveNamespace
         Microsoft::WRL::Wrappers::HString m_version;
     };
 
-    class AdaptiveRequirementFactory : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveNamespace::IAdaptiveRequirementFactory>
+    class AdaptiveRequirementFactory
+        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRequirementFactory>
     {
         IFACEMETHODIMP CreateInstance(_In_ HSTRING name,
                                       _In_ HSTRING version,

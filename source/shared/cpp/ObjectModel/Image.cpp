@@ -6,7 +6,7 @@
 #include "ParseContext.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 Image::Image() :
     BaseCardElement(CardElementType::Image), m_imageStyle(ImageStyle::Default), m_imageSize(ImageSize::None),
@@ -180,8 +180,7 @@ std::shared_ptr<BaseCardElement> ImageParser::Deserialize(ParseContext& context,
     return ImageParser::DeserializeWithoutCheckingType(context, json);
 }
 
-std::shared_ptr<BaseCardElement>
-ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::Value& json)
+std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::Value& json)
 {
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(context, json);
 
@@ -192,8 +191,10 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
 
-    const auto& widthDimension = ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width), &context.warnings);
-    const auto& heightDimension = ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height), &context.warnings);
+    const auto& widthDimension =
+        ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width), &context.warnings);
+    const auto& heightDimension =
+        ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height), &context.warnings);
 
     if (widthDimension.has_value() || heightDimension.has_value())
     {

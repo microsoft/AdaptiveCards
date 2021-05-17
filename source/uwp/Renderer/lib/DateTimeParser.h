@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DateTimeParser
     {

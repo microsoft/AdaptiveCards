@@ -4,7 +4,7 @@
 #include "ParseContext.h"
 #include "RichTextElementProperties.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 RichTextElementProperties::RichTextElementProperties() :
     TextElementProperties(), m_italic(false), m_strikethrough(false), m_underline(false)
 {

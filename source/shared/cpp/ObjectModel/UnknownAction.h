@@ -7,7 +7,7 @@
 #include "Enums.h"
 #include "ActionParserRegistration.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class UnknownAction : public BaseActionElement
     {

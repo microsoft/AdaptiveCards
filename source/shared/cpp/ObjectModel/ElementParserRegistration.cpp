@@ -21,7 +21,7 @@
 #include "ToggleInput.h"
 #include "UnknownElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     BaseCardElementParserWrapper::BaseCardElementParserWrapper(std::shared_ptr<BaseCardElementParser> parserToWrap) :
         m_parser{parserToWrap}

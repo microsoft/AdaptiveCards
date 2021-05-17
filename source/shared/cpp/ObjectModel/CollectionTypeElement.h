@@ -7,7 +7,7 @@
 #include "BaseCardElement.h"
 #include "Util.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class CollectionTypeElement : public BaseCardElement
     {
@@ -47,8 +47,8 @@ namespace AdaptiveSharedNamespace
         // such as style, padding and bleed
         void ConfigForContainerStyle(const AdaptiveCards::ParseContext& context);
 
-        void SetParentalId(const AdaptiveSharedNamespace::InternalId& id);
-        AdaptiveSharedNamespace::InternalId GetParentalId(void) const;
+        void SetParentalId(const AdaptiveCards::InternalId& id);
+        AdaptiveCards::InternalId GetParentalId(void) const;
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
@@ -83,7 +83,7 @@ namespace AdaptiveSharedNamespace
         bool m_hasPadding;
         bool m_hasBleed;
         // id refers to parent to where bleed property should target
-        AdaptiveSharedNamespace::InternalId m_parentalId;
+        AdaptiveCards::InternalId m_parentalId;
 
         std::shared_ptr<BackgroundImage> m_backgroundImage;
         std::shared_ptr<BaseActionElement> m_selectAction;

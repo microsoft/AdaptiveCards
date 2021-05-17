@@ -6,7 +6,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 Column::Column() : CollectionTypeElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0)
 {
@@ -23,8 +23,7 @@ void Column::SetWidth(const std::string& value)
     SetWidth(value, nullptr);
 }
 
-void Column::SetWidth(const std::string& value,
-                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings)
+void Column::SetWidth(const std::string& value, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>* warnings)
 {
     m_width = ParseUtil::ToLowercase(value);
     m_pixelWidth = ParseSizeForPixelSize(m_width, warnings).value_or(0);

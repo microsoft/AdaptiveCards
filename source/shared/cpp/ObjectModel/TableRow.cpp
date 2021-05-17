@@ -6,7 +6,7 @@
 #include "TableCell.h"
 #include "ParseUtil.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     TableRow::TableRow() :
         BaseCardElement(CardElementType::TableRow), m_style(ContainerStyle::None),

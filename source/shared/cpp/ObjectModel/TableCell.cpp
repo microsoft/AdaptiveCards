@@ -4,9 +4,9 @@
 #include "pch.h"
 #include "TableCell.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     TableCell::TableCell() : Container(CardElementType::TableCell) {}
 
