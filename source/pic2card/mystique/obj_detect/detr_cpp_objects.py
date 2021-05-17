@@ -2,30 +2,37 @@
 Doing Detr inference using c++ binding, quick checks shows >3x improvements
 with the inference time.
 """
+from typing import Dict, Tuple
 import detr
 import numpy as np
-from typing import Dict, Tuple
 from PIL import Image
-
-from .od_base import AbstractObjectDetection
 from mystique import config
+from .od_base import AbstractObjectDetection
 
 
 # for output bounding box post-processing
 # TODO: Move these tensor works too into c++ side, as this comes in
 # inference path.
-def box_cxcywh_to_xyxy(x: np.ndarray):
-    x_c, y_c, w, h = [i[:, 0] for i in np.split(x, [1, 2, 3], axis=1)]
-    b = [(x_c - 0.5 * w), (y_c - 0.5 * h),
-         (x_c + 0.5 * w), (y_c + 0.5 * h)]
-    return np.stack(b, axis=1)
+def box_cxcywh_to_xyxy(
+    x_a: np.ndarray,
+):  # pylint: disable=missing-function-docstring
+    x_c, y_c, w_a, h_a = [i[:, 0] for i in np.split(x_a, [1, 2, 3], axis=1)]
+    boundary_box = [
+        (x_c - 0.5 * w_a),
+        (y_c - 0.5 * h_a),
+        (x_c + 0.5 * w_a),
+        (y_c + 0.5 * h_a),
+    ]
+    return np.stack(boundary_box, axis=1)
 
 
-def rescale_bboxes(out_bbox: np.ndarray, size: Tuple[int, int]):
+def rescale_bboxes(
+    out_bbox: np.ndarray, size: Tuple[int, int]
+):  # pylint: disable=missing-function-docstring
     img_w, img_h = size
-    b = box_cxcywh_to_xyxy(out_bbox)
-    b = b * [img_w, img_h, img_w, img_h]
-    return b
+    boundary_box = box_cxcywh_to_xyxy(out_bbox)
+    boundary_box = boundary_box * [img_w, img_h, img_w, img_h]
+    return boundary_box
 
 
 class DetrCppOD(AbstractObjectDetection):
@@ -33,12 +40,15 @@ class DetrCppOD(AbstractObjectDetection):
     Do the inference in c++ code and return the result. This class wraps uses
     detr cpp python extension to do the inference.
     """
-    def __init__(self, pt_path="./detr_trace.pt", threshold=0.8):
-        self.model = detr.Detr(self.model_path)
+
+    def __init__(
+        self, pt_path="./detr_trace.pt", threshold=0.8
+    ):  # pylint: disable=unused-argument
+        self.model = detr.Detr(self.model_path)  # pylint: disable=no-member
         self.threshold = threshold
 
     @property
-    def model_path(self):
+    def model_path(self):  # pylint: disable=missing-function-docstring
         return config.DETR_MODEL_PATH
 
     def get_objects(self, image_np: np.array, image: Image) -> Dict:
@@ -65,8 +75,8 @@ class DetrCppOD(AbstractObjectDetection):
         return {
             "detection_classes": scores.argmax(-1),
             "detection_scores": scores.max(-1),
-            "detection_boxes": boxes
+            "detection_boxes": boxes,
         }
 
-    def get_bboxes(self):
+    def get_bboxes(self):  # pylint: disable=arguments-differ
         pass

@@ -1,0 +1,1 @@
+../ACOAdaptiveCardParseResult.h

@@ -6,6 +6,7 @@
 //
 
 #import "ACRChoiceSetViewDataSource.h"
+#import "ACOBundle.h"
 #import "ACRInputLabelView.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
@@ -19,8 +20,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 const CGFloat padding = 2.0f;
 
-@implementation ACRChoiceSetCell
-{
+@implementation ACRChoiceSetCell {
     CGSize _imageSize;
 }
 
@@ -29,14 +29,15 @@ const CGFloat padding = 2.0f;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         UIImage *iconImage = nil;
+        NSBundle *bundle = [[ACOBundle getInstance] getBundle];
         if ([reuseIdentifier isEqualToString:@"checked-checkbox"]) {
-            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:bundle compatibleWithTraitCollection:nil];
         } else if ([reuseIdentifier isEqualToString:@"checked-radiobutton"]) {
-            iconImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"checked.png" inBundle:bundle compatibleWithTraitCollection:nil];
         } else if ([reuseIdentifier isEqualToString:@"unchecked-checkbox"]) {
-            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:bundle compatibleWithTraitCollection:nil];
         } else {
-            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:bundle compatibleWithTraitCollection:nil];
         }
         self.imageView.image = iconImage;
         self.textLabel.numberOfLines = 0;
