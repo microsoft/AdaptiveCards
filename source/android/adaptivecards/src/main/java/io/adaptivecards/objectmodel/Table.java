@@ -111,4 +111,9 @@ public class Table extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Table_SetRows(swigCPtr, this, TableRowVector.getCPtr(value), value);
   }
 
+  public static Table dynamic_cast(BaseCardElement baseCardElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.Table_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
+    return (cPtr == 0) ? null : new Table(cPtr, true);
+  }
+
 }

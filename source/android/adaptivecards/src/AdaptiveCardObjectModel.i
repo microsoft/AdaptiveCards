@@ -372,10 +372,10 @@ namespace std {
 %shared_ptr(AdaptiveCards::Authentication)
 %shared_ptr(AdaptiveCards::TokenExchangeResource)
 %shared_ptr(AdaptiveCards::AuthCardButton)
-%shared_ptr(AdaptiveCards::Table)
 %shared_ptr(AdaptiveCards::TableCell)
 %shared_ptr(AdaptiveCards::TableColumnDefinition)
 %shared_ptr(AdaptiveCards::TableRow)
+%shared_ptr(AdaptiveCards::Table)
 
 
 %apply unsigned int& INOUT { unsigned int& };
@@ -734,6 +734,21 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::Table::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::Table {
+    static AdaptiveCards::Table *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::Table *>(baseCardElement);
+    }
+};
+
 %exception AdaptiveCards::FactSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
     if (!result) {
@@ -1038,9 +1053,10 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
-%include "../../../shared/cpp/ObjectModel/Table.h"
 %include "../../../shared/cpp/ObjectModel/TableCell.h"
+%include "../../../shared/cpp/ObjectModel/Table.h"
 %include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
+%include "../../../shared/cpp/ObjectModel/TableRow.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/MediaSource.h"
 %include "../../../shared/cpp/ObjectModel/Media.h"

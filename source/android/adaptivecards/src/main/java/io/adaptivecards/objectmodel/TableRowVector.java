@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class TableRowVector extends java.util.AbstractList<SWIGTYPE_p_AdaptiveCards__TableRow> implements java.util.RandomAccess {
+public class TableRowVector extends java.util.AbstractList<TableRow> implements java.util.RandomAccess {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -36,42 +36,42 @@ public class TableRowVector extends java.util.AbstractList<SWIGTYPE_p_AdaptiveCa
     }
   }
 
-  public TableRowVector(SWIGTYPE_p_AdaptiveCards__TableRow[] initialElements) {
+  public TableRowVector(TableRow[] initialElements) {
     this();
     reserve(initialElements.length);
 
-    for (SWIGTYPE_p_AdaptiveCards__TableRow element : initialElements) {
+    for (TableRow element : initialElements) {
       add(element);
     }
   }
 
-  public TableRowVector(Iterable<SWIGTYPE_p_AdaptiveCards__TableRow> initialElements) {
+  public TableRowVector(Iterable<TableRow> initialElements) {
     this();
-    for (SWIGTYPE_p_AdaptiveCards__TableRow element : initialElements) {
+    for (TableRow element : initialElements) {
       add(element);
     }
   }
 
-  public SWIGTYPE_p_AdaptiveCards__TableRow get(int index) {
+  public TableRow get(int index) {
     return doGet(index);
   }
 
-  public SWIGTYPE_p_AdaptiveCards__TableRow set(int index, SWIGTYPE_p_AdaptiveCards__TableRow e) {
+  public TableRow set(int index, TableRow e) {
     return doSet(index, e);
   }
 
-  public boolean add(SWIGTYPE_p_AdaptiveCards__TableRow e) {
+  public boolean add(TableRow e) {
     modCount++;
     doAdd(e);
     return true;
   }
 
-  public void add(int index, SWIGTYPE_p_AdaptiveCards__TableRow e) {
+  public void add(int index, TableRow e) {
     modCount++;
     doAdd(index, e);
   }
 
-  public SWIGTYPE_p_AdaptiveCards__TableRow remove(int index) {
+  public TableRow remove(int index) {
     modCount++;
     return doRemove(index);
   }
@@ -109,35 +109,35 @@ public class TableRowVector extends java.util.AbstractList<SWIGTYPE_p_AdaptiveCa
     AdaptiveCardObjectModelJNI.TableRowVector_clear(swigCPtr, this);
   }
 
-  public TableRowVector(int count, SWIGTYPE_p_AdaptiveCards__TableRow value) {
-    this(AdaptiveCardObjectModelJNI.new_TableRowVector__SWIG_2(count, SWIGTYPE_p_AdaptiveCards__TableRow.getCPtr(value)), true);
+  public TableRowVector(int count, TableRow value) {
+    this(AdaptiveCardObjectModelJNI.new_TableRowVector__SWIG_2(count, TableRow.getCPtr(value), value), true);
   }
 
   private int doSize() {
     return AdaptiveCardObjectModelJNI.TableRowVector_doSize(swigCPtr, this);
   }
 
-  private void doAdd(SWIGTYPE_p_AdaptiveCards__TableRow x) {
-    AdaptiveCardObjectModelJNI.TableRowVector_doAdd__SWIG_0(swigCPtr, this, SWIGTYPE_p_AdaptiveCards__TableRow.getCPtr(x));
+  private void doAdd(TableRow x) {
+    AdaptiveCardObjectModelJNI.TableRowVector_doAdd__SWIG_0(swigCPtr, this, TableRow.getCPtr(x), x);
   }
 
-  private void doAdd(int index, SWIGTYPE_p_AdaptiveCards__TableRow x) {
-    AdaptiveCardObjectModelJNI.TableRowVector_doAdd__SWIG_1(swigCPtr, this, index, SWIGTYPE_p_AdaptiveCards__TableRow.getCPtr(x));
+  private void doAdd(int index, TableRow x) {
+    AdaptiveCardObjectModelJNI.TableRowVector_doAdd__SWIG_1(swigCPtr, this, index, TableRow.getCPtr(x), x);
   }
 
-  private SWIGTYPE_p_AdaptiveCards__TableRow doRemove(int index) {
+  private TableRow doRemove(int index) {
     long cPtr = AdaptiveCardObjectModelJNI.TableRowVector_doRemove(swigCPtr, this, index);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_AdaptiveCards__TableRow(cPtr, true);
+    return (cPtr == 0) ? null : new TableRow(cPtr, true);
   }
 
-  private SWIGTYPE_p_AdaptiveCards__TableRow doGet(int index) {
+  private TableRow doGet(int index) {
     long cPtr = AdaptiveCardObjectModelJNI.TableRowVector_doGet(swigCPtr, this, index);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_AdaptiveCards__TableRow(cPtr, true);
+    return (cPtr == 0) ? null : new TableRow(cPtr, true);
   }
 
-  private SWIGTYPE_p_AdaptiveCards__TableRow doSet(int index, SWIGTYPE_p_AdaptiveCards__TableRow val) {
-    long cPtr = AdaptiveCardObjectModelJNI.TableRowVector_doSet(swigCPtr, this, index, SWIGTYPE_p_AdaptiveCards__TableRow.getCPtr(val));
-    return (cPtr == 0) ? null : new SWIGTYPE_p_AdaptiveCards__TableRow(cPtr, true);
+  private TableRow doSet(int index, TableRow val) {
+    long cPtr = AdaptiveCardObjectModelJNI.TableRowVector_doSet(swigCPtr, this, index, TableRow.getCPtr(val), val);
+    return (cPtr == 0) ? null : new TableRow(cPtr, true);
   }
 
   private void doRemoveRange(int fromIndex, int toIndex) {
