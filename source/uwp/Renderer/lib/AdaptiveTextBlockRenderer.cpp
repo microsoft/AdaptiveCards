@@ -10,7 +10,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -18,7 +18,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace ABI::Windows::UI::Xaml::Automation::Peers;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveTextBlockRenderer::RuntimeClassInitialize() noexcept
     try
@@ -46,7 +46,7 @@ namespace AdaptiveNamespace
         if (text.Get() == nullptr)
         {
             *textBlockControl = nullptr;
-            renderContext->AddError(ABI::AdaptiveNamespace::ErrorStatusCode::RequiredPropertyMissing,
+            renderContext->AddError(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode::RequiredPropertyMissing,
                                     HStringReference(L"Required property, \"text\", is missing from TextBlock").Get());
             return S_OK;
         }
@@ -63,16 +63,16 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(xamlTextBlock->get_Inlines(&inlines));
 
         // Check if this text block has a style set to heading and if so apply the appropriate styling from the host config
-        ComPtr<IReference<ABI::AdaptiveNamespace::TextStyle>> textStyleRef;
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> textStyleRef;
         RETURN_IF_FAILED(adaptiveTextBlock->get_Style(&textStyleRef));
 
-        ABI::AdaptiveNamespace::TextStyle textStyle = ABI::AdaptiveNamespace::TextStyle::Default;
+        ABI::AdaptiveCards::Rendering::Uwp::TextStyle textStyle = ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Default;
         if (textStyleRef != nullptr)
         {
             RETURN_IF_FAILED(textStyleRef->get_Value(&textStyle));
         }
 
-        if (textStyle == ABI::AdaptiveNamespace::TextStyle::Heading)
+        if (textStyle == ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Heading)
         {
             ComPtr<IAdaptiveHostConfig> hostConfig;
             RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -103,7 +103,7 @@ namespace AdaptiveNamespace
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", frameworkElement.Get()));
 
         // If this text block has a heading style, set the corresponding automation property
-        if (textStyle == ABI::AdaptiveNamespace::TextStyle::Heading)
+        if (textStyle == ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Heading)
         {
             ComPtr<IDependencyObject> textBlockAsDependencyObject;
             RETURN_IF_FAILED(xamlTextBlock.As(&textBlockAsDependencyObject));
@@ -129,18 +129,18 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveTextBlockRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
     try
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveTextBlock, AdaptiveSharedNamespace::TextBlock, AdaptiveSharedNamespace::TextBlockParser>(
+        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveTextBlock, AdaptiveCards::TextBlock, AdaptiveCards::TextBlockParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+    HRESULT AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                                                   ABI::Windows::UI::Xaml::Automation::Peers::AutomationHeadingLevel* headingLevel)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;

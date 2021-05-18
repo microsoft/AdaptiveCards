@@ -16,14 +16,14 @@ import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 
-class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
+public class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
 {
     private final IconPlacement m_iconPlacement;
     private final long m_iconSize;
     private final long m_padding;
     private final WeakReference<Context> m_context;
 
-    protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding, Context context)
+    public ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding, Context context)
     {
         super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
         m_iconPlacement = iconPlacement;
@@ -38,16 +38,8 @@ class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
         Button button = (Button) super.m_view;
         float imageHeight;
 
-        if (m_iconPlacement == IconPlacement.AboveTitle)
-        {
-            // If icon is above title, iconSize should be used as the height of the image
-            imageHeight = Util.dpToPixels(m_context.get(), m_iconSize);
-        }
-        else
-        {
-            // Otherwise, the height of the image should be the height of the action's text
-            imageHeight = button.getTextSize();
-        }
+        // iconSize should be used as the height of the image
+        imageHeight = Util.dpToPixels(m_context.get(), m_iconSize);
 
         return Util.scaleBitmapToHeight(imageHeight, bitmap);
     }

@@ -4,7 +4,7 @@
 
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     struct RemoteResourceInformation
     {

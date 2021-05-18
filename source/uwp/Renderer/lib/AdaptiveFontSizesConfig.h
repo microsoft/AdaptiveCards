@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveFontSizesConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig>
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontSizesConfig>
     {
         AdaptiveRuntime(AdaptiveFontSizesConfig);
 

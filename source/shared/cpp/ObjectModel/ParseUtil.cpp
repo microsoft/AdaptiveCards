@@ -21,7 +21,7 @@ namespace
     }
 }
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     std::string ParseUtil::JsonToString(const Json::Value& json)
     {
@@ -391,12 +391,12 @@ namespace AdaptiveSharedNamespace
         std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
 
         Json::Value jsonValue;
-
-        const bool ok = reader->parse(jsonString.data(), jsonString.data() + jsonString.size(), &jsonValue, nullptr);
-
-        if (!ok)
+        std::string errors;
+        if (!reader->parse(jsonString.data(), jsonString.data() + jsonString.size(), &jsonValue, &errors))
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidJson, "Expected JSON Object");
+            std::ostringstream exceptionMsg{};
+            exceptionMsg << "Expected JSON Object (" << errors << ")";
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidJson, exceptionMsg.str());
         }
 
         return jsonValue;

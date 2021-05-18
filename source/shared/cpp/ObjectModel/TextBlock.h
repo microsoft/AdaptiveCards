@@ -8,7 +8,7 @@
 #include "DateTimePreparser.h"
 #include "TextElementProperties.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class TextBlockParser;
 

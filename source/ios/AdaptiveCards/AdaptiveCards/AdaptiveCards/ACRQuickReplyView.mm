@@ -6,6 +6,7 @@
 //
 
 #import "ACRQuickReplyView.h"
+#import "ACOBundle.h"
 
 
 @implementation ACRQuickReplyView
@@ -27,8 +28,7 @@
 
 - (void)commonInit
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    [bundle loadNibNamed:@"ACRQuickActionView" owner:self options:nil];
+    [[[ACOBundle getInstance] getBundle] loadNibNamed:@"ACRQuickActionView" owner:self options:nil];
     [self addSubview:self.stack];
     self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     self.translatesAutoresizingMaskIntoConstraints = NO;
@@ -38,7 +38,7 @@
     [self.layoutMarginsGuide.bottomAnchor constraintEqualToAnchor:self.stack.bottomAnchor].active = YES;
 }
 
-- (void) addTextField:(ACRTextField *)textField
+- (void)addTextField:(ACRTextField *)textField
 {
     [self.stack insertArrangedSubview:textField atIndex:0];
     [textField setContentHuggingPriority:249 forAxis:UILayoutConstraintAxisHorizontal];
@@ -46,14 +46,16 @@
     self.textField = textField;
 }
 
-- (BOOL)becomeFirstResponder {
+- (BOOL)becomeFirstResponder
+{
     if (self.textField) {
         [self.textField becomeFirstResponder];
     }
     return YES;
 }
 
-- (BOOL)resignFirstResponder {
+- (BOOL)resignFirstResponder
+{
     if (self) {
         [self.textField resignFirstResponder];
     }

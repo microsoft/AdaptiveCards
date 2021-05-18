@@ -9,7 +9,7 @@
 
 void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties);
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseActionElement : public BaseElement
     {
@@ -48,6 +48,9 @@ namespace AdaptiveSharedNamespace
         Mode GetMode() const;
         void SetMode(const Mode mode);
 
+        bool GetIsEnabled() const;
+        void SetIsEnabled(const bool isEnabled);
+
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
         Json::Value SerializeToJsonValue() const override;
 
@@ -57,9 +60,7 @@ namespace AdaptiveSharedNamespace
                                                                                       const std::string& jsonString);
         static std::shared_ptr<BaseActionElement> DeserializeBaseProperties(ParseContext& context, const Json::Value& json);
 
-        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
-                                    const Json::Value& json,
-                                    std::shared_ptr<BaseElement>& element);
+        static void ParseJsonObject(AdaptiveCards::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     private:
         void PopulateKnownPropertiesSet();
@@ -71,6 +72,8 @@ namespace AdaptiveSharedNamespace
         std::string m_iconUrl;
         std::string m_style;
         std::string m_tooltip;
+
+        bool m_isEnabled;
 
         ActionType m_type;
         Mode m_mode;

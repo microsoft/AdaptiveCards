@@ -11,7 +11,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(HorizontalAlignment::Left),
@@ -44,7 +44,8 @@ Json::Value TextBlock::SerializeToJsonValue() const
 
     if (m_textStyle.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextStyleToString(m_textStyle.value_or(TextStyle::Default));
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] =
+            TextStyleToString(m_textStyle.value_or(TextStyle::Default));
     }
 
     return root;

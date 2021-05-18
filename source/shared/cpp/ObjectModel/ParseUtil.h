@@ -4,13 +4,16 @@
 
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
+#include "BackgroundImage.h"
 #include "ParseContext.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
+    class BaseElement;
     class BaseCardElement;
     class BaseActionElement;
     class BackgroundImage;
+    class ParseContext;
 
     namespace ParseUtil
     {
@@ -43,11 +46,9 @@ namespace AdaptiveSharedNamespace
 
         int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
 
-        std::optional<int> GetOptionalInt(const Json::Value& json,
-                                          AdaptiveCardSchemaKey key);
+        std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key);
 
-        std::optional<double> GetOptionalDouble(const Json::Value& json,
-                                                AdaptiveCardSchemaKey key);
+        std::optional<double> GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key);
 
         CardElementType GetCardElementType(const Json::Value& json);
 
@@ -178,7 +179,6 @@ namespace AdaptiveSharedNamespace
         {
             return optionalEnum.value_or(defaultEnumValue);
         }
-
     }
 
     // Deserialize value at the given key
@@ -260,7 +260,7 @@ namespace AdaptiveSharedNamespace
     // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
     // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
     template<typename T>
-    static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
+    static void ParseJsonObject(AdaptiveCards::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
     {
         T::ParseJsonObject(context, json, baseElement);
     }

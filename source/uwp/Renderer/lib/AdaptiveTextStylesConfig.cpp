@@ -6,9 +6,9 @@
 #include "AdaptiveTextStylesConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveTextStylesConfig::RuntimeClassInitialize() noexcept
     try
@@ -24,12 +24,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStylesConfig::get_Heading(ABI::AdaptiveNamespace::IAdaptiveTextStyleConfig** headingStyle)
+    HRESULT AdaptiveTextStylesConfig::get_Heading(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig** headingStyle)
     {
         return m_headingStyle.CopyTo(headingStyle);
     }
 
-    IFACEMETHODIMP AdaptiveTextStylesConfig::put_Heading(ABI::AdaptiveNamespace::IAdaptiveTextStyleConfig* headingStyle)
+    IFACEMETHODIMP AdaptiveTextStylesConfig::put_Heading(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* headingStyle)
     {
         m_headingStyle = headingStyle;
         return S_OK;

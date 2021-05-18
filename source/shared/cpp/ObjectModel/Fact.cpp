@@ -5,7 +5,7 @@
 #include "DateTimePreparser.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 Fact::Fact()
 {

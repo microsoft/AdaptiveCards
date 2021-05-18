@@ -6,24 +6,24 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     AdaptiveImage::AdaptiveImage() {}
 
     HRESULT AdaptiveImage::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
+        std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();
         return RuntimeClassInitialize(image);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage)
+    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Image>& sharedImage)
     try
     {
         if (sharedImage == nullptr)
@@ -35,11 +35,12 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetBackgroundColor(), m_backgroundColor.GetAddressOf()));
 
-        m_imageStyle = static_cast<ABI::AdaptiveNamespace::ImageStyle>(sharedImage->GetImageStyle());
-        m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
+        m_imageStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageStyle>(sharedImage->GetImageStyle());
+        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImage->GetImageSize());
         m_pixelWidth = sharedImage->GetPixelWidth();
         m_pixelHeight = sharedImage->GetPixelHeight();
-        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
+        m_horizontalAlignment =
+            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
 
@@ -62,25 +63,25 @@ namespace AdaptiveNamespace
         return m_backgroundColor.Set(backgroundColor);
     }
 
-    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveNamespace::ImageStyle* imageStyle)
+    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageStyle* imageStyle)
     {
         *imageStyle = m_imageStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveNamespace::ImageStyle imageStyle)
+    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ImageStyle imageStyle)
     {
         m_imageStyle = imageStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize)
+    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveNamespace::ImageSize imageSize)
+    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
@@ -114,13 +115,13 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveImage::put_AltText(_In_ HSTRING text) { return m_altText.Set(text); }
 
-    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment* alignment)
+    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
+    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
@@ -143,10 +144,10 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedImage)
+    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedImage)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
+        std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();
 
         RETURN_IF_FAILED(CopySharedElementProperties(*image));
 
@@ -167,11 +168,11 @@ namespace AdaptiveNamespace
             image->SetAltText(out);
         }
 
-        image->SetImageStyle(static_cast<AdaptiveSharedNamespace::ImageStyle>(m_imageStyle));
-        image->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
+        image->SetImageStyle(static_cast<AdaptiveCards::ImageStyle>(m_imageStyle));
+        image->SetImageSize(static_cast<AdaptiveCards::ImageSize>(m_imageSize));
         image->SetPixelHeight(m_pixelHeight);
         image->SetPixelWidth(m_pixelWidth);
-        image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
+        image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
 
         sharedImage = std::move(image);
         return S_OK;

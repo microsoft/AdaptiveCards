@@ -10,7 +10,7 @@
 #include "DateTimePreparser.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 TextElementProperties::TextElementProperties() : m_language()
 {

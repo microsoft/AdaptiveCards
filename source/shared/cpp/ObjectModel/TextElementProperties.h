@@ -8,7 +8,7 @@
 #include "DateTimePreparser.h"
 #include "HostConfig.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class TextElementProperties
     {

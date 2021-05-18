@@ -11,20 +11,20 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
-using namespace AdaptiveNamespace;
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards::Rendering::Uwp;
+using namespace AdaptiveCards;
 using namespace msl::utilities;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml;
 using namespace std::string_literals;
 
-HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextBlock* adaptiveTextBlock,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlock* adaptiveTextBlock,
+                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                                      _In_ ITextBlock* xamlTextBlock)
 {
     boolean wrap;
@@ -122,8 +122,8 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
                                           _In_ ITextBlock* textBlock)
 {
     // Create an AdaptiveTextRun with the language, text, and configuration to pass to SetXamlInlines
-    ComPtr<AdaptiveNamespace::AdaptiveTextRun> textRun;
-    RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveTextRun>(&textRun));
+    ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveTextRun> textRun;
+    RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveTextRun>(&textRun));
 
     RETURN_IF_FAILED(textRun->put_Text(text));
     RETURN_IF_FAILED(textRun->put_Language(language));
@@ -131,10 +131,10 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     // For weight, color, size, fontType, and isSubtle, use the value from the text element if there is one, otherwise use the value from the text style
 
     // TextWeight
-    ComPtr<IReference<ABI::AdaptiveNamespace::TextWeight>> weightToSet;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>> weightToSet;
     if (textElement != nullptr)
     {
-        ComPtr<IReference<ABI::AdaptiveNamespace::TextWeight>> elementWeight;
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>> elementWeight;
         RETURN_IF_FAILED(textElement->get_Weight(&elementWeight));
         if (elementWeight != nullptr)
         {
@@ -143,20 +143,20 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     }
     if (weightToSet == nullptr)
     {
-        ABI::AdaptiveNamespace::TextWeight weight;
+        ABI::AdaptiveCards::Rendering::Uwp::TextWeight weight;
         RETURN_IF_FAILED(textStyle->get_Weight(&weight));
 
-        weightToSet = winrt::box_value(static_cast<winrt::AdaptiveNamespace::TextWeight>(weight))
-                          .as<IReference<ABI::AdaptiveNamespace::TextWeight>>()
+        weightToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::TextWeight>(weight))
+                          .as<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>>()
                           .get();
     }
     RETURN_IF_FAILED(textRun->put_Weight(weightToSet.Get()));
 
     // ForegroundColor
-    ComPtr<IReference<ABI::AdaptiveNamespace::ForegroundColor>> colorToSet;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>> colorToSet;
     if (textElement != nullptr)
     {
-        ComPtr<IReference<ABI::AdaptiveNamespace::ForegroundColor>> elementColor;
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>> elementColor;
         RETURN_IF_FAILED(textElement->get_Color(&elementColor));
         if (elementColor != nullptr)
         {
@@ -165,20 +165,20 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     }
     if (colorToSet == nullptr)
     {
-        ABI::AdaptiveNamespace::ForegroundColor color;
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor color;
         RETURN_IF_FAILED(textStyle->get_Color(&color));
 
-        colorToSet = winrt::box_value(static_cast<winrt::AdaptiveNamespace::ForegroundColor>(color))
-                         .as<IReference<ABI::AdaptiveNamespace::ForegroundColor>>()
+        colorToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::ForegroundColor>(color))
+                         .as<IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>>()
                          .get();
     }
     RETURN_IF_FAILED(textRun->put_Color(colorToSet.Get()));
 
     // TextSize
-    ComPtr<IReference<ABI::AdaptiveNamespace::TextSize>> sizeToSet;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>> sizeToSet;
     if (textElement != nullptr)
     {
-        ComPtr<IReference<ABI::AdaptiveNamespace::TextSize>> elementSize;
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>> elementSize;
         RETURN_IF_FAILED(textElement->get_Size(&elementSize));
         if (elementSize != nullptr)
         {
@@ -187,20 +187,20 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     }
     if (sizeToSet == nullptr)
     {
-        ABI::AdaptiveNamespace::TextSize size;
+        ABI::AdaptiveCards::Rendering::Uwp::TextSize size;
         RETURN_IF_FAILED(textStyle->get_Size(&size));
 
-        sizeToSet = winrt::box_value(static_cast<winrt::AdaptiveNamespace::TextSize>(size))
-                        .as<IReference<ABI::AdaptiveNamespace::TextSize>>()
+        sizeToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::TextSize>(size))
+                        .as<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>>()
                         .get();
     }
     RETURN_IF_FAILED(textRun->put_Size(sizeToSet.Get()));
 
     // FontType
-    ComPtr<IReference<ABI::AdaptiveNamespace::FontType>> fontTypeToSet;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>> fontTypeToSet;
     if (textElement != nullptr)
     {
-        ComPtr<IReference<ABI::AdaptiveNamespace::FontType>> elementFontType;
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>> elementFontType;
         RETURN_IF_FAILED(textElement->get_FontType(&elementFontType));
         if (elementFontType != nullptr)
         {
@@ -209,11 +209,11 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     }
     if (fontTypeToSet == nullptr)
     {
-        ABI::AdaptiveNamespace::FontType fontType;
+        ABI::AdaptiveCards::Rendering::Uwp::FontType fontType;
         RETURN_IF_FAILED(textStyle->get_FontType(&fontType));
 
-        fontTypeToSet = winrt::box_value(static_cast<winrt::AdaptiveNamespace::FontType>(fontType))
-                            .as<IReference<ABI::AdaptiveNamespace::FontType>>()
+        fontTypeToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::FontType>(fontType))
+                            .as<IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>>()
                             .get();
     }
     RETURN_IF_FAILED(textRun->put_FontType(fontTypeToSet.Get()));
@@ -288,9 +288,9 @@ HRESULT SetWrapProperties(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xam
     return S_OK;
 }
 
-HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT SetXamlInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        bool isInHyperlink,
                        _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_opt_ UINT* characterLength)
@@ -359,9 +359,9 @@ static HRESULT GetTextFromXmlNode(_In_ ABI::Windows::Data::Xml::Dom::IXmlNode* n
     return S_OK;
 }
 
-HRESULT AddListInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddListInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        bool isListOrdered,
                        bool isInHyperlink,
@@ -471,9 +471,9 @@ HRESULT AddListInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
     return S_OK;
 }
 
-HRESULT AddLinkInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddLinkInline(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                      _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                      _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                       _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                       bool isStrikethrough,
                       bool isItalic,
@@ -622,9 +622,10 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
 
                 if (isBoldResult == 0)
                 {
-                    RETURN_IF_FAILED(textElementToUse->put_Weight(winrt::box_value(winrt::AdaptiveNamespace::TextWeight::Bolder)
-                                                                      .as<IReference<ABI::AdaptiveNamespace::TextWeight>>()
-                                                                      .get()));
+                    RETURN_IF_FAILED(
+                        textElementToUse->put_Weight(winrt::box_value(winrt::AdaptiveCards::Rendering::Uwp::TextWeight::Bolder)
+                                                         .as<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>>()
+                                                         .get()));
                 }
             }
 
@@ -651,9 +652,9 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
     return S_OK;
 }
 
-HRESULT AddHtmlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddHtmlInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        bool isInHyperlink,
                        _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,

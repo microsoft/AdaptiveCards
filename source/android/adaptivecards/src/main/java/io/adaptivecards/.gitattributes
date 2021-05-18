@@ -1,0 +1,7 @@
+###############################################################################
+# Configure Github language/diffs (see github/linguist)
+#
+# Mark SWIG-generated files appropriately
+###############################################################################
+
+/objectmodel/* linguist-generated

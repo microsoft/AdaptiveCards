@@ -1,8 +1,9 @@
 """Module responsible for all the utilities and template classes needed for
 the layout generation"""
+# pylint: disable=relative-beyond-top-level
+
 from typing import List, Tuple, Dict, Union
 
-from .objects_group import ImageGrouping
 from .objects_group import ChoicesetGrouping
 
 
@@ -11,19 +12,21 @@ class DsHelper:
     Base class for layout ds utilities and template handling.
     - handles all utility functions needed for the layout generation
     """
-    CONTAINERS = ['columnset', 'imageset', 'column', 'choiceset']
-    MERGING_CONTAINERS_LIST = ['imageset', 'choiceset']
+
+    CONTAINERS = ["columnset", "imageset", "column", "choiceset"]
+    MERGING_CONTAINERS_LIST = ["choiceset"]
 
     def __init__(self):
 
         self.serialized_layout = []
         self.ds_template = DsDesignTemplate()
 
-    def merge_properties(self,
-                         properties: List[Dict],
-                         design_object: List[Dict],
-                         container_details_object: object
-                         ) -> None:
+    def merge_properties(
+        self,
+        properties: List[Dict],
+        design_object: List[Dict],
+        container_details_object: object,
+    ) -> None:
         """
         Merges the design objects with properties with the appropriate layout
         structure with the help of the uuid.
@@ -31,30 +34,40 @@ class DsHelper:
         @param design_object: layout data structure
         @param container_details_object: ContainerDetailsTemplate object
         """
-        if (isinstance(design_object, dict) and
-                design_object.get("object", "") not in DsHelper.CONTAINERS):
-            extracted_properties = [prop for prop in properties
-                                    if prop.get("uuid", "") ==
-                                    design_object.get("uuid")][0]
+        if (
+            isinstance(design_object, dict)
+            and design_object.get("object", "") not in DsHelper.CONTAINERS
+        ):
+            extracted_properties = [
+                prop
+                for prop in properties
+                if prop.get("uuid", "") == design_object.get("uuid")
+            ][0]
             extracted_properties.pop("coords")
             design_object.update(extracted_properties)
 
         elif isinstance(design_object, list):
             for design_obj in design_object:
-                self.merge_properties(properties, design_obj,
-                                      container_details_object)
+                self.merge_properties(
+                    properties, design_obj, container_details_object
+                )
         else:
             container_details_template_object = getattr(
-                container_details_object, design_object.get("object", ""))
+                container_details_object, design_object.get("object", "")
+            )
             self.merge_properties(
                 properties,
                 container_details_template_object(design_object),
-                container_details_object)
+                container_details_object,
+            )
 
-    def export_debug_string(self, serialized_layout: List,
-                            design_object: Union[List, Dict],
-                            card_layout: List[Dict],
-                            indentation=None) -> None:
+    def export_debug_string(
+        self,
+        serialized_layout: List,
+        design_object: Union[List, Dict],
+        card_layout: List[Dict],
+        indentation=None,
+    ) -> None:
         """
         Recursively generates the debug layout structure string.
         @param serialized_layout: debug layout structure string
@@ -62,8 +75,10 @@ class DsHelper:
         @param indentation: indentation
         @param card_layout: generated layout structure
         """
-        if (isinstance(design_object, dict) and
-                design_object.get("object", "") not in DsHelper.CONTAINERS):
+        if (
+            isinstance(design_object, dict)
+            and design_object.get("object", "") not in DsHelper.CONTAINERS
+        ):
             design_class = design_object.get("class", "")
             if design_object in card_layout:
                 tab_space = "\t" * 0
@@ -72,17 +87,23 @@ class DsHelper:
             serialized_layout.append(f"{tab_space}item({design_class})\n")
         elif isinstance(design_object, list):
             for design_obj in design_object:
-                self.export_debug_string(serialized_layout, design_obj,
-                                         card_layout,
-                                         indentation=indentation)
+                self.export_debug_string(
+                    serialized_layout,
+                    design_obj,
+                    card_layout,
+                    indentation=indentation,
+                )
         else:
             export_serialized_layout_template = SerializedLayoutExport(
-                design_object, card_layout, self)
+                design_object, card_layout, self
+            )
             export_serialized_layout_template_object = getattr(
                 export_serialized_layout_template,
-                design_object.get("object", ""))
-            export_serialized_layout_template_object(serialized_layout,
-                                                     indentation)
+                design_object.get("object", ""),
+            )
+            export_serialized_layout_template_object(
+                serialized_layout, indentation
+            )
 
     def build_serialized_layout_string(self, card_layout: List[Dict]) -> List:
         """
@@ -90,20 +111,22 @@ class DsHelper:
         @param card_layout: adaptive card body
         @return: debugging data-structure format
         """
-        y_minimum_final = [c.get("coordinates")[1] for c in
-                           card_layout]
-        card_layout = [value for _, value in sorted(zip(y_minimum_final,
-                                                        card_layout),
-                                                    key=lambda value: value[0])]
+        y_minimum_final = [c.get("coordinates")[1] for c in card_layout]
+        card_layout = [
+            value
+            for _, value in sorted(
+                zip(y_minimum_final, card_layout), key=lambda value: value[0]
+            )
+        ]
 
-        self.export_debug_string(self.serialized_layout,
-                                 card_layout,
-                                 card_layout,
-                                 indentation=0)
+        self.export_debug_string(
+            self.serialized_layout, card_layout, card_layout, indentation=0
+        )
         return self.serialized_layout
 
-    def add_element_to_ds(self, element_type: str, card_layout: List,
-                          element=None) -> None:
+    def add_element_to_ds(
+        self, element_type: str, card_layout: List, element=None
+    ) -> None:
         """
         Adds the design element structure to the layout data structure.
         @param element_type: type of passed design element [ individual /
@@ -112,12 +135,12 @@ class DsHelper:
                                  has to be added
         @param element: design element to be added
         """
-        element_structure_object = getattr(self.ds_template,
-                                           element_type)
+        element_structure_object = getattr(self.ds_template, element_type)
         element_structre = element_structure_object(element)
         if element_structre not in card_layout:
             card_layout.append(element_structure_object(element))
 
+    # pylint: disable=no-self-use
     def build_container_coordinates(self, coordinates: List) -> Tuple:
         """
         Returns the column set or column coordinates by taking min(x minimum and
@@ -131,10 +154,12 @@ class DsHelper:
         y_minimums = [c[1] for c in coordinates]
         x_maximums = [c[2] for c in coordinates]
         y_maximums = [c[3] for c in coordinates]
-        return (min(x_minimums),
-                min(y_minimums),
-                max(x_maximums),
-                max(y_maximums))
+        return (
+            min(x_minimums),
+            min(y_minimums),
+            max(x_maximums),
+            max(y_maximums),
+        )
 
 
 class SerializedLayoutExport:
@@ -142,6 +167,7 @@ class SerializedLayoutExport:
     This class is responsible for calling the appropriate debug templates
     for the container structure.
     """
+
     def __init__(self, design_object, card_layout, export_object):
         self.design_object = design_object
         self.card_layout = card_layout
@@ -164,7 +190,8 @@ class SerializedLayoutExport:
             serialized_layout_string,
             self.design_object.get("row", []),
             self.card_layout,
-            indentation=indentation)
+            indentation=indentation,
+        )
 
     def column(self, serialized_layout_string, indentation) -> None:
         """
@@ -183,7 +210,8 @@ class SerializedLayoutExport:
             serialized_layout_string,
             self.design_object.get("column", {}).get("items", []),
             self.card_layout,
-            indentation=indentation)
+            indentation=indentation,
+        )
 
     def imageset(self, serialized_layout_string, indentation) -> None:
         """
@@ -201,7 +229,8 @@ class SerializedLayoutExport:
         self.export_object.export_debug_string(
             serialized_layout_string,
             self.design_object.get("imageset", {}).get("items", []),
-            indentation=indentation)
+            indentation=indentation,
+        )
 
     def choiceset(self, serialized_layout_string, indentation) -> None:
         """
@@ -219,7 +248,8 @@ class SerializedLayoutExport:
         self.export_object.export_debug_string(
             serialized_layout_string,
             self.design_object.get("choiceset", {}).get("items", []),
-            indentation=indentation)
+            indentation=indentation,
+        )
 
 
 class DsDesignTemplate:
@@ -229,7 +259,7 @@ class DsDesignTemplate:
     the layout generation.
     """
 
-    def item(self, design_element: Dict) -> Dict:
+    def item(self, design_element: Dict) -> Dict:  # pylint: disable=no-self-use
         """
         Returns the design structure for the primary card design elements
         @param: design element
@@ -240,9 +270,10 @@ class DsDesignTemplate:
             "data": design_element.get("data", ""),
             "class": design_element.get("class", ""),
             "uuid": design_element.get("uuid"),
-            "coordinates": design_element.get("coords", ())
+            "coordinates": design_element.get("coords", ()),
         }
 
+    # pylint: disable=no-self-use, unused-argument
     def row(self, design_element: Dict) -> Dict:
         """
         Returns the design structure for the column-set container
@@ -254,39 +285,34 @@ class DsDesignTemplate:
             "row": [],
         }
 
+    # pylint: disable=no-self-use, unused-argument
     def column(self, design_element: Dict) -> Dict:
         """
         Returns the design structure for the column of the column-set container
         @param: design element
         @return: design structure
         """
-        return {
-            "column": {"items": []},
-            "object": "column"
-        }
+        return {"column": {"items": []}, "object": "column"}
 
+    # pylint: disable=no-self-use, unused-argument
     def imageset(self, design_element: Dict) -> Dict:
         """
         Returns the design structure for the image-set container
         @return: design structure
         """
-        return {
-            "imageset": {"items": []},
-            "object": "imageset"
-        }
+        return {"imageset": {"items": []}, "object": "imageset"}
 
+    # pylint: disable=no-self-use, unused-argument
     def choiceset(self, design_element: Dict) -> Dict:
         """
         Returns the design structure for the choice-set container
         @param: design element
         @return: design structure
         """
-        return {
-            "choiceset": {"items": []},
-            "object": "choiceset"
-        }
+        return {"choiceset": {"items": []}, "object": "choiceset"}
 
 
+# pylint: disable=too-few-public-methods
 class ContainerTemplate:
     """
     Class to handle different container groupings other than columnset and
@@ -294,25 +320,10 @@ class ContainerTemplate:
     - Handles the functionalies needed for different type of container
     groupings.
     """
-    def imageset(self, card_layout: List[Dict],
-                 containers_group_object) -> List[Dict]:
-        """
-        Groups and returns the layout structure with the respective image-sets
-        @param card_layout: Un-grouped layout structure.
-        @param containers_group_object: ContainerGroup object
-        @return: Grouped layout structure
-        """
-        image_grouping = ImageGrouping(self)
-        condition = image_grouping.imageset_condition
-        containers_group_object.merge_column_items(
-            card_layout, 5, "imageset", image_grouping, condition, 0)
-        items, _ = containers_group_object.collect_items_for_container(
-            card_layout, 5)
-        return containers_group_object.add_merged_items(
-            items, card_layout, "imageset", image_grouping, condition)
 
-    def choiceset(self, card_layout: List[Dict],
-                  containers_group_object) -> List[Dict]:
+    def choiceset(
+        self, card_layout: List[Dict], containers_group_object
+    ) -> List[Dict]:
         """
         Groups and returns the layout structure with the respective choice-sets
         @param card_layout: Un-grouped layout structure.
@@ -321,12 +332,20 @@ class ContainerTemplate:
         """
         choice_grouping = ChoicesetGrouping(self)
         condition = choice_grouping.choiceset_condition
-        containers_group_object.merge_column_items(
-            card_layout, 2, "choiceset", choice_grouping, condition, 1)
+        merging_payload = {
+            "object_class": 2,
+            "grouping_type": "choiceset",
+            "grouping_object": choice_grouping,
+            "grouping_condition": condition,
+            "order_key": 1,
+        }
+        containers_group_object.merge_column_items(card_layout, merging_payload)
         items, _ = containers_group_object.collect_items_for_container(
-            card_layout, 2)
+            card_layout, 2
+        )
         return containers_group_object.add_merged_items(
-            items, card_layout, "choiceset", choice_grouping, condition)
+            items, card_layout, merging_payload
+        )
 
 
 class ContainerDetailTemplate:
@@ -335,6 +354,7 @@ class ContainerDetailTemplate:
     given container from the generated layout structure
     """
 
+    # pylint: disable=no-self-use
     def columnset(self, design_element: Dict) -> List:
         """
         Returns the design objects of a column-set container for the given
@@ -344,6 +364,7 @@ class ContainerDetailTemplate:
         """
         return design_element.get("row", [])
 
+    # pylint: disable=no-self-use
     def column(self, design_element: Dict) -> List:
         """
         Returns the design objects of a column container for the given
@@ -353,6 +374,7 @@ class ContainerDetailTemplate:
         """
         return design_element.get("column", {}).get("items", [])
 
+    # pylint: disable=no-self-use
     def imageset(self, design_element: Dict) -> List:
         """
         Returns the design objects of a image-set container for the given
@@ -362,6 +384,7 @@ class ContainerDetailTemplate:
         """
         return design_element.get("imageset", {}).get("items", [])
 
+    # pylint: disable=no-self-use
     def choiceset(self, design_element: Dict) -> List:
         """
         Returns the design objects of a choice-set container for the given

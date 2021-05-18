@@ -5,27 +5,27 @@
 #include "ToggleVisibilityAction.h"
 #include "AdaptiveActionElement.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("32114ce2-7e10-4f7f-8225-bfd661c6794c") AdaptiveToggleVisibilityAction
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveToggleVisibilityAction,
-                                              ABI::AdaptiveNamespace::IAdaptiveActionElement,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveToggleVisibilityAction,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveActionElementBase>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveActionElementBase>>
     {
         AdaptiveRuntime(AdaptiveToggleVisibilityAction);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction>& sharedToggleVisibilityAction);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleVisibilityAction>& sharedToggleVisibilityAction);
 
         // IAdaptiveToggleVisibilityAction
         IFACEMETHODIMP get_TargetElements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>** facts) override;
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>** facts) override;
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType) override;
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType) override;
         IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value) override
         {
             return AdaptiveActionElementBase::get_ActionTypeString(value);
@@ -40,22 +40,22 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) override { return AdaptiveActionElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) override { return AdaptiveActionElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback) override
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FallbackType* fallback) override
         {
             return AdaptiveActionElementBase::get_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** content) override
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** content) override
         {
             return AdaptiveActionElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback) override
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallback) override
         {
             return AdaptiveActionElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* content) override
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* content) override
         {
             return AdaptiveActionElementBase::put_FallbackContent(content);
         }
@@ -84,6 +84,15 @@ namespace AdaptiveNamespace
             return AdaptiveActionElementBase::put_Tooltip(tooltip);
         }
 
+        IFACEMETHODIMP put_IsEnabled(boolean isEnabled) override
+        {
+            return AdaptiveActionElementBase::put_IsEnabled(isEnabled);
+        }
+        IFACEMETHODIMP get_IsEnabled(_Out_ boolean* isEnabled) override
+        {
+            return AdaptiveActionElementBase::get_IsEnabled(isEnabled);
+        }
+
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result) override
         {
             return AdaptiveActionElementBase::get_AdditionalProperties(result);
@@ -98,13 +107,13 @@ namespace AdaptiveNamespace
             return AdaptiveActionElementBase::ToJson(result);
         }
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) override;
+        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel) override;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>> m_targetElements;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>> m_targetElements;
     };
 
     ActivatableClass(AdaptiveToggleVisibilityAction);

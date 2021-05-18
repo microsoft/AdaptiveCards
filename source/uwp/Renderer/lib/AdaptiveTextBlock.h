@@ -5,22 +5,22 @@
 #include "TextBlock.h"
 #include "AdaptiveTextElement.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveTextBlock
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveTextBlock,
-                                              ABI::AdaptiveNamespace::IAdaptiveTextElement,
-                                              ABI::AdaptiveNamespace::IAdaptiveCardElement,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlock,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveTextElement>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveCardElementBase>,
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveTextElement>>
     {
         AdaptiveRuntime(AdaptiveTextBlock);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock);
 
         // IAdaptiveTextBlock
         IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap) override;
@@ -29,39 +29,39 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_MaxLines(_Out_ UINT32* value) override;
         IFACEMETHODIMP put_MaxLines(UINT32 value) override;
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment) override;
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment HorizontalAlignment) override;
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* HorizontalAlignment) override;
+        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment HorizontalAlignment) override;
 
-        IFACEMETHODIMP get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextStyle>** value) override;
-        IFACEMETHODIMP put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextStyle>* value) override;
+        IFACEMETHODIMP get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** value) override;
+        IFACEMETHODIMP put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* value) override;
 
         // IAdaptiveTextElement
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) override { return AdaptiveTextElement::get_Text(text); }
         IFACEMETHODIMP put_Text(_In_ HSTRING text) override { return AdaptiveTextElement::put_Text(text); }
 
-        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextSize>** textSize) override
+        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>** textSize) override
         {
             return AdaptiveTextElement::get_Size(textSize);
         }
-        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextSize>* textSize) override
+        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>* textSize) override
         {
             return AdaptiveTextElement::put_Size(textSize);
         }
 
-        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextWeight>** textWeight) override
+        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>** textWeight) override
         {
             return AdaptiveTextElement::get_Weight(textWeight);
         }
-        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextWeight>* textWeight) override
+        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>* textWeight) override
         {
             return AdaptiveTextElement::put_Weight(textWeight);
         }
 
-        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::ForegroundColor>** textColor) override
+        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>** textColor) override
         {
             return AdaptiveTextElement::get_Color(textColor);
         }
-        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::ForegroundColor>* textColor) override
+        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>* textColor) override
         {
             return AdaptiveTextElement::put_Color(textColor);
         }
@@ -84,23 +84,23 @@ namespace AdaptiveNamespace
             return AdaptiveTextElement::put_Language(language);
         }
 
-        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::FontType>** type) override
+        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>** type) override
         {
             return AdaptiveTextElement::get_FontType(type);
         }
-        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::FontType>* type) override
+        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>* type) override
         {
             return AdaptiveTextElement::put_FontType(type);
         }
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType) override;
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType) override;
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing) override
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing) override
         {
             return AdaptiveCardElementBase::get_Spacing(spacing);
         }
-        IFACEMETHODIMP put_Spacing(ABI::AdaptiveNamespace::Spacing spacing) override
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing) override
         {
             return AdaptiveCardElementBase::put_Spacing(spacing);
         }
@@ -126,21 +126,21 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) override { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) override { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback) override
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FallbackType* fallback) override
         {
             return AdaptiveCardElementBase::get_FallbackType(fallback);
         }
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** content) override
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** content) override
         {
             return AdaptiveCardElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback) override
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallback) override
         {
             return AdaptiveCardElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* content) override
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* content) override
         {
             return AdaptiveCardElementBase::put_FallbackContent(content);
         }
@@ -160,7 +160,7 @@ namespace AdaptiveNamespace
         }
 
         IFACEMETHODIMP get_Requirements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements) override
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveRequirement*>** requirements) override
         {
             return AdaptiveCardElementBase::get_Requirements(requirements);
         }
@@ -170,13 +170,13 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::ToJson(result);
         }
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) override;
+        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
 
-        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height) override
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HeightType* height) override
         {
             return AdaptiveCardElementBase::get_Height(height);
         }
-        IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType height) override
+        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::Rendering::Uwp::HeightType height) override
         {
             return AdaptiveCardElementBase::put_Height(height);
         }
@@ -187,8 +187,8 @@ namespace AdaptiveNamespace
     private:
         boolean m_wrap;
         UINT32 m_maxLines;
-        ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveNamespace::TextStyle>> m_style;
+        ABI::AdaptiveCards::Rendering::Uwp::HAlignment m_horizontalAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> m_style;
     };
 
     ActivatableClass(AdaptiveTextBlock);

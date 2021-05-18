@@ -1,0 +1,1 @@
+../AdaptiveCards.h

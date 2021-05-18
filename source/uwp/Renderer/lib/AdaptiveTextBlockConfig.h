@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveTextBlockConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveTextBlockConfig>
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlockConfig>
     {
         AdaptiveRuntime(AdaptiveTextBlockConfig);
 

@@ -4,7 +4,7 @@
 #include "HostConfig.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 HostConfig HostConfig::DeserializeFromString(const std::string& jsonString)
 {
@@ -652,16 +652,16 @@ unsigned int HostConfig::GetFontSize(FontType fontType, TextSize size) const
     // desired font size
     auto result = GetFontType(fontType).fontSizes.GetFontSize(size);
 
-    // UINT_MAX used to check if value was defined
-    if (result == UINT_MAX)
+    // std::numeric_limits<unsigned int>::max() used to check if value was defined
+    if (result == std::numeric_limits<unsigned int>::max())
     {
         // default font size
         result = _fontTypes.defaultFontType.fontSizes.GetFontSize(size);
-        if (result == UINT_MAX)
+        if (result == std::numeric_limits<unsigned int>::max())
         {
             // deprecated font size
             result = _fontSizes.GetFontSize(size);
-            if (result == UINT_MAX)
+            if (result == std::numeric_limits<unsigned int>::max())
             {
                 // constant default font size
                 result = FontSizesConfig::GetDefaultFontSize(size);
@@ -676,16 +676,16 @@ unsigned int HostConfig::GetFontWeight(FontType fontType, TextWeight weight) con
     // desired font weight
     auto result = GetFontType(fontType).fontWeights.GetFontWeight(weight);
 
-    // UINT_MAX used to check if value was defined
-    if (result == UINT_MAX)
+    // std::numeric_limits<unsigned int>::max() used to check if value was defined
+    if (result == std::numeric_limits<unsigned int>::max())
     {
         // default font weight
         result = _fontTypes.defaultFontType.fontWeights.GetFontWeight(weight);
-        if (result == UINT_MAX)
+        if (result == std::numeric_limits<unsigned int>::max())
         {
             // deprecated font weight
             result = _fontWeights.GetFontWeight(weight);
-            if (result == UINT_MAX)
+            if (result == std::numeric_limits<unsigned int>::max())
             {
                 // constant default font weight
                 result = FontWeightsConfig::GetDefaultFontWeight(weight);

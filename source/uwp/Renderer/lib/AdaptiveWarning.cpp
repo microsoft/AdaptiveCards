@@ -5,26 +5,26 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveWarning::RuntimeClassInitialize() { return S_OK; }
 
-    HRESULT AdaptiveWarning::RuntimeClassInitialize(ABI::AdaptiveNamespace::WarningStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveWarning::RuntimeClassInitialize(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode, _In_ HSTRING message)
     {
         m_statusCode = statusCode;
         m_message.Set(message);
         return S_OK;
     }
 
-    HRESULT AdaptiveWarning::get_StatusCode(_Out_ ABI::AdaptiveNamespace::WarningStatusCode* value)
+    HRESULT AdaptiveWarning::get_StatusCode(_Out_ ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode* value)
     {
         *value = m_statusCode;
         return S_OK;
     }
 
-    HRESULT AdaptiveWarning::put_StatusCode(ABI::AdaptiveNamespace::WarningStatusCode value)
+    HRESULT AdaptiveWarning::put_StatusCode(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode value)
     {
         m_statusCode = value;
         return S_OK;

@@ -4,7 +4,7 @@
 
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class FontSizesConfig
     {
@@ -21,12 +21,12 @@ namespace AdaptiveSharedNamespace
         void SetFontSize(TextSize size, unsigned int value);
 
     private:
-        // UINT_MAX used to check if value was defined
-        unsigned int _small = UINT_MAX;
-        unsigned int _default = UINT_MAX;
-        unsigned int _medium = UINT_MAX;
-        unsigned int _large = UINT_MAX;
-        unsigned int _extraLarge = UINT_MAX;
+        // std::numeric_limits<unsigned int>::max() used to check if value was defined
+        unsigned int _small = std::numeric_limits<unsigned int>::max();
+        unsigned int _default = std::numeric_limits<unsigned int>::max();
+        unsigned int _medium = std::numeric_limits<unsigned int>::max();
+        unsigned int _large = std::numeric_limits<unsigned int>::max();
+        unsigned int _extraLarge = std::numeric_limits<unsigned int>::max();
     };
 
     class FontWeightsConfig
@@ -43,10 +43,10 @@ namespace AdaptiveSharedNamespace
         void SetFontWeight(TextWeight weight, unsigned int value);
 
     private:
-        // UINT_MAX used to check if value was defined
-        unsigned int _lighter = UINT_MAX;
-        unsigned int _default = UINT_MAX;
-        unsigned int _bolder = UINT_MAX;
+        // std::numeric_limits<unsigned int>::max() used to check if value was defined
+        unsigned int _lighter = std::numeric_limits<unsigned int>::max();
+        unsigned int _default = std::numeric_limits<unsigned int>::max();
+        unsigned int _bolder = std::numeric_limits<unsigned int>::max();
     };
 
     struct FontTypeDefinition
@@ -194,8 +194,9 @@ namespace AdaptiveSharedNamespace
     struct ContainerStyleDefinition
     {
         std::string backgroundColor = "#FFFFFFFF";
-        std::string borderColor = "#FF7F7F7F7F"; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
+        std::string borderColor = "#FF7F7F7F7F";
         unsigned int borderThickness = 0; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
+                                          // (see #1150)
         ColorsConfig foregroundColors;
 
         static ContainerStyleDefinition Deserialize(const Json::Value& json, const ContainerStyleDefinition& defaultValue);
@@ -305,7 +306,7 @@ namespace AdaptiveSharedNamespace
         unsigned int maxActions = 5;
         Spacing spacing = Spacing::Default;
         IconPlacement iconPlacement = IconPlacement::AboveTitle;
-        unsigned int iconSize = 30;
+        unsigned int iconSize = 16;
 
         static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
     };
