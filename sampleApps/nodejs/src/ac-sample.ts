@@ -2,6 +2,7 @@
 import * as AC from 'adaptivecards';
 import * as markdownit from 'markdown-it';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
+import { sampleHostConfig } from './ac-hostconfig'
 
 /**
  * Our input change handler for 'file-picker'
@@ -45,6 +46,10 @@ function renderAdaptiveCard(json: string): void {
     if (json.length > 0) {
         // render the adaptive card
         const adaptiveCard = new AC.AdaptiveCard();
+
+        // use our own HostConfig for styling
+        adaptiveCard.hostConfig = sampleHostConfig;
+
         const context = new AC.SerializationContext();
 
         // errors will appended as children to this element
