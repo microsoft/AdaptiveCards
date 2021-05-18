@@ -35,7 +35,7 @@
 			}
 
 			#card-target:empty {
-				background: linear-gradient(45deg, #CCC, #FFF);
+				background: linear-gradient(45deg, #EEE, #FFF);
 			}
 
 			#editor-and-card > div {
@@ -61,9 +61,30 @@
 
 			.ac-adaptiveCard {
 				width: 600px;
+                border: 3px outset khaki !important;
 				box-shadow: 5px 5px 10px -4px;
+                border-radius: 5px;
 			}
-		</style>
+
+            .ac-adaptiveCard .ac-adaptiveCard {
+                border: 1px inset khaki !important;
+            }
+
+            .ac-factset {
+                border: 1px inset #6262A3 !important;
+            }
+
+            .ac-anchor {
+                color: khaki;
+            }
+
+            .ac-pushButton, .ac-input {
+                color: white;
+                background-color: #6262A3;
+                border-radius: 5px;
+            }
+
+        </style>
 	</head>
 	<body>
 		<div id="picker-and-output">
