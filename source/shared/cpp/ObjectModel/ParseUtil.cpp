@@ -319,37 +319,6 @@ namespace AdaptiveCards
         throwIfWrongType(value);
     }
 
-    CardElementType ParseUtil::GetCardElementType(const Json::Value& json)
-    {
-        return CardElementTypeFromString(GetTypeAsString(json));
-    }
-
-    CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
-    {
-        try
-        {
-            return GetCardElementType(json);
-        }
-        catch (const AdaptiveCardParseException&)
-        {
-            return CardElementType::Unknown;
-        }
-    }
-
-    ActionType ParseUtil::GetActionType(const Json::Value& json) { return ActionTypeFromString(GetTypeAsString(json)); }
-
-    ActionType ParseUtil::TryGetActionType(const Json::Value& json)
-    {
-        try
-        {
-            return GetActionType(json);
-        }
-        catch (const AdaptiveCardParseException&)
-        {
-            return ActionType::Unsupported;
-        }
-    }
-
     Json::Value ParseUtil::GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);

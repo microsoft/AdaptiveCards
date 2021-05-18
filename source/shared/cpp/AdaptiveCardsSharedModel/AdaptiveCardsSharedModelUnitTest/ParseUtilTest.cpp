@@ -115,24 +115,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(propertyValue.asBool());
         }
 
-        TEST_METHOD(GetActionTypeTests)
-        {
-            auto jsonObj = s_GetValidJsonObject();
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetActionType(jsonObj); });
-            auto actionType = ParseUtil::TryGetActionType(jsonObj);
-            Assert::IsTrue(actionType == ActionType::Unsupported);
-
-            auto jsonObjWithType = s_GetJsonObjectWithType("Custom"s);
-            actionType = ParseUtil::GetActionType(jsonObjWithType);
-            Assert::IsTrue(actionType == ActionType::Custom);
-            actionType = ParseUtil::TryGetActionType(jsonObjWithType);
-            Assert::IsTrue(actionType == ActionType::Custom);
-
-            auto jsonObjWithInvalidType = s_GetJsonObjectWithType("Invalid"s);
-            actionType = ParseUtil::GetActionType(jsonObjWithInvalidType);
-            Assert::IsTrue(actionType == ActionType::Unsupported);
-        }
-
         TEST_METHOD(GetArrayTests)
         {
             bool throwsExpected = false;
@@ -212,21 +194,6 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             auto jsonObjWithAccentArray = s_GetJsonObjectWithAccent("[\"thing1\", \"thing2\"]"s);
             Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetBool(jsonObjWithAccentArray, AdaptiveCardSchemaKey::Accent, false, true); });
-        }
-
-        TEST_METHOD(GetCardElementTypeTests)
-        {
-            auto jsonObj = s_GetValidJsonObject();
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetCardElementType(jsonObj); });
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObj) == CardElementType::Unknown);
-
-            auto jsonObjWithInvalidType = s_GetJsonObjectWithType("Invalid"s);
-            Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithInvalidType) == CardElementType::Unknown);
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithInvalidType) == CardElementType::Unknown);
-
-            auto jsonObjWithValidType = s_GetJsonObjectWithType("AdaptiveCard"s);
-            Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithValidType) == CardElementType::AdaptiveCard);
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithValidType) == CardElementType::AdaptiveCard);
         }
 
         TEST_METHOD(GetIntTests)

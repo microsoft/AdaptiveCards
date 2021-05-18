@@ -50,14 +50,6 @@ namespace AdaptiveCards
 
         std::optional<double> GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key);
 
-        CardElementType GetCardElementType(const Json::Value& json);
-
-        CardElementType TryGetCardElementType(const Json::Value& json);
-
-        ActionType GetActionType(const Json::Value& json);
-
-        ActionType TryGetActionType(const Json::Value& json);
-
         Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
         std::vector<std::string> GetStringArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
@@ -159,8 +151,6 @@ namespace AdaptiveCards
         }
         catch (const std::out_of_range&)
         {
-            // TODO: Uncomment and add to warnings instead of throwing.
-            // throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
             return std::nullopt;
         }
     }
