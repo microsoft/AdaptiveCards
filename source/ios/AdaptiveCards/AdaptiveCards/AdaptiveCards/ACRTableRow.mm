@@ -1,12 +1,17 @@
 //
 //  ACRTableRow.m
-//  SPMTest
+//  ACRTableRow
 //
-//  Created by Inyoung Woo on 5/14/21.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 
 #import "ACRTableRow.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRRegistration.h"
+#import "ACRTableCellRenderer.h"
 #import "ACRTableCellView.h"
+#import "TableRow.h"
 
 @implementation ACRColumnDefinition
 
@@ -15,14 +20,14 @@
     self = [super init];
     if (self) {
         _numeric = 0;
-        _baseIndex = -1;
         _isValid = YES;
+        _isPixelWidth = YES;
     }
 
     return self;
 }
 
-- (instancetype)init:(CGFloat)numeric
+- (instancetype)initWithPixelWidth:(CGFloat)numeric
 {
     self = [self init];
     if (self) {
@@ -31,12 +36,14 @@
     return self;
 }
 
-- (instancetype)init:(CGFloat)numeric baseIndex:(NSInteger)baseIndex
+- (instancetype)initWithRelativeWidth:(CGFloat)numeric
+                      totalPixelWidth:(CGFloat)totalPixelWidth
 {
     self = [self init];
     if (self) {
         _numeric = numeric;
-        _baseIndex = baseIndex;
+        _totalPixelWidth = totalPixelWidth;
+        _isPixelWidth = NO;
     }
     return self;
 }
@@ -45,76 +52,103 @@
 
 @implementation ACRTableRowView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
-
-- (instancetype)init
+- (instancetype)init:(ACOBaseCardElement *)acoElem
+    columnDefinitions:(NSArray<ACRColumnDefinition *> *)columnDefinition
+             rootView:(ACRView *)rootView
+               inputs:(NSMutableArray *)inputs
+           hostConfig:(ACOHostConfig *)acoConfig
 {
     self = [super init];
     if (self) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        NSBundle *mainBundle = [NSBundle mainBundle];
-        NSString *payload0 = [NSString stringWithContentsOfFile:[mainBundle pathForResource:@"TextBlock" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+        const auto element = [acoElem element];
+        const auto row = std::dynamic_pointer_cast<TableRow>(element);
+        self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:(ACRContainerStyle)row->GetStyle()];
 
-        NSString *payload1 = [NSString stringWithContentsOfFile:[mainBundle pathForResource:@"Input" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+        if (!row) {
+            return self;
+        }
 
-        ACOHostConfigParseResult *configParseResult = [ACOHostConfig fromJson:nil];
+        auto idx = 0;
+        const auto &cells = row->GetCells();
+        const auto endIdx = [columnDefinition count];
 
-        ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload0];
-        ACOAdaptiveCardParseResult *cardParseResult1 = [ACOAdaptiveCard fromJson:payload1];
+        // should be read from Hostconfig
+        CGFloat spacing = 8.0f;
 
-        if (cardParseResult.isValid) {
-            ACRRenderResult *result = [ACRRenderer render:cardParseResult.card config:configParseResult.config widthConstraint:0 delegate:self];
+        NSLayoutXAxisAnchor *trailingAnchor = self.leadingAnchor;
+        UIView *prevView = nil;
 
-            result.view.translatesAutoresizingMaskIntoConstraints = NO;
-            result.view.backgroundColor = UIColor.clearColor;
-            ACRTableCellView *cellView = [[ACRTableCellView alloc] init:result.view cellDefinition:[[ACRTableCellDefinition alloc] init:ACRLeft]];
-            [cellView.widthAnchor constraintEqualToConstant:100.0].active = YES;
-            cellView.translatesAutoresizingMaskIntoConstraints = NO;
-            ACRRenderResult *result1 = [ACRRenderer render:cardParseResult1.card config:configParseResult.config widthConstraint:0 delegate:self];
+        for (; idx < endIdx; idx++) {
+            ACRColumnDefinition *ithColumnDefinition = columnDefinition[idx];
+            if (ithColumnDefinition.isValid) {
+                ACRTableCellView *cellView = nil;
+                if (idx < cells.size()) {
+                    auto cell = cells.at(idx);
+                    ACRTableCellDefinition *cellDefinition = [[ACRTableCellDefinition alloc] init];
+                    cellDefinition.style = (ACRContainerStyle)row->GetStyle();
+                    cellDefinition.horizontalAlignment = (ACRHorizontalAlignment)row->GetHorizontalCellContentAlignment();
+                    cellDefinition.verticalAlignment = (ACRVerticalAlignment)row->GetVerticalCellContentAlignment();
+                    cellView = [[ACRTableCellView alloc] init:[[ACOBaseCardElement alloc] initWithBaseCardElement:cell]
+                                               cellDefinition:cellDefinition
+                                                     rootView:rootView
+                                                       inputs:inputs
+                                                   hostConfig:acoConfig];
+                } else {
+                    // filler view for empty cells
+                    cellView = [[ACRTableCellView alloc] init];
+                }
+                cellView.translatesAutoresizingMaskIntoConstraints = NO;
 
-            result1.view.translatesAutoresizingMaskIntoConstraints = NO;
-            result1.view.backgroundColor = UIColor.clearColor;
-            ACRTableCellView *cellView1 = [[ACRTableCellView alloc] init:result1.view cellDefinition:[[ACRTableCellDefinition alloc] init:ACRLeft]];
-            [cellView1.widthAnchor constraintEqualToConstant:200.0].active = YES;
-            cellView1.translatesAutoresizingMaskIntoConstraints = NO;
-            [self addSubview:cellView];
-            [self addSubview:cellView1];
+                if (cellView) {
+                    [self addSubview:cellView];
+                    if (ithColumnDefinition.isPixelWidth) {
+                        [cellView.widthAnchor constraintEqualToConstant:ithColumnDefinition.numeric].active = YES;
+                    } else if (!ithColumnDefinition.isPixelWidth) {
+                        [cellView.widthAnchor constraintEqualToAnchor:self.widthAnchor
+                                                           multiplier:ithColumnDefinition.numeric
+                                                             constant:-ithColumnDefinition.totalPixelWidth]
+                            .active = YES;
+                    }
 
-            [self.heightAnchor constraintGreaterThanOrEqualToAnchor:cellView.heightAnchor].active = YES;
-            [self.heightAnchor constraintGreaterThanOrEqualToAnchor:cellView1.heightAnchor].active = YES;
+                    [self.heightAnchor constraintGreaterThanOrEqualToAnchor:cellView.heightAnchor].active = YES;
+                    NSLayoutConstraint *heightConstraint = [cellView.heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
+                    heightConstraint.priority = UILayoutPriorityDefaultLow;
+                    heightConstraint.active = YES;
 
-            NSLayoutConstraint *h0 = [cellView.heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
-            NSLayoutConstraint *h1 = [cellView1.heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
-            h0.priority = UILayoutPriorityDefaultLow;
-            h1.priority = UILayoutPriorityDefaultLow;
-            h0.active = YES;
-            h1.active = YES;
-
-            [cellView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
-            [cellView1.leadingAnchor constraintEqualToAnchor:cellView.trailingAnchor constant:8.0f].active = YES;
-            [self.trailingAnchor constraintEqualToAnchor:cellView1.trailingAnchor].active = YES;
-
-            [cellView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
-            [cellView1.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
+                    [cellView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
+                    if (prevView) {
+                        [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor constant:spacing].active = YES;
+                    } else {
+                        [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor].active = YES;
+                    }
+                    trailingAnchor = cellView.trailingAnchor;
+                    prevView = cellView;
+                }
+            }
         }
     }
-
     return self;
 }
 
-- (instancetype)init:(ACOBaseCardElement *)acoElem columnDefinitions:(NSArray<ACRColumnDefinition *> *)columnDefinition
+- (void)addArrangedSubview:(UIView *)view
 {
-    
+    [self addSubview:view];
 }
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(UIViewNoIntrinsicMetric, UIViewNoIntrinsicMetric);
+    CGSize size = CGSizeZero;
+    for (UIView *subview in self.subviews) {
+        if (!subview.isHidden) {
+            CGSize intrinsicContentSize = [subview intrinsicContentSize];
+            size.width += intrinsicContentSize.width;
+            size.height = MAX(size.height, intrinsicContentSize.height);
+        }
+    }
+
+    size.width = (size.width == 0) ? UIViewNoIntrinsicMetric : size.width;
+    size.height = (size.height == 0) ? UIViewNoIntrinsicMetric : size.height;
+    return size;
 }
 @end

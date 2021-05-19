@@ -1,29 +1,34 @@
 //
 //  ACRTableCell.h
-//  SPMTest
+//  ACRTableCell
 //
-//  Created by Inyoung Woo on 5/14/21.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "AdaptiveCards.h"
+#import "ACRContentStackView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ACRTableCellDefinition : NSObject
 
-//@property ACRWidth width;
-
-- (instancetype)init:(ACRHorizontalAlignment) horizontalAlignment;
+@property ACRContainerStyle style;
+@property ACRVerticalAlignment verticalAlignment;
+@property ACRHorizontalAlignment horizontalAlignment;
 
 @end
 
-@interface ACRTableCellView : UIView
+@interface ACRTableCellView : ACRContentStackView
 
 @property CGFloat spacing;
 
-- (instancetype)init:(UIView *)content cellDefinition:(ACRTableCellDefinition *)definition;
+- (instancetype)init:(ACOBaseCardElement *)baseCardElement
+      cellDefinition:(ACRTableCellDefinition *)definition   
+            rootView:(ACRView *)rootView
+              inputs:(NSMutableArray *)inputs
+          hostConfig:(ACOHostConfig *)acoConfig;
 
 @end
 
