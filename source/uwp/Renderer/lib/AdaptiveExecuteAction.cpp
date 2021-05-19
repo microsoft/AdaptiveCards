@@ -5,21 +5,20 @@
 #include "AdaptiveExecuteAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveExecuteAction::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ExecuteAction> executeAction =
-            std::make_shared<AdaptiveSharedNamespace::ExecuteAction>();
+        std::shared_ptr<AdaptiveCards::ExecuteAction> executeAction = std::make_shared<AdaptiveCards::ExecuteAction>();
         return RuntimeClassInitialize(executeAction);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveExecuteAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ExecuteAction>& sharedExecuteAction)
+    HRESULT AdaptiveExecuteAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ExecuteAction>& sharedExecuteAction)
     try
     {
         auto sharedJson = sharedExecuteAction->GetDataJson();
@@ -28,18 +27,19 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(StringToJsonValue(sharedExecuteAction->GetDataJson(), &m_dataJson));
         }
 
-        m_associatedInputs = static_cast<ABI::AdaptiveNamespace::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
+        m_associatedInputs =
+            static_cast<ABI::AdaptiveCards::Rendering::Uwp::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedExecuteAction->GetVerb(), m_verb.GetAddressOf()));
 
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedExecuteAction));
+        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedExecuteAction));
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveExecuteAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveExecuteAction::get_ActionType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveNamespace::ActionType::Execute;
+        *actionType = ABI::AdaptiveCards::Rendering::Uwp::ActionType::Execute;
         return S_OK;
     }
 
@@ -51,13 +51,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(_Out_ ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs)
+    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(_Out_ ABI::AdaptiveCards::Rendering::Uwp::AssociatedInputs* associatedInputs)
     {
         *associatedInputs = m_associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveExecuteAction::put_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs associatedInputs)
+    HRESULT AdaptiveExecuteAction::put_AssociatedInputs(ABI::AdaptiveCards::Rendering::Uwp::AssociatedInputs associatedInputs)
     {
         m_associatedInputs = associatedInputs;
         return S_OK;
@@ -67,11 +67,10 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveExecuteAction::put_Verb(_In_ HSTRING verb) { return m_verb.Set(verb); }
 
-    HRESULT AdaptiveExecuteAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    HRESULT AdaptiveExecuteAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ExecuteAction> executeAction =
-            std::make_shared<AdaptiveSharedNamespace::ExecuteAction>();
+        std::shared_ptr<AdaptiveCards::ExecuteAction> executeAction = std::make_shared<AdaptiveCards::ExecuteAction>();
         RETURN_IF_FAILED(CopySharedElementProperties(*executeAction));
 
         std::string jsonAsString;
@@ -81,7 +80,7 @@ namespace AdaptiveNamespace
             executeAction->SetDataJson(std::move(jsonAsString));
         }
 
-        executeAction->SetAssociatedInputs(static_cast<AdaptiveSharedNamespace::AssociatedInputs>(m_associatedInputs));
+        executeAction->SetAssociatedInputs(static_cast<AdaptiveCards::AssociatedInputs>(m_associatedInputs));
 
         std::string verb;
         RETURN_IF_FAILED(HStringToUTF8(m_verb.Get(), verb));

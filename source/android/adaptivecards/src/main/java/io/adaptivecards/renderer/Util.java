@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -23,24 +24,12 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.CharVector;
-import io.adaptivecards.objectmodel.ChoiceSetInput;
-import io.adaptivecards.objectmodel.Column;
-import io.adaptivecards.objectmodel.ColumnSet;
-import io.adaptivecards.objectmodel.Container;
-import io.adaptivecards.objectmodel.FactSet;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.Image;
-import io.adaptivecards.objectmodel.ImageSet;
+import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.JsonValue;
-import io.adaptivecards.objectmodel.Media;
 import io.adaptivecards.objectmodel.Mode;
 import io.adaptivecards.objectmodel.ParseContext;
-import io.adaptivecards.objectmodel.RichTextBlock;
-import io.adaptivecards.objectmodel.SubmitAction;
-import io.adaptivecards.objectmodel.SubmitActionParser;
-import io.adaptivecards.objectmodel.TextBlock;
-import io.adaptivecards.objectmodel.TextBlockParser;
-import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
+import io.adaptivecards.renderer.action.ActionElementRendererIconImageLoaderAsync;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public final class Util {
@@ -341,6 +330,7 @@ public final class Util {
         dest.SetTitle(origin.GetTitle());
         dest.SetFallbackContent(origin.GetFallbackContent());
         dest.SetFallbackType(origin.GetFallbackType());
+        dest.SetTooltip(origin.GetTooltip());
     }
 
     /**
@@ -488,6 +478,20 @@ public final class Util {
         }
 
         return new Pair<>(primaryActionElementVector,secondaryActionElementVector);
+    }
+
+    public static void loadIcon(Context context, View view, String iconUrl, HostConfig hostConfig, RenderedAdaptiveCard renderedCard, IconPlacement iconPlacement)
+    {
+        ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(
+            renderedCard,
+            view,
+            hostConfig.GetImageBaseUrl(),
+            iconPlacement,
+            hostConfig.GetActions().getIconSize(),
+            hostConfig.GetSpacing().getDefaultSpacing(),
+            context
+        );
+        imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, iconUrl);
     }
 
 }

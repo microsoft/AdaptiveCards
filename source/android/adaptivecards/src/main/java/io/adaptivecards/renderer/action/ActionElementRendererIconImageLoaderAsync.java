@@ -16,14 +16,14 @@ import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 
-class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
+public class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
 {
     private final IconPlacement m_iconPlacement;
     private final long m_iconSize;
     private final long m_padding;
     private final WeakReference<Context> m_context;
 
-    protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding, Context context)
+    public ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding, Context context)
     {
         super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
         m_iconPlacement = iconPlacement;

@@ -6,9 +6,9 @@
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept
     try
@@ -27,23 +27,23 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveFactSetConfig::get_Title(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextConfig** titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Title(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig** titleTextConfig)
     {
         return m_title.CopyTo(titleTextConfig);
     }
 
-    HRESULT AdaptiveFactSetConfig::put_Title(_In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Title(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig* titleTextConfig)
     {
         m_title = titleTextConfig;
         return S_OK;
     }
 
-    HRESULT AdaptiveFactSetConfig::get_Value(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextConfig** valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Value(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig** valueTextConfig)
     {
         return m_value.CopyTo(valueTextConfig);
     }
 
-    HRESULT AdaptiveFactSetConfig::put_Value(_In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Value(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig* valueTextConfig)
     {
         m_value = valueTextConfig;
         return S_OK;

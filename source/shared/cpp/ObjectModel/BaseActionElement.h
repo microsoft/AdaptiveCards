@@ -9,7 +9,7 @@
 
 void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties);
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseActionElement : public BaseElement
     {
@@ -60,9 +60,7 @@ namespace AdaptiveSharedNamespace
                                                                                       const std::string& jsonString);
         static std::shared_ptr<BaseActionElement> DeserializeBaseProperties(ParseContext& context, const Json::Value& json);
 
-        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
-                                    const Json::Value& json,
-                                    std::shared_ptr<BaseElement>& element);
+        static void ParseJsonObject(AdaptiveCards::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     private:
         void PopulateKnownPropertiesSet();

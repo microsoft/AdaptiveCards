@@ -4,7 +4,7 @@
 
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     // Used to uniquely identify a single BaseElement-derived object through the course of deserializing. For more
     // details, refer to the giant comment on ID collision detection in ParseContext.cpp.

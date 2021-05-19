@@ -26,10 +26,14 @@ class Debug:
         """
         self.od_model = od_model
 
-    def visualize_custom_image_pipeline_objects(self, image_copy: np.array,
-                                                detected_coords: List[Tuple],
-                                                image: Image,
-                                                image_np: np.array):
+    # pylint: disable=no-self-use
+    def visualize_custom_image_pipeline_objects(
+        self,
+        image_copy: np.array,
+        detected_coords: List[Tuple],
+        image: Image,
+        image_np: np.array,
+    ):
         """
         Visualize the custom image pipeline objects
         @param image_copy: opencv input image
@@ -39,11 +43,16 @@ class Debug:
         """
         image_extraction = ImageExtraction()
         image_extraction.get_image_with_boundary_boxes(
-            image=image_copy, detected_coords=detected_coords,
-            pil_image=image, faster_rcnn_image=image_np)
+            image=image_copy,
+            detected_coords=detected_coords,
+            pil_image=image,
+            faster_rcnn_image=image_np,
+        )
 
-    def plot_debug_images(self, faster_rcnn_image: np.array,
-                          image_pipeline_image: np.array):
+    # pylint: disable=no-self-use
+    def plot_debug_images(
+        self, faster_rcnn_image: np.array, image_pipeline_image: np.array
+    ):
         """
         Plots the debugs images and returns the base64 string of the plot
 
@@ -56,13 +65,13 @@ class Debug:
         plt.subplot(1, 2, 1)
         plt.title("RCNN Model Objects")
         plt.imshow(cv2.cvtColor(faster_rcnn_image, cv2.COLOR_BGR2RGB))
-        plt.axis('off')
+        plt.axis("off")
         plt.subplot(1, 2, 2)
         plt.title("Custom Image Pipeline Objects")
         plt.imshow(cv2.cvtColor(image_pipeline_image, cv2.COLOR_BGR2RGB))
-        plt.axis('off')
+        plt.axis("off")
         pic_iobytes = io.BytesIO()
-        plt.savefig(pic_iobytes, format='png')
+        plt.savefig(pic_iobytes, format="png")
         pic_iobytes.seek(0)
 
         return base64.b64encode(pic_iobytes.read()).decode()
@@ -77,12 +86,9 @@ class Debug:
         @return: list of boundaries, classes , scores , output dict
         """
         # Extract the design objects from faster rcnn model
-        output_dict = self.od_model.get_objects(
-            image_np=image_np, image=image
-        )
+        output_dict = self.od_model.get_objects(image_np=image_np, image=image)
         boxes = np.squeeze(output_dict["detection_boxes"])
-        classes = np.squeeze(
-            output_dict["detection_classes"]).astype(np.int32)
+        classes = np.squeeze(output_dict["detection_classes"]).astype(np.int32)
         scores = np.squeeze(output_dict["detection_scores"])
 
         return boxes, classes, scores, output_dict
@@ -99,19 +105,22 @@ class Debug:
         pil_image = pil_image.convert("RGB")
         image_np = np.asarray(pil_image)
         image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
-        (boxes, classes, scores,
-         output_dict) = self.get_boundary_boxes(image_np, pil_image)
+        (boxes, classes, scores, output_dict) = self.get_boundary_boxes(
+            image_np, pil_image
+        )
         predict_card = PredictCard(self.od_model)
 
         # Custom pipelne
         image_buffer = plot_results(pil_image, classes, scores, boxes)
         # retval, image_buffer = cv2.imencode(".png", image_np)
         image_model_base64_string = base64.b64encode(
-            image_buffer.read()).decode()
+            image_buffer.read()
+        ).decode()
         # {"image": self.plot_debug_images(image_np, image_copy)}
         debug_output = {"image": image_model_base64_string}
         # generate card from existing workflow
-        predict_json = predict_card.generate_card(output_dict, pil_image,
-                                                  image_np, card_format)
+        predict_json = predict_card.generate_card(
+            output_dict, pil_image, image_np, card_format
+        )
         debug_output.update(predict_json)
         return debug_output

@@ -5,23 +5,47 @@
 #include "ParseContext.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
-std::string BackgroundImage::GetUrl() const { return m_url; }
+std::string BackgroundImage::GetUrl() const
+{
+    return m_url;
+}
 
-void BackgroundImage::SetUrl(const std::string& value) { m_url = value; }
+void BackgroundImage::SetUrl(const std::string& value)
+{
+    m_url = value;
+}
 
-ImageFillMode BackgroundImage::GetFillMode() const { return m_fillMode; }
+ImageFillMode BackgroundImage::GetFillMode() const
+{
+    return m_fillMode;
+}
 
-void BackgroundImage::SetFillMode(const ImageFillMode& value) { m_fillMode = value; }
+void BackgroundImage::SetFillMode(const ImageFillMode& value)
+{
+    m_fillMode = value;
+}
 
-HorizontalAlignment BackgroundImage::GetHorizontalAlignment() const { return m_hAlignment; }
+HorizontalAlignment BackgroundImage::GetHorizontalAlignment() const
+{
+    return m_hAlignment;
+}
 
-void BackgroundImage::SetHorizontalAlignment(const HorizontalAlignment& value) { m_hAlignment = value; }
+void BackgroundImage::SetHorizontalAlignment(const HorizontalAlignment& value)
+{
+    m_hAlignment = value;
+}
 
-VerticalAlignment BackgroundImage::GetVerticalAlignment() const { return m_vAlignment; }
+VerticalAlignment BackgroundImage::GetVerticalAlignment() const
+{
+    return m_vAlignment;
+}
 
-void BackgroundImage::SetVerticalAlignment(const VerticalAlignment& value) { m_vAlignment = value; }
+void BackgroundImage::SetVerticalAlignment(const VerticalAlignment& value)
+{
+    m_vAlignment = value;
+}
 
 // Indicates non-default values have been set. If false, serialization can be safely skipped.
 bool BackgroundImage::ShouldSerialize() const
@@ -55,8 +79,7 @@ Json::Value BackgroundImage::SerializeToJsonValue() const
 
         if (m_fillMode != ImageFillMode::Cover)
         {
-            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FillMode)] =
-                ImageFillModeToString(m_fillMode);
+            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FillMode)] = ImageFillModeToString(m_fillMode);
         }
 
         if (m_hAlignment != HorizontalAlignment::Left)
@@ -67,8 +90,7 @@ Json::Value BackgroundImage::SerializeToJsonValue() const
 
         if (m_vAlignment != VerticalAlignment::Top)
         {
-            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalAlignment)] =
-                VerticalAlignmentToString(m_vAlignment);
+            root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalAlignment)] = VerticalAlignmentToString(m_vAlignment);
         }
     }
     return root;
@@ -95,8 +117,7 @@ std::shared_ptr<BackgroundImage> BackgroundImage::Deserialize(const Json::Value&
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
 
-    image->SetFillMode(ParseUtil::GetEnumValue<ImageFillMode>(
-        json, AdaptiveCardSchemaKey::FillMode, ImageFillMode::Cover, ImageFillModeFromString));
+    image->SetFillMode(ParseUtil::GetEnumValue<ImageFillMode>(json, AdaptiveCardSchemaKey::FillMode, ImageFillMode::Cover, ImageFillModeFromString));
 
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));

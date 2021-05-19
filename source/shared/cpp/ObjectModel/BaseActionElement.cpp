@@ -5,7 +5,7 @@
 #include "BaseElement.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 constexpr const char* const BaseActionElement::defaultStyle;
 
@@ -86,7 +86,7 @@ bool BaseActionElement::GetIsEnabled() const
     return m_isEnabled;
 }
 
-void AdaptiveSharedNamespace::BaseActionElement::SetIsEnabled(const bool isEnabled)
+void AdaptiveCards::BaseActionElement::SetIsEnabled(const bool isEnabled)
 {
     m_isEnabled = isEnabled;
 }
@@ -158,9 +158,7 @@ void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInforma
     }
 }
 
-void BaseActionElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
-                                        const Json::Value& json,
-                                        std::shared_ptr<BaseElement>& baseElement)
+void BaseActionElement::ParseJsonObject(AdaptiveCards::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
 {
     baseElement = ParseUtil::GetActionFromJsonValue(context, json);
 }

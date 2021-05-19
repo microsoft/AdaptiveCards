@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "DateTimePreparsedToken.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 DateTimePreparsedToken::DateTimePreparsedToken() :
     m_text(""), m_date{}, m_format(DateTimePreparsedTokenFormat::RegularString)

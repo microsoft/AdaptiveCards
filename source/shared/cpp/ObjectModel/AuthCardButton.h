@@ -5,14 +5,16 @@
 #include "pch.h"
 #include "ParseContext.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class AuthCardButton
     {
     public:
         AuthCardButton() {}
         AuthCardButton(std::string type, std::string title, std::string image, std::string value) :
-            m_type(type), m_title(title), m_image(image), m_value(value) {}
+            m_type(type), m_title(title), m_image(image), m_value(value)
+        {
+        }
 
         std::string GetType();
         const std::string GetType() const;

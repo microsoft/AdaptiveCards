@@ -16,7 +16,8 @@ public enum ActionType {
   Submit,
   ToggleVisibility,
   Custom,
-  UnknownAction;
+  UnknownAction,
+  Overflow;
 
   public final int swigValue() {
     return swigValue;

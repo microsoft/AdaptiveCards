@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "BaseInputElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class DateInput : public BaseInputElement
     {

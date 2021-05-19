@@ -12,6 +12,7 @@ Usage:
   python generate_tfrecord.py --csv_input=data/test_labels.csv \
       --output_path=test.record
 """
+# pylint: disable=no-member
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -23,7 +24,7 @@ from collections import namedtuple
 import pandas as pd
 import tensorflow as tf
 from PIL import Image
-from object_detection.utils import dataset_util
+from object_detection.utils import dataset_util  # pylint: disable=import-error
 
 flags = tf.app.flags
 flags.DEFINE_string("csv_input", "", "Path to the CSV input")
@@ -49,11 +50,10 @@ def class_text_to_int(row_label):
         return 4
     if row_label == "image":
         return 5
-    else:
-        return 0
+    return 0
 
 
-def create_tf_example(group, path):
+def create_tf_example(group, path):  # pylint: disable=too-many-locals
     """
     Generate tf recods by parsing the xml with
     the properites and labels.
@@ -65,8 +65,9 @@ def create_tf_example(group, path):
     """
     # import pdb; pdb.set_trace()
     # name_filename = group.filename[:group.filename.find(".")] + ".png"
-    with tf.gfile.GFile(os.path.join(path, "{}".format(group.filename)),
-                        "rb") as fid:
+    with tf.gfile.GFile(
+        os.path.join(path, "{}".format(group.filename)), "rb"
+    ) as fid:
         encoded_jpg = fid.read()
     encoded_jpg_io = io.BytesIO(encoded_jpg)
     image = Image.open(encoded_jpg_io)
@@ -81,7 +82,10 @@ def create_tf_example(group, path):
     classes_text = []
     classes = []
 
-    for index, row in group.object.iterrows():
+    for (
+        index,  # pylint: disable=unused-variable
+        row,
+    ) in group.object.iterrows():
         xmins.append(row["xmin"] / width)
         xmaxs.append(row["xmax"] / width)
         ymins.append(row["ymin"] / height)
@@ -89,22 +93,36 @@ def create_tf_example(group, path):
         classes_text.append(row["class"].encode("utf8"))
         classes.append(class_text_to_int(row["class"]))
 
-    tf_example = tf.train.Example(features=tf.train.Features(feature={
-        "image/height": dataset_util.int64_feature(height),
-        "image/width": dataset_util.int64_feature(width),
-        "image/filename": dataset_util.bytes_feature(filename),
-        "image/source_id": dataset_util.bytes_feature(filename),
-        "image/encoded": dataset_util.bytes_feature(encoded_jpg),
-        "image/format": dataset_util.bytes_feature(image_format),
-        "image/object/bbox/xmin": dataset_util.float_list_feature(xmins),
-        "image/object/bbox/xmax": dataset_util.float_list_feature(xmaxs),
-        "image/object/bbox/ymin": dataset_util.float_list_feature(ymins),
-        "image/object/bbox/ymax": dataset_util.float_list_feature(ymaxs),
-        "image/object/class/text": dataset_util.bytes_list_feature(
-            classes_text),
-        "image/object/class/label": dataset_util.int64_list_feature(
-            classes),
-    }))
+    tf_example = tf.train.Example(
+        features=tf.train.Features(
+            feature={
+                "image/height": dataset_util.int64_feature(height),
+                "image/width": dataset_util.int64_feature(width),
+                "image/filename": dataset_util.bytes_feature(filename),
+                "image/source_id": dataset_util.bytes_feature(filename),
+                "image/encoded": dataset_util.bytes_feature(encoded_jpg),
+                "image/format": dataset_util.bytes_feature(image_format),
+                "image/object/bbox/xmin": dataset_util.float_list_feature(
+                    xmins
+                ),
+                "image/object/bbox/xmax": dataset_util.float_list_feature(
+                    xmaxs
+                ),
+                "image/object/bbox/ymin": dataset_util.float_list_feature(
+                    ymins
+                ),
+                "image/object/bbox/ymax": dataset_util.float_list_feature(
+                    ymaxs
+                ),
+                "image/object/class/text": dataset_util.bytes_list_feature(
+                    classes_text
+                ),
+                "image/object/class/label": dataset_util.int64_list_feature(
+                    classes
+                ),
+            }
+        )
+    )
     return tf_example
 
 
@@ -118,9 +136,11 @@ def main(_):
     path = os.path.join(FLAGS.image_dir)
     examples = pd.read_csv(FLAGS.csv_input)
     data = namedtuple("data", ["filename", "object"])
-    gb = examples.groupby("filename")
-    grouped = [data(filename, gb.get_group(x))
-               for filename, x in zip(gb.groups.keys(), gb.groups)]
+    gbs = examples.groupby("filename")
+    grouped = [
+        data(filename, gbs.get_group(x))
+        for filename, x in zip(gbs.groups.keys(), gbs.groups)
+    ]
     for group in grouped:
         tf_example = create_tf_example(group, path)
         writer.write(tf_example.SerializeToString())

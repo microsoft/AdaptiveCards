@@ -345,4 +345,8 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return AdaptiveCardObjectModelJNI.c_adaptiveCardsFeature_get();
   }
 
+  public static String ToLowercase(String value) {
+    return AdaptiveCardObjectModelJNI.ToLowercase(value);
+  }
+
 }
