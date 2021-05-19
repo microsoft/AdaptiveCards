@@ -2892,17 +2892,43 @@ export class TextInput extends Input {
     }
 }
 
+export class FileResult extends SerializableObject {
+    //#region Schema
+
+    static readonly fileNameProperty = new StringProperty(Versions.v1_0, "fileName");
+    static readonly contentProperty  = new StringProperty(Versions.v1_0, "content");
+
+    @property(FileResult.fileNameProperty)
+    fileName?: string;
+
+    @property(FileResult.contentProperty)
+    content?: string;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return "FileResult";
+    }
+
+    constructor(fileName?: string, content?: string) {
+        super();
+
+        this.fileName = fileName;
+        this.content = content;
+    }
+}
+
 export class FileInput extends Input {
   //#region Schema
 
-  static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
+  static readonly valueProperty = new SerializableObjectProperty(Versions.v1_0, "value", FileResult);
   static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
   static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
   static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.File);
   static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
 
   @property(FileInput.valueProperty)
-  defaultValue?: string;
+  defaultValue?: FileResult;
 
   @property(FileInput.maxLengthProperty)
   maxLength?: number;
@@ -2931,7 +2957,17 @@ export class FileInput extends Input {
           input.maxLength = this.maxLength;
       }
 
-      input.oninput = () => { this.valueChanged(); }
+      input.oninput = () => {
+          this.valueChanged();
+          let fileName = (<HTMLInputElement>this.renderedInputControlElement).value;
+          let file = (<HTMLInputElement>this.renderedInputControlElement).files?.item(0) as File;
+          let fileReader = new FileReader();
+          fileReader.onload = () => {
+              let content = fileReader.result as string;
+              this.defaultValue = new FileResult(fileName, content);
+          }
+          fileReader.readAsDataURL(file);
+      }
   }
 
   protected internalRender(): HTMLElement | undefined {
@@ -2964,21 +3000,9 @@ export class FileInput extends Input {
       return this.value ? true : false;
   }
 
-  isValid(): boolean {
-      if (!this.value) {
-          return true;
-      }
-
-      if (this.regex) {
-          return new RegExp(this.regex, "g").test(this.value);
-      }
-
-      return true;
-  }
-
   get value(): string | undefined {
-      if (this.renderedInputControlElement) {
-          return (<HTMLInputElement>this.renderedInputControlElement).value;
+      if (this.defaultValue) {
+          return JSON.stringify(this.defaultValue, undefined, 4);
       }
       else {
           return undefined;
