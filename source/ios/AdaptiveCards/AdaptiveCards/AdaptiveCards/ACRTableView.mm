@@ -1,8 +1,8 @@
 //
 //  ACRTableView.m
-//  SPMTest
+//  ACRTableView
 //
-//  Created by Inyoung Woo on 5/14/21.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 
 #import "ACRTableView.h"

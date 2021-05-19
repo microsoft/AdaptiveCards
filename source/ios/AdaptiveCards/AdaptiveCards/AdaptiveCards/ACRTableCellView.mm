@@ -1,8 +1,8 @@
 //
 //  ACRTableCell.m
-//  SPMTest
+//  ACRTableCell
 //
-//  Created by Inyoung Woo on 5/14/21.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 
 #import "ACRTableCellView.h"
@@ -59,10 +59,6 @@
     }
 }
 
-- (void)configHorizontalAlignment
-{
-}
-
 - (void)configureForStyle:(ACOHostConfig *)acoConfig
 {
     if (_definition) {
@@ -84,18 +80,6 @@
 
 @end
 
-@implementation ACRTableCellDefinition {
-    ACRHorizontalAlignment _horizontalAlignment;
-    ACRContainerStyle _style;
-}
-
-- (instancetype)init:(ACRHorizontalAlignment)horizontalAlignment
-{
-    self = [super init];
-    if (self) {
-        _horizontalAlignment = horizontalAlignment;
-    }
-    return self;
-}
+@implementation ACRTableCellDefinition
 
 @end
