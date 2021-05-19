@@ -18,6 +18,17 @@ namespace AdaptiveCards.Rendering.Wpf
         public static void ToggleVisibility(
             FrameworkElement uiElement,
             AdaptiveAction inlineAction,
+            AdaptiveRenderContext context)
+        {
+            if (inlineAction is AdaptiveToggleVisibilityAction iAction)
+            {
+                context.InvokeAction(uiElement, new AdaptiveActionEventArgs(iAction));
+            }
+        }
+
+        public static void ForceToggleVisibility(
+            FrameworkElement uiElement,
+            AdaptiveAction inlineAction,
             AdaptiveRenderContext context,
             bool isVisible)
         {
@@ -61,7 +72,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     uiCheckbox.Checked += (sender, e) =>
                     {
-                        ToggleVisibility(
+                        ForceToggleVisibility(
                             uiCheckbox,
                             choice.InlineAction,
                             context,
@@ -72,7 +83,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     uiCheckbox.Unchecked += (sender, e) =>
                     {
-                        ToggleVisibility(
+                        ForceToggleVisibility(
                             uiCheckbox,
                             choice.InlineAction,
                             context,
@@ -112,19 +123,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             ToggleVisibility(
                                 uiComboItem,
                                 choice.InlineAction,
-                                context,
-                                true);
-
-                            e.Handled = true;
-                        };
-
-                        uiComboItem.Unselected += (sender, e) =>
-                        {
-                            ToggleVisibility(
-                                uiComboItem,
-                                choice.InlineAction,
-                                context,
-                                false);
+                                context);
 
                             e.Handled = true;
                         };
@@ -150,19 +149,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             ToggleVisibility(
                                 uiRadio,
                                 choice.InlineAction,
-                                context,
-                                true);
-
-                            e.Handled = true;
-                        };
-
-                        uiRadio.Unchecked += (sender, e) =>
-                        {
-                            ToggleVisibility(
-                                uiRadio,
-                                choice.InlineAction,
-                                context,
-                                false);
+                                context);
 
                             e.Handled = true;
                         };

@@ -157,7 +157,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (File.Exists(fileName))
             {
-                var content = File.ReadAllBytes(fileName);
+                var file = File.ReadAllBytes(fileName);
+                var content = Convert.ToBase64String(file);
 
                 return JsonConvert.SerializeObject(new
                 {
