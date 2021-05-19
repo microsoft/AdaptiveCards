@@ -6,29 +6,31 @@
 //
 
 #import "ACRTableCellView.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
 
 @implementation ACRTableCellView {
     __weak UIView *_contentView;
     ACRTableCellDefinition *_definition;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
-
-- (instancetype)init:(UIView *)content cellDefinition:(ACRTableCellDefinition *)definition
+- (instancetype)init:(ACOBaseCardElement *)baseCardElement
+      cellDefinition:(ACRTableCellDefinition *)definition
+            rootView:(ACRView *)rootView
+              inputs:(NSMutableArray *)inputs
+          hostConfig:(ACOHostConfig *)acoConfig;
 {
     self = [super init];
     if (self) {
-        _contentView = content;
+
+        [[ACRTableCellRenderer getInstance] render:self rootView:rootView inputs:inputs baseCardElement:baseCardElement hostConfig:acoConfig];
         _definition = definition;
-        [self addSubview:content];
+        if ([self.subviews count]) {
+            _contentView = self.subviews[0];
+        }
+        [self addSubview:_contentView];
         [self setAutoLayout];
-        [self configureForStyle];
+        [self configureForStyle:acoConfig];
         _spacing = 8.0f;
     }
     return self;
@@ -61,13 +63,13 @@
 {
 }
 
-- (void)configureForStyle
+- (void)configureForStyle:(ACOHostConfig *)acoConfig
 {
     if (_definition) {
         self.layoutMargins = UIEdgeInsetsMake(8.0f, 8.0f, 8.0f, 8.0f);
-        self.backgroundColor = [UIColor grayColor];
         _contentView.preservesSuperviewLayoutMargins = NO;
         self.preservesSuperviewLayoutMargins = NO;
+        self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_definition.style];
     }
 }
 

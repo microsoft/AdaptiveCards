@@ -6,25 +6,37 @@
 //
 
 #import "AdaptiveCards.h"
+#import "ACRContentStackView.h"
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ACRColumnDefinition : NSObject
 
+// if pixel, numeric has the pixel width, else has the fraction, 
+// the width / total relative width
 @property CGFloat numeric;
-@property NSInteger baseIndex;
+// sum of all pixel width in a row
+@property CGFloat totalPixelWidth;
+// the column definition was invalid; will be skipped in rendering
 @property BOOL isValid;
+// the column has pixel width;
+@property BOOL isPixelWidth;
 
-- (instancetype)init:(CGFloat)numeric;
+- (instancetype)initWithPixelWidth:(CGFloat)numeric;
 
-- (instancetype)init:(CGFloat)numeric baseIndex:(NSInteger)baseIndex;
+- (instancetype)initWithRelativeWidth:(CGFloat)numeric
+                      totalPixelWidth:(CGFloat)totalPixelWidth;
 
 @end
 
-@interface ACRTableRowView : UIView
+@interface ACRTableRowView : ACRContentStackView
 
-- (instancetype)init:(ACOBaseCardElement *)acoElem columnDefinitions:(NSArray<ACRColumnDefinition *> *)columnDefinition;
+- (instancetype)init:(ACOBaseCardElement *)acoElem
+    columnDefinitions:(NSArray<ACRColumnDefinition *> *)columnDefinition
+             rootView:(ACRView *)rootView
+               inputs:(NSMutableArray *)inputs
+           hostConfig:(ACOHostConfig *)acoConfig;
 
 @end
 
