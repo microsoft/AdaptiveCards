@@ -111,7 +111,6 @@ public enum AdaptiveCardSchemaKey {
   Language,
   Large,
   Left,
-  Level,
   Light,
   Lighter,
   LineColor,
