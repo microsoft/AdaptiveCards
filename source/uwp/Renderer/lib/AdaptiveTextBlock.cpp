@@ -33,6 +33,7 @@ namespace AdaptiveNamespace
         m_wrap = sharedTextBlock->GetWrap();
         m_maxLines = sharedTextBlock->GetMaxLines();
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+        m_style = static_cast<ABI::AdaptiveNamespace::TextStyle>(sharedTextBlock->GetStyle());
 
         InitializeTextElement(sharedTextBlock);
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
@@ -76,6 +77,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveTextBlock::get_Style(_Out_ ABI::AdaptiveNamespace::TextStyle* style)
+    {
+        *style = m_style;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTextBlock::put_Style(ABI::AdaptiveNamespace::TextStyle style)
+    {
+        m_style = style;
+        return S_OK;
+    }
+
     HRESULT AdaptiveTextBlock::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::TextBlock;
@@ -93,6 +106,7 @@ namespace AdaptiveNamespace
         textBlock->SetWrap(m_wrap);
         textBlock->SetMaxLines(m_maxLines);
         textBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
+        textBlock->SetStyle(static_cast<AdaptiveSharedNamespace::TextStyle>(m_style));
 
         sharedTextBlock = std::move(textBlock);
         return S_OK;

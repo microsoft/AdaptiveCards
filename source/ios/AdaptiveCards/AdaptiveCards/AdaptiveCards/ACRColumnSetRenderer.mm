@@ -42,10 +42,13 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
+    [rootView.context pushBaseCardElementContext:acoElem];
+
     ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] initWithStyle:(ACRContainerStyle)columnSetElem->GetStyle()
                                                                   parentStyle:[viewGroup style]
                                                                    hostConfig:acoConfig
                                                                     superview:viewGroup];
+    columnSetView.rtl = rootView.context.rtl;
 
     [viewGroup addArrangedSubview:columnSetView];
 
@@ -199,7 +202,7 @@
         prevColumn = column;
     }
 
-    if ([viewsWithPaddingView containsObject:viewWithMaxSize]) {
+    if (columns.size() > 1 && [viewsWithPaddingView containsObject:viewWithMaxSize]) {
         viewWithMaxSize.hasPaddingView = NO;
         [viewWithMaxSize removeLastViewFromArrangedSubview];
     }
@@ -235,6 +238,10 @@
     [columnSetView hideIfSubviewsAreAllHidden];
 
     [columnSetView setNeedsLayout];
+
+    [rootView.context popBaseCardElementContext:acoElem];
+
+    [columnSetView toggleVisibilityOfFirstView];
 
     return columnSetView;
 }

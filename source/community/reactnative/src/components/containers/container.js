@@ -16,21 +16,19 @@ import { SelectAction } from '../actions';
 import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
-import { HostConfigManager } from '../../utils/host-config';
-import { StyleManager } from "../../styles/style-config";
 import { InputContext } from '../../utils/context';
 import { ContainerWrapper } from './';
 
 export class Container extends React.Component {
 
-	hostConfig = HostConfigManager.getHostConfig();
-	styleConfig = StyleManager.getManager().styles;
 	static contextType = InputContext;
 
 	constructor(props) {
 		super(props);
 		this.payload = props.json;
 		this.selectionActionData = props.json.selectAction;
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 	}
 
 	/**
@@ -52,7 +50,10 @@ export class Container extends React.Component {
 		}
 
 		children = Registry.getManager().parseRegistryComponents(this.payload.items, this.context.onParseError);
-		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.payload.style, isFirst: index === 0 }));
+		return children.map((ChildElement, index) => React.cloneElement(ChildElement, {
+			containerStyle: this.payload.style,
+			isFirst: index === 0, configManager: this.props.configManager
+		}));
 	}
 
 	internalRenderer = () => {
@@ -64,17 +65,17 @@ export class Container extends React.Component {
 		const showValidationText = this.props.isError && this.context.showErrors;
 
 		var containerContent = (
-			<ContainerWrapper json={payload} style={containerStyle} containerStyle={this.props.containerStyle}>
-				{payload.spacing && payload.separator && this.getSpacingElement()}
+			<ContainerWrapper configManager={this.props.configManager} json={payload} style={containerStyle} containerStyle={this.props.containerStyle}>
+				{(payload.spacing || payload.separator) && this.getSpacingElement()}
 				{this.parsePayload()}
 				{showValidationText && this.getValidationText()}
 			</ContainerWrapper>
 		);
 		if ((payload.selectAction === undefined)
-			|| (HostConfigManager.supportsInteractivity() === false)) {
+			|| (!this.hostConfig.supportsInteractivity)) {
 			return containerContent;
 		} else {
-			return <SelectAction selectActionData={payload.selectAction}>
+			return <SelectAction configManager={this.props.configManager} selectActionData={payload.selectAction}>
 				{containerContent}
 			</SelectAction>;
 		}
@@ -91,12 +92,15 @@ export class Container extends React.Component {
 			Enums.Spacing.Default);
 		const spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
 
-		// spacing styles
+		// separator and spacing styles
 		const separatorStyles = [{ height: spacing }];
-
+		
+		const { isFirst } = this.props; //isFirst represent, it is first element
 		// separator styles
-		separatorStyles.push(this.styleConfig.separatorStyle);
-		separatorStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2, height: 0 });
+		this.payload.separator && !isFirst && separatorStyles.push(this.styleConfig.separatorStyle);
+
+		// spacing styles
+		this.payload.spacing && separatorStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2, height: 0 });
 		return <View style={separatorStyles}></View>
 	}
 

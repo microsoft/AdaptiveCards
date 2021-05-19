@@ -21,12 +21,12 @@ namespace AdaptiveSharedNamespace
         void SetFontSize(TextSize size, unsigned int value);
 
     private:
-        // UINT_MAX used to check if value was defined
-        unsigned int _small = UINT_MAX;
-        unsigned int _default = UINT_MAX;
-        unsigned int _medium = UINT_MAX;
-        unsigned int _large = UINT_MAX;
-        unsigned int _extraLarge = UINT_MAX;
+        // std::numeric_limits<unsigned int>::max() used to check if value was defined
+        unsigned int _small = std::numeric_limits<unsigned int>::max();
+        unsigned int _default = std::numeric_limits<unsigned int>::max();
+        unsigned int _medium = std::numeric_limits<unsigned int>::max();
+        unsigned int _large = std::numeric_limits<unsigned int>::max();
+        unsigned int _extraLarge = std::numeric_limits<unsigned int>::max();
     };
 
     class FontWeightsConfig
@@ -43,10 +43,10 @@ namespace AdaptiveSharedNamespace
         void SetFontWeight(TextWeight weight, unsigned int value);
 
     private:
-        // UINT_MAX used to check if value was defined
-        unsigned int _lighter = UINT_MAX;
-        unsigned int _default = UINT_MAX;
-        unsigned int _bolder = UINT_MAX;
+        // std::numeric_limits<unsigned int>::max() used to check if value was defined
+        unsigned int _lighter = std::numeric_limits<unsigned int>::max();
+        unsigned int _default = std::numeric_limits<unsigned int>::max();
+        unsigned int _bolder = std::numeric_limits<unsigned int>::max();
     };
 
     struct FontTypeDefinition
@@ -86,8 +86,8 @@ namespace AdaptiveSharedNamespace
 
     // TODO: microsoft/AdaptiveCards#3460 each ColorConfig below needs a HighlightColorConfig initializer
 #ifdef __clang__
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
     struct ColorsConfig
     {
@@ -102,7 +102,7 @@ namespace AdaptiveSharedNamespace
         static ColorsConfig Deserialize(const Json::Value& json, const ColorsConfig& defaultValue);
     };
 #ifdef __clang__
-    #pragma clang diagnostic pop
+#pragma clang diagnostic pop
 #endif
 
     struct TextConfig
@@ -292,7 +292,7 @@ namespace AdaptiveSharedNamespace
         unsigned int maxActions = 5;
         Spacing spacing = Spacing::Default;
         IconPlacement iconPlacement = IconPlacement::AboveTitle;
-        unsigned int iconSize = 30;
+        unsigned int iconSize = 16;
 
         static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
     };
@@ -300,7 +300,7 @@ namespace AdaptiveSharedNamespace
     struct InputLabelConfig
     {
         ForegroundColor color = ForegroundColor::Default;
-        bool isSubtle = false; 
+        bool isSubtle = false;
         TextSize size = TextSize::Default;
         std::string suffix = std::string();
         TextWeight weight = TextWeight::Default;
@@ -341,6 +341,12 @@ namespace AdaptiveSharedNamespace
         bool allowInlinePlayback = true;
 
         static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
+    };
+
+    struct HeadingsConfig
+    {
+        unsigned int level = 2;
+        static HeadingsConfig Deserialize(const Json::Value& json, const HeadingsConfig& defaultValue);
     };
 
     class HostConfig
@@ -412,6 +418,9 @@ namespace AdaptiveSharedNamespace
         InputsConfig GetInputs() const;
         void SetInputs(const InputsConfig value);
 
+        HeadingsConfig GetHeadings() const;
+        void SetHeadings(const HeadingsConfig value);
+
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
         const ColorConfig& GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const;
@@ -433,5 +442,6 @@ namespace AdaptiveSharedNamespace
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
         InputsConfig _inputs;
+        HeadingsConfig _headings;
     };
 }

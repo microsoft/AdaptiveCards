@@ -224,7 +224,13 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         m_onlineImageLoader = onlineImageLoader;
     }
 
-    // By default, this function keeps the bitmap as is
+    /**
+     * Override this method to transform the resolved image before it is rendered.
+     * The result of this method will be passed to {@link #onSuccessfulPostExecute}.
+     * Default implementation applies no transformations.
+     * @param bitmap the resolved image
+     * @return the transformed image
+     */
     public Bitmap styleBitmap(Bitmap bitmap)
     {
         return bitmap;

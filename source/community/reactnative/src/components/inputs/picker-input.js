@@ -9,7 +9,6 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	TextInput,
-	DatePickerIOS,
 	Modal,
 	Button,
 	ViewPropTypes
@@ -18,18 +17,16 @@ import {
 import { InputContextConsumer } from '../../utils/context';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
-import * as Enums from '../../utils/enums';
-import { StyleManager } from '../../styles/style-config';
-import { HostConfigManager } from '../../utils/host-config';
+import DateTimePicker from '@react-native-community/datetimepicker'
 import InputLabel from "./input-label";
 
 export class PickerInput extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
-
 	constructor(props) {
 		super(props);
 
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.placeHolder = Constants.EmptyString;
@@ -55,12 +52,12 @@ export class PickerInput extends React.Component {
 		this.label = this.payload.label;
 	}
 
-	componentWillReceiveProps(newProps) {
-		this.setState({ isError: this.isRequired && !newProps.value })
+	static getDerivedStateFromProps(nextProps, prevState) {
+		return { isError: this.isRequired && !nextProps.value }
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -84,8 +81,8 @@ export class PickerInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
-					<ElementWrapper style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
-						<InputLabel isRequired={this.isRequired} label={label} />
+					<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
+						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
 							<View
@@ -119,13 +116,14 @@ export class PickerInput extends React.Component {
 											onPress={this.props.handleModalClose}
 										/>
 									</View>
-									<DatePickerIOS
+									<DateTimePicker
+										display={Platform.OS === Constants.PlatformIOS ? 'spinner' : 'default'}
 										mode={this.props.mode}
 										format={this.props.format}
-										date={this.props.chosenDate || new Date()}
+										value={this.props.chosenDate || new Date()}
 										minimumDate={this.props.minDate}
 										maximumDate={this.props.maxDate}
-										onDateChange={this.props.handleDateChange} />
+										onChange={(event, date) => this.props.handleDateChange(date)} />
 								</View>
 							</View>
 						</Modal>

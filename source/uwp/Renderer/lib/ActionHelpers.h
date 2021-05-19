@@ -44,11 +44,12 @@ namespace AdaptiveNamespace::ActionHelpers
 
     void WrapInTouchTarget(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
                            _In_ ABI::Windows::UI::Xaml::IUIElement* elementToWrap,
-                           _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+                           _In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                            bool fullWidth,
                            const std::wstring& style,
                            HSTRING altText,
+                           bool allowTitleAsTooltip,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
     void HandleSelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,

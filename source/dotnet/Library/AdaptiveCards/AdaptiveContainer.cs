@@ -59,5 +59,14 @@ namespace AdaptiveCards
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
+        /// <summary>
+        /// Sets the text flow direction
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public bool? Rtl { get; set; } = null;
     }
 }

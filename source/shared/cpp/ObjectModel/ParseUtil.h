@@ -4,13 +4,16 @@
 
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
+#include "BackgroundImage.h"
 #include "ParseContext.h"
 
 namespace AdaptiveSharedNamespace
 {
+    class BaseElement;
     class BaseCardElement;
     class BaseActionElement;
     class BackgroundImage;
+    class ParseContext;
 
     namespace ParseUtil
     {
@@ -37,13 +40,21 @@ namespace AdaptiveSharedNamespace
 
         bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired = false);
 
+        std::optional<bool> GetOptionalBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+
         unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue, bool isRequired = false);
 
         int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
 
-        std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<int> defaultValue, bool isRequired = false);
+        std::optional<int> GetOptionalInt(const Json::Value& json,
+                                          AdaptiveCardSchemaKey key,
+                                          std::optional<int> defaultValue,
+                                          bool isRequired = false);
 
-        std::optional<double> GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<double> defaultValue, bool isRequired = false);
+        std::optional<double> GetOptionalDouble(const Json::Value& json,
+                                                AdaptiveCardSchemaKey key,
+                                                std::optional<double> defaultValue,
+                                                bool isRequired = false);
 
         CardElementType GetCardElementType(const Json::Value& json);
 
@@ -62,11 +73,7 @@ namespace AdaptiveSharedNamespace
         Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
 
         template<typename T, typename Fn>
-        T GetEnumValue(const Json::Value& json,
-                       AdaptiveCardSchemaKey key,
-                       T defaultEnumValue,
-                       Fn enumConverter,
-                       bool isRequired = false);
+        T GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, Fn enumConverter, bool isRequired = false);
 
         template<typename T>
         std::shared_ptr<T> DeserializeValue(const Json::Value& json,
@@ -133,11 +140,7 @@ namespace AdaptiveSharedNamespace
     };
 
     template<typename T, typename Fn>
-    T ParseUtil::GetEnumValue(const Json::Value& json,
-                              AdaptiveCardSchemaKey key,
-                              T defaultEnumValue,
-                              Fn enumConverter,
-                              bool isRequired)
+    T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, Fn enumConverter, bool isRequired)
     {
         std::string propertyValueStr = "";
         try
@@ -195,11 +198,10 @@ namespace AdaptiveSharedNamespace
     }
 
     template<typename T>
-    std::shared_ptr<T> ParseUtil::GetElementOfType(
-        ParseContext& context,
-        const Json::Value& json,
-        AdaptiveCardSchemaKey key,
-        const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer)
+    std::shared_ptr<T> ParseUtil::GetElementOfType(ParseContext& context,
+                                                   const Json::Value& json,
+                                                   AdaptiveCardSchemaKey key,
+                                                   const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer)
     {
         auto el = deserializer(context, json);
         return el;
@@ -253,9 +255,7 @@ namespace AdaptiveSharedNamespace
     // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
     // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
     template<typename T>
-    static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
-                                const Json::Value& json,
-                                std::shared_ptr<BaseElement>& baseElement)
+    static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
     {
         T::ParseJsonObject(context, json, baseElement);
     }

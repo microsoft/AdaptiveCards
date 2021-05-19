@@ -71,7 +71,7 @@
     // Set paragraph style such as line break mode and alignment
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineBreakMode = textConfigForBlock.wrap ? NSLineBreakByWordWrapping : NSLineBreakByTruncatingTail;
-    paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:textBlockElement->GetHorizontalAlignment()];
+    paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:textBlockElement->GetHorizontalAlignment() context:rootView.context];
 
     // Obtain text color to apply to the attributed string
     ACRContainerStyle style = viewGroup.style;

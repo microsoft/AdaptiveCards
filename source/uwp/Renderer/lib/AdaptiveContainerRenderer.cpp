@@ -37,6 +37,32 @@ namespace AdaptiveNamespace
         ComPtr<IFrameworkElement> containerPanelAsFrameWorkElement;
         RETURN_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
 
+        // Get any RTL setting set on either the current context or on this container. Any value set on the container
+        // should be set on the context to apply to all children
+        ComPtr<IReference<bool>> previousContextRtl;
+        RETURN_IF_FAILED(renderContext->get_Rtl(&previousContextRtl));
+        ComPtr<IReference<bool>> currentRtl = previousContextRtl;
+
+        ComPtr<IReference<bool>> containerRtl;
+        RETURN_IF_FAILED(adaptiveContainer->get_Rtl(&containerRtl));
+
+        bool updatedRtl = false;
+        if (containerRtl != nullptr)
+        {
+            currentRtl = containerRtl;
+            RETURN_IF_FAILED(renderContext->put_Rtl(currentRtl.Get()));
+            updatedRtl = true;
+        }
+
+        if (currentRtl)
+        {
+            boolean rtlValue;
+            RETURN_IF_FAILED(currentRtl->get_Value(&rtlValue));
+
+            RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft :
+                                                                                            FlowDirection_LeftToRight));
+        }
+
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
         ABI::AdaptiveNamespace::HeightType containerHeightType{};
@@ -74,6 +100,12 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(adaptiveContainer->get_Items(&childItems));
         RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
             childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
+
+        // If we changed the context's rtl setting, set it back after rendering the children
+        if (updatedRtl)
+        {
+            RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
+        }
 
         ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
         RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignment));

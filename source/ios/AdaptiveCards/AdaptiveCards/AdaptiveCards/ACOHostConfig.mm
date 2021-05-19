@@ -18,6 +18,7 @@ using namespace AdaptiveCards;
 @implementation ACOHostConfig {
     std::shared_ptr<HostConfig> _config;
     NSMutableDictionary<NSString *, NSString *> *_fontFamilyNames;
+    NSMutableDictionary<NSNumber *, NSNumber *> *_iconPlacements;
 }
 
 - (instancetype)init
@@ -33,12 +34,12 @@ using namespace AdaptiveCards;
     if (self && config) {
         _config = config;
         _fontFamilyNames = [NSMutableDictionary dictionary];
+        _iconPlacements = [NSMutableDictionary dictionary];
 
         // check if requested font family name is supported by iOS, if so save it for future uses
         [self importFontFamily:AdaptiveCards::FontType::Default];
         [self importFontFamily:AdaptiveCards::FontType::Monospace];
 
-        _allActionsHaveIcons = YES;
         _buttonPadding = 5;
         if (!_config->GetImageBaseUrl().empty()) {
             NSString *tmpURLString = [NSString stringWithCString:_config->GetImageBaseUrl().c_str() encoding:NSUTF8StringEncoding];
@@ -132,15 +133,15 @@ using namespace AdaptiveCards;
     return _config->GetFontSize(type, txtSz);
 }
 
-+ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment
++ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment context:(ACORenderContext *)context
 {
     switch (alignment) {
         case HorizontalAlignment::Center:
             return NSTextAlignmentCenter;
         case HorizontalAlignment::Left:
-            return NSTextAlignmentLeft;
+            return (context.rtl == ACRRtlRTL) ? NSTextAlignmentRight : NSTextAlignmentLeft;
         case HorizontalAlignment::Right:
-            return NSTextAlignmentRight;
+            return (context.rtl == ACRRtlRTL) ? NSTextAlignmentLeft : NSTextAlignmentRight;
         default:
             return NSTextAlignmentLeft;
     }
@@ -181,8 +182,7 @@ using namespace AdaptiveCards;
             sz = _config->GetImageSizes().smallSize;
             break;
 
-        case ACRImageSizeExplicit:
-        {
+        case ACRImageSizeExplicit: {
             BOOL isAspectRatioNeeded = !(width && height);
             CGSize imageSizeAsCGSize = CGSizeZero;
             if (width) {
@@ -427,5 +427,15 @@ using namespace AdaptiveCards;
         return ACRAboveTitle;
     }
     return ACRLeftOfTitle;
+}
+
+- (NSNumber *)getIconPlacement:(NSNumber *)internalId
+{
+    return [_iconPlacements objectForKey:internalId];
+}
+
+- (void)setIconPlacement:(NSNumber *)internalId placement:(BOOL)placement
+{
+    [_iconPlacements setObject:[NSNumber numberWithBool:placement] forKey:internalId];
 }
 @end

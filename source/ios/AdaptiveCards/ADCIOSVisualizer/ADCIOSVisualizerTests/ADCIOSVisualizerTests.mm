@@ -19,7 +19,9 @@
 #import "AdaptiveCards/SubmitAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
+#import "Adaptivecards/ACRRegistrationPrivate.h"
 #import "CustomActionNewType.h"
+#import "CustomActionOpenURLRenderer.h"
 #import "MockRenderer.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
@@ -34,6 +36,7 @@
     NSString *_defaultHostConfigFile;
     ACOHostConfig *_defaultHostConfig;
     NSSet *_setOfExpectedToFailFiles;
+    NSSet *_setOfExcludedFiles;
 }
 
 - (void)setUp
@@ -50,7 +53,8 @@
         }
     }
 
-    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];
+    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];    
+    _setOfExcludedFiles = [NSSet setWithArray:@[ @"TooltipTestCard.json" ]];
 
     self.continueAfterFailure = NO;
 }
@@ -77,6 +81,7 @@
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRContainer];
+    [[ACRRegistration getInstance] setActionRenderer:nil actionElementType:ACROpenUrl];
     [super tearDown];
 }
 
@@ -189,6 +194,9 @@
         
         ACOAdaptiveCardParseResult *cardParseResult = nil;
         @try {
+            if ([_setOfExcludedFiles containsObject:fileName]) {
+                continue;
+            }
             cardParseResult = [ACOAdaptiveCard fromJson:payload];
             if ([_setOfExpectedToFailFiles containsObject:fileName]) {
                 XCTAssertFalse(cardParseResult.isValid);
@@ -274,6 +282,18 @@
     XCTAssert([dictionary count] == 1);
 }
 
+- (void)testActionRegistration
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    // override default Action.OpenUrl renderer
+    [registration setActionRenderer:[CustomActionNewTypeRenderer getInstance] actionElementType:ACROpenUrl];
+    // make sure it's registered
+    XCTAssertEqual([CustomActionNewTypeRenderer getInstance], [registration getActionRendererByType:ACROpenUrl]);
+    // reset
+    [registration setActionRenderer:nil actionElementType:ACROpenUrl];
+    // check the renderer is reset to the default renderer
+    XCTAssertEqual([ACRActionOpenURLRenderer getInstance], [registration getActionRendererByType:ACROpenUrl]);
+}
 // this test ensure that extending text render doesn't crash
 // in use case where custom renderer uses default text renderer
 - (void)testExtendingTextRenderersDoesNotCrash
@@ -757,6 +777,27 @@
                  config:nil
         widthConstraint:300
                delegate:nil];
+}
+
+// Test that overriden default renders can be chosen to use resource resolvers
+- (void)testResourceResolverSelectivelyWorksForElements
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[MockRenderer getInstance]
+                             cardElementType:ACRContainer];
+    XCTAssertFalse([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:ACRContainer]);
+    [registration setBaseCardElementRenderer:[MockRenderer getInstance] cardElementType:ACRContainer useResourceResolver:YES];
+    XCTAssertTrue([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:ACRContainer]);
+}
+
+// Test that overriden default renders can be chosen to use resource resolvers
+- (void)testResourceResolverSelectivelyWorksForActions
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@(ACROpenUrl)];
+    XCTAssertFalse([registration shouldUseResourceResolverForOverridenDefaultActionRenderers:ACROpenUrl]);
+    [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] actionElementType:ACROpenUrl useResourceResolver:YES];
+    XCTAssertTrue([registration shouldUseResourceResolverForOverridenDefaultActionRenderers:ACROpenUrl]);
 }
 
 @end

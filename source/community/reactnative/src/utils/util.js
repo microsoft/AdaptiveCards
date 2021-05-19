@@ -1,5 +1,4 @@
 import * as Enums from './enums';
-import { HostConfigManager } from './host-config';
 
 export function getValueOrDefault(obj, defaultValue) {
 	return obj ? obj : defaultValue;
@@ -137,28 +136,6 @@ export function getEffectiveInputStyle(style) {
 			return "emailAddress";
 		default:
 			return "none";
-	}
-}
-
-/**
- * @description Returns the actual size value based on the given enum value.
- * @param {Enums.Size} size 
- * @return {number | string} Actual size value
- */
-export function getEffectiveSize(size) {
-	switch (size) {
-		case Enums.Size.Auto:
-			return "contain";
-		case Enums.Size.Stretch:
-			return "stretch";
-		case Enums.Size.Small:
-			return HostConfigManager.getHostConfig().imageSizes.small;
-		case Enums.Size.Medium:
-			return HostConfigManager.getHostConfig().imageSizes.medium;
-		case Enums.Size.Large:
-			return HostConfigManager.getHostConfig().imageSizes.large;
-		default:
-			return "contain";
 	}
 }
 

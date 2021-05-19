@@ -125,6 +125,7 @@
     <ClCompile Include="lib\AdaptiveAuthCardButton.cpp" />
     <ClCompile Include="lib\AdaptiveTokenExchangeResource.cpp" />
     <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
+    <ClCompile Include="lib\AdaptiveHeadingsConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -256,6 +257,7 @@
     <ClInclude Include="lib\AdaptiveAuthCardButton.h" />
     <ClInclude Include="lib\AdaptiveTokenExchangeResource.h" />
     <ClInclude Include="lib\AdaptiveAuthentication.h" />
+    <ClInclude Include="lib\AdaptiveHeadingsConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

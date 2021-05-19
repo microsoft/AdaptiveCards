@@ -175,6 +175,7 @@ namespace UWPUnitTests
                 Language = "en",
                 MaxLines = 3,
                 Size = TextSize.Large,
+                Style = TextStyle.Heading,
                 Text = "This is a text block",
                 Weight = TextWeight.Bolder,
                 Wrap = true,
@@ -196,12 +197,21 @@ namespace UWPUnitTests
             Assert.AreEqual("en", textBlock.Language);
             Assert.AreEqual<uint>(3, textBlock.MaxLines);
             Assert.AreEqual(TextSize.Large, textBlock.Size);
+            Assert.AreEqual(TextStyle.Heading, textBlock.Style);
             Assert.AreEqual("This is a text block", textBlock.Text);
             Assert.AreEqual(TextWeight.Bolder, textBlock.Weight);
             Assert.IsTrue(textBlock.Wrap);
 
-            var jsonString = textBlock.ToJson().ToString();
-            Assert.AreEqual("{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(textBlock);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"style\":\"heading\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -301,6 +311,7 @@ namespace UWPUnitTests
                 Bleed = true,
                 Style = ContainerStyle.Emphasis,
                 VerticalContentAlignment = VerticalContentAlignment.Bottom,
+                Rtl = true,
 
                 // Base Element Properties
                 Height = HeightType.Stretch,
@@ -315,6 +326,8 @@ namespace UWPUnitTests
             Assert.IsTrue(container.Bleed);
             Assert.AreEqual(ContainerStyle.Emphasis, container.Style);
             Assert.AreEqual(VerticalContentAlignment.Bottom, container.VerticalContentAlignment);
+            Assert.IsTrue(container.Rtl.HasValue);
+            Assert.IsTrue(container.Rtl.Value);
 
             container.SelectAction = new AdaptiveSubmitAction
             {
@@ -338,8 +351,16 @@ namespace UWPUnitTests
             Assert.AreEqual("This is a text block", (container.Items[0] as AdaptiveTextBlock).Text);
             Assert.AreEqual("This is another text block", (container.Items[1] as AdaptiveTextBlock).Text);
 
-            var jsonString = container.ToJson().ToString();
-            Assert.AreEqual("{\"bleed\":true,\"height\":\"Stretch\",\"id\":\"ContainerId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"Container\",\"verticalContentAlignment\":\"Bottom\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(container);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"bleed\":true,\"height\":\"Stretch\",\"id\":\"ContainerId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"rtl\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"Container\",\"verticalContentAlignment\":\"Bottom\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -352,6 +373,7 @@ namespace UWPUnitTests
                 Style = ContainerStyle.Emphasis,
                 VerticalContentAlignment = VerticalContentAlignment.Bottom,
                 Width = "50px",
+                Rtl = true,
 
                 // Base Element Properties
                 Height = HeightType.Stretch,
@@ -368,6 +390,8 @@ namespace UWPUnitTests
             Assert.AreEqual(VerticalContentAlignment.Bottom, column1.VerticalContentAlignment);
             Assert.AreEqual("50px", column1.Width);
             Assert.AreEqual<uint>(50, column1.PixelWidth);
+            Assert.IsTrue(column1.Rtl.HasValue);
+            Assert.IsTrue(column1.Rtl.Value);
 
             column1.SelectAction = new AdaptiveSubmitAction
             {
@@ -399,13 +423,24 @@ namespace UWPUnitTests
 
             AdaptiveColumn column2 = new AdaptiveColumn
             {
-                Id = "Column2Id"
+                Id = "Column2Id",
+                Rtl = false
             };
             AdaptiveTextBlock textBlock3 = new AdaptiveTextBlock
             {
                 Text = "This is a text block"
             };
             column2.Items.Add(textBlock3);
+
+            Assert.IsTrue(column2.Rtl.HasValue);
+            Assert.IsFalse(column2.Rtl.Value);
+
+            AdaptiveColumn column3 = new AdaptiveColumn
+            {
+                Id = "Column3Id"
+            };
+
+            Assert.IsFalse(column3.Rtl.HasValue);
 
             AdaptiveColumnSet columnSet = new AdaptiveColumnSet
             {
@@ -428,12 +463,22 @@ namespace UWPUnitTests
 
             columnSet.Columns.Add(column1);
             columnSet.Columns.Add(column2);
+            columnSet.Columns.Add(column3);
 
             Assert.AreEqual("ColumnId", columnSet.Columns[0].Id);
             Assert.AreEqual("Column2Id", columnSet.Columns[1].Id);
+            Assert.AreEqual("Column3Id", columnSet.Columns[2].Id);
 
-            var jsonString = columnSet.ToJson().ToString();
-            Assert.AreEqual("{\"bleed\":true,\"columns\":[{\"bleed\":true,\"fallback\":{\"items\":[],\"type\":\"Column\",\"width\":\"auto\"},\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(columnSet);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"bleed\":true,\"columns\":[{\"bleed\":true,\"fallback\":{\"items\":[],\"type\":\"Column\",\"width\":\"auto\"},\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"rtl\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"rtl\":false,\"type\":\"Column\",\"width\":\"auto\"},{\"id\":\"Column3Id\",\"items\":[],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -798,6 +843,7 @@ namespace UWPUnitTests
             IAdaptiveActionElement element,
             string iconUrl,
             string id,
+            bool isEnabled,
             string title,
             string style)
         {
@@ -805,6 +851,7 @@ namespace UWPUnitTests
             Assert.AreEqual(id, element.Id);
             Assert.AreEqual(style, element.Style);
             Assert.AreEqual(title, element.Title);
+            Assert.AreEqual(isEnabled, element.IsEnabled);
         }
 
         [TestMethod]
@@ -814,17 +861,28 @@ namespace UWPUnitTests
             AdaptiveOpenUrlAction openUrlAction = new AdaptiveOpenUrlAction
             {
                 Url = url,
+                Tooltip = "I am a tooltip",
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
+                IsEnabled = false,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", false, "Title", "Destructive");
             Assert.AreEqual(url, openUrlAction.Url);
+            Assert.AreEqual("I am a tooltip", openUrlAction.Tooltip);
 
-            var jsonString = openUrlAction.ToJson().ToString();
-            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Actions.Add(openUrlAction);
+
+            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"isEnabled\":false,\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -834,18 +892,29 @@ namespace UWPUnitTests
             AdaptiveSubmitAction submitAction = new AdaptiveSubmitAction
             {
                 DataJson = dataJson,
+                Tooltip = "I am a tooltip",
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
+                IsEnabled = true,
                 Style = "Destructive",
                 Title = "Title",
                 AssociatedInputs = AssociatedInputs.None
             };
 
-            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", true, "Title", "Destructive");
             Assert.AreEqual(dataJson, submitAction.DataJson);
+            Assert.AreEqual("I am a tooltip", submitAction.Tooltip);
 
-            var jsonString = submitAction.ToJson().ToString();
-            Assert.AreEqual("{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Submit\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Actions.Add(submitAction);
+
+            string expectedSerialization = "{\"actions\":[{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.Submit\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -856,21 +925,24 @@ namespace UWPUnitTests
             {
                 DataJson = dataJson,
                 Verb = "doStuff",
+                Tooltip = "I am a tooltip",
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
+                IsEnabled = false,
                 Style = "Destructive",
                 Title = "Title",
                 AssociatedInputs = AssociatedInputs.None
             };
 
-            ValidateBaseActionProperties(executeAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            ValidateBaseActionProperties(executeAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", false, "Title", "Destructive");
             Assert.AreEqual(dataJson, executeAction.DataJson);
             Assert.AreEqual("doStuff", executeAction.Verb);
+            Assert.AreEqual("I am a tooltip", executeAction.Tooltip);
 
             AdaptiveCard adaptiveCard = new AdaptiveCard();
             adaptiveCard.Actions.Add(executeAction);
 
-            string expectedSerialization = "{\"actions\":[{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Execute\",\"verb\":\"doStuff\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+            string expectedSerialization = "{\"actions\":[{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"isEnabled\":false,\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.Execute\",\"verb\":\"doStuff\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
 
             var jsonString = adaptiveCard.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);
@@ -885,19 +957,31 @@ namespace UWPUnitTests
             AdaptiveShowCardAction showCardAction = new AdaptiveShowCardAction
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
+                Tooltip = "I am a tooltip",
                 Id = "OpenUrlId",
+                IsEnabled = true,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", true, "Title", "Destructive");
+
+            Assert.AreEqual("I am a tooltip", showCardAction.Tooltip);
 
             AdaptiveCard card = new AdaptiveCard();
             showCardAction.Card = card;
             Assert.IsNotNull(showCardAction.Card);
 
-            var jsonString = showCardAction.ToJson().ToString();
-            Assert.AreEqual("{\"card\":{\"actions\":[],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"},\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.ShowCard\"}", jsonString);
+            AdaptiveCard parentCard = new AdaptiveCard();
+            parentCard.Actions.Add(showCardAction);
+
+            string expectedSerialization = "{\"actions\":[{\"card\":{\"actions\":[],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"},\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.ShowCard\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = parentCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(parentCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -920,13 +1004,16 @@ namespace UWPUnitTests
 
             AdaptiveToggleVisibilityAction toggleAction = new AdaptiveToggleVisibilityAction
             {
+                Tooltip = "I am a tooltip",
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "ToggleVisibilityId",
+                IsEnabled = false,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", "Title", "Destructive");
+            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", false, "Title", "Destructive");
+            Assert.AreEqual("I am a tooltip", toggleAction.Tooltip);
 
             toggleAction.TargetElements.Add(toggleTarget1);
             toggleAction.TargetElements.Add(toggleTarget2);
@@ -934,8 +1021,17 @@ namespace UWPUnitTests
             Assert.AreEqual("elementId", toggleAction.TargetElements[0].ElementId);
             Assert.AreEqual("element2Id", toggleAction.TargetElements[1].ElementId);
 
-            var jsonString = toggleAction.ToJson().ToString();
-            Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"style\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"type\":\"Action.ToggleVisibility\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Actions.Add(toggleAction);
+
+            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"isEnabled\":false,\"style\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.ToggleVisibility\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
+
         }
 
         [TestMethod]

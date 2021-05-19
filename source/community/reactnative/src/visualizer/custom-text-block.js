@@ -28,7 +28,7 @@ export class CustomTextBlockRenderer extends React.Component {
                 break;
         }
         return (
-            <TextBlock json={payload} style={textStyle} />
+            <TextBlock {...this.props} style={textStyle} />
         );
     }
 }

@@ -10,6 +10,11 @@ export class ActionStyle {
     static readonly Destructive: "destructive" = "destructive";
 }
 
+export class ActionMode {
+    static readonly Primary: "primary" = "primary";
+    static readonly Secondary: "secondary" = "secondary";
+}
+
 export enum Size {
     Auto,
     Stretch,
@@ -118,7 +123,9 @@ export enum InputTextStyle {
     Text,
     Tel,
     Url,
-    Email
+    Email,
+    File,
+    Color
 }
 
 /*
@@ -145,6 +152,11 @@ export class ContainerStyle {
     static readonly Good: "good" = "good";
     static readonly Attention: "attention" = "attention";
     static readonly Warning: "warning" = "warning";
+}
+
+export class TextStyles {
+    static readonly Default: "default" = "default";
+    static readonly Heading: "heading" = "heading";
 }
 
 export enum ValidationPhase {

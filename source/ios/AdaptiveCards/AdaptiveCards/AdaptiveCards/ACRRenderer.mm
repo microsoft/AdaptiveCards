@@ -77,6 +77,20 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
 
+    std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+
+    if (!actions.empty()) {
+        [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config hash:iOSInternalIdHash(adaptiveCard->GetInternalId().Hash())];
+    }
+
+    // set context
+    ACOAdaptiveCard *wrapperCard = [[ACOAdaptiveCard alloc] init];
+    [wrapperCard setCard:adaptiveCard];
+
+    [rootView.context pushCardContext:wrapperCard];
+
+    verticalView.rtl = rootView.context.rtl;
+
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
     if (selectAction) {
         ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
@@ -116,13 +130,7 @@ using namespace AdaptiveCards;
     style = (style == ACRNone) ? ACRDefault : style;
     [verticalView setStyle:style];
 
-    [rootView addTasksToConcurrentQueue:body];
-
-    std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
-
-    if (!actions.empty()) {
-        [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
-    }
+    [rootView addBaseCardElementListToConcurrentQueue:body registration:[ACRRegistration getInstance]];
 
     UIView *leadingBlankSpace = nil;
     if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
@@ -145,6 +153,8 @@ using namespace AdaptiveCards;
 
     // renders background image for AdaptiveCard and an inner AdaptiveCard in a ShowCard
     renderBackgroundImage(backgroundImageProperties, verticalView, rootView);
+
+    [rootView.context popCardContext:wrapperCard];
 
     return verticalView;
 }
@@ -236,6 +246,8 @@ using namespace AdaptiveCards;
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
     }
+
+    [view toggleVisibilityOfFirstView];
 
     return view;
 }

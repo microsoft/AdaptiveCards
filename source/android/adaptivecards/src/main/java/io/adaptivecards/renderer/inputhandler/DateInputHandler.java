@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.inputhandler;
 
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
@@ -15,7 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 public class DateInputHandler extends TextInputHandler
 {
