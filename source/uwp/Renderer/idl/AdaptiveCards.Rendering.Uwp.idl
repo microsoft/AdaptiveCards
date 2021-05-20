@@ -81,6 +81,9 @@ namespace AdaptiveCards
                 Media,
                 ActionSet,
                 RichTextBlock,
+                TableCell,
+                TableRow,
+                Table,
             } ElementType;
 
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum ActionType {
@@ -605,6 +608,53 @@ namespace AdaptiveCards
                 AdaptiveFactSet();
 
                 Windows.Foundation.Collections.IVector<AdaptiveFact> Facts { get; };
+            };
+
+            [default_interface] runtimeclass AdaptiveTableCell : IAdaptiveContainerBase, IAdaptiveCardElement
+            {
+                AdaptiveTableCell();
+
+                VerticalContentAlignment VerticalContentAlignment;
+                AdaptiveBackgroundImage BackgroundImage;
+                Windows.Foundation.IReference<Boolean> Rtl;
+
+                Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
+            }
+
+            runtimeclass AdaptiveTableRow : IAdaptiveCardElement
+            {
+                AdaptiveTableRow();
+
+                HAlignment HorizontalCellContentAlignment;
+                VerticalContentAlignment VerticalCellContentAlignment;
+                ContainerStyle Style;
+
+                Windows.Foundation.Collections.IVector<AdaptiveTableCell> Cells { get; };
+            }
+
+            runtimeclass AdaptiveTableColumnDefinition
+            {
+                AdaptiveTableColumnDefinition();
+
+                HAlignment HorizontalCellContentAlignment;
+                VerticalContentAlignment VerticalCellContentAlignment;
+
+                Windows.Foundation.IReference<UInt32> Width;
+                Windows.Foundation.IReference<UInt32> PixelWidth;
+            };
+
+            runtimeclass AdaptiveTable : IAdaptiveCardElement
+            {
+                AdaptiveTable();
+
+                Boolean ShowGridLines;
+                Boolean FirstRowAsHeaders;
+                HAlignment HorizontalCellContentAlignment;
+                VerticalContentAlignment VerticalCellContentAlignment;
+                ContainerStyle GridStyle;
+
+                Windows.Foundation.Collections.IVector<AdaptiveTableColumnDefinition> Columns { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveTableRow> Rows { get; };
             };
 
             runtimeclass AdaptiveActionSet : IAdaptiveCardElement
