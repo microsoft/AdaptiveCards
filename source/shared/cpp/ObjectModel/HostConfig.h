@@ -350,6 +350,12 @@ namespace AdaptiveCards
         static HeadingsConfig Deserialize(const Json::Value& json, const HeadingsConfig& defaultValue);
     };
 
+    struct TableConfig
+    {
+        unsigned int cellSpacing = 8;
+        static TableConfig Deserialize(const Json::Value& json, const TableConfig& defaultValue);
+    };
+
     class HostConfig
     {
     public:
@@ -422,6 +428,9 @@ namespace AdaptiveCards
         HeadingsConfig GetHeadings() const;
         void SetHeadings(const HeadingsConfig value);
 
+        TableConfig GetTable() const;
+        void SetTable(const TableConfig value);
+
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
         const ColorConfig& GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const;
@@ -444,5 +453,6 @@ namespace AdaptiveCards
         MediaConfig _media;
         InputsConfig _inputs;
         HeadingsConfig _headings;
+        TableConfig _table;
     };
 }
