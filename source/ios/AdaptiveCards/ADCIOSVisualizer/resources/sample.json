@@ -101,6 +101,7 @@
 			}
 		},
 		"accent": {
+			"borderColor": "#62A8F7",
 			"backgroundColor": "#D7E7FA",
 			"foregroundColors": {
 				"default": {

@@ -57,6 +57,7 @@
              rootView:(ACRView *)rootView
                inputs:(NSMutableArray *)inputs
            hostConfig:(ACOHostConfig *)acoConfig
+            gridStyle:(ACRContainerStyle)gridStyle
 {
     self = [super init];
     if (self) {
@@ -86,7 +87,11 @@
                 if (idx < cells.size()) {
                     auto cell = cells.at(idx);
                     ACRTableCellDefinition *cellDefinition = [[ACRTableCellDefinition alloc] init];
-                    cellDefinition.style = (ACRContainerStyle)row->GetStyle();
+                    auto style = row->GetStyle();
+                    if (style == ContainerStyle::None) {
+                        style = cell->GetStyle();
+                    }
+                    cellDefinition.style = (ACRContainerStyle)style;
                     cellDefinition.horizontalAlignment = (ACRHorizontalAlignment)row->GetHorizontalCellContentAlignment();
                     cellDefinition.verticalAlignment = (ACRVerticalAlignment)row->GetVerticalCellContentAlignment();
                     cellView = [[ACRTableCellView alloc] init:[[ACOBaseCardElement alloc] initWithBaseCardElement:cell]
@@ -111,17 +116,25 @@
                             .active = YES;
                     }
 
-                    [self.heightAnchor constraintGreaterThanOrEqualToAnchor:cellView.heightAnchor].active = YES;
+                    [self.heightAnchor constraintEqualToAnchor:cellView.heightAnchor].active = YES;
                     NSLayoutConstraint *heightConstraint = [cellView.heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
                     heightConstraint.priority = UILayoutPriorityDefaultLow;
                     heightConstraint.active = YES;
 
-                    [cellView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
+                    [cellView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
                     if (prevView) {
+                        if (ithColumnDefinition.showGridLines) {
+                            spacing = -1;
+                        }
                         [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor constant:spacing].active = YES;
                     } else {
                         [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor].active = YES;
                     }
+
+                    if (ithColumnDefinition.showGridLines) {
+                        [self setBorderOnCell:cellView hostConfig:acoConfig style:gridStyle];
+                    }
+
                     trailingAnchor = cellView.trailingAnchor;
                     prevView = cellView;
                 }
@@ -151,4 +164,16 @@
     size.height = (size.height == 0) ? UIViewNoIntrinsicMetric : size.height;
     return size;
 }
+
+- (void)setBorderOnCell:(UIView *)cell hostConfig:(ACOHostConfig *)hostConfig style:(ACRContainerStyle)style
+{
+    if (style != ACRNone) {
+        auto config = [hostConfig getHostConfig];
+        auto borderColor = config->GetBorderColor([ACOHostConfig getSharedContainerStyle:style]);
+        UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:borderColor];
+        cell.layer.borderColor = [color CGColor];
+        cell.layer.borderWidth = 1.0;
+    }
+}
+
 @end

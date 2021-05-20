@@ -30,6 +30,11 @@
         std::shared_ptr<Table> table = std::dynamic_pointer_cast<Table>([acoElement element]);
         [viewGroup addArrangedSubview:self];
         _columnDefinitions = [[NSMutableArray alloc] init];
+        _showGridLines = table->GetShowGridLines();
+        _gridStyle = [viewGroup style];
+        if (const auto style = table->GetGridStyle(); style != ContainerStyle::None) {
+            _gridStyle = (ACRContainerStyle)style;
+        }
         [self defineColumnDefinitions:table];
         [self buildRowView:table rootView:rootView inputs:inputs hostConfig:acoConfig];
     }
@@ -52,15 +57,20 @@
 
     for (auto columnDefinition : table->GetColumns()) {
         auto optionalNumericValue = columnDefinition->GetWidth();
+        ACRColumnDefinition *iOSColumnDefinition = nil;
         if (optionalNumericValue.has_value()) {
-            [_columnDefinitions addObject:[[ACRColumnDefinition alloc] initWithRelativeWidth:optionalNumericValue.value_or(1) / totalRelativeWidth
-                                                                             totalPixelWidth:totalPixelWidth]];
+            iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithRelativeWidth:optionalNumericValue.value_or(1) / totalRelativeWidth
+                                                                     totalPixelWidth:totalPixelWidth];
         } else if (auto optionalPixelValue = columnDefinition->GetPixelWidth(); optionalPixelValue.has_value()) {
-            [_columnDefinitions addObject:[[ACRColumnDefinition alloc] initWithPixelWidth:optionalPixelValue.value_or(1)]];
+            iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithPixelWidth:optionalPixelValue.value_or(1)];
         } else {
-            ACRColumnDefinition *invalidColumnDefintion = [[ACRColumnDefinition alloc] init];
-            invalidColumnDefintion.isValid = NO;
-            [_columnDefinitions addObject:invalidColumnDefintion];
+            iOSColumnDefinition = [[ACRColumnDefinition alloc] init];
+            iOSColumnDefinition.isValid = NO;
+        }
+
+        if (columnDefinition) {
+            iOSColumnDefinition.showGridLines = self.showGridLines;
+            [_columnDefinitions addObject:iOSColumnDefinition];
         }
     }
 }
@@ -79,10 +89,12 @@
                               columnDefinitions:_columnDefinitions
                                        rootView:rootView
                                          inputs:inputs
-                                     hostConfig:acoConfig];
+                                     hostConfig:acoConfig
+                                      gridStyle:_gridStyle];
         [self addSubview:rowView];
         [self.widthAnchor constraintEqualToAnchor:rowView.widthAnchor].active = YES;
-        [nextTopAnchor constraintEqualToAnchor:rowView.topAnchor].active = YES;
+        CGFloat offset = self.showGridLines ? 1 : 0.0;
+        [nextTopAnchor constraintEqualToAnchor:rowView.topAnchor constant:offset].active = YES;
         nextTopAnchor = rowView.bottomAnchor;
     }
 
