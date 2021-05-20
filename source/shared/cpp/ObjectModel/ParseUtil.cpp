@@ -73,15 +73,13 @@ namespace AdaptiveCards
 
     std::string ParseUtil::TryGetString(const Json::Value& json, AdaptiveCardSchemaKey key)
     {
-        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
-        auto propertyValue = json.get(propertyName, Json::Value());
-        if (propertyValue.empty() || !propertyValue.isString())
+        try
+        {
+            return GetString(json, key);
+        }
+        catch (Json::Exception&)
         {
             return "";
-        }
-        else
-        {
-            return propertyValue.asString();
         }
     }
 
