@@ -245,8 +245,20 @@ namespace AdaptiveCards
                                                      const T& defaultValue,
                                                      const std::function<T(const Json::Value&, const T&)>& deserializer)
     {
-        auto jsonObject = ParseUtil::ExtractJsonValue(rootJson, key);
-        T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
+        T result = defaultValue;
+        try
+        {
+            auto jsonObject = ParseUtil::ExtractJsonValue(rootJson, key);
+            if (!jsonObject.empty())
+            {
+                result = deserializer(jsonObject, defaultValue);
+            }
+        }
+        catch (Json::Exception&)
+        {
+            // value missing
+        }
+
         return result;
     }
 

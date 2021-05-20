@@ -38,6 +38,7 @@ namespace AdaptiveCards
         ButtonSpacing,
         Buttons,
         Card,
+        CellSpacing,
         Cells,
         Center,
         ChoiceSet,
