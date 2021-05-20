@@ -36,6 +36,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::ButtonSpacing, "buttonSpacing"},
             {AdaptiveCardSchemaKey::Buttons, "buttons"},
             {AdaptiveCardSchemaKey::Card, "card"},
+            {AdaptiveCardSchemaKey::CellSpacing, "cellSpacing"},
             {AdaptiveCardSchemaKey::Cells, "cells"},
             {AdaptiveCardSchemaKey::Center, "center"},
             {AdaptiveCardSchemaKey::ChoiceSet, "choiceSet"},

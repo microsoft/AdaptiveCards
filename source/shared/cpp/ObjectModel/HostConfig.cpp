@@ -14,13 +14,13 @@ HostConfig HostConfig::DeserializeFromString(const std::string& jsonString)
 HostConfig HostConfig::Deserialize(const Json::Value& json)
 {
     HostConfig result;
-    std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
+    std::string fontFamily = ParseUtil::TryGetString(json, AdaptiveCardSchemaKey::FontFamily);
     result._fontFamily = fontFamily != "" ? fontFamily : result._fontFamily;
 
     result._supportsInteractivity =
-        ParseUtil::GetBool(json, AdaptiveCardSchemaKey::SupportsInteractivity, result._supportsInteractivity);
+        ParseUtil::GetOptionalBool(json, AdaptiveCardSchemaKey::SupportsInteractivity, false).value_or(result._supportsInteractivity);
 
-    result._imageBaseUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
+    result._imageBaseUrl = ParseUtil::TryGetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
 
     result._factSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetConfig>(json,
                                                                                     AdaptiveCardSchemaKey::FactSet,
@@ -84,6 +84,9 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
                                                                                       AdaptiveCardSchemaKey::Headings,
                                                                                       result._headings,
                                                                                       HeadingsConfig::Deserialize);
+
+    result._table =
+        ParseUtil::ExtractJsonValueAndMergeWithDefault<TableConfig>(json, AdaptiveCardSchemaKey::Table, result._table, TableConfig::Deserialize);
 
     return result;
 }
@@ -488,6 +491,15 @@ HeadingsConfig HeadingsConfig::Deserialize(const Json::Value& json, const Headin
     HeadingsConfig result;
 
     result.level = ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Level, defaultValue.level);
+
+    return result;
+}
+
+TableConfig TableConfig::Deserialize(const Json::Value& json, const TableConfig& defaultValue)
+{
+    TableConfig result;
+
+    result.cellSpacing = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::CellSpacing, defaultValue.cellSpacing);
 
     return result;
 }
@@ -926,4 +938,14 @@ HeadingsConfig HostConfig::GetHeadings() const
 void HostConfig::SetHeadings(const HeadingsConfig value)
 {
     _headings = value;
+}
+
+TableConfig HostConfig::GetTable() const
+{
+    return _table;
+}
+
+void HostConfig::SetTable(const TableConfig value)
+{
+    _table = value;
 }
