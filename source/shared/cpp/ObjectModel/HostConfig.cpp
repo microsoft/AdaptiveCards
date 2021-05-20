@@ -18,7 +18,7 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result._fontFamily = fontFamily != "" ? fontFamily : result._fontFamily;
 
     result._supportsInteractivity =
-        ParseUtil::GetOptionalBool(json, AdaptiveCardSchemaKey::SupportsInteractivity, false).value_or(result._supportsInteractivity);
+        ParseUtil::GetOptionalBool(json, AdaptiveCardSchemaKey::SupportsInteractivity).value_or(result._supportsInteractivity);
 
     result._imageBaseUrl = ParseUtil::TryGetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
 
