@@ -117,7 +117,7 @@ Example host config text styles section:
 New `HostConfig.table.cellSpacing` property of number type is added, which represents an explicit number of pixels. This controls the empty space between cells both horizontally (between rows) and vertically (between columns).
 
 This value is only used in the absence of grid lines and bleed. Formally, given any two adjacent cells, spacing must be applied between them if and only if:
-  - the cells are in a `Table` with `showGridLines: true`
+  - the cells are in a `Table` with `showGridLines: false`
   - AND at least one of the two cells has `bleed: false`
 
 `cellSpacing` must be greater than or equal to zero. Any other value will be interpreted as 0
