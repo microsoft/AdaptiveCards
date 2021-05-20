@@ -22,11 +22,6 @@ This is NOT a proposal for an advanced Table with features such as:
 | `firstRowAsHeaders` | `Boolean` | No | Defines whether the first row of the Table should be treated as a header row. Defaults to `true`. When `firstRowAsHeaders` is set to true, that row and its cells will be recognized as such by accessibility software. A cell belonging to the header row will also apply the "columnHeader" text styles to all text blocks it contains. |
 
 #### Notes on rendering Table
-- When `showGridLines` is set to `false`, there should be space added between columns and rows in order for the content of the table to be clearly separated.
-  - The amount of space used will be defined via the new `HostConfig.table.cellSpacing` property, of type number, representing an explicit number of pixels.
-  - `cellSpacing` must be greater than or equal to zero. Any other value will be interpreted as 0
-  - The suggested default value is 8
-  - Each cell can have its own style (and thus background color). When rendering space between styled columns, empty space must visually appear.
 
 Examples:
 ![image](https://user-images.githubusercontent.com/1334689/115600996-1ec3b780-a292-11eb-98a9-ab534e1a7362.png)
@@ -113,6 +108,30 @@ Example host config text styles section:
             "fontType": "default"
         },
         ...
+    }
+    ...
+}
+```
+#### Introducing the `table` config, and its `cellSpacing` property
+
+New `HostConfig.table.cellSpacing` property of number type is added, which represents an explicit number of pixels. This controls the empty space between cells both horizontally (between rows) and vertically (between columns).
+
+This value is only used in the absence of grid lines and bleed. Formally, given any two adjacent cells, spacing must be applied between them if and only if:
+  - the cells are in a `Table` with `showGridLines: true`
+  - AND at least one of the two cells has `bleed: false`
+
+`cellSpacing` must be greater than or equal to zero. Any other value will be interpreted as 0
+
+The default value is 8
+
+Each cell can have its own style (and thus background color). When rendering space between styled columns, empty space must visually appear.
+
+Example:
+```
+{
+    ...
+    "table": {
+        "cellSpacing": 8
     }
     ...
 }
