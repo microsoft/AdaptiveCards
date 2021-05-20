@@ -93,6 +93,58 @@ namespace std {
   }
 
 #pragma region
+// Map C++ "std::optional<unsigned int>" and "std::optional<unsigned int>&" types to Java "Long" objects
+
+%typemap(jni) std::optional<unsigned int> "jobject"
+%typemap(jtype) std::optional<unsigned int> "Long"
+%typemap(jstype) std::optional<unsigned int> "Long"
+%typemap(in, noblock=1) std::optional<unsigned int> {
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "longValue", "()J");
+    jlong val = (jlong)JCALL2(CallIntMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv) || val < 0) return $null;
+    $1 = (unsigned int)val;
+  }
+}
+%typemap(out, noblock=1) std::optional<unsigned int> {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Long");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(J)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, (long *)*$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<unsigned int> "$javainput"
+%typemap(javaout) std::optional<unsigned int> {
+    return $jnicall;
+  }
+%template() std::optional<unsigned int>;
+
+%typemap(jni) std::optional<unsigned int>& "jobject"
+%typemap(jtype) std::optional<unsigned int>& "Long"
+%typemap(jstype) std::optional<unsigned int>& "Long"
+%typemap(in, noblock=1) std::optional<unsigned int>& {
+  std::optional<unsigned int> optVal = std::nullopt;
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "longValue", "()J");
+    jlong val = (jlong)JCALL2(CallIntMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv) || val < 0) return $null;
+    optVal = std::optional<unsigned int>((unsigned int)val);
+  }
+  $1 = &optVal;
+}
+%typemap(out, noblock=1) std::optional<unsigned int>& {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Long");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(J)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, (long *)*$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<unsigned int>& "$javainput"
+%typemap(javaout) std::optional<unsigned int>& {
+    return $jnicall;
+  }
+
+#pragma region
 // Map C++ "std::optional<double>" and "std::optional<double>&" types to Java "Double" objects
 
 %template() std::optional<double>;
@@ -591,6 +643,7 @@ namespace Json {
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 %template(TableCellVector) std::vector<std::shared_ptr<AdaptiveCards::TableCell> >;
 %template(TableRowVector) std::vector<std::shared_ptr<AdaptiveCards::TableRow> >;
+%template(TableColumnDefinitionVector) std::vector<std::shared_ptr<AdaptiveCards::TableColumnDefinition> >;
 %template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;

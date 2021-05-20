@@ -120,7 +120,8 @@ namespace AdaptiveCards
         ParseUtil::ExpectTypeString(json, CardElementType::Table);
 
         std::shared_ptr<Table> table = BaseCardElement::Deserialize<Table>(context, json);
-        table->SetShowGridLines(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::ShowGridLines, false, false));
+        table->SetShowGridLines(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::ShowGridLines, true, false));
+        table->SetGridStyle(ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::GridStyle, ContainerStyle::None, ContainerStyleFromString));
         table->SetFirstRowAsHeaders(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::FirstRowAsHeaders, false, false));
         table->SetHorizontalCellContentAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
             json, AdaptiveCardSchemaKey::HorizontalCellContentAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));

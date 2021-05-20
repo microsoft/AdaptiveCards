@@ -5,35 +5,36 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import androidx.fragment.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.FragmentManager;
+
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CollectionTypeElement;
+import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.Container;
-import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.StretchableElementLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -79,9 +80,9 @@ public class ContainerRenderer extends BaseCardElementRenderer
         applyVerticalContentAlignment(containerView, container.GetVerticalContentAlignment());
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
-        ContainerStyle styleForThis = GetLocalContainerStyle(container, containerStyle);
-        ApplyPadding(styleForThis, containerStyle, containerView, context, hostConfig);
-        ApplyBleed(container, containerView, context, hostConfig);
+        ContainerStyle styleForThis = getLocalContainerStyle(container, containerStyle);
+        applyPadding(styleForThis, containerStyle, containerView, context, hostConfig);
+        applyBleed(container, containerView, context, hostConfig);
         BaseCardElementRenderer.applyRtl(container.GetRtl(), containerView);
 
         RenderArgs containerRenderArgs = new RenderArgs(renderArgs);
@@ -131,7 +132,15 @@ public class ContainerRenderer extends BaseCardElementRenderer
         container.setGravity(gravity);
     }
 
+    /**
+     * @deprecated renamed to {@link #applyBleed}
+     */
     public static void ApplyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
+    {
+        applyBleed(collectionElement, collectionElementView, context, hostConfig);
+    }
+
+    public static void applyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
     {
         if (collectionElement.GetBleed() && collectionElement.GetCanBleed())
         {
@@ -167,7 +176,15 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
     }
 
+    /**
+     * @deprecated renamed to {@link #applyPadding}
+     */
     public static void ApplyPadding(ContainerStyle elementContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
+    {
+        applyPadding(elementContainerStyle, parentContainerStyle, collectionElementView, context, hostConfig);
+    }
+
+    public static void applyPadding(ContainerStyle elementContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
     {
         if (elementContainerStyle != parentContainerStyle)
         {
@@ -178,9 +195,17 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
     }
 
+    /**
+     * @deprecated renamed to {@link #getLocalContainerStyle}
+     */
     public static ContainerStyle GetLocalContainerStyle(CollectionTypeElement collectionElement, ContainerStyle parentContainerStyle)
     {
-        return (collectionElement.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? parentContainerStyle : collectionElement.GetStyle());
+        return getLocalContainerStyle(collectionElement, parentContainerStyle);
+    }
+
+    public static ContainerStyle getLocalContainerStyle(CollectionTypeElement collectionElement, ContainerStyle parentContainerStyle)
+    {
+        return collectionElement.GetStyle() == ContainerStyle.None ? parentContainerStyle : collectionElement.GetStyle();
     }
 
     public static void setBackgroundImage(RenderedAdaptiveCard renderedCard,

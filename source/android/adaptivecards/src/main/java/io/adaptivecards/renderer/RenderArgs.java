@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
-import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.InternalId;
 
 public class RenderArgs
 {
@@ -58,6 +56,16 @@ public class RenderArgs
         return m_containerCardId;
     }
 
+    public void setHeader(boolean isHeader)
+    {
+        m_isHeader = isHeader;
+    }
+
+    public boolean isHeader()
+    {
+        return m_isHeader;
+    }
+
     /**
      * @return true for root level action otherwise false.
      */
@@ -76,6 +84,7 @@ public class RenderArgs
 
     private boolean m_ancestorHasFallback;
     private ContainerStyle m_containerStyle;
+    private boolean m_isHeader;
     private boolean m_allowAboveTitleIconPlacement;
     private long m_containerCardId;
     private boolean m_isRootLevelActions;

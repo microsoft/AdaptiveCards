@@ -78,7 +78,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         // normalizeWeights(columnVector);
 
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
-        ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
+        ContainerStyle styleForThis = ContainerRenderer.getLocalContainerStyle(columnSet, parentContainerStyle);
 
         for (int i = 0; i < columnVectorSize; i++)
         {
@@ -128,8 +128,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         columnSetLayout.setTag(tagContent);
 
-        ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, columnSetLayout, context, hostConfig);
-        ContainerRenderer.ApplyBleed(columnSet, columnSetLayout, context, hostConfig);
+        ContainerRenderer.applyPadding(styleForThis, parentContainerStyle, columnSetLayout, context, hostConfig);
+        ContainerRenderer.applyBleed(columnSet, columnSetLayout, context, hostConfig);
 
         return columnSetLayout;
     }

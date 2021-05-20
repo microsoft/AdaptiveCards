@@ -68,20 +68,20 @@ public class TableColumnDefinition {
     AdaptiveCardObjectModelJNI.TableColumnDefinition_SetVerticalCellContentAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public SWIGTYPE_p_std__optionalT_unsigned_int_t GetWidth() {
-    return new SWIGTYPE_p_std__optionalT_unsigned_int_t(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetWidth(swigCPtr, this), true);
+  public Long GetWidth() {
+    return AdaptiveCardObjectModelJNI.TableColumnDefinition_GetWidth(swigCPtr, this);
   }
 
-  public void SetWidth(SWIGTYPE_p_std__optionalT_unsigned_int_t value) {
-    AdaptiveCardObjectModelJNI.TableColumnDefinition_SetWidth(swigCPtr, this, SWIGTYPE_p_std__optionalT_unsigned_int_t.getCPtr(value));
+  public void SetWidth(Long value) {
+    AdaptiveCardObjectModelJNI.TableColumnDefinition_SetWidth(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_std__optionalT_unsigned_int_t GetPixelWidth() {
-    return new SWIGTYPE_p_std__optionalT_unsigned_int_t(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetPixelWidth(swigCPtr, this), true);
+  public Long GetPixelWidth() {
+    return AdaptiveCardObjectModelJNI.TableColumnDefinition_GetPixelWidth(swigCPtr, this);
   }
 
-  public void SetPixelWidth(SWIGTYPE_p_std__optionalT_unsigned_int_t value) {
-    AdaptiveCardObjectModelJNI.TableColumnDefinition_SetPixelWidth(swigCPtr, this, SWIGTYPE_p_std__optionalT_unsigned_int_t.getCPtr(value));
+  public void SetPixelWidth(Long value) {
+    AdaptiveCardObjectModelJNI.TableColumnDefinition_SetPixelWidth(swigCPtr, this, value);
   }
 
   public static TableColumnDefinition Deserialize(ParseContext context, JsonValue root) {

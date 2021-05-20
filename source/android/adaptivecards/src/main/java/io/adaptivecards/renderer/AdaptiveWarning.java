@@ -11,6 +11,7 @@ public class AdaptiveWarning {
     public static final int SELECT_SHOW_CARD_ACTION = 6;
     public static final int INVALID_COLUMN_WIDTH_VALUE = 7;
     public static final int EMPTY_LABEL_IN_REQUIRED_INPUT = 8;
+    public static final int MISSING_RENDER_ARGS = 8;
 
     private int code;
     private String message;

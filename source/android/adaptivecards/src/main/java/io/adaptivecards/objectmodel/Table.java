@@ -95,12 +95,12 @@ public class Table extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Table_SetGridStyle(swigCPtr, this, value.swigValue());
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__TableColumnDefinition_t_t GetColumns() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__TableColumnDefinition_t_t(AdaptiveCardObjectModelJNI.Table_GetColumns__SWIG_0(swigCPtr, this), false);
+  public TableColumnDefinitionVector GetColumns() {
+    return new TableColumnDefinitionVector(AdaptiveCardObjectModelJNI.Table_GetColumns__SWIG_0(swigCPtr, this), false);
   }
 
-  public void SetColumns(SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__TableColumnDefinition_t_t value) {
-    AdaptiveCardObjectModelJNI.Table_SetColumns(swigCPtr, this, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__TableColumnDefinition_t_t.getCPtr(value));
+  public void SetColumns(TableColumnDefinitionVector value) {
+    AdaptiveCardObjectModelJNI.Table_SetColumns(swigCPtr, this, TableColumnDefinitionVector.getCPtr(value), value);
   }
 
   public TableRowVector GetRows() {

@@ -1512,6 +1512,60 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableRow_Sg__Sg__d
           throw std::out_of_range("vector index out of range");
         }
       }
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::TableColumnDefinition > const &value){
+        if (count < 0)
+          throw std::out_of_range("vector count must be positive");
+        return new std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::size_type>(count), value);
+      }
+SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > const *self){
+        return SWIG_VectorSize(self->size());
+      }
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *self,std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type const &x){
+        self->push_back(x);
+      }
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type const &x){
+        jint size = static_cast<jint>(self->size());
+        if (0 <= index && index <= size) {
+          self->insert(self->begin() + index, x);
+        } else {
+          throw std::out_of_range("vector index out of range");
+        }
+      }
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doRemove(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *self,jint index){
+        jint size = static_cast<jint>(self->size());
+        if (0 <= index && index < size) {
+          std::shared_ptr< AdaptiveCards::TableColumnDefinition > const old_value = (*self)[index];
+          self->erase(self->begin() + index);
+          return old_value;
+        } else {
+          throw std::out_of_range("vector index out of range");
+        }
+      }
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *self,jint index){
+        jint size = static_cast<jint>(self->size());
+        if (index >= 0 && index < size)
+          return (*self)[index];
+        else
+          throw std::out_of_range("vector index out of range");
+      }
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type const &val){
+        jint size = static_cast<jint>(self->size());
+        if (index >= 0 && index < size) {
+          std::shared_ptr< AdaptiveCards::TableColumnDefinition > const old_value = (*self)[index];
+          (*self)[index] = val;
+          return old_value;
+        }
+        else
+          throw std::out_of_range("vector index out of range");
+      }
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doRemoveRange(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *self,jint fromIndex,jint toIndex){
+        jint size = static_cast<jint>(self->size());
+        if (0 <= fromIndex && fromIndex <= toIndex && toIndex <= size) {
+          self->erase(self->begin() + fromIndex, self->begin() + toIndex);
+        } else {
+          throw std::out_of_range("vector index out of range");
+        }
+      }
 SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
@@ -6546,6 +6600,276 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jenv;
   (void)jcls;
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableRow > > **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TableColumnDefinitionVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *)new std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >();
+  *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TableColumnDefinitionVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > const & reference is null");
+    return 0;
+  } 
+  result = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *)new std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >((std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > const &)*arg1);
+  *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::size_type result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  result = ((std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > const *)arg1)->capacity();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::size_type arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  arg2 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::size_type)jarg2; 
+  try {
+    (arg1)->reserve(arg2);
+  } catch(std::length_error &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  result = (bool)((std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > const *)arg1)->empty();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  (arg1)->clear();
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1TableColumnDefinitionVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  jint arg1 ;
+  std::shared_ptr< AdaptiveCards::TableColumnDefinition > *arg2 = 0 ;
+  std::shared_ptr< AdaptiveCards::TableColumnDefinition > tempnull2 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  arg1 = jarg1; 
+  arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::TableColumnDefinition > **)&jarg2 : &tempnull2; 
+  try {
+    result = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::TableColumnDefinition > const &)*arg2);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1doSize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  jint result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  try {
+    result = std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doSize((std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > const *)arg1);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1doAdd_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type *arg2 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type tempnull2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  arg2 = jarg2 ? *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type **)&jarg2 : &tempnull2; 
+  std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doAdd__SWIG_0(arg1,(std::shared_ptr< AdaptiveCards::TableColumnDefinition > const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1doAdd_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  jint arg2 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type *arg3 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type tempnull3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  arg2 = jarg2; 
+  arg3 = jarg3 ? *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type **)&jarg3 : &tempnull3; 
+  try {
+    std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doAdd__SWIG_1(arg1,arg2,(std::shared_ptr< AdaptiveCards::TableColumnDefinition > const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1doRemove(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  jlong jresult = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  jint arg2 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  arg2 = jarg2; 
+  try {
+    result = std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doRemove(arg1,arg2);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type **)&jresult = result ? new std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type(result) : 0; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1doGet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  jlong jresult = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  jint arg2 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  arg2 = jarg2; 
+  try {
+    result = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doGet(arg1,arg2);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type(*result) : 0; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1doSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
+  jlong jresult = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  jint arg2 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type *arg3 = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type tempnull3 ;
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg3_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  arg2 = jarg2; 
+  arg3 = jarg3 ? *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type **)&jarg3 : &tempnull3; 
+  try {
+    result = std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doSet(arg1,arg2,(std::shared_ptr< AdaptiveCards::TableColumnDefinition > const &)*arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return 0;
+  }
+  *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type **)&jresult = result ? new std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > >::value_type(result) : 0; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinitionVector_1doRemoveRange(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  jint arg2 ;
+  jint arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
+  arg2 = jarg2; 
+  arg3 = jarg3; 
+  try {
+    std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_TableColumnDefinition_Sg__Sg__doRemoveRange(arg1,arg2,arg3);
+  } catch(std::out_of_range &_e) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
+    return ;
+  }
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1TableColumnDefinitionVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > **)&jarg1; 
   delete arg1;
 }
 
@@ -28534,7 +28858,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Table_1SetColumns(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Table_1SetColumns(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::Table *arg1 = (AdaptiveCards::Table *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::TableColumnDefinition > > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::Table > *smartarg1 = 0 ;
@@ -28542,6 +28866,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg2_;
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::Table > **)&jarg1;
   arg1 = (AdaptiveCards::Table *)(smartarg1 ? smartarg1->get() : 0); 
@@ -28857,11 +29182,11 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1GetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
+SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1GetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jobject jresult = 0 ;
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition const > *smartarg1 = 0 ;
-  SwigValueWrapper< std::optional< unsigned int > > result;
+  std::optional< unsigned int > result;
   
   (void)jenv;
   (void)jcls;
@@ -28870,12 +29195,15 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::TableColumnDefinition const *)arg1)->GetWidth();
-  *(std::optional< unsigned int > **)&jresult = new std::optional< unsigned int >((const std::optional< unsigned int > &)result); 
+  jclass clazz = jenv->FindClass("java/lang/Long");
+  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(J)V");
+  jobject obj = result ? jenv->NewObject(clazz, mid, (long *)*result) : 0;
+  jresult = obj;
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::optional< unsigned int > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition > *smartarg1 = 0 ;
@@ -28886,20 +29214,24 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = *(std::optional< unsigned int > **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::optional< unsigned int > const & reference is null");
-    return ;
-  } 
+  std::optional<unsigned int> optVal = std::nullopt;
+  if (jarg2) {
+    jclass sbufClass = jenv->GetObjectClass(jarg2);
+    jmethodID mid = jenv->GetMethodID(sbufClass, "longValue", "()J");
+    jlong val = (jlong)jenv->CallIntMethod(jarg2, mid);
+    if (jenv->ExceptionCheck() || val < 0) return ;
+    optVal = std::optional<unsigned int>((unsigned int)val);
+  }
+  arg2 = &optVal;
   (arg1)->SetWidth((std::optional< unsigned int > const &)*arg2);
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1GetPixelWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
+SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1GetPixelWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jobject jresult = 0 ;
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition const > *smartarg1 = 0 ;
-  SwigValueWrapper< std::optional< unsigned int > > result;
+  std::optional< unsigned int > result;
   
   (void)jenv;
   (void)jcls;
@@ -28908,12 +29240,15 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::TableColumnDefinition const *)arg1)->GetPixelWidth();
-  *(std::optional< unsigned int > **)&jresult = new std::optional< unsigned int >((const std::optional< unsigned int > &)result); 
+  jclass clazz = jenv->FindClass("java/lang/Long");
+  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(J)V");
+  jobject obj = result ? jenv->NewObject(clazz, mid, (long *)*result) : 0;
+  jresult = obj;
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetPixelWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetPixelWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::optional< unsigned int > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition > *smartarg1 = 0 ;
@@ -28924,11 +29259,15 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = *(std::optional< unsigned int > **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::optional< unsigned int > const & reference is null");
-    return ;
-  } 
+  std::optional<unsigned int> optVal = std::nullopt;
+  if (jarg2) {
+    jclass sbufClass = jenv->GetObjectClass(jarg2);
+    jmethodID mid = jenv->GetMethodID(sbufClass, "longValue", "()J");
+    jlong val = (jlong)jenv->CallIntMethod(jarg2, mid);
+    if (jenv->ExceptionCheck() || val < 0) return ;
+    optVal = std::optional<unsigned int>((unsigned int)val);
+  }
+  arg2 = &optVal;
   (arg1)->SetPixelWidth((std::optional< unsigned int > const &)*arg2);
 }
 
