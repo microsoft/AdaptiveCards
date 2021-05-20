@@ -39,6 +39,7 @@ public enum AdaptiveCardSchemaKey {
   ButtonSpacing,
   Buttons,
   Card,
+  CellSpacing,
   Cells,
   Center,
   ChoiceSet,

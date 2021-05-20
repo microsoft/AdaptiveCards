@@ -236,4 +236,12 @@ public class HostConfig {
     AdaptiveCardObjectModelJNI.HostConfig_SetTextBlock(swigCPtr, this, TextBlockConfig.getCPtr(value), value);
   }
 
+  public TableConfig GetTable() {
+    return new TableConfig(AdaptiveCardObjectModelJNI.HostConfig_GetTable(swigCPtr, this), true);
+  }
+
+  public void SetTable(TableConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetTable(swigCPtr, this, TableConfig.getCPtr(value), value);
+  }
+
 }

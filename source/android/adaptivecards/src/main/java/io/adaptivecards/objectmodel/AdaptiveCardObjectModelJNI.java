@@ -1313,6 +1313,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long TextBlockConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, TextBlockConfig jarg2_);
   public final static native long new_TextBlockConfig();
   public final static native void delete_TextBlockConfig(long jarg1);
+  public final static native void TableConfig_cellSpacing_set(long jarg1, TableConfig jarg1_, long jarg2);
+  public final static native long TableConfig_cellSpacing_get(long jarg1, TableConfig jarg1_);
+  public final static native long TableConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, TableConfig jarg2_);
+  public final static native long new_TableConfig();
+  public final static native void delete_TableConfig(long jarg1);
   public final static native long new_HostConfig();
   public final static native long HostConfig_Deserialize(long jarg1, JsonValue jarg1_);
   public final static native long HostConfig_DeserializeFromString(String jarg1);
@@ -1363,6 +1368,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void HostConfig_SetTextStyles(long jarg1, HostConfig jarg1_, long jarg2, TextStylesConfig jarg2_);
   public final static native long HostConfig_GetTextBlock(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_SetTextBlock(long jarg1, HostConfig jarg1_, long jarg2, TextBlockConfig jarg2_);
+  public final static native long HostConfig_GetTable(long jarg1, HostConfig jarg1_);
+  public final static native void HostConfig_SetTable(long jarg1, HostConfig jarg1_, long jarg2, TableConfig jarg2_);
   public final static native void delete_HostConfig(long jarg1);
   public final static native long new_MarkDownParser(String jarg1);
   public final static native String MarkDownParser_TransformToHtml(long jarg1, MarkDownParser jarg1_);
