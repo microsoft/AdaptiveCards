@@ -238,6 +238,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             view.setFocusable(true);
             view.setClickable(true);
+            view.setEnabled(selectAction.GetIsEnabled());
             if (Util.isOfType(selectAction, ExecuteAction.class) || Util.isOfType(selectAction, SubmitAction.class) || selectAction.GetElementType() == ActionType.Custom)
             {
                 renderedCard.registerSubmitableAction(view, renderArgs);
