@@ -948,7 +948,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         RETURN_IF_FAILED(actionsConfig->get_MaxActions(&maxActions));
 
         bool allActionsHaveIcons{true};
-        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
+        IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
             HString iconUrl;
             RETURN_IF_FAILED(child->get_IconUrl(iconUrl.GetAddressOf()));
 
@@ -968,7 +968,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
-        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
+        IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
             if (currentAction < maxActions)
             {
                 // Render each action using the registered renderer

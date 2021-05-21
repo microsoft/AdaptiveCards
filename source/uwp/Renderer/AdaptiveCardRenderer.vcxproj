@@ -146,6 +146,10 @@
     <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveRefresh.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
+    <ClCompile Include="lib\AdaptiveTable.cpp" />
+    <ClCompile Include="lib\AdaptiveTableCell.cpp" />
+    <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
     <ClCompile Include="lib\AdaptiveTextStylesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTokenExchangeResource.cpp" />
@@ -217,6 +221,10 @@
     <ClInclude Include="lib\AdaptiveSeparator.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveTable.h" />
+    <ClInclude Include="lib\AdaptiveTableCell.h" />
+    <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
+    <ClInclude Include="lib\AdaptiveTableRow.h" />
     <ClInclude Include="lib\AdaptiveTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveTextElement.h" />
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />

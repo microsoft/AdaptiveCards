@@ -67,7 +67,7 @@ namespace AdaptiveCards::Rendering::Uwp
             ComPtr<AdaptiveRenderArgs> childRenderArgs;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, xamlGrid.Get(), renderArgs));
 
-            XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage>(
+            IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage>(
                 images.Get(),
                 [imageSize, xamlGrid, renderContext, childRenderArgs, imageRenderer, imageSetConfig](IAdaptiveImage* adaptiveImage) {
                     ComPtr<IUIElement> uiImage;

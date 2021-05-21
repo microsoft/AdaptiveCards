@@ -1194,5 +1194,135 @@ namespace UWPUnitTests
             jsonString = textBlockNone.ToJson().ToString();
             Assert.AreEqual("{\"requires\":{\"foo\":\"0.0.0.0\"},\"text\":\"This text block has fallback explicitly set to None\",\"type\":\"TextBlock\"}", jsonString);
         }
+
+        [TestMethod]
+        public void Table()
+        {
+            // Create a table
+            AdaptiveTable table = new AdaptiveTable
+            {
+                // Table Properties
+                ShowGridLines = true,
+                FirstRowAsHeaders = true,
+                HorizontalCellContentAlignment = HAlignment.Right,
+                VerticalCellContentAlignment = VerticalContentAlignment.Bottom,
+
+                // Base Element Properties
+                Height = HeightType.Stretch,
+                Id = "TableId",
+                IsVisible = false,
+                Separator = true,
+                Spacing = Spacing.ExtraLarge,
+            };
+
+            ValidateBaseElementProperties(table, "TableId", false, true, Spacing.ExtraLarge, HeightType.Stretch);
+
+            Assert.IsTrue(table.ShowGridLines);
+            Assert.IsTrue(table.FirstRowAsHeaders);
+            Assert.AreEqual(HAlignment.Right, table.HorizontalCellContentAlignment);
+            Assert.AreEqual(VerticalContentAlignment.Bottom, table.VerticalCellContentAlignment);
+
+            // Create a column defintion
+            AdaptiveTableColumnDefinition columnDefinition1 = new AdaptiveTableColumnDefinition
+            {
+                HorizontalCellContentAlignment = HAlignment.Center,
+                VerticalCellContentAlignment = VerticalContentAlignment.Center,
+                Width = 2
+            };
+
+            // Validate column definition properties
+            Assert.AreEqual(HAlignment.Center, columnDefinition1.HorizontalCellContentAlignment);
+            Assert.AreEqual(VerticalContentAlignment.Center, columnDefinition1.VerticalCellContentAlignment);
+            Assert.AreEqual(2U, columnDefinition1.Width);
+
+            // Create another column definitoin
+            AdaptiveTableColumnDefinition columnDefinition2 = new AdaptiveTableColumnDefinition
+            {
+                HorizontalCellContentAlignment = HAlignment.Right,
+                VerticalCellContentAlignment = VerticalContentAlignment.Bottom
+            };
+
+            // Add the column definitions to the table
+            table.Columns.Add(columnDefinition1);
+            table.Columns.Add(columnDefinition2);
+
+            // Create a row
+            AdaptiveTableRow row = new AdaptiveTableRow
+            {
+
+                Style = ContainerStyle.Emphasis,
+                HorizontalCellContentAlignment = HAlignment.Center,
+                VerticalCellContentAlignment = VerticalContentAlignment.Center,
+
+                // Base Element Properties
+                Height = HeightType.Stretch,
+                Id = "RowId",
+                IsVisible = false,
+                Separator = true,
+                Spacing = Spacing.ExtraLarge,
+            };
+
+            // Validate the row properties
+            ValidateBaseElementProperties(row, "RowId", false, true, Spacing.ExtraLarge, HeightType.Stretch);
+
+            Assert.AreEqual(ContainerStyle.Emphasis, row.Style);
+            Assert.AreEqual(HAlignment.Center, row.HorizontalCellContentAlignment);
+            Assert.AreEqual(VerticalContentAlignment.Center, row.VerticalCellContentAlignment);
+
+            // Add the row to the table;
+            table.Rows.Add(row);
+
+            // Create a cell 
+            AdaptiveTableCell cell1 = new AdaptiveTableCell
+            {
+                Bleed = true,
+                Style = ContainerStyle.Emphasis,
+                VerticalContentAlignment = VerticalContentAlignment.Bottom,
+                Rtl = true,
+
+                // Base Element Properties
+                Height = HeightType.Stretch,
+                Id = "Cell1Id",
+                IsVisible = false,
+                Separator = true,
+                Spacing = Spacing.ExtraLarge,
+            };
+
+            // Validate the cell properties
+            ValidateBaseElementProperties(cell1, "Cell1Id", false, true, Spacing.ExtraLarge, HeightType.Stretch);
+
+            Assert.IsTrue(cell1.Bleed);
+            Assert.AreEqual(ContainerStyle.Emphasis, cell1.Style);
+            Assert.AreEqual(VerticalContentAlignment.Bottom, cell1.VerticalContentAlignment);
+            Assert.IsTrue(cell1.Rtl.HasValue);
+            Assert.IsTrue(cell1.Rtl.Value);
+
+            AdaptiveTextBlock textBlock = new AdaptiveTextBlock
+            {
+                Text = "Cell1 Text Block"
+            };
+            cell1.Items.Add(textBlock);
+            Assert.AreEqual("Cell1 Text Block", (cell1.Items[0] as AdaptiveTextBlock).Text);
+
+            // Create a second cell
+            AdaptiveTableCell cell2 = new AdaptiveTableCell();
+
+            // Add the cells to the row
+            row.Cells.Add(cell1);
+            row.Cells.Add(cell2);
+
+            // Put the table in a card and validate serialization/deserialization
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(table);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"columns\":[{\"horizontalCellContentAlignment\":\"center\",\"verticalCellContentAlignment\":\"center\"},{\"horizontalCellContentAlignment\":\"right\",\"verticalCellContentAlignment\":\"bottom\"}],\"firstRowAsHeaders\":true,\"horizontalCellContentAlignment\":\"right\",\"rows\":[{\"cells\":[{\"bleed\":true,\"height\":\"Stretch\",\"id\":\"Cell1Id\",\"isVisible\":false,\"items\":[{\"text\":\"Cell1 Text Block\",\"type\":\"TextBlock\"}],\"rtl\":true,\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"TableCell\",\"verticalContentAlignment\":\"Bottom\"},{\"items\":[],\"type\":\"TableCell\"}],\"horizontalCellContentAlignment\":\"center\",\"style\":\"Emphasis\",\"type\":\"TableRow\",\"verticalCellContentAlignment\":\"center\"}],\"showGridLines\":true,\"type\":\"Table\",\"verticalCellContentAlignment\":\"bottom\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
+
+        }
     }
 }

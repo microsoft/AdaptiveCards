@@ -191,7 +191,7 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(renderedCard->get_Errors(&renderResultErrors));
             ComPtr<IVector<AdaptiveError*>> parseErrors;
             RETURN_IF_FAILED(adaptiveCardParseResult->get_Errors(&parseErrors));
-            XamlHelpers::IterateOverVector<AdaptiveError, IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error) {
+            IterateOverVector<AdaptiveError, IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error) {
                 ComPtr<IAdaptiveError> localError(error);
                 return renderResultErrors->Append(localError.Get());
             });

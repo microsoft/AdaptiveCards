@@ -65,7 +65,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IVector<AdaptiveFact*>> facts;
         RETURN_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
         int currentFact = 0, validFacts = 0;
-        XamlHelpers::IterateOverVector<AdaptiveFact, IAdaptiveFact>(
+        IterateOverVector<AdaptiveFact, IAdaptiveFact>(
             facts.Get(),
             [xamlGrid, gridStatics, factSetGridHeight, &currentFact, &validFacts, renderContext, renderArgs](IAdaptiveFact* fact) {
                 ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(
