@@ -179,7 +179,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
 
                 paragraph.setSpan(new TypefaceSpan(fontName), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
-                if(textRun.GetSelectAction() != null)
+                if(textRun.GetSelectAction() != null && textRun.GetSelectAction().GetIsEnabled())
                 {
                     paragraph.setSpan(new ActionSpan(textRun.GetSelectAction(), renderedCard, cardActionHandler), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 }

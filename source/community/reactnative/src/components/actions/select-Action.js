@@ -69,6 +69,7 @@ export class SelectAction extends React.Component {
 
 				return <ButtonComponent
 					onPress={() => { this.onClickHandle() }}
+					disabled={this.payload.isEnabled == undefined ? false : !this.payload.isEnabled} //isEnabled defaults to true
 					accessible={true}
 					accessibilityLabel={this.payload.altText}
 					accessibilityRole={Constants.Button}
