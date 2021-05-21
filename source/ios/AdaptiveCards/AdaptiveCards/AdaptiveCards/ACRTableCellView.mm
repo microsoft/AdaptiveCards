@@ -33,6 +33,9 @@
         [self setAutoLayout];
         [self configureForStyle:acoConfig];
         _spacing = 8.0f;
+        if (rootView.context.isFirstRowAsHeaders) {
+            self.accessibilityTraits |= UIAccessibilityTraitHeader;
+        }
     }
     return self;
 }

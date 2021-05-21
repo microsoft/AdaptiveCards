@@ -85,7 +85,7 @@
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
         }
-        
+
         lab.textContainer.lineFragmentPadding = 0;
         lab.textContainerInset = UIEdgeInsetsZero;
         lab.layoutManager.usesFontLeading = false;
@@ -122,7 +122,7 @@
         lab.textContainer.maximumNumberOfLines = 1;
     }
 
-    if (txtBlck->GetStyle() == TextStyle::Heading) {
+    if (txtBlck->GetStyle() == TextStyle::Heading || rootView.context.isFirstRowAsHeaders) {
         lab.accessibilityTraits |= UIAccessibilityTraitHeader;
     }
 
