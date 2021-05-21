@@ -67,6 +67,9 @@ export class CardObjectRegistry<T extends SerializableObject> {
 }
 
 export class GlobalRegistry {
+    private static _elements?: CardObjectRegistry<CardElement>;
+    private static _actions?: CardObjectRegistry<Action>;
+
     static populateWithDefaultElements(registry: CardObjectRegistry<CardElement>) {
         registry.clear();
 
@@ -82,11 +85,26 @@ export class GlobalRegistry {
     static readonly defaultElements = new CardObjectRegistry<CardElement>();
     static readonly defaultActions = new CardObjectRegistry<Action>();
 
-    static readonly elements = new CardObjectRegistry<CardElement>();
-    static readonly actions = new CardObjectRegistry<Action>();
+    static get elements(): CardObjectRegistry<CardElement> {
+        if (!GlobalRegistry._elements) {
+            GlobalRegistry._elements = new CardObjectRegistry<CardElement>();
+            GlobalRegistry.populateWithDefaultElements(GlobalRegistry._elements);
+        }
+
+        return GlobalRegistry._elements;
+    }
+
+    static get actions(): CardObjectRegistry<Action> {
+        if (!GlobalRegistry._actions) {
+            GlobalRegistry._actions = new CardObjectRegistry<Action>();
+            GlobalRegistry.populateWithDefaultActions(GlobalRegistry._actions);
+        }
+
+        return GlobalRegistry._actions;
+    }
 
     static reset() {
-        GlobalRegistry.populateWithDefaultElements(GlobalRegistry.elements);
-        GlobalRegistry.populateWithDefaultActions(GlobalRegistry.actions);
+        GlobalRegistry._elements = undefined;
+        GlobalRegistry._actions = undefined;
     }
 }
