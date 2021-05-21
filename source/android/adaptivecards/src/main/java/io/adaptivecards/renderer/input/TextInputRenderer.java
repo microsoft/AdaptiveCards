@@ -282,6 +282,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
+                        inlineButton.setEnabled(action.GetIsEnabled());
 
                         ContainerRenderer.applyTitleAndTooltip(action, inlineButton);
 
@@ -317,7 +318,10 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setTextColor(Color.BLACK);
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
+
                         inlineButton.setText(title);
+                        inlineButton.setEnabled(action.GetIsEnabled());
+
                         if (!TextUtils.isEmpty(action.GetTooltip()))
                         {
                             TooltipCompat.setTooltipText(inlineButton, action.GetTooltip());

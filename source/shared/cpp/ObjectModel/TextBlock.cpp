@@ -15,7 +15,7 @@ using namespace AdaptiveCards;
 
 TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(HorizontalAlignment::Left),
-    m_textStyle(TextStyle::Paragraph), m_textElementProperties(std::make_shared<TextElementProperties>())
+    m_textElementProperties(std::make_shared<TextElementProperties>())
 {
     PopulateKnownPropertiesSet();
 }
@@ -39,12 +39,13 @@ Json::Value TextBlock::SerializeToJsonValue() const
 
     if (m_wrap)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = true;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap;
     }
 
-    if (m_textStyle != TextStyle::Paragraph)
+    if (m_textStyle.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextStyleToString(m_textStyle);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] =
+            TextStyleToString(m_textStyle.value_or(TextStyle::Default));
     }
 
     return root;
@@ -65,52 +66,52 @@ DateTimePreparser TextBlock::GetTextForDateParsing() const
     return m_textElementProperties->GetTextForDateParsing();
 }
 
-TextStyle AdaptiveCards::TextBlock::GetStyle() const
+std::optional<TextStyle> TextBlock::GetStyle() const
 {
     return m_textStyle;
 }
 
-void AdaptiveCards::TextBlock::SetStyle(const TextStyle value)
+void TextBlock::SetStyle(const std::optional<TextStyle> value)
 {
     m_textStyle = value;
 }
 
-TextSize TextBlock::GetTextSize() const
+std::optional<TextSize> TextBlock::GetTextSize() const
 {
     return m_textElementProperties->GetTextSize();
 }
 
-void TextBlock::SetTextSize(const TextSize value)
+void TextBlock::SetTextSize(const std::optional<TextSize> value)
 {
     m_textElementProperties->SetTextSize(value);
 }
 
-TextWeight TextBlock::GetTextWeight() const
+std::optional<TextWeight> TextBlock::GetTextWeight() const
 {
     return m_textElementProperties->GetTextWeight();
 }
 
-void TextBlock::SetTextWeight(const TextWeight value)
+void TextBlock::SetTextWeight(const std::optional<TextWeight> value)
 {
     m_textElementProperties->SetTextWeight(value);
 }
 
-FontType TextBlock::GetFontType() const
+std::optional<FontType> TextBlock::GetFontType() const
 {
     return m_textElementProperties->GetFontType();
 }
 
-void TextBlock::SetFontType(const FontType value)
+void TextBlock::SetFontType(const std::optional<FontType> value)
 {
     m_textElementProperties->SetFontType(value);
 }
 
-ForegroundColor TextBlock::GetTextColor() const
+std::optional<ForegroundColor> TextBlock::GetTextColor() const
 {
     return m_textElementProperties->GetTextColor();
 }
 
-void TextBlock::SetTextColor(const ForegroundColor value)
+void TextBlock::SetTextColor(const std::optional<ForegroundColor> value)
 {
     m_textElementProperties->SetTextColor(value);
 }
@@ -125,12 +126,12 @@ void TextBlock::SetWrap(const bool value)
     m_wrap = value;
 }
 
-bool TextBlock::GetIsSubtle() const
+std::optional<bool> TextBlock::GetIsSubtle() const
 {
     return m_textElementProperties->GetIsSubtle();
 }
 
-void TextBlock::SetIsSubtle(const bool value)
+void TextBlock::SetIsSubtle(const std::optional<bool> value)
 {
     m_textElementProperties->SetIsSubtle(value);
 }
@@ -173,7 +174,7 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& cont
     textBlock->m_textElementProperties->Deserialize(context, json);
 
     textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
-    textBlock->SetStyle(ParseUtil::GetEnumValue<TextStyle>(json, AdaptiveCardSchemaKey::Style, TextStyle::Paragraph, TextStyleFromString));
+    textBlock->SetStyle(ParseUtil::GetOptionalEnumValue<TextStyle>(json, AdaptiveCardSchemaKey::Style, TextStyleFromString));
     textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
     textBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));

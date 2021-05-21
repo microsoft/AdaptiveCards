@@ -81,6 +81,9 @@ namespace AdaptiveCards
                 Media,
                 ActionSet,
                 RichTextBlock,
+                TableCell,
+                TableRow,
+                Table,
             } ElementType;
 
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum ActionType {
@@ -239,7 +242,7 @@ namespace AdaptiveCards
             } AssociatedInputs;
 
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum TextStyle {
-                Paragraph = 0,
+                Default = 0,
                 Heading,
             } TextStyle;
 
@@ -304,13 +307,13 @@ namespace AdaptiveCards
 
             interface IAdaptiveTextElement
             {
-                TextSize Size;
-                TextWeight Weight;
-                ForegroundColor Color;
+                Windows.Foundation.IReference<TextSize> Size;
+                Windows.Foundation.IReference<TextWeight> Weight;
+                Windows.Foundation.IReference<ForegroundColor> Color;
                 String Text;
-                Boolean IsSubtle;
+                Windows.Foundation.IReference<Boolean> IsSubtle;
                 String Language;
-                FontType FontType;
+                Windows.Foundation.IReference<FontType> FontType;
             };
 
             runtimeclass AdaptiveTextBlock : IAdaptiveCardElement, IAdaptiveTextElement
@@ -320,7 +323,7 @@ namespace AdaptiveCards
                 Boolean Wrap;
                 HAlignment HorizontalAlignment;
                 UInt32 MaxLines;
-                TextStyle Style;
+                Windows.Foundation.IReference<TextStyle> Style;
             };
 
             [version(NTDDI_WIN10_RS1), uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085")] interface IAdaptiveInline {};
@@ -607,6 +610,53 @@ namespace AdaptiveCards
                 Windows.Foundation.Collections.IVector<AdaptiveFact> Facts { get; };
             };
 
+            [default_interface] runtimeclass AdaptiveTableCell : IAdaptiveContainerBase, IAdaptiveCardElement
+            {
+                AdaptiveTableCell();
+
+                VerticalContentAlignment VerticalContentAlignment;
+                AdaptiveBackgroundImage BackgroundImage;
+                Windows.Foundation.IReference<Boolean> Rtl;
+
+                Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
+            }
+
+            runtimeclass AdaptiveTableRow : IAdaptiveCardElement
+            {
+                AdaptiveTableRow();
+
+                HAlignment HorizontalCellContentAlignment;
+                VerticalContentAlignment VerticalCellContentAlignment;
+                ContainerStyle Style;
+
+                Windows.Foundation.Collections.IVector<AdaptiveTableCell> Cells { get; };
+            }
+
+            runtimeclass AdaptiveTableColumnDefinition
+            {
+                AdaptiveTableColumnDefinition();
+
+                HAlignment HorizontalCellContentAlignment;
+                VerticalContentAlignment VerticalCellContentAlignment;
+
+                Windows.Foundation.IReference<UInt32> Width;
+                Windows.Foundation.IReference<UInt32> PixelWidth;
+            };
+
+            runtimeclass AdaptiveTable : IAdaptiveCardElement
+            {
+                AdaptiveTable();
+
+                Boolean ShowGridLines;
+                Boolean FirstRowAsHeaders;
+                HAlignment HorizontalCellContentAlignment;
+                VerticalContentAlignment VerticalCellContentAlignment;
+                ContainerStyle GridStyle;
+
+                Windows.Foundation.Collections.IVector<AdaptiveTableColumnDefinition> Columns { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveTableRow> Rows { get; };
+            };
+
             runtimeclass AdaptiveActionSet : IAdaptiveCardElement
             {
                 AdaptiveActionSet();
@@ -742,14 +792,28 @@ namespace AdaptiveCards
                 AdaptiveColorConfig Attention;
             };
 
-            runtimeclass AdaptiveTextConfig
+            interface IAdaptiveTextStyleConfig
             {
-                AdaptiveTextConfig();
-
                 TextWeight Weight;
                 TextSize Size;
                 ForegroundColor Color;
                 Boolean IsSubtle;
+                FontType FontType;
+            };
+
+            runtimeclass AdaptiveTextStyleConfig : [default] IAdaptiveTextStyleConfig { AdaptiveTextStyleConfig(); };
+
+            runtimeclass AdaptiveTextStylesConfig
+            {
+                AdaptiveTextStylesConfig();
+
+                AdaptiveTextStyleConfig Heading;
+            };
+
+            runtimeclass AdaptiveFactSetTextConfig : IAdaptiveTextStyleConfig
+            {
+                AdaptiveFactSetTextConfig();
+
                 Boolean Wrap;
                 UInt32 MaxWidth;
             };
@@ -809,8 +873,8 @@ namespace AdaptiveCards
             {
                 AdaptiveFactSetConfig();
 
-                AdaptiveTextConfig Title;
-                AdaptiveTextConfig Value;
+                AdaptiveFactSetTextConfig Title;
+                AdaptiveFactSetTextConfig Value;
                 UInt32 Spacing;
             };
 
@@ -884,11 +948,11 @@ namespace AdaptiveCards
                 AdaptiveLabelConfig Label;
             };
 
-            runtimeclass AdaptiveHeadingsConfig
+            runtimeclass AdaptiveTextBlockConfig
             {
-                AdaptiveHeadingsConfig();
+                AdaptiveTextBlockConfig();
 
-                UInt32 Level;
+                UInt32 HeadingLevel;
             };
 
             runtimeclass AdaptiveHostConfig
@@ -912,7 +976,8 @@ namespace AdaptiveCards
                 AdaptiveActionsConfig Actions;
                 AdaptiveMediaConfig Media;
                 AdaptiveInputsConfig Inputs;
-                AdaptiveHeadingsConfig Headings;
+                AdaptiveTextBlockConfig TextBlock;
+                AdaptiveTextStylesConfig TextStyles;
 
                 static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
                 static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);

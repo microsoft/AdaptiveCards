@@ -5,7 +5,6 @@ package io.adaptivecards.renderer.action;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
-import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -110,6 +109,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
+        button.setEnabled(baseActionElement.GetIsEnabled());
 
         if (Util.isOfType(baseActionElement, ExecuteAction.class) || Util.isOfType(baseActionElement, SubmitAction.class))
         {

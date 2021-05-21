@@ -128,7 +128,17 @@ std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context
     const auto& fallbackElement = column->GetFallbackContent();
     if (fallbackElement)
     {
-        if (CardElementTypeFromString(fallbackElement->GetElementTypeString()) != CardElementType::Column)
+        bool isFallbackColumn;
+        try
+        {
+            isFallbackColumn = CardElementTypeFromString(fallbackElement->GetElementTypeString()) == CardElementType::Column;
+        }
+        catch (const std::out_of_range&)
+        {
+            isFallbackColumn = false;
+        }
+
+        if (!isFallbackColumn)
         {
             context.warnings.emplace_back(
                 std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::UnknownElementType,

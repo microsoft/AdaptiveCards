@@ -13,6 +13,7 @@ import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.InputLabelConfig;
+import io.adaptivecards.objectmodel.TextStyle;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
@@ -55,8 +56,8 @@ public class InputUtil
         labelView.setText(paragraph);
         labelView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
 
-        TextBlockRenderer.getInstance().setTextFormat(labelView, hostConfig, FontType.Default, inputLabelConfig.getWeight());
-        TextBlockRenderer.setTextSize(labelView, FontType.Default, inputLabelConfig.getSize(), hostConfig);
+        TextBlockRenderer.applyTextFormat(labelView, hostConfig, TextStyle.Default, FontType.Default, inputLabelConfig.getWeight());
+        TextBlockRenderer.applyTextSize(labelView, hostConfig, TextStyle.Default, FontType.Default, inputLabelConfig.getSize());
 
         return labelView;
     }
@@ -73,8 +74,8 @@ public class InputUtil
         errorMessageView.setText(paragraph);
 
         ErrorMessageConfig errorMessageConfig  = hostConfig.GetInputs().getErrorMessage();
-        TextBlockRenderer.getInstance().setTextFormat(errorMessageView, hostConfig, FontType.Default, errorMessageConfig.getWeight());
-        TextBlockRenderer.setTextSize(errorMessageView, FontType.Default, errorMessageConfig.getSize(), hostConfig);
+        TextBlockRenderer.applyTextFormat(errorMessageView, hostConfig, TextStyle.Default, FontType.Default, errorMessageConfig.getWeight());
+        TextBlockRenderer.applyTextSize(errorMessageView, hostConfig, TextStyle.Default, FontType.Default, errorMessageConfig.getSize());
 
         errorMessageView.setVisibility(View.GONE);
 
