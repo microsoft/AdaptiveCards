@@ -173,7 +173,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         case CardElementType::TextBlock: {
             std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
             RichTextElementProperties textProp;
-            TextBlockToRichTextElementProperties(textBlockElement, textProp);
+
+            TextBlockToRichTextElementProperties(textBlockElement, [_hostConfig getHostConfig], textProp);
 
             /// tag a base card element with unique key
             NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];

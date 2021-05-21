@@ -10,7 +10,7 @@ namespace AdaptiveCards
     {
     public:
         RichTextElementProperties();
-        RichTextElementProperties(const TextConfig&, const std::string&, const std::string&);
+        RichTextElementProperties(const TextStyleConfig&, const std::string&, const std::string&);
         RichTextElementProperties(const RichTextElementProperties&) = default;
         RichTextElementProperties(RichTextElementProperties&&) = default;
         RichTextElementProperties& operator=(const RichTextElementProperties&) = default;
