@@ -30,26 +30,26 @@ namespace AdaptiveCards
         void SetText(const std::string& value);
         DateTimePreparser GetTextForDateParsing() const;
 
-        TextStyle GetStyle() const;
-        void SetStyle(const TextStyle value);
+        std::optional<TextStyle> GetStyle() const;
+        void SetStyle(const std::optional<TextStyle> value);
 
-        TextSize GetTextSize() const;
-        void SetTextSize(const TextSize value);
+        std::optional<TextSize> GetTextSize() const;
+        void SetTextSize(const std::optional<TextSize> value);
 
-        TextWeight GetTextWeight() const;
-        void SetTextWeight(const TextWeight value);
+        std::optional<TextWeight> GetTextWeight() const;
+        void SetTextWeight(const std::optional<TextWeight> value);
 
-        FontType GetFontType() const;
-        void SetFontType(const FontType value);
+        std::optional<FontType> GetFontType() const;
+        void SetFontType(const std::optional<FontType> value);
 
-        ForegroundColor GetTextColor() const;
-        void SetTextColor(const ForegroundColor value);
+        std::optional<ForegroundColor> GetTextColor() const;
+        void SetTextColor(const std::optional<ForegroundColor> value);
 
         bool GetWrap() const;
         void SetWrap(const bool value);
 
-        bool GetIsSubtle() const;
-        void SetIsSubtle(const bool value);
+        std::optional<bool> GetIsSubtle() const;
+        void SetIsSubtle(const std::optional<bool> value);
 
         unsigned int GetMaxLines() const;
         void SetMaxLines(const unsigned int value);
@@ -64,7 +64,7 @@ namespace AdaptiveCards
         bool m_wrap;
         unsigned int m_maxLines;
         HorizontalAlignment m_hAlignment;
-        TextStyle m_textStyle;
+        std::optional<TextStyle> m_textStyle;
         std::shared_ptr<TextElementProperties> m_textElementProperties;
         void PopulateKnownPropertiesSet();
     };

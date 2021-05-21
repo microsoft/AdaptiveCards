@@ -101,7 +101,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         if (m_buttons)
         {
-            XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveAuthCardButton, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveAuthCardButton>(
+            IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveAuthCardButton, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveAuthCardButton>(
                 m_buttons.Get(), [&](ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveAuthCardButton* authCardButton) {
                     ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveAuthCardButton> buttonImpl =
                         PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveAuthCardButton>(authCardButton);

@@ -8,16 +8,16 @@
 
 package io.adaptivecards.objectmodel;
 
-public class HeadingsConfig {
+public class StdOptionalTextSize {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  protected HeadingsConfig(long cPtr, boolean cMemoryOwn) {
+  protected StdOptionalTextSize(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(HeadingsConfig obj) {
+  protected static long getCPtr(StdOptionalTextSize obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -30,26 +30,26 @@ public class HeadingsConfig {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        AdaptiveCardObjectModelJNI.delete_HeadingsConfig(swigCPtr);
+        AdaptiveCardObjectModelJNI.delete_StdOptionalTextSize(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
-  public void setLevel(long value) {
-    AdaptiveCardObjectModelJNI.HeadingsConfig_level_set(swigCPtr, this, value);
+  public StdOptionalTextSize() {
+    this(AdaptiveCardObjectModelJNI.new_StdOptionalTextSize__SWIG_0(), true);
   }
 
-  public long getLevel() {
-    return AdaptiveCardObjectModelJNI.HeadingsConfig_level_get(swigCPtr, this);
+  public StdOptionalTextSize(TextSize arg0) {
+    this(AdaptiveCardObjectModelJNI.new_StdOptionalTextSize__SWIG_1(arg0.swigValue()), true);
   }
 
-  public static HeadingsConfig Deserialize(JsonValue json, HeadingsConfig defaultValue) {
-    return new HeadingsConfig(AdaptiveCardObjectModelJNI.HeadingsConfig_Deserialize(JsonValue.getCPtr(json), json, HeadingsConfig.getCPtr(defaultValue), defaultValue), true);
+  public boolean has_value() {
+    return AdaptiveCardObjectModelJNI.StdOptionalTextSize_has_value(swigCPtr, this);
   }
 
-  public HeadingsConfig() {
-    this(AdaptiveCardObjectModelJNI.new_HeadingsConfig(), true);
+  public TextSize value() {
+    return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.StdOptionalTextSize_value(swigCPtr, this));
   }
 
 }

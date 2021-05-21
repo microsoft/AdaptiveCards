@@ -28,6 +28,7 @@
 #include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveSubmitAction.h"
+#include "AdaptiveTable.h"
 #include "AdaptiveTextBlock.h"
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTextRun.h"
@@ -266,6 +267,11 @@ HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptive
             GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveToggleInput>(
                 item);
         break;
+    case ABI::AdaptiveCards::Rendering::Uwp::ElementType::Table:
+        baseCardElement =
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveTable>(
+                item);
+        break;
     case ABI::AdaptiveCards::Rendering::Uwp::ElementType::Unsupported:
         baseCardElement =
             GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveUnsupportedElement>(
@@ -289,7 +295,7 @@ HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVect
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement>(
+    IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement>(
         items, [&](ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* item) {
             std::shared_ptr<AdaptiveCards::BaseCardElement> baseCardElement;
             RETURN_IF_FAILED(GenerateSharedElement(item, baseCardElement));
@@ -351,7 +357,7 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement>(
+    IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement>(
         actions, [&](ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action) {
             std::shared_ptr<AdaptiveCards::BaseActionElement> baseActionElement;
             GenerateSharedAction(action, baseActionElement);
@@ -369,7 +375,7 @@ try
 {
     sharedRequirements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveRequirement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRequirement>(
+    IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveRequirement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRequirement>(
         adaptiveRequirements, [&](ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRequirement* requirement) {
             HString nameHString;
             RETURN_IF_FAILED(requirement->get_Name(nameHString.GetAddressOf()));
@@ -399,118 +405,12 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage*>* images,
-                             std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements)
-{
-    containedElements.clear();
-
-    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage>(
-        images, [&](ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage* image) {
-            ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage> localImage = image;
-            ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement> imageAsElement;
-            localImage.As(&imageAsElement);
-
-            std::shared_ptr<AdaptiveCards::BaseCardElement> sharedImage =
-                GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement, AdaptiveCards::Rendering::Uwp::AdaptiveImage>(
-                    imageAsElement.Get());
-            containedElements.push_back(std::AdaptivePointerCast<AdaptiveCards::Image>(sharedImage));
-
-            return S_OK;
-        });
-
-    return S_OK;
-}
-
-HRESULT GenerateSharedFacts(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact*>* facts,
-                            std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements)
-{
-    containedElements.clear();
-
-    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact>(
-        facts, [&](ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact* fact) {
-            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveFact> adaptiveElement =
-                PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveFact>(fact);
-            if (adaptiveElement == nullptr)
-            {
-                return E_INVALIDARG;
-            }
-
-            std::shared_ptr<AdaptiveCards::Fact> sharedFact;
-            RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedFact));
-            containedElements.push_back(std::AdaptivePointerCast<AdaptiveCards::Fact>(sharedFact));
-            return S_OK;
-        });
-
-    return S_OK;
-}
-
-HRESULT GenerateSharedChoices(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput*>* choices,
-                              std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements)
-{
-    containedElements.clear();
-
-    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput>(
-        choices, [&](ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput* choice) {
-            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput> adaptiveElement =
-                PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput>(choice);
-            if (adaptiveElement == nullptr)
-            {
-                return E_INVALIDARG;
-            }
-
-            std::shared_ptr<AdaptiveCards::ChoiceInput> sharedChoice;
-            RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedChoice));
-            containedElements.push_back(std::AdaptivePointerCast<AdaptiveCards::ChoiceInput>(sharedChoice));
-            return S_OK;
-        });
-
-    return S_OK;
-}
-
-HRESULT GenerateSharedMediaSources(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>* sources,
-    std::vector<std::shared_ptr<AdaptiveCards::MediaSource>>& containedElements)
-{
-    containedElements.clear();
-
-    ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>> localSources(sources);
-    ComPtr<IIterable<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>> vectorIterable;
-    THROW_IF_FAILED(localSources.As<IIterable<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>>(&vectorIterable));
-
-    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>> vectorIterator;
-    HRESULT hr = vectorIterable->First(&vectorIterator);
-
-    boolean hasCurrent;
-    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
-
-    while (SUCCEEDED(hr) && hasCurrent)
-    {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaSource> source;
-        THROW_IF_FAILED(vectorIterator->get_Current(&source));
-
-        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource> adaptiveElement =
-            PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource>(source);
-        if (adaptiveElement == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        std::shared_ptr<AdaptiveCards::MediaSource> sharedSource;
-        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedSource));
-        containedElements.push_back(std::AdaptivePointerCast<AdaptiveCards::MediaSource>(sharedSource));
-
-        hr = vectorIterator->MoveNext(&hasCurrent);
-    }
-
-    return S_OK;
-}
-
 HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline*>* inlines,
                               std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements)
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline>(
+    IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline>(
         inlines, [&](ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline* thisInline) {
             // We only support text runs for now
             ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveTextRun> adaptiveTextRun =
@@ -525,45 +425,6 @@ HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI
             containedElements.push_back(std::AdaptivePointerCast<AdaptiveCards::Inline>(sharedTextRun));
             return S_OK;
         });
-
-    return S_OK;
-}
-
-HRESULT GenerateSharedToggleElements(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>* targets,
-    std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget>>& containedElements)
-{
-    containedElements.clear();
-
-    ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>> localTargets(
-        targets);
-    ComPtr<IIterable<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>> vectorIterable;
-    THROW_IF_FAILED(localTargets.As<IIterable<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>>(&vectorIterable));
-
-    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>> vectorIterator;
-    HRESULT hr = vectorIterable->First(&vectorIterator);
-
-    boolean hasCurrent;
-    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
-
-    while (SUCCEEDED(hr) && hasCurrent)
-    {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveToggleVisibilityTarget> target;
-        THROW_IF_FAILED(vectorIterator->get_Current(&target));
-
-        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget> adaptiveElement =
-            PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget>(target);
-        if (adaptiveElement == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> sharedTarget;
-        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedTarget));
-        containedElements.push_back(std::AdaptivePointerCast<AdaptiveCards::ToggleVisibilityTarget>(sharedTarget));
-
-        hr = vectorIterator->MoveNext(&hasCurrent);
-    }
 
     return S_OK;
 }
@@ -638,6 +499,10 @@ try
     case CardElementType::Column:
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveColumn>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::Column>(baseElement)));
+        break;
+    case CardElementType::Table:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveTable>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveCards::Table>(baseElement)));
         break;
     case CardElementType::Custom:
         RETURN_IF_FAILED(
@@ -736,39 +601,6 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateColumnsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Column>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveColumn*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColumn> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveColumn>(
-            &projectedContainedElement, std::static_pointer_cast<AdaptiveCards::Column>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateFactsProjection(const std::vector<std::shared_ptr<AdaptiveCards::Fact>>& containedElements,
-                                _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveFact>(
-            &projectedContainedElement, std::static_pointer_cast<AdaptiveCards::Fact>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
 HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
                                   ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline*>* projectedParentContainer) noexcept
 try
@@ -802,105 +634,6 @@ try
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveRequirement>(&projectedRequirement, sharedRequirement));
         RETURN_IF_FAILED(projectedRequirementVector->Append(projectedRequirement.Detach()));
     }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateImagesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Image>>& containedElements,
-                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveImage>(
-            &projectedContainedElement, std::static_pointer_cast<AdaptiveCards::Image>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateInputChoicesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput>(
-            &projectedContainedElement, std::static_pointer_cast<AdaptiveCards::ChoiceInput>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateMediaSourcesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::MediaSource>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaSource> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource>(
-            &projectedContainedElement, std::static_pointer_cast<AdaptiveCards::MediaSource>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateToggleTargetProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveToggleVisibilityTarget> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget>(
-            &projectedContainedElement, std::static_pointer_cast<AdaptiveCards::ToggleVisibilityTarget>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateSeparatorProjection(const std::shared_ptr<AdaptiveCards::Separator>& sharedSeparator,
-                                    _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparator** projectedSeparator) noexcept
-try
-{
-    *projectedSeparator = nullptr;
-    if (sharedSeparator != nullptr)
-    {
-        return MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::AdaptiveSeparator>(projectedSeparator, sharedSeparator);
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateSharedSeparator(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparator* separator,
-                                _Out_ std::shared_ptr<AdaptiveCards::Separator>* sharedSeparatorOut) noexcept
-try
-{
-    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor color;
-    RETURN_IF_FAILED(separator->get_Color(&color));
-
-    ABI::AdaptiveCards::Rendering::Uwp::SeparatorThickness thickness;
-    RETURN_IF_FAILED(separator->get_Thickness(&thickness));
-
-    auto sharedSeparator = std::make_shared<Separator>();
-    sharedSeparator->SetColor(static_cast<AdaptiveCards::ForegroundColor>(color));
-    sharedSeparator->SetThickness(static_cast<AdaptiveCards::SeparatorThickness>(thickness));
-
-    *sharedSeparatorOut = sharedSeparator;
     return S_OK;
 }
 CATCH_RETURN;
@@ -1065,11 +798,24 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextEle
     ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig> hostConfig;
     RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor adaptiveForegroundColor;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveForegroundColor));
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>> adaptiveForegroundColorRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveForegroundColorRef));
 
-    boolean isSubtle;
-    RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtle));
+    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor adaptiveForegroundColor =
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor::Default;
+    if (adaptiveForegroundColorRef != nullptr)
+    {
+        adaptiveForegroundColorRef->get_Value(&adaptiveForegroundColor);
+    }
+
+    ComPtr<IReference<bool>> isSubtleRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtleRef));
+
+    boolean isSubtle = false;
+    if (isSubtleRef != nullptr)
+    {
+        isSubtleRef->get_Value(&isSubtle);
+    }
 
     ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
     RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
@@ -1721,29 +1467,29 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextEl
     ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveTextElement> localCopiedTextElement;
     RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveTextRun>(&localCopiedTextElement));
 
-    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor color;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>> color;
     RETURN_IF_FAILED(textElement->get_Color(&color));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Color(color));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Color(color.Get()));
 
-    ABI::AdaptiveCards::Rendering::Uwp::FontType fontType;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>> fontType;
     RETURN_IF_FAILED(textElement->get_FontType(&fontType));
-    RETURN_IF_FAILED(localCopiedTextElement->put_FontType(fontType));
+    RETURN_IF_FAILED(localCopiedTextElement->put_FontType(fontType.Get()));
 
-    boolean isSubtle;
+    ComPtr<IReference<bool>> isSubtle;
     RETURN_IF_FAILED(textElement->get_IsSubtle(&isSubtle));
-    RETURN_IF_FAILED(localCopiedTextElement->put_IsSubtle(isSubtle));
+    RETURN_IF_FAILED(localCopiedTextElement->put_IsSubtle(isSubtle.Get()));
 
     HString language;
     RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
     RETURN_IF_FAILED(localCopiedTextElement->put_Language(language.Get()));
 
-    ABI::AdaptiveCards::Rendering::Uwp::TextSize size;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>> size;
     RETURN_IF_FAILED(textElement->get_Size(&size));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Size(size));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Size(size.Get()));
 
-    ABI::AdaptiveCards::Rendering::Uwp::TextWeight weight;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>> weight;
     RETURN_IF_FAILED(textElement->get_Weight(&weight));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Weight(weight));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Weight(weight.Get()));
 
     HString text;
     RETURN_IF_FAILED(textElement->get_Text(text.GetAddressOf()));

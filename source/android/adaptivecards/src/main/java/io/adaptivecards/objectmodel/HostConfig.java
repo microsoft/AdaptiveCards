@@ -220,12 +220,28 @@ public class HostConfig {
     AdaptiveCardObjectModelJNI.HostConfig_SetInputs(swigCPtr, this, InputsConfig.getCPtr(value), value);
   }
 
-  public HeadingsConfig GetHeadings() {
-    return new HeadingsConfig(AdaptiveCardObjectModelJNI.HostConfig_GetHeadings(swigCPtr, this), true);
+  public TextStylesConfig GetTextStyles() {
+    return new TextStylesConfig(AdaptiveCardObjectModelJNI.HostConfig_GetTextStyles(swigCPtr, this), true);
   }
 
-  public void SetHeadings(HeadingsConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_SetHeadings(swigCPtr, this, HeadingsConfig.getCPtr(value), value);
+  public void SetTextStyles(TextStylesConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetTextStyles(swigCPtr, this, TextStylesConfig.getCPtr(value), value);
+  }
+
+  public TextBlockConfig GetTextBlock() {
+    return new TextBlockConfig(AdaptiveCardObjectModelJNI.HostConfig_GetTextBlock(swigCPtr, this), true);
+  }
+
+  public void SetTextBlock(TextBlockConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetTextBlock(swigCPtr, this, TextBlockConfig.getCPtr(value), value);
+  }
+
+  public TableConfig GetTable() {
+    return new TableConfig(AdaptiveCardObjectModelJNI.HostConfig_GetTable(swigCPtr, this), true);
+  }
+
+  public void SetTable(TableConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetTable(swigCPtr, this, TableConfig.getCPtr(value), value);
   }
 
 }

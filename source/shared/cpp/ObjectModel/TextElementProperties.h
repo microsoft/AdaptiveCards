@@ -14,7 +14,7 @@ namespace AdaptiveCards
     {
     public:
         TextElementProperties();
-        TextElementProperties(const TextConfig&, const std::string&, const std::string&);
+        TextElementProperties(const TextStyleConfig&, const std::string&, const std::string&);
         TextElementProperties(const TextElementProperties&) = default;
         TextElementProperties(TextElementProperties&&) = default;
         TextElementProperties& operator=(const TextElementProperties&) = default;
@@ -27,20 +27,20 @@ namespace AdaptiveCards
         void SetText(const std::string& value);
         DateTimePreparser GetTextForDateParsing() const;
 
-        TextSize GetTextSize() const;
-        void SetTextSize(const TextSize value);
+        std::optional<TextSize> GetTextSize() const;
+        void SetTextSize(const std::optional<TextSize> value);
 
-        TextWeight GetTextWeight() const;
-        void SetTextWeight(const TextWeight value);
+        std::optional<TextWeight> GetTextWeight() const;
+        void SetTextWeight(const std::optional<TextWeight> value);
 
-        FontType GetFontType() const;
-        void SetFontType(const FontType value);
+        std::optional<FontType> GetFontType() const;
+        void SetFontType(const std::optional<FontType> value);
 
-        ForegroundColor GetTextColor() const;
-        void SetTextColor(const ForegroundColor value);
+        std::optional<ForegroundColor> GetTextColor() const;
+        void SetTextColor(const std::optional<ForegroundColor> value);
 
-        bool GetIsSubtle() const;
-        void SetIsSubtle(const bool value);
+        std::optional<bool> GetIsSubtle() const;
+        void SetIsSubtle(const std::optional<bool> value);
 
         void SetLanguage(const std::string& value);
         const std::string& GetLanguage() const;
@@ -52,11 +52,11 @@ namespace AdaptiveCards
         static std::string _ProcessHTMLEntities(const std::string& input);
 
         std::string m_text;
-        TextSize m_textSize;
-        TextWeight m_textWeight;
-        FontType m_fontType;
-        ForegroundColor m_textColor;
-        bool m_isSubtle;
+        std::optional<TextSize> m_textSize;
+        std::optional<TextWeight> m_textWeight;
+        std::optional<FontType> m_fontType;
+        std::optional<ForegroundColor> m_textColor;
+        std::optional<bool> m_isSubtle;
         std::string m_language;
     };
 }

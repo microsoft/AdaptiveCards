@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveToggleVisibilityAction.h"
+#include "AdaptiveToggleVisibilityTarget.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
@@ -28,7 +29,7 @@ namespace AdaptiveCards::Rendering::Uwp
             return E_INVALIDARG;
         }
 
-        m_targetElements = Microsoft::WRL::Make<Vector<AdaptiveToggleVisibilityTarget*>>();
+        m_targetElements = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>>();
         GenerateToggleTargetProjection(sharedToggleVisibilityAction->GetTargetElements(), m_targetElements.Get());
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedToggleVisibilityAction));
@@ -42,7 +43,8 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleVisibilityAction::get_TargetElements(_COM_Outptr_ IVector<AdaptiveToggleVisibilityTarget*>** targetElements)
+    HRESULT AdaptiveToggleVisibilityAction::get_TargetElements(
+        _COM_Outptr_ IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget*>** targetElements)
     {
         return m_targetElements.CopyTo(targetElements);
     }
