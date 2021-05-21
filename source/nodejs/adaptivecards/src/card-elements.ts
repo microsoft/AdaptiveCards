@@ -4831,6 +4831,7 @@ class ActionCollection {
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
         let afterSelectedAction = false;
+
         for (const button of this._buttons) {
             // remove actions after selected action from tabOrder, to skip focus directly to expanded card
             if (afterSelectedAction) {
@@ -4910,7 +4911,7 @@ class ActionCollection {
             if (action === this._expandedAction) {
                 this.collapseExpandedAction();
             }
-            else {
+            else if (this._owner.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Inline) {
                 this.expandShowCardAction(action, true);
             }
         }
