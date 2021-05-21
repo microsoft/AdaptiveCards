@@ -250,10 +250,14 @@ export default class Renderer extends React.Component {
 const styles = StyleSheet.create({
     container: {
         padding: 10,
+        flex: 1,
         ...Platform.select({
             ios: {
                 paddingTop: 50,
                 marginBottom: Constants.IosBottomMargin, //Adaptive card starts from 84 pixel so we gave margin bottom as 84. Its purely for our renderer app, it will not impact adaptive card.
+            },
+            android: {
+                marginBottom: Constants.AndroidBottomMargin
             }
         }),
     },

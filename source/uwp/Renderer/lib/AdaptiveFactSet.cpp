@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveFactSet.h"
+#include "AdaptiveFact.h"
 
 #include "Util.h"
 #include "Vector.h"
@@ -16,7 +17,10 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    AdaptiveFactSet::AdaptiveFactSet() { m_facts = Microsoft::WRL::Make<Vector<AdaptiveFact*>>(); }
+    AdaptiveFactSet::AdaptiveFactSet()
+    {
+        m_facts = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact*>>();
+    }
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept
     try
@@ -41,7 +45,7 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<AdaptiveFact*>** facts)
+    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact*>** facts)
     {
         return m_facts.CopyTo(facts);
     }

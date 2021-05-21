@@ -4,7 +4,7 @@ package io.adaptivecards.objectmodel;
 
 import android.util.Pair;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
@@ -123,10 +123,12 @@ public class TextBlockPropertiesTest
     @Test
     public void FontTypeTest() throws Exception
     {
+        final String textBlockDefaultFontType = "{\"fontType\":\"Default\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockMonospaceFontType = "{\"fontType\":\"Monospace\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
 
         ArrayList<Pair<FontType, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(FontType.Default, s_defaultTextBlock));
+        tests.add(new Pair<>(null, s_defaultTextBlock));
+        tests.add(new Pair<>(FontType.Default, textBlockDefaultFontType));
         tests.add(new Pair<>(FontType.Monospace, textBlockMonospaceFontType));
 
         for (Pair<FontType, String> testTuple : tests)
@@ -167,11 +169,13 @@ public class TextBlockPropertiesTest
     @Test
     public void IsSubtleTest() throws Exception
     {
+        final String textBlockFalseIsSubtle = "{\"isSubtle\":false,\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockTrueIsSubtle = "{\"isSubtle\":true,\"text\":\"\",\"type\":\"TextBlock\"}\n";
 
         ArrayList<Pair<Boolean, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(false, s_defaultTextBlock));
-        tests.add(new Pair<>(true, textBlockTrueIsSubtle));
+        tests.add(new Pair<>(null, s_defaultTextBlock));
+        tests.add(new Pair<>(Boolean.FALSE, textBlockFalseIsSubtle));
+        tests.add(new Pair<>(Boolean.TRUE, textBlockTrueIsSubtle));
 
         for (Pair<Boolean, String> testTuple : tests)
         {
@@ -181,7 +185,7 @@ public class TextBlockPropertiesTest
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals((boolean)testTuple.first, parsedTextBlock.GetIsSubtle());
+            Assert.assertEquals(testTuple.first, parsedTextBlock.GetIsSubtle());
         }
     }
 
@@ -241,6 +245,7 @@ public class TextBlockPropertiesTest
     @Test
     public void TextColorTest() throws Exception
     {
+        final String textBlockDefaultTextColor = "{\"color\":\"Default\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockAccentTextColor = "{\"color\":\"Accent\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockAttentionTextColor = "{\"color\":\"Attention\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockDarkTextColor = "{\"color\":\"Dark\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
@@ -249,7 +254,8 @@ public class TextBlockPropertiesTest
         final String textBlockWarningTextColor = "{\"color\":\"Warning\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
 
         ArrayList<Pair<ForegroundColor, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(ForegroundColor.Default, s_defaultTextBlock));
+        tests.add(new Pair<>(null, s_defaultTextBlock));
+        tests.add(new Pair<>(ForegroundColor.Default, textBlockDefaultTextColor));
         tests.add(new Pair<>(ForegroundColor.Accent, textBlockAccentTextColor));
         tests.add(new Pair<>(ForegroundColor.Attention, textBlockAttentionTextColor));
         tests.add(new Pair<>(ForegroundColor.Dark, textBlockDarkTextColor));
@@ -273,13 +279,15 @@ public class TextBlockPropertiesTest
     public void TextSizeTest() throws Exception
     {
         final String textBlockSmallTextSize = "{\"size\":\"Small\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
+        final String textBlockDefaultTextSize = "{\"size\":\"Default\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockMediumTextSize = "{\"size\":\"Medium\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockLargeTextSize = "{\"size\":\"Large\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockExtraLargeTextSize = "{\"size\":\"ExtraLarge\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
 
         ArrayList<Pair<TextSize, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(TextSize.Default, s_defaultTextBlock));
+        tests.add(new Pair<>(null, s_defaultTextBlock));
         tests.add(new Pair<>(TextSize.Small, textBlockSmallTextSize));
+        tests.add(new Pair<>(TextSize.Default, textBlockDefaultTextSize));
         tests.add(new Pair<>(TextSize.Medium, textBlockMediumTextSize));
         tests.add(new Pair<>(TextSize.Large, textBlockLargeTextSize));
         tests.add(new Pair<>(TextSize.ExtraLarge, textBlockExtraLargeTextSize));
@@ -299,13 +307,15 @@ public class TextBlockPropertiesTest
     @Test
     public void TextWeightTest() throws Exception
     {
-        final String textBlockSmallTextSize = "{\"text\":\"\",\"type\":\"TextBlock\",\"weight\":\"Bolder\"}\n";
-        final String textBlockMediumTextSize = "{\"text\":\"\",\"type\":\"TextBlock\",\"weight\":\"Lighter\"}\n";
+        final String textBlockDefaultTextWeight = "{\"text\":\"\",\"type\":\"TextBlock\",\"weight\":\"Default\"}\n";
+        final String textBlockBolderTextWeight = "{\"text\":\"\",\"type\":\"TextBlock\",\"weight\":\"Bolder\"}\n";
+        final String textBlockLighterTextWeight = "{\"text\":\"\",\"type\":\"TextBlock\",\"weight\":\"Lighter\"}\n";
 
         ArrayList<Pair<TextWeight, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(TextWeight.Default, s_defaultTextBlock));
-        tests.add(new Pair<>(TextWeight.Bolder, textBlockSmallTextSize));
-        tests.add(new Pair<>(TextWeight.Lighter, textBlockMediumTextSize));
+        tests.add(new Pair<>(null, s_defaultTextBlock));
+        tests.add(new Pair<>(TextWeight.Default, textBlockDefaultTextWeight));
+        tests.add(new Pair<>(TextWeight.Bolder, textBlockBolderTextWeight));
+        tests.add(new Pair<>(TextWeight.Lighter, textBlockLighterTextWeight));
 
         for (Pair<TextWeight, String> testTuple : tests)
         {
@@ -336,7 +346,7 @@ public class TextBlockPropertiesTest
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(testTuple.second), "1.0");
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals((boolean)testTuple.first, parsedTextBlock.GetWrap());
+            Assert.assertEquals(testTuple.first, (Boolean)parsedTextBlock.GetWrap());
         }
     }
 

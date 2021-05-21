@@ -83,12 +83,16 @@ public class Column extends CollectionTypeElement {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Column_GetItems__SWIG_0(swigCPtr, this), false);
   }
 
-  public Boolean GetRtl() {
-  return AdaptiveCardObjectModelJNI.Column_GetRtl(swigCPtr, this);
+  public @androidx.annotation.Nullable Boolean GetRtl() {
+  StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.Column_GetRtl(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
 }
 
-  public void SetRtl(Boolean value) {
-    AdaptiveCardObjectModelJNI.Column_SetRtl(swigCPtr, this, value);
+  public void SetRtl(@androidx.annotation.Nullable Boolean value) {
+    StdOptionalBool optvalue = (value == null) ? new StdOptionalBool() : new StdOptionalBool(value);
+    {
+      AdaptiveCardObjectModelJNI.Column_SetRtl(swigCPtr, this, StdOptionalBool.getCPtr(optvalue), optvalue);
+    }
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {

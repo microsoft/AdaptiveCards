@@ -1,0 +1,55 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Style: Heading",
+			"style": "heading",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style: Default",
+			"style": "default",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style: (unset)",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style: Heading, everything default",
+			"style": "heading",
+			"color": "default",
+			"size": "default",
+			"weight": "default",
+			"isSubtle": false,
+			"fontType": "default",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style: Heading, isSubtle: true, weight: lighter, size: extraLarge, fontType: monospace",
+			"style": "heading",
+			"weight": "lighter",
+			"size": "extraLarge",
+			"isSubtle": true,
+			"fontType": "monospace",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style: Default, isSubtle: true, weight: lighter, size: extraLarge, fontType: monospace",
+			"style": "default",
+			"weight": "lighter",
+			"size": "extraLarge",
+			"isSubtle": true,
+			"fontType": "monospace",
+			"wrap": true
+		}
+	]
+}
