@@ -121,4 +121,8 @@ export class OutlookContainer extends HostContainer {
     public getHostConfig(): Adaptive.HostConfig {
         return new Adaptive.HostConfig(hostConfig);
     }
+
+    get targetVersion(): Adaptive.Version {
+        return Adaptive.Versions.v1_4;
+    }
 }
