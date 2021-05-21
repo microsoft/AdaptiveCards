@@ -6,7 +6,7 @@
     "properties": {
         "columns": {
             "type": "TableColumnDefinition[]",
-            "description": "Defines the number of columns in the table, their sizes ans more."
+            "description": "Defines the number of columns in the table, their sizes, and more."
         },
         "rows": {
             "type": "TableRow[]",
