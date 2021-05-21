@@ -27,48 +27,62 @@ private:
     bool m_isInHyperlink{};
 };
 
-HRESULT AddHtmlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddHtmlInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        bool isInHyperlink,
                        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_ UINT* characterLength);
 
-HRESULT AddTextInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddTextInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        const TextRunStyleParameters& styleParameters,
                        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_ UINT* characterLength);
 
-HRESULT AddSingleTextInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddSingleTextInline(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                             _In_ HSTRING string,
                             const TextRunStyleParameters& styleParameters,
                             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                             _Out_ UINT* characterLength);
 
-HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT SetXamlInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        bool isInHyperlink,
                        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_opt_ UINT* characterLength = nullptr);
 
-HRESULT SetXamlInlinesWithTextConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* textConfig,
-                                     _In_ HSTRING language,
-                                     _In_ HSTRING text,
-                                     _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+HRESULT SetXamlInlinesWithTextStyleConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* textElement,
+                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* textConfig,
+                                          _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+
+HRESULT SetXamlInlinesWithTextStyleConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* textStyle,
+                                          _In_opt_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* textElement,
+                                          _In_ HSTRING language,
+                                          _In_ HSTRING text,
+                                          _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+
+HRESULT SetXamlInlinesWithFactSetTextConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFactSetTextConfig* textConfig,
+                                            _In_ HSTRING language,
+                                            _In_ HSTRING text,
+                                            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
 
 HRESULT SetWrapProperties(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock, bool wrap);
-HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextBlock* adaptiveTextBlock,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlock* adaptiveTextBlock,
+                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                                      _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
 
 template<typename TAdaptiveType, typename TXamlTextBlockType>
@@ -83,7 +97,7 @@ HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock, _In_ TXaml
 
     switch (horizontalAlignment)
     {
-    case ABI::AdaptiveNamespace::HAlignment::Left:
+    case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left:
         // text block stretches to both ends of its parent horizontally if its horizontal alignment is not set,
         // this can lead to unexpected behavior such as hyper link being active in the streched space
         // setting the horizontal alignment, aligns the textblock instead of stretching
@@ -91,12 +105,12 @@ HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock, _In_ TXaml
             ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Left));
         RETURN_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Left));
         break;
-    case ABI::AdaptiveNamespace::HAlignment::Right:
+    case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Right:
         RETURN_IF_FAILED(xamlTextBlockAsFrameworkElement->put_HorizontalAlignment(
             ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Right));
         RETURN_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Right));
         break;
-    case ABI::AdaptiveNamespace::HAlignment::Center:
+    case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Center:
         RETURN_IF_FAILED(xamlTextBlockAsFrameworkElement->put_HorizontalAlignment(
             ABI::Windows::UI::Xaml::HorizontalAlignment::HorizontalAlignment_Center));
         RETURN_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center));
@@ -112,13 +126,13 @@ HRESULT SetStrikethroughAndUnderline(const TextRunStyleParameters& styleProperti
                                      _In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textBlock);
 
 template<typename TXamlTextBlockType>
-HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT StyleTextElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                          const TextRunStyleParameters& styleProperties,
                          _In_ TXamlTextBlockType* xamlTextElement)
 {
-    Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> hostConfig;
+    Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig> hostConfig;
     RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
     RETURN_IF_FAILED(SetStrikethroughAndUnderline(styleProperties, xamlTextElement));
@@ -129,35 +143,66 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
     }
 
     // Get the forground color based on text color, subtle, and container style
-    ABI::AdaptiveNamespace::ForegroundColor adaptiveTextColor;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveTextColor));
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>> adaptiveTextColorRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveTextColorRef));
+
+    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor adaptiveTextColor =
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor::Default;
+    if (adaptiveTextColorRef != nullptr)
+    {
+        adaptiveTextColorRef->get_Value(&adaptiveTextColor);
+    }
 
     // If the card author set the default color and we're in a hyperlink, don't change the color and lose the hyperlink styling
-    if (adaptiveTextColor != ABI::AdaptiveNamespace::ForegroundColor::Default || !styleProperties.IsInHyperlink())
+    if (adaptiveTextColor != ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor::Default || !styleProperties.IsInHyperlink())
     {
-        boolean isSubtle = false;
-        RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtle));
+        ComPtr<IReference<bool>> isSubtleRef;
+        RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtleRef));
 
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        boolean isSubtle = false;
+        if (isSubtleRef != nullptr)
+        {
+            isSubtleRef->get_Value(&isSubtle);
+        }
+
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         ABI::Windows::UI::Color fontColor;
         RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), adaptiveTextColor, containerStyle, isSubtle, false, &fontColor));
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> fontColorBrush =
-            AdaptiveNamespace::XamlHelpers::GetSolidColorBrush(fontColor);
+            AdaptiveCards::Rendering::Uwp::XamlHelpers::GetSolidColorBrush(fontColor);
         RETURN_IF_FAILED(xamlTextElement->put_Foreground(fontColorBrush.Get()));
     }
 
     // Retrieve the desired FontFamily, FontSize, and FontWeight values
-    ABI::AdaptiveNamespace::TextSize adaptiveTextSize;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Size(&adaptiveTextSize));
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>> adaptiveTextSizeRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Size(&adaptiveTextSizeRef));
 
-    ABI::AdaptiveNamespace::TextWeight adaptiveTextWeight;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Weight(&adaptiveTextWeight));
+    ABI::AdaptiveCards::Rendering::Uwp::TextSize adaptiveTextSize = ABI::AdaptiveCards::Rendering::Uwp::TextSize::Default;
+    if (adaptiveTextSizeRef != nullptr)
+    {
+        adaptiveTextSizeRef->get_Value(&adaptiveTextSize);
+    }
 
-    ABI::AdaptiveNamespace::FontType fontType;
-    RETURN_IF_FAILED(adaptiveTextElement->get_FontType(&fontType));
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>> adaptiveTextWeightRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Weight(&adaptiveTextWeightRef));
+
+    ABI::AdaptiveCards::Rendering::Uwp::TextWeight adaptiveTextWeight = ABI::AdaptiveCards::Rendering::Uwp::TextWeight::Default;
+    if (adaptiveTextWeightRef != nullptr)
+    {
+        adaptiveTextWeightRef->get_Value(&adaptiveTextWeight);
+    }
+
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>> fontTypeRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_FontType(&fontTypeRef));
+
+    ABI::AdaptiveCards::Rendering::Uwp::FontType fontType = ABI::AdaptiveCards::Rendering::Uwp::FontType::Default;
+    if (fontTypeRef != nullptr)
+    {
+        fontTypeRef->get_Value(&fontType);
+    }
 
     UINT32 fontSize;
     Microsoft::WRL::Wrappers::HString fontFamilyName;

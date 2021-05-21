@@ -287,5 +287,17 @@
 			"size": "small",
 			"weight": "lighter"
 		}
+	},
+	"textBlock": {
+		"headingLevel": 2
+	},
+	"textStyles": {
+		"heading": {
+			"size": "large",
+			"weight": "bolder",
+			"color": "default",
+			"isSubtle": false,
+			"fontType": "default"
+		}
 	}
 }

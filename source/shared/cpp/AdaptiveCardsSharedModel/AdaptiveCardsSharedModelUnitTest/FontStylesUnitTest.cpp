@@ -15,7 +15,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(DefineFromEmptyConstructor)
         {
             TextBlock emptyTB;
-            Assert::IsTrue(emptyTB.GetFontType() == AdaptiveCards::FontType::Default);
+            Assert::IsFalse(emptyTB.GetFontType().has_value());
 
             // Set FontType to Display
             emptyTB.SetFontType(AdaptiveCards::FontType::Default);

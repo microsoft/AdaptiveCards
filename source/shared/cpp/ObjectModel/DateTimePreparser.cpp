@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#if defined(__ANDROID__) || (__APPLE__) || (__linux__)
+#if defined(__ANDROID__) || (__APPLE__) || (__linux__) || (__EMSCRIPTEN__)
 #define LOCALTIME(X, Y) (nullptr == localtime_r(Y, X))
 #else
 #define LOCALTIME(X, Y) localtime_s(X, Y)
@@ -15,7 +15,7 @@
 #include "DateTimePreparser.h"
 #include <iomanip>
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 DateTimePreparser::DateTimePreparser() : m_hasDateTokens(false)
 {

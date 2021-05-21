@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     // LinkButton is a templated button that exists strictly to behave as a button but appear as a link for
     // accessibility purposes.
@@ -11,8 +11,7 @@ namespace AdaptiveNamespace
         winrt::Windows::UI::Xaml::Automation::Peers::AutomationPeer OnCreateAutomationPeer();
     };
 
-    struct LinkButtonAutomationPeer
-        : public winrt::Windows::UI::Xaml::Automation::Peers::ButtonAutomationPeerT<LinkButtonAutomationPeer>
+    struct LinkButtonAutomationPeer : public winrt::Windows::UI::Xaml::Automation::Peers::ButtonAutomationPeerT<LinkButtonAutomationPeer>
     {
         LinkButtonAutomationPeer(LinkButton& linkButton);
 

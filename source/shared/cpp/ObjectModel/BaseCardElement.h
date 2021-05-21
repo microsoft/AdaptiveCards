@@ -11,7 +11,7 @@
 
 void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties);
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseCardElement : public BaseElement
     {
@@ -42,12 +42,13 @@ namespace AdaptiveSharedNamespace
 
         CardElementType GetElementType() const;
 
-        static std::shared_ptr<BaseCardElement> DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
-        static std::shared_ptr<BaseCardElement> DeserializeBaseProperties(ParseContext& context, const Json::Value& json);       
+        static std::shared_ptr<BaseCardElement> DeserializeBasePropertiesFromString(ParseContext& context,
+                                                                                    const std::string& jsonString);
+        static std::shared_ptr<BaseCardElement> DeserializeBaseProperties(ParseContext& context, const Json::Value& json);
 
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
-        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
+        static void ParseJsonObject(AdaptiveCards::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     protected:
         static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement>& selectAction);

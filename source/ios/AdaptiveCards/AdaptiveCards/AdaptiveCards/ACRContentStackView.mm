@@ -32,7 +32,6 @@ static int kToggleVisibilityContext;
 {
     self = [self initWithFrame:superview.frame];
     if (self) {
-
         _style = style;
         if (style != ACRNone &&
             style != parentStyle) {

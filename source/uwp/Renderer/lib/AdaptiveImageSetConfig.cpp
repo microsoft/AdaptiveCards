@@ -5,9 +5,9 @@
 #include "AdaptiveImageSetConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept
     try
@@ -19,18 +19,18 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize(ImageSetConfig sharedImageSetConfig) noexcept
     {
-        m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImageSetConfig.imageSize);
+        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImageSetConfig.imageSize);
         m_maxImageHeight = sharedImageSetConfig.maxImageHeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSetConfig::get_ImageSize(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize)
+    HRESULT AdaptiveImageSetConfig::get_ImageSize(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
+    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;

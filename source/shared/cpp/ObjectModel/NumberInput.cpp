@@ -5,7 +5,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 NumberInput::NumberInput() : BaseInputElement(CardElementType::NumberInput)
 {
@@ -87,16 +87,14 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& co
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
 
-    static const std::optional<double> emptyOptionalDouble;
-    numberInput->SetValue(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Value, emptyOptionalDouble));
-    numberInput->SetMax(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Max, emptyOptionalDouble));
-    numberInput->SetMin(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Min, emptyOptionalDouble));
+    numberInput->SetValue(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Value));
+    numberInput->SetMax(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Max));
+    numberInput->SetMin(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Min));
 
     return numberInput;
 }
 
-std::shared_ptr<BaseCardElement>
-NumberInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return NumberInputParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

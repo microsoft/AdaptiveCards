@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "ParseContext.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class ChoiceInput
     {

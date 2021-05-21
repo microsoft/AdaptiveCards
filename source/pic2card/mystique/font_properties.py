@@ -4,9 +4,9 @@ can switch for different implementation to obtain font properties
 """
 
 from typing import Tuple, Dict, List
+import statistics
 import numpy as np
 import cv2
-import statistics
 from PIL import Image
 from mystique import default_host_configs
 from mystique.extract_properties_abstract import AbstractFontSizeAndWeight
@@ -22,10 +22,10 @@ def classify_font_weights(design_objects):
     """
     dynamic_thresh = []
     for item in design_objects:
-        if item['object'] == 'textbox':
+        if item["object"] == "textbox":
             # For debugging purposes
             # print(f"{item['data']}, weight is {item['weight']}")
-            dynamic_thresh.append(item['weight'][item['uuid']])
+            dynamic_thresh.append(item["weight"][item["uuid"]])
 
     if len(set(dynamic_thresh)) > 1:
         std = statistics.pstdev(dynamic_thresh)
@@ -36,17 +36,17 @@ def classify_font_weights(design_objects):
         light_limit = round(mean - std, 2)
 
     else:
-        bold_limit = default_host_configs.FONT_WEIGHT_MORPH['bolder']
-        light_limit = default_host_configs.FONT_WEIGHT_MORPH['lighter']
+        bold_limit = default_host_configs.FONT_WEIGHT_MORPH["bolder"]
+        light_limit = default_host_configs.FONT_WEIGHT_MORPH["lighter"]
 
     for item in design_objects:
-        if item['object'] == 'textbox':
-            if item['weight'][item['uuid']] < light_limit:
-                item['weight'] = "Lighter"
-            elif item['weight'][item['uuid']] >= bold_limit:
-                item['weight'] = "Bolder"
+        if item["object"] == "textbox":
+            if item["weight"][item["uuid"]] < light_limit:
+                item["weight"] = "Lighter"
+            elif item["weight"][item["uuid"]] >= bold_limit:
+                item["weight"] = "Bolder"
             else:
-                item['weight'] = "Default"
+                item["weight"] = "Default"
     return design_objects
 
 
@@ -66,16 +66,18 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
         """
         box_height = []
         box_width = []
-        n_boxes = len(img_data['level'])
+        n_boxes = len(img_data["level"])
         for i in range(n_boxes):
-            if len(img_data['text'][i]) > 1:  # to ignore img with wrong bbox
-                (_, _, char_w, char_h) = (img_data['left'][i],
-                                          img_data['top'][i],
-                                          img_data['width'][i],
-                                          img_data['height'][i])
+            if len(img_data["text"][i]) > 1:  # to ignore img with wrong bbox
+                (_, _, char_w, char_h) = (
+                    img_data["left"][i],
+                    img_data["top"][i],
+                    img_data["width"][i],
+                    img_data["height"][i],
+                )
                 # h = text_size_processing(img_data['text'][i], h)
                 # Approximate character width
-                char_w = char_w/len(img_data['text'][i])
+                char_w = char_w / len(img_data["text"][i])
                 box_height.append(char_h)
                 box_width.append(char_w)
 
@@ -98,26 +100,27 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
         font_size = default_host_configs.FONT_SIZE
         # Handling of unrecognized characters
         if not box_height:
-            heights_ratio = font_size['default']
+            heights_ratio = font_size["default"]
         else:
             heights = int(np.mean(box_height))
-            heights_ratio = round((heights/image_height), 4)
+            heights_ratio = round((heights / image_height), 4)
 
-        if font_size['small'] < heights_ratio < font_size['default']:
+        if font_size["small"] < heights_ratio < font_size["default"]:
             size = "Small"
-        elif font_size['default'] < heights_ratio < font_size['medium']:
+        elif font_size["default"] < heights_ratio < font_size["medium"]:
             size = "Default"
-        elif font_size['medium'] < heights_ratio < font_size['large']:
+        elif font_size["medium"] < heights_ratio < font_size["large"]:
             size = "Medium"
-        elif font_size['large'] < heights_ratio < font_size['extralarge']:
+        elif font_size["large"] < heights_ratio < font_size["extralarge"]:
             size = "Large"
-        elif font_size['extralarge'] < heights_ratio:
+        elif font_size["extralarge"] < heights_ratio:
             size = "ExtraLarge"
         else:
             size = "Default"
 
         return size
 
+    # pylint: disable=arguments-differ
     def get_weight(self, image: Image, coords: Tuple, img_data: Dict) -> str:
         """
         Extract the weight by taking an average of
@@ -135,12 +138,12 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
         box_width = self.get_bbox_properties(img_data)[1]
         # Handling of unrecognized characters
         if not box_width:
-            weights_ratio = default_host_configs.FONT_WEIGHT_BBOX['default']
+            weights_ratio = default_host_configs.FONT_WEIGHT_BBOX["default"]
         else:
             weights = int(np.mean(box_width))
-            weights_ratio = round((weights/image_width), 4)
+            weights_ratio = round((weights / image_width), 4)
 
-        return {img_data['uuid']: weights_ratio}
+        return {img_data["uuid"]: weights_ratio}
 
 
 class FontPropMorph(FontPropBoundingBox):
@@ -149,6 +152,7 @@ class FontPropMorph(FontPropBoundingBox):
     using morphology operations.
     """
 
+    # pylint: disable=too-many-locals
     def get_weight(self, image: Image, coords: Tuple, img_data: None) -> str:
         """
         Extract the weight of the each words by
@@ -162,12 +166,12 @@ class FontPropMorph(FontPropBoundingBox):
         """
         cropped_image = image.crop(coords)
         c_img = np.asarray(cropped_image)
-        """
-        if(image_height/image_width) < 1:
-            y_scale = round((800/image_width), 2)
-            x_scale = round((500/image_height), 2)
-            c_img = cv2.resize(c_img, (0, 0), fx=x_scale, fy=y_scale)
-        """
+        # """
+        # if(image_height/image_width) < 1:
+        #     y_scale = round((800/image_width), 2)
+        #     x_scale = round((500/image_height), 2)
+        #     c_img = cv2.resize(c_img, (0, 0), fx=x_scale, fy=y_scale)
+        # """
         gray = cv2.cvtColor(c_img, cv2.COLOR_BGR2GRAY)
         # Converting input image to binary format
         _, img = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
@@ -186,7 +190,7 @@ class FontPropMorph(FontPropBoundingBox):
             if cv2.countNonZero(img) == 0:
                 break
         # length of the lines in text
-        area_of_skel = np.sum(skel)/255
+        area_of_skel = np.sum(skel) / 255
         # width of line = area of the line / length of the line
-        thickness = round(area_of_img/area_of_skel, 2)
-        return {img_data['uuid']: thickness}
+        thickness = round(area_of_img / area_of_skel, 2)
+        return {img_data["uuid"]: thickness}

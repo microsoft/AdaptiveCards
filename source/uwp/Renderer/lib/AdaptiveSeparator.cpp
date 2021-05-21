@@ -6,12 +6,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveSeparator::RuntimeClassInitialize() noexcept
     try
@@ -21,33 +21,33 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSeparator::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Separator>& sharedSeparator)
+    HRESULT AdaptiveSeparator::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Separator>& sharedSeparator)
     {
         m_sharedSeparator = sharedSeparator;
         return S_OK;
     }
 
-    HRESULT AdaptiveSeparator::get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* color)
+    HRESULT AdaptiveSeparator::get_Color(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* color)
     {
-        *color = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(m_sharedSeparator->GetColor());
+        *color = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>(m_sharedSeparator->GetColor());
         return S_OK;
     }
 
-    HRESULT AdaptiveSeparator::put_Color(ABI::AdaptiveNamespace::ForegroundColor color)
+    HRESULT AdaptiveSeparator::put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor color)
     {
-        m_sharedSeparator->SetColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(color));
+        m_sharedSeparator->SetColor(static_cast<AdaptiveCards::ForegroundColor>(color));
         return S_OK;
     }
 
-    HRESULT AdaptiveSeparator::get_Thickness(_Out_ ABI::AdaptiveNamespace::SeparatorThickness* thickness)
+    HRESULT AdaptiveSeparator::get_Thickness(_Out_ ABI::AdaptiveCards::Rendering::Uwp::SeparatorThickness* thickness)
     {
-        *thickness = static_cast<ABI::AdaptiveNamespace::SeparatorThickness>(m_sharedSeparator->GetThickness());
+        *thickness = static_cast<ABI::AdaptiveCards::Rendering::Uwp::SeparatorThickness>(m_sharedSeparator->GetThickness());
         return S_OK;
     }
 
-    HRESULT AdaptiveSeparator::put_Thickness(ABI::AdaptiveNamespace::SeparatorThickness thickness)
+    HRESULT AdaptiveSeparator::put_Thickness(ABI::AdaptiveCards::Rendering::Uwp::SeparatorThickness thickness)
     {
-        m_sharedSeparator->SetThickness(static_cast<AdaptiveSharedNamespace::SeparatorThickness>(thickness));
+        m_sharedSeparator->SetThickness(static_cast<AdaptiveCards::SeparatorThickness>(thickness));
         return S_OK;
     }
 }

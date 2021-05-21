@@ -33,7 +33,7 @@
 + (ACRUILabel *)buildLabel:(NSString *)text
                  superview:(UIView<ACRIContentHoldingView> *)superview
                 hostConfig:(ACOHostConfig *)acoConfig
-                textConfig:(TextConfig const &)textConfig
+                textConfig:(FactSetTextConfig const &)textConfig
             containerStyle:(ACRContainerStyle)style
                  elementId:(NSString *)elementId
                   rootView:(ACRView *)rootView

@@ -4,7 +4,7 @@ import androidx.test.InstrumentationRegistry;
 import androidx.fragment.app.FragmentManager;
 import android.widget.EditText;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

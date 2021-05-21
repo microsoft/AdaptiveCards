@@ -7,14 +7,20 @@
 #include "ParseContext.h"
 #include "TokenExchangeResource.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class Authentication
     {
     public:
         Authentication() {}
-        Authentication(std::string text, std::string connectionName, const std::shared_ptr<TokenExchangeResource>& tokenExchangeResource, const std::vector<std::shared_ptr<AuthCardButton>>& buttons) :
-            m_text(text), m_connectionName(connectionName), m_tokenExchangeResource(tokenExchangeResource), m_buttons(buttons) {}
+        Authentication(std::string text,
+                       std::string connectionName,
+                       const std::shared_ptr<TokenExchangeResource>& tokenExchangeResource,
+                       const std::vector<std::shared_ptr<AuthCardButton>>& buttons) :
+            m_text(text),
+            m_connectionName(connectionName), m_tokenExchangeResource(tokenExchangeResource), m_buttons(buttons)
+        {
+        }
 
         std::string GetText();
         const std::string GetText() const;

@@ -1,11 +1,17 @@
+"""Tests that run for a list of sample images
+for predict_json api.
+"""
+
 import json
-from tests.utils import get_response
+from tests.utils import get_response  # pylint: disable=no-name-in-module
+
+# pylint: disable=no-name-in-module
 from tests.test_predict_json import BaseAPITest
 
 
 class TestSampleImages(BaseAPITest):
-    """ Basic Tests that run for a list of sample images
-        for predict_json api.
+    """Basic Tests that run for a list of sample images
+    for predict_json api.
     """
 
     def setUp(self):
@@ -19,11 +25,12 @@ class TestSampleImages(BaseAPITest):
         checks if return json has no error and
         response status is 200 for predict_json api
         """
-        for data in self.templates_output['templates']:
+        for data in self.templates_output["templates"]:
             # update self.data with the template api output
             self.data = f'{{"image": "{data}"}}'
-            self.response = get_response(self.client, self.api,
-                                         self.headers, self.data)
+            self.response = get_response(
+                self.client, self.api, self.headers, self.data
+            )
             self.output = json.loads(self.response.data)
             self.assertEqual(self.response.status_code, 200)
             self.assertEqual(bool(self.output), True)

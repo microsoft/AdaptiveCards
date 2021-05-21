@@ -6,7 +6,7 @@
 #include "Image.h"
 #include "BaseCardElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseCardElement;
     class ImageSet : public BaseCardElement

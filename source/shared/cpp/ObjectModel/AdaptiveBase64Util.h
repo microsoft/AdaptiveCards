@@ -8,7 +8,7 @@
 #pragma warning(disable : ALL_CPPCORECHECK_WARNINGS)
 #endif
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class AdaptiveBase64Util
     {

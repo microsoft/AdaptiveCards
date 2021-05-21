@@ -72,44 +72,64 @@ public class TextRun extends Inline {
     return new DateTimePreparser(AdaptiveCardObjectModelJNI.TextRun_GetTextForDateParsing(swigCPtr, this), true);
   }
 
-  public TextSize GetTextSize() {
-    return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextRun_GetTextSize(swigCPtr, this));
+  public @androidx.annotation.Nullable TextSize GetTextSize() {
+  StdOptionalTextSize optvalue = new StdOptionalTextSize(AdaptiveCardObjectModelJNI.TextRun_GetTextSize(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetTextSize(@androidx.annotation.Nullable TextSize value) {
+    StdOptionalTextSize optvalue = (value == null) ? new StdOptionalTextSize() : new StdOptionalTextSize(value);
+    {
+      AdaptiveCardObjectModelJNI.TextRun_SetTextSize(swigCPtr, this, StdOptionalTextSize.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public void SetTextSize(TextSize value) {
-    AdaptiveCardObjectModelJNI.TextRun_SetTextSize(swigCPtr, this, value.swigValue());
+  public @androidx.annotation.Nullable TextWeight GetTextWeight() {
+  StdOptionalTextWeight optvalue = new StdOptionalTextWeight(AdaptiveCardObjectModelJNI.TextRun_GetTextWeight(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetTextWeight(@androidx.annotation.Nullable TextWeight value) {
+    StdOptionalTextWeight optvalue = (value == null) ? new StdOptionalTextWeight() : new StdOptionalTextWeight(value);
+    {
+      AdaptiveCardObjectModelJNI.TextRun_SetTextWeight(swigCPtr, this, StdOptionalTextWeight.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public TextWeight GetTextWeight() {
-    return TextWeight.swigToEnum(AdaptiveCardObjectModelJNI.TextRun_GetTextWeight(swigCPtr, this));
+  public @androidx.annotation.Nullable FontType GetFontType() {
+  StdOptionalFontType optvalue = new StdOptionalFontType(AdaptiveCardObjectModelJNI.TextRun_GetFontType(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetFontType(@androidx.annotation.Nullable FontType value) {
+    StdOptionalFontType optvalue = (value == null) ? new StdOptionalFontType() : new StdOptionalFontType(value);
+    {
+      AdaptiveCardObjectModelJNI.TextRun_SetFontType(swigCPtr, this, StdOptionalFontType.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public void SetTextWeight(TextWeight value) {
-    AdaptiveCardObjectModelJNI.TextRun_SetTextWeight(swigCPtr, this, value.swigValue());
+  public @androidx.annotation.Nullable ForegroundColor GetTextColor() {
+  StdOptionalForegroundColor optvalue = new StdOptionalForegroundColor(AdaptiveCardObjectModelJNI.TextRun_GetTextColor(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetTextColor(@androidx.annotation.Nullable ForegroundColor value) {
+    StdOptionalForegroundColor optvalue = (value == null) ? new StdOptionalForegroundColor() : new StdOptionalForegroundColor(value);
+    {
+      AdaptiveCardObjectModelJNI.TextRun_SetTextColor(swigCPtr, this, StdOptionalForegroundColor.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public FontType GetFontType() {
-    return FontType.swigToEnum(AdaptiveCardObjectModelJNI.TextRun_GetFontType(swigCPtr, this));
-  }
+  public @androidx.annotation.Nullable Boolean GetIsSubtle() {
+  StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.TextRun_GetIsSubtle(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
 
-  public void SetFontType(FontType value) {
-    AdaptiveCardObjectModelJNI.TextRun_SetFontType(swigCPtr, this, value.swigValue());
-  }
-
-  public ForegroundColor GetTextColor() {
-    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.TextRun_GetTextColor(swigCPtr, this));
-  }
-
-  public void SetTextColor(ForegroundColor value) {
-    AdaptiveCardObjectModelJNI.TextRun_SetTextColor(swigCPtr, this, value.swigValue());
-  }
-
-  public boolean GetIsSubtle() {
-    return AdaptiveCardObjectModelJNI.TextRun_GetIsSubtle(swigCPtr, this);
-  }
-
-  public void SetIsSubtle(boolean value) {
-    AdaptiveCardObjectModelJNI.TextRun_SetIsSubtle(swigCPtr, this, value);
+  public void SetIsSubtle(@androidx.annotation.Nullable Boolean value) {
+    StdOptionalBool optvalue = (value == null) ? new StdOptionalBool() : new StdOptionalBool(value);
+    {
+      AdaptiveCardObjectModelJNI.TextRun_SetIsSubtle(swigCPtr, this, StdOptionalBool.getCPtr(optvalue), optvalue);
+    }
   }
 
   public boolean GetItalic() {

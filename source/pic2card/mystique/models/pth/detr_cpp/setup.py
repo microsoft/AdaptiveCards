@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 import os
 from setuptools import setup
 from torch.utils import cpp_extension
@@ -9,11 +10,15 @@ from torch.utils import cpp_extension
 curr_dir = os.path.dirname(__file__)
 
 # Required libopencv-3.2-dev and libopencv-3.2
-setup(name="detr",
-      ext_modules=[cpp_extension.CppExtension(
-        name='detr',
-        sources=[os.path.join(curr_dir, "detr.cpp")],
-        libraries=["opencv_core", "opencv_imgproc"],
-        extra_compile_args=["-fno-inline"]
-        )],
-      cmdclass={'build_ext': cpp_extension.BuildExtension})
+setup(
+    name="detr",
+    ext_modules=[
+        cpp_extension.CppExtension(
+            name="detr",
+            sources=[os.path.join(curr_dir, "detr.cpp")],
+            libraries=["opencv_core", "opencv_imgproc"],
+            extra_compile_args=["-fno-inline"],
+        )
+    ],
+    cmdclass={"build_ext": cpp_extension.BuildExtension},
+)
