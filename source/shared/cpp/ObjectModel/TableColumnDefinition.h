@@ -19,8 +19,8 @@ namespace AdaptiveCards
         HorizontalAlignment GetHorizontalCellContentAlignment() const;
         void SetHorizontalCellContentAlignment(HorizontalAlignment value);
 
-        VerticalAlignment GetVerticalCellContentAlignment() const;
-        void SetVerticalCellContentAlignment(VerticalAlignment value);
+        VerticalContentAlignment GetVerticalCellContentAlignment() const;
+        void SetVerticalCellContentAlignment(VerticalContentAlignment value);
 
         std::optional<unsigned int> GetWidth() const;
         void SetWidth(const std::optional<unsigned int>& value);
@@ -35,7 +35,7 @@ namespace AdaptiveCards
 
     private:
         HorizontalAlignment m_horizontalCellContentAlignment;
-        VerticalAlignment m_verticalCellContentAlignment;
+        VerticalContentAlignment m_verticalCellContentAlignment;
 
         std::optional<unsigned int> m_pixelWidth;
         std::optional<unsigned int> m_width;

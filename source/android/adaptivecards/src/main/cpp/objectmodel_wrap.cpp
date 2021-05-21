@@ -3444,6 +3444,72 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1StdOptionalLong_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  std::optional< unsigned int > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (std::optional< unsigned int > *)new std::optional< unsigned int >();
+  *(std::optional< unsigned int > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1StdOptionalLong_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  unsigned int arg1 ;
+  std::optional< unsigned int > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (unsigned int)jarg1; 
+  result = (std::optional< unsigned int > *)new std::optional< unsigned int >(arg1);
+  *(std::optional< unsigned int > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_StdOptionalLong_1has_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  std::optional< unsigned int > *arg1 = (std::optional< unsigned int > *) 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::optional< unsigned int > **)&jarg1; 
+  result = (bool)((std::optional< unsigned int > const *)arg1)->has_value();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_StdOptionalLong_1value(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  std::optional< unsigned int > *arg1 = (std::optional< unsigned int > *) 0 ;
+  unsigned int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(std::optional< unsigned int > **)&jarg1; 
+  result = (unsigned int)(arg1)->value();
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1StdOptionalLong(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  std::optional< unsigned int > *arg1 = (std::optional< unsigned int > *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(std::optional< unsigned int > **)&jarg1; 
+  delete arg1;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1StdOptionalFontType_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   std::optional< AdaptiveCards::FontType > *result = 0 ;
@@ -29474,7 +29540,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   jint jresult = 0 ;
   AdaptiveCards::Table *arg1 = (AdaptiveCards::Table *) 0 ;
   std::shared_ptr< AdaptiveCards::Table const > *smartarg1 = 0 ;
-  AdaptiveCards::VerticalAlignment result;
+  AdaptiveCards::VerticalContentAlignment result;
   
   (void)jenv;
   (void)jcls;
@@ -29482,7 +29548,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::Table > **)&jarg1;
   arg1 = (AdaptiveCards::Table *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (AdaptiveCards::VerticalAlignment)((AdaptiveCards::Table const *)arg1)->GetVerticalCellContentAlignment();
+  result = (AdaptiveCards::VerticalContentAlignment)((AdaptiveCards::Table const *)arg1)->GetVerticalCellContentAlignment();
   jresult = (jint)result; 
   return jresult;
 }
@@ -29490,7 +29556,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Table_1SetVerticalCellContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::Table *arg1 = (AdaptiveCards::Table *) 0 ;
-  AdaptiveCards::VerticalAlignment arg2 ;
+  AdaptiveCards::VerticalContentAlignment arg2 ;
   std::shared_ptr< AdaptiveCards::Table > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -29499,7 +29565,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::Table > **)&jarg1;
   arg1 = (AdaptiveCards::Table *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = (AdaptiveCards::VerticalAlignment)jarg2; 
+  arg2 = (AdaptiveCards::VerticalContentAlignment)jarg2; 
   (arg1)->SetVerticalCellContentAlignment(arg2);
 }
 
@@ -29850,7 +29916,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   jint jresult = 0 ;
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition const > *smartarg1 = 0 ;
-  AdaptiveCards::VerticalAlignment result;
+  AdaptiveCards::VerticalContentAlignment result;
   
   (void)jenv;
   (void)jcls;
@@ -29858,7 +29924,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (AdaptiveCards::VerticalAlignment)((AdaptiveCards::TableColumnDefinition const *)arg1)->GetVerticalCellContentAlignment();
+  result = (AdaptiveCards::VerticalContentAlignment)((AdaptiveCards::TableColumnDefinition const *)arg1)->GetVerticalCellContentAlignment();
   jresult = (jint)result; 
   return jresult;
 }
@@ -29866,7 +29932,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetVerticalCellContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
-  AdaptiveCards::VerticalAlignment arg2 ;
+  AdaptiveCards::VerticalContentAlignment arg2 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -29875,13 +29941,13 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = (AdaptiveCards::VerticalAlignment)jarg2; 
+  arg2 = (AdaptiveCards::VerticalContentAlignment)jarg2; 
   (arg1)->SetVerticalCellContentAlignment(arg2);
 }
 
 
-SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1GetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jobject jresult = 0 ;
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1GetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition const > *smartarg1 = 0 ;
   std::optional< unsigned int > result;
@@ -29893,15 +29959,12 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::TableColumnDefinition const *)arg1)->GetWidth();
-  jclass clazz = jenv->FindClass("java/lang/Long");
-  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(J)V");
-  jobject obj = result ? jenv->NewObject(clazz, mid, (long *)*result) : 0;
-  jresult = obj;
+  *(std::optional< unsigned int > **)&jresult = new std::optional< unsigned int >((const std::optional< unsigned int > &)result); 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::optional< unsigned int > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition > *smartarg1 = 0 ;
@@ -29909,24 +29972,21 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg2_;
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
-  std::optional<unsigned int> optVal = std::nullopt;
-  if (jarg2) {
-    jclass sbufClass = jenv->GetObjectClass(jarg2);
-    jmethodID mid = jenv->GetMethodID(sbufClass, "longValue", "()J");
-    jlong val = (jlong)jenv->CallIntMethod(jarg2, mid);
-    if (jenv->ExceptionCheck() || val < 0) return ;
-    optVal = std::optional<unsigned int>((unsigned int)val);
-  }
-  arg2 = &optVal;
+  arg2 = *(std::optional< unsigned int > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::optional< unsigned int > const & reference is null");
+    return ;
+  } 
   (arg1)->SetWidth((std::optional< unsigned int > const &)*arg2);
 }
 
 
-SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1GetPixelWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jobject jresult = 0 ;
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1GetPixelWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition const > *smartarg1 = 0 ;
   std::optional< unsigned int > result;
@@ -29938,15 +29998,12 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::TableColumnDefinition const *)arg1)->GetPixelWidth();
-  jclass clazz = jenv->FindClass("java/lang/Long");
-  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(J)V");
-  jobject obj = result ? jenv->NewObject(clazz, mid, (long *)*result) : 0;
-  jresult = obj;
+  *(std::optional< unsigned int > **)&jresult = new std::optional< unsigned int >((const std::optional< unsigned int > &)result); 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetPixelWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableColumnDefinition_1SetPixelWidth(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::TableColumnDefinition *arg1 = (AdaptiveCards::TableColumnDefinition *) 0 ;
   std::optional< unsigned int > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::TableColumnDefinition > *smartarg1 = 0 ;
@@ -29954,18 +30011,15 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg2_;
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::TableColumnDefinition > **)&jarg1;
   arg1 = (AdaptiveCards::TableColumnDefinition *)(smartarg1 ? smartarg1->get() : 0); 
-  std::optional<unsigned int> optVal = std::nullopt;
-  if (jarg2) {
-    jclass sbufClass = jenv->GetObjectClass(jarg2);
-    jmethodID mid = jenv->GetMethodID(sbufClass, "longValue", "()J");
-    jlong val = (jlong)jenv->CallIntMethod(jarg2, mid);
-    if (jenv->ExceptionCheck() || val < 0) return ;
-    optVal = std::optional<unsigned int>((unsigned int)val);
-  }
-  arg2 = &optVal;
+  arg2 = *(std::optional< unsigned int > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::optional< unsigned int > const & reference is null");
+    return ;
+  } 
   (arg1)->SetPixelWidth((std::optional< unsigned int > const &)*arg2);
 }
 
@@ -30150,7 +30204,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   jint jresult = 0 ;
   AdaptiveCards::TableRow *arg1 = (AdaptiveCards::TableRow *) 0 ;
   std::shared_ptr< AdaptiveCards::TableRow const > *smartarg1 = 0 ;
-  AdaptiveCards::VerticalAlignment result;
+  AdaptiveCards::VerticalContentAlignment result;
   
   (void)jenv;
   (void)jcls;
@@ -30158,7 +30212,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::TableRow > **)&jarg1;
   arg1 = (AdaptiveCards::TableRow *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (AdaptiveCards::VerticalAlignment)((AdaptiveCards::TableRow const *)arg1)->GetVerticalCellContentAlignment();
+  result = (AdaptiveCards::VerticalContentAlignment)((AdaptiveCards::TableRow const *)arg1)->GetVerticalCellContentAlignment();
   jresult = (jint)result; 
   return jresult;
 }
@@ -30166,7 +30220,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TableRow_1SetVerticalCellContentAlignment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::TableRow *arg1 = (AdaptiveCards::TableRow *) 0 ;
-  AdaptiveCards::VerticalAlignment arg2 ;
+  AdaptiveCards::VerticalContentAlignment arg2 ;
   std::shared_ptr< AdaptiveCards::TableRow > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -30175,7 +30229,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::TableRow > **)&jarg1;
   arg1 = (AdaptiveCards::TableRow *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = (AdaptiveCards::VerticalAlignment)jarg2; 
+  arg2 = (AdaptiveCards::VerticalContentAlignment)jarg2; 
   (arg1)->SetVerticalCellContentAlignment(arg2);
 }
 

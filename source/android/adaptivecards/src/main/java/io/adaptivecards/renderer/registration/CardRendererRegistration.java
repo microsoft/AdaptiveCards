@@ -45,8 +45,6 @@ import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.OverflowActionLayoutRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.TableCellRenderer;
-import io.adaptivecards.renderer.TableRenderer;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -73,6 +71,8 @@ import io.adaptivecards.renderer.readonly.ImageRenderer;
 import io.adaptivecards.renderer.readonly.ImageSetRenderer;
 import io.adaptivecards.renderer.readonly.MediaRenderer;
 import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
+import io.adaptivecards.renderer.readonly.TableRenderer;
+import io.adaptivecards.renderer.readonly.TableCellRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 public class CardRendererRegistration

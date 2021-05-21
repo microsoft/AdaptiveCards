@@ -63,11 +63,11 @@ public class TableRow extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TableRow_SetCells(swigCPtr, this, TableCellVector.getCPtr(value), value);
   }
 
-  public VerticalAlignment GetVerticalCellContentAlignment() {
-    return VerticalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.TableRow_GetVerticalCellContentAlignment(swigCPtr, this));
+  public VerticalContentAlignment GetVerticalCellContentAlignment() {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.TableRow_GetVerticalCellContentAlignment(swigCPtr, this));
   }
 
-  public void SetVerticalCellContentAlignment(VerticalAlignment value) {
+  public void SetVerticalCellContentAlignment(VerticalContentAlignment value) {
     AdaptiveCardObjectModelJNI.TableRow_SetVerticalCellContentAlignment(swigCPtr, this, value.swigValue());
   }
 

@@ -60,28 +60,36 @@ public class TableColumnDefinition {
     AdaptiveCardObjectModelJNI.TableColumnDefinition_SetHorizontalCellContentAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public VerticalAlignment GetVerticalCellContentAlignment() {
-    return VerticalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetVerticalCellContentAlignment(swigCPtr, this));
+  public VerticalContentAlignment GetVerticalCellContentAlignment() {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetVerticalCellContentAlignment(swigCPtr, this));
   }
 
-  public void SetVerticalCellContentAlignment(VerticalAlignment value) {
+  public void SetVerticalCellContentAlignment(VerticalContentAlignment value) {
     AdaptiveCardObjectModelJNI.TableColumnDefinition_SetVerticalCellContentAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public Long GetWidth() {
-    return AdaptiveCardObjectModelJNI.TableColumnDefinition_GetWidth(swigCPtr, this);
+  public @androidx.annotation.Nullable Long GetWidth() {
+    StdOptionalLong optvalue = new StdOptionalLong(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetWidth(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetWidth(Long value) {
-    AdaptiveCardObjectModelJNI.TableColumnDefinition_SetWidth(swigCPtr, this, value);
+  public void SetWidth(@androidx.annotation.Nullable Long value) {
+    StdOptionalLong optvalue = (value == null) ? new StdOptionalLong() : new StdOptionalLong(value);
+    {
+      AdaptiveCardObjectModelJNI.TableColumnDefinition_SetWidth(swigCPtr, this, StdOptionalLong.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public Long GetPixelWidth() {
-    return AdaptiveCardObjectModelJNI.TableColumnDefinition_GetPixelWidth(swigCPtr, this);
+  public @androidx.annotation.Nullable Long GetPixelWidth() {
+    StdOptionalLong optvalue = new StdOptionalLong(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetPixelWidth(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetPixelWidth(Long value) {
-    AdaptiveCardObjectModelJNI.TableColumnDefinition_SetPixelWidth(swigCPtr, this, value);
+  public void SetPixelWidth(@androidx.annotation.Nullable Long value) {
+    StdOptionalLong optvalue = (value == null) ? new StdOptionalLong() : new StdOptionalLong(value);
+    {
+      AdaptiveCardObjectModelJNI.TableColumnDefinition_SetPixelWidth(swigCPtr, this, StdOptionalLong.getCPtr(optvalue), optvalue);
+    }
   }
 
   public static TableColumnDefinition Deserialize(ParseContext context, JsonValue root) {

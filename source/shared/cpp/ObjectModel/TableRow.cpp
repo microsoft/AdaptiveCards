@@ -11,7 +11,7 @@ namespace AdaptiveCards
     TableRow::TableRow() :
         BaseCardElement(CardElementType::TableRow), m_style(ContainerStyle::None),
         m_horizontalCellContentAlignment(HorizontalAlignment::Left),
-        m_verticalCellContentAlignment(VerticalAlignment::Top), m_cells({}), m_rtl({})
+        m_verticalCellContentAlignment(VerticalContentAlignment::Top), m_cells({}), m_rtl({})
     {
         PopulateKnownPropertiesSet();
     }
@@ -29,8 +29,8 @@ namespace AdaptiveCards
     const std::vector<std::shared_ptr<TableCell>>& TableRow::GetCells() const { return m_cells; }
     void TableRow::SetCells(const std::vector<std::shared_ptr<TableCell>>& value) { m_cells = value; }
 
-    VerticalAlignment TableRow::GetVerticalCellContentAlignment() const { return m_verticalCellContentAlignment; }
-    void TableRow::SetVerticalCellContentAlignment(VerticalAlignment value) { m_verticalCellContentAlignment = value; }
+    VerticalContentAlignment TableRow::GetVerticalCellContentAlignment() const { return m_verticalCellContentAlignment; }
+    void TableRow::SetVerticalCellContentAlignment(VerticalContentAlignment value) { m_verticalCellContentAlignment = value; }
 
     HorizontalAlignment TableRow::GetHorizontalCellContentAlignment() const { return m_horizontalCellContentAlignment; }
     void TableRow::SetHorizontalCellContentAlignment(HorizontalAlignment value)
@@ -61,10 +61,10 @@ namespace AdaptiveCards
                 HorizontalAlignmentToString(m_horizontalCellContentAlignment);
         }
 
-        if (m_verticalCellContentAlignment != VerticalAlignment::Top)
+        if (m_verticalCellContentAlignment != VerticalContentAlignment::Top)
         {
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalCellContentAlignment)] =
-                VerticalAlignmentToString(m_verticalCellContentAlignment);
+                VerticalContentAlignmentToString(m_verticalCellContentAlignment);
         }
 
         if (m_style != ContainerStyle::None)
@@ -83,8 +83,8 @@ namespace AdaptiveCards
 
         tableRow->SetHorizontalCellContentAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
             json, AdaptiveCardSchemaKey::HorizontalCellContentAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
-        tableRow->SetVerticalCellContentAlignment(ParseUtil::GetEnumValue<VerticalAlignment>(
-            json, AdaptiveCardSchemaKey::VerticalCellContentAlignment, VerticalAlignment::Top, VerticalAlignmentFromString));
+        tableRow->SetVerticalCellContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
+            json, AdaptiveCardSchemaKey::VerticalCellContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
         tableRow->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
         auto cells = ParseUtil::GetElementCollection<TableCell>(
             false, context, json, AdaptiveCardSchemaKey::Cells, false, CardElementTypeToString(CardElementType::TableCell));

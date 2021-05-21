@@ -39,6 +39,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native boolean StdOptionalDouble_has_value(long jarg1, StdOptionalDouble jarg1_);
   public final static native double StdOptionalDouble_value(long jarg1, StdOptionalDouble jarg1_);
   public final static native void delete_StdOptionalDouble(long jarg1);
+  public final static native long new_StdOptionalLong__SWIG_0();
+  public final static native long new_StdOptionalLong__SWIG_1(long jarg1);
+  public final static native boolean StdOptionalLong_has_value(long jarg1, StdOptionalLong jarg1_);
+  public final static native long StdOptionalLong_value(long jarg1, StdOptionalLong jarg1_);
+  public final static native void delete_StdOptionalLong(long jarg1);
   public final static native long new_StdOptionalFontType__SWIG_0();
   public final static native long new_StdOptionalFontType__SWIG_1(int jarg1);
   public final static native boolean StdOptionalFontType_has_value(long jarg1, StdOptionalFontType jarg1_);
@@ -1473,10 +1478,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TableColumnDefinition_SetHorizontalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_, int jarg2);
   public final static native int TableColumnDefinition_GetVerticalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_);
   public final static native void TableColumnDefinition_SetVerticalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_, int jarg2);
-  public final static native Long TableColumnDefinition_GetWidth(long jarg1, TableColumnDefinition jarg1_);
-  public final static native void TableColumnDefinition_SetWidth(long jarg1, TableColumnDefinition jarg1_, Long jarg2);
-  public final static native Long TableColumnDefinition_GetPixelWidth(long jarg1, TableColumnDefinition jarg1_);
-  public final static native void TableColumnDefinition_SetPixelWidth(long jarg1, TableColumnDefinition jarg1_, Long jarg2);
+  public final static native long TableColumnDefinition_GetWidth(long jarg1, TableColumnDefinition jarg1_);
+  public final static native void TableColumnDefinition_SetWidth(long jarg1, TableColumnDefinition jarg1_, long jarg2, StdOptionalLong jarg2_);
+  public final static native long TableColumnDefinition_GetPixelWidth(long jarg1, TableColumnDefinition jarg1_);
+  public final static native void TableColumnDefinition_SetPixelWidth(long jarg1, TableColumnDefinition jarg1_, long jarg2, StdOptionalLong jarg2_);
   public final static native long TableColumnDefinition_Deserialize(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_);
   public final static native long TableColumnDefinition_DeserializeFromString(long jarg1, ParseContext jarg1_, String jarg2);
   public final static native void delete_TableColumnDefinition(long jarg1);

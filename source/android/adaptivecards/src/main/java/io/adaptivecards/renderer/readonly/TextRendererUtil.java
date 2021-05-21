@@ -17,6 +17,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextSize;
 import io.adaptivecards.objectmodel.TextStyle;
 import io.adaptivecards.objectmodel.TextWeight;
+import io.adaptivecards.renderer.RenderArgs;
 
 public class TextRendererUtil
 {
@@ -130,66 +131,91 @@ public class TextRendererUtil
         return alignment;
     }
 
-    static TextSize getTextSizeFromStyle(HostConfig hostConfig, TextStyle textStyle, TextSize override)
+    static TextSize computeTextSize(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, TextSize declaredSize)
     {
-        if (override != null)
+        if (declaredSize != null)
         {
-            return override;
+            return declaredSize;
         }
-        if (textStyle == TextStyle.Heading)
+        if (declaredStyle == TextStyle.Heading)
         {
+            return hostConfig.GetTextStyles().getHeading().getSize();
+        }
+        if (declaredStyle == null && renderArgs != null && renderArgs.isHeader())
+        {
+            // TODO: Replace with headER styles
             return hostConfig.GetTextStyles().getHeading().getSize();
         }
         return TextSize.Default;
     }
 
-    static ForegroundColor getTextColorFromStyle(HostConfig hostConfig, TextStyle textStyle, ForegroundColor override)
+    static ForegroundColor computeTextColor(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, ForegroundColor declaredColor)
     {
-        if (override != null)
+        if (declaredColor != null)
         {
-            return override;
+            return declaredColor;
         }
-        if (textStyle == TextStyle.Heading)
+        if (declaredStyle == TextStyle.Heading)
         {
+            return hostConfig.GetTextStyles().getHeading().getColor();
+        }
+        if (declaredStyle == null && renderArgs != null && renderArgs.isHeader())
+        {
+            // TODO: Replace with headER styles
             return hostConfig.GetTextStyles().getHeading().getColor();
         }
         return ForegroundColor.Default;
     }
 
-    static TextWeight getTextWeightFromStyle(HostConfig hostConfig, TextStyle textStyle, TextWeight override)
+    static TextWeight computeTextWeight(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, TextWeight declaredWeight)
     {
-        if (override != null)
+        if (declaredWeight != null)
         {
-            return override;
+            return declaredWeight;
         }
-        if (textStyle == TextStyle.Heading)
+        if (declaredStyle == TextStyle.Heading)
         {
+            return hostConfig.GetTextStyles().getHeading().getWeight();
+        }
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isHeader())
+        {
+            // TODO: Replace with headER styles
             return hostConfig.GetTextStyles().getHeading().getWeight();
         }
         return TextWeight.Default;
     }
 
-    static boolean getIsSubtleFromStyle(HostConfig hostConfig, TextStyle textStyle, Boolean override)
+    static boolean computeIsSubtle(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, Boolean declaredIsSubtle)
     {
-        if (override != null)
+        if (declaredIsSubtle != null)
         {
-            return override;
+            return declaredIsSubtle;
         }
-        if (textStyle == TextStyle.Heading)
+        if (declaredStyle == TextStyle.Heading)
         {
+            return hostConfig.GetTextStyles().getHeading().getIsSubtle();
+        }
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isHeader())
+        {
+            // TODO: Replace with headER styles
             return hostConfig.GetTextStyles().getHeading().getIsSubtle();
         }
         return false;
     }
 
-    static FontType getFontTypeFromStyle(HostConfig hostConfig, TextStyle textStyle, FontType override)
+    static FontType computeFontType(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, FontType declaredFontType)
     {
-        if (override != null)
+        if (declaredFontType != null)
         {
-            return override;
+            return declaredFontType;
         }
-        if (textStyle == TextStyle.Heading)
+        if (declaredStyle == TextStyle.Heading)
         {
+            return hostConfig.GetTextStyles().getHeading().getFontType();
+        }
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isHeader())
+        {
+            // TODO: Replace with headER styles
             return hostConfig.GetTextStyles().getHeading().getFontType();
         }
         return FontType.Default;

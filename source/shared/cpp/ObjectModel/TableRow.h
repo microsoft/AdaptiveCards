@@ -26,8 +26,8 @@ namespace AdaptiveCards
         const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& GetCells() const;
         void SetCells(const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& value);
 
-        VerticalAlignment GetVerticalCellContentAlignment() const;
-        void SetVerticalCellContentAlignment(VerticalAlignment value);
+        VerticalContentAlignment GetVerticalCellContentAlignment() const;
+        void SetVerticalCellContentAlignment(VerticalContentAlignment value);
 
         HorizontalAlignment GetHorizontalCellContentAlignment() const;
         void SetHorizontalCellContentAlignment(HorizontalAlignment value);
@@ -41,7 +41,7 @@ namespace AdaptiveCards
         ContainerStyle m_style;
 
         HorizontalAlignment m_horizontalCellContentAlignment;
-        VerticalAlignment m_verticalCellContentAlignment;
+        VerticalContentAlignment m_verticalCellContentAlignment;
 
         std::vector<std::shared_ptr<AdaptiveCards::TableCell>> m_cells;
         std::optional<bool> m_rtl;

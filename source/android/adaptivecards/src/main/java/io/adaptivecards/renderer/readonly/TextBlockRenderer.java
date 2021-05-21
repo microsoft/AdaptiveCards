@@ -63,15 +63,20 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    public static HorizontalAlignment computeTextAlignment(RenderArgs renderArgs, HorizontalAlignment declaredAlignment)
+    {
+        return (declaredAlignment != null) ? declaredAlignment : renderArgs.getHorizontalAlignment();
+    }
+
     public static void applyTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
         textView.setTextAlignment(TextRendererUtil.getTextAlignment(textAlignment));
     }
 
-    public static void applyTextSize(TextView textView, HostConfig hostConfig, TextStyle textStyle, FontType fontType, TextSize textSize)
+    public static void applyTextSize(TextView textView, HostConfig hostConfig, RenderArgs renderArgs, TextStyle textStyle, FontType fontType, TextSize textSize)
     {
-        textSize = TextRendererUtil.getTextSizeFromStyle(hostConfig, textStyle, textSize);
-        fontType = TextRendererUtil.getFontTypeFromStyle(hostConfig, textStyle, fontType);
+        textSize = TextRendererUtil.computeTextSize(hostConfig, renderArgs, textStyle, textSize);
+        fontType = TextRendererUtil.computeFontType(hostConfig, renderArgs, textStyle, fontType);
 
         textView.setTextSize(TextRendererUtil.getTextSize(fontType, textSize, hostConfig));
     }
@@ -89,10 +94,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         });
     }
 
-    public static void applyTextFormat(TextView textView, HostConfig hostConfig, TextStyle textStyle, FontType type, TextWeight textWeight)
+    public static void applyTextFormat(TextView textView, HostConfig hostConfig, RenderArgs renderArgs, TextStyle textStyle, FontType type, TextWeight textWeight)
     {
-        type = TextRendererUtil.getFontTypeFromStyle(hostConfig, textStyle, type);
-        textWeight = TextRendererUtil.getTextWeightFromStyle(hostConfig, textStyle, textWeight);
+        type = TextRendererUtil.computeFontType(hostConfig, renderArgs, textStyle, type);
+        textWeight = TextRendererUtil.computeTextWeight(hostConfig, renderArgs, textStyle, textWeight);
 
         Typeface typeface = TextRendererUtil.getTextFormat(hostConfig, type, textWeight == TextWeight.Lighter);
 
@@ -117,10 +122,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
     }
 
-    public static void applyTextColor(TextView textView, HostConfig hostConfig, TextStyle textStyle, ForegroundColor foregroundColor, Boolean isSubtle, ContainerStyle containerStyle)
+    public static void applyTextColor(TextView textView, HostConfig hostConfig, RenderArgs renderArgs, TextStyle textStyle, ForegroundColor foregroundColor, Boolean isSubtle, ContainerStyle containerStyle)
     {
-        foregroundColor = TextRendererUtil.getTextColorFromStyle(hostConfig, textStyle, foregroundColor);
-        isSubtle = TextRendererUtil.getIsSubtleFromStyle(hostConfig, textStyle, isSubtle);
+        foregroundColor = TextRendererUtil.computeTextColor(hostConfig, renderArgs, textStyle, foregroundColor);
+        isSubtle = TextRendererUtil.computeIsSubtle(hostConfig, renderArgs, textStyle, isSubtle);
 
         textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }
@@ -223,10 +228,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
         textView.setHorizontallyScrolling(false);
-        applyTextFormat(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight());
-        applyTextSize(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextSize());
-        applyTextColor(textView, hostConfig, textBlock.GetStyle(), textBlock.GetTextColor(), textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
-        applyTextAlignment(textView, textBlock.GetHorizontalAlignment());
+        applyTextFormat(textView, hostConfig, renderArgs, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight());
+        applyTextSize(textView, hostConfig, renderArgs, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextSize());
+        applyTextColor(textView, hostConfig, renderArgs, textBlock.GetStyle(), textBlock.GetTextColor(), textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
+        applyTextAlignment(textView, computeTextAlignment(renderArgs, textBlock.GetHorizontalAlignment()));
         applyAccessibilityHeading(textView, textBlock.GetStyle());
 
         int maxLines = (int)textBlock.GetMaxLines();

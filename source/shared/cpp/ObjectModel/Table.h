@@ -31,8 +31,8 @@ namespace AdaptiveCards
         HorizontalAlignment GetHorizontalCellContentAlignment() const;
         void SetHorizontalCellContentAlignment(HorizontalAlignment value);
 
-        VerticalAlignment GetVerticalCellContentAlignment() const;
-        void SetVerticalCellContentAlignment(VerticalAlignment value);
+        VerticalContentAlignment GetVerticalCellContentAlignment() const;
+        void SetVerticalCellContentAlignment(VerticalContentAlignment value);
 
         ContainerStyle GetGridStyle() const;
         void SetGridStyle(ContainerStyle value);
@@ -52,7 +52,7 @@ namespace AdaptiveCards
         std::vector<std::shared_ptr<AdaptiveCards::TableRow>> m_rows;
 
         HorizontalAlignment m_horizontalCellContentAlignment;
-        VerticalAlignment m_verticalCellContentAlignment;
+        VerticalContentAlignment m_verticalCellContentAlignment;
         ContainerStyle m_gridStyle;
 
         bool m_showGridLines;

@@ -126,11 +126,11 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                     throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
                 }
 
-                TextSize textSize = TextRendererUtil.getTextSizeFromStyle(hostConfig, TextStyle.Default, textRun.GetTextSize());
-                ForegroundColor textColor = TextRendererUtil.getTextColorFromStyle(hostConfig, TextStyle.Default, textRun.GetTextColor());
-                TextWeight textWeight = TextRendererUtil.getTextWeightFromStyle(hostConfig, TextStyle.Default, textRun.GetTextWeight());
-                boolean isSubtle = TextRendererUtil.getIsSubtleFromStyle(hostConfig, TextStyle.Default, textRun.GetIsSubtle());
-                FontType fontType = TextRendererUtil.getFontTypeFromStyle(hostConfig, TextStyle.Default, textRun.GetFontType());
+                TextSize textSize = TextRendererUtil.computeTextSize(hostConfig, renderArgs, TextStyle.Default, textRun.GetTextSize());
+                ForegroundColor textColor = TextRendererUtil.computeTextColor(hostConfig, renderArgs, TextStyle.Default, textRun.GetTextColor());
+                TextWeight textWeight = TextRendererUtil.computeTextWeight(hostConfig, renderArgs, TextStyle.Default, textRun.GetTextWeight());
+                boolean isSubtle = TextRendererUtil.computeIsSubtle(hostConfig, renderArgs, TextStyle.Default, textRun.GetIsSubtle());
+                FontType fontType = TextRendererUtil.computeFontType(hostConfig, renderArgs, TextStyle.Default, textRun.GetFontType());
 
                 DateTimeParser parser = new DateTimeParser(textRun.GetLanguage());
                 String formattedText = parser.GenerateString(textRun.GetTextForDateParsing());

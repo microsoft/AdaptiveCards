@@ -49,58 +49,6 @@ namespace std {
 }
 
 #pragma region
-// Map C++ "std::optional<unsigned int>" and "std::optional<unsigned int>&" types to Java "Long" objects
-
-%typemap(jni) std::optional<unsigned int> "jobject"
-%typemap(jtype) std::optional<unsigned int> "Long"
-%typemap(jstype) std::optional<unsigned int> "Long"
-%typemap(in, noblock=1) std::optional<unsigned int> {
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "longValue", "()J");
-    jlong val = (jlong)JCALL2(CallIntMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv) || val < 0) return $null;
-    $1 = (unsigned int)val;
-  }
-}
-%typemap(out, noblock=1) std::optional<unsigned int> {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Long");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(J)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, (long *)*$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<unsigned int> "$javainput"
-%typemap(javaout) std::optional<unsigned int> {
-    return $jnicall;
-  }
-%template() std::optional<unsigned int>;
-
-%typemap(jni) std::optional<unsigned int>& "jobject"
-%typemap(jtype) std::optional<unsigned int>& "Long"
-%typemap(jstype) std::optional<unsigned int>& "Long"
-%typemap(in, noblock=1) std::optional<unsigned int>& {
-  std::optional<unsigned int> optVal = std::nullopt;
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "longValue", "()J");
-    jlong val = (jlong)JCALL2(CallIntMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv) || val < 0) return $null;
-    optVal = std::optional<unsigned int>((unsigned int)val);
-  }
-  $1 = &optVal;
-}
-%typemap(out, noblock=1) std::optional<unsigned int>& {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Long");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(J)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, (long *)*$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<unsigned int>& "$javainput"
-%typemap(javaout) std::optional<unsigned int>& {
-    return $jnicall;
-  }
-
-#pragma region
 // Maps std::optional<T> to T
 
 %define STD_OPTIONAL(T, IntermediateT)
@@ -113,14 +61,15 @@ namespace std {
          pgcppname="opt$javainput")
          std::optional<T>, std::optional<T>& "$javaclassname.getCPtr(opt$javainput)";
 %typemap(javaout) std::optional<T>, std::optional<T>& {
-  IntermediateT optvalue = new IntermediateT($jnicall, $owner);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    IntermediateT optvalue = new IntermediateT($jnicall, $owner);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 %enddef
 #pragma endregion
 
 STD_OPTIONAL(bool, StdOptionalBool)
 STD_OPTIONAL(double, StdOptionalDouble)
+STD_OPTIONAL(unsigned int, StdOptionalLong)
 STD_OPTIONAL(AdaptiveCards::FontType, StdOptionalFontType)
 STD_OPTIONAL(AdaptiveCards::TextWeight, StdOptionalTextWeight)
 STD_OPTIONAL(AdaptiveCards::TextSize, StdOptionalTextSize)
