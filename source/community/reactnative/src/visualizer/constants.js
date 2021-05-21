@@ -9,3 +9,4 @@ export const InProgress = "InProgress";
 export const InProgressText = "This task is not completed yet.";
 
 export const IosBottomMargin = 84
+export const AndroidBottomMargin = 50
