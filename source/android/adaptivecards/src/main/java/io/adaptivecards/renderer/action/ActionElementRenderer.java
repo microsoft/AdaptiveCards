@@ -146,16 +146,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                 iconPlacement = IconPlacement.LeftOfTitle;
             }
 
-            ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(
-                    renderedCard,
-                    button,
-                    hostConfig.GetImageBaseUrl(),
-                    iconPlacement,
-                    hostConfig.GetActions().getIconSize(),
-                    hostConfig.GetSpacing().getDefaultSpacing(),
-                    context
-            );
-            imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, baseActionElement.GetIconUrl());
+            Util.loadIcon(context, button, iconUrl, hostConfig, renderedCard, iconPlacement);
         }
 
         viewGroup.addView(button);
