@@ -81,10 +81,11 @@ a.ac-anchor:visited:active {
     -ms-user-select: none;
     user-select: none;
     border: 1px solid #DDDDDD;
-		background-color: #FFFFFF;
-		color: #0063B1;
+	background-color: #FFFFFF;
+	color: #0063B1;
 }
 
+.ac-pushButton:hover,
 .ac-pushButton:focus {
     border-color: #0063B1;
 }
@@ -105,6 +106,23 @@ a.ac-anchor:visited:active {
 
 .ac-pushButton.style-destructive:hover, .ac-pushButton.style-destructive:active {
     background-color: #BF0000;
+}
+
+.ac-pushButton-disabled {
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Calibri", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid #EEEEEE;
+	background-color: #EEEEEE;
+	color: #666666;
 }
 
 .ac-quickActionButton {
@@ -204,6 +222,31 @@ a.ac-anchor:visited:active {
     background-color: #CCCCCC;
 }
 
+.ac-inlineActionButton-disabled {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Calibri", sans-serif;
+    font-size: 13.3px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+    height: 31px;
+}
+
+.ac-inlineActionButton-disabled.textOnly {
+    padding: 0 8px;
+}
+
+.ac-inlineActionButton-disabled.iconOnly {
+    padding: 0;
+}
+
 .webChatOuterContainer {
     background-color: #eceff1;
     border: 1px solid #e6e6e6;
@@ -288,6 +331,18 @@ a.ac-anchor:visited:active {
     padding: 0px 12px 0px 12px;
     line-height: 30px;
     cursor: pointer;
+}
+  
+.ac-ctrl-dropdown-item-disabled {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    padding: 0px 12px 0px 12px;
+    line-height: 30px;
+    cursor: pointer;
+    color: #666666;
 }
   
 .ac-ctrl-dropdown-item:hover {
