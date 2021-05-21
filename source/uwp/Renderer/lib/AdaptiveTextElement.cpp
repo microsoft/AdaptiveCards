@@ -7,60 +7,57 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveTextElement::get_Text(_Outptr_ HSTRING* text) { return m_text.CopyTo(text); }
 
     HRESULT AdaptiveTextElement::put_Text(_In_ HSTRING text) { return m_text.Set(text); }
 
-    HRESULT AdaptiveTextElement::get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* textSize)
+    HRESULT AdaptiveTextElement::get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>** textSize)
     {
-        *textSize = m_textSize;
-        return S_OK;
+        return m_textSize.CopyTo(textSize);
     }
 
-    HRESULT AdaptiveTextElement::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
+    HRESULT AdaptiveTextElement::put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>* textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::get_Weight(_Out_ ABI::AdaptiveNamespace::TextWeight* textWeight)
+    HRESULT AdaptiveTextElement::get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>** textWeight)
     {
-        *textWeight = m_textWeight;
-        return S_OK;
+        return m_textWeight.CopyTo(textWeight);
     }
 
-    HRESULT AdaptiveTextElement::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
+    HRESULT AdaptiveTextElement::put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>* textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* foregroundColor)
+    HRESULT AdaptiveTextElement::get_Color(
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>** foregroundColor)
     {
-        *foregroundColor = m_foregroundColor;
-        return S_OK;
+        return m_foregroundColor.CopyTo(foregroundColor);
     }
 
-    HRESULT AdaptiveTextElement::put_Color(ABI::AdaptiveNamespace::ForegroundColor foregroundColor)
+    HRESULT AdaptiveTextElement::put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>* foregroundColor)
     {
         m_foregroundColor = foregroundColor;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::get_IsSubtle(_Out_ boolean* isSubtle)
+    HRESULT AdaptiveTextElement::get_IsSubtle(_Outptr_ ABI::Windows::Foundation::IReference<bool>** isSubtle)
     {
-        *isSubtle = m_subtle;
-        return S_OK;
+        return m_subtle.CopyTo(isSubtle);
     }
 
-    HRESULT AdaptiveTextElement::put_IsSubtle(boolean isSubtle)
+    HRESULT AdaptiveTextElement::put_IsSubtle(_In_ ABI::Windows::Foundation::IReference<bool>* isSubtle)
     {
         m_subtle = isSubtle;
         return S_OK;
@@ -70,13 +67,12 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveTextElement::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
 
-    HRESULT AdaptiveTextElement::get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* fontType)
+    HRESULT AdaptiveTextElement::get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>** fontType)
     {
-        *fontType = m_fontType;
-        return S_OK;
+        return m_fontType.CopyTo(fontType);
     }
 
-    HRESULT AdaptiveTextElement::put_FontType(ABI::AdaptiveNamespace::FontType fontType)
+    HRESULT AdaptiveTextElement::put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>* fontType)
     {
         m_fontType = fontType;
         return S_OK;

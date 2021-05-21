@@ -5,20 +5,20 @@
 #include "AdaptiveCardConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize() noexcept
     try
     {
-        AdaptiveSharedNamespace::AdaptiveCardConfig cardConfig;
+        AdaptiveCards::AdaptiveCardConfig cardConfig;
         return RuntimeClassInitialize(cardConfig);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveCardConfig::RuntimeClassInitialize(AdaptiveSharedNamespace::AdaptiveCardConfig adaptiveCardConfig) noexcept
+    HRESULT AdaptiveCardConfig::RuntimeClassInitialize(AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig) noexcept
     {
         m_allowCustomStyle = adaptiveCardConfig.allowCustomStyle;
         return S_OK;

@@ -4,13 +4,13 @@
 
 #include "TextElementProperties.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class RichTextElementProperties : public TextElementProperties
     {
     public:
         RichTextElementProperties();
-        RichTextElementProperties(const TextConfig&, const std::string&, const std::string&);
+        RichTextElementProperties(const TextStyleConfig&, const std::string&, const std::string&);
         RichTextElementProperties(const RichTextElementProperties&) = default;
         RichTextElementProperties(RichTextElementProperties&&) = default;
         RichTextElementProperties& operator=(const RichTextElementProperties&) = default;
@@ -24,7 +24,7 @@ namespace AdaptiveSharedNamespace
         void SetStrikethrough(const bool value);
 
         bool GetUnderline() const;
-        void SetUnderline (const bool value);
+        void SetUnderline(const bool value);
 
         Json::Value SerializeToJsonValue(Json::Value& root) const override;
         void Deserialize(ParseContext& context, const Json::Value& root) override;

@@ -39,166 +39,41 @@ struct tm {
 };
 
 namespace std {
-  template<typename T> class optional {};
+    template<typename T> class optional {
+    public:
+        optional();
+        optional(T);
+        bool has_value() const;
+        T value();
+  };
 }
-
-// std::optional<int>
-%typemap(jni) std::optional<int> "jobject"
-%typemap(jtype) std::optional<int> "Integer"
-%typemap(jstype) std::optional<int> "Integer"
-%typemap(in, noblock=1) std::optional<int> {
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
-    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv)) return $null;
-    $1 = (int)val;
-  }
-}
-%typemap(out, noblock=1) std::optional<int> {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<int> "$javainput"
-%typemap(javaout) std::optional<int> {
-    return $jnicall;
-  }
-%template() std::optional<int>;
-
-%typemap(jni) std::optional<int>& "jobject"
-%typemap(jtype) std::optional<int>& "Integer"
-%typemap(jstype) std::optional<int>& "Integer"
-%typemap(in, noblock=1) std::optional<int>& {
-  std::optional<int> optVal = std::nullopt;
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
-    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv)) return $null;
-    optVal = std::optional<int>(val);
-  }
-  $1 = &optVal;
-}
-%typemap(out, noblock=1) std::optional<int>& {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<int>& "$javainput"
-%typemap(javaout) std::optional<int>& {
-    return $jnicall;
-  }
 
 #pragma region
-// Map C++ "std::optional<double>" and "std::optional<double>&" types to Java "Double" objects
+// Maps std::optional<T> to T
 
-%template() std::optional<double>;
+%define STD_OPTIONAL(T, IntermediateT)
+%template(IntermediateT) std::optional<T>;
+%typemap(javaclassmodifiers) IntermediateT "class"; //this should make the class package-access, but not currently working
+%typemap(jstype) std::optional<T>, std::optional<T>& "@androidx.annotation.Nullable $typemap(jboxtype, T)";
 
-%typemap(jni) std::optional<double> "jobject"
-%typemap(jtype) std::optional<double> "Double"
-%typemap(jstype) std::optional<double> "Double"
-%typemap(in, noblock=1) std::optional<double> {
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "doubleValue", "()D");
-    jdouble val = (jdouble)JCALL2(CallDoubleMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv)) return $null;
-    $1 = (double)val;
-  }
+%typemap(javain,
+         pre="    IntermediateT opt$javainput = ($javainput == null) ? new IntermediateT() : new IntermediateT($javainput);",
+         pgcppname="opt$javainput")
+         std::optional<T>, std::optional<T>& "$javaclassname.getCPtr(opt$javainput)";
+%typemap(javaout) std::optional<T>, std::optional<T>& {
+  IntermediateT optvalue = new IntermediateT($jnicall, $owner);
+  return optvalue.has_value() ? optvalue.value() : null;
 }
-%typemap(out, noblock=1) std::optional<double> {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Double");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(D)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<double> "$javainput"
-%typemap(javaout) std::optional<double> {
-  return $jnicall;
-}
-
-%typemap(jni) std::optional<double>& "jobject"
-%typemap(jtype) std::optional<double>& "Double"
-%typemap(jstype) std::optional<double>& "Double"
-%typemap(in, noblock=1) std::optional<double>& {
-  std::optional<double> optVal = std::nullopt;
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "doubleValue", "()D");
-    jdouble val = (jdouble)JCALL2(CallDoubleMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv)) return $null;
-    optVal = std::optional<double>(val);
-  }
-  $1 = &optVal;
-}
-%typemap(out, noblock=1) std::optional<double>& {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Double");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(D)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<double>& "$javainput"
-%typemap(javaout) std::optional<double>& {
-  return $jnicall;
-}
+%enddef
 #pragma endregion
 
-#pragma region
-// Map C++ "std::optional<bool>" and "std::optional<bool>&" types to Java "Boolean" objects
-
-%template() std::optional<bool>;
-
-%typemap(jni) std::optional<bool> "jobject"
-%typemap(jtype) std::optional<bool> "Boolean"
-%typemap(jstype) std::optional<bool> "Boolean"
-%typemap(in, noblock=1) std::optional<bool> {
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "booleanValue", "()Z");
-    jboolean val = (jboolean)JCALL2(CallBooleanMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv)) return $null;
-    $1 = (bool)val;
-  }
-}
-%typemap(out, noblock=1) std::optional<bool> {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Boolean");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(Z)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<bool> "$javainput"
-%typemap(javaout) std::optional<bool> {
-  return $jnicall;
-}
-
-%typemap(jni) std::optional<bool>& "jobject"
-%typemap(jtype) std::optional<bool>& "Boolean"
-%typemap(jstype) std::optional<bool>& "Boolean"
-%typemap(in, noblock=1) std::optional<bool>& {
-  std::optional<bool> optVal = std::nullopt;
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "booleanValue", "()Z");
-    jboolean val = (jboolean)JCALL2(CallBooleanMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv)) return $null;
-    optVal = std::optional<bool>(val);
-  }
-  $1 = &optVal;
-}
-%typemap(out, noblock=1) std::optional<bool>& {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Boolean");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(Z)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<bool>& "$javainput"
-%typemap(javaout) std::optional<bool>& {
-  return $jnicall;
-}
-#pragma endregion
+STD_OPTIONAL(bool, StdOptionalBool)
+STD_OPTIONAL(double, StdOptionalDouble)
+STD_OPTIONAL(AdaptiveCards::FontType, StdOptionalFontType)
+STD_OPTIONAL(AdaptiveCards::TextWeight, StdOptionalTextWeight)
+STD_OPTIONAL(AdaptiveCards::TextSize, StdOptionalTextSize)
+STD_OPTIONAL(AdaptiveCards::ForegroundColor, StdOptionalForegroundColor)
+STD_OPTIONAL(AdaptiveCards::TextStyle, StdOptionalTextStyle)
 
 %include <typemaps.i>
 %include <std_string.i>
@@ -229,6 +104,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 #include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#include "../../../shared/cpp/ObjectModel/InternalId.h"
 #include "../../../shared/cpp/ObjectModel/BaseElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -242,6 +118,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
+#include "../../../shared/cpp/ObjectModel/InternalId.h"
 #include "../../../shared/cpp/ObjectModel/Column.h"
 #include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 #include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
@@ -265,6 +142,10 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
+#include "../../../shared/cpp/ObjectModel/Table.h"
+#include "../../../shared/cpp/ObjectModel/TableCell.h"
+#include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
+#include "../../../shared/cpp/ObjectModel/TableRow.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/ActionSet.h"
 #include "../../../shared/cpp/ObjectModel/MediaSource.h"
@@ -332,6 +213,9 @@ namespace std {
 %shared_ptr(AdaptiveCards::FactSetParser)
 %shared_ptr(AdaptiveCards::ChoiceSetInputParser)
 %shared_ptr(AdaptiveCards::NumberInputParser)
+%shared_ptr(AdaptiveCards::TableParser)
+%shared_ptr(AdaptiveCards::TableCellParser)
+%shared_ptr(AdaptiveCards::TableRowParser)
 %shared_ptr(AdaptiveCards::TextInputParser)
 %shared_ptr(AdaptiveCards::TimeInputParser)
 %shared_ptr(AdaptiveCards::ToggleInputParser)
@@ -364,6 +248,11 @@ namespace std {
 %shared_ptr(AdaptiveCards::Authentication)
 %shared_ptr(AdaptiveCards::TokenExchangeResource)
 %shared_ptr(AdaptiveCards::AuthCardButton)
+%shared_ptr(AdaptiveCards::Table)
+%shared_ptr(AdaptiveCards::TableCell)
+%shared_ptr(AdaptiveCards::TableColumnDefinition)
+%shared_ptr(AdaptiveCards::TableRow)
+
 
 %apply unsigned int& INOUT { unsigned int& };
 
@@ -576,6 +465,8 @@ namespace Json {
 %template(MediaSourceVector) std::vector<std::shared_ptr<AdaptiveCards::MediaSource> >;
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
+%template(TableCellVector) std::vector<std::shared_ptr<AdaptiveCards::TableCell> >;
+%template(TableRowVector) std::vector<std::shared_ptr<AdaptiveCards::TableRow> >;
 %template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
@@ -980,13 +871,12 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 
-
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ParseContext.h"
 
-
+%include "../../../shared/cpp/ObjectModel/InternalId.h"
 %include "../../../shared/cpp/ObjectModel/BaseElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -1024,6 +914,9 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
+%include "../../../shared/cpp/ObjectModel/Table.h"
+%include "../../../shared/cpp/ObjectModel/TableCell.h"
+%include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/MediaSource.h"
 %include "../../../shared/cpp/ObjectModel/Media.h"
@@ -1037,4 +930,3 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 %include "../../../shared/cpp/ObjectModel/TextRun.h"
 %include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
-

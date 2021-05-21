@@ -7,6 +7,7 @@
 
 #import "ACRButton.h"
 #import "ACOBaseActionElementPrivate.h"
+#import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRUIImageView.h"
 #import "ACRViewPrivate.h"
@@ -102,9 +103,8 @@
                  title:(NSString *)title
          andHostConfig:(ACOHostConfig *)config;
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     NSString *nibNameButton = [acoAction type] == ACRShowCard ? @"ACRButtonExpandable" : @"ACRButton";
-    ACRButton *button = [bundle loadNibNamed:nibNameButton owner:rootView options:nil][0];
+    ACRButton *button = [[[ACOBundle getInstance] getBundle] loadNibNamed:nibNameButton owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
     button.titleLabel.numberOfLines = 0;

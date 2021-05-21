@@ -4,18 +4,18 @@
 
 #include "AuthCardButton.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("0DF8553F-E958-4E9C-897D-847691F1F3CC") AdaptiveAuthCardButton
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveAuthCardButton,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveAuthCardButton,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveAuthCardButton);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::AuthCardButton>& sharedAuthCardButton);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::AuthCardButton>& sharedAuthCardButton);
 
         IFACEMETHODIMP get_Type(_Outptr_ HSTRING* type);
         IFACEMETHODIMP put_Type(_In_ HSTRING type);
@@ -29,7 +29,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Value(_Outptr_ HSTRING* value);
         IFACEMETHODIMP put_Value(_In_ HSTRING value);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AuthCardButton>& sharedModel);
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::AuthCardButton>& sharedModel);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }

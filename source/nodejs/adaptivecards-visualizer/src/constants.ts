@@ -198,7 +198,7 @@ export const defaultPayload: string = `{
 							"items": [
 								{
 									"type": "Image",
-									"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+									"url": "https://matthidinger.com/images/bio-photo.jpg",
 									"size": "small",
 									"style": "person"
 								}

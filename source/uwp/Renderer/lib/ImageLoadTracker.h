@@ -5,7 +5,7 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     struct TrackedImageDetails
     {

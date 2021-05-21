@@ -106,8 +106,8 @@
                 // Obtain text color to apply to the attributed string
                 ACRContainerStyle style = lab.style;
                 auto foregroundColor = [acoConfig getTextBlockColor:style
-                                                          textColor:textRun->GetTextColor()
-                                                       subtleOption:textRun->GetIsSubtle()];
+                                                          textColor:textRun->GetTextColor().value_or(ForegroundColor::Default)
+                                                       subtleOption:textRun->GetIsSubtle().value_or(false)];
 
                 // Config and add Select Action
                 std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
@@ -141,8 +141,8 @@
                 // apply hightlight to textrun
                 if (textRun->GetHighlight()) {
                     UIColor *highlightColor = [acoConfig getHighlightColor:style
-                                                           foregroundColor:textRun->GetTextColor()
-                                                              subtleOption:textRun->GetIsSubtle()];
+                                                           foregroundColor:textRun->GetTextColor().value_or(ForegroundColor::Default)
+                                                              subtleOption:textRun->GetIsSubtle().value_or(false)];
                     [textRunContent addAttribute:NSBackgroundColorAttributeName
                                            value:highlightColor
                                            range:NSMakeRange(0, textRunContent.length)];

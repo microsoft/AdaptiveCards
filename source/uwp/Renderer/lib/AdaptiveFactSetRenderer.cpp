@@ -9,13 +9,13 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveFactSetRenderer::RuntimeClassInitialize() noexcept
     try
@@ -55,9 +55,9 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
 
         GridLength factSetGridHeight = {0, GridUnitType::GridUnitType_Auto};
-        ABI::AdaptiveNamespace::HeightType heightType;
+        ABI::AdaptiveCards::Rendering::Uwp::HeightType heightType;
         RETURN_IF_FAILED(cardElement->get_Height(&heightType));
-        if (heightType == ABI::AdaptiveNamespace::HeightType::Stretch)
+        if (heightType == ABI::AdaptiveCards::Rendering::Uwp::HeightType::Stretch)
         {
             factSetGridHeight = {1, GridUnitType::GridUnitType_Star};
         }
@@ -65,7 +65,7 @@ namespace AdaptiveNamespace
         ComPtr<IVector<AdaptiveFact*>> facts;
         RETURN_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
         int currentFact = 0, validFacts = 0;
-        XamlHelpers::IterateOverVector<AdaptiveFact, IAdaptiveFact>(
+        IterateOverVector<AdaptiveFact, IAdaptiveFact>(
             facts.Get(),
             [xamlGrid, gridStatics, factSetGridHeight, &currentFact, &validFacts, renderContext, renderArgs](IAdaptiveFact* fact) {
                 ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(
@@ -87,7 +87,7 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(localFact->get_Language(language.GetAddressOf()));
 
                 // Create the title xaml textblock and style it from Host options
-                ComPtr<IAdaptiveTextConfig> titleTextConfig;
+                ComPtr<IAdaptiveFactSetTextConfig> titleTextConfig;
                 RETURN_IF_FAILED(factSetConfig->get_Title(&titleTextConfig));
 
                 ComPtr<ITextBlock> titleTextBlock =
@@ -96,11 +96,11 @@ namespace AdaptiveNamespace
                 HString factTitle;
                 RETURN_IF_FAILED(localFact->get_Title(factTitle.GetAddressOf()));
 
-                RETURN_IF_FAILED(SetXamlInlinesWithTextConfig(
+                RETURN_IF_FAILED(SetXamlInlinesWithFactSetTextConfig(
                     renderContext, renderArgs, titleTextConfig.Get(), language.Get(), factTitle.Get(), titleTextBlock.Get()));
 
                 // Create the value xaml textblock and style it from Host options
-                ComPtr<IAdaptiveTextConfig> valueTextConfig;
+                ComPtr<IAdaptiveFactSetTextConfig> valueTextConfig;
                 RETURN_IF_FAILED(factSetConfig->get_Value(&valueTextConfig));
 
                 ComPtr<ITextBlock> valueTextBlock =
@@ -109,7 +109,7 @@ namespace AdaptiveNamespace
                 HString factValue;
                 RETURN_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
 
-                RETURN_IF_FAILED(SetXamlInlinesWithTextConfig(
+                RETURN_IF_FAILED(SetXamlInlinesWithFactSetTextConfig(
                     renderContext, renderArgs, valueTextConfig.Get(), language.Get(), factValue.Get(), valueTextBlock.Get()));
 
                 if (factTitle.Get() != nullptr || factValue.Get() != nullptr)
@@ -170,13 +170,13 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveFactSetRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
     try
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveFactSet, AdaptiveSharedNamespace::FactSet, AdaptiveSharedNamespace::FactSetParser>(
+        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveFactSet, AdaptiveCards::FactSet, AdaptiveCards::FactSetParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;

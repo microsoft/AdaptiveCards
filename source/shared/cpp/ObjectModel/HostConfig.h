@@ -4,7 +4,7 @@
 
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class FontSizesConfig
     {
@@ -21,12 +21,12 @@ namespace AdaptiveSharedNamespace
         void SetFontSize(TextSize size, unsigned int value);
 
     private:
-        // UINT_MAX used to check if value was defined
-        unsigned int _small = UINT_MAX;
-        unsigned int _default = UINT_MAX;
-        unsigned int _medium = UINT_MAX;
-        unsigned int _large = UINT_MAX;
-        unsigned int _extraLarge = UINT_MAX;
+        // std::numeric_limits<unsigned int>::max() used to check if value was defined
+        unsigned int _small = std::numeric_limits<unsigned int>::max();
+        unsigned int _default = std::numeric_limits<unsigned int>::max();
+        unsigned int _medium = std::numeric_limits<unsigned int>::max();
+        unsigned int _large = std::numeric_limits<unsigned int>::max();
+        unsigned int _extraLarge = std::numeric_limits<unsigned int>::max();
     };
 
     class FontWeightsConfig
@@ -43,10 +43,10 @@ namespace AdaptiveSharedNamespace
         void SetFontWeight(TextWeight weight, unsigned int value);
 
     private:
-        // UINT_MAX used to check if value was defined
-        unsigned int _lighter = UINT_MAX;
-        unsigned int _default = UINT_MAX;
-        unsigned int _bolder = UINT_MAX;
+        // std::numeric_limits<unsigned int>::max() used to check if value was defined
+        unsigned int _lighter = std::numeric_limits<unsigned int>::max();
+        unsigned int _default = std::numeric_limits<unsigned int>::max();
+        unsigned int _bolder = std::numeric_limits<unsigned int>::max();
     };
 
     struct FontTypeDefinition
@@ -105,17 +105,30 @@ namespace AdaptiveSharedNamespace
 #pragma clang diagnostic pop
 #endif
 
-    struct TextConfig
+    struct TextStyleConfig
     {
         TextWeight weight = TextWeight::Default;
         TextSize size = TextSize::Default;
-        FontType fontType = FontType::Default;
-        ForegroundColor color = ForegroundColor::Default;
         bool isSubtle = false;
+        ForegroundColor color = ForegroundColor::Default;
+        FontType fontType = FontType::Default;
+
+        static TextStyleConfig Deserialize(const Json::Value& json, const TextStyleConfig& defaultValue);
+    };
+
+    struct FactSetTextConfig : TextStyleConfig
+    {
         bool wrap = true;
         unsigned int maxWidth = ~0U;
 
-        static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
+        static FactSetTextConfig Deserialize(const Json::Value& json, const FactSetTextConfig& defaultValue);
+    };
+
+    struct TextStylesConfig
+    {
+        TextStyleConfig heading = {TextWeight::Bolder, TextSize::Large, false, ForegroundColor::Default, FontType::Default};
+
+        static TextStylesConfig Deserialize(const Json::Value& json, const TextStylesConfig& defaultValue);
     };
 
     struct SpacingConfig
@@ -171,8 +184,8 @@ namespace AdaptiveSharedNamespace
 
     struct FactSetConfig
     {
-        TextConfig title{TextWeight::Bolder, TextSize::Default, FontType::Default, ForegroundColor::Default, false, true, 150};
-        TextConfig value{TextWeight::Default, TextSize::Default, FontType::Default, ForegroundColor::Default, false, true, ~0U};
+        FactSetTextConfig title{TextWeight::Bolder, TextSize::Default, false, ForegroundColor::Default, FontType::Default, true, 150};
+        FactSetTextConfig value{TextWeight::Default, TextSize::Default, false, ForegroundColor::Default, FontType::Default, true, ~0U};
         unsigned int spacing = 10;
 
         static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -181,8 +194,9 @@ namespace AdaptiveSharedNamespace
     struct ContainerStyleDefinition
     {
         std::string backgroundColor = "#FFFFFFFF";
-        std::string borderColor = "#FF7F7F7F7F"; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
+        std::string borderColor = "#FF7F7F7F7F";
         unsigned int borderThickness = 0; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
+                                          // (see #1150)
         ColorsConfig foregroundColors;
 
         static ContainerStyleDefinition Deserialize(const Json::Value& json, const ContainerStyleDefinition& defaultValue);
@@ -343,10 +357,17 @@ namespace AdaptiveSharedNamespace
         static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
     };
 
-    struct HeadingsConfig
+    struct TextBlockConfig
     {
-        unsigned int level = 2;
-        static HeadingsConfig Deserialize(const Json::Value& json, const HeadingsConfig& defaultValue);
+        unsigned int headingLevel = 2;
+
+        static TextBlockConfig Deserialize(const Json::Value& json, const TextBlockConfig& defaultValue);
+    };
+
+    struct TableConfig
+    {
+        unsigned int cellSpacing = 8;
+        static TableConfig Deserialize(const Json::Value& json, const TableConfig& defaultValue);
     };
 
     class HostConfig
@@ -418,8 +439,14 @@ namespace AdaptiveSharedNamespace
         InputsConfig GetInputs() const;
         void SetInputs(const InputsConfig value);
 
-        HeadingsConfig GetHeadings() const;
-        void SetHeadings(const HeadingsConfig value);
+        TextStylesConfig GetTextStyles() const;
+        void SetTextStyles(const TextStylesConfig value);
+
+        TextBlockConfig GetTextBlock() const;
+        void SetTextBlock(const TextBlockConfig value);
+
+        TableConfig GetTable() const;
+        void SetTable(const TableConfig value);
 
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
@@ -442,6 +469,8 @@ namespace AdaptiveSharedNamespace
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
         InputsConfig _inputs;
-        HeadingsConfig _headings;
+        TextBlockConfig _textBlock;
+        TextStylesConfig _textStyles;
+        TableConfig _table;
     };
 }

@@ -5,8 +5,9 @@ import tensorflow as tf
 from mystique import config
 
 
-def set_graph_and_tensors(tensors=("detection_boxes", "detection_scores",
-                                   "detection_classes")):
+def set_graph_and_tensors(
+    tensors=("detection_boxes", "detection_scores", "detection_classes")
+):
     """
     setting up tf graphs and tensors using the trained inference graph
 
@@ -17,11 +18,9 @@ def set_graph_and_tensors(tensors=("detection_boxes", "detection_scores",
     tensor_dict = dict()
     detection_graph = tf.Graph()
     # setting up default graph with graphs from inference graph
-    with detection_graph.as_default() as default_graph:
+    with detection_graph.as_default() as default_graph:  # pylint: disable=not-context-manager
         od_graph_def = tf.compat.v1.GraphDef()
-        with tf.compat.v1.gfile.GFile(
-            config.TF_FROZEN_MODEL_PATH, "rb"
-        ) as fid:
+        with tf.compat.v1.gfile.GFile(config.TF_FROZEN_MODEL_PATH, "rb") as fid:
             serialized_graph = fid.read()
             od_graph_def.ParseFromString(serialized_graph)
             tf.import_graph_def(od_graph_def, name="")

@@ -8,7 +8,7 @@
 #include "MarkDownBlockParser.h"
 #include "MarkDownHtmlGenerator.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class MarkDownParser
     {

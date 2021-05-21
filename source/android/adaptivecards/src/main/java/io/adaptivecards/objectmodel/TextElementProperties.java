@@ -44,8 +44,8 @@ public class TextElementProperties {
     this(AdaptiveCardObjectModelJNI.new_TextElementProperties__SWIG_0(), true);
   }
 
-  public TextElementProperties(TextConfig arg0, String arg1, String arg2) {
-    this(AdaptiveCardObjectModelJNI.new_TextElementProperties__SWIG_1(TextConfig.getCPtr(arg0), arg0, arg1, arg2), true);
+  public TextElementProperties(TextStyleConfig arg0, String arg1, String arg2) {
+    this(AdaptiveCardObjectModelJNI.new_TextElementProperties__SWIG_1(TextStyleConfig.getCPtr(arg0), arg0, arg1, arg2), true);
   }
 
   public TextElementProperties(TextElementProperties arg0) {
@@ -68,44 +68,64 @@ public class TextElementProperties {
     return new DateTimePreparser(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextForDateParsing(swigCPtr, this), true);
   }
 
-  public TextSize GetTextSize() {
-    return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextSize(swigCPtr, this));
+  public @androidx.annotation.Nullable TextSize GetTextSize() {
+  StdOptionalTextSize optvalue = new StdOptionalTextSize(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextSize(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetTextSize(@androidx.annotation.Nullable TextSize value) {
+    StdOptionalTextSize optvalue = (value == null) ? new StdOptionalTextSize() : new StdOptionalTextSize(value);
+    {
+      AdaptiveCardObjectModelJNI.TextElementProperties_SetTextSize(swigCPtr, this, StdOptionalTextSize.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public void SetTextSize(TextSize value) {
-    AdaptiveCardObjectModelJNI.TextElementProperties_SetTextSize(swigCPtr, this, value.swigValue());
+  public @androidx.annotation.Nullable TextWeight GetTextWeight() {
+  StdOptionalTextWeight optvalue = new StdOptionalTextWeight(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextWeight(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetTextWeight(@androidx.annotation.Nullable TextWeight value) {
+    StdOptionalTextWeight optvalue = (value == null) ? new StdOptionalTextWeight() : new StdOptionalTextWeight(value);
+    {
+      AdaptiveCardObjectModelJNI.TextElementProperties_SetTextWeight(swigCPtr, this, StdOptionalTextWeight.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public TextWeight GetTextWeight() {
-    return TextWeight.swigToEnum(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextWeight(swigCPtr, this));
+  public @androidx.annotation.Nullable FontType GetFontType() {
+  StdOptionalFontType optvalue = new StdOptionalFontType(AdaptiveCardObjectModelJNI.TextElementProperties_GetFontType(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetFontType(@androidx.annotation.Nullable FontType value) {
+    StdOptionalFontType optvalue = (value == null) ? new StdOptionalFontType() : new StdOptionalFontType(value);
+    {
+      AdaptiveCardObjectModelJNI.TextElementProperties_SetFontType(swigCPtr, this, StdOptionalFontType.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public void SetTextWeight(TextWeight value) {
-    AdaptiveCardObjectModelJNI.TextElementProperties_SetTextWeight(swigCPtr, this, value.swigValue());
+  public @androidx.annotation.Nullable ForegroundColor GetTextColor() {
+  StdOptionalForegroundColor optvalue = new StdOptionalForegroundColor(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextColor(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
+
+  public void SetTextColor(@androidx.annotation.Nullable ForegroundColor value) {
+    StdOptionalForegroundColor optvalue = (value == null) ? new StdOptionalForegroundColor() : new StdOptionalForegroundColor(value);
+    {
+      AdaptiveCardObjectModelJNI.TextElementProperties_SetTextColor(swigCPtr, this, StdOptionalForegroundColor.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public FontType GetFontType() {
-    return FontType.swigToEnum(AdaptiveCardObjectModelJNI.TextElementProperties_GetFontType(swigCPtr, this));
-  }
+  public @androidx.annotation.Nullable Boolean GetIsSubtle() {
+  StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.TextElementProperties_GetIsSubtle(swigCPtr, this), false);
+  return optvalue.has_value() ? optvalue.value() : null;
+}
 
-  public void SetFontType(FontType value) {
-    AdaptiveCardObjectModelJNI.TextElementProperties_SetFontType(swigCPtr, this, value.swigValue());
-  }
-
-  public ForegroundColor GetTextColor() {
-    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextColor(swigCPtr, this));
-  }
-
-  public void SetTextColor(ForegroundColor value) {
-    AdaptiveCardObjectModelJNI.TextElementProperties_SetTextColor(swigCPtr, this, value.swigValue());
-  }
-
-  public boolean GetIsSubtle() {
-    return AdaptiveCardObjectModelJNI.TextElementProperties_GetIsSubtle(swigCPtr, this);
-  }
-
-  public void SetIsSubtle(boolean value) {
-    AdaptiveCardObjectModelJNI.TextElementProperties_SetIsSubtle(swigCPtr, this, value);
+  public void SetIsSubtle(@androidx.annotation.Nullable Boolean value) {
+    StdOptionalBool optvalue = (value == null) ? new StdOptionalBool() : new StdOptionalBool(value);
+    {
+      AdaptiveCardObjectModelJNI.TextElementProperties_SetIsSubtle(swigCPtr, this, StdOptionalBool.getCPtr(optvalue), optvalue);
+    }
   }
 
   public void SetLanguage(String value) {

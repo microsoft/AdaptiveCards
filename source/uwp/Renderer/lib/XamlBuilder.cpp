@@ -11,14 +11,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     XamlBuilder::XamlBuilder()
     {
@@ -48,7 +48,7 @@ namespace AdaptiveNamespace
                                                        _Outptr_ IFrameworkElement** xamlTreeRoot,
                                                        _In_ IAdaptiveRenderContext* renderContext,
                                                        ComPtr<XamlBuilder> xamlBuilder,
-                                                       ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle) noexcept
+                                                       ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle defaultContainerStyle) noexcept
     try
     {
         *xamlTreeRoot = nullptr;
@@ -62,13 +62,13 @@ namespace AdaptiveNamespace
             boolean allowCustomStyle;
             RETURN_IF_FAILED(adaptiveCardConfig->get_AllowCustomStyle(&allowCustomStyle));
 
-            ABI::AdaptiveNamespace::ContainerStyle containerStyle = defaultContainerStyle;
+            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle = defaultContainerStyle;
             if (allowCustomStyle)
             {
-                ABI::AdaptiveNamespace::ContainerStyle cardStyle;
+                ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle cardStyle;
                 RETURN_IF_FAILED(adaptiveCard->get_Style(&cardStyle));
 
-                if (cardStyle != ABI::AdaptiveNamespace::ContainerStyle::None)
+                if (cardStyle != ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
                 {
                     containerStyle = cardStyle;
                 }
@@ -113,7 +113,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(
                 BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
 
-            ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment;
             RETURN_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
             XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer.Get(), verticalContentAlignment);
 
@@ -137,7 +137,7 @@ namespace AdaptiveNamespace
                 else
                 {
                     renderContext->AddWarning(
-                        ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
+                        ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
                         HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
                 }
             }
@@ -244,7 +244,7 @@ namespace AdaptiveNamespace
 
         ComPtr<IPanel> rootAsPanel;
         RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         ABI::Windows::UI::Color backgroundColor;
@@ -283,7 +283,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         RETURN_IF_FAILED(XamlHelpers::ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get()));
 
-        ABI::AdaptiveNamespace::HeightType adaptiveCardHeightType;
+        ABI::AdaptiveCards::Rendering::Uwp::HeightType adaptiveCardHeightType;
         RETURN_IF_FAILED(adaptiveCard->get_Height(&adaptiveCardHeightType));
 
         XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
@@ -298,7 +298,7 @@ namespace AdaptiveNamespace
             rootAsFrameworkElement->put_MaxHeight(xamlBuilder->m_fixedHeight);
         }
 
-        if (adaptiveCardHeightType == ABI::AdaptiveNamespace::HeightType::Stretch)
+        if (adaptiveCardHeightType == ABI::AdaptiveCards::Rendering::Uwp::HeightType::Stretch)
         {
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
@@ -330,8 +330,8 @@ namespace AdaptiveNamespace
 
     HRESULT XamlBuilder::BuildPanelChildren(_In_ IVector<IAdaptiveCardElement*>* children,
                                             _In_ IPanel* parentPanel,
-                                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                                             std::function<void(IUIElement* child)> childCreatedCallback) noexcept
     {
         int iElement = 0;
@@ -344,11 +344,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(renderContext->get_FeatureRegistration(&featureRegistration));
         ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
 
-        HRESULT hr = XamlHelpers::IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
+        HRESULT hr = IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
             HRESULT hr = S_OK;
 
             // Get fallback state
-            ABI::AdaptiveNamespace::FallbackType elementFallback;
+            ABI::AdaptiveCards::Rendering::Uwp::FallbackType elementFallback;
             RETURN_IF_FAILED(element->get_FallbackType(&elementFallback));
             const bool elementHasFallback = (elementFallback != FallbackType_None);
             RETURN_IF_FAILED(renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback));

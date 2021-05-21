@@ -9,7 +9,7 @@
 package io.adaptivecards.objectmodel;
 
 public enum TextStyle {
-  Paragraph(0),
+  Default(0),
   Heading;
 
   public final int swigValue() {

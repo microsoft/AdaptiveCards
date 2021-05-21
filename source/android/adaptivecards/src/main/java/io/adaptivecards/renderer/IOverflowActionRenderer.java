@@ -34,11 +34,12 @@ public interface IOverflowActionRenderer {
     /**
      * This implementation is invoked when Overflow action view ("...") is pressed and rendered secondary view elements will be shown.
      *
-     * @param menuItemList list of view of rendered secondary action elements.
-     * @param view           Overflow action view.
+     * @param menuItemList       list of view of rendered secondary action elements.
+     * @param view               Overflow action view.
+     * @param isRootLevelActions indicates action is part of root level actions or action set elements in body.
      * @return false will show the elements in default {@link android.widget.PopupWindow}, while true indicates client can customize the display behaviour.
      */
-    default boolean onDisplayOverflowActionMenu(@NonNull List<View> menuItemList, @NonNull View view)
+    default boolean onDisplayOverflowActionMenu(@NonNull List<View> menuItemList, @NonNull View view, boolean isRootLevelActions)
     {
         return false;
     }

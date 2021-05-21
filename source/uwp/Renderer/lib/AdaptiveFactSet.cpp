@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveFactSet.h"
+#include "AdaptiveFact.h"
 
 #include "Util.h"
 #include "Vector.h"
@@ -9,24 +10,27 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
-    AdaptiveFactSet::AdaptiveFactSet() { m_facts = Microsoft::WRL::Make<Vector<AdaptiveFact*>>(); }
+    AdaptiveFactSet::AdaptiveFactSet()
+    {
+        m_facts = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact*>>();
+    }
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
+        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
         return RuntimeClassInitialize(factSet);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::FactSet>& sharedFactSet)
+    HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::FactSet>& sharedFactSet)
     try
     {
         if (sharedFactSet == nullptr)
@@ -41,7 +45,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<AdaptiveFact*>** facts)
+    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact*>** facts)
     {
         return m_facts.CopyTo(facts);
     }
@@ -52,10 +56,10 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
+        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
 
         RETURN_IF_FAILED(CopySharedElementProperties(*factSet));
         RETURN_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));

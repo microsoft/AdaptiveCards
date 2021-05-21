@@ -8,7 +8,7 @@
 #include "TextBlock.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 ColumnSet::ColumnSet() : CollectionTypeElement(CardElementType::ColumnSet)
 {
@@ -45,7 +45,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
                                                         context,
                                                         value,
                                                         AdaptiveCardSchemaKey::Columns,
-                                                        false,     // isRequired
+                                                        false,                                             // isRequired
                                                         CardElementTypeToString(CardElementType::Column)); // impliedType
 }
 

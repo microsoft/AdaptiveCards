@@ -1,8 +1,13 @@
+# pylint: disable=missing-module-docstring, missing-class-docstring
+# pylint: disable=missing-function-docstring
+
+# pylint: disable=no-member
+
 import os
+import unittest
 import detr
 import numpy as np
 from PIL import Image
-import unittest
 
 curr_dir = os.path.dirname(__file__)
 
@@ -10,9 +15,11 @@ curr_dir = os.path.dirname(__file__)
 class TestDetrLib(unittest.TestCase):
     def setUp(self):
         self.model_path = os.path.join(
-            curr_dir, "../../../../model/pth_models/detr_trace.pt")
+            curr_dir, "../../../../model/pth_models/detr_trace.pt"
+        )
         self.image_path = os.path.join(
-            curr_dir, "../../../../tests/test_images/test01.png")
+            curr_dir, "../../../../tests/test_images/test01.png"
+        )
         img = Image.open(self.image_path)
         self.img_np = np.asarray(img)
 
@@ -37,18 +44,10 @@ class TestDetrLib(unittest.TestCase):
 
     def test_image_resizing(self):
         model = detr.Detr(self.model_path)
-        self.assertEqual(
-            model.get_new_size(400, 300, 800, 1333),
-            [800, 600])
+        self.assertEqual(model.get_new_size(400, 300, 800, 1333), [800, 600])
 
-        self.assertEqual(
-            model.get_new_size(800, 300, 800, 1333),
-            [500, 187])
+        self.assertEqual(model.get_new_size(800, 300, 800, 1333), [500, 187])
 
-        self.assertEqual(
-            model.get_new_size(300, 500, 800, 1333),
-            [480, 800])
+        self.assertEqual(model.get_new_size(300, 500, 800, 1333), [480, 800])
 
-        self.assertEqual(
-            model.get_new_size(1500, 1500, 800, 1333),
-            [800, 800])
+        self.assertEqual(model.get_new_size(1500, 1500, 800, 1333), [800, 800])

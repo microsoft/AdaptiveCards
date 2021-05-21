@@ -9,6 +9,7 @@
 #import "ACOBaseActionElement.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRAggregateTarget.h"
@@ -43,14 +44,13 @@
 + (ACRTextField *)configTextFiled:(std::shared_ptr<TextInput> const &)inputBlock renderAction:(BOOL)renderAction rootView:(ACRView *)rootView viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup
 {
     ACRTextField *txtInput = nil;
+    NSBundle *bundle = [[ACOBundle getInstance] getBundle];
     switch (inputBlock->GetTextInputStyle()) {
         case TextInputStyle::Email: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
             break;
         }
         case TextInputStyle::Tel: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextTelelphoneField" owner:rootView options:nil][0];
             CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
             UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
@@ -62,13 +62,11 @@
             break;
         }
         case TextInputStyle::Url: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextUrlField" owner:rootView options:nil][0];
             break;
         }
         case TextInputStyle::Text:
         default: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
             break;
         }

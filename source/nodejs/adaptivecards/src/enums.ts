@@ -152,11 +152,6 @@ export class ContainerStyle {
     static readonly Warning: "warning" = "warning";
 }
 
-export class TextStyles {
-    static readonly Default: "default" = "default";
-    static readonly Heading: "heading" = "heading";
-}
-
 export enum ValidationPhase {
     Parse,
     ToJSON,
@@ -188,6 +183,11 @@ export enum ContainerFitStatus {
     FullyInContainer,
     Overflowing,
     FullyOutOfContainer
+}
+
+export enum TypeErrorType {
+    UnknownType,
+    ForbiddenType
 }
 
 export enum RefreshMode {

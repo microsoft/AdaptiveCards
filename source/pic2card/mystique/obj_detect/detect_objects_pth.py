@@ -1,32 +1,44 @@
+""" Pytorch implementation of object detection classes."""
 from typing import Tuple
 import numpy as np
 
 import torch
 import torchvision.transforms as T
 from detecto.core import Model
-from detecto.utils import read_image, normalize_transform
 
-from .od_base import AbstractObjectDetection
+
+from detecto.utils import (
+    read_image,
+    normalize_transform,
+)
 from mystique import config
+from .od_base import AbstractObjectDetection
 
 
-class PtObjectDetection(AbstractObjectDetection):
+class PtObjectDetection(
+    AbstractObjectDetection
+):  # pylint: disable=abstract-method
     """
     Pytorch implementation of object detection classes.
     """
-    transformer = T.Compose([
+
+    transformer = T.Compose(
+        [
             T.ToPILImage(),
             lambda image: image.convert("RGB"),
             T.ToTensor(),
-            normalize_transform()
-    ])
+            normalize_transform(),
+        ]
+    )
 
-    classes = ["checkbox",
-               "radiobutton",
-               "textbox",
-               "actionset",
-               "image",
-               "rating"]
+    classes = [
+        "checkbox",
+        "radiobutton",
+        "textbox",
+        "actionset",
+        "image",
+        "rating",
+    ]
     model = None
 
     def __init__(self, model_path=None):
@@ -41,11 +53,10 @@ class PtObjectDetection(AbstractObjectDetection):
         return self.transformer(image)
 
     def _load_model(self):
-        """ Load the saved model and pass the required classes """
+        """Load the saved model and pass the required classes"""
         return Model.load(self.model_path, classes=self.classes)
 
-    def get_bboxes(self, image_path: str,
-                   img_pipeline=None) -> Tuple:
+    def get_bboxes(self, image_path: str, img_pipeline=None) -> Tuple:
         """
         Do inference and return the bounding boxes compatible to caller.
         """

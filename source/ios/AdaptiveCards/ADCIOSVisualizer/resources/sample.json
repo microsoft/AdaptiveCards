@@ -26,7 +26,7 @@
 			}
 		},
 		"monospace": {
-			"fontFamily": "'Courier New', Courier, monospace",
+			"fontFamily": "Courier New, Courier",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -35,7 +35,7 @@
 				"extraLarge": 26
 			},
 			"fontWeights": {
-				"lighter": 200,
+				"lighter": 400,
 				"default": 400,
 				"bolder": 700
 			}
@@ -277,7 +277,7 @@
 		"spacing": 5
 	},
 	"media": {
-        "playButton" : "http://adaptivecards.io/content/adaptive-card-50.png",
+		"playButton" : "http://adaptivecards.io/content/adaptive-card-50.png",
 		"allowInlinePlayback" : true
 	}
 }

@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "CollectionTypeElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseActionElement;
 
@@ -15,6 +15,7 @@ namespace AdaptiveSharedNamespace
 
     public:
         Container();
+        Container(CardElementType derivedType);
         Container(const Container&) = default;
         Container(Container&&) = default;
         Container& operator=(const Container&) = default;
@@ -35,7 +36,7 @@ namespace AdaptiveSharedNamespace
     private:
         void PopulateKnownPropertiesSet();
 
-        std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+        std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
         std::optional<bool> m_rtl;
     };
 

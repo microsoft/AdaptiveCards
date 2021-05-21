@@ -7,12 +7,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveChoiceInput::RuntimeClassInitialize() noexcept
     try
@@ -22,7 +22,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveChoiceInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedChoiceInput)
+    HRESULT AdaptiveChoiceInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedChoiceInput)
     {
         m_sharedChoiceInput = sharedChoiceInput;
         return S_OK;
@@ -60,7 +60,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedModel)
+    HRESULT AdaptiveChoiceInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel)
     {
         sharedModel = m_sharedChoiceInput;
         return S_OK;

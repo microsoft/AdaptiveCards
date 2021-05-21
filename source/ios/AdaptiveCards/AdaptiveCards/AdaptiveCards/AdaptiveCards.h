@@ -13,82 +13,56 @@ FOUNDATION_EXPORT double AdaptiveCardsFrameworkVersionNumber;
 //! Project version string for AFramework.
 FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
-#import <AdaptiveCards/ACRView.h>
+#import "ACOAdaptiveCard.h"
+#import "ACOAdaptiveCardParseResult.h"
+#import "ACOBaseCardElement.h"
+#import "ACOEnums.h"
+#import "ACOHostConfig.h"
+#import "ACOHostConfigParseResult.h"
+#import "ACOIResourceResolver.h"
+#import "ACOInputResults.h"
+#import "ACOMediaEvent.h"
+#import "ACORemoteResourceInformation.h"
+#import "ACORenderContext.h"
+#import "ACOResourceResolvers.h"
+#import "ACRActionDelegate.h"
+#import "ACRActionOpenURLRenderer.h"
+#import "ACRActionSetRenderer.h"
+#import "ACRActionShowCardRenderer.h"
+#import "ACRActionSubmitRenderer.h"
+#import "ACRBaseActionElementRenderer.h"
+#import "ACRBaseCardElementRenderer.h"
+#import "ACRButton.h"
+#import "ACRColumnRenderer.h"
+#import "ACRColumnSetRenderer.h"
+#import "ACRContainerRenderer.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRErrors.h"
+#import "ACRFactSetRenderer.h"
+#import "ACRIBaseActionElementRenderer.h"
+#import "ACRIBaseCardElementRenderer.h"
+#import "ACRIBaseInputHandler.h"
+#import "ACRIMedia.h"
+#import "ACRImageProperties.h"
+#import "ACRImageRenderer.h"
+#import "ACRImageSetRenderer.h"
+#import "ACRInputChoiceSetRenderer.h"
+#import "ACRInputDateRenderer.h"
+#import "ACRInputLabelView.h"
+#import "ACRInputNumberRenderer.h"
+#import "ACRInputRenderer.h"
+#import "ACRInputTimeRenderer.h"
+#import "ACRInputToggleRenderer.h"
+#import "ACRMediaRenderer.h"
+#import "ACRMediaTarget.h"
+#import "ACRParseWarning.h"
+#import "ACRRegistration.h"
+#import "ACRRenderResult.h"
+#import "ACRRenderer.h"
+#import "ACRRichTextBlockRenderer.h"
+#import "ACRTextBlockRenderer.h"
+#import "ACRTextInputHandler.h"
+#import "ACRTextView.h"
+#import "ACRToggleInputView.h"
+#import "ACRView.h"
 
-#import <AdaptiveCards/ACRActionDelegate.h>
-
-#import <AdaptiveCards/ACOHostConfig.h>
-
-#import <AdaptiveCards/ACOBaseCardElement.h>
-
-#import <AdaptiveCards/ACOAdaptiveCard.h>
-
-#import <AdaptiveCards/ACOHostConfigParseResult.h>
-
-#import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
-
-#import <AdaptiveCards/ACOResourceResolvers.h>
-
-#import <AdaptiveCards/ACOIResourceResolver.h>
-
-#import <AdaptiveCards/ACRRenderer.h>
-
-#import <AdaptiveCards/ACRRenderResult.h>
-
-#import <AdaptiveCards/ACRRegistration.h>
-
-#import <AdaptiveCards/ACRColumnRenderer.h>
-
-#import <AdaptiveCards/ACRColumnSetRenderer.h>
-
-#import <AdaptiveCards/ACRContainerRenderer.h>
-
-#import <AdaptiveCards/ACRFactSetRenderer.h>
-
-#import <AdaptiveCards/ACRIBaseActionElementRenderer.h>
-
-#import <AdaptiveCards/ACRIBaseCardElementRenderer.h>
-
-#import <AdaptiveCards/ACRImageRenderer.h>
-
-#import <AdaptiveCards/ACRImageSetRenderer.h>
-
-#import <AdaptiveCards/ACRInputChoiceSetRenderer.h>
-
-#import <AdaptiveCards/ACRInputDateRenderer.h>
-
-#import <AdaptiveCards/ACRInputNumberRenderer.h>
-
-#import <AdaptiveCards/ACRInputRenderer.h>
-
-#import <AdaptiveCards/ACRTextView.h>
-
-#import <AdaptiveCards/ACRInputTimeRenderer.h>
-
-#import <AdaptiveCards/ACRInputToggleRenderer.h>
-
-#import <AdaptiveCards/ACRIBaseInputHandler.h>
-
-#import <AdaptiveCards/ACRErrors.h>
-
-#import <AdaptiveCards/ACRParseWarning.h>
-
-#import <AdaptiveCards/ACRTextBlockRenderer.h>
-
-#import <AdaptiveCards/ACRBaseActionElementRenderer.h>
-
-#import <AdaptiveCards/ACRBaseCardElementRenderer.h>
-
-#import <AdaptiveCards/ACRActionOpenURLRenderer.h>
-
-#import <AdaptiveCards/ACRActionShowCardRenderer.h>
-
-#import <AdaptiveCards/ACRActionSubmitRenderer.h>
-
-#import <AdaptiveCards/ACORemoteResourceInformation.h>
-
-#import <AdaptiveCards/ACRIMedia.h>
-
-#import <AdaptiveCards/ACOMediaEvent.h>
-
-#import <AdaptiveCards/ACRMediaTarget.h>
