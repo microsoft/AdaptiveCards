@@ -1612,6 +1612,13 @@
           ],
           "description": "Must be `TableRow`"
         },
+        "cells": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableCell"
+          },
+          "description": "The cells in this row. If a row contains more cells than there are columns defined on the Table element, the extra cells are ignored."
+        },
         "style": {
           "anyOf": [
             {

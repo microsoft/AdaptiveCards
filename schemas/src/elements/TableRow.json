@@ -4,6 +4,10 @@
     "extends": "Element",
     "version": "1.5",
     "properties": {
+        "cells": {
+            "type": "TableCell[]",
+            "description": "The cells in this row. If a row contains more cells than there are columns defined on the Table element, the extra cells are ignored."
+        },
 		"style": {
 			"type": "ContainerStyle?",
 			"description": "Defines the style of the entire row."
