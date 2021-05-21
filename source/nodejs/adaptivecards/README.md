@@ -28,9 +28,9 @@ In previous releases of this SDK (`1.x`), the package version would match an off
 | `1.1` | `1.0` ... `1.1` | `1.1` | 
 | `1.0` | `1.0` | `1.0` |
 
-## Breaking changes
+## Notable changes
 
-Please be aware of the following **breaking changes** in particular versions.
+The following lists the most notable changes in each version of the SDK, including **breaking changes**. Please refer to this list when upgrading to a new version of the SDK.
 
 | In version | Change description |
 |---|---|
@@ -38,6 +38,9 @@ Please be aware of the following **breaking changes** in particular versions.
 || **BREAKING CHANGE**: The `fontType`, `size`, `weight`, `color` and `isSubtle` properties on TextBlock and TextRun can now be `undefined`. When one of those properties is set to `undefined`, its effective value is determined as per defaults set in HostConfig. When these properties are set to explicit values, they override the defaults.<br><br>To obtain the effective values applied at render time for those properties, application code can use the `effectiveFontType`, `effectiveSize`, `effectiveWeight`, `effectiveColor` and `effectiveIsSubtle` properties. |
 || **BREAKING CHANGE**: The `horizontalAlignment` property on any card element can now be `undefined`. When it is undefined, its effective value is inherited from its parent element, up to the AdaptiveCard element (which doesn't have a parent). If none of the parents explicitly set `horizontalAlignment`, it defaults to `HorizontalAlignment.Left`.<br><br>To obtain the effective horizontal alignment value applied at render time, application code can use the `getEffectiveHorizontalAlignment` method. |
 || **BREAKING CHANGE**: The `verticalContentAlignment` property on Container can now be `undefined`. When it is undefined, its effective value is inherited from its parent container, up to the AdaptiveCard element (which doesn't have a parent). If none of the parent containers explicitly set `verticalContentAlignment`, it defaults to `VerticalAlignment.Top`.<br><br>To obtain the effective vertical content alignment value applied at render time, application code can use the `getEffectiveVerticalContentAlignment` method. |
+|| `Action.updateActionButtonCssStyles(buttonElement: HTMLElement, buttonState: ActionButtonState)` has been **REMOVED**. A new `Action.updateCssClasses()` method has been introduced in its place. While this is technically a **breaking change**, it is extremely unlikely to affect any application. |
+|| `Action.addCssClasses(element: HTMLElement)` has been **REMOVED**. A new `Action.updateCssClasses()` method has been introduced in its place. While this is technically a **breaking change**, it is extremely unlikely to affect any application. |
+|| `Action.expanded?: boolean` has been **REMOVED**. A new `Action.state` property has been introduced in its place. While this is technically a **breaking change**, it is extremely unlikely to affect any application. |
 | **2.6** | A new `static SerializableObject.defaultMaxVersion` property is introduced to allow applications to constrain de-serialization to a specific Adaptive Card schema version globally. This new property complements the existing `SerializableObject.maxVersion` member property that does the same on a per-serializable object basis. |
 | **2.5** | The non-standard `ignoreInputValidation` property on `Action.Submit` has been **REMOVED**. Use the new `associatedInputs` property instead. |
 | **2.4** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |

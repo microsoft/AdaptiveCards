@@ -46,6 +46,7 @@ namespace AdaptiveCards
         Color,
         ColorConfig,
         Column,
+        ColumnHeader,
         ColumnSet,
         Columns,
         ConnectionName,

@@ -213,5 +213,7 @@
 	"This is the default style. The TextBlock behaves as standard content and will be read as such by accessibility software.": "This is the default style. The TextBlock behaves as standard content and will be read as such by accessibility software.",
 	"The TextBlock behaves as a heading which impacts how accessibility software handles navigation and narration.": "The TextBlock behaves as a heading which impacts how accessibility software handles navigation and narration.",
 	"This is the default style which provide no special styling or behavior.": "This is the default style which provide no special styling or behavior.",
-	"The TextBlock is a heading. This will apply the heading styling defaults and mark the text block as a heading for accessiblity.": "The TextBlock is a heading. This will apply the heading styling defaults and mark the text block as a heading for accessiblity."
+	"The TextBlock is a heading. This will apply the heading styling defaults and mark the text block as a heading for accessiblity.": "The TextBlock is a heading. This will apply the heading styling defaults and mark the text block as a heading for accessiblity.",
+	"A unique identifier associated with this Action.": "A unique identifier associated with this Action.",
+	"Determines whether the action should be enabled.": "Determines whether the action should be enabled."
 }
