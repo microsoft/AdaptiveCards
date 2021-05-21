@@ -98,7 +98,7 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         RETURN_IF_FAILED(parentPanel->get_Children(&children));
 
         bool foundPreviousVisibleElement = false;
-        XamlHelpers::IterateOverVector<UIElement, IUIElement>(children.Get(), [&](IUIElement* child) {
+        IterateOverVector<UIElement, IUIElement>(children.Get(), [&](IUIElement* child) {
             ComPtr<IUIElement> localChild(child);
 
             ComPtr<IFrameworkElement> childAsFrameworkElement;

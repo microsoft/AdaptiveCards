@@ -104,4 +104,9 @@
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="EverythingBagel.json">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

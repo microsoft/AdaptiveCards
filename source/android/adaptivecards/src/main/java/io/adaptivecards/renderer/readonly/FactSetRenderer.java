@@ -3,7 +3,6 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import androidx.fragment.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,21 +11,24 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.Fact;
+import io.adaptivecards.objectmodel.FactSet;
+import io.adaptivecards.objectmodel.FactSetTextConfig;
+import io.adaptivecards.objectmodel.FactVector;
 import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.TextStyle;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.Fact;
-import io.adaptivecards.objectmodel.FactVector;
-import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.FactSet;
-import io.adaptivecards.objectmodel.TextConfig;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
 
 public class FactSetRenderer extends BaseCardElementRenderer
 {
@@ -44,14 +46,14 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, CharSequence text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
+    static TextView createTextView(Context context, CharSequence text, FactSetTextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
 
-        TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle(), containerStyle);
-        TextBlockRenderer.setTextSize(textView, FontType.Default, textConfig.getSize(), hostConfig);
-        TextBlockRenderer.getInstance().setTextFormat(textView, hostConfig, FontType.Default, textConfig.getWeight());
+        TextBlockRenderer.applyTextColor(textView, hostConfig, TextStyle.Default, textConfig.getColor(), textConfig.getIsSubtle(), containerStyle);
+        TextBlockRenderer.applyTextSize(textView, hostConfig, TextStyle.Default, FontType.Default, textConfig.getSize());
+        TextBlockRenderer.getInstance().applyTextFormat(textView, hostConfig, TextStyle.Default, FontType.Default, textConfig.getWeight());
         textView.setOnTouchListener(new TextBlockRenderer.TouchTextView(new SpannableString(text)));
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));

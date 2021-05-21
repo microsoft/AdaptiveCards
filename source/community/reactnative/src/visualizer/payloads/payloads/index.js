@@ -4,6 +4,10 @@ export default payloads = [
     "json": require('./Accessibility.json')
   },
   {
+    "title": "Action.IsEnabled.json",
+    "json": require('./Action.IsEnabled.json')
+  },
+  {
     "title": "Action.NoBody.json",
     "json": require('./Action.NoBody.json')
   },
@@ -310,6 +314,10 @@ export default payloads = [
   {
     "title": "RichTextBlock.json",
     "json": require('./RichTextBlock.json')
+  },
+  {
+    "title": "SelectAction.IsEnabled.json",
+    "json": require('./SelectAction.IsEnabled.json')
   },
   {
     "title": "TextBlock.Color.json",

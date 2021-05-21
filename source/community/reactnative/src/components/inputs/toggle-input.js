@@ -70,7 +70,6 @@ export class ToggleInput extends React.Component {
 								accessible={true}
 								accessibilityLabel={this.altText}
 								style={styles.toggleView}>
-								<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} />
 								<Switch
 									style={styles.switch}
 									value={toggleValue}
@@ -78,6 +77,9 @@ export class ToggleInput extends React.Component {
 										this.toggleValueChanged(toggleValue, addInputItem)
 									}}>
 								</Switch>
+								<View style={styles.titleContainer}>
+									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} />
+								</View>
 							</View>
 						)
 					}}
@@ -94,14 +96,17 @@ const styles = StyleSheet.create({
 	},
 	toggleView: {
 		padding: 5,
-		flexDirection: Constants.FlexRow,
+		flexDirection: Constants.FlexRowReverse,
 		justifyContent: Constants.SpaceBetween,
 		alignItems: Constants.CenterString,
 	},
 	title: {
 		flexShrink: 1,
 	},
-	switch:{
+	titleContainer: {
+		flex: 1
+	},
+	switch: {
 		marginLeft: 10
 	}
 });

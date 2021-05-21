@@ -105,17 +105,30 @@ namespace AdaptiveCards
 #pragma clang diagnostic pop
 #endif
 
-    struct TextConfig
+    struct TextStyleConfig
     {
         TextWeight weight = TextWeight::Default;
         TextSize size = TextSize::Default;
-        FontType fontType = FontType::Default;
-        ForegroundColor color = ForegroundColor::Default;
         bool isSubtle = false;
+        ForegroundColor color = ForegroundColor::Default;
+        FontType fontType = FontType::Default;
+
+        static TextStyleConfig Deserialize(const Json::Value& json, const TextStyleConfig& defaultValue);
+    };
+
+    struct FactSetTextConfig : TextStyleConfig
+    {
         bool wrap = true;
         unsigned int maxWidth = ~0U;
 
-        static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
+        static FactSetTextConfig Deserialize(const Json::Value& json, const FactSetTextConfig& defaultValue);
+    };
+
+    struct TextStylesConfig
+    {
+        TextStyleConfig heading = {TextWeight::Bolder, TextSize::Large, false, ForegroundColor::Default, FontType::Default};
+
+        static TextStylesConfig Deserialize(const Json::Value& json, const TextStylesConfig& defaultValue);
     };
 
     struct SpacingConfig
@@ -171,8 +184,8 @@ namespace AdaptiveCards
 
     struct FactSetConfig
     {
-        TextConfig title{TextWeight::Bolder, TextSize::Default, FontType::Default, ForegroundColor::Default, false, true, 150};
-        TextConfig value{TextWeight::Default, TextSize::Default, FontType::Default, ForegroundColor::Default, false, true, ~0U};
+        FactSetTextConfig title{TextWeight::Bolder, TextSize::Default, false, ForegroundColor::Default, FontType::Default, true, 150};
+        FactSetTextConfig value{TextWeight::Default, TextSize::Default, false, ForegroundColor::Default, FontType::Default, true, ~0U};
         unsigned int spacing = 10;
 
         static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -344,10 +357,11 @@ namespace AdaptiveCards
         static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
     };
 
-    struct HeadingsConfig
+    struct TextBlockConfig
     {
-        unsigned int level = 2;
-        static HeadingsConfig Deserialize(const Json::Value& json, const HeadingsConfig& defaultValue);
+        unsigned int headingLevel = 2;
+
+        static TextBlockConfig Deserialize(const Json::Value& json, const TextBlockConfig& defaultValue);
     };
 
     struct TableConfig
@@ -425,8 +439,11 @@ namespace AdaptiveCards
         InputsConfig GetInputs() const;
         void SetInputs(const InputsConfig value);
 
-        HeadingsConfig GetHeadings() const;
-        void SetHeadings(const HeadingsConfig value);
+        TextStylesConfig GetTextStyles() const;
+        void SetTextStyles(const TextStylesConfig value);
+
+        TextBlockConfig GetTextBlock() const;
+        void SetTextBlock(const TextBlockConfig value);
 
         TableConfig GetTable() const;
         void SetTable(const TableConfig value);
@@ -452,7 +469,8 @@ namespace AdaptiveCards
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
         InputsConfig _inputs;
-        HeadingsConfig _headings;
+        TextBlockConfig _textBlock;
+        TextStylesConfig _textStyles;
         TableConfig _table;
     };
 }

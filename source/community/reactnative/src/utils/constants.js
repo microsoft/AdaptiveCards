@@ -4,6 +4,7 @@ export const EmptyString = "";
 export const FullWidth = '100%';
 export const FlexRow = 'row';
 export const FlexColumn = 'column';
+export const FlexRowReverse = 'row-reverse';
 export const FlexEnd = 'flex-end';
 export const FlexWrap = 'wrap';
 export const FlexStart = 'flex-start';
@@ -68,3 +69,6 @@ export const TypeObject = "object"
 export const InlineAction = "inline-action";
 
 export const Button = "button";
+
+export const BehaviourPadding = "padding";
+export const BehaviourHeight = "height";

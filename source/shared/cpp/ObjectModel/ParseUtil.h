@@ -40,29 +40,15 @@ namespace AdaptiveCards
 
         bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired = false);
 
-        std::optional<bool> GetOptionalBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+        std::optional<bool> GetOptionalBool(const Json::Value& json, AdaptiveCardSchemaKey key);
 
         unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue, bool isRequired = false);
 
         int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
 
-        std::optional<int> GetOptionalInt(const Json::Value& json,
-                                          AdaptiveCardSchemaKey key,
-                                          std::optional<int> defaultValue,
-                                          bool isRequired = false);
+        std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key);
 
-        std::optional<double> GetOptionalDouble(const Json::Value& json,
-                                                AdaptiveCardSchemaKey key,
-                                                std::optional<double> defaultValue,
-                                                bool isRequired = false);
-
-        CardElementType GetCardElementType(const Json::Value& json);
-
-        CardElementType TryGetCardElementType(const Json::Value& json);
-
-        ActionType GetActionType(const Json::Value& json);
-
-        ActionType TryGetActionType(const Json::Value& json);
+        std::optional<double> GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key);
 
         Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
@@ -71,6 +57,9 @@ namespace AdaptiveCards
         Json::Value GetJsonValueFromString(const std::string& jsonString);
 
         Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
+
+        template<typename T, typename Fn>
+        std::optional<T> GetOptionalEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, Fn enumConverter);
 
         template<typename T, typename Fn>
         T GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, Fn enumConverter, bool isRequired = false);
@@ -140,7 +129,7 @@ namespace AdaptiveCards
     };
 
     template<typename T, typename Fn>
-    T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, Fn enumConverter, bool isRequired)
+    std::optional<T> ParseUtil::GetOptionalEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, Fn enumConverter)
     {
         std::string propertyValueStr = "";
         try
@@ -149,15 +138,7 @@ namespace AdaptiveCards
             auto const& propertyValue = json.get(propertyName, Json::Value());
             if (propertyValue.empty())
             {
-                if (isRequired)
-                {
-                    throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
-                                                     "Property is required but was found empty: " + propertyName);
-                }
-                else
-                {
-                    return defaultEnumValue;
-                }
+                return std::nullopt;
             }
 
             if (!propertyValue.isString())
@@ -170,9 +151,23 @@ namespace AdaptiveCards
         }
         catch (const std::out_of_range&)
         {
-            // TODO: Uncomment and add to warnings instead of throwing.
-            // throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
-            return defaultEnumValue;
+            return std::nullopt;
+        }
+    }
+
+    template<typename T, typename Fn>
+    T ParseUtil::GetEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, T defaultEnumValue, Fn enumConverter, bool isRequired)
+    {
+        std::optional<T> optionalEnum = GetOptionalEnumValue<T, Fn>(json, key, enumConverter);
+
+        if (isRequired && !optionalEnum.has_value())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                             "Property is required but was found empty: " + AdaptiveCardSchemaKeyToString(key));
+        }
+        else
+        {
+            return optionalEnum.value_or(defaultEnumValue);
         }
     }
 

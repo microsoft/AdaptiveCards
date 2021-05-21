@@ -18,7 +18,7 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result._fontFamily = fontFamily != "" ? fontFamily : result._fontFamily;
 
     result._supportsInteractivity =
-        ParseUtil::GetOptionalBool(json, AdaptiveCardSchemaKey::SupportsInteractivity, false).value_or(result._supportsInteractivity);
+        ParseUtil::GetOptionalBool(json, AdaptiveCardSchemaKey::SupportsInteractivity).value_or(result._supportsInteractivity);
 
     result._imageBaseUrl = ParseUtil::TryGetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
 
@@ -80,10 +80,15 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
                                                                                   result._inputs,
                                                                                   InputsConfig::Deserialize);
 
-    result._headings = ParseUtil::ExtractJsonValueAndMergeWithDefault<HeadingsConfig>(json,
-                                                                                      AdaptiveCardSchemaKey::Headings,
-                                                                                      result._headings,
-                                                                                      HeadingsConfig::Deserialize);
+    result._textBlock = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextBlockConfig>(json,
+                                                                                        AdaptiveCardSchemaKey::TextBlock,
+                                                                                        result._textBlock,
+                                                                                        TextBlockConfig::Deserialize);
+
+    result._textStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStylesConfig>(json,
+                                                                                          AdaptiveCardSchemaKey::TextStyles,
+                                                                                          result._textStyles,
+                                                                                          TextStylesConfig::Deserialize);
 
     result._table =
         ParseUtil::ExtractJsonValueAndMergeWithDefault<TableConfig>(json, AdaptiveCardSchemaKey::Table, result._table, TableConfig::Deserialize);
@@ -201,24 +206,40 @@ ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConf
     return result;
 }
 
-TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& defaultValue)
+void TextStyleConfigDeserializeHelper(TextStyleConfig& result, const Json::Value& json, const TextStyleConfig& defaultValue)
 {
-    TextConfig result;
-    result.weight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
-
-    result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
-
+    result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
     result.fontType =
         ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
-
-    result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
-
     result.isSubtle = ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, defaultValue.isSubtle);
+    result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
+    result.weight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
+}
 
+TextStyleConfig TextStyleConfig::Deserialize(const Json::Value& json, const TextStyleConfig& defaultValue)
+{
+    TextStyleConfig result;
+    TextStyleConfigDeserializeHelper(result, json, defaultValue);
+    return result;
+}
+
+FactSetTextConfig FactSetTextConfig::Deserialize(const Json::Value& json, const FactSetTextConfig& defaultValue)
+{
+    FactSetTextConfig result;
+    TextStyleConfigDeserializeHelper(result, json, defaultValue);
     result.wrap = ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, defaultValue.wrap);
-
     result.maxWidth = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxWidth, defaultValue.maxWidth);
 
+    return result;
+}
+
+TextStylesConfig TextStylesConfig::Deserialize(const Json::Value& json, const TextStylesConfig& defaultValue)
+{
+    TextStylesConfig result;
+    result.heading = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStyleConfig>(json,
+                                                                                     AdaptiveCardSchemaKey::Heading,
+                                                                                     defaultValue.heading,
+                                                                                     TextStyleConfig::Deserialize);
     return result;
 }
 
@@ -256,15 +277,15 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
     FactSetConfig result;
 
     result.spacing = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing);
-    result.title = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextConfig>(json,
-                                                                              AdaptiveCardSchemaKey::Title,
-                                                                              defaultValue.title,
-                                                                              TextConfig::Deserialize);
+    result.title = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetTextConfig>(json,
+                                                                                     AdaptiveCardSchemaKey::Title,
+                                                                                     defaultValue.title,
+                                                                                     FactSetTextConfig::Deserialize);
 
-    result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextConfig>(json,
-                                                                              AdaptiveCardSchemaKey::Value,
-                                                                              defaultValue.value,
-                                                                              TextConfig::Deserialize);
+    result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetTextConfig>(json,
+                                                                                     AdaptiveCardSchemaKey::Value,
+                                                                                     defaultValue.value,
+                                                                                     FactSetTextConfig::Deserialize);
 
     // Value doesn't support maxWidth, so reset to the default value.
     result.value.maxWidth = defaultValue.value.maxWidth;
@@ -486,11 +507,11 @@ MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig&
     return result;
 }
 
-HeadingsConfig HeadingsConfig::Deserialize(const Json::Value& json, const HeadingsConfig& defaultValue)
+TextBlockConfig TextBlockConfig::Deserialize(const Json::Value& json, const TextBlockConfig& defaultValue)
 {
-    HeadingsConfig result;
+    TextBlockConfig result;
 
-    result.level = ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Level, defaultValue.level);
+    result.headingLevel = ParseUtil::GetInt(json, AdaptiveCardSchemaKey::HeadingLevel, defaultValue.headingLevel);
 
     return result;
 }
@@ -930,14 +951,24 @@ void HostConfig::SetInputs(const InputsConfig value)
     _inputs = value;
 }
 
-HeadingsConfig HostConfig::GetHeadings() const
+TextBlockConfig HostConfig::GetTextBlock() const
 {
-    return _headings;
+    return _textBlock;
 }
 
-void HostConfig::SetHeadings(const HeadingsConfig value)
+void HostConfig::SetTextBlock(const TextBlockConfig value)
 {
-    _headings = value;
+    _textBlock = value;
+}
+
+TextStylesConfig HostConfig::GetTextStyles() const
+{
+    return _textStyles;
+}
+
+void HostConfig::SetTextStyles(const TextStylesConfig value)
+{
+    _textStyles = value;
 }
 
 TableConfig HostConfig::GetTable() const

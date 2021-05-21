@@ -206,9 +206,10 @@ export class Input extends React.Component {
 			return null;
 		}
 		else {
+			let opacityStyle = { opacity: inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.4 };
 			return (
 				<View>
-					<ElementWrapper configManager={this.props.configManager}  json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
+					<ElementWrapper configManager={this.props.configManager} json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
 						<View style={styles.elementWrapper}>
 							<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 							<TextInput
@@ -236,11 +237,14 @@ export class Input extends React.Component {
 								value={this.props.value}
 							/>
 						</View>
-						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}>
+						<TouchableOpacity
+							disabled={inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled} //isEnabled defaults to true
+							opacity={inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.5}
+							onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}>
 							{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
-								<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
+								<Text style={[styles.inlineActionText, opacityStyle]}>{inlineAction.title}</Text> :
 								<Image
-									style={styles.inlineActionImage}
+									style={[styles.inlineActionImage, opacityStyle]}
 									source=
 									{{ uri: inlineAction.iconUrl }} />
 							}

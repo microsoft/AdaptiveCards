@@ -132,25 +132,7 @@ namespace AdaptiveCards::Rendering::Uwp
             columnSet->SetSelectAction(std::move(sharedAction));
         }
 
-        XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveColumn, IAdaptiveColumn>(
-            m_columns.Get(), [&](IAdaptiveColumn* column) {
-                ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveColumn> columnImpl =
-                    PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveColumn>(column);
-
-                std::shared_ptr<BaseCardElement> sharedColumnBaseElement;
-                RETURN_IF_FAILED(columnImpl->GetSharedModel(sharedColumnBaseElement));
-
-                std::shared_ptr<AdaptiveCards::Column> sharedColumn =
-                    std::AdaptivePointerCast<AdaptiveCards::Column>(sharedColumnBaseElement);
-                if (sharedColumn == nullptr)
-                {
-                    return E_UNEXPECTED;
-                }
-
-                columnSet->GetColumns().push_back(std::move(sharedColumn));
-
-                return S_OK;
-            });
+        GenerateSharedColumns(m_columns.Get(), columnSet->GetColumns());
 
         columnSet->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
         columnSet->SetMinHeight(m_minHeight);

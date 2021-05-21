@@ -171,25 +171,27 @@ namespace AdaptiveCards
 
     bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired)
     {
-        return ParseUtil::GetOptionalBool(json, key, isRequired).value_or(defaultValue);
+        auto optionalBool = GetOptionalBool(json, key);
+
+        if (isRequired && !optionalBool.has_value())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                             "Property is required but was found empty: " + AdaptiveCardSchemaKeyToString(key));
+        }
+        else
+        {
+            return optionalBool.value_or(defaultValue);
+        }
     }
 
     // Get optional boolean value at given key. Validates that value is bool type, if present.
-    std::optional<bool> ParseUtil::GetOptionalBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
+    std::optional<bool> ParseUtil::GetOptionalBool(const Json::Value& json, AdaptiveCardSchemaKey key)
     {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
-            if (isRequired)
-            {
-                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
-                                                 "Property is required but was found empty: " + propertyName);
-            }
-            else
-            {
-                return std::nullopt;
-            }
+            return std::nullopt;
         }
 
         if (!propertyValue.isBool())
@@ -229,19 +231,26 @@ namespace AdaptiveCards
 
     int ParseUtil::GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired)
     {
+        auto optionalInt = GetOptionalInt(json, key);
+
+        if (isRequired && !optionalInt.has_value())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                             "Property is required but was found empty: " + AdaptiveCardSchemaKeyToString(key));
+        }
+        else
+        {
+            return optionalInt.value_or(defaultValue);
+        }
+    }
+
+    std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key)
+    {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
-            if (isRequired)
-            {
-                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
-                                                 "Property is required but was found empty: " + propertyName);
-            }
-            else
-            {
-                return defaultValue;
-            }
+            return std::nullopt;
         }
 
         if (!propertyValue.isInt())
@@ -253,53 +262,13 @@ namespace AdaptiveCards
         return propertyValue.asInt();
     }
 
-    std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json,
-                                                 AdaptiveCardSchemaKey key,
-                                                 std::optional<int> defaultValue,
-                                                 bool isRequired /*=false*/)
+    std::optional<double> ParseUtil::GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key)
     {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
-            if (isRequired)
-            {
-                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
-                                                 "Property is required but was found empty: " + propertyName);
-            }
-            else
-            {
-                return defaultValue;
-            }
-        }
-
-        if (!propertyValue.isInt())
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                             "Value for property " + propertyName + " was invalid. Expected type int.");
-        }
-
-        return propertyValue.asInt();
-    }
-
-    std::optional<double> ParseUtil::GetOptionalDouble(const Json::Value& json,
-                                                       AdaptiveCardSchemaKey key,
-                                                       std::optional<double> defaultValue,
-                                                       bool isRequired /*=false*/)
-    {
-        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
-        auto propertyValue = json.get(propertyName, Json::Value());
-        if (propertyValue.empty())
-        {
-            if (isRequired)
-            {
-                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
-                                                 "Property is required but was found empty: " + propertyName);
-            }
-            else
-            {
-                return defaultValue;
-            }
+            return std::nullopt;
         }
 
         if (!propertyValue.isDouble())
@@ -346,37 +315,6 @@ namespace AdaptiveCards
 
         auto value = json.get(expectedKey, Json::Value());
         throwIfWrongType(value);
-    }
-
-    CardElementType ParseUtil::GetCardElementType(const Json::Value& json)
-    {
-        return CardElementTypeFromString(GetTypeAsString(json));
-    }
-
-    CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
-    {
-        try
-        {
-            return GetCardElementType(json);
-        }
-        catch (const AdaptiveCardParseException&)
-        {
-            return CardElementType::Unknown;
-        }
-    }
-
-    ActionType ParseUtil::GetActionType(const Json::Value& json) { return ActionTypeFromString(GetTypeAsString(json)); }
-
-    ActionType ParseUtil::TryGetActionType(const Json::Value& json)
-    {
-        try
-        {
-            return GetActionType(json);
-        }
-        catch (const AdaptiveCardParseException&)
-        {
-            return ActionType::Unsupported;
-        }
     }
 
     Json::Value ParseUtil::GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
