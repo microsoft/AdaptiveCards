@@ -34,14 +34,14 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
 
-    struct TextConfig textConfigForBlock =
+    struct TextStyleConfig textConfigForBlock =
         {
-            .weight = textBlockElement->GetTextWeight(),
-            .size = textBlockElement->GetTextSize(),
-            .fontType = textBlockElement->GetFontType(),
-            .color = textBlockElement->GetTextColor(),
-            .isSubtle = textBlockElement->GetIsSubtle(),
-            .wrap = textBlockElement->GetWrap()};
+            .weight = textBlockElement->GetTextWeight().value_or(TextWeight::Default),
+            .size = textBlockElement->GetTextSize().value_or(TextSize::Default),
+            .fontType = textBlockElement->GetFontType().value_or(FontType::Default),
+            .color = textBlockElement->GetTextColor().value_or(ForegroundColor::Default),
+            .isSubtle = textBlockElement->GetIsSubtle().value_or(false),
+    };
 
     std::string textForBlock = textBlockElement->GetText();
 
@@ -70,7 +70,7 @@
     UILabel *lab = [[UILabel alloc] init]; // generate key for text map from TextBlock element's id
     // Set paragraph style such as line break mode and alignment
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.lineBreakMode = textConfigForBlock.wrap ? NSLineBreakByWordWrapping : NSLineBreakByTruncatingTail;
+    paragraphStyle.lineBreakMode = textBlockElement->GetWrap() ? NSLineBreakByWordWrapping : NSLineBreakByTruncatingTail;
     paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:textBlockElement->GetHorizontalAlignment() context:rootView.context];
 
     // Obtain text color to apply to the attributed string

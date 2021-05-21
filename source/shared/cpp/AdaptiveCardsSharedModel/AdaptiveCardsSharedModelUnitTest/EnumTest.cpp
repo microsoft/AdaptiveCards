@@ -13,27 +13,18 @@ using namespace std::string_literals;
         Assert::AreEqual(ENUMNAME##ToString(VALIDVALUE), VALIDSTRING); \
         Assert::IsTrue(ENUMNAME##FromString(VALIDSTRING) == VALIDVALUE); \
 
-#define ENUM_TEST_THROWING(ENUMNAME, VALIDVALUE, VALIDSTRING) \
+#define ENUM_TEST(ENUMNAME, VALIDVALUE, VALIDSTRING) \
     ENUM_TEST_START(ENUMNAME)                                           \
     {                                                                   \
         ENUM_TO_FROM_STRING_TEST(ENUMNAME, VALIDVALUE, VALIDSTRING);    \
         Assert::ExpectException<std::out_of_range>([]() { ENUMNAME##FromString("This is invalid."); }); \
     }                                                                   \
 
-#define ENUM_TEST_WITH_DEFAULT(ENUMNAME, VALIDVALUE, VALIDSTRING, DEFAULTVALUE)  \
-    ENUM_TEST_START(ENUMNAME)                                     \
-    {                                                             \
-        ENUM_TO_FROM_STRING_TEST(ENUMNAME, VALIDVALUE, VALIDSTRING);  \
-        Assert::IsTrue(ENUMNAME##FromString("This is invalid.") == DEFAULTVALUE); \
-    }                                                                   \
-
-#define ENUM_TEST(ENUMNAME, VALIDVALUE, VALIDSTRING) ENUM_TEST_WITH_DEFAULT(ENUMNAME, VALIDVALUE, VALIDSTRING, ENUMNAME::Default)
-
 #define ENUM_TEST_WITH_REVERSE_MAP(ENUMNAME, VALIDVALUE, VALIDSTRING, ...) \
     ENUM_TEST_START(ENUMNAME)                                           \
     {                                                                   \
         ENUM_TO_FROM_STRING_TEST(ENUMNAME, VALIDVALUE, VALIDSTRING);    \
-        Assert::IsTrue(ENUMNAME##FromString("This is invalid.") == ENUMNAME::Default); \
+        Assert::ExpectException<std::out_of_range>([]() { ENUMNAME##FromString("This is invalid."); }); \
         std::unordered_map<std::string, ENUMNAME> reverseMap __VA_ARGS__; \
         for (const auto& key : reverseMap)                              \
         {                                                               \
@@ -41,32 +32,31 @@ using namespace std::string_literals;
         }                                                               \
     }                                                                   \
 
-
 namespace AdaptiveCardsSharedModelUnitTest
 {
     TEST_CLASS(EnumTests)
     {
     public:
-        ENUM_TEST_THROWING(AdaptiveCardSchemaKey, AdaptiveCardSchemaKey::Accent, "accent"s);
-        ENUM_TEST_WITH_DEFAULT(CardElementType, CardElementType::AdaptiveCard, "AdaptiveCard"s, CardElementType::Unknown);
-        ENUM_TEST_WITH_DEFAULT(ActionType, ActionType::OpenUrl, "Action.OpenUrl"s, ActionType::Unsupported);
-        ENUM_TEST_WITH_DEFAULT(HeightType, HeightType::Auto, "Auto"s, HeightType::Stretch);
-        ENUM_TEST(Spacing, Spacing::None, "none"s);
-        ENUM_TEST(SeparatorThickness, SeparatorThickness::Thick, "thick"s);
-        ENUM_TEST_WITH_REVERSE_MAP(ImageStyle, ImageStyle::Person, "person"s, {{"normal", ImageStyle::Default}});
-        ENUM_TEST_WITH_DEFAULT(ImageSize, ImageSize::Large, "Large"s, ImageSize::Auto);
-        ENUM_TEST_WITH_DEFAULT(HorizontalAlignment, HorizontalAlignment::Center, "center"s, HorizontalAlignment::Left);
-        ENUM_TEST(ForegroundColor, ForegroundColor::Accent, "Accent"s);
-        ENUM_TEST_WITH_REVERSE_MAP(TextWeight, TextWeight::Bolder, "Bolder"s, {{"Normal", TextWeight::Default}});
-        ENUM_TEST_WITH_REVERSE_MAP(TextSize, TextSize::Large, "Large"s, {{"Normal", TextSize::Default}});
-        ENUM_TEST(FontType, FontType::Monospace, "Monospace"s);
-        ENUM_TEST_WITH_DEFAULT(ActionsOrientation, ActionsOrientation::Vertical, "Vertical"s, ActionsOrientation::Horizontal);
-        ENUM_TEST_WITH_DEFAULT(ActionMode, ActionMode::Popup, "Popup"s, ActionMode::Inline);
-        ENUM_TEST_WITH_DEFAULT(ChoiceSetStyle, ChoiceSetStyle::Expanded, "Expanded"s, ChoiceSetStyle::Compact);
-        ENUM_TEST_WITH_DEFAULT(TextInputStyle, TextInputStyle::Tel, "Tel"s, TextInputStyle::Text);
+        ENUM_TEST(ActionAlignment, ActionAlignment::Center, "Center"s);  
+        ENUM_TEST(ActionMode, ActionMode::Popup, "Popup"s);
+        ENUM_TEST(ActionsOrientation, ActionsOrientation::Vertical, "Vertical"s);
+        ENUM_TEST(ActionType, ActionType::OpenUrl, "Action.OpenUrl"s);
+        ENUM_TEST(AdaptiveCardSchemaKey, AdaptiveCardSchemaKey::Accent, "accent"s);
+        ENUM_TEST(CardElementType, CardElementType::AdaptiveCard, "AdaptiveCard"s);
+        ENUM_TEST(ChoiceSetStyle, ChoiceSetStyle::Expanded, "Expanded"s);
         ENUM_TEST(ContainerStyle, ContainerStyle::Emphasis, "Emphasis"s);
-        ENUM_TEST_WITH_DEFAULT(ActionAlignment, ActionAlignment::Center, "Center"s, ActionAlignment::Left);
-        ENUM_TEST_WITH_DEFAULT(IconPlacement, IconPlacement::LeftOfTitle, "LeftOfTitle"s, IconPlacement::AboveTitle);
-        ENUM_TEST_WITH_DEFAULT(VerticalContentAlignment, VerticalContentAlignment::Center, "Center"s, VerticalContentAlignment::Top);
+        ENUM_TEST(FontType, FontType::Monospace, "Monospace"s);
+        ENUM_TEST(ForegroundColor, ForegroundColor::Accent, "Accent"s);
+        ENUM_TEST(HeightType, HeightType::Auto, "Auto"s);
+        ENUM_TEST(HorizontalAlignment, HorizontalAlignment::Center, "center"s);
+        ENUM_TEST(IconPlacement, IconPlacement::LeftOfTitle, "LeftOfTitle"s);
+        ENUM_TEST(ImageSize, ImageSize::Large, "Large"s);
+        ENUM_TEST_WITH_REVERSE_MAP(ImageStyle, ImageStyle::Person, "person"s, );
+        ENUM_TEST(SeparatorThickness, SeparatorThickness::Thick, "thick"s);
+        ENUM_TEST(Spacing, Spacing::None, "none"s);
+        ENUM_TEST(TextInputStyle, TextInputStyle::Tel, "Tel"s);
+        ENUM_TEST_WITH_REVERSE_MAP(TextSize, TextSize::Large, "Large"s, {{"Normal", TextSize::Default}});
+        ENUM_TEST_WITH_REVERSE_MAP(TextWeight, TextWeight::Bolder, "Bolder"s, {{"Normal", TextWeight::Default}});
+        ENUM_TEST(VerticalContentAlignment, VerticalContentAlignment::Center, "Center"s);
     };
 }

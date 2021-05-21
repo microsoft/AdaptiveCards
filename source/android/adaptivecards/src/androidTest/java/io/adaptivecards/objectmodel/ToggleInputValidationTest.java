@@ -3,7 +3,7 @@ package io.adaptivecards.objectmodel;
 import androidx.test.InstrumentationRegistry;
 import android.widget.CheckBox;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

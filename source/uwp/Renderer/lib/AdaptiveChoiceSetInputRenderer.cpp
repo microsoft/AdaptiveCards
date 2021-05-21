@@ -135,7 +135,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         int currentIndex = 0;
         int selectedIndex = -1;
-        XamlHelpers::IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput, IAdaptiveChoiceInput>(
+        IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput, IAdaptiveChoiceInput>(
             choices.Get(), [&currentIndex, &selectedIndex, itemsVector, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
                 HString title;
                 RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
@@ -210,7 +210,7 @@ namespace AdaptiveCards::Rendering::Uwp
         boolean wrap;
         adaptiveChoiceSetInput->get_Wrap(&wrap);
 
-        XamlHelpers::IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
+        IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
             choices.Get(), [panel, isMultiSelect, renderContext, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
                 ComPtr<IUIElement> choiceItem;
                 if (isMultiSelect)

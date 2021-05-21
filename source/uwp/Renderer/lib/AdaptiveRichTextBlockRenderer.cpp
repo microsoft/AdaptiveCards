@@ -70,7 +70,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(adaptiveRichTextBlock->get_Inlines(&adaptiveInlines));
 
         UINT currentOffset = 0;
-        XamlHelpers::IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [&](IAdaptiveInline* adaptiveInline) {
+        IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [&](IAdaptiveInline* adaptiveInline) {
             // We only support TextRun inlines for now
             ComPtr<IAdaptiveInline> localInline(adaptiveInline);
             ComPtr<IAdaptiveTextRun> adaptiveTextRun;

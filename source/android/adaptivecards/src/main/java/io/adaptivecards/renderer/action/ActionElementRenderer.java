@@ -6,13 +6,15 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
-import androidx.fragment.app.FragmentManager;
-import android.util.Log;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.widget.TooltipCompat;
+import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionAlignment;
@@ -116,6 +118,10 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         button.setText(baseActionElement.GetTitle());
+        if (!TextUtils.isEmpty(baseActionElement.GetTooltip()))
+        {
+            TooltipCompat.setTooltipText(button, baseActionElement.GetTooltip());
+        }
         ActionAlignment alignment = hostConfig.GetActions().getActionAlignment();
         ActionsOrientation orientation = hostConfig.GetActions().getActionsOrientation();
         LinearLayout.LayoutParams layoutParams;

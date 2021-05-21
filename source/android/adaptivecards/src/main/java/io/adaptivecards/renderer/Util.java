@@ -330,6 +330,7 @@ public final class Util {
         dest.SetTitle(origin.GetTitle());
         dest.SetFallbackContent(origin.GetFallbackContent());
         dest.SetFallbackType(origin.GetFallbackType());
+        dest.SetTooltip(origin.GetTooltip());
     }
 
     /**

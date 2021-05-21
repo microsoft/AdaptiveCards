@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveImageSet.h"
+#include "AdaptiveImage.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -13,7 +14,10 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    AdaptiveImageSet::AdaptiveImageSet() { m_images = Microsoft::WRL::Make<Vector<AdaptiveImage*>>(); }
+    AdaptiveImageSet::AdaptiveImageSet()
+    {
+        m_images = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage*>>();
+    }
 
     HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept
     try
@@ -40,7 +44,7 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<AdaptiveImage*>** images)
+    IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage*>** images)
     {
         return m_images.CopyTo(images);
     }
