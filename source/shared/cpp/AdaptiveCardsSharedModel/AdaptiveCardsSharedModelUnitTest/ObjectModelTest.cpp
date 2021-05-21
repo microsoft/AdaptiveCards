@@ -633,13 +633,19 @@ namespace AdaptiveCardsSharedModelUnitTest
                         },
                         {
                             "type": "TextBlock",
+                            "id": "explicit default",
+                            "style": "Default",
+                            "text" : "hello"
+                        },
+                        {
+                            "type": "TextBlock",
                             "id": "invalid-heading",
                             "style": "Footer",
                             "text" : "hello"
                         },
                         {
                             "type": "TextBlock",
-                            "id": "default style",
+                            "id": "implicit default",
                             "text" : "hello"
                         }
                     ]
@@ -649,7 +655,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
             auto card = parseResult->GetAdaptiveCard();
             auto body = card->GetBody();
-            std::vector<TextStyle> expectedStyles = { TextStyle::Heading, TextStyle::Heading, TextStyle::Paragraph, TextStyle::Paragraph };
+            std::vector<std::optional<TextStyle>> expectedStyles = { TextStyle::Heading, TextStyle::Heading, TextStyle::Default, std::nullopt, std::nullopt };
 
             auto i = 0;
             for (const auto& elem : body) {

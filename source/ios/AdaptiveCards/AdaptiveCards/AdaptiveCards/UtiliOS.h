@@ -74,7 +74,7 @@ ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
 
 void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action);
 
-void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, RichTextElementProperties &textProp);
+void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, const std::shared_ptr<HostConfig> &config, RichTextElementProperties &textProp);
 
 void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp);
 

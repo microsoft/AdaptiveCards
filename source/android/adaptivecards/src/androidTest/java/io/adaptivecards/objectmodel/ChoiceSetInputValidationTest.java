@@ -7,7 +7,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

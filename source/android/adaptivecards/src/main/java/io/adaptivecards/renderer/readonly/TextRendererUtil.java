@@ -15,6 +15,7 @@ import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextSize;
+import io.adaptivecards.objectmodel.TextStyle;
 import io.adaptivecards.objectmodel.TextWeight;
 
 public class TextRendererUtil
@@ -127,6 +128,71 @@ public class TextRendererUtil
         }
 
         return alignment;
+    }
+
+    static TextSize getTextSizeFromStyle(HostConfig hostConfig, TextStyle textStyle, TextSize override)
+    {
+        if (override != null)
+        {
+            return override;
+        }
+        if (textStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getSize();
+        }
+        return TextSize.Default;
+    }
+
+    static ForegroundColor getTextColorFromStyle(HostConfig hostConfig, TextStyle textStyle, ForegroundColor override)
+    {
+        if (override != null)
+        {
+            return override;
+        }
+        if (textStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getColor();
+        }
+        return ForegroundColor.Default;
+    }
+
+    static TextWeight getTextWeightFromStyle(HostConfig hostConfig, TextStyle textStyle, TextWeight override)
+    {
+        if (override != null)
+        {
+            return override;
+        }
+        if (textStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getWeight();
+        }
+        return TextWeight.Default;
+    }
+
+    static boolean getIsSubtleFromStyle(HostConfig hostConfig, TextStyle textStyle, Boolean override)
+    {
+        if (override != null)
+        {
+            return override;
+        }
+        if (textStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getIsSubtle();
+        }
+        return false;
+    }
+
+    static FontType getFontTypeFromStyle(HostConfig hostConfig, TextStyle textStyle, FontType override)
+    {
+        if (override != null)
+        {
+            return override;
+        }
+        if (textStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getFontType();
+        }
+        return FontType.Default;
     }
 
     static long getTextSize(FontType type, TextSize textSize, HostConfig hostConfig)

@@ -34,7 +34,13 @@ namespace AdaptiveCards::Rendering::Uwp
         m_maxLines = sharedTextBlock->GetMaxLines();
         m_horizontalAlignment =
             static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
-        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>(sharedTextBlock->GetStyle());
+        if (sharedTextBlock->GetStyle().has_value())
+        {
+            m_style = winrt::box_value(
+                          static_cast<winrt::AdaptiveCards::Rendering::Uwp::TextStyle>(sharedTextBlock->GetStyle().value()))
+                          .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>>()
+                          .get();
+        }
 
         InitializeTextElement(sharedTextBlock);
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
@@ -78,13 +84,12 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextStyle* style)
+    HRESULT AdaptiveTextBlock::get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** style)
     {
-        *style = m_style;
-        return S_OK;
+        return m_style.CopyTo(style);
     }
 
-    HRESULT AdaptiveTextBlock::put_Style(ABI::AdaptiveCards::Rendering::Uwp::TextStyle style)
+    HRESULT AdaptiveTextBlock::put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* style)
     {
         m_style = style;
         return S_OK;
@@ -107,7 +112,13 @@ namespace AdaptiveCards::Rendering::Uwp
         textBlock->SetWrap(m_wrap);
         textBlock->SetMaxLines(m_maxLines);
         textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
-        textBlock->SetStyle(static_cast<AdaptiveCards::TextStyle>(m_style));
+
+        if (m_style != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::TextStyle styleValue;
+            RETURN_IF_FAILED(m_style->get_Value(&styleValue));
+            textBlock->SetStyle(static_cast<AdaptiveCards::TextStyle>(styleValue));
+        }
 
         sharedTextBlock = std::move(textBlock);
         return S_OK;

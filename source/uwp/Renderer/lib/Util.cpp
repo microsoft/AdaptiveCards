@@ -798,11 +798,24 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextEle
     ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig> hostConfig;
     RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor adaptiveForegroundColor;
-    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveForegroundColor));
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>> adaptiveForegroundColorRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveForegroundColorRef));
 
-    boolean isSubtle;
-    RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtle));
+    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor adaptiveForegroundColor =
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor::Default;
+    if (adaptiveForegroundColorRef != nullptr)
+    {
+        adaptiveForegroundColorRef->get_Value(&adaptiveForegroundColor);
+    }
+
+    ComPtr<IReference<bool>> isSubtleRef;
+    RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtleRef));
+
+    boolean isSubtle = false;
+    if (isSubtleRef != nullptr)
+    {
+        isSubtleRef->get_Value(&isSubtle);
+    }
 
     ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
     RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
@@ -1454,29 +1467,29 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextEl
     ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveTextElement> localCopiedTextElement;
     RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveTextRun>(&localCopiedTextElement));
 
-    ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor color;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>> color;
     RETURN_IF_FAILED(textElement->get_Color(&color));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Color(color));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Color(color.Get()));
 
-    ABI::AdaptiveCards::Rendering::Uwp::FontType fontType;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::FontType>> fontType;
     RETURN_IF_FAILED(textElement->get_FontType(&fontType));
-    RETURN_IF_FAILED(localCopiedTextElement->put_FontType(fontType));
+    RETURN_IF_FAILED(localCopiedTextElement->put_FontType(fontType.Get()));
 
-    boolean isSubtle;
+    ComPtr<IReference<bool>> isSubtle;
     RETURN_IF_FAILED(textElement->get_IsSubtle(&isSubtle));
-    RETURN_IF_FAILED(localCopiedTextElement->put_IsSubtle(isSubtle));
+    RETURN_IF_FAILED(localCopiedTextElement->put_IsSubtle(isSubtle.Get()));
 
     HString language;
     RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
     RETURN_IF_FAILED(localCopiedTextElement->put_Language(language.Get()));
 
-    ABI::AdaptiveCards::Rendering::Uwp::TextSize size;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextSize>> size;
     RETURN_IF_FAILED(textElement->get_Size(&size));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Size(size));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Size(size.Get()));
 
-    ABI::AdaptiveCards::Rendering::Uwp::TextWeight weight;
+    ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>> weight;
     RETURN_IF_FAILED(textElement->get_Weight(&weight));
-    RETURN_IF_FAILED(localCopiedTextElement->put_Weight(weight));
+    RETURN_IF_FAILED(localCopiedTextElement->put_Weight(weight.Get()));
 
     HString text;
     RETURN_IF_FAILED(textElement->get_Text(text.GetAddressOf()));

@@ -47,8 +47,8 @@ public class RichTextElementProperties extends TextElementProperties {
     this(AdaptiveCardObjectModelJNI.new_RichTextElementProperties__SWIG_0(), true);
   }
 
-  public RichTextElementProperties(TextConfig arg0, String arg1, String arg2) {
-    this(AdaptiveCardObjectModelJNI.new_RichTextElementProperties__SWIG_1(TextConfig.getCPtr(arg0), arg0, arg1, arg2), true);
+  public RichTextElementProperties(TextStyleConfig arg0, String arg1, String arg2) {
+    this(AdaptiveCardObjectModelJNI.new_RichTextElementProperties__SWIG_1(TextStyleConfig.getCPtr(arg0), arg0, arg1, arg2), true);
   }
 
   public RichTextElementProperties(RichTextElementProperties arg0) {

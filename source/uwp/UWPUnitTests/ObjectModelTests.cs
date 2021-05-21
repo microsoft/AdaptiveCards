@@ -190,16 +190,22 @@ namespace UWPUnitTests
 
             ValidateBaseElementProperties(textBlock, "TextBlockId", false, true, Spacing.Large, HeightType.Stretch);
 
-            Assert.AreEqual(ForegroundColor.Accent, textBlock.Color);
-            Assert.AreEqual(FontType.Monospace, textBlock.FontType);
+            Assert.IsTrue(textBlock.Color.HasValue);
+            Assert.AreEqual(ForegroundColor.Accent, textBlock.Color.Value);
+            Assert.IsTrue(textBlock.FontType.HasValue);
+            Assert.AreEqual(FontType.Monospace, textBlock.FontType.Value);
             Assert.AreEqual(HAlignment.Center, textBlock.HorizontalAlignment);
-            Assert.IsTrue(textBlock.IsSubtle);
+            Assert.IsTrue(textBlock.IsSubtle.HasValue);
+            Assert.IsTrue(textBlock.IsSubtle.Value);
             Assert.AreEqual("en", textBlock.Language);
             Assert.AreEqual<uint>(3, textBlock.MaxLines);
-            Assert.AreEqual(TextSize.Large, textBlock.Size);
-            Assert.AreEqual(TextStyle.Heading, textBlock.Style);
+            Assert.IsTrue(textBlock.Size.HasValue);
+            Assert.AreEqual(TextSize.Large, textBlock.Size.Value);
+            Assert.IsTrue(textBlock.Style.HasValue);
+            Assert.AreEqual(TextStyle.Heading, textBlock.Style.Value);
             Assert.AreEqual("This is a text block", textBlock.Text);
-            Assert.AreEqual(TextWeight.Bolder, textBlock.Weight);
+            Assert.IsTrue(textBlock.Weight.HasValue);
+            Assert.AreEqual(TextWeight.Bolder, textBlock.Weight.Value);
             Assert.IsTrue(textBlock.Wrap);
 
             AdaptiveCard adaptiveCard = new AdaptiveCard();
@@ -211,6 +217,31 @@ namespace UWPUnitTests
             Assert.AreEqual(expectedSerialization, jsonString);
 
             var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
+
+            // Validate optional properties are unset
+            textBlock = new AdaptiveTextBlock
+            {
+                // Text Block Properties
+                Text = "This is a text block",
+            };
+
+            Assert.IsFalse(textBlock.Color.HasValue);
+            Assert.IsFalse(textBlock.FontType.HasValue);
+            Assert.IsFalse(textBlock.IsSubtle.HasValue);
+            Assert.IsFalse(textBlock.Size.HasValue);
+            Assert.IsFalse(textBlock.Style.HasValue);
+            Assert.IsFalse(textBlock.Weight.HasValue);
+
+            adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(textBlock);
+
+            expectedSerialization = "{\"actions\":[],\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
             Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
@@ -1088,7 +1119,8 @@ namespace UWPUnitTests
             Assert.AreEqual(ForegroundColor.Accent, textRun1.Color);
             Assert.AreEqual(FontType.Monospace, textRun1.FontType);
             Assert.IsTrue(textRun1.Highlight);
-            Assert.IsTrue(textRun1.IsSubtle);
+            Assert.IsTrue(textRun1.IsSubtle.HasValue);
+            Assert.IsTrue(textRun1.IsSubtle.Value);
             Assert.IsTrue(textRun1.Italic);
             Assert.IsTrue(textRun1.Strikethrough);
             Assert.AreEqual("en", textRun1.Language);

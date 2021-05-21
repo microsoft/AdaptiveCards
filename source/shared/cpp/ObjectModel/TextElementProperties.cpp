@@ -12,13 +12,11 @@
 
 using namespace AdaptiveCards;
 
-TextElementProperties::TextElementProperties() :
-    m_textSize(TextSize::Default), m_textWeight(TextWeight::Default), m_fontType(FontType::Default),
-    m_textColor(ForegroundColor::Default), m_isSubtle(false), m_language()
+TextElementProperties::TextElementProperties() : m_language()
 {
 }
 
-TextElementProperties::TextElementProperties(const TextConfig& config, const std::string& text, const std::string& language) :
+TextElementProperties::TextElementProperties(const TextStyleConfig& config, const std::string& text, const std::string& language) :
     m_textSize(config.size), m_textWeight(config.weight), m_fontType(config.fontType), m_textColor(config.color),
     m_isSubtle(config.isSubtle), m_language(language)
 {
@@ -27,29 +25,29 @@ TextElementProperties::TextElementProperties(const TextConfig& config, const std
 
 Json::Value TextElementProperties::SerializeToJsonValue(Json::Value& root) const
 {
-    if (m_textSize != TextSize::Default)
+    if (m_textSize.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(m_textSize);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(m_textSize.value_or(TextSize::Default));
     }
 
-    if (m_textColor != ForegroundColor::Default)
+    if (m_textColor.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(m_textColor);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(m_textColor.value_or(ForegroundColor::Default));
     }
 
-    if (m_textWeight != TextWeight::Default)
+    if (m_textWeight.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(m_textWeight);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(m_textWeight.value_or(TextWeight::Default));
     }
 
-    if (m_fontType != FontType::Default)
+    if (m_fontType.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType)] = FontTypeToString(m_fontType);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontType)] = FontTypeToString(m_fontType.value_or(FontType::Default));
     }
 
-    if (m_isSubtle)
+    if (m_isSubtle.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = true;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = m_isSubtle.value_or(false);
     }
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText();
@@ -107,52 +105,52 @@ DateTimePreparser TextElementProperties::GetTextForDateParsing() const
     return DateTimePreparser(m_text);
 }
 
-TextSize TextElementProperties::GetTextSize() const
+std::optional<TextSize> TextElementProperties::GetTextSize() const
 {
     return m_textSize;
 }
 
-void TextElementProperties::SetTextSize(const TextSize value)
+void TextElementProperties::SetTextSize(const std::optional<TextSize> value)
 {
     m_textSize = value;
 }
 
-TextWeight TextElementProperties::GetTextWeight() const
+std::optional<TextWeight> TextElementProperties::GetTextWeight() const
 {
     return m_textWeight;
 }
 
-void TextElementProperties::SetTextWeight(const TextWeight value)
+void TextElementProperties::SetTextWeight(const std::optional<TextWeight> value)
 {
     m_textWeight = value;
 }
 
-FontType TextElementProperties::GetFontType() const
+std::optional<FontType> TextElementProperties::GetFontType() const
 {
     return m_fontType;
 }
 
-void TextElementProperties::SetFontType(const FontType value)
+void TextElementProperties::SetFontType(const std::optional<FontType> value)
 {
     m_fontType = value;
 }
 
-ForegroundColor TextElementProperties::GetTextColor() const
+std::optional<ForegroundColor> TextElementProperties::GetTextColor() const
 {
     return m_textColor;
 }
 
-void TextElementProperties::SetTextColor(const ForegroundColor value)
+void TextElementProperties::SetTextColor(const std::optional<ForegroundColor> value)
 {
     m_textColor = value;
 }
 
-bool TextElementProperties::GetIsSubtle() const
+std::optional<bool> TextElementProperties::GetIsSubtle() const
 {
     return m_isSubtle;
 }
 
-void TextElementProperties::SetIsSubtle(const bool value)
+void TextElementProperties::SetIsSubtle(const std::optional<bool> value)
 {
     m_isSubtle = value;
 }
@@ -176,11 +174,12 @@ void TextElementProperties::Deserialize(ParseContext& context, const Json::Value
             std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
                                                        "required property, \"text\", is either empty or missing"));
     }
-    SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));
-    SetTextColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
-    SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));
-    SetFontType(ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, FontType::Default, FontTypeFromString));
-    SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
+
+    SetTextSize(ParseUtil::GetOptionalEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSizeFromString));
+    SetTextColor(ParseUtil::GetOptionalEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColorFromString));
+    SetTextWeight(ParseUtil::GetOptionalEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeightFromString));
+    SetFontType(ParseUtil::GetOptionalEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, FontTypeFromString));
+    SetIsSubtle(ParseUtil::GetOptionalBool(json, AdaptiveCardSchemaKey::IsSubtle));
     SetLanguage(context.GetLanguage());
 }
 
