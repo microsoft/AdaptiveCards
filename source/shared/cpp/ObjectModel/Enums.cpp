@@ -44,6 +44,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Color, "color"},
             {AdaptiveCardSchemaKey::ColorConfig, "colorConfig"},
             {AdaptiveCardSchemaKey::Column, "column"},
+            {AdaptiveCardSchemaKey::ColumnHeader, "columnHeader"},
             {AdaptiveCardSchemaKey::ColumnSet, "columnSet"},
             {AdaptiveCardSchemaKey::Columns, "columns"},
             {AdaptiveCardSchemaKey::ConnectionName, "connectionName"},
