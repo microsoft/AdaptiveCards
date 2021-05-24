@@ -80,7 +80,6 @@ namespace AdaptiveCards
         template<typename T>
         std::shared_ptr<T> GetElementOfType(ParseContext& context,
                                             const Json::Value& json,
-                                            AdaptiveCardSchemaKey key,
                                             const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer);
 
         template<typename T>
@@ -119,7 +118,7 @@ namespace AdaptiveCards
         void ExpectTypeString(const Json::Value& json, const std::string& expectedTypeStr);
 
         // throws if the key is missing or the value mapped to the key is the wrong type
-        void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
+        void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, const std::function<void(const Json::Value&)>& throwIfWrongType);
 
         std::string ToLowercase(const std::string& value);
 
@@ -131,7 +130,7 @@ namespace AdaptiveCards
     template<typename T, typename Fn>
     std::optional<T> ParseUtil::GetOptionalEnumValue(const Json::Value& json, AdaptiveCardSchemaKey key, Fn enumConverter)
     {
-        std::string propertyValueStr = "";
+        std::string propertyValueStr;
         try
         {
             const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
@@ -165,10 +164,8 @@ namespace AdaptiveCards
             throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                              "Property is required but was found empty: " + AdaptiveCardSchemaKeyToString(key));
         }
-        else
-        {
-            return optionalEnum.value_or(defaultEnumValue);
-        }
+
+        return optionalEnum.value_or(defaultEnumValue);
     }
 
     // Deserialize value at the given key
@@ -195,7 +192,6 @@ namespace AdaptiveCards
     template<typename T>
     std::shared_ptr<T> ParseUtil::GetElementOfType(ParseContext& context,
                                                    const Json::Value& json,
-                                                   AdaptiveCardSchemaKey key,
                                                    const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer)
     {
         auto el = deserializer(context, json);
@@ -317,7 +313,7 @@ namespace AdaptiveCards
             if (!impliedType.empty())
             {
                 const std::string typeString = ParseUtil::GetString(curJsonValue, AdaptiveCardSchemaKey::Type, impliedType, false);
-                if (typeString.compare(impliedType) != 0)
+                if (typeString == impliedType)
                 {
                     throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
                                                      "Unable to parse element of type " + typeString);

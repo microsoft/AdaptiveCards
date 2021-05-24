@@ -44,7 +44,7 @@ namespace AdaptiveCards
 
     std::string ParseUtil::GetTypeAsString(const Json::Value& json)
     {
-        const char typeKey[] = "type";
+        constexpr auto typeKey = "type";
 
         if (!json.isMember(typeKey))
         {
@@ -95,10 +95,8 @@ namespace AdaptiveCards
                 throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                                  "Property is required but was found empty: " + propertyName);
             }
-            else
-            {
-                return "";
-            }
+
+            return "";
         }
 
         if (!propertyValue.isString())
@@ -133,10 +131,8 @@ namespace AdaptiveCards
                 throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                                  "Property is required but was found empty: " + propertyName);
             }
-            else
-            {
-                return "";
-            }
+
+            return "";
         }
 
         return propertyValue.toStyledString();
@@ -154,10 +150,8 @@ namespace AdaptiveCards
                 throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                                  "Property is required but was found empty: " + propertyName);
             }
-            else
-            {
-                return "";
-            }
+
+            return "";
         }
 
         return propertyValue.asString();
@@ -178,10 +172,8 @@ namespace AdaptiveCards
             throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                              "Property is required but was found empty: " + AdaptiveCardSchemaKeyToString(key));
         }
-        else
-        {
-            return optionalBool.value_or(defaultValue);
-        }
+
+        return optionalBool.value_or(defaultValue);
     }
 
     // Get optional boolean value at given key. Validates that value is bool type, if present.
@@ -214,10 +206,8 @@ namespace AdaptiveCards
                 throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                                  "Property is required but was found empty: " + propertyName);
             }
-            else
-            {
-                return defaultValue;
-            }
+
+            return defaultValue;
         }
 
         if (!propertyValue.isUInt())
@@ -238,10 +228,8 @@ namespace AdaptiveCards
             throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
                                              "Property is required but was found empty: " + AdaptiveCardSchemaKeyToString(key));
         }
-        else
-        {
-            return optionalInt.value_or(defaultValue);
-        }
+
+        return optionalInt.value_or(defaultValue);
     }
 
     std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key)
@@ -300,7 +288,7 @@ namespace AdaptiveCards
     // throws if the key is missing or the value mapped to the key is the wrong type
     void ParseUtil::ExpectKeyAndValueType(const Json::Value& json,
                                           const char* expectedKey,
-                                          std::function<void(const Json::Value&)> throwIfWrongType)
+                                          const std::function<void(const Json::Value&)>& throwIfWrongType)
     {
         if (expectedKey == nullptr)
         {
@@ -344,10 +332,10 @@ namespace AdaptiveCards
 
         strings.reserve(jsonArray.size());
 
-        for (const auto& curJsonValue : jsonArray)
+        std::transform(jsonArray.begin(), jsonArray.end(), std::back_inserter(strings), [](const auto& curJsonValue)
         {
-            strings.push_back(curJsonValue.asString());
-        }
+            return curJsonValue.asString();
+        });
 
         return strings;
     }
@@ -359,6 +347,9 @@ namespace AdaptiveCards
 
         Json::Value jsonValue;
         std::string errors;
+
+        // not much to do here -- jsoncpp expects a beginning/end pointer with no affordance for std::string
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         if (!reader->parse(jsonString.data(), jsonString.data() + jsonString.size(), &jsonValue, &errors))
         {
             std::ostringstream exceptionMsg{};
