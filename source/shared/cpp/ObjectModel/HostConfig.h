@@ -127,6 +127,7 @@ namespace AdaptiveCards
     struct TextStylesConfig
     {
         TextStyleConfig heading = {TextWeight::Bolder, TextSize::Large, false, ForegroundColor::Default, FontType::Default};
+        TextStyleConfig columnHeader = {TextWeight::Bolder, TextSize::Default, false, ForegroundColor::Default, FontType::Default};
 
         static TextStylesConfig Deserialize(const Json::Value& json, const TextStylesConfig& defaultValue);
     };

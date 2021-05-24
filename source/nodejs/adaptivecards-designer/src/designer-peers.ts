@@ -299,7 +299,11 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
                 action.id = command.id;
                 action.title = command.caption;
                 action.tooltip = command.altText;
-                action.expanded = command.expanded;
+
+                if (command.expanded) {
+                    action.state = Adaptive.ActionButtonState.Expanded;
+                }
+                
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
                 actionSet.addAction(action);
@@ -1393,6 +1397,7 @@ export class ActionPeer extends DesignerPeer {
         ]);
     static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
     static readonly tooltipProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "tooltip", "Tooltip");
+    static readonly isEnabledProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_5, "isEnabled", "Enabled");
 
     protected doubleClick(e: MouseEvent) {
         super.doubleClick(e);
@@ -1454,6 +1459,7 @@ export class ActionPeer extends DesignerPeer {
         propertySheet.add(
             defaultCategory,
             ActionPeer.idProperty,
+            ActionPeer.isEnabledProperty,
             ActionPeer.titleProperty,
             ActionPeer.tooltipProperty,
             ActionPeer.modeProperty,
@@ -1664,19 +1670,19 @@ export class CardElementPeer extends DesignerPeer {
     }
 
     updateChildren(initializeCardElement?: boolean) {
-        if (this.cardElement instanceof Adaptive.CardElementContainer) {
-            for (let i = 0; i < this.getChildCount(); i++) {
-                let existingPeer = this.getChildAt(i);
+        for (let i = 0; i < this.getChildCount(); i++) {
+            let existingPeer = this.getChildAt(i);
 
-                if (existingPeer instanceof CardElementPeer && this.cardElement.indexOf(existingPeer.cardElement) < 0) {
-                    this.removeChild(existingPeer);
-                }
-
-                if (existingPeer instanceof ActionPeer && this.cardElement.indexOfAction(existingPeer.action) < 0) {
-                    this.removeChild(existingPeer);
-                }
+            if (existingPeer instanceof CardElementPeer && this.cardElement.indexOf(existingPeer.cardElement) < 0) {
+                this.removeChild(existingPeer);
             }
 
+            if (existingPeer instanceof ActionPeer && this.cardElement.indexOfAction(existingPeer.action) < 0) {
+                this.removeChild(existingPeer);
+            }
+        }
+
+        if (this.cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < this.cardElement.getItemCount(); i++) {
                 let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
 
@@ -1690,18 +1696,18 @@ export class CardElementPeer extends DesignerPeer {
                         i);
                 }
             }
+        }
 
-            for (var i = 0; i < this.cardElement.getActionCount(); i++) {
-                let existingPeer = this.findActionChild(this.cardElement.getActionAt(i));
+        for (var i = 0; i < this.cardElement.getActionCount(); i++) {
+            let existingPeer = this.findActionChild(this.cardElement.getActionAt(i));
 
-                if (!existingPeer) {
-                    this.insertChild(
-                        CardDesignerSurface.actionPeerRegistry.createPeerInstance(
-                            this.designerSurface,
-                            this,
-                            this.cardElement.getActionAt(i)),
-                        i);
-                }
+            if (!existingPeer) {
+                this.insertChild(
+                    CardDesignerSurface.actionPeerRegistry.createPeerInstance(
+                        this.designerSurface,
+                        this,
+                        this.cardElement.getActionAt(i)),
+                    i);
             }
         }
 

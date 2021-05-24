@@ -240,6 +240,12 @@ TextStylesConfig TextStylesConfig::Deserialize(const Json::Value& json, const Te
                                                                                      AdaptiveCardSchemaKey::Heading,
                                                                                      defaultValue.heading,
                                                                                      TextStyleConfig::Deserialize);
+
+    result.columnHeader = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStyleConfig>(json,
+                                                                                          AdaptiveCardSchemaKey::ColumnHeader,
+                                                                                          defaultValue.columnHeader,
+                                                                                          TextStyleConfig::Deserialize);
+
     return result;
 }
 

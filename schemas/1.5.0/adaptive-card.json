@@ -34,6 +34,7 @@
         },
         "title": {},
         "iconUrl": {},
+        "id": {},
         "style": {},
         "fallback": {},
         "tooltip": {},
@@ -64,6 +65,7 @@
         },
         "title": {},
         "iconUrl": {},
+        "id": {},
         "style": {},
         "fallback": {},
         "tooltip": {},
@@ -96,6 +98,7 @@
         },
         "title": {},
         "iconUrl": {},
+        "id": {},
         "style": {},
         "fallback": {},
         "tooltip": {},
@@ -138,6 +141,7 @@
         },
         "title": {},
         "iconUrl": {},
+        "id": {},
         "style": {},
         "fallback": {},
         "tooltip": {},
@@ -171,6 +175,7 @@
         },
         "title": {},
         "iconUrl": {},
+        "id": {},
         "style": {},
         "fallback": {},
         "tooltip": {},
@@ -465,9 +470,15 @@
           "description": "Style hint for `Column`."
         },
         "verticalContentAlignment": {
-          "$ref": "#/definitions/VerticalContentAlignment",
-          "description": "Defines how the content should be aligned vertically within the column.",
-          "default": "top",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalContentAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines how the content should be aligned vertically within the column. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
           "version": "1.1"
         },
         "width": {
@@ -546,8 +557,15 @@
           ]
         },
         "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls the horizontal alignment of the ColumnSet."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the horizontal alignment of the ColumnSet. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
         },
         "fallback": {},
         "height": {},
@@ -598,9 +616,15 @@
           "description": "Style hint for `Container`."
         },
         "verticalContentAlignment": {
-          "$ref": "#/definitions/VerticalContentAlignment",
-          "description": "Defines how the content should be aligned vertically within the container.",
-          "default": "top",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalContentAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
           "version": "1.1"
         },
         "bleed": {
@@ -768,8 +792,15 @@
           "version": "1.1"
         },
         "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls how this element is horizontally positioned within its parent."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how this element is horizontally positioned within its parent. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
         },
         "selectAction": {
           "$ref": "#/definitions/ImplementationsOf.ISelectAction",
@@ -1409,8 +1440,15 @@
           "description": "The array of inlines."
         },
         "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls the horizontal text alignment."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
         },
         "fallback": {},
         "height": {},
@@ -1425,6 +1463,238 @@
       "required": [
         "inlines"
       ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "Table": {
+      "description": "Provides a way to display data in a tabular form.",
+      "version": "1.5",
+      "properties": {
+        "type": {
+          "enum": [
+            "Table"
+          ],
+          "description": "Must be `Table`"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableColumnDefinition"
+          },
+          "description": "Defines the number of columns in the table, their sizes ans more."
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableRow"
+          },
+          "description": "Defines the rows of the table."
+        },
+        "firstRowAsHeader": {
+          "type": "boolean",
+          "description": "Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.",
+          "default": true
+        },
+        "showGridLines": {
+          "type": "boolean",
+          "description": "Specifies whether grid lines should be displayed.",
+          "default": true
+        },
+        "gridStyle": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ContainerStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines the style of the grid. This property currently only controls the grid's color.",
+          "default": "default"
+        },
+        "horizontalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells is horizontally aligned by default. When not specified, horizontal alignment is defined on a per-cell basis."
+        },
+        "verticalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells is vertically aligned by default. When not specified, vertical alignment is defined on a per-cell basis."
+        },
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "TableCell": {
+      "description": "Represents a cell within a row of a Table element.",
+      "version": "1.5",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "TableCell"
+          ],
+          "description": "Must be `TableCell`"
+        },
+        "items": {},
+        "selectAction": {},
+        "style": {},
+        "verticalContentAlignment": {},
+        "bleed": {},
+        "backgroundImage": {},
+        "minHeight": {},
+        "rtl?": {},
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Container"
+        }
+      ]
+    },
+    "TableColumnDefinition": {
+      "description": "Defines the characteristics of a column in a Table element.",
+      "version": "1.5",
+      "properties": {
+        "type": {
+          "enum": [
+            "TableColumnDefinition"
+          ],
+          "description": "Must be `TableColumnDefinition`"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "Specifies the width of the column. If expressed as a number, width represents the weight a the column relative to the other columns in the table. If expressed as a string, width must by in the format \"<number>px\" (for instance, \"50px\") and represents an explicit number of pixels.",
+          "default": 1
+        },
+        "horizontalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells in the column is horizontally aligned by default. When specified, this value overrides the setting at the table level. When not specified, horizontal alignment is defined at the table, row or cell level."
+        },
+        "verticalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table level. When not specified, vertical alignment is defined at the table, row or cell level."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "TableRow": {
+      "description": "Represents a row of cells within a Table element.",
+      "version": "1.5",
+      "properties": {
+        "type": {
+          "enum": [
+            "TableRow"
+          ],
+          "description": "Must be `TableRow`"
+        },
+        "cells": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableCell"
+          },
+          "description": "The cells in this row. If a row contains more cells than there are columns defined on the Table element, the extra cells are ignored."
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ContainerStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines the style of the entire row."
+        },
+        "horizontalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells in the row is horizontally aligned by default. When specified, this value overrides both the setting at the table and columns level. When not specified, horizontal alignment is defined at the table, column or cell level."
+        },
+        "verticalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table and column level. When not specified, vertical alignment is defined either at the table, column or cell level."
+        },
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Element"
@@ -1468,8 +1738,15 @@
           "version": "1.2"
         },
         "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls the horizontal text alignment."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
         },
         "isSubtle": {
           "anyOf": [
@@ -2246,6 +2523,36 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/Table"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TableCell"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TableRow"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/TextBlock"
             }
           ]
@@ -2444,6 +2751,36 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/Table"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TableCell"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TableRow"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/TextBlock"
             }
           ]
@@ -2608,6 +2945,36 @@
           ],
           "allOf": [
             {
+              "$ref": "#/definitions/Table"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TableCell"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TableRow"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
               "$ref": "#/definitions/TextBlock"
             }
           ]
@@ -2692,6 +3059,30 @@
         }
       ]
     },
+    "ImplementationsOf.Container": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Container"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TableCell"
+            }
+          ]
+        }
+      ]
+    },
     "Extendable.Action": {
       "properties": {
         "title": {
@@ -2703,6 +3094,10 @@
           "format": "uri-reference",
           "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
           "version": "1.1"
+        },
+        "id": {
+          "type": "string",
+          "description": "A unique identifier associated with this Action."
         },
         "style": {
           "$ref": "#/definitions/ActionStyle",
@@ -2738,6 +3133,113 @@
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Item"
+        }
+      ]
+    },
+    "Extendable.Container": {
+      "description": "Containers group items together.",
+      "properties": {
+        "type": {
+          "enum": [
+            "Container"
+          ],
+          "description": "Must be `Container`"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Element"
+          },
+          "description": "The card elements to render inside the `Container`."
+        },
+        "selectAction": {
+          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
+          "description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
+          "version": "1.1"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ContainerStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Style hint for `Container`."
+        },
+        "verticalContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalContentAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
+          "version": "1.1"
+        },
+        "bleed": {
+          "type": "boolean",
+          "description": "Determines whether the element should bleed through its parent's padding.",
+          "version": "1.2",
+          "features": [
+            2109
+          ]
+        },
+        "backgroundImage": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BackgroundImage"
+            },
+            {
+              "type": "string",
+              "format": "uri-reference",
+              "description": "The URL (or data url) to use as the background image. Supports data URI."
+            }
+          ],
+          "description": "Specifies the background image. Acceptable formats are PNG, JPEG, and GIF",
+          "version": "1.2"
+        },
+        "minHeight": {
+          "type": "string",
+          "description": "Specifies the minimum height of the container in pixels, like `\"80px\"`.",
+          "examples": [
+            "50px"
+          ],
+          "version": "1.2",
+          "features": [
+            2293
+          ]
+        },
+        "rtl?": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
+          "version": "vNext"
+        },
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },
