@@ -990,17 +990,19 @@ export class TextBlock extends BaseTextBlock {
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
                 element.onclick = (e) => {
-                    e.preventDefault();
-                    e.cancelBubble = true;
+                    if (this.selectAction && this.selectAction.isEnabled) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
 
-                    if (this.selectAction) {
                         this.selectAction.execute();
                     }
                 }
 
                 this.selectAction.setupElementForAccessibility(element);
 
-                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+                if (this.selectAction.isEnabled) {
+                    element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+                }
             }
 
             if (!this._processedText) {
@@ -1279,10 +1281,10 @@ export class TextRun extends BaseTextBlock {
                 anchor.href = href ? href : "";
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
-                    e.preventDefault();
-                    e.cancelBubble = true;
+                    if (this.selectAction && this.selectAction.isEnabled) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
 
-                    if (this.selectAction) {
                         this.selectAction.execute();
                     }
                 }
@@ -1806,30 +1808,6 @@ export class Image extends CardElement {
             // Cache hostConfig to avoid walking the parent hierarchy multiple times
             let hostConfig = this.hostConfig;
 
-            if (this.selectAction && hostConfig.supportsInteractivity) {
-                element.onkeypress = (e) => {
-                    if (this.selectAction && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
-                        e.preventDefault();
-                        e.cancelBubble = true;
-
-                        this.selectAction.execute();
-                    }
-                }
-
-                element.onclick = (e) => {
-                    if (this.selectAction) {
-                        e.preventDefault();
-                        e.cancelBubble = true;
-
-                        this.selectAction.execute();
-                    }
-                }
-
-                this.selectAction.setupElementForAccessibility(element);
-
-                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
-            }
-
             switch (this.getEffectiveHorizontalAlignment()) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.justifyContent = "center";
@@ -1874,9 +1852,29 @@ export class Image extends CardElement {
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
+                imageElement.onkeypress = (e) => {
+                    if (this.selectAction && this.selectAction.isEnabled && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
+                        this.selectAction.execute();
+                    }
+                }
+
+                imageElement.onclick = (e) => {
+                    if (this.selectAction && this.selectAction.isEnabled) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
+                        this.selectAction.execute();
+                    }
+                }
+
                 this.selectAction.setupElementForAccessibility(imageElement);
 
-                imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+                if (this.selectAction.isEnabled) {
+                    imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+                }
             }
 
             this.applySize(imageElement);
@@ -2019,7 +2017,7 @@ export abstract class CardElementContainer extends CardElement {
 
             if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
                 element.onclick = (e) => {
-                    if (this._selectAction !== undefined) {
+                    if (this._selectAction && this._selectAction.isEnabled) {
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -2028,7 +2026,7 @@ export abstract class CardElementContainer extends CardElement {
                 }
 
                 element.onkeypress = (e) => {
-                    if (this._selectAction !== undefined && (e.keyCode == 13 || e.keyCode == 32)) {
+                    if (this._selectAction && this._selectAction.isEnabled && (e.keyCode == 13 || e.keyCode == 32)) {
                         // Enter or space pressed
                         e.preventDefault();
                         e.cancelBubble = true;
@@ -2039,7 +2037,9 @@ export abstract class CardElementContainer extends CardElement {
 
                 this._selectAction.setupElementForAccessibility(element);
 
-                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+                if (this._selectAction.isEnabled) {
+                    element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+                }
 
             }
         }
@@ -2823,7 +2823,7 @@ export class TextInput extends Input {
         input.oninput = () => { this.valueChanged(); }
         input.onkeypress = (e: KeyboardEvent) => {
             // Ctrl+Enter pressed
-            if (e.ctrlKey && e.code === "Enter" && this.inlineAction) {
+            if (e.ctrlKey && e.code === "Enter" && this.inlineAction && this.inlineAction.isEnabled) {
                 this.inlineAction.execute();
             }
         }
@@ -2856,12 +2856,13 @@ export class TextInput extends Input {
 
         if (this.inlineAction) {
             let button = document.createElement("button");
-            button.className = this.hostConfig.makeCssClassName("ac-inlineActionButton");
-            button.onclick = (e) => {
-                e.preventDefault();
-                e.cancelBubble = true;
+            button.className = this.hostConfig.makeCssClassName(this.inlineAction.isEnabled ? "ac-inlineActionButton" : "ac-inlineActionButton-disabled");
 
-                if (this.inlineAction) {
+            button.onclick = (e) => {
+                if (this.inlineAction && this.inlineAction.isEnabled) {
+                    e.preventDefault();
+                    e.cancelBubble = true;
+
                     this.inlineAction.execute();
                 }
             };
@@ -3724,131 +3725,10 @@ export class TimeInput extends Input {
     }
 }
 
-const enum ActionButtonState {
+export const enum ActionButtonState {
     Normal,
     Expanded,
     Subdued
-}
-
-class ActionButton {
-    private _action: Action;
-    private _parentContainerStyle: string;
-    private _state: ActionButtonState = ActionButtonState.Normal;
-    private _focusable: boolean = true;
-
-    private updateCssStyle() {
-        if (this.action.parent && this.action.renderedElement) {
-            let hostConfig = this.action.parent.hostConfig;
-
-            this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
-
-            if (this._parentContainerStyle) {
-                this.action.renderedElement.classList.add("style-" + this._parentContainerStyle);
-            }
-
-            this.action.updateActionButtonCssStyle(this.action.renderedElement, this._state);
-
-            this.action.renderedElement.tabIndex = this.focusable ? 0 : -1;
-
-            this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
-            this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
-
-            switch (this._state) {
-                case ActionButtonState.Expanded:
-                    this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expanded"));
-                    break;
-                case ActionButtonState.Subdued:
-                    this.action.renderedElement.classList.add(hostConfig.makeCssClassName("subdued"));
-                    break;
-            }
-
-            if (this.action.style) {
-                if (this.action.style === Enums.ActionStyle.Positive) {
-                    this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("primary", "style-positive"));
-                }
-                else {
-                    this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("style-" + this.action.style.toLowerCase()));
-                }
-            }
-        }
-    }
-
-    constructor(action: Action, parentContainerStyle: string) {
-        this._parentContainerStyle = parentContainerStyle;
-
-        this.action = action;
-    }
-
-    onBlur?: (actionButton: ActionButton) => void;
-    onClick?: (actionButton: ActionButton, event?: MouseEvent) => void;
-
-    render() {
-        this.action.render();
-
-        if (this.action.renderedElement) {
-            this.action.renderedElement.onclick = (e) => {
-                e.preventDefault();
-                e.cancelBubble = true;
-
-                this.click(e);
-            };
-
-            this.action.renderedElement.onblur = (e) => {
-                this.blur();
-            };
-
-            this.updateCssStyle();
-        }
-    }
-
-    blur() {
-        if (this.onBlur !== undefined) {
-            this.onBlur(this);
-        }
-    }
-
-    click(event?: MouseEvent) {
-        if (this.onClick !== undefined) {
-            this.onClick(this, event);
-        }
-    }
-
-    get action(): Action {
-        return this._action;
-    }
-
-    set action(value: Action) {
-        if (this._action !== value) {
-            if (this._action !== undefined && this._action.renderedElement) {
-                this._action.renderedElement.removeAttribute("onclick");
-            }
-
-            this._action = value;
-
-            this.render();
-        }
-    }
-
-    get state(): ActionButtonState {
-        return this._state;
-    }
-
-    set state(value: ActionButtonState) {
-        this._state = value;
-
-        this.updateCssStyle();
-    }
-
-    get focusable(): boolean {
-        return this._focusable;
-    }
-
-    set focusable(value: boolean) {
-        if(value != this._focusable) {
-            this._focusable = value;
-            this.updateCssStyle();
-        }
-    }
 }
 
 export type ActionType = { new(): Action };
@@ -3876,6 +3756,7 @@ export abstract class Action extends CardObject {
         ],
         Enums.ActionMode.Primary);
     static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip");
+    static readonly isEnabledProperty = new BoolProperty(Versions.v1_5, "isEnabled", true);
 
     @property(Action.titleProperty)
     title?: string;
@@ -3892,16 +3773,115 @@ export abstract class Action extends CardObject {
     @property(Action.tooltipProperty)
     tooltip?: string;
 
+    @property(Action.isEnabledProperty)
+    isEnabled: boolean;
+
     //#endregion
 
+    private renderButtonContent() {
+        if (this.renderedElement) {
+            // Cache hostConfig for perf
+            let hostConfig = this.hostConfig;
+
+            let titleElement = document.createElement("div");
+            titleElement.style.overflow = "hidden";
+            titleElement.style.textOverflow = "ellipsis";
+
+            if (!(hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle || hostConfig.actions.allowTitleToWrap)) {
+                titleElement.style.whiteSpace = "nowrap";
+            }
+
+            if (this.title) {
+                titleElement.innerText = this.title;
+            }
+
+            if (!this.iconUrl) {
+                this.renderedElement.classList.add("noIcon");
+                this.renderedElement.appendChild(titleElement);
+            }
+            else {
+                let iconElement = document.createElement("img");
+                iconElement.src = this.iconUrl;
+                iconElement.style.width = hostConfig.actions.iconSize + "px";
+                iconElement.style.height = hostConfig.actions.iconSize + "px";
+                iconElement.style.flex = "0 0 auto";
+
+                if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
+                    this.renderedElement.classList.add("iconAbove");
+                    this.renderedElement.style.flexDirection = "column";
+
+                    if (this.title) {
+                        iconElement.style.marginBottom = "6px";
+                    }
+                }
+                else {
+                    this.renderedElement.classList.add("iconLeft");
+
+                    iconElement.style.maxHeight = "100%";
+
+                    if (this.title) {
+                        iconElement.style.marginRight = "6px";
+                    }
+                }
+
+                this.renderedElement.appendChild(iconElement);
+                this.renderedElement.appendChild(titleElement);
+            }
+        }
+    }
+
+    private getParentContainer(): Container | undefined {
+        if (this.parent instanceof Container) {
+            return this.parent;
+        }
+
+        return this.parent ? this.parent.getParentContainer() : undefined;
+    }
+
+    private _state: ActionButtonState = ActionButtonState.Normal;
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
+    private _isFocusable: boolean = true;
+
+    protected updateCssClasses() {
+        if (this.parent && this.renderedElement) {
+            let hostConfig = this.parent.hostConfig;
+
+            this.renderedElement.className = hostConfig.makeCssClassName(this.isEnabled ? "ac-pushButton" : "ac-pushButton-disabled");
+
+            let parentContainer = this.getParentContainer();
+
+            if (parentContainer) {
+                let parentContainerStyle = parentContainer.getEffectiveStyle();
+
+                if (parentContainerStyle) {
+                    this.renderedElement.classList.add("style-" + parentContainerStyle);
+                }
+            }
+
+            this.renderedElement.tabIndex = this.isFocusable ? 0 : -1;
+
+            switch (this._state) {
+                case ActionButtonState.Expanded:
+                    this.renderedElement.classList.add(hostConfig.makeCssClassName("expanded"));
+                    break;
+                case ActionButtonState.Subdued:
+                    this.renderedElement.classList.add(hostConfig.makeCssClassName("subdued"));
+                    break;
+            }
+
+            if (this.style && this.isEnabled) {
+                if (this.style === Enums.ActionStyle.Positive) {
+                    this.renderedElement.classList.add(...hostConfig.makeCssClassNames("primary", "style-positive"));
+                }
+                else {
+                    this.renderedElement.classList.add(...hostConfig.makeCssClassNames("style-" + this.style.toLowerCase()));
+                }
+            }
+        }
+    }
 
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SerializationContext();
-    }
-
-    protected addCssClasses(element: HTMLElement) {
-        // Do nothing in base implementation
     }
 
     protected internalGetReferencedInputs(): Dictionary<Input> {
@@ -3940,8 +3920,6 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
-    expanded?: boolean;
-
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -3953,8 +3931,20 @@ export abstract class Action extends CardObject {
     }
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
-        element.tabIndex = 0;
+        element.tabIndex = this.isEnabled ? 0 : -1;
+        
         element.setAttribute("role", this.getAriaRole());
+
+        if (element instanceof HTMLButtonElement) {
+            element.disabled = !this.isEnabled;
+        }
+
+        if (!this.isEnabled) {
+            element.setAttribute("aria-disabled", "true");
+        }
+        else {
+            element.classList.add(this.hostConfig.makeCssClassName("ac-selectable"));
+        }
 
         if (this.title) {
             element.setAttribute("aria-label", this.title);
@@ -3969,17 +3959,9 @@ export abstract class Action extends CardObject {
         }
     }
 
-    updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
-        // Do nothing in base implementation
-    }
-
     promoteAsPrimary(): Action | undefined {
         if (this._actionCollection) {
-            let button = this._actionCollection.findActionButton(this);
-
-            if (!button) {
-                return this._actionCollection.promoteAsPrimary(this);
-            }
+            return this._actionCollection.promoteAsPrimary(this);
         }
 
         return undefined;
@@ -3990,71 +3972,25 @@ export abstract class Action extends CardObject {
     }
 
     render() {
-        // Cache hostConfig for perf
-        let hostConfig = this.hostConfig;
-
         let buttonElement = document.createElement("button");
-
-        this.addCssClasses(buttonElement);
-
-        if (this.expanded != undefined) {
-            buttonElement.setAttribute("aria-expanded", this.expanded.toString())
-        }
-
         buttonElement.type = "button";
         buttonElement.style.display = "flex";
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
+        buttonElement.onclick = (e) => {
+            if (this.isEnabled) {
+                e.preventDefault();
+                e.cancelBubble = true;
 
-        let titleElement = document.createElement("div");
-        titleElement.style.overflow = "hidden";
-        titleElement.style.textOverflow = "ellipsis";
-
-        if (!(hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle || hostConfig.actions.allowTitleToWrap)) {
-            titleElement.style.whiteSpace = "nowrap";
-        }
-
-        if (this.title) {
-            titleElement.innerText = this.title;
-        }
-
-        this.setupElementForAccessibility(buttonElement, true);
-
-        if (!this.iconUrl) {
-            buttonElement.classList.add("noIcon");
-
-            buttonElement.appendChild(titleElement);
-        }
-        else {
-            let iconElement = document.createElement("img");
-            iconElement.src = this.iconUrl;
-            iconElement.style.width = hostConfig.actions.iconSize + "px";
-            iconElement.style.height = hostConfig.actions.iconSize + "px";
-            iconElement.style.flex = "0 0 auto";
-
-            if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
-                buttonElement.classList.add("iconAbove");
-                buttonElement.style.flexDirection = "column";
-
-                if (this.title) {
-                    iconElement.style.marginBottom = "6px";
-                }
+                this.execute();
             }
-            else {
-                buttonElement.classList.add("iconLeft");
-
-                iconElement.style.maxHeight = "100%";
-
-                if (this.title) {
-                    iconElement.style.marginRight = "6px";
-                }
-            }
-
-            buttonElement.appendChild(iconElement);
-            buttonElement.appendChild(titleElement);
-        }
-
+        };
+        
         this._renderedElement = buttonElement;
+
+        this.renderButtonContent();
+        this.updateCssClasses();
+        this.setupElementForAccessibility(buttonElement);
     }
 
     execute() {
@@ -4138,6 +4074,30 @@ export abstract class Action extends CardObject {
 
     get parent(): CardElement | undefined {
         return <CardElement>this._parent;
+    }
+
+    get state(): ActionButtonState {
+        return this._state;
+    }
+
+    set state(value: ActionButtonState) {
+        if (this._state !== value) {
+            this._state = value;
+
+            this.updateCssClasses();
+        }
+    }
+
+    get isFocusable(): boolean {
+        return this._isFocusable;
+    }
+
+    set isFocusable(value: boolean) {
+        if (this._isFocusable !== value) {
+            this._isFocusable = value;
+
+            this.updateCssClasses();
+        }
     }
 }
 
@@ -4595,6 +4555,17 @@ export class ShowCardAction extends Action {
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.ShowCard" = "Action.ShowCard";
 
+    protected updateCssClasses() {
+        super.updateCssClasses();
+
+        if (this.renderedElement) {
+            let effectiveHostConfig = this.parent ? this.parent.hostConfig : defaultHostConfig;
+
+            this.renderedElement.classList.add(effectiveHostConfig.makeCssClassName("expandable"));
+            this.renderedElement.setAttribute("aria-expanded", (this.state === ActionButtonState.Expanded).toString());
+        }
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
@@ -4619,14 +4590,6 @@ export class ShowCardAction extends Action {
         }
     }
 
-    protected addCssClasses(element: HTMLElement) {
-        super.addCssClasses(element);
-
-        if (this.parent) {
-            element.classList.add(this.parent.hostConfig.makeCssClassName("expandable"));
-        }
-    }
-
     protected raiseExecuteActionEvent() {
         if (this.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Popup) {
             // Only raise the event in Popup mode.
@@ -4644,15 +4607,6 @@ export class ShowCardAction extends Action {
         super.internalValidateProperties(context);
 
         this.card.internalValidateProperties(context);
-    }
-
-    updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
-        super.updateActionButtonCssStyle(actionButtonElement);
-
-        if (this.parent) {
-            actionButtonElement.classList.add(this.parent.hostConfig.makeCssClassName("expandable"));
-            actionButtonElement.setAttribute("aria-expanded", (buttonState === ActionButtonState.Expanded).toString());
-        }
     }
 
     setParent(value: CardElement) {
@@ -4710,6 +4664,7 @@ class OverflowAction extends Action {
 
             for (let i = 0; i < this.actions.length; i++) {
                 const menuItem = new MenuItem(i.toString(), this.actions[i].title ?? "");
+                menuItem.isEnabled = this.actions[i].isEnabled;
                 menuItem.onClick = () => {
                     let actionToExecute = this.actions[i];
 
@@ -4723,7 +4678,9 @@ class OverflowAction extends Action {
 
                     contextMenu.closePopup(false);
 
-                    actionToExecute.execute();
+                    if (actionToExecute.isEnabled) {
+                        actionToExecute.execute();
+                    }
                 };
 
                 contextMenu.items.add(menuItem);
@@ -4738,7 +4695,6 @@ class ActionCollection {
     private _owner: CardElement;
     private _actionCardContainer: HTMLDivElement;
     private _expandedAction?: ShowCardAction;
-    private _renderedActionCount: number = 0;
     private _actionCard?: HTMLElement;
 
     private isActionAllowed(action: Action): boolean {
@@ -4764,7 +4720,7 @@ class ActionCollection {
             return;
         }
 
-        this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? this._owner.hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
+        this._actionCardContainer.style.marginTop = this.renderedActionCount > 0 ? this._owner.hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
 
         let padding = this._owner.getEffectivePadding();
 
@@ -4811,8 +4767,8 @@ class ActionCollection {
     }
 
     private collapseExpandedAction() {
-        for (let button of this._buttons) {
-            button.state = ActionButtonState.Normal;
+        for (let action of this._renderedActions) {
+            action.state = ActionButtonState.Normal;
         }
 
         let previouslyExpandedAction = this._expandedAction;
@@ -4831,23 +4787,28 @@ class ActionCollection {
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
         let afterSelectedAction = false;
-        for (const button of this._buttons) {
-            // remove actions after selected action from tabOrder, to skip focus directly to expanded card
+
+        for (let renderedAction of this._renderedActions) {
+            // Remove actions after selected action from tabOrder, to skip focus directly to expanded card
             if (afterSelectedAction) {
-                button.focusable = false;
+                renderedAction.isFocusable = false;
             }
             
-            if (button.action !== action) {
-                button.state = ActionButtonState.Subdued;
+            if (renderedAction !== action) {
+                renderedAction.state = ActionButtonState.Subdued;
             }
             else {
-                button.state = ActionButtonState.Expanded;
+                renderedAction.state = ActionButtonState.Expanded;
+
                 afterSelectedAction = true;
-                button.onBlur = (e) => {
-                    for (const b of this._buttons) {
-                        b.focusable = true;
+
+                if (renderedAction.renderedElement) {
+                    renderedAction.renderedElement.onblur = (e) => {
+                        for (let ra of this._renderedActions) {
+                            ra.isFocusable = true;
+                        }
                     }
-                };
+                }
             }
         }
 
@@ -4857,49 +4818,12 @@ class ActionCollection {
             raiseEvent);
     }
 
-    private getParentContainer(): Container | undefined {
-        if (this._owner instanceof Container) {
-            return this._owner;
-        }
-        else {
-            return this._owner.getParentContainer();
-        }
-    }
-
     private _items: Action[] = [];
-    private _buttons: ActionButton[] = [];
     private _overflowAction?: OverflowAction;
+    private _renderedActions: Action[] = [];
 
     constructor(owner: CardElement) {
         this._owner = owner;
-    }
-
-    promoteAsPrimary(action: Action): Action | undefined {
-        if (this._buttons.length > 1) {
-            let button = this._buttons[this._buttons.length - 2];
-
-            let swappedAction = button.action;
-
-            action.render();
-
-            if (swappedAction.renderedElement && swappedAction.renderedElement.parentElement && action.renderedElement) {
-                button.action = action;
-
-                swappedAction.renderedElement.parentElement.replaceChild(action.renderedElement, swappedAction.renderedElement);
-
-                action.renderedElement.setAttribute("aria-posinset", (this._buttons.length - 1).toString());
-                action.renderedElement.setAttribute("aria-setsize", this._buttons.length.toString());
-                action.renderedElement.setAttribute("role", "menuitem");
-
-                swappedAction.renderedElement.removeAttribute("aria-posinset");
-                swappedAction.renderedElement.removeAttribute("aria-setsize");
-                swappedAction.renderedElement.removeAttribute("role");
-
-                return swappedAction;
-            }
-        }
-
-        return undefined;
     }
 
     actionExecuted(action: Action) {
@@ -4910,10 +4834,36 @@ class ActionCollection {
             if (action === this._expandedAction) {
                 this.collapseExpandedAction();
             }
-            else {
+            else if (this._owner.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Inline) {
                 this.expandShowCardAction(action, true);
             }
         }
+    }
+
+    promoteAsPrimary(action: Action): Action | undefined {
+        if (this._renderedActions.length > 1) {
+            let swappedAction = this._renderedActions[this._renderedActions.length - 2];
+
+            action.render();
+
+            if (swappedAction.renderedElement && swappedAction.renderedElement.parentElement && action.renderedElement) {
+                swappedAction.renderedElement.parentElement.replaceChild(action.renderedElement, swappedAction.renderedElement);
+
+                action.renderedElement.setAttribute("aria-posinset", (this._renderedActions.length - 1).toString());
+                action.renderedElement.setAttribute("aria-setsize", this._renderedActions.length.toString());
+                action.renderedElement.setAttribute("role", "menuitem");
+
+                swappedAction.renderedElement.removeAttribute("aria-posinset");
+                swappedAction.renderedElement.removeAttribute("aria-setsize");
+                swappedAction.renderedElement.removeAttribute("role");
+
+                this._renderedActions[this._renderedActions.length - 2] = action;
+
+                return swappedAction;
+            }
+        }
+
+        return undefined;
     }
 
     parse(source: any, context: SerializationContext) {
@@ -4999,11 +4949,11 @@ class ActionCollection {
         let maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this._items.length) : this._items.length;
 
         this._actionCardContainer = document.createElement("div");
-        this._renderedActionCount = 0;
+        this._renderedActions = [];
 
         if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this._items[0] instanceof ShowCardAction && this.isActionAllowed(this._items[0])) {
             this.showActionCard(<ShowCardAction>this._items[0], true);
-            this._renderedActionCount = 1;
+            this._renderedActions.push(this._items[0]);
         }
         else {
             let buttonStrip = document.createElement("div");
@@ -5075,92 +5025,78 @@ class ActionCollection {
                 }
             }
 
-            let parentContainer = this.getParentContainer();
+            const allowedActions = this._items.filter(this.isActionAllowed.bind(this));
 
-            if (parentContainer) {
-                let parentContainerStyle = parentContainer.getEffectiveStyle();
+            let primaryActions: Action[] = [];
+            let secondaryActions: Action[] = [];
 
-                let primaryActions: Action[] = [];
-                let secondaryActions: Action[] = [];
+            if (!this._owner.isDesignMode()) {
+                allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? secondaryActions.push(action) : primaryActions.push(action));
 
-                const allowedActions = this._items.filter(this.isActionAllowed.bind(this));
+                // If primaryActions.length > maxActions, extra actions are moved to overflow
+                const overflowPrimaryActions = primaryActions.splice(hostConfig.actions.maxActions);
 
-                if (!this._owner.isDesignMode()) {
-                    allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? secondaryActions.push(action) : primaryActions.push(action));
+                if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
+                    secondaryActions.push(...overflowPrimaryActions);
+                }
 
-                    // given primaryActions.length > maxActions, exceeding actions are forced moved to overflow
-                    const overflowPrimaryActions = primaryActions.splice(hostConfig.actions.maxActions);
+                let shouldRenderOverflowActionButton = true;
 
-                    if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
-                        secondaryActions.push(...overflowPrimaryActions);
+                if (secondaryActions.length > 0) {
+                    if (!this._overflowAction) {
+                        this._overflowAction = new OverflowAction(secondaryActions);
+                        this._overflowAction.setParent(this._owner);
+                        this._overflowAction["_actionCollection"] = this;
                     }
 
-                    let shouldRenderOverflowActionButton = true;
+                    let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
+                    shouldRenderOverflowActionButton = !raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
+                }
 
-                    if (secondaryActions.length > 0) {
-                        if (!this._overflowAction) {
-                            this._overflowAction = new OverflowAction(secondaryActions);
-                            this._overflowAction.setParent(this._owner);
-                            this._overflowAction["_actionCollection"] = this;
+                if (this._overflowAction && shouldRenderOverflowActionButton) {
+                    primaryActions.push(this._overflowAction);
+                }
+            }
+            else {
+                primaryActions = allowedActions;
+            }
+
+            for (let i = 0; i < primaryActions.length; i++) {
+                let action = primaryActions[i];
+                action.render();
+
+                if (action.renderedElement) {
+                    if (primaryActions.length > 1) {
+                        action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
+                        action.renderedElement.setAttribute("aria-setsize", primaryActions.length.toString());
+                        action.renderedElement.setAttribute("role", "menuitem");
+                    }
+
+                    if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
+                        action.renderedElement.style.flex = "0 1 100%";
+                    }
+                    else {
+                        action.renderedElement.style.flex = "0 1 auto";
+                    }
+
+                    buttonStrip.appendChild(action.renderedElement);
+
+                    this._renderedActions.push(action);
+
+                    if (i < primaryActions.length - 1 && hostConfig.actions.buttonSpacing > 0) {
+                        let spacer = document.createElement("div");
+
+                        if (orientation === Enums.Orientation.Horizontal) {
+                            spacer.style.flex = "0 0 auto";
+                            spacer.style.width = hostConfig.actions.buttonSpacing + "px";
+                        }
+                        else {
+                            spacer.style.height = hostConfig.actions.buttonSpacing + "px";
                         }
 
-                        let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
-                        shouldRenderOverflowActionButton = !raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
-                    }
-
-                    if (this._overflowAction && shouldRenderOverflowActionButton) {
-                        primaryActions.push(this._overflowAction);
+                        Utils.appendChild(buttonStrip, spacer);
                     }
                 }
-                else {
-                    primaryActions = allowedActions;
-                }
-
-				for (let i = 0; i < primaryActions.length; i++) {
-					let actionButton = this.findActionButton(primaryActions[i]);
-
-					if (!actionButton) {
-						actionButton = new ActionButton(primaryActions[i], parentContainerStyle);
-						actionButton.onClick = (ab) => { ab.action.execute(); };
-
-						this._buttons.push(actionButton);
-					}
-
-					actionButton.render();
-
-					if (actionButton.action.renderedElement) {
-						if (primaryActions.length > 1) {
-							actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-							actionButton.action.renderedElement.setAttribute("aria-setsize", primaryActions.length.toString());
-							actionButton.action.renderedElement.setAttribute("role", "menuitem");
-						}
-
-						if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
-							actionButton.action.renderedElement.style.flex = "0 1 100%";
-						}
-						else {
-							actionButton.action.renderedElement.style.flex = "0 1 auto";
-						}
-
-						buttonStrip.appendChild(actionButton.action.renderedElement);
-
-						this._renderedActionCount++;
-
-						if (i < primaryActions.length - 1 && hostConfig.actions.buttonSpacing > 0) {
-							let spacer = document.createElement("div");
-
-							if (orientation === Enums.Orientation.Horizontal) {
-								spacer.style.flex = "0 0 auto";
-								spacer.style.width = hostConfig.actions.buttonSpacing + "px";
-							}
-							else {
-								spacer.style.height = hostConfig.actions.buttonSpacing + "px";
-							}
-
-							Utils.appendChild(buttonStrip, spacer);
-						}
-					}
-				}
             }
 
             let buttonStripContainer = document.createElement("div");
@@ -5172,15 +5108,15 @@ class ActionCollection {
 
         Utils.appendChild(element, this._actionCardContainer);
 
-        for (let button of this._buttons) {
-            if (button.state == ActionButtonState.Expanded) {
-                this.expandShowCardAction(<ShowCardAction>button.action, false);
+        for (let renderedAction of this._renderedActions) {
+            if (renderedAction.state == ActionButtonState.Expanded) {
+                this.expandShowCardAction(<ShowCardAction>renderedAction, false);
 
                 break;
             }
         }
 
-        return this._renderedActionCount > 0 ? element : undefined;
+        return this._renderedActions.length > 0 ? element : undefined;
     }
 
     addAction(action: Action) {
@@ -5216,9 +5152,9 @@ class ActionCollection {
 
             action["_actionCollection"] = undefined;
 
-            for (let i = 0; i < this._buttons.length; i++) {
-                if (this._buttons[i].action == action) {
-                    this._buttons.splice(i, 1);
+            for (let i = 0; i < this._renderedActions.length; i++) {
+                if (this._renderedActions[i] == action) {
+                    this._renderedActions.splice(i, 1);
 
                     break;
                 }
@@ -5232,10 +5168,8 @@ class ActionCollection {
 
     clear() {
         this._items = [];
-        this._buttons = [];
-
+        this._renderedActions = [];
         this._expandedAction = undefined;
-        this._renderedActionCount = 0;
     }
 
     getAllInputs(processActions: boolean = true): Input[] {
@@ -5250,16 +5184,6 @@ class ActionCollection {
         return result;
     }
 
-    findActionButton(action: Action): ActionButton | undefined {
-        for (let actionButton of this._buttons) {
-            if (actionButton.action == action) {
-                return actionButton;
-            }
-        }
-
-        return undefined;
-    }
-
     getResourceInformation(): IResourceInformation[] {
         let result: IResourceInformation[] = [];
 
@@ -5271,7 +5195,7 @@ class ActionCollection {
     }
 
     get renderedActionCount(): number {
-        return this._renderedActionCount;
+        return this._renderedActions.length;
     }
 
     get expandedAction(): ShowCardAction | undefined {

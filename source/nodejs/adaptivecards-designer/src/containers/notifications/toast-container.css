@@ -260,6 +260,18 @@ a.ac-anchor:visited:active {
     cursor: pointer;
 }
   
+.ac-ctrl-dropdown-item-disabled {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    padding: 0px 12px 0px 12px;
+    line-height: 30px;
+    cursor: pointer;
+    color: #666666;
+}
+  
 .ac-ctrl-dropdown-item:hover {
     background-color: #EEEEEE;
 }
