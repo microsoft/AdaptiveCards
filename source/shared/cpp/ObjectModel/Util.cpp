@@ -21,7 +21,7 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
         return backgroundColor;
     }
 
-    const size_t backgroundColorLength = backgroundColor.length();
+    const auto backgroundColorLength = backgroundColor.length();
     bool isValidColor = ((backgroundColor.at(0) == '#') && (backgroundColorLength == lengthRGB || backgroundColorLength == lengthRGBA));
     for (size_t i = 1; i < backgroundColorLength && isValidColor; ++i)
     {
@@ -55,7 +55,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
                                            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
 {
     constexpr auto warningMessage = R"(expected input argument to be specified as '\d+(\.\d+)?px' with no spaces, but received )";
-    std::string stringPattern = R"(^([1-9]+\\d*)(\\.\\d+)?)";
+    std::string stringPattern = R"(^([1-9]+\d*)(\.\d+)?)";
     stringPattern += ("(" + unit + ")$");
     std::regex pattern(stringPattern);
     std::smatch matches;
