@@ -470,9 +470,15 @@
           "description": "Style hint for `Column`."
         },
         "verticalContentAlignment": {
-          "$ref": "#/definitions/VerticalContentAlignment",
-          "description": "Defines how the content should be aligned vertically within the column.",
-          "default": "top",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalContentAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines how the content should be aligned vertically within the column. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
           "version": "1.1"
         },
         "width": {
@@ -551,8 +557,15 @@
           ]
         },
         "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls the horizontal alignment of the ColumnSet."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the horizontal alignment of the ColumnSet. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
         },
         "fallback": {},
         "height": {},
@@ -603,9 +616,15 @@
           "description": "Style hint for `Container`."
         },
         "verticalContentAlignment": {
-          "$ref": "#/definitions/VerticalContentAlignment",
-          "description": "Defines how the content should be aligned vertically within the container.",
-          "default": "top",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalContentAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
           "version": "1.1"
         },
         "bleed": {
@@ -773,8 +792,15 @@
           "version": "1.1"
         },
         "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls how this element is horizontally positioned within its parent."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how this element is horizontally positioned within its parent. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
         },
         "selectAction": {
           "$ref": "#/definitions/ImplementationsOf.ISelectAction",
@@ -1414,8 +1440,15 @@
           "description": "The array of inlines."
         },
         "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls the horizontal text alignment."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
         },
         "fallback": {},
         "height": {},
@@ -1705,8 +1738,15 @@
           "version": "1.2"
         },
         "horizontalAlignment": {
-          "$ref": "#/definitions/HorizontalAlignment",
-          "description": "Controls the horizontal text alignment."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
         },
         "isSubtle": {
           "anyOf": [
@@ -3129,9 +3169,15 @@
           "description": "Style hint for `Container`."
         },
         "verticalContentAlignment": {
-          "$ref": "#/definitions/VerticalContentAlignment",
-          "description": "Defines how the content should be aligned vertically within the container.",
-          "default": "top",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalContentAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
           "version": "1.1"
         },
         "bleed": {
