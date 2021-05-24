@@ -14,8 +14,8 @@ using namespace AdaptiveCards;
 
 std::string ValidateColor(const std::string& backgroundColor, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
-    constexpr auto lengthRGB = sizeof("#RRGGBB");
-    constexpr auto lengthRGBA = sizeof("#RRGGBBAA");
+    constexpr auto lengthRGB = sizeof("#RRGGBB") - 1;    // -1 for null terminator
+    constexpr auto lengthRGBA = sizeof("#RRGGBBAA") - 1; // ^
     if (backgroundColor.empty())
     {
         return backgroundColor;
