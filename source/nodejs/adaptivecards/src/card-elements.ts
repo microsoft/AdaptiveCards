@@ -4834,7 +4834,7 @@ class ActionCollection {
             if (action === this._expandedAction) {
                 this.collapseExpandedAction();
             }
-            else {
+            else if (this._owner.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Inline) {
                 this.expandShowCardAction(action, true);
             }
         }
