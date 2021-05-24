@@ -313,7 +313,7 @@ namespace AdaptiveCards
             if (!impliedType.empty())
             {
                 const std::string typeString = ParseUtil::GetString(curJsonValue, AdaptiveCardSchemaKey::Type, impliedType, false);
-                if (typeString == impliedType)
+                if (typeString != impliedType)
                 {
                     throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
                                                      "Unable to parse element of type " + typeString);
