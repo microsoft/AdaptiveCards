@@ -14,16 +14,18 @@ using namespace AdaptiveCards;
 
 std::string ValidateColor(const std::string& backgroundColor, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
+    constexpr auto lengthRGB = sizeof("#RRGGBB");
+    constexpr auto lengthRGBA = sizeof("#RRGGBBAA");
     if (backgroundColor.empty())
     {
         return backgroundColor;
     }
 
     const size_t backgroundColorLength = backgroundColor.length();
-    bool isValidColor = ((backgroundColor.at(0) == '#') && (backgroundColorLength == 7 || backgroundColorLength == 9));
+    bool isValidColor = ((backgroundColor.at(0) == '#') && (backgroundColorLength == lengthRGB || backgroundColorLength == lengthRGBA));
     for (size_t i = 1; i < backgroundColorLength && isValidColor; ++i)
     {
-        isValidColor = isxdigit(backgroundColor.at(i));
+        isValidColor = (isxdigit(backgroundColor.at(i)) != 0);
     }
 
     if (!isValidColor)
@@ -35,9 +37,9 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
 
     std::string validBackgroundColor;
     // If format given was #RRGGBB
-    if (backgroundColorLength == 7)
+    if (backgroundColorLength == lengthRGB)
     {
-        validBackgroundColor = "#FF" + backgroundColor.substr(1, 6);
+        validBackgroundColor = "#FF" + backgroundColor.substr(1, lengthRGB-1); // -1 because we skipped '#'
     }
     else
     {
@@ -52,8 +54,8 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
                                            std::optional<int>& parsedDimension,
                                            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
 {
-    constexpr auto warningMessage = "expected input argument to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
-    std::string stringPattern = "^([1-9]+\\d*)(\\.\\d+)?";
+    constexpr auto warningMessage = R"(expected input argument to be specified as '\d+(\.\d+)?px' with no spaces, but received )";
+    std::string stringPattern = R"(^([1-9]+\\d*)(\\.\\d+)?)";
     stringPattern += ("(" + unit + ")$");
     std::regex pattern(stringPattern);
     std::smatch matches;
@@ -67,7 +69,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
         }
         catch (const std::invalid_argument&)
         {
-            if (warnings)
+            if (warnings != nullptr)
             {
                 warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
                                                                                   warningMessage + requestedDimension));
@@ -75,7 +77,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
         }
         catch (const std::out_of_range&)
         {
-            if (warnings)
+            if (warnings != nullptr)
             {
                 warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
                                                                                   "out of range: " + requestedDimension));
@@ -84,7 +86,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
     }
     else
     {
-        if (warnings)
+        if (warnings != nullptr)
         {
             warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
                                                                               warningMessage + requestedDimension));
@@ -112,7 +114,7 @@ bool ShouldParseForExplicitDimension(const std::string& input)
     {
         ch = input.at(index++);
         hasDigit |= isdigit(ch);
-        if (hasDigit && (isalpha(ch) || '.' == ch))
+        if (hasDigit != 0 && ((isalpha(ch) != 0) || '.' == ch))
         {
             return true;
         }
@@ -133,7 +135,7 @@ std::optional<int> ParseSizeForPixelSize(const std::string& sizeString, std::vec
 
 void EnsureShowCardVersions(const std::vector<std::shared_ptr<BaseActionElement>>& actions, const std::string& version)
 {
-    for (auto& action : actions)
+    for (const auto& action : actions)
     {
         if (action->GetElementType() == ActionType::ShowCard)
         {
