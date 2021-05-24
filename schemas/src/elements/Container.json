@@ -18,9 +18,8 @@
 			"description": "Style hint for `Container`."
 		},
 		"verticalContentAlignment": {
-			"type": "VerticalContentAlignment",
-			"description": "Defines how the content should be aligned vertically within the container.",
-			"default": "top",
+			"type": "VerticalContentAlignment?",
+			"description": "Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
 			"version": "1.1"
 		},
 		"bleed": {
