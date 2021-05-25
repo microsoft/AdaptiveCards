@@ -11,7 +11,7 @@ namespace AdaptiveCards
     public:
         AdaptiveCardParseException(AdaptiveCards::ErrorStatusCode statusCode, const std::string& message);
 
-        virtual const char* what() const throw();
+        const char* what() const throw() override;
         AdaptiveCards::ErrorStatusCode GetStatusCode() const;
         const std::string& GetReason() const;
 

@@ -11,14 +11,14 @@ std::string AuthCardButton::GetType()
     return m_type;
 }
 
-const std::string AuthCardButton::GetType() const
+std::string AuthCardButton::GetType() const
 {
     return m_type;
 }
 
 void AuthCardButton::SetType(std::string type)
 {
-    m_type = type;
+    m_type = std::move(type);
 }
 
 std::string AuthCardButton::GetTitle()
@@ -26,14 +26,14 @@ std::string AuthCardButton::GetTitle()
     return m_title;
 }
 
-const std::string AuthCardButton::GetTitle() const
+std::string AuthCardButton::GetTitle() const
 {
     return m_title;
 }
 
 void AuthCardButton::SetTitle(std::string title)
 {
-    m_title = title;
+    m_title = std::move(title);
 }
 
 std::string AuthCardButton::GetImage()
@@ -41,14 +41,14 @@ std::string AuthCardButton::GetImage()
     return m_image;
 }
 
-const std::string AuthCardButton::GetImage() const
+std::string AuthCardButton::GetImage() const
 {
     return m_image;
 }
 
 void AuthCardButton::SetImage(std::string image)
 {
-    m_image = image;
+    m_image = std::move(image);
 }
 
 std::string AuthCardButton::GetValue()
@@ -56,14 +56,14 @@ std::string AuthCardButton::GetValue()
     return m_value;
 }
 
-const std::string AuthCardButton::GetValue() const
+std::string AuthCardButton::GetValue() const
 {
     return m_value;
 }
 
 void AuthCardButton::SetValue(std::string value)
 {
-    m_value = value;
+    m_value = std::move(value);
 }
 
 // Indicates non-default values have been set. If false, serialization can be safely skipped.
@@ -104,7 +104,7 @@ Json::Value AuthCardButton::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<AuthCardButton> AuthCardButton::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<AuthCardButton> AuthCardButton::Deserialize(ParseContext& /*context*/, const Json::Value& json)
 {
     std::shared_ptr<AuthCardButton> button = std::make_shared<AuthCardButton>();
 

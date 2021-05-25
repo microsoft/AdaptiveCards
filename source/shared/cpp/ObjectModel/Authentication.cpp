@@ -11,14 +11,14 @@ std::string Authentication::GetText()
     return m_text;
 }
 
-const std::string Authentication::GetText() const
+std::string Authentication::GetText() const
 {
     return m_text;
 }
 
 void Authentication::SetText(std::string text)
 {
-    m_text = text;
+    m_text = std::move(text);
 }
 
 std::string Authentication::GetConnectionName()
@@ -26,14 +26,14 @@ std::string Authentication::GetConnectionName()
     return m_connectionName;
 }
 
-const std::string Authentication::GetConnectionName() const
+std::string Authentication::GetConnectionName() const
 {
     return m_connectionName;
 }
 
 void Authentication::SetConnectionName(std::string connectionName)
 {
-    m_connectionName = connectionName;
+    m_connectionName = std::move(connectionName);
 }
 
 std::shared_ptr<TokenExchangeResource> Authentication::GetTokenExchangeResource()
@@ -41,14 +41,14 @@ std::shared_ptr<TokenExchangeResource> Authentication::GetTokenExchangeResource(
     return m_tokenExchangeResource;
 }
 
-const std::shared_ptr<TokenExchangeResource> Authentication::GetTokenExchangeResource() const
+std::shared_ptr<TokenExchangeResource> Authentication::GetTokenExchangeResource() const
 {
     return m_tokenExchangeResource;
 }
 
 void Authentication::SetTokenExchangeResource(std::shared_ptr<TokenExchangeResource> tokenExchangeResource)
 {
-    m_tokenExchangeResource = tokenExchangeResource;
+    m_tokenExchangeResource = std::move(tokenExchangeResource);
 }
 
 std::vector<std::shared_ptr<AuthCardButton>>& AdaptiveCards::Authentication::GetButtons()
@@ -63,7 +63,7 @@ const std::vector<std::shared_ptr<AuthCardButton>>& AdaptiveCards::Authenticatio
 
 void AdaptiveCards::Authentication::SetButtons(std::vector<std::shared_ptr<AuthCardButton>> buttons)
 {
-    m_buttons = buttons;
+    m_buttons = std::move(buttons);
 }
 
 // Indicates non-default values have been set. If false, serialization can be safely skipped.
@@ -101,7 +101,7 @@ Json::Value Authentication::SerializeToJsonValue() const
     if (!m_buttons.empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Buttons)] = Json::Value(Json::arrayValue);
-        for (std::shared_ptr<AuthCardButton> button : m_buttons)
+        for (const std::shared_ptr<AuthCardButton>& button : m_buttons)
         {
             if (button != nullptr && button->ShouldSerialize())
             {

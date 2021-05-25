@@ -8,7 +8,7 @@
 
 using namespace AdaptiveCards;
 
-ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet), m_actions{}
+ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet)
 {
     PopulateKnownPropertiesSet();
 }

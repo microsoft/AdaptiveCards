@@ -15,7 +15,7 @@
 namespace AdaptiveCards
 {
     ActionElementParserWrapper::ActionElementParserWrapper(std::shared_ptr<ActionElementParser> parserToWrap) :
-        m_parser{parserToWrap}
+        m_parser{std::move(parserToWrap)}
     {
     }
 
@@ -60,7 +60,7 @@ namespace AdaptiveCards
         // make sure caller isn't attempting to overwrite a known element's parser
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
-            ActionParserRegistration::m_cardElementParsers[elementType] = parser;
+            ActionParserRegistration::m_cardElementParsers[elementType] = std::move(parser);
         }
         else
         {
@@ -94,9 +94,7 @@ namespace AdaptiveCards
             std::shared_ptr<ActionElementParser> wrappedParser = std::make_shared<ActionElementParserWrapper>(parser->second);
             return wrappedParser;
         }
-        else
-        {
-            return std::shared_ptr<ActionElementParser>(nullptr);
-        }
+
+        return std::shared_ptr<ActionElementParser>(nullptr);
     }
 }

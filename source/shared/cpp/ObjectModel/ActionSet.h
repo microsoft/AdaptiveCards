@@ -37,7 +37,7 @@ namespace AdaptiveCards
         ActionSetParser& operator=(ActionSetParser&&) = default;
         virtual ~ActionSetParser() = default;
 
-        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& contexts, const std::string& jsonString) override;
     };
 }

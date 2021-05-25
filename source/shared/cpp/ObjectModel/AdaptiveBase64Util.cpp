@@ -89,7 +89,7 @@ void AdaptiveBase64Util::StripPadding(std::string* in)
     }
 }
 
-void AdaptiveBase64Util::a3_to_a4(unsigned char* a4, unsigned char* a3)
+void AdaptiveBase64Util::a3_to_a4(unsigned char* a4, const unsigned char* a3)
 {
     a4[0] = (a3[0] & 0xfc) >> 2;
     a4[1] = ((a3[0] & 0x03) << 4) + ((a3[1] & 0xf0) >> 4);
@@ -97,7 +97,7 @@ void AdaptiveBase64Util::a3_to_a4(unsigned char* a4, unsigned char* a3)
     a4[3] = (a3[2] & 0x3f);
 }
 
-void AdaptiveBase64Util::a4_to_a3(unsigned char* a3, unsigned char* a4)
+void AdaptiveBase64Util::a4_to_a3(unsigned char* a3, const unsigned char* a4)
 {
     a3[0] = (a4[0] << 2) + ((a4[1] & 0x30) >> 4);
     a3[1] = ((a4[1] & 0xf) << 4) + ((a4[2] & 0x3c) >> 2);
@@ -125,7 +125,7 @@ bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
     size_t enc_len{};
     unsigned char a3[3];
     unsigned char a4[4];
-    while (input_len--)
+    while ((input_len--) != 0u)
     {
         a3[i++] = *(input++);
         if (i == 3)
@@ -141,7 +141,7 @@ bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
         }
     }
 
-    if (i)
+    if (i != 0)
     {
         for (int j{i}; j < 3; ++j)
         {
@@ -175,7 +175,7 @@ bool AdaptiveBase64Util::Decode(const std::string& in, std::vector<char>* out)
     size_t dec_len = 0;
     unsigned char a3[3];
     unsigned char a4[4];
-    while (input_len--)
+    while ((input_len--) != 0u)
     {
         if (*input == '=')
         {
@@ -201,7 +201,7 @@ bool AdaptiveBase64Util::Decode(const std::string& in, std::vector<char>* out)
         }
     }
 
-    if (i)
+    if (i != 0)
     {
         for (int j{i}; j < 4; ++j)
         {
@@ -241,6 +241,6 @@ std::string AdaptiveBase64Util::Encode(const std::vector<char>& decodedBase64)
 // Format for DataURI is data:[<MediaType>][;base64],data with MediaType and base64 being optional and data is composed of [A-Z a-z 0-9 + /] characters
 std::string AdaptiveBase64Util::ExtractDataFromUri(const std::string& dataUri)
 {
-    size_t comaPosition = dataUri.find_last_of(",");
+    size_t comaPosition = dataUri.find_last_of(',');
     return dataUri.substr(comaPosition + 1);
 }

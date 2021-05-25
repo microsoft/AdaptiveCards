@@ -18,8 +18,8 @@ namespace AdaptiveCards
         static inline size_t EncodedLength(size_t length);
         static inline size_t EncodedLength(const std::vector<char>& in);
         static inline void StripPadding(std::string* in);
-        static inline void a3_to_a4(unsigned char* a4, unsigned char* a3);
-        static inline void a4_to_a3(unsigned char* a3, unsigned char* a4);
+        static inline void a3_to_a4(unsigned char* a4, const unsigned char* a3);
+        static inline void a4_to_a3(unsigned char* a3, const unsigned char* a4);
         static inline unsigned char b64_lookup(unsigned char c);
         static bool Encode(const std::vector<char>& in, std::string* out);
         static bool Decode(const std::string& in, std::vector<char>* out);
