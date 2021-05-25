@@ -115,6 +115,8 @@ namespace RendererQml
 		static std::vector<std::string> splitString(const std::string& string, char delimiter);
 		static std::string HandleEscapeSequences(std::string& text);
 
+		static const bool isValidDate(const std::string& date);
+
     private:
         Utils() {}
 		static std::string FetchSystemDateTime(const std::string& fetchFormat);

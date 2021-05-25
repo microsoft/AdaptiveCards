@@ -1298,12 +1298,12 @@ namespace RendererQml
 		calendarTag->AddImports("import QtQuick 2.15");
         calendarTag->Property("anchors.fill", "parent");
 
-		if (!input->GetMin().empty())
+		if (!input->GetMin().empty() && Utils::isValidDate(input->GetMin()))
 		{
 			calendarTag->Property("minimumDate", Utils::GetDate(input->GetMin()));
 		}
 
-		if (!input->GetMax().empty())
+		if (!input->GetMax().empty() && Utils::isValidDate(input->GetMin()))
 		{
 			calendarTag->Property("maximumDate", Utils::GetDate(input->GetMax()));
 		}
@@ -1394,7 +1394,7 @@ namespace RendererQml
 
 		uiDateInput->Property("onTextChanged", Formatter() << "{" << uiDateInput->GetId() << "TextChanged(text);" << "setValidDate(text);" << "}");
 
-		if (!input->GetValue().empty())
+		if (!input->GetValue().empty() && Utils::isValidDate(input->GetValue()))
 		{
 			uiDateInput->Property("text", Formatter() << Utils::GetDate(input->GetValue()) << ".toLocaleString(Qt.locale(\"en_US\")," << "\"" << StringDateFormat << "\"" << ")" );
 		}
