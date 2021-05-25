@@ -1167,6 +1167,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_FactSetTextConfig(long jarg1);
   public final static native void TextStylesConfig_heading_set(long jarg1, TextStylesConfig jarg1_, long jarg2, TextStyleConfig jarg2_);
   public final static native long TextStylesConfig_heading_get(long jarg1, TextStylesConfig jarg1_);
+  public final static native void TextStylesConfig_columnHeader_set(long jarg1, TextStylesConfig jarg1_, long jarg2, TextStyleConfig jarg2_);
+  public final static native long TextStylesConfig_columnHeader_get(long jarg1, TextStylesConfig jarg1_);
   public final static native long TextStylesConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, TextStylesConfig jarg2_);
   public final static native long new_TextStylesConfig();
   public final static native void delete_TextStylesConfig(long jarg1);

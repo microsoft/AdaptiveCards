@@ -24692,6 +24692,35 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextStylesConfig_1columnHeader_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TextStylesConfig *arg1 = (AdaptiveCards::TextStylesConfig *) 0 ;
+  AdaptiveCards::TextStyleConfig *arg2 = (AdaptiveCards::TextStyleConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::TextStylesConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::TextStyleConfig **)&jarg2; 
+  if (arg1) (arg1)->columnHeader = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextStylesConfig_1columnHeader_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::TextStylesConfig *arg1 = (AdaptiveCards::TextStylesConfig *) 0 ;
+  AdaptiveCards::TextStyleConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::TextStylesConfig **)&jarg1; 
+  result = (AdaptiveCards::TextStyleConfig *)& ((arg1)->columnHeader);
+  *(AdaptiveCards::TextStyleConfig **)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextStylesConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
