@@ -68,7 +68,6 @@ namespace RendererQml
         uiCard->AddImports("import QtQuick 2.15");
         uiCard->AddImports("import QtQuick.Layouts 1.3");
         uiCard->AddImports("import QtQuick.Controls 2.15");
-        uiCard->AddImports("import QtGraphicalEffects 1.15");
         uiCard->Property("id", "adaptiveCard");
         context->setCardRootId(uiCard->GetId());
 		context->setCardRootElement(uiCard);
@@ -78,6 +77,7 @@ namespace RendererQml
 		uiCard->Property("Layout.fillWidth", "true");
 		uiCard->Property("readonly property string bgColor", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
         uiCard->Property("color", "bgColor");
+        uiCard->Property("border.color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
         const auto hasBackgroundImage = card->GetBackgroundImage() != nullptr;
 		if (hasBackgroundImage)
@@ -499,10 +499,6 @@ namespace RendererQml
 
 		uiTextInput->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveSharedNamespace::FontType::Default, AdaptiveSharedNamespace::TextSize::Default)));
 
-		auto glowTag = std::make_shared<QmlTag>("Glow");
-		glowTag->Property("samples", "25");
-		glowTag->Property("color", "'skyblue'");
-
 		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
 		backgroundTag->Property("radius", "5");
 		//TODO: These color styling should come from css
@@ -510,8 +506,6 @@ namespace RendererQml
         backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
         backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
 		backgroundTag->Property("border.width", "1");
-		backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
-		backgroundTag->Property("layer.effect", glowTag->ToString());
 		uiTextInput->Property("background", backgroundTag->ToString());
 
 		if (!input->GetValue().empty())
@@ -615,10 +609,6 @@ namespace RendererQml
         input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
 		const auto inputId = input->GetId();
 
-		auto glowTag = std::make_shared<QmlTag>("Glow");
-		glowTag->Property("samples", "25");
-		glowTag->Property("color", "'skyblue'");
-
 		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
 		backgroundTag->Property("radius", "5");
 		//TODO: These color styling should come from css
@@ -626,8 +616,6 @@ namespace RendererQml
         backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
 
 		backgroundTag->Property("border.color", Formatter() << inputId << "_contentItem" << ".activeFocus? 'black' : 'grey'");
-		backgroundTag->Property("layer.enabled", Formatter() << inputId + "_contentItem" << ".activeFocus ? true : false");
-		backgroundTag->Property("layer.effect", glowTag->ToString());
 
 		auto contentItemTag = std::make_shared<QmlTag>("TextField");
 		contentItemTag->Property("id", inputId + "_contentItem");
@@ -958,10 +946,6 @@ namespace RendererQml
 		dropIcon->Property("fillMode", "Image.PreserveAspectFit");
 		dropIcon->Property("mipmap", "true");
 
-
-		auto ColorOverlayTag = GetColorOverlay(iconId, textColor);
-        uiComboBox->AddChild(ColorOverlayTag);
-
 		uiComboBox->Property("indicator", dropIcon->ToString());
 		uiComboBox->Property("model", GetModel(choiceset.choices));
 
@@ -1256,18 +1240,12 @@ namespace RendererQml
 
         std::string calendar_box_id = input->GetId() + "_cal_box";
 
-        auto glowTag = std::make_shared<QmlTag>("Glow");
-        glowTag->Property("samples", "25");
-        glowTag->Property("color", "'skyblue'");
-
         auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
         backgroundTag->Property("radius", "5");
         //TODO: These color styling should come from css
         backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
         backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
         backgroundTag->Property("border.width", "1");
-        backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
-        backgroundTag->Property("layer.effect", glowTag->ToString());
         uiDateInput->Property("background", backgroundTag->ToString());
 
         const std::string iconId = input->GetId() + "_icon";
@@ -1287,10 +1265,6 @@ namespace RendererQml
         mouseAreaTag->Property("enabled", "true");
         std::string onClicked_value = "{ parent.forceActiveFocus(); " + calendar_box_id + ".visible=!" + calendar_box_id + ".visible; parent.z=" + calendar_box_id + ".visible?1:0; }";
         mouseAreaTag->Property("onClicked", onClicked_value);
-
-        auto ColorOverlayTag = GetColorOverlay(iconId, context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
-        mouseAreaTag->AddChild(ColorOverlayTag);
-
         uiDateInput->AddChild(mouseAreaTag);
 
         auto calendarTag = std::make_shared<QmlTag>("Calendar");
@@ -1601,14 +1575,6 @@ namespace RendererQml
 		case AdaptiveCards::ImageStyle::Default:
 			break;
 		case AdaptiveCards::ImageStyle::Person:
-			maskTag = std::make_shared<QmlTag>("OpacityMask");
-			maskSourceTag = std::make_shared<QmlTag>("Rectangle");
-			maskSourceTag->Property("width", image->GetId() + ".width");
-			maskSourceTag->Property("height", image->GetId() + ".height");
-			maskSourceTag->Property("radius", image->GetId() + ".radius");
-			maskTag->Property("maskSource", maskSourceTag->ToString());
-			uiImage->Property("layer.enabled", "true");
-			uiImage->Property("layer.effect", maskTag->ToString());
 			uiRectangle->Property("radius", "width/2");
 			break;
 		}
@@ -1675,10 +1641,6 @@ namespace RendererQml
 
 		uiTimeInput->Property("onTextChanged", Formatter() << "{" << listViewHours_id << ".currentIndex=parseInt(getText(0,2));" << listViewMin_id << ".currentIndex=parseInt(getText(3,5));" << "if(getText(0,2) === '--' || getText(3,5) === '--'){" << id << ".selectedTime ='';} else{" << id << ".selectedTime =" << id << ".text;}}");
 
-		auto glowTag = std::make_shared<QmlTag>("Glow");
-		glowTag->Property("samples", "25");
-		glowTag->Property("color", "'skyblue'");
-
 		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
 		backgroundTag->Property("radius", "5");
 		//TODO: These color styling should come from css
@@ -1686,8 +1648,6 @@ namespace RendererQml
         backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
         backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
 		backgroundTag->Property("border.width", "1");
-		backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
-		backgroundTag->Property("layer.effect", glowTag->ToString());
 		uiTimeInput->Property("background", backgroundTag->ToString());
 
         const std::string iconId = id + "_icon";
@@ -1706,10 +1666,6 @@ namespace RendererQml
 		mouseAreaTag->Property("anchors.right", "parent.right");
 		mouseAreaTag->Property("enabled", "true");
 		mouseAreaTag->Property("onClicked", Formatter() << "{" << id << ".forceActiveFocus();\n" << timeBox_id << ".visible=!" << timeBox_id << ".visible;\n" << "parent.z=" << timeBox_id << ".visible?1:0;\n" << listViewHours_id << ".currentIndex=parseInt(parent.getText(0,2));\n" << listViewMin_id << ".currentIndex=parseInt(parent.getText(3,5));\n" << "}");
-
-        auto ColorOverlayTag = GetColorOverlay(iconId, context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
-        mouseAreaTag->AddChild(ColorOverlayTag);
-
 		uiTimeInput->AddChild(mouseAreaTag);
 
 		//Rectangle that contains the hours and min ListViews
@@ -1721,8 +1677,6 @@ namespace RendererQml
 		timeBoxTag->Property("width", "105");
 		timeBoxTag->Property("height", "200");
 		timeBoxTag->Property("visible", "false");
-		timeBoxTag->Property("layer.enabled", "true");
-		timeBoxTag->Property("layer.effect", glowTag->ToString());
 
 		//ListView for DropDown Selection
 		std::map<std::string, std::map<std::string, std::string>> ListViewHoursProperties;
@@ -2397,7 +2351,6 @@ namespace RendererQml
             contentText->Property("font.pixelSize", Formatter() << fontSize);
 
             //TODO: Add border color and style: default/positive/destructive
-            std::string overlayTagColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false);
             if (!Utils::IsNullOrWhitespace(action->GetStyle()) && !Utils::CaseInsensitiveCompare(action->GetStyle(), "default"))
             {
                 if (Utils::CaseInsensitiveCompare(action->GetStyle(), "positive"))
@@ -2407,7 +2360,6 @@ namespace RendererQml
 						bgRectangle->Property("border.color", Formatter() << buttonId << ".showCard ? '#196323' : "<< buttonId << ".pressed ? '#196323' : '#1B8728'");
 						bgRectangle->Property("color", Formatter() << buttonId << ".showCard ? '#196323' : " << buttonId << ".pressed ? '#196323' : " << buttonId << ".hovered ? '#1B8728' : 'white'");
 						contentText->Property("color", Formatter() << buttonId << ".showCard ? '#FFFFFF' : " << buttonId << ".hovered ? '#FFFFFF' : '#1B8728'");
-                        overlayTagColor = Formatter() << buttonId << ".showCard ? '#FFFFFF' : " << buttonId << ".hovered ? '#FFFFFF' : '#1B8728'";
 					}
 					else
 					{
@@ -2423,7 +2375,6 @@ namespace RendererQml
 						bgRectangle->Property("border.color", Formatter() << buttonId << ".showCard ? '#A12C23' : " << buttonId << ".pressed ? '#A12C23' : '#D93829'");
 						bgRectangle->Property("color", Formatter() << buttonId << ".showCard ? '#A12C23' : " << buttonId << ".pressed ? '#A12C23' : " << buttonId << ".hovered ? '#D93829' : 'white'");
 						contentText->Property("color", Formatter() << buttonId << ".showCard ? '#FFFFFF' : " << buttonId << ".hovered ? '#FFFFFF' : '#D93829'");
-                        overlayTagColor = Formatter() << buttonId << ".showCard ? '#FFFFFF' : " << buttonId << ".hovered ? '#FFFFFF' : '#D93829'";
 					}
 					else
 					{
@@ -2439,7 +2390,6 @@ namespace RendererQml
 						bgRectangle->Property("border.color", Formatter() << buttonId << ".showCard ? '#0A5E7D' : " << buttonId << ".pressed ? '#0A5E7D' : '#007EA8'");
 						bgRectangle->Property("color", Formatter() << buttonId << ".showCard ? '#0A5E7D' : " << buttonId << ".pressed ? '#0A5E7D' : " << buttonId << ".hovered ? '#007EA8' : 'white'");
 						contentText->Property("color", Formatter() << buttonId << ".showCard ? '#FFFFFF' : " << buttonId << ".hovered ? '#FFFFFF' : '#007EA8'");
-                        overlayTagColor = Formatter() << buttonId << ".showCard ? '#FFFFFF' : " << buttonId << ".hovered ? '#FFFFFF' : '#007EA8'";
 					}
 					else
 					{
@@ -2456,7 +2406,6 @@ namespace RendererQml
 					bgRectangle->Property("border.color", Formatter() << buttonId << ".showCard ? '#0A5E7D' : " << buttonId << ".pressed ? '#0A5E7D' : '#007EA8'");
 					bgRectangle->Property("color", Formatter() << buttonId << ".showCard ? '#0A5E7D' : " << buttonId << ".pressed ? '#0A5E7D' : " << buttonId << ".hovered ? '#007EA8' : 'white'");
 					contentText->Property("color", Formatter() << buttonId << ".showCard ? '#FFFFFF' : " << buttonId << ".hovered ? '#FFFFFF' : '#007EA8'");
-                    overlayTagColor = Formatter() << buttonId << ".showCard ? '#FFFFFF' : " << buttonId << ".hovered ? '#FFFFFF' : '#007EA8'";
 				}
 				else
 				{
@@ -2484,9 +2433,6 @@ namespace RendererQml
                 showCardIcon->Property("anchors.verticalCenter", "parent.verticalCenter");
                 showCardIcon->Property("source", RendererQml::arrow_down_12, true);
                 showCardIconItem->AddChild(showCardIcon);
-
-                auto ColorOverlayTag = GetColorOverlay(iconId, overlayTagColor);
-                showCardIconItem->AddChild(ColorOverlayTag);
                 textLayout->AddChild(showCardIconItem);
             }
 
@@ -3191,27 +3137,18 @@ namespace RendererQml
 
 	const std::string RendererQml::AdaptiveCardQmlRenderer::getMinWidthFactSet()
 	{
-		std::string minWidthFactSet =  R"(function getMinWidthFactSet(childrens, spacing){		
-			var min = 0		
-			for(var j=0;j<childrens.length;j+=2)		
-			{		
-				min = Math.max(min,childrens[j].implicitWidth + childrens[j+1].implicitWidth + spacing)		
-			}		
-			return min;		
+		std::string minWidthFactSet =  R"(function getMinWidthFactSet(childrens, spacing){
+			var min = 0
+			for(var j=0;j<childrens.length;j+=2)
+			{
+				min = Math.max(min,childrens[j].implicitWidth + childrens[j+1].implicitWidth + spacing)
+			}
+			return min;
 		})";
 
 		minWidthFactSet.erase(std::remove(minWidthFactSet.begin(), minWidthFactSet.end(), '\t'), minWidthFactSet.end());
 
 		return minWidthFactSet;
 	}
-
-    std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetColorOverlay(const std::string& parent, const std::string& color)
-    {
-        auto colorOverlay = std::make_shared<QmlTag>("ColorOverlay");
-        colorOverlay->Property("anchors.fill", parent);
-        colorOverlay->Property("source", parent);
-        colorOverlay->Property("color", color);
-        return colorOverlay;
-    }
 }
 
