@@ -71,20 +71,28 @@ public class Table extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Table_SetFirstRowAsHeaders(swigCPtr, this, value);
   }
 
-  public HorizontalAlignment GetHorizontalCellContentAlignment() {
-    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Table_GetHorizontalCellContentAlignment(swigCPtr, this));
+  public @androidx.annotation.Nullable HorizontalAlignment GetHorizontalCellContentAlignment() {
+    StdOptionalHorizontalAlignment optvalue = new StdOptionalHorizontalAlignment(AdaptiveCardObjectModelJNI.Table_GetHorizontalCellContentAlignment(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetHorizontalCellContentAlignment(HorizontalAlignment value) {
-    AdaptiveCardObjectModelJNI.Table_SetHorizontalCellContentAlignment(swigCPtr, this, value.swigValue());
+  public void SetHorizontalCellContentAlignment(@androidx.annotation.Nullable HorizontalAlignment value) {
+    StdOptionalHorizontalAlignment optvalue = (value == null) ? new StdOptionalHorizontalAlignment() : new StdOptionalHorizontalAlignment(value);
+    {
+      AdaptiveCardObjectModelJNI.Table_SetHorizontalCellContentAlignment(swigCPtr, this, StdOptionalHorizontalAlignment.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public VerticalContentAlignment GetVerticalCellContentAlignment() {
-    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Table_GetVerticalCellContentAlignment(swigCPtr, this));
+  public @androidx.annotation.Nullable VerticalContentAlignment GetVerticalCellContentAlignment() {
+    StdOptionalVerticalContentAlignment optvalue = new StdOptionalVerticalContentAlignment(AdaptiveCardObjectModelJNI.Table_GetVerticalCellContentAlignment(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetVerticalCellContentAlignment(VerticalContentAlignment value) {
-    AdaptiveCardObjectModelJNI.Table_SetVerticalCellContentAlignment(swigCPtr, this, value.swigValue());
+  public void SetVerticalCellContentAlignment(@androidx.annotation.Nullable VerticalContentAlignment value) {
+    StdOptionalVerticalContentAlignment optvalue = (value == null) ? new StdOptionalVerticalContentAlignment() : new StdOptionalVerticalContentAlignment(value);
+    {
+      AdaptiveCardObjectModelJNI.Table_SetVerticalCellContentAlignment(swigCPtr, this, StdOptionalVerticalContentAlignment.getCPtr(optvalue), optvalue);
+    }
   }
 
   public ContainerStyle GetGridStyle() {
