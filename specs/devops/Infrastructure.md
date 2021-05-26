@@ -69,13 +69,22 @@ Estimate: 10-13 points
         * Version of a release is specified at pipeline runtime (no PR's needed)
         * Final publish of artifact is gated on additional approval, who is expected to check version number
         * Pipeline pushes updated version string into source control after successful publish
-* Modify all pipelines to push git tags after release
-* Modify all pipelines to migrate off of deprecated PackageES build pool
+* Modify all release pipelines to push git tags after release
+* Modify all release pipelines to migrate off of deprecated PackageES build pool
 
 Outcome:
 Any member should be able to publish any library using only their web browser.
 
-### Epic 2. Lower barriers for smoke testing
+### Epic 2. Lay groundwork for automated UI tests
+Estimate: 7-10 points
+
+* Investigate and finalize UI testing tool(s) to use
+* Modify all pipelines to execute tool(s) and report output
+
+Outcome:
+Pending configuration and writing of tests, pipelines should now be ready to report any failing automated UI tests.
+
+### Epic 3. Lower barriers for smoke testing
 Estimate: 5-7 points
 
 * Modify UWP and WPF visualizer pipelines to produce executables with valid test certificates
@@ -84,7 +93,7 @@ Estimate: 5-7 points
 Outcome:
 Any member should be able to perform smoke testing on any visualizer app using only a test device, without setting up a dev environment.
 
-### Epic 3. Produce compliant artifacts
+### Epic 4. Produce compliant artifacts
 Estimate: 3-5 points
 
 * Configure timely, automatic upgrades of vulnerable dependencies
@@ -95,18 +104,18 @@ Estimate: 3-5 points
 Outcome:
 Packages should not contain any vulnerable dependencies at time of release, and all released artifacts should satisfy any Microsoft signing requirements.
 
-### Epic 4. Automatic release notes
+### Epic 5. Generate release notes
 Estimate: 7-9 points
 
 * Create check to ensure that PRs follow standardized title format (i.e. indicate affected platform(s) and fixed issue(s))
-* Create automation to calculate commits since last release and parse their titles, generating release notes that list fixed issues organized by platform
+* Create automation to enumerate commits since last release, parse their titles, and use them to generating release notes that list fixed issues organized by platform
 
 Outcome:
 Monthly release notes should be auto-generated, requiring minimal modification for any special callouts before posting
 
 ## Looking further
 
-### Versioning without thinking
+### Epic ?. Versioning without thinking
 Estimate: 7-9 points
 
 * Require PR titles to specify whether the fix is a chore, fix, or feature (and indicate presence of breaking changes)
