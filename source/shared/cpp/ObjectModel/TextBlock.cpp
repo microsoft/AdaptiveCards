@@ -29,7 +29,8 @@ Json::Value TextBlock::SerializeToJsonValue() const
 
     if (m_hAlignment.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment.value());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
+            HorizontalAlignmentToString(m_hAlignment.value_or(HorizontalAlignment::Left));
     }
 
     if (m_maxLines != 0)
