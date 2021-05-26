@@ -17,8 +17,12 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_Heading(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig** headingStyle) override;
         IFACEMETHODIMP put_Heading(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* headingStyle) override;
 
+        IFACEMETHODIMP get_ColumnHeader(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig** columnHeaderStyle) override;
+        IFACEMETHODIMP put_ColumnHeader(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* columnHeaderStyle) override;
+
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig> m_headingStyle;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig> m_columnHeaderStyle;
     };
 
     ActivatableClass(AdaptiveTextStylesConfig);

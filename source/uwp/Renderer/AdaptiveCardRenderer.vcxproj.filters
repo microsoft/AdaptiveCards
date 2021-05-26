@@ -128,11 +128,12 @@
     <ClCompile Include="lib\AdaptiveTextBlockConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextStylesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
-    <ClCompile Include="lib\AdaptiveHeadingsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTableCell.cpp" />
     <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveTable.cpp" />
+    <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -268,11 +269,12 @@
     <ClInclude Include="lib\AdaptiveTextStyleConfig.h" />
     <ClInclude Include="lib\AdaptiveTextStylesConfig.h" />
     <ClInclude Include="lib\AdaptiveTextStyleConfigBase.h" />
-    <ClInclude Include="lib\AdaptiveHeadingsConfig.h" />
     <ClInclude Include="lib\AdaptiveTableCell.h" />
     <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
     <ClInclude Include="lib\AdaptiveTableRow.h" />
     <ClInclude Include="lib\AdaptiveTable.h" />
+    <ClInclude Include="lib\AdaptiveTableRenderer.h" />
+    <ClInclude Include="lib\AdaptiveTableConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

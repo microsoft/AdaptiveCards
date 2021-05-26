@@ -100,10 +100,13 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                               boolean isVisible,
                               _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
 
-    template<typename T>
-    void AppendXamlElementToPanel(_In_ T* xamlElement,
-                                  _In_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
-                                  ABI::AdaptiveCards::Rendering::Uwp::HeightType heightType = ABI::AdaptiveCards::Rendering::Uwp::HeightType::Auto)
+    HRESULT HandleTableColumnWidth(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableColumnDefinition* column,
+                                   _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
+
+        template<typename T>
+        void AppendXamlElementToPanel(_In_ T* xamlElement,
+                                      _In_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
+                                      ABI::AdaptiveCards::Rendering::Uwp::HeightType heightType = ABI::AdaptiveCards::Rendering::Uwp::HeightType::Auto)
     {
         if (!xamlElement)
         {
