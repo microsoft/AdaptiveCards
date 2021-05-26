@@ -141,10 +141,9 @@ public class TextRendererUtil
         {
             return hostConfig.GetTextStyles().getHeading().getSize();
         }
-        if (declaredStyle == null && renderArgs != null && renderArgs.isHeader())
+        if (declaredStyle == null && renderArgs != null && renderArgs.isColumnHeader())
         {
-            // TODO: Replace with headER styles
-            return hostConfig.GetTextStyles().getHeading().getSize();
+            return hostConfig.GetTextStyles().getColumnHeader().getSize();
         }
         return TextSize.Default;
     }
@@ -159,10 +158,9 @@ public class TextRendererUtil
         {
             return hostConfig.GetTextStyles().getHeading().getColor();
         }
-        if (declaredStyle == null && renderArgs != null && renderArgs.isHeader())
+        if (declaredStyle == null && renderArgs != null && renderArgs.isColumnHeader())
         {
-            // TODO: Replace with headER styles
-            return hostConfig.GetTextStyles().getHeading().getColor();
+            return hostConfig.GetTextStyles().getColumnHeader().getColor();
         }
         return ForegroundColor.Default;
     }
@@ -177,10 +175,9 @@ public class TextRendererUtil
         {
             return hostConfig.GetTextStyles().getHeading().getWeight();
         }
-        if (declaredStyle == null && renderArgs != null &&  renderArgs.isHeader())
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isColumnHeader())
         {
-            // TODO: Replace with headER styles
-            return hostConfig.GetTextStyles().getHeading().getWeight();
+            return hostConfig.GetTextStyles().getColumnHeader().getWeight();
         }
         return TextWeight.Default;
     }
@@ -195,10 +192,9 @@ public class TextRendererUtil
         {
             return hostConfig.GetTextStyles().getHeading().getIsSubtle();
         }
-        if (declaredStyle == null && renderArgs != null &&  renderArgs.isHeader())
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isColumnHeader())
         {
-            // TODO: Replace with headER styles
-            return hostConfig.GetTextStyles().getHeading().getIsSubtle();
+            return hostConfig.GetTextStyles().getColumnHeader().getIsSubtle();
         }
         return false;
     }
@@ -213,10 +209,9 @@ public class TextRendererUtil
         {
             return hostConfig.GetTextStyles().getHeading().getFontType();
         }
-        if (declaredStyle == null && renderArgs != null &&  renderArgs.isHeader())
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isColumnHeader())
         {
-            // TODO: Replace with headER styles
-            return hostConfig.GetTextStyles().getHeading().getFontType();
+            return hostConfig.GetTextStyles().getColumnHeader().getFontType();
         }
         return FontType.Default;
     }

@@ -63,14 +63,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    public static HorizontalAlignment computeTextAlignment(RenderArgs renderArgs, HorizontalAlignment declaredAlignment)
+    public static void applyHorizontalAlignment(TextView textView, RenderArgs renderArgs, HorizontalAlignment horizontalAlignment)
     {
-        return (declaredAlignment != null) ? declaredAlignment : renderArgs.getHorizontalAlignment();
-    }
-
-    public static void applyTextAlignment(TextView textView, HorizontalAlignment textAlignment)
-    {
-        textView.setTextAlignment(TextRendererUtil.getTextAlignment(textAlignment));
+        horizontalAlignment = RendererUtil.computeHorizontalAlignment(renderArgs, horizontalAlignment);
+        textView.setTextAlignment(TextRendererUtil.getTextAlignment(horizontalAlignment));
     }
 
     public static void applyTextSize(TextView textView, HostConfig hostConfig, RenderArgs renderArgs, TextStyle textStyle, FontType fontType, TextSize textSize)
@@ -231,7 +227,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         applyTextFormat(textView, hostConfig, renderArgs, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight());
         applyTextSize(textView, hostConfig, renderArgs, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextSize());
         applyTextColor(textView, hostConfig, renderArgs, textBlock.GetStyle(), textBlock.GetTextColor(), textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
-        applyTextAlignment(textView, computeTextAlignment(renderArgs, textBlock.GetHorizontalAlignment()));
+        applyHorizontalAlignment(textView, renderArgs, textBlock.GetHorizontalAlignment());
         applyAccessibilityHeading(textView, textBlock.GetStyle());
 
         int maxLines = (int)textBlock.GetMaxLines();

@@ -23,7 +23,7 @@ public class RenderArgs
         setAncestorHasFallback(renderArgs.getAncestorHasFallback());
         setContainerStyle(renderArgs.getContainerStyle());
         setContainerCardId(renderArgs.getContainerCardId());
-        setHeader(renderArgs.isHeader());
+        setColumnHeader(renderArgs.isColumnHeader());
         setHorizontalAlignment(renderArgs.getHorizontalAlignment());
     }
 
@@ -73,14 +73,14 @@ public class RenderArgs
     /**
      * @return true if text should used styles defined for table headers
      */
-    public boolean isHeader()
+    public boolean isColumnHeader()
     {
-        return m_isHeader;
+        return m_isColumnHeader;
     }
 
-    public void setHeader(boolean isHeader)
+    public void setColumnHeader(boolean isHeader)
     {
-        m_isHeader = isHeader;
+        m_isColumnHeader = isHeader;
     }
 
     /**
@@ -114,7 +114,7 @@ public class RenderArgs
 
     private boolean m_ancestorHasFallback;
     private ContainerStyle m_containerStyle = ContainerStyle.Default;
-    private boolean m_isHeader;
+    private boolean m_isColumnHeader;
     private HorizontalAlignment m_horizontalAlignment = HorizontalAlignment.Left;
     private boolean m_allowAboveTitleIconPlacement;
     private long m_containerCardId;

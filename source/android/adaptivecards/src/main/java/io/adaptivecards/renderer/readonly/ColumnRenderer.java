@@ -17,6 +17,7 @@ import java.util.Locale;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
@@ -136,6 +137,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
         columnRenderArgs.setContainerStyle(styleForThis);
+        columnRenderArgs.setHorizontalAlignment(HorizontalAlignment.Left);
         if (!column.GetItems().isEmpty())
         {
             try

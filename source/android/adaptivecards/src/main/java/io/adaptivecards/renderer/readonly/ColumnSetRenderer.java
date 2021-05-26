@@ -21,6 +21,7 @@ import io.adaptivecards.objectmodel.ColumnVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
@@ -91,6 +92,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
             RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
             columnRenderArgs.setContainerStyle(styleForThis);
+            columnRenderArgs.setHorizontalAlignment(HorizontalAlignment.Left);
 
             FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
 

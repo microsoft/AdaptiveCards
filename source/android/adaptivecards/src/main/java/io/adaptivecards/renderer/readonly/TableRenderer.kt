@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly
 
 import android.content.Context
@@ -41,7 +43,7 @@ object TableRenderer : BaseCardElementRenderer() {
                 val cell = row.GetCells().getOrNull(j) ?: break
                 val cellArgs = TableCellRenderArgs(renderArgs, i, j, table, tableLayout).apply {
                     containerStyle = rowStyle
-                    isHeader = (i == 0) && table.GetFirstRowAsHeaders()
+                    isColumnHeader = (i == 0) && table.GetFirstRowAsHeaders()
                 }
                 tableCellRenderer.render(renderedCard, context, fragmentManager, rowLayout, cell, cardActionHandler, hostConfig, cellArgs)
             }

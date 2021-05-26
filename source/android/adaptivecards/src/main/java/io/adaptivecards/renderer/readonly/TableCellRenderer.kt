@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.readonly
 
 import android.content.Context
@@ -10,10 +12,7 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentManager
-import io.adaptivecards.objectmodel.BaseCardElement
-import io.adaptivecards.objectmodel.HostConfig
-import io.adaptivecards.objectmodel.Table
-import io.adaptivecards.objectmodel.TableCell
+import io.adaptivecards.objectmodel.*
 import io.adaptivecards.renderer.*
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler
 import io.adaptivecards.renderer.registration.CardRendererRegistration
@@ -77,12 +76,14 @@ object TableCellRenderer : BaseCardElementRenderer() {
         setMinHeight(cell.GetMinHeight(), cellLayout, context)
         applyRtl(cell.GetRtl(), cellLayout)
 
-        ContainerRenderer.applyPadding(ContainerRenderer.getLocalContainerStyle(cell, renderArgs.containerStyle), renderArgs.containerStyle, cellLayout, hostConfig, renderArgs.table.GetShowGridLines())
-        ContainerRenderer.applyContainerStyle(ContainerRenderer.getLocalContainerStyle(cell, renderArgs.containerStyle), cellLayout, hostConfig)
+        val computedStyle = ContainerRenderer.getLocalContainerStyle(cell, renderArgs.containerStyle)
+        ContainerRenderer.applyPadding(computedStyle, renderArgs.containerStyle, cellLayout, hostConfig, renderArgs.table.GetShowGridLines())
+        ContainerRenderer.applyContainerStyle(computedStyle, cellLayout, hostConfig)
         ContainerRenderer.applyVerticalContentAlignment(cellLayout, cell.GetVerticalContentAlignment()
                 ?: row.GetVerticalCellContentAlignment()
                 ?: col.GetVerticalCellContentAlignment()
-                ?: renderArgs.table.GetVerticalCellContentAlignment())
+                ?: renderArgs.table.GetVerticalCellContentAlignment()
+                ?: VerticalContentAlignment.Top)
         ContainerRenderer.setSelectAction(renderedCard, cell.GetSelectAction(), cellLayout, cardActionHandler, renderArgs)
 
         CardRendererRegistration.getInstance().renderElements(renderedCard,
@@ -93,7 +94,11 @@ object TableCellRenderer : BaseCardElementRenderer() {
                 cardActionHandler,
                 hostConfig,
                 RenderArgs(renderArgs).apply {
-                    containerStyle = cell.GetStyle()
+                    containerStyle = computedStyle
+                    horizontalAlignment = (row.GetHorizontalCellContentAlignment()
+                            ?: col.GetHorizontalCellContentAlignment()
+                            ?: renderArgs.table.GetHorizontalCellContentAlignment()
+                            ?: HorizontalAlignment.Left)
                 })
 
         viewGroup.addView(cellLayout)

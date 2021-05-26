@@ -212,7 +212,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // HorizontalAlignment
         // Inlines
 
-        textView.setTextAlignment(TextRendererUtil.getTextAlignment(richTextBlock.GetHorizontalAlignment()));
+        TextBlockRenderer.applyHorizontalAlignment(textView, renderArgs, richTextBlock.GetHorizontalAlignment());
 
         // This is the section for rendering the paragraphs
         // Every paragraph may contain contains any number of inlines

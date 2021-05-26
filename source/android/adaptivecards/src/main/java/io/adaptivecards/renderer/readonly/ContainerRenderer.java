@@ -25,6 +25,7 @@ import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
@@ -91,6 +92,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         RenderArgs containerRenderArgs = new RenderArgs(renderArgs);
         containerRenderArgs.setContainerStyle(styleForThis);
+        containerRenderArgs.setHorizontalAlignment(HorizontalAlignment.Left);
         if (!container.GetItems().isEmpty())
         {
             try
