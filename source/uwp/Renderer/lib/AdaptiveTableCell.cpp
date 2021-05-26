@@ -41,8 +41,14 @@ namespace AdaptiveCards::Rendering::Uwp
         GenerateContainedElementsProjection(sharedTableCell->GetItems(), m_items.Get());
         GenerateActionProjection(sharedTableCell->GetSelectAction(), &m_selectAction);
         m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedTableCell->GetStyle());
-        m_verticalAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>(
-            sharedTableCell->GetVerticalContentAlignment());
+        if (sharedTableCell->GetVerticalContentAlignment().has_value())
+        {
+            m_verticalContentAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>(
+                                     sharedTableCell->GetVerticalContentAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>>()
+                    .get();
+        }
         m_minHeight = sharedTableCell->GetMinHeight();
         m_bleed = sharedTableCell->GetBleed();
         m_bleedDirection = static_cast<ABI::AdaptiveCards::Rendering::Uwp::BleedDirection>(sharedTableCell->GetBleedDirection());
@@ -98,15 +104,16 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTableCell::get_VerticalContentAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment* verticalAlignment)
+    HRESULT AdaptiveTableCell::get_VerticalContentAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>** verticalContentAlignment)
     {
-        *verticalAlignment = m_verticalAlignment;
-        return S_OK;
+        return m_verticalContentAlignment.CopyTo(verticalContentAlignment);
     }
 
-    HRESULT AdaptiveTableCell::put_VerticalContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalAlignment)
+    HRESULT AdaptiveTableCell::put_VerticalContentAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalContentAlignment)
     {
-        m_verticalAlignment = verticalAlignment;
+        m_verticalContentAlignment = verticalContentAlignment;
         return S_OK;
     }
 
@@ -176,7 +183,15 @@ namespace AdaptiveCards::Rendering::Uwp
         }
 
         tableCell->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
-        tableCell->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(m_verticalAlignment));
+
+        if (m_verticalContentAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignmentValue;
+            RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
+            tableCell->SetVerticalContentAlignment(
+                static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));
+        }
+
         tableCell->SetMinHeight(m_minHeight);
 
         ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);

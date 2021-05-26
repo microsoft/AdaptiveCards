@@ -32,8 +32,14 @@ namespace AdaptiveCards::Rendering::Uwp
             return E_INVALIDARG;
         }
 
-        m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedRichTextBlock->GetHorizontalAlignment());
+        if (sharedRichTextBlock->GetHorizontalAlignment().has_value())
+        {
+            m_horizontalAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::HAlignment>(
+                                     sharedRichTextBlock->GetHorizontalAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>>()
+                    .get();
+        }
 
         GenerateInlinesProjection(sharedRichTextBlock->GetInlines(), m_inlines.Get());
 
@@ -42,15 +48,16 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveRichTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveRichTextBlock::get_HorizontalAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment)
     {
-        *alignment = m_horizontalAlignment;
-        return S_OK;
+        return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
-    HRESULT AdaptiveRichTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveRichTextBlock::put_HorizontalAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment)
     {
-        m_horizontalAlignment = alignment;
+        m_horizontalAlignment = horizontalAlignment;
         return S_OK;
     }
 
@@ -73,7 +80,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
         RETURN_IF_FAILED(CopySharedElementProperties(*richTextBlock));
 
-        richTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+        if (m_horizontalAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::HAlignment horizontalAlignmentValue;
+            RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
+            richTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
+        }
 
         RETURN_IF_FAILED(GenerateSharedInlines(m_inlines.Get(), richTextBlock->GetInlines()));
 

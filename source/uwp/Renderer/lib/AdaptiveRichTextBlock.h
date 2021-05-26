@@ -22,8 +22,10 @@ namespace AdaptiveCards::Rendering::Uwp
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::RichTextBlock>& sharedRichTextBlock) noexcept;
 
         // IAdaptiveRichTextBlock
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment HorizontalAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment) override;
+        IFACEMETHODIMP put_HorizontalAlignment(
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment) override;
 
         IFACEMETHODIMP get_Inlines(
             _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline*>** inlines);
@@ -113,7 +115,7 @@ namespace AdaptiveCards::Rendering::Uwp
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        ABI::AdaptiveCards::Rendering::Uwp::HAlignment m_horizontalAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>> m_horizontalAlignment;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline*>> m_inlines;
     };
 
