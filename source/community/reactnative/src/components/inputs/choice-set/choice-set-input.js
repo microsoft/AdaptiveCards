@@ -4,7 +4,7 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputchoiceset
  */
 
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {
 	StyleSheet,
 	Text,
@@ -12,7 +12,10 @@ import {
 	Picker,
 	TouchableOpacity,
 	Image,
-	Platform
+	Platform,
+	TextInput,
+	ScrollView,
+	Modal
 } from 'react-native';
 
 import ElementWrapper from '../../elements/element-wrapper';
@@ -28,13 +31,12 @@ import InputLabel from "../input-label";
 const DropDownImage = './assets/dropdown.png';
 const CompactStyle = "compact";
 
-export class ChoiceSetInput extends React.Component {
+
+export class ChoiceSetInput extends React.PureComponent {
 
 	styleConfig = StyleManager.getManager().styles;
-
 	constructor(props) {
 		super(props);
-
 		this.id = Constants.EmptyString;
 		this.isMultiSelect = Boolean;
 		this.style = Constants.EmptyString;
@@ -44,7 +46,6 @@ export class ChoiceSetInput extends React.Component {
 		this.payload = props.json;
 		this.label = Constants.EmptyString;
 		this.isRequired = this.payload.isRequired || false;
-
 		this.state = {
 			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ?
 				props.json.choices[0].value : props.json.value,
@@ -53,8 +54,27 @@ export class ChoiceSetInput extends React.Component {
 			activeIndex: undefined,
 			checked: undefined,
 			checkedValues: undefined,
-			isError: this.isRequired ? this.validate() : false
+			isError: this.isRequired ? this.validate() : false,
+			pickerInputText: undefined,
+			pickerChoicesArr: [],
 		}
+	}
+
+	componentDidMount(){	
+		if(this.payload.choicesSource != undefined){
+			if(this.payload.choicesSource.type = 'Data.Query'){
+				fetch('https://tygu9.sse.codesandbox.io').then((response) => response.json())
+				.then((json) => {
+				  json.data.map((data,index)=>{	
+					  this.choices.push(data);
+					  this.forceUpdate();
+					  this.dynamicChoiceData = true;
+				  })
+				}).catch((e)=>{
+					//console.log(e);
+				})
+			};
+		};
 	}
 
 	/**
@@ -95,6 +115,7 @@ export class ChoiceSetInput extends React.Component {
 	 * @param {string} value 
 	 */
 	getPickerSelectedValue = (value, addInputItem) => {
+
 		if (Utils.isNullOrEmpty(value))
 			return Constants.EmptyString
 		let choiceName = this.choices.find(choice => choice.value === value);
@@ -156,51 +177,149 @@ export class ChoiceSetInput extends React.Component {
 		return array
 	}
 
+
+	setPickerValue(addInputItem) {
+		if (this.state.pickerInputText == undefined) {
+			this.setState({
+				pickerInputText: this.getPickerSelectedValue(this.state.selectedPickerValue,
+					addInputItem)
+			})
+			this.setState({ pickerChoicesArr: this.choices })
+			return (this.getPickerSelectedValue(this.state.selectedPickerValue,
+				addInputItem))
+		}
+		else {
+			return (this.state.pickerInputText)
+		}
+	}
 	/**
 	 * @description Renders Picker component as per the json
 	 */
 	renderPickerComponent(addInputItem) {
+		if(this.payload.choicesSource == undefined)
+		{
+			return (
+				<View style={styles.containerView}>
+					{(Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
+						activeOpacity={1}
+						onPress={onPress}>
+						<View style={styles.touchView}>
+							<Text
+								style={[styles.text, this.styleConfig.defaultFontConfig]}
+							>
+								{this.getPickerSelectedValue(this.state.selectedPickerValue,
+									addInputItem)
+								}
+							</Text>
+							<Image
+								style={styles.button}
+								source={require(DropDownImage)}
+							/>
+						</View>
+					</TouchableOpacity>}
+					{((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
+						<View style={styles.pickerContainer}>
+							<Picker
+								mode={'dropdown'}
+								selectedValue={this.getPickerInitialValue(addInputItem)}
+								onValueChange={
+									(itemValue) => {
+										this.setState({
+											selectedPickerValue: itemValue,
+											isError: false
+										})
+										addInputItem(this.id, { value: itemValue, errorState: false });
+									}}>
+								{this.choices.map((item, key) => (
+									<Picker.Item
+										label={item.title}
+										value={item.value} key={key}
+									/>)
+								)}
+							</Picker>
+						</View>
+					}
+				</View>
+			)
+		}
+		else
 		return (
 			<View style={styles.containerView}>
-				{(Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
-					activeOpacity={1}
-					onPress={onPress}>
-					<View style={styles.touchView}>
-						<Text
-							style={[styles.text, this.styleConfig.defaultFontConfig]}
+				{(Platform.OS === Constants.PlatformIOS) && <View>
+					<View style={{ flexDirection: "row", display: "flex", width: "100%", backgroundColor: 'white', borderWidth: 1, borderColor: "black",position:'relative' }}>
+						<TextInput
+							value={this.setPickerValue(addInputItem)}
+							onChangeText={(text) => {
+								if (!this.state.isPickerSelected) {
+									
+									this.setState({ isPickerSelected: true })
+								}
+								this.setState({
+									selectedPickerValue: text,
+									isError: false,
+									pickerInputText: text
+								})
+									var searchResult = this.choices.filter(function (e) {
+										return e.title.includes(text);
+									});
+									this.setState({ pickerChoicesArr: searchResult })
+				
+							}}
+							style={[styles.text, this.styleConfig.defaultFontConfig], styles.autoCompPicker}
+							accessible={true}
 						>
-							{this.getPickerSelectedValue(this.state.selectedPickerValue,
-								addInputItem)
-							}
-						</Text>
-						<Image
-							style={styles.button}
-							source={require(DropDownImage)}
-						/>
+						</TextInput>
+						
+
 					</View>
-				</TouchableOpacity>}
-				{((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
+				</View>}
+				{this.state.isPickerSelected &&
+					<ScrollView style={{ width: '100%', height: 200, backgroundColor: 'white',elevation:1}}>
+						{this.state.pickerChoicesArr.map((item, key) => (
+							<TouchableOpacity key={key} style={{ height: 40, backgroundColor: 'white',marginVertical:5, justifyContent: "center", borderColor: "#dadde1", borderWidth: 1 }}
+								onPress={() => {
+									var itemValue =
+									 this.state.pickerChoicesArr[key].value;
+									this.setState({
+										selectedPickerValue: itemValue,
+										isError: false
+									})
+									addInputItem(this.id, { value: itemValue, errorState: false });
+									this.setState({ pickerInputText: this.getPickerSelectedValue(itemValue, addInputItem) })
+									onPress();
+								}}
+							>
+								<Text style={{ marginLeft: 2 }}>{item.title}</Text>
+							</TouchableOpacity>
+						)
+						)}
+					</ScrollView>
+				}
+				{/* {((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
 					<View style={styles.pickerContainer}>
 						<Picker
 							mode={'dropdown'}
 							selectedValue={this.getPickerInitialValue(addInputItem)}
-							onValueChange={
+							onValueChange={		
 								(itemValue) => {
 									this.setState({
 										selectedPickerValue: itemValue,
 										isError: false
 									})
 									addInputItem(this.id, { value: itemValue, errorState: false });
+									this.setState({pickerInputText:this.getPickerSelectedValue(itemValue,addInputItem)})
 								}}>
-							{this.choices.map((item, key) => (
+							{this.state.pickerChoicesArr.map((item, key) => (
 								<Picker.Item
+								    onPress={()=>{console.log('ji');}}
 									label={item.title}
 									value={item.value} key={key}
-								/>)
+								/>
+								)
 							)}
 						</Picker>
 					</View>
-				}
+				} */}
 			</View>
 		)
 	}
@@ -288,7 +407,8 @@ export class ChoiceSetInput extends React.Component {
 
 		onPress = () => {
 			this.setState({
-				isPickerSelected: !this.state.isPickerSelected
+				isPickerSelected: !this.state.isPickerSelected,
+				pickerChoicesArr:this.choices
 			})
 		}
 
@@ -343,5 +463,12 @@ const styles = StyleSheet.create({
 		width: 30,
 		marginBottom: 8,
 		marginRight: 8,
+		backgroundColor: Constants.EmphasisColor,
 	},
+	autoCompPicker: {
+		backgroundColor: 'white',
+		height: 30,
+		flex: 1,
+		width: '100%',
+	}
 });
