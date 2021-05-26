@@ -150,7 +150,7 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
     if (GetVerticalContentAlignment().has_value())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
-            VerticalContentAlignmentToString(GetVerticalContentAlignment().value());
+            VerticalContentAlignmentToString(GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top));
     }
 
     if (GetBleed())
