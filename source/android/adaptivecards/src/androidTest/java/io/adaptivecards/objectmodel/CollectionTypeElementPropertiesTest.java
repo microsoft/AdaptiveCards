@@ -190,7 +190,8 @@ public class CollectionTypeElementPropertiesTest
         final String containerVerticalContentAlignment = "{\"items\":[],\"type\":\"Container\",\"verticalContentAlignment\":\"%s\"}\n";
 
         ArrayList<Pair<VerticalContentAlignment, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(VerticalContentAlignment.Top, s_defaultContainerJson));
+        tests.add(new Pair<>(null, s_defaultContainerJson));
+        tests.add(new Pair<>(VerticalContentAlignment.Top, String.format(containerVerticalContentAlignment, "Top")));
         tests.add(new Pair<>(VerticalContentAlignment.Center, String.format(containerVerticalContentAlignment, "Center")));
         tests.add(new Pair<>(VerticalContentAlignment.Bottom, String.format(containerVerticalContentAlignment, "Bottom")));
 
