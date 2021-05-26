@@ -22,13 +22,13 @@ namespace AdaptiveCards
         if (m_horizontalCellContentAlignment.has_value())
         {
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalCellContentAlignment)] =
-                HorizontalAlignmentToString(m_horizontalCellContentAlignment.value());
+                HorizontalAlignmentToString(m_horizontalCellContentAlignment.value_or(HorizontalAlignment::Left));
         }
 
         if (m_verticalCellContentAlignment.has_value())
         {
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalCellContentAlignment)] =
-                VerticalContentAlignmentToString(m_verticalCellContentAlignment.value());
+                VerticalContentAlignmentToString(m_verticalCellContentAlignment.value_or(VerticalContentAlignment::Top));
         }
 
         if (m_width.has_value())
