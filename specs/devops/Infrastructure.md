@@ -38,7 +38,7 @@ Monthly
 
 Additionally, the repository contains libraries contributed and maintained by the community, which we do not currently validate or publish in any way.
 
-## Problem
+## Motivation
 
 As long as releases have significant overhead, the planning process becomes encumbered by the release process. There are several points throughout the current process that have room for improvement. Primarily, monthly releases involve significant context-switching by all developers, with many manual steps that take time away from development and open the door for errors.
 * Some platforms do not publish consumable apps nightly, requiring a local build to smoke test before release.
@@ -53,52 +53,65 @@ Benefit from any solutions can be gauged against the status quo through a few in
 
 To fully benefit from agile development, teams need to be able to unceremoniously ship at the end of every cycle, decoupling release from planning. With that goal in mind, we should periodically re-evaluate the process and these indicators to identify sources of deficiencies.
 
-## Proposal(s)
+## Roadmap
 
-### Visualizer Builds
-* .NET UWP, .NET WPF
-    * Pipeline must output an artifact (ideally, publish to App Center) that is properly signed to allow smoke-testing visualizer without building from source
+### Epic 1. Enable automated publishing
+Estimate: 10-13 points
 
-### SDK Publishing
+* Modify Android SDK release pipeline to upload signed artifact to Sonatype, and release to Maven Central after approval
+* Create NodeJS SDK release pipeline to build and publish packages to npm
+* Modify all pipelines to standardize version string handling
+    * Open question: checked-in vs. runtime-configured version strings
+        * Oversight: checked-in versions must be reviewed vs. runtime versions are susceptible to unchecked typos
+        * Convenience: checked-in versions require PR checks to complete vs. runtime versions avoid release overhead
+        * History/branching: when building an old commit/branch, checked-in versions indicate version vs. runtime versions have no indication
+    * Proposed solution:
+        * Version of a release is specified at pipeline runtime (no PR's needed)
+        * Final publish of artifact is gated on additional approval, who is expected to check version number
+        * Pipeline pushes updated version string into source control after successful publish
+* Modify all pipelines to push git tags after release
+* Modify all pipelines to migrate off of deprecated PackageES build pool
 
-* Android
-    * Pipeline must upload artifacts to Sonatype staging repository
-    * Pipeline must publish to maven central
-        * Publish stage should be gated on manual approval (similar to website release pipeline), to reduce risk of inadvertent release
-* Web
-    * Create JS release pipeline, which must publish packages to npm
-        * Pipeline must detect which packages have been updated OR allow configuring at runtime
-* (all)
-    * Pipelines must create and push Github release tags after successful publish
+Outcome:
+Any member should be able to publish any library using only their web browser.
 
-### Dependency Auditing
+### Epic 2. Lower barriers for smoke testing
+Estimate: 5-7 points
 
-* Web
-    * Reconcile different systems for detecting vulnerable dependencies (lerna/npm audit, Component Governance, Github dependabot)
-    * Automation (dependabot, Github app, and/or ADO pipeline) should create PR's to fix vulnerabilities when detected, so the repository is compliant ahead of release-time
-        * Migrate off of deprecated dependabot to allow for more precise configuration
-        * Non-trivial dependency updates cannot be performed by any bots. Introduce a process to ensure these are assigned to a dev when detected, rather than allowed to languish until release.
-* (community)
-    * Inquire whether community-maintained sources that are not built/published by us need to adhere to component governance
-        * If so, implement process and/or automation to fix vulnerabilities in these, too
+* Modify UWP and WPF visualizer pipelines to produce executables with valid test certificates
+* Modify Android visualizer pipeline to publish app that can be installed directly on work-joined Android devices
 
-### Microsoft Signing
+Outcome:
+Any member should be able to perform smoke testing on any visualizer app using only a test device, without setting up a dev environment.
 
-* Android
-    * [✓] Pipeline must securely sign with a corporate-managed certificate
-* Web
-    * Inquire current signing practices by other Microsoft-published npm packages for signing, as npm has no first-party support for author-signatures
-        * Follow existing practices, or work with compliance team(s) to establish best practice
+### Epic 3. Produce compliant artifacts
+Estimate: 3-5 points
 
-### Release Notes
+* Configure timely, automatic upgrades of vulnerable dependencies
+    * Automatically file high-priority bugs for vulnerabilities that cannot be fixed by bot
+* Investigate signing practices by Microsoft-published npm packages, as npm has no first-party support for author-signatures
+    * If no existing guidance, work with compliance teams to establish whether author-signing is required and how to achieve it
 
-* Pipeline should use release tags to determine last released commit for each package
-* Pipeline should generate list of PR's and Issue's that constitute all the changes since the last release
-    * PR numbers in commit messages should be used to associate each commit to a PR
-    * Issue numbers in PR descriptions should be used to associate the commit to an Issue, if present
-    * Pipeline may comment on each identified issue/PR to indicate that the fix is now published
-* Pipeline should publish release notes, with above identified lists for each platform
+Outcome:
+Packages should not contain any vulnerable dependencies at time of release, and all released artifacts should satisfy any Microsoft signing requirements.
 
-## Looking Further
+### Epic 4. Automatic release notes
+Estimate: 7-9 points
 
-### TODO
+* Create check to ensure that PRs follow standardized title format (i.e. indicate affected platform(s) and fixed issue(s))
+* Create automation to calculate commits since last release and parse their titles, generating release notes that list fixed issues organized by platform
+
+Outcome:
+Monthly release notes should be auto-generated, requiring minimal modification for any special callouts before posting
+
+## Looking further
+
+### Versioning without thinking
+Estimate: 7-9 points
+
+* Require PR titles to specify whether the fix is a chore, fix, or feature (and indicate presence of breaking changes)
+    * Consider following a standard, such as [conventional-commits](https://www.conventionalcommits.org/en/v1.0.0/)
+* Modify release pipelines to infer the new version string based on the semver impact of PRs since last release
+
+Outcome:
+Stable release versions should no longer be specified by members during release. The strings are generated based on severity of fixes, ensuring version adheres strictly to semver.
