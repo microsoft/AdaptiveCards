@@ -60,28 +60,36 @@ public class TableColumnDefinition {
     AdaptiveCardObjectModelJNI.TableColumnDefinition_SetHorizontalCellContentAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public VerticalAlignment GetVerticalCellContentAlignment() {
-    return VerticalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetVerticalCellContentAlignment(swigCPtr, this));
+  public VerticalContentAlignment GetVerticalCellContentAlignment() {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetVerticalCellContentAlignment(swigCPtr, this));
   }
 
-  public void SetVerticalCellContentAlignment(VerticalAlignment value) {
+  public void SetVerticalCellContentAlignment(VerticalContentAlignment value) {
     AdaptiveCardObjectModelJNI.TableColumnDefinition_SetVerticalCellContentAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public SWIGTYPE_p_std__optionalT_unsigned_int_t GetWidth() {
-    return new SWIGTYPE_p_std__optionalT_unsigned_int_t(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetWidth(swigCPtr, this), true);
+  public @androidx.annotation.Nullable Long GetWidth() {
+    StdOptionalLong optvalue = new StdOptionalLong(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetWidth(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetWidth(SWIGTYPE_p_std__optionalT_unsigned_int_t value) {
-    AdaptiveCardObjectModelJNI.TableColumnDefinition_SetWidth(swigCPtr, this, SWIGTYPE_p_std__optionalT_unsigned_int_t.getCPtr(value));
+  public void SetWidth(@androidx.annotation.Nullable Long value) {
+    StdOptionalLong optvalue = (value == null) ? new StdOptionalLong() : new StdOptionalLong(value);
+    {
+      AdaptiveCardObjectModelJNI.TableColumnDefinition_SetWidth(swigCPtr, this, StdOptionalLong.getCPtr(optvalue), optvalue);
+    }
   }
 
-  public SWIGTYPE_p_std__optionalT_unsigned_int_t GetPixelWidth() {
-    return new SWIGTYPE_p_std__optionalT_unsigned_int_t(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetPixelWidth(swigCPtr, this), true);
+  public @androidx.annotation.Nullable Long GetPixelWidth() {
+    StdOptionalLong optvalue = new StdOptionalLong(AdaptiveCardObjectModelJNI.TableColumnDefinition_GetPixelWidth(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetPixelWidth(SWIGTYPE_p_std__optionalT_unsigned_int_t value) {
-    AdaptiveCardObjectModelJNI.TableColumnDefinition_SetPixelWidth(swigCPtr, this, SWIGTYPE_p_std__optionalT_unsigned_int_t.getCPtr(value));
+  public void SetPixelWidth(@androidx.annotation.Nullable Long value) {
+    StdOptionalLong optvalue = (value == null) ? new StdOptionalLong() : new StdOptionalLong(value);
+    {
+      AdaptiveCardObjectModelJNI.TableColumnDefinition_SetPixelWidth(swigCPtr, this, StdOptionalLong.getCPtr(optvalue), optvalue);
+    }
   }
 
   public static TableColumnDefinition Deserialize(ParseContext context, JsonValue root) {

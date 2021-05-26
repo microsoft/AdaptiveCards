@@ -79,11 +79,11 @@ public class Table extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Table_SetHorizontalCellContentAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public VerticalAlignment GetVerticalCellContentAlignment() {
-    return VerticalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Table_GetVerticalCellContentAlignment(swigCPtr, this));
+  public VerticalContentAlignment GetVerticalCellContentAlignment() {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Table_GetVerticalCellContentAlignment(swigCPtr, this));
   }
 
-  public void SetVerticalCellContentAlignment(VerticalAlignment value) {
+  public void SetVerticalCellContentAlignment(VerticalContentAlignment value) {
     AdaptiveCardObjectModelJNI.Table_SetVerticalCellContentAlignment(swigCPtr, this, value.swigValue());
   }
 
@@ -95,12 +95,12 @@ public class Table extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Table_SetGridStyle(swigCPtr, this, value.swigValue());
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__TableColumnDefinition_t_t GetColumns() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__TableColumnDefinition_t_t(AdaptiveCardObjectModelJNI.Table_GetColumns__SWIG_0(swigCPtr, this), false);
+  public TableColumnDefinitionVector GetColumns() {
+    return new TableColumnDefinitionVector(AdaptiveCardObjectModelJNI.Table_GetColumns__SWIG_0(swigCPtr, this), false);
   }
 
-  public void SetColumns(SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__TableColumnDefinition_t_t value) {
-    AdaptiveCardObjectModelJNI.Table_SetColumns(swigCPtr, this, SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__TableColumnDefinition_t_t.getCPtr(value));
+  public void SetColumns(TableColumnDefinitionVector value) {
+    AdaptiveCardObjectModelJNI.Table_SetColumns(swigCPtr, this, TableColumnDefinitionVector.getCPtr(value), value);
   }
 
   public TableRowVector GetRows() {
@@ -109,6 +109,11 @@ public class Table extends BaseCardElement {
 
   public void SetRows(TableRowVector value) {
     AdaptiveCardObjectModelJNI.Table_SetRows(swigCPtr, this, TableRowVector.getCPtr(value), value);
+  }
+
+  public static Table dynamic_cast(BaseCardElement baseCardElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.Table_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
+    return (cPtr == 0) ? null : new Table(cPtr, true);
   }
 
 }

@@ -68,9 +68,9 @@ public class Container extends CollectionTypeElement {
   }
 
   public @androidx.annotation.Nullable Boolean GetRtl() {
-  StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.Container_GetRtl(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.Container_GetRtl(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetRtl(@androidx.annotation.Nullable Boolean value) {
     StdOptionalBool optvalue = (value == null) ? new StdOptionalBool() : new StdOptionalBool(value);

@@ -54,8 +54,8 @@ namespace AdaptiveCards
         unsigned int GetMaxLines() const;
         void SetMaxLines(const unsigned int value);
 
-        HorizontalAlignment GetHorizontalAlignment() const;
-        void SetHorizontalAlignment(const HorizontalAlignment value);
+        std::optional<HorizontalAlignment> GetHorizontalAlignment() const;
+        void SetHorizontalAlignment(const std::optional<HorizontalAlignment> value);
 
         void SetLanguage(const std::string& value);
         const std::string& GetLanguage() const;
@@ -63,7 +63,7 @@ namespace AdaptiveCards
     private:
         bool m_wrap;
         unsigned int m_maxLines;
-        HorizontalAlignment m_hAlignment;
+        std::optional<HorizontalAlignment> m_hAlignment;
         std::optional<TextStyle> m_textStyle;
         std::shared_ptr<TextElementProperties> m_textElementProperties;
         void PopulateKnownPropertiesSet();
