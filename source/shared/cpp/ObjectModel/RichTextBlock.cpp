@@ -14,7 +14,7 @@
 using namespace AdaptiveCards;
 
 RichTextBlock::RichTextBlock() :
-    BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(HorizontalAlignment::Left)
+    BaseCardElement(CardElementType::RichTextBlock), m_hAlignment(std::nullopt)
 {
     PopulateKnownPropertiesSet();
 }
@@ -23,9 +23,9 @@ Json::Value RichTextBlock::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    if (m_hAlignment != HorizontalAlignment::Left)
+    if (m_hAlignment.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment.value());
     }
 
     const std::string& inlinesPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines);
@@ -38,12 +38,12 @@ Json::Value RichTextBlock::SerializeToJsonValue() const
     return root;
 }
 
-HorizontalAlignment RichTextBlock::GetHorizontalAlignment() const
+std::optional<HorizontalAlignment> RichTextBlock::GetHorizontalAlignment() const
 {
     return m_hAlignment;
 }
 
-void RichTextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
+void RichTextBlock::SetHorizontalAlignment(const std::optional<HorizontalAlignment> value)
 {
     m_hAlignment = value;
 }
@@ -63,8 +63,8 @@ std::shared_ptr<BaseCardElement> RichTextBlockParser::Deserialize(ParseContext& 
     ParseUtil::ExpectTypeString(json, CardElementType::RichTextBlock);
 
     std::shared_ptr<RichTextBlock> richTextBlock = BaseCardElement::Deserialize<RichTextBlock>(context, json);
-    richTextBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
-        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+    richTextBlock->SetHorizontalAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
+        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignmentFromString));
 
     auto inlines =
         ParseUtil::GetElementCollectionOfSingleType<Inline>(context, json, AdaptiveCardSchemaKey::Inlines, Inline::Deserialize, false);
