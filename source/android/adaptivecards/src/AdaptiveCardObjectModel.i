@@ -75,6 +75,8 @@ STD_OPTIONAL(AdaptiveCards::TextWeight, StdOptionalTextWeight)
 STD_OPTIONAL(AdaptiveCards::TextSize, StdOptionalTextSize)
 STD_OPTIONAL(AdaptiveCards::ForegroundColor, StdOptionalForegroundColor)
 STD_OPTIONAL(AdaptiveCards::TextStyle, StdOptionalTextStyle)
+STD_OPTIONAL(AdaptiveCards::HorizontalAlignment, StdOptionalHorizontalAlignment)
+STD_OPTIONAL(AdaptiveCards::VerticalContentAlignment, StdOptionalVerticalContentAlignment)
 
 %include <typemaps.i>
 %include <std_string.i>

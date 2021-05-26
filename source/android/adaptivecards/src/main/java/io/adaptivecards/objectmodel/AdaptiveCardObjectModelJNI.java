@@ -69,6 +69,16 @@ public class AdaptiveCardObjectModelJNI {
   public final static native boolean StdOptionalTextStyle_has_value(long jarg1, StdOptionalTextStyle jarg1_);
   public final static native int StdOptionalTextStyle_value(long jarg1, StdOptionalTextStyle jarg1_);
   public final static native void delete_StdOptionalTextStyle(long jarg1);
+  public final static native long new_StdOptionalHorizontalAlignment__SWIG_0();
+  public final static native long new_StdOptionalHorizontalAlignment__SWIG_1(int jarg1);
+  public final static native boolean StdOptionalHorizontalAlignment_has_value(long jarg1, StdOptionalHorizontalAlignment jarg1_);
+  public final static native int StdOptionalHorizontalAlignment_value(long jarg1, StdOptionalHorizontalAlignment jarg1_);
+  public final static native void delete_StdOptionalHorizontalAlignment(long jarg1);
+  public final static native long new_StdOptionalVerticalContentAlignment__SWIG_0();
+  public final static native long new_StdOptionalVerticalContentAlignment__SWIG_1(int jarg1);
+  public final static native boolean StdOptionalVerticalContentAlignment_has_value(long jarg1, StdOptionalVerticalContentAlignment jarg1_);
+  public final static native int StdOptionalVerticalContentAlignment_value(long jarg1, StdOptionalVerticalContentAlignment jarg1_);
+  public final static native void delete_StdOptionalVerticalContentAlignment(long jarg1);
 
     static {
         try {
@@ -646,8 +656,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_CollectionTypeElement(long jarg1);
   public final static native int CollectionTypeElement_GetStyle(long jarg1, CollectionTypeElement jarg1_);
   public final static native void CollectionTypeElement_SetStyle(long jarg1, CollectionTypeElement jarg1_, int jarg2);
-  public final static native int CollectionTypeElement_GetVerticalContentAlignment(long jarg1, CollectionTypeElement jarg1_);
-  public final static native void CollectionTypeElement_SetVerticalContentAlignment(long jarg1, CollectionTypeElement jarg1_, int jarg2);
+  public final static native long CollectionTypeElement_GetVerticalContentAlignment(long jarg1, CollectionTypeElement jarg1_);
+  public final static native void CollectionTypeElement_SetVerticalContentAlignment(long jarg1, CollectionTypeElement jarg1_, long jarg2, StdOptionalVerticalContentAlignment jarg2_);
   public final static native boolean CollectionTypeElement_GetPadding(long jarg1, CollectionTypeElement jarg1_);
   public final static native void CollectionTypeElement_SetPadding(long jarg1, CollectionTypeElement jarg1_, boolean jarg2);
   public final static native boolean CollectionTypeElement_GetBleed(long jarg1, CollectionTypeElement jarg1_);
@@ -713,8 +723,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void Image_SetImageSize(long jarg1, Image jarg1_, int jarg2);
   public final static native String Image_GetAltText(long jarg1, Image jarg1_);
   public final static native void Image_SetAltText(long jarg1, Image jarg1_, String jarg2);
-  public final static native int Image_GetHorizontalAlignment(long jarg1, Image jarg1_);
-  public final static native void Image_SetHorizontalAlignment(long jarg1, Image jarg1_, int jarg2);
+  public final static native long Image_GetHorizontalAlignment(long jarg1, Image jarg1_);
+  public final static native void Image_SetHorizontalAlignment(long jarg1, Image jarg1_, long jarg2, StdOptionalHorizontalAlignment jarg2_);
   public final static native long Image_GetSelectAction(long jarg1, Image jarg1_);
   public final static native void Image_SetSelectAction(long jarg1, Image jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long Image_GetPixelWidth(long jarg1, Image jarg1_);
@@ -1457,10 +1467,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void Table_SetShowGridLines(long jarg1, Table jarg1_, boolean jarg2);
   public final static native boolean Table_GetFirstRowAsHeaders(long jarg1, Table jarg1_);
   public final static native void Table_SetFirstRowAsHeaders(long jarg1, Table jarg1_, boolean jarg2);
-  public final static native int Table_GetHorizontalCellContentAlignment(long jarg1, Table jarg1_);
-  public final static native void Table_SetHorizontalCellContentAlignment(long jarg1, Table jarg1_, int jarg2);
-  public final static native int Table_GetVerticalCellContentAlignment(long jarg1, Table jarg1_);
-  public final static native void Table_SetVerticalCellContentAlignment(long jarg1, Table jarg1_, int jarg2);
+  public final static native long Table_GetHorizontalCellContentAlignment(long jarg1, Table jarg1_);
+  public final static native void Table_SetHorizontalCellContentAlignment(long jarg1, Table jarg1_, long jarg2, StdOptionalHorizontalAlignment jarg2_);
+  public final static native long Table_GetVerticalCellContentAlignment(long jarg1, Table jarg1_);
+  public final static native void Table_SetVerticalCellContentAlignment(long jarg1, Table jarg1_, long jarg2, StdOptionalVerticalContentAlignment jarg2_);
   public final static native int Table_GetGridStyle(long jarg1, Table jarg1_);
   public final static native void Table_SetGridStyle(long jarg1, Table jarg1_, int jarg2);
   public final static native long Table_GetColumns__SWIG_0(long jarg1, Table jarg1_);
@@ -1476,10 +1486,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_TableColumnDefinition();
   public final static native String TableColumnDefinition_Serialize(long jarg1, TableColumnDefinition jarg1_);
   public final static native long TableColumnDefinition_SerializeToJsonValue(long jarg1, TableColumnDefinition jarg1_);
-  public final static native int TableColumnDefinition_GetHorizontalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_);
-  public final static native void TableColumnDefinition_SetHorizontalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_, int jarg2);
-  public final static native int TableColumnDefinition_GetVerticalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_);
-  public final static native void TableColumnDefinition_SetVerticalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_, int jarg2);
+  public final static native long TableColumnDefinition_GetHorizontalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_);
+  public final static native void TableColumnDefinition_SetHorizontalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_, long jarg2, StdOptionalHorizontalAlignment jarg2_);
+  public final static native long TableColumnDefinition_GetVerticalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_);
+  public final static native void TableColumnDefinition_SetVerticalCellContentAlignment(long jarg1, TableColumnDefinition jarg1_, long jarg2, StdOptionalVerticalContentAlignment jarg2_);
   public final static native long TableColumnDefinition_GetWidth(long jarg1, TableColumnDefinition jarg1_);
   public final static native void TableColumnDefinition_SetWidth(long jarg1, TableColumnDefinition jarg1_, long jarg2, StdOptionalLong jarg2_);
   public final static native long TableColumnDefinition_GetPixelWidth(long jarg1, TableColumnDefinition jarg1_);
@@ -1493,10 +1503,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long TableRow_SerializeToJsonValue(long jarg1, TableRow jarg1_);
   public final static native long TableRow_GetCells__SWIG_0(long jarg1, TableRow jarg1_);
   public final static native void TableRow_SetCells(long jarg1, TableRow jarg1_, long jarg2, TableCellVector jarg2_);
-  public final static native int TableRow_GetVerticalCellContentAlignment(long jarg1, TableRow jarg1_);
-  public final static native void TableRow_SetVerticalCellContentAlignment(long jarg1, TableRow jarg1_, int jarg2);
-  public final static native int TableRow_GetHorizontalCellContentAlignment(long jarg1, TableRow jarg1_);
-  public final static native void TableRow_SetHorizontalCellContentAlignment(long jarg1, TableRow jarg1_, int jarg2);
+  public final static native long TableRow_GetVerticalCellContentAlignment(long jarg1, TableRow jarg1_);
+  public final static native void TableRow_SetVerticalCellContentAlignment(long jarg1, TableRow jarg1_, long jarg2, StdOptionalVerticalContentAlignment jarg2_);
+  public final static native long TableRow_GetHorizontalCellContentAlignment(long jarg1, TableRow jarg1_);
+  public final static native void TableRow_SetHorizontalCellContentAlignment(long jarg1, TableRow jarg1_, long jarg2, StdOptionalHorizontalAlignment jarg2_);
   public final static native int TableRow_GetStyle(long jarg1, TableRow jarg1_);
   public final static native void TableRow_SetStyle(long jarg1, TableRow jarg1_, int jarg2);
   public final static native long new_TableRowParser__SWIG_0();
@@ -1527,8 +1537,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextBlock_SetIsSubtle(long jarg1, TextBlock jarg1_, long jarg2, StdOptionalBool jarg2_);
   public final static native long TextBlock_GetMaxLines(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetMaxLines(long jarg1, TextBlock jarg1_, long jarg2);
-  public final static native int TextBlock_GetHorizontalAlignment(long jarg1, TextBlock jarg1_);
-  public final static native void TextBlock_SetHorizontalAlignment(long jarg1, TextBlock jarg1_, int jarg2);
+  public final static native long TextBlock_GetHorizontalAlignment(long jarg1, TextBlock jarg1_);
+  public final static native void TextBlock_SetHorizontalAlignment(long jarg1, TextBlock jarg1_, long jarg2, StdOptionalHorizontalAlignment jarg2_);
   public final static native void TextBlock_SetLanguage(long jarg1, TextBlock jarg1_, String jarg2);
   public final static native String TextBlock_GetLanguage(long jarg1, TextBlock jarg1_);
   public final static native long TextBlock_dynamic_cast(long jarg1, BaseCardElement jarg1_);
@@ -1650,8 +1660,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_RichTextBlock__SWIG_1(long jarg1, RichTextBlock jarg1_);
   public final static native void delete_RichTextBlock(long jarg1);
   public final static native long RichTextBlock_SerializeToJsonValue(long jarg1, RichTextBlock jarg1_);
-  public final static native int RichTextBlock_GetHorizontalAlignment(long jarg1, RichTextBlock jarg1_);
-  public final static native void RichTextBlock_SetHorizontalAlignment(long jarg1, RichTextBlock jarg1_, int jarg2);
+  public final static native long RichTextBlock_GetHorizontalAlignment(long jarg1, RichTextBlock jarg1_);
+  public final static native void RichTextBlock_SetHorizontalAlignment(long jarg1, RichTextBlock jarg1_, long jarg2, StdOptionalHorizontalAlignment jarg2_);
   public final static native long RichTextBlock_GetInlines__SWIG_0(long jarg1, RichTextBlock jarg1_);
   public final static native long RichTextBlock_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_RichTextBlockParser__SWIG_0();
