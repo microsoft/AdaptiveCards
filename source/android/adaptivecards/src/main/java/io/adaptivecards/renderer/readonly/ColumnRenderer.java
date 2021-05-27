@@ -138,6 +138,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
         columnRenderArgs.setContainerStyle(styleForThis);
         columnRenderArgs.setHorizontalAlignment(HorizontalAlignment.Left);
+        columnRenderArgs.setAncestorHasSelectAction(renderArgs.getAncestorHasSelectAction() || (column.GetSelectAction() != null));
         if (!column.GetItems().isEmpty())
         {
             try

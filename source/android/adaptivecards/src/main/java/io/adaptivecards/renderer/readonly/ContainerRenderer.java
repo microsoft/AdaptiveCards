@@ -93,6 +93,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         RenderArgs containerRenderArgs = new RenderArgs(renderArgs);
         containerRenderArgs.setContainerStyle(styleForThis);
         containerRenderArgs.setHorizontalAlignment(HorizontalAlignment.Left);
+        containerRenderArgs.setAncestorHasSelectAction(renderArgs.getAncestorHasSelectAction() || (container.GetSelectAction() != null));
         if (!container.GetItems().isEmpty())
         {
             try
