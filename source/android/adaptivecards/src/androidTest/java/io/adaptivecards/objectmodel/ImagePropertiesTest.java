@@ -235,11 +235,13 @@ public class ImagePropertiesTest
     @Test
     public void HorizontalAlignmentTest() throws Exception
     {
+        final String imageLeftAlignment = "{\"horizontalAlignment\":\"left\",\"type\":\"Image\",\"url\":\"http://\"}\n";
         final String imageCenterAlignment = "{\"horizontalAlignment\":\"center\",\"type\":\"Image\",\"url\":\"http://\"}\n";
         final String imageRightAlignment = "{\"horizontalAlignment\":\"right\",\"type\":\"Image\",\"url\":\"http://\"}\n";
 
         ArrayList<Pair<HorizontalAlignment, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(HorizontalAlignment.Left, s_defaultImage));
+        tests.add(new Pair<>(null, s_defaultImage));
+        tests.add(new Pair<>(HorizontalAlignment.Left, imageLeftAlignment));
         tests.add(new Pair<>(HorizontalAlignment.Center, imageCenterAlignment));
         tests.add(new Pair<>(HorizontalAlignment.Right, imageRightAlignment));
 

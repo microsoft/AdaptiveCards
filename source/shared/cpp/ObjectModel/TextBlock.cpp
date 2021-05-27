@@ -14,7 +14,7 @@
 using namespace AdaptiveCards;
 
 TextBlock::TextBlock() :
-    BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(HorizontalAlignment::Left),
+    BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(std::nullopt),
     m_textElementProperties(std::make_shared<TextElementProperties>())
 {
     PopulateKnownPropertiesSet();
@@ -27,9 +27,10 @@ Json::Value TextBlock::SerializeToJsonValue() const
     // ignore return -- properties are added directly to root
     (void)m_textElementProperties->SerializeToJsonValue(root);
 
-    if (m_hAlignment != HorizontalAlignment::Left)
+    if (m_hAlignment.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
+            HorizontalAlignmentToString(m_hAlignment.value_or(HorizontalAlignment::Left));
     }
 
     if (m_maxLines != 0)
@@ -146,12 +147,12 @@ void TextBlock::SetMaxLines(const unsigned int value)
     m_maxLines = value;
 }
 
-HorizontalAlignment TextBlock::GetHorizontalAlignment() const
+std::optional<HorizontalAlignment> TextBlock::GetHorizontalAlignment() const
 {
     return m_hAlignment;
 }
 
-void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
+void TextBlock::SetHorizontalAlignment(const std::optional<HorizontalAlignment> value)
 {
     m_hAlignment = value;
 }
@@ -176,8 +177,8 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& cont
     textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
     textBlock->SetStyle(ParseUtil::GetOptionalEnumValue<TextStyle>(json, AdaptiveCardSchemaKey::Style, TextStyleFromString));
     textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
-    textBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
-        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+    textBlock->SetHorizontalAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
+        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignmentFromString));
 
     return textBlock;
 }

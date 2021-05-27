@@ -61,19 +61,22 @@ namespace std {
          pgcppname="opt$javainput")
          std::optional<T>, std::optional<T>& "$javaclassname.getCPtr(opt$javainput)";
 %typemap(javaout) std::optional<T>, std::optional<T>& {
-  IntermediateT optvalue = new IntermediateT($jnicall, $owner);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    IntermediateT optvalue = new IntermediateT($jnicall, $owner);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 %enddef
 #pragma endregion
 
 STD_OPTIONAL(bool, StdOptionalBool)
 STD_OPTIONAL(double, StdOptionalDouble)
+STD_OPTIONAL(unsigned int, StdOptionalLong)
 STD_OPTIONAL(AdaptiveCards::FontType, StdOptionalFontType)
 STD_OPTIONAL(AdaptiveCards::TextWeight, StdOptionalTextWeight)
 STD_OPTIONAL(AdaptiveCards::TextSize, StdOptionalTextSize)
 STD_OPTIONAL(AdaptiveCards::ForegroundColor, StdOptionalForegroundColor)
 STD_OPTIONAL(AdaptiveCards::TextStyle, StdOptionalTextStyle)
+STD_OPTIONAL(AdaptiveCards::HorizontalAlignment, StdOptionalHorizontalAlignment)
+STD_OPTIONAL(AdaptiveCards::VerticalContentAlignment, StdOptionalVerticalContentAlignment)
 
 %include <typemaps.i>
 %include <std_string.i>
@@ -248,10 +251,10 @@ STD_OPTIONAL(AdaptiveCards::TextStyle, StdOptionalTextStyle)
 %shared_ptr(AdaptiveCards::Authentication)
 %shared_ptr(AdaptiveCards::TokenExchangeResource)
 %shared_ptr(AdaptiveCards::AuthCardButton)
-%shared_ptr(AdaptiveCards::Table)
 %shared_ptr(AdaptiveCards::TableCell)
 %shared_ptr(AdaptiveCards::TableColumnDefinition)
 %shared_ptr(AdaptiveCards::TableRow)
+%shared_ptr(AdaptiveCards::Table)
 
 
 %apply unsigned int& INOUT { unsigned int& };
@@ -467,6 +470,7 @@ namespace Json {
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 %template(TableCellVector) std::vector<std::shared_ptr<AdaptiveCards::TableCell> >;
 %template(TableRowVector) std::vector<std::shared_ptr<AdaptiveCards::TableRow> >;
+%template(TableColumnDefinitionVector) std::vector<std::shared_ptr<AdaptiveCards::TableColumnDefinition> >;
 %template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
@@ -607,6 +611,21 @@ namespace Json {
 %extend AdaptiveCards::ColumnSet {
     static AdaptiveCards::ColumnSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
         return dynamic_cast<AdaptiveCards::ColumnSet *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::Table::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::Table {
+    static AdaptiveCards::Table *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::Table *>(baseCardElement);
     }
 };
 
@@ -914,9 +933,10 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
-%include "../../../shared/cpp/ObjectModel/Table.h"
 %include "../../../shared/cpp/ObjectModel/TableCell.h"
+%include "../../../shared/cpp/ObjectModel/Table.h"
 %include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
+%include "../../../shared/cpp/ObjectModel/TableRow.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/MediaSource.h"
 %include "../../../shared/cpp/ObjectModel/Media.h"

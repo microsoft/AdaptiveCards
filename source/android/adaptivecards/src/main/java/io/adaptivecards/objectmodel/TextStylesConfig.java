@@ -45,6 +45,15 @@ public class TextStylesConfig {
     return (cPtr == 0) ? null : new TextStyleConfig(cPtr, false);
   }
 
+  public void setColumnHeader(TextStyleConfig value) {
+    AdaptiveCardObjectModelJNI.TextStylesConfig_columnHeader_set(swigCPtr, this, TextStyleConfig.getCPtr(value), value);
+  }
+
+  public TextStyleConfig getColumnHeader() {
+    long cPtr = AdaptiveCardObjectModelJNI.TextStylesConfig_columnHeader_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new TextStyleConfig(cPtr, false);
+  }
+
   public static TextStylesConfig Deserialize(JsonValue json, TextStylesConfig defaultValue) {
     return new TextStylesConfig(AdaptiveCardObjectModelJNI.TextStylesConfig_Deserialize(JsonValue.getCPtr(json), json, TextStylesConfig.getCPtr(defaultValue), defaultValue), true);
   }

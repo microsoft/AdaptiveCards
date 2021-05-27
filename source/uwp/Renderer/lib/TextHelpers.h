@@ -88,8 +88,14 @@ HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveCards::Rendering::Uwp::IA
 template<typename TAdaptiveType, typename TXamlTextBlockType>
 HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock, _In_ TXamlTextBlockType* xamlTextBlock)
 {
-    HAlignment horizontalAlignment;
-    RETURN_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&horizontalAlignment));
+    ComPtr<IReference<HAlignment>> horizontalAlignmentReference;
+    RETURN_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&horizontalAlignmentReference));
+
+    HAlignment horizontalAlignment = ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left;
+    if (horizontalAlignmentReference != nullptr)
+    {
+        horizontalAlignmentReference->get_Value(&horizontalAlignment);
+    }
 
     ComPtr<TXamlTextBlockType> xamlTextBlockComptr(xamlTextBlock);
     ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> xamlTextBlockAsFrameworkElement;

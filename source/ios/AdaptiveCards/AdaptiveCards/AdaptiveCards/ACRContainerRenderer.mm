@@ -65,7 +65,7 @@
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
 
-    const VerticalContentAlignment adaptiveVAlignment = containerElem->GetVerticalContentAlignment();
+    const VerticalContentAlignment adaptiveVAlignment = containerElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top);
     // Dont add the trailing space if the vertical content alignment is top/default
     if (adaptiveVAlignment == VerticalContentAlignment::Center || (adaptiveVAlignment == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
         trailingBlankSpace = [container addPaddingSpace];
