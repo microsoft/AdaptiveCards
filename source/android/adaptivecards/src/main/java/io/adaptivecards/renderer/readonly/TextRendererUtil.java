@@ -131,7 +131,7 @@ public class TextRendererUtil
         return alignment;
     }
 
-    static TextSize computeTextSize(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, TextSize declaredSize)
+    static TextSize computeTextSize(HostConfig hostConfig, TextStyle declaredStyle, TextSize declaredSize, RenderArgs renderArgs)
     {
         if (declaredSize != null)
         {
@@ -148,7 +148,7 @@ public class TextRendererUtil
         return TextSize.Default;
     }
 
-    static ForegroundColor computeTextColor(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, ForegroundColor declaredColor)
+    static ForegroundColor computeTextColor(HostConfig hostConfig, TextStyle declaredStyle, ForegroundColor declaredColor, RenderArgs renderArgs)
     {
         if (declaredColor != null)
         {
@@ -165,7 +165,7 @@ public class TextRendererUtil
         return ForegroundColor.Default;
     }
 
-    static TextWeight computeTextWeight(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, TextWeight declaredWeight)
+    static TextWeight computeTextWeight(HostConfig hostConfig, TextStyle declaredStyle, TextWeight declaredWeight, RenderArgs renderArgs)
     {
         if (declaredWeight != null)
         {
@@ -182,7 +182,7 @@ public class TextRendererUtil
         return TextWeight.Default;
     }
 
-    static boolean computeIsSubtle(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, Boolean declaredIsSubtle)
+    static boolean computeIsSubtle(HostConfig hostConfig, TextStyle declaredStyle, Boolean declaredIsSubtle, RenderArgs renderArgs)
     {
         if (declaredIsSubtle != null)
         {
@@ -199,7 +199,7 @@ public class TextRendererUtil
         return false;
     }
 
-    static FontType computeFontType(HostConfig hostConfig, RenderArgs renderArgs, TextStyle declaredStyle, FontType declaredFontType)
+    static FontType computeFontType(HostConfig hostConfig, TextStyle declaredStyle, FontType declaredFontType, RenderArgs renderArgs)
     {
         if (declaredFontType != null)
         {

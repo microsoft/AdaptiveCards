@@ -158,7 +158,7 @@ public class RendererUtil
         }
     }
 
-    static HorizontalAlignment computeHorizontalAlignment(RenderArgs renderArgs, HorizontalAlignment declaredAlignment)
+    static HorizontalAlignment computeHorizontalAlignment(HorizontalAlignment declaredAlignment, RenderArgs renderArgs)
     {
         if (declaredAlignment != null)
         {

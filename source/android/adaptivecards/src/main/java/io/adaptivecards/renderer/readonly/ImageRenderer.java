@@ -162,7 +162,7 @@ public class ImageRenderer extends BaseCardElementRenderer
      */
     private static void applyHorizontalAlignment(ConstraintSet constraintSet, int viewId, HorizontalAlignment declaredAlignment, RenderArgs renderArgs)
     {
-        HorizontalAlignment computedAlignment = RendererUtil.computeHorizontalAlignment(renderArgs, declaredAlignment);
+        HorizontalAlignment computedAlignment = RendererUtil.computeHorizontalAlignment(declaredAlignment, renderArgs);
         float bias = 0;
         if (computedAlignment == HorizontalAlignment.Center)
         {
