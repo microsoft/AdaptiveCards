@@ -344,7 +344,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(renderContext->get_FeatureRegistration(&featureRegistration));
         ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
 
-        HRESULT hr = XamlHelpers::IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
+        HRESULT hr = IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
             HRESULT hr = S_OK;
 
             // Get fallback state

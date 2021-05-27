@@ -36,8 +36,8 @@ namespace AdaptiveCards
         std::string GetAltText() const;
         void SetAltText(const std::string& value);
 
-        HorizontalAlignment GetHorizontalAlignment() const;
-        void SetHorizontalAlignment(const HorizontalAlignment value);
+        std::optional<HorizontalAlignment> GetHorizontalAlignment() const;
+        void SetHorizontalAlignment(const std::optional<HorizontalAlignment> value);
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
@@ -60,7 +60,7 @@ namespace AdaptiveCards
         unsigned int m_pixelWidth;
         unsigned int m_pixelHeight;
         std::string m_altText;
-        HorizontalAlignment m_hAlignment;
+        std::optional<HorizontalAlignment> m_hAlignment;
         std::shared_ptr<BaseActionElement> m_selectAction;
     };
 

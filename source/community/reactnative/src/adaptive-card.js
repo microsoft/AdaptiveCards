@@ -23,6 +23,7 @@ import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
 import { ModelFactory } from './models';
+import { PlatformIOS, BehaviourHeight, BehaviourPadding } from "./utils/constants"
 
 export default class AdaptiveCard extends React.Component {
 
@@ -35,26 +36,37 @@ export default class AdaptiveCard extends React.Component {
 
 		this.payload = props.payload;
 
-		// hostConfig
-		this.hostConfig = new HostConfig(props.hostConfig || defaultHostConfig);
+		if (props.isActionShowCard && props.configManager) {
+			/**
+			 * If it's ActionShowCard then all the config will be already available in props
+			 */
+			this.configManager = props.configManager;
+			this.hostConfig = props.configManager.hostConfig;
+			this.themeConfig = props.configManager.themeConfig;
+			this.styleConfig = props.configManager.styleConfig;
+		} else {
+			// hostConfig
+			this.hostConfig = new HostConfig(props.hostConfig || defaultHostConfig);
 
-		// themeConfig
-		let themeConfigValues = { ...defaultThemeConfig, ...(props.themeConfig || {}) }
-		this.themeConfig = new ThemeConfig(themeConfigValues);
+			// themeConfig
+			let themeConfigValues = { ...defaultThemeConfig, ...(props.themeConfig || {}) }
+			this.themeConfig = new ThemeConfig(themeConfigValues);
 
-		//styleConfig
-		this.styleConfig = new StyleConfig(this.hostConfig, this.themeConfig).getStyleConfig();
+			//styleConfig
+			this.styleConfig = new StyleConfig(this.hostConfig, this.themeConfig).getStyleConfig();
 
-		if (this.props.isActionShowCard)
+			this.configManager = {
+				hostConfig: this.hostConfig,
+				themeConfig: this.themeConfig,
+				styleConfig: this.styleConfig
+			}
+		}
+
+		if (props.isActionShowCard)
 			this.cardModel = props.payload;
 		else
 			this.cardModel = ModelFactory.createElement(props.payload, undefined, this.hostConfig);
 
-		this.configManager = {
-			hostConfig: this.hostConfig,
-			themeConfig: this.themeConfig,
-			styleConfig: this.styleConfig
-		}
 		this.state = {
 			showErrors: false,
 			payload: this.payload,
@@ -186,24 +198,29 @@ export default class AdaptiveCard extends React.Component {
 
 		var adaptiveCardContent =
 			(
-				<KeyboardAvoidingView behavior={Platform.OS === 'ios'
-					? 'padding'
-					: undefined}>
-					<ContainerWrapper configManager={this.configManager} style={containerStyles} json={this.state.cardModel}>
-						<ScrollView
-							contentContainerStyle={this.props.contentContainerStyle}
-							showsHorizontalScrollIndicator={true}
-							showsVerticalScrollIndicator={true}
-							alwaysBounceVertical={false}
-							alwaysBounceHorizontal={false}
-							scrollEnabled={this.props.cardScrollEnabled}>
-							{this.parsePayload()}
-							{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
-								<ActionWrapper configManager={this.configManager} actions={this.state.cardModel.actions} />}
-						</ScrollView>
-					</ContainerWrapper>
+				<ContainerWrapper configManager={this.configManager} style={containerStyles} json={this.state.cardModel}>
+					<ScrollView
+						contentContainerStyle={this.props.contentContainerStyle}
+						showsHorizontalScrollIndicator={true}
+						showsVerticalScrollIndicator={true}
+						alwaysBounceVertical={false}
+						alwaysBounceHorizontal={false}
+						scrollEnabled={this.props.cardScrollEnabled}>
+						{this.parsePayload()}
+						{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
+							<ActionWrapper configManager={this.configManager} actions={this.state.cardModel.actions} />}
+					</ScrollView>
+				</ContainerWrapper>
+			);
+
+		if (!this.props.isActionShowCard) {
+			adaptiveCardContent = (
+				<KeyboardAvoidingView keyboardVerticalOffset={40}
+					behavior={Platform.OS == PlatformIOS ? BehaviourPadding : BehaviourHeight}>
+					{adaptiveCardContent}
 				</KeyboardAvoidingView>
 			);
+		}
 
 		// checks if selectAction option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.selectAction)) {

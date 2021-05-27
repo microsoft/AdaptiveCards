@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveChoiceSetInput.h"
+#include "AdaptiveChoiceInput.h"
 
 #include "Util.h"
 #include "Vector.h"
@@ -18,7 +19,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
-        m_choices = Microsoft::WRL::Make<Vector<AdaptiveChoiceInput*>>();
+        m_choices = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput*>>();
     }
 
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept
@@ -94,7 +95,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<AdaptiveChoiceInput*>** choices)
+    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput*>** choices)
     {
         return m_choices.CopyTo(choices);
     }

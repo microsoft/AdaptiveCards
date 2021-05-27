@@ -10,7 +10,7 @@ using namespace AdaptiveCards;
 
 Image::Image() :
     BaseCardElement(CardElementType::Image), m_imageStyle(ImageStyle::Default), m_imageSize(ImageSize::None),
-    m_pixelWidth(0), m_pixelHeight(0), m_hAlignment(HorizontalAlignment::Left)
+    m_pixelWidth(0), m_pixelHeight(0), m_hAlignment(std::nullopt)
 {
     PopulateKnownPropertiesSet();
 }
@@ -60,9 +60,10 @@ Json::Value Image::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor)] = m_backgroundColor;
     }
 
-    if (m_hAlignment != HorizontalAlignment::Left)
+    if (m_hAlignment.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
+            HorizontalAlignmentToString(m_hAlignment.value_or(HorizontalAlignment::Left));
     }
 
     if (!m_altText.empty())
@@ -129,12 +130,12 @@ void Image::SetAltText(const std::string& value)
     m_altText = value;
 }
 
-HorizontalAlignment Image::GetHorizontalAlignment() const
+std::optional<HorizontalAlignment> Image::GetHorizontalAlignment() const
 {
     return m_hAlignment;
 }
 
-void Image::SetHorizontalAlignment(const HorizontalAlignment value)
+void Image::SetHorizontalAlignment(const std::optional<HorizontalAlignment> value)
 {
     m_hAlignment = value;
 }
@@ -188,8 +189,8 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(Par
     image->SetBackgroundColor(ValidateColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor), context.warnings));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
-    image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
-        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+    image->SetHorizontalAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
+        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignmentFromString));
 
     const auto& widthDimension =
         ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width), &context.warnings);

@@ -105,17 +105,31 @@ namespace AdaptiveCards
 #pragma clang diagnostic pop
 #endif
 
-    struct TextConfig
+    struct TextStyleConfig
     {
         TextWeight weight = TextWeight::Default;
         TextSize size = TextSize::Default;
-        FontType fontType = FontType::Default;
-        ForegroundColor color = ForegroundColor::Default;
         bool isSubtle = false;
+        ForegroundColor color = ForegroundColor::Default;
+        FontType fontType = FontType::Default;
+
+        static TextStyleConfig Deserialize(const Json::Value& json, const TextStyleConfig& defaultValue);
+    };
+
+    struct FactSetTextConfig : TextStyleConfig
+    {
         bool wrap = true;
         unsigned int maxWidth = ~0U;
 
-        static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
+        static FactSetTextConfig Deserialize(const Json::Value& json, const FactSetTextConfig& defaultValue);
+    };
+
+    struct TextStylesConfig
+    {
+        TextStyleConfig heading = {TextWeight::Bolder, TextSize::Large, false, ForegroundColor::Default, FontType::Default};
+        TextStyleConfig columnHeader = {TextWeight::Bolder, TextSize::Default, false, ForegroundColor::Default, FontType::Default};
+
+        static TextStylesConfig Deserialize(const Json::Value& json, const TextStylesConfig& defaultValue);
     };
 
     struct SpacingConfig
@@ -171,8 +185,8 @@ namespace AdaptiveCards
 
     struct FactSetConfig
     {
-        TextConfig title{TextWeight::Bolder, TextSize::Default, FontType::Default, ForegroundColor::Default, false, true, 150};
-        TextConfig value{TextWeight::Default, TextSize::Default, FontType::Default, ForegroundColor::Default, false, true, ~0U};
+        FactSetTextConfig title{TextWeight::Bolder, TextSize::Default, false, ForegroundColor::Default, FontType::Default, true, 150};
+        FactSetTextConfig value{TextWeight::Default, TextSize::Default, false, ForegroundColor::Default, FontType::Default, true, ~0U};
         unsigned int spacing = 10;
 
         static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -181,7 +195,7 @@ namespace AdaptiveCards
     struct ContainerStyleDefinition
     {
         std::string backgroundColor = "#FFFFFFFF";
-        std::string borderColor = "#FF7F7F7F7F";
+        std::string borderColor = "#FF7F7F7F";
         unsigned int borderThickness = 0; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
                                           // (see #1150)
         ColorsConfig foregroundColors;
@@ -192,7 +206,7 @@ namespace AdaptiveCards
     struct ContainerStylesDefinition
     {
         ContainerStyleDefinition defaultPalette = {"#FFFFFFFF",
-                                                   "#FF7F7F7F7F",
+                                                   "#FF7F7F7F",
                                                    0,
                                                    {
                                                        // Foreground Colors
@@ -218,7 +232,7 @@ namespace AdaptiveCards
                                                         {"#FF8B0000", "#B28B0000", {"#FFFFFF00", "#FFFFFFE0"}} // attention
                                                     }};
         ContainerStyleDefinition goodPalette = {"#FFD5F0DD",
-                                                "#FF7F7F7F7F",
+                                                "#FF7F7F7F",
                                                 0,
                                                 {
                                                     // Foreground Colors
@@ -232,7 +246,7 @@ namespace AdaptiveCards
                                                 }};
         ContainerStyleDefinition attentionPalette = {
             "#F7E9E9",
-            "#FF7F7F7F7F",
+            "#FF7F7F7F",
             0,
             {
                 // Foreground Colors
@@ -246,7 +260,7 @@ namespace AdaptiveCards
             },
         };
         ContainerStyleDefinition warningPalette = {"#F7F7DF",
-                                                   "#FF7F7F7F7F",
+                                                   "#FF7F7F7F",
                                                    0,
                                                    {
                                                        // Foreground Colors
@@ -259,7 +273,7 @@ namespace AdaptiveCards
                                                        {"#FF8B0000", "#B28B0000", {"#FFFFFF00", "#FFFFFFE0"}} // attention
                                                    }};
         ContainerStyleDefinition accentPalette = {"#DCE5F7",
-                                                  "#FF7F7F7F7F",
+                                                  "#FF7F7F7F",
                                                   0,
                                                   {
                                                       // Foreground Colors
@@ -344,10 +358,17 @@ namespace AdaptiveCards
         static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
     };
 
-    struct HeadingsConfig
+    struct TextBlockConfig
     {
-        unsigned int level = 2;
-        static HeadingsConfig Deserialize(const Json::Value& json, const HeadingsConfig& defaultValue);
+        unsigned int headingLevel = 2;
+
+        static TextBlockConfig Deserialize(const Json::Value& json, const TextBlockConfig& defaultValue);
+    };
+
+    struct TableConfig
+    {
+        unsigned int cellSpacing = 8;
+        static TableConfig Deserialize(const Json::Value& json, const TableConfig& defaultValue);
     };
 
     class HostConfig
@@ -419,8 +440,14 @@ namespace AdaptiveCards
         InputsConfig GetInputs() const;
         void SetInputs(const InputsConfig value);
 
-        HeadingsConfig GetHeadings() const;
-        void SetHeadings(const HeadingsConfig value);
+        TextStylesConfig GetTextStyles() const;
+        void SetTextStyles(const TextStylesConfig value);
+
+        TextBlockConfig GetTextBlock() const;
+        void SetTextBlock(const TextBlockConfig value);
+
+        TableConfig GetTable() const;
+        void SetTable(const TableConfig value);
 
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
@@ -443,6 +470,8 @@ namespace AdaptiveCards
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
         InputsConfig _inputs;
-        HeadingsConfig _headings;
+        TextBlockConfig _textBlock;
+        TextStylesConfig _textStyles;
+        TableConfig _table;
     };
 }

@@ -51,52 +51,52 @@ DateTimePreparser TextRun::GetTextForDateParsing() const
     return m_textElementProperties->GetTextForDateParsing();
 }
 
-TextSize TextRun::GetTextSize() const
+std::optional<TextSize> TextRun::GetTextSize() const
 {
     return m_textElementProperties->GetTextSize();
 }
 
-void TextRun::SetTextSize(const TextSize value)
+void TextRun::SetTextSize(const std::optional<TextSize> value)
 {
     m_textElementProperties->SetTextSize(value);
 }
 
-TextWeight TextRun::GetTextWeight() const
+std::optional<TextWeight> TextRun::GetTextWeight() const
 {
     return m_textElementProperties->GetTextWeight();
 }
 
-void TextRun::SetTextWeight(const TextWeight value)
+void TextRun::SetTextWeight(const std::optional<TextWeight> value)
 {
     m_textElementProperties->SetTextWeight(value);
 }
 
-FontType TextRun::GetFontType() const
+std::optional<FontType> TextRun::GetFontType() const
 {
     return m_textElementProperties->GetFontType();
 }
 
-void TextRun::SetFontType(const FontType value)
+void TextRun::SetFontType(const std::optional<FontType> value)
 {
     m_textElementProperties->SetFontType(value);
 }
 
-ForegroundColor TextRun::GetTextColor() const
+std::optional<ForegroundColor> TextRun::GetTextColor() const
 {
     return m_textElementProperties->GetTextColor();
 }
 
-void TextRun::SetTextColor(const ForegroundColor value)
+void TextRun::SetTextColor(const std::optional<ForegroundColor> value)
 {
     m_textElementProperties->SetTextColor(value);
 }
 
-bool TextRun::GetIsSubtle() const
+std::optional<bool> TextRun::GetIsSubtle() const
 {
     return m_textElementProperties->GetIsSubtle();
 }
 
-void TextRun::SetIsSubtle(const bool value)
+void TextRun::SetIsSubtle(const std::optional<bool> value)
 {
     m_textElementProperties->SetIsSubtle(value);
 }

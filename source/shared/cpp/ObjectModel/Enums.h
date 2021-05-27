@@ -38,6 +38,7 @@ namespace AdaptiveCards
         ButtonSpacing,
         Buttons,
         Card,
+        CellSpacing,
         Cells,
         Center,
         ChoiceSet,
@@ -45,6 +46,7 @@ namespace AdaptiveCards
         Color,
         ColorConfig,
         Column,
+        ColumnHeader,
         ColumnSet,
         Columns,
         ConnectionName,
@@ -74,7 +76,8 @@ namespace AdaptiveCards
         ForegroundColors,
         Good,
         GridStyle,
-        Headings,
+        Heading,
+        HeadingLevel,
         Height,
         Highlight,
         HighlightColor,
@@ -109,7 +112,6 @@ namespace AdaptiveCards
         Language,
         Large,
         Left,
-        Level,
         Light,
         Lighter,
         LineColor,
@@ -173,6 +175,7 @@ namespace AdaptiveCards
         TextBlock,
         TextConfig,
         TextInput,
+        TextStyles,
         TextWeight,
         Thickness,
         TimeInput,
@@ -239,7 +242,7 @@ namespace AdaptiveCards
 
     enum class TextStyle
     {
-        Paragraph = 0,
+        Default = 0,
         Heading
     };
     DECLARE_ADAPTIVECARD_ENUM(TextStyle);

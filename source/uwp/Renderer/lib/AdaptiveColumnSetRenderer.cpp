@@ -89,7 +89,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IPanel> gridAsPanel;
         RETURN_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
-        HRESULT hrColumns = XamlHelpers::IterateOverVectorWithFailure<AdaptiveColumn, IAdaptiveColumn>(columns.Get(), ancestorHasFallback, [&](IAdaptiveColumn* column) {
+        HRESULT hrColumns = IterateOverVectorWithFailure<AdaptiveColumn, IAdaptiveColumn>(columns.Get(), ancestorHasFallback, [&](IAdaptiveColumn* column) {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
             RETURN_IF_FAILED(localColumn.As(&columnAsCardElement));

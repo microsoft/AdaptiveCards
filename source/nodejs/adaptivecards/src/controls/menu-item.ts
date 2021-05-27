@@ -4,12 +4,27 @@ import { defaultHostConfig, HostConfig } from "../host-config";
 import { Constants } from "./constants";
 
 export class MenuItem {
+    private _hostConfig?: HostConfig;
     private _element: HTMLElement;
     private _value: string;
+    private _isEnabled: boolean = true;
 
     private click() {
-        if (this.onClick) {
+        if (this.isEnabled && this.onClick) {
             this.onClick(this);
+        }
+    }
+
+    private updateCssClasses() {
+        if (this._element) {
+            let effectiveHostConfig = this._hostConfig ? this._hostConfig : defaultHostConfig;
+
+            this._element.className = effectiveHostConfig.makeCssClassName("ac-ctrl");
+            this._element.classList.add(effectiveHostConfig.makeCssClassName(this.isEnabled ? "ac-ctrl-dropdown-item" : "ac-ctrl-dropdown-item-disabled"));
+
+            if (!this.isEnabled) {
+                this._element.classList.add(effectiveHostConfig.makeCssClassName("ac-disabled"));
+            }
         }
     }
 
@@ -27,21 +42,28 @@ export class MenuItem {
     }
 
     render(hostConfig?: HostConfig): HTMLElement {
-        if (!this._element) {
-            let effectiveHostConfig = hostConfig ? hostConfig : defaultHostConfig;
+        this._hostConfig = hostConfig;
 
+        if (!this._element) {
             this._element = document.createElement("span");
-            this._element.className = effectiveHostConfig.makeCssClassName("ac-ctrl ac-ctrl-dropdown-item");
             this._element.innerText = this.value;
             this._element.setAttribute("role", "menuitem");
+
+            if (!this.isEnabled) {
+                this._element.setAttribute("aria-disabled", "true");
+            }
+
             this._element.setAttribute("aria-selected", "false");
             this._element.onmouseup = (e) => { this.click(); };
             this._element.onkeydown = (e) => {
                 if (e.key === Constants.keys.enter) {
-                    this.click();
                     e.cancelBubble = true;
+                    
+                    this.click();
                 }
             };
+
+            this.updateCssClasses();
         }
 
         return this._element;
@@ -56,6 +78,18 @@ export class MenuItem {
 
         if (this._element) {
             this._element.innerText = newValue;
+        }
+    }
+
+    get isEnabled(): boolean {
+        return this._isEnabled;
+    }
+
+    set isEnabled(value: boolean) {
+        if (this._isEnabled !== value) {
+            this._isEnabled = value;
+
+            this.updateCssClasses();
         }
     }
 }

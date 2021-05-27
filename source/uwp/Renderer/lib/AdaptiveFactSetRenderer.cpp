@@ -65,7 +65,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IVector<AdaptiveFact*>> facts;
         RETURN_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
         int currentFact = 0, validFacts = 0;
-        XamlHelpers::IterateOverVector<AdaptiveFact, IAdaptiveFact>(
+        IterateOverVector<AdaptiveFact, IAdaptiveFact>(
             facts.Get(),
             [xamlGrid, gridStatics, factSetGridHeight, &currentFact, &validFacts, renderContext, renderArgs](IAdaptiveFact* fact) {
                 ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(
@@ -87,7 +87,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 RETURN_IF_FAILED(localFact->get_Language(language.GetAddressOf()));
 
                 // Create the title xaml textblock and style it from Host options
-                ComPtr<IAdaptiveTextConfig> titleTextConfig;
+                ComPtr<IAdaptiveFactSetTextConfig> titleTextConfig;
                 RETURN_IF_FAILED(factSetConfig->get_Title(&titleTextConfig));
 
                 ComPtr<ITextBlock> titleTextBlock =
@@ -96,11 +96,11 @@ namespace AdaptiveCards::Rendering::Uwp
                 HString factTitle;
                 RETURN_IF_FAILED(localFact->get_Title(factTitle.GetAddressOf()));
 
-                RETURN_IF_FAILED(SetXamlInlinesWithTextConfig(
+                RETURN_IF_FAILED(SetXamlInlinesWithFactSetTextConfig(
                     renderContext, renderArgs, titleTextConfig.Get(), language.Get(), factTitle.Get(), titleTextBlock.Get()));
 
                 // Create the value xaml textblock and style it from Host options
-                ComPtr<IAdaptiveTextConfig> valueTextConfig;
+                ComPtr<IAdaptiveFactSetTextConfig> valueTextConfig;
                 RETURN_IF_FAILED(factSetConfig->get_Value(&valueTextConfig));
 
                 ComPtr<ITextBlock> valueTextBlock =
@@ -109,7 +109,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 HString factValue;
                 RETURN_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
 
-                RETURN_IF_FAILED(SetXamlInlinesWithTextConfig(
+                RETURN_IF_FAILED(SetXamlInlinesWithFactSetTextConfig(
                     renderContext, renderArgs, valueTextConfig.Get(), language.Get(), factValue.Get(), valueTextBlock.Get()));
 
                 if (factTitle.Get() != nullptr || factValue.Get() != nullptr)

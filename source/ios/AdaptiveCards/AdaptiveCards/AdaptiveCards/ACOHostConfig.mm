@@ -52,9 +52,13 @@ using namespace AdaptiveCards;
 - (void)importFontFamily:(AdaptiveCards::FontType)type
 {
     NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(type).c_str() encoding:NSUTF8StringEncoding];
-    if ([UIFont.familyNames containsObject:requestedFontFamilyName]) {
-        NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
-        _fontFamilyNames[key] = requestedFontFamilyName;
+    NSSet<NSString *> *fontFamilySet = [NSSet setWithArray:UIFont.familyNames];
+    for (NSString *fontName in [requestedFontFamilyName componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@","]]) {
+        if ([fontFamilySet containsObject:fontName]) {
+            NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
+            _fontFamilyNames[key] = fontName;
+            break;
+        }
     }
 }
 

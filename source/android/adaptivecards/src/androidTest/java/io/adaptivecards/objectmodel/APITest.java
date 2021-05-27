@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

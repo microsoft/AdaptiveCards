@@ -32,9 +32,23 @@ namespace AdaptiveCards::Rendering::Uwp
 
         m_wrap = sharedTextBlock->GetWrap();
         m_maxLines = sharedTextBlock->GetMaxLines();
-        m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
-        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>(sharedTextBlock->GetStyle());
+
+        if (sharedTextBlock->GetHorizontalAlignment().has_value())
+        {
+            m_horizontalAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::HAlignment>(
+                                     sharedTextBlock->GetHorizontalAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>>()
+                    .get();
+        }
+
+        if (sharedTextBlock->GetStyle().has_value())
+        {
+            m_style = winrt::box_value(
+                          static_cast<winrt::AdaptiveCards::Rendering::Uwp::TextStyle>(sharedTextBlock->GetStyle().value()))
+                          .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>>()
+                          .get();
+        }
 
         InitializeTextElement(sharedTextBlock);
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
@@ -66,25 +80,25 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment)
     {
-        *alignment = m_horizontalAlignment;
+        return m_horizontalAlignment.CopyTo(horizontalAlignment);
+    }
+
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment)
+    {
+        m_horizontalAlignment = horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** style)
     {
-        m_horizontalAlignment = alignment;
-        return S_OK;
+        return m_style.CopyTo(style);
     }
 
-    HRESULT AdaptiveTextBlock::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextStyle* style)
-    {
-        *style = m_style;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTextBlock::put_Style(ABI::AdaptiveCards::Rendering::Uwp::TextStyle style)
+    HRESULT AdaptiveTextBlock::put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* style)
     {
         m_style = style;
         return S_OK;
@@ -106,8 +120,20 @@ namespace AdaptiveCards::Rendering::Uwp
 
         textBlock->SetWrap(m_wrap);
         textBlock->SetMaxLines(m_maxLines);
-        textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
-        textBlock->SetStyle(static_cast<AdaptiveCards::TextStyle>(m_style));
+
+        if (m_horizontalAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::HAlignment horizontalAlignmentValue;
+            RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
+            textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
+        }
+
+        if (m_style != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::TextStyle styleValue;
+            RETURN_IF_FAILED(m_style->get_Value(&styleValue));
+            textBlock->SetStyle(static_cast<AdaptiveCards::TextStyle>(styleValue));
+        }
 
         sharedTextBlock = std::move(textBlock);
         return S_OK;
