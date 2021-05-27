@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import org.junit.Assert;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
@@ -231,5 +233,215 @@ public class APITest
         }
     }
 
+    public static class MockImageRendererExpectingAncestorWithNoSelectActionRenderer extends BaseCardElementRenderer
+    {
+        // This variable exists in case there are systems in place to catch exceptions on rendering
+        public boolean safetyCheck;
+
+        @Override
+        public View render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager,
+                           ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler,
+                           HostConfig hostConfig, RenderArgs renderArgs) throws Exception
+        {
+            ImageView img = new ImageView(context);
+            viewGroup.addView(img);
+
+            safetyCheck = renderArgs.getAncestorHasSelectAction();
+            Assert.assertEquals(false, renderArgs.getAncestorHasSelectAction());
+
+            return img;
+        }
+    }
+
+    public static class MockImageRendererExpectingAncestorWithSelectActionRenderer extends BaseCardElementRenderer
+    {
+        // This variable exists in case there are systems in place to catch exceptions on rendering
+        public boolean safetyCheck;
+
+        @Override
+        public View render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager,
+                           ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler,
+                           HostConfig hostConfig, RenderArgs renderArgs) throws Exception
+        {
+            ImageView img = new ImageView(context);
+            viewGroup.addView(img);
+
+            safetyCheck = renderArgs.getAncestorHasSelectAction();
+            Assert.assertEquals(true, renderArgs.getAncestorHasSelectAction());
+
+            return img;
+        }
+    }
+
+    @Test
+    public void TestContainerHasNoSelectActionInRenderArgs() throws Exception
+    {
+        AdaptiveCard card = new AdaptiveCard();
+        Container mainContainer = TestUtil.createMockContainer();
+        card.GetBody().add(mainContainer);
+
+        Container nestedContainer = TestUtil.createMockContainer();
+        nestedContainer.GetItems().add(TestUtil.createMockImage());
+        mainContainer.GetItems().add(nestedContainer);
+
+        MockImageRendererExpectingAncestorWithNoSelectActionRenderer imageRenderer =  new MockImageRendererExpectingAncestorWithNoSelectActionRenderer();
+        CardRendererRegistration.getInstance().registerRenderer("Image", imageRenderer);
+
+        Context context = InstrumentationRegistry.getTargetContext();
+
+        try
+        {
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(context, null, card, new ActionHandler(), new HostConfig());
+            Assert.assertEquals(false, imageRenderer.safetyCheck);
+        }
+        catch (Exception e)
+        {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void TestContainerSetSelectActionInRenderArgs() throws Exception
+    {
+        AdaptiveCard card = new AdaptiveCard();
+        Container mainContainer = TestUtil.createMockContainer();
+        mainContainer.SetSelectAction(TestUtil.createSampleSubmitAction());
+        card.GetBody().add(mainContainer);
+
+        Container nestedContainer = TestUtil.createMockContainer();
+        nestedContainer.GetItems().add(TestUtil.createMockImage());
+        mainContainer.GetItems().add(nestedContainer);
+
+        MockImageRendererExpectingAncestorWithSelectActionRenderer imageRenderer =  new MockImageRendererExpectingAncestorWithSelectActionRenderer();
+        CardRendererRegistration.getInstance().registerRenderer("Image", imageRenderer);
+
+        Context context = InstrumentationRegistry.getTargetContext();
+
+        try
+        {
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(context, null, card, new ActionHandler(), new HostConfig());
+            Assert.assertEquals(true, imageRenderer.safetyCheck);
+        }
+        catch (Exception e)
+        {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void TestColumnSetHasNoSelectActionInRenderArgs() throws Exception
+    {
+        AdaptiveCard card = new AdaptiveCard();
+        Column column = TestUtil.createMockColumn();
+        ColumnSet columnSet = TestUtil.createMockColumnSet(column);
+        card.GetBody().add(columnSet);
+
+        Container nestedContainer = TestUtil.createMockContainer();
+        nestedContainer.GetItems().add(TestUtil.createMockImage());
+        column.GetItems().add(nestedContainer);
+
+        MockImageRendererExpectingAncestorWithNoSelectActionRenderer imageRenderer =  new MockImageRendererExpectingAncestorWithNoSelectActionRenderer();
+        CardRendererRegistration.getInstance().registerRenderer("Image", imageRenderer);
+
+        Context context = InstrumentationRegistry.getTargetContext();
+
+        try
+        {
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(context, null, card, new ActionHandler(), new HostConfig());
+            Assert.assertEquals(false, imageRenderer.safetyCheck);
+        }
+        catch (Exception e)
+        {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void TestColumnSetSetSelectActionInRenderArgs() throws Exception
+    {
+        AdaptiveCard card = new AdaptiveCard();
+        Column column = TestUtil.createMockColumn();
+        ColumnSet columnSet = TestUtil.createMockColumnSet(column);
+        columnSet.SetSelectAction(TestUtil.createSampleSubmitAction());
+        card.GetBody().add(columnSet);
+
+        Container nestedContainer = TestUtil.createMockContainer();
+        nestedContainer.GetItems().add(TestUtil.createMockImage());
+        column.GetItems().add(nestedContainer);
+
+        MockImageRendererExpectingAncestorWithSelectActionRenderer imageRenderer =  new MockImageRendererExpectingAncestorWithSelectActionRenderer();
+        CardRendererRegistration.getInstance().registerRenderer("Image", imageRenderer);
+
+        Context context = InstrumentationRegistry.getTargetContext();
+
+        try
+        {
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(context, null, card, new ActionHandler(), new HostConfig());
+            Assert.assertEquals(true, imageRenderer.safetyCheck);
+        }
+        catch (Exception e)
+        {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void TestColumnSetSelectActionInRenderArgs() throws Exception
+    {
+        AdaptiveCard card = new AdaptiveCard();
+        Column column = TestUtil.createMockColumn();
+        column.SetSelectAction(TestUtil.createSampleSubmitAction());
+        ColumnSet columnSet = TestUtil.createMockColumnSet(column);
+        card.GetBody().add(columnSet);
+
+        Container nestedContainer = TestUtil.createMockContainer();
+        nestedContainer.GetItems().add(TestUtil.createMockImage());
+        column.GetItems().add(nestedContainer);
+
+        MockImageRendererExpectingAncestorWithSelectActionRenderer imageRenderer =  new MockImageRendererExpectingAncestorWithSelectActionRenderer();
+        CardRendererRegistration.getInstance().registerRenderer("Image", imageRenderer);
+
+        Context context = InstrumentationRegistry.getTargetContext();
+
+        try
+        {
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(context, null, card, new ActionHandler(), new HostConfig());
+            Assert.assertEquals(true, imageRenderer.safetyCheck);
+        }
+        catch (Exception e)
+        {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void TestCardSetSelectActionInRenderArgs() throws Exception
+    {
+        AdaptiveCard card = new AdaptiveCard();
+        card.SetSelectAction(TestUtil.createSampleSubmitAction());
+
+        Column column = TestUtil.createMockColumn();
+        ColumnSet columnSet = TestUtil.createMockColumnSet(column);
+        card.GetBody().add(columnSet);
+
+        Container nestedContainer = TestUtil.createMockContainer();
+        nestedContainer.GetItems().add(TestUtil.createMockImage());
+        column.GetItems().add(nestedContainer);
+
+        MockImageRendererExpectingAncestorWithSelectActionRenderer imageRenderer =  new MockImageRendererExpectingAncestorWithSelectActionRenderer();
+        CardRendererRegistration.getInstance().registerRenderer("Image", imageRenderer);
+
+        Context context = InstrumentationRegistry.getTargetContext();
+
+        try
+        {
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(context, null, card, new ActionHandler(), new HostConfig());
+            Assert.assertEquals(true, imageRenderer.safetyCheck);
+        }
+        catch (Exception e)
+        {
+            Assert.fail();
+        }
+    }
 }
 

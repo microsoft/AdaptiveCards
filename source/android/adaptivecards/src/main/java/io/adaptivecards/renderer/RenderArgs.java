@@ -16,6 +16,7 @@ public class RenderArgs
         setAncestorHasFallback(renderArgs.getAncestorHasFallback());
         setContainerStyle(renderArgs.getContainerStyle());
         setContainerCardId(renderArgs.getContainerCardId());
+        setAncestorHasSelectAction(renderArgs.getAncestorHasSelectAction());
     }
 
     public boolean getAncestorHasFallback()
@@ -70,8 +71,27 @@ public class RenderArgs
      *
      * @param m_isRootLevelActions true for root level action otherwise false.
      */
-    public void setRootLevelActions(boolean m_isRootLevelActions) {
+    public void setRootLevelActions(boolean m_isRootLevelActions)
+    {
         this.m_isRootLevelActions = m_isRootLevelActions;
+    }
+
+    /**
+     * @return true if any ancestor has a select action.
+     */
+    public boolean getAncestorHasSelectAction() {
+        return m_ancestorHasSelectAction;
+    }
+
+    /**
+     * Set true to indicate an {@link io.adaptivecards.objectmodel.Container}, {@link io.adaptivecards.objectmodel.Column} or {@link io.adaptivecards.objectmodel.ColumnSet}
+     * elements have a select action.
+     *
+     * @param ancestorHasSelectAction true for root level action otherwise false.
+     */
+    public void setAncestorHasSelectAction(boolean ancestorHasSelectAction)
+    {
+        m_ancestorHasSelectAction = ancestorHasSelectAction;
     }
 
     private boolean m_ancestorHasFallback;
@@ -79,4 +99,5 @@ public class RenderArgs
     private boolean m_allowAboveTitleIconPlacement;
     private long m_containerCardId;
     private boolean m_isRootLevelActions;
+    private boolean m_ancestorHasSelectAction = false;
 }
