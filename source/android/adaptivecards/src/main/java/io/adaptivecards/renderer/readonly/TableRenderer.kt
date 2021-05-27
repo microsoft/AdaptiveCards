@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
 import androidx.fragment.app.FragmentManager
-import io.adaptivecards.objectmodel.BaseCardElement
-import io.adaptivecards.objectmodel.CardElementType
-import io.adaptivecards.objectmodel.HostConfig
-import io.adaptivecards.objectmodel.Table
+import io.adaptivecards.objectmodel.*
 import io.adaptivecards.renderer.*
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler
 import io.adaptivecards.renderer.registration.CardRendererRegistration
@@ -30,6 +27,13 @@ object TableRenderer : BaseCardElementRenderer() {
             clipToPadding = false
         }
 
+        val isFirstRowHeader = table.GetFirstRowAsHeaders()
+        val computedGridStyle = if (table.GetGridStyle() == ContainerStyle.None) {
+            renderArgs.containerStyle
+        } else {
+            table.GetGridStyle()
+        }
+
         for (i in table.GetRows().indices) {
             val row = table.GetRows()[i]
             val rowLayout = TableRow(context).apply {
@@ -41,9 +45,9 @@ object TableRenderer : BaseCardElementRenderer() {
 
             for (j in table.GetColumns().indices) {
                 val cell = row.GetCells().getOrNull(j) ?: break
-                val cellArgs = TableCellRenderArgs(renderArgs, i, j, table, tableLayout).apply {
+                val cellArgs = TableCellRenderArgs(renderArgs, table, tableLayout, i, j, computedGridStyle).apply {
                     containerStyle = rowStyle
-                    isColumnHeader = (i == 0) && table.GetFirstRowAsHeaders()
+                    isColumnHeader = (i == 0) && isFirstRowHeader
                 }
                 tableCellRenderer.render(renderedCard, context, fragmentManager, rowLayout, cell, cardActionHandler, hostConfig, cellArgs)
             }
