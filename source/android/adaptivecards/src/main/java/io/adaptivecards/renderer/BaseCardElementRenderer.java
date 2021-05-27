@@ -179,6 +179,8 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         View separator = null;
         TagContent tagContent = getTagContent(elementView);
 
+        int visibility = isVisible ? View.VISIBLE : View.GONE;
+
         if (tagContent != null)
         {
             separator = tagContent.GetSeparator();
@@ -188,19 +190,17 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             {
                 viewGroupsToUpdate.add(viewGroup);
             }
-        }
 
-        int visibility = isVisible ? View.VISIBLE : View.GONE;
+            View stretchContainer = tagContent.GetStretchContainer();
+            if (stretchContainer != null)
+            {
+                stretchContainer.setVisibility(visibility);
+            }
+        }
 
         if (separator != null)
         {
             separator.setVisibility(visibility);
-        }
-
-        View stretchContainer = tagContent.GetStretchContainer();
-        if (stretchContainer != null)
-        {
-            stretchContainer.setVisibility(visibility);
         }
 
         elementView.setVisibility(visibility);
