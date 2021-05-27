@@ -42,8 +42,10 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_AltText(_Outptr_ HSTRING* text);
         IFACEMETHODIMP put_AltText(_In_ HSTRING text);
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment HorizontalAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment) override;
+        IFACEMETHODIMP put_HorizontalAlignment(
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment) override;
 
         IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action);
@@ -139,7 +141,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ABI::AdaptiveCards::Rendering::Uwp::ImageStyle m_imageStyle;
         ABI::AdaptiveCards::Rendering::Uwp::ImageSize m_imageSize;
         Microsoft::WRL::Wrappers::HString m_altText;
-        ABI::AdaptiveCards::Rendering::Uwp::HAlignment m_horizontalAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>> m_horizontalAlignment;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_selectAction;
         UINT32 m_pixelWidth;
         UINT32 m_pixelHeight;
