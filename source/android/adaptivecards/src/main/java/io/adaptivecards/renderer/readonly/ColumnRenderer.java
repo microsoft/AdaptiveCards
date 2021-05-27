@@ -3,12 +3,12 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -17,8 +17,8 @@ import java.util.Locale;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
@@ -43,20 +43,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
 
         return s_instance;
-    }
-
-    private void setVerticalContentAlignment(VerticalContentAlignment verticalContentAlignment, LinearLayout columnLayout)
-    {
-        int gravity = Gravity.TOP;
-        if(verticalContentAlignment == VerticalContentAlignment.Center)
-        {
-            gravity = Gravity.CENTER;
-        }
-        else if(verticalContentAlignment == VerticalContentAlignment.Bottom)
-        {
-            gravity = Gravity.BOTTOM;
-        }
-        columnLayout.setGravity(gravity);
     }
 
     /**
@@ -147,10 +133,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
         setMinHeight(column.GetMinHeight(), columnLayout, context);
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
-        ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(column, containerStyle);
+        ContainerStyle styleForThis = ContainerRenderer.getLocalContainerStyle(column, containerStyle);
 
         RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
         columnRenderArgs.setContainerStyle(styleForThis);
+        columnRenderArgs.setHorizontalAlignment(HorizontalAlignment.Left);
         columnRenderArgs.setAncestorHasSelectAction(renderArgs.getAncestorHasSelectAction() || (column.GetSelectAction() != null));
         if (!column.GetItems().isEmpty())
         {
@@ -175,10 +162,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, column.GetBackgroundImage(), hostConfig, columnLayout);
 
-        setVerticalContentAlignment(column.GetVerticalContentAlignment(), columnLayout);
+        ContainerRenderer.applyVerticalContentAlignment(columnLayout, column.GetVerticalContentAlignment());
 
-        ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, context, hostConfig);
-        ContainerRenderer.ApplyBleed(column, columnLayout, context, hostConfig);
+        ContainerRenderer.applyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, hostConfig);
+        ContainerRenderer.applyContainerStyle(styleForThis, columnLayout, hostConfig);
+        ContainerRenderer.applyBleed(column, columnLayout, context, hostConfig);
         BaseCardElementRenderer.applyRtl(column.GetRtl(), columnLayout);
 
         ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler, renderArgs);

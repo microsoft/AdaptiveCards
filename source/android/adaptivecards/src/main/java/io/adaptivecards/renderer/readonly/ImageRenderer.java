@@ -10,9 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +17,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.fragment.app.FragmentManager;
+
 import io.adaptivecards.R;
-import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.IOnlineImageLoader;
-import io.adaptivecards.renderer.InnerImageLoaderAsync;
-import io.adaptivecards.renderer.RenderArgs;
-import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Image;
@@ -37,6 +31,13 @@ import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.IOnlineImageLoader;
+import io.adaptivecards.renderer.InnerImageLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -158,19 +159,20 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     /**
      * Calculate horizontal bias for ConstraintLayout
-     * @param image the parsed Image
-     * @return horizontal bias
      */
-    private static float getHorizontalBias(Image image) {
-        if (image.GetHorizontalAlignment() == HorizontalAlignment.Center)
+    private static void applyHorizontalAlignment(ConstraintSet constraintSet, int viewId, HorizontalAlignment declaredAlignment, RenderArgs renderArgs)
+    {
+        HorizontalAlignment computedAlignment = RendererUtil.computeHorizontalAlignment(declaredAlignment, renderArgs);
+        float bias = 0;
+        if (computedAlignment == HorizontalAlignment.Center)
         {
-            return 0.5f;
+            bias = 0.5f;
         }
-        if (image.GetHorizontalAlignment() == HorizontalAlignment.Right)
+        if (computedAlignment == HorizontalAlignment.Right)
         {
-            return 1;
+            bias = 1;
         }
-        return 0;
+        constraintSet.setHorizontalBias(viewId, bias);
     }
 
     /**
@@ -204,7 +206,7 @@ public class ImageRenderer extends BaseCardElementRenderer
      * @param hostConfig the HostConfig that configures semantic 'size' values
      * @return
      */
-    private static ConstraintSet createConstraints(Context context, ImageView imageView, Image image, HostConfig hostConfig)
+    private static ConstraintSet createConstraints(Context context, ImageView imageView, Image image, HostConfig hostConfig, RenderArgs renderArgs)
     {
         long explicitWidth = image.GetPixelWidth();
         long explicitHeight = image.GetPixelHeight();
@@ -235,8 +237,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         constraints.connect(id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
 
         // Set horizontal alignment (on both placeholder and ImageView)
-        constraints.setHorizontalBias(R.id.widthPlaceholder, getHorizontalBias(image));
-        constraints.setHorizontalBias(id, getHorizontalBias(image));
+        applyHorizontalAlignment(constraints, R.id.widthPlaceholder, image.GetHorizontalAlignment(), renderArgs);
+        applyHorizontalAlignment(constraints, id, image.GetHorizontalAlignment(), renderArgs);
 
         // Explicit height and/or width given
         if (explicitWidth != 0 || explicitHeight != 0)
@@ -366,7 +368,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             ConstraintLayout container = createContainer(context, image);
             tagContent.SetStretchContainer(container);
             container.addView(imageView);
-            createConstraints(context, imageView, image, hostConfig).applyTo(container);
+            createConstraints(context, imageView, image, hostConfig, renderArgs).applyTo(container);
             viewGroup.addView(container);
         }
 

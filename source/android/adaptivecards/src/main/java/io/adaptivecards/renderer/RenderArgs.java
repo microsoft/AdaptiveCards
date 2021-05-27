@@ -2,10 +2,17 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
-import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.InternalId;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
 
+/**
+ * Used to inform child elements of their rendering context. Renderers should apply all supplied
+ * arguments relevant to their element, unless overridden by a declared property on that element.
+ *
+ * Renderers with any children must use the copy constructor to pass arguments on. If any arguments
+ * were overridden by a declared property, the new value(s) must be set on the copied instance
+ * before passing arguments on.
+ */
 public class RenderArgs
 {
 
@@ -16,6 +23,8 @@ public class RenderArgs
         setAncestorHasFallback(renderArgs.getAncestorHasFallback());
         setContainerStyle(renderArgs.getContainerStyle());
         setContainerCardId(renderArgs.getContainerCardId());
+        setColumnHeader(renderArgs.isColumnHeader());
+        setHorizontalAlignment(renderArgs.getHorizontalAlignment());
         setAncestorHasSelectAction(renderArgs.getAncestorHasSelectAction());
     }
 
@@ -29,6 +38,9 @@ public class RenderArgs
         m_ancestorHasFallback = ancestorHasFallback;
     }
 
+    /**
+     * @return background style used by parent
+     */
     public ContainerStyle getContainerStyle()
     {
         return m_containerStyle;
@@ -57,6 +69,32 @@ public class RenderArgs
     public long getContainerCardId()
     {
         return m_containerCardId;
+    }
+
+    /**
+     * @return true if text should used styles defined for table headers
+     */
+    public boolean isColumnHeader()
+    {
+        return m_isColumnHeader;
+    }
+
+    public void setColumnHeader(boolean isHeader)
+    {
+        m_isColumnHeader = isHeader;
+    }
+
+    /**
+     * @return horizontal alignment
+     */
+    public HorizontalAlignment getHorizontalAlignment()
+    {
+        return m_horizontalAlignment;
+    }
+
+    public void setHorizontalAlignment(HorizontalAlignment horizontalAlignment)
+    {
+        m_horizontalAlignment = horizontalAlignment;
     }
 
     /**
@@ -95,7 +133,9 @@ public class RenderArgs
     }
 
     private boolean m_ancestorHasFallback;
-    private ContainerStyle m_containerStyle;
+    private ContainerStyle m_containerStyle = ContainerStyle.Default;
+    private boolean m_isColumnHeader;
+    private HorizontalAlignment m_horizontalAlignment = HorizontalAlignment.Left;
     private boolean m_allowAboveTitleIconPlacement;
     private long m_containerCardId;
     private boolean m_isRootLevelActions;

@@ -4,6 +4,7 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -24,6 +25,7 @@ import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
@@ -82,13 +84,15 @@ public class ContainerRenderer extends BaseCardElementRenderer
         applyVerticalContentAlignment(containerView, container.GetVerticalContentAlignment());
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
-        ContainerStyle styleForThis = GetLocalContainerStyle(container, containerStyle);
-        ApplyPadding(styleForThis, containerStyle, containerView, context, hostConfig);
-        ApplyBleed(container, containerView, context, hostConfig);
+        ContainerStyle styleForThis = getLocalContainerStyle(container, containerStyle);
+        applyPadding(styleForThis, containerStyle, containerView, hostConfig);
+        applyContainerStyle(styleForThis, containerView, hostConfig);
+        applyBleed(container, containerView, context, hostConfig);
         BaseCardElementRenderer.applyRtl(container.GetRtl(), containerView);
 
         RenderArgs containerRenderArgs = new RenderArgs(renderArgs);
         containerRenderArgs.setContainerStyle(styleForThis);
+        containerRenderArgs.setHorizontalAlignment(HorizontalAlignment.Left);
         containerRenderArgs.setAncestorHasSelectAction(renderArgs.getAncestorHasSelectAction() || (container.GetSelectAction() != null));
         if (!container.GetItems().isEmpty())
         {
@@ -135,7 +139,15 @@ public class ContainerRenderer extends BaseCardElementRenderer
         container.setGravity(gravity);
     }
 
+    /**
+     * @deprecated renamed to {@link #applyBleed}
+     */
     public static void ApplyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
+    {
+        applyBleed(collectionElement, collectionElementView, context, hostConfig);
+    }
+
+    public static void applyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
     {
         if (collectionElement.GetBleed() && collectionElement.GetCanBleed())
         {
@@ -171,20 +183,64 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
     }
 
-    public static void ApplyPadding(ContainerStyle elementContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
+    /**
+     * @deprecated Separated into specific {@link #applyPadding} and {@link #applyContainerStyle}.
+     */
+    public static void ApplyPadding(ContainerStyle computedContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, HostConfig hostConfig)
     {
-        if (elementContainerStyle != parentContainerStyle)
+        applyPadding(computedContainerStyle, parentContainerStyle, collectionElementView, hostConfig);
+        applyContainerStyle(computedContainerStyle, collectionElementView, hostConfig);
+    }
+
+    public static void applyPadding(ContainerStyle computedContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, HostConfig hostConfig)
+    {
+        applyPadding(computedContainerStyle, parentContainerStyle, collectionElementView, hostConfig, false);
+    }
+
+    public static void applyPadding(ContainerStyle computedContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, HostConfig hostConfig, boolean hasBorder)
+    {
+        if (hasBorder || computedContainerStyle != parentContainerStyle)
         {
-            int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            int padding = Util.dpToPixels(collectionElementView.getContext(), hostConfig.GetSpacing().getPaddingSpacing());
             collectionElementView.setPadding(padding, padding, padding, padding);
-            String color = hostConfig.GetBackgroundColor(elementContainerStyle);
-            collectionElementView.setBackgroundColor(Color.parseColor(color));
         }
     }
 
+    public static void applyContainerStyle(ContainerStyle computedContainerStyle, ViewGroup collectionElementView, HostConfig hostConfig)
+    {
+        int color = Color.parseColor(hostConfig.GetBackgroundColor(computedContainerStyle));
+        if (collectionElementView.getBackground() instanceof GradientDrawable)
+        {
+            ((GradientDrawable) collectionElementView.getBackground()).setColor(color);
+        }
+        else
+        {
+            collectionElementView.setBackgroundColor(color);
+        }
+    }
+
+    /**
+     * @deprecated renamed to {@link #getLocalContainerStyle}
+     */
     public static ContainerStyle GetLocalContainerStyle(CollectionTypeElement collectionElement, ContainerStyle parentContainerStyle)
     {
-        return (collectionElement.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? parentContainerStyle : collectionElement.GetStyle());
+        return getLocalContainerStyle(collectionElement, parentContainerStyle);
+    }
+
+    public static ContainerStyle getLocalContainerStyle(CollectionTypeElement collectionElement, ContainerStyle parentContainerStyle)
+    {
+        return computeContainerStyle(collectionElement.GetStyle(), parentContainerStyle);
+    }
+
+    /**
+     * Compute the style to apply to a container given its declared and inherited styles.
+     * @param declared the ContainerStyle declared on a container element
+     * @param inherited the ContainerStyle inherited through RenderArgs provided by parent
+     * @return the ContainerStyle to apply
+     */
+    public static ContainerStyle computeContainerStyle(ContainerStyle declared, ContainerStyle inherited)
+    {
+        return declared == ContainerStyle.None ? inherited : declared;
     }
 
     public static void setBackgroundImage(RenderedAdaptiveCard renderedCard,
