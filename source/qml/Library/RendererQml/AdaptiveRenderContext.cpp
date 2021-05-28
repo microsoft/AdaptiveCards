@@ -304,4 +304,32 @@ namespace RendererQml
     {
         return m_textRunSelectActionList;
     }
+
+    const int AdaptiveRenderContext::getDefaultIdCounter()
+    {
+        return ++m_DefaultIdCounter;
+    }
+
+    void AdaptiveRenderContext::setDefaultIdName(const std::string& defaultId)
+    {
+        m_defaultId = defaultId;
+    }
+
+    const std::string AdaptiveRenderContext::getDefaultIdName()
+    {
+        return m_defaultId;
+    }
+
+    const std::string AdaptiveRenderContext::ConvertToValidId(const std::string& id)
+    {
+        std::string newId =id;
+        newId = Utils::HandleKeywords(Utils::ToLower(newId));
+
+        if (Utils::hasNonAlphaNumeric(newId))
+        {
+            newId = Formatter() << getDefaultIdName() << "_" << std::to_string(getDefaultIdCounter());
+        }
+
+        return newId;
+    }
 }

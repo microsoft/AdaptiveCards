@@ -62,6 +62,7 @@ namespace RendererQml
 
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::AdaptiveCardRender(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, std::shared_ptr<AdaptiveRenderContext> context)
     {
+        context->setDefaultIdName("defaultId");
 		int margin = context->GetConfig()->GetSpacing().paddingSpacing;
 
         auto uiCard = std::make_shared<QmlTag>("Rectangle");
@@ -422,7 +423,7 @@ namespace RendererQml
 
 		if (!textBlock->GetId().empty())
 		{
-            textBlock->SetId(Utils::ConvertToLowerIdValue(textBlock->GetId()));
+            textBlock->SetId(context->ConvertToValidId(textBlock->GetId()));
 			uiTextBlock->Property("id", textBlock->GetId());
 		}
 
@@ -458,7 +459,7 @@ namespace RendererQml
 		std::shared_ptr<QmlTag> uiTextInput;
 		std::shared_ptr<QmlTag> scrollViewTag;
 
-        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
+        input->SetId(context->ConvertToValidId(input->GetId()));
 
 		if (input->GetIsMultiline())
 		{
@@ -606,7 +607,7 @@ namespace RendererQml
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::NumberInputRender(std::shared_ptr<AdaptiveCards::NumberInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
         const std::string origionalElementId = input->GetId();
-        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
+        input->SetId(context->ConvertToValidId(input->GetId()));
 		const auto inputId = input->GetId();
 
 		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
@@ -756,7 +757,7 @@ namespace RendererQml
 
 		if (!richTextBlock->GetId().empty())
 		{
-			richTextBlock->SetId(Utils::ConvertToLowerIdValue(richTextBlock->GetId()));
+			richTextBlock->SetId(context->ConvertToValidId(richTextBlock->GetId()));
 			uiTextBlock->Property("id", richTextBlock->GetId());
 		}
 
@@ -854,7 +855,7 @@ namespace RendererQml
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ToggleInputRender(std::shared_ptr<AdaptiveCards::ToggleInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
         const std::string origionalElementId = input->GetId();
-        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
+        input->SetId(context->ConvertToValidId(input->GetId()));
 
 		const auto valueOn = !input->GetValueOn().empty() ? input->GetValueOn() : "true";
 		const auto valueOff = !input->GetValueOff().empty() ? input->GetValueOff() : "false";
@@ -878,7 +879,7 @@ namespace RendererQml
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ChoiceSetRender(std::shared_ptr<AdaptiveCards::ChoiceSetInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
         const std::string origionalElementId = input->GetId();
-        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
+        input->SetId(context->ConvertToValidId(input->GetId()));
 
 		int ButtonNumber = 0;
 		RendererQml::Checkboxes choices;
@@ -1215,7 +1216,7 @@ namespace RendererQml
     {
 		//TODO: ids which are qml keywords would result in undefined behaviour
         const std::string origionalElementId = input->GetId();
-        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
+        input->SetId(context->ConvertToValidId(input->GetId()));
 
         auto uiDateInput = std::make_shared<QmlTag>("TextField");
         uiDateInput->Property("id", input->GetId());
@@ -1373,7 +1374,7 @@ namespace RendererQml
 			uiDateInput->Property("text", Formatter() << Utils::GetDate(input->GetValue()) << ".toLocaleString(Qt.locale(\"en_US\")," << "\"" << StringDateFormat << "\"" << ")" );
 		}
 
-		uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? input->GetPlaceholder() : "Select date") << " in " << Utils::ConvertToLowerIdValue(StringDateFormat), true);
+		uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? input->GetPlaceholder() : "Select date") << " in " << Utils::ToLower(StringDateFormat), true);
 		uiDateInput->Property("validator", Formatter() << "RegExpValidator { regExp: " << DateRegex << "}");
 		uiDateInput->Property("onFocusChanged", Formatter() << "{" << "if(focus===true) inputMask=\"" << inputMask << "\";" <<
 			"if(focus === false){ z=0;" << "if(text === \""<< std::string(dateSeparator) + std::string(dateSeparator) << "\"){ inputMask = \"\" ; } " <<"if( " << calendar_box_id << ".visible === true){ " << calendar_box_id << ".visible=false}}} ");
@@ -1393,7 +1394,7 @@ namespace RendererQml
 
 		if (!factSet->GetId().empty())
 		{
-			factSet->SetId(Utils::ConvertToLowerIdValue(factSet->GetId()));
+			factSet->SetId(context->ConvertToValidId(factSet->GetId()));
 			uiFactSet->Property("id", factSet->GetId());
 		}
 
@@ -1463,7 +1464,7 @@ namespace RendererQml
 		}
         else
         {
-            image->SetId(Utils::ConvertToLowerIdValue(image->GetId()));
+            image->SetId(context->ConvertToValidId(image->GetId()));
         }
 
 		uiRectangle->Property("id", image->GetId());
@@ -1591,7 +1592,7 @@ namespace RendererQml
         const std::string origionalElementId = input->GetId();
 		const bool is12hour = Utils::isSystemTime12Hour();
 
-        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
+        input->SetId(context->ConvertToValidId(input->GetId()));
 
 		auto uiTimeInput = std::make_shared<QmlTag>("TextField");
 		const std::string id = input->GetId();
@@ -1814,7 +1815,7 @@ namespace RendererQml
 
 		if (!imageSet->GetId().empty())
 		{
-			imageSet->SetId(Utils::ConvertToLowerIdValue(imageSet->GetId()));
+			imageSet->SetId(context->ConvertToValidId(imageSet->GetId()));
 			uiFlow->Property("id", imageSet->GetId());
 		}
 
@@ -1913,7 +1914,7 @@ namespace RendererQml
 		}
 		else
 		{
-			columnSet->SetId(Utils::ConvertToLowerIdValue(columnSet->GetId()));
+			columnSet->SetId(context->ConvertToValidId(columnSet->GetId()));
 		}
 
 		const auto id = columnSet->GetId();
@@ -2050,7 +2051,7 @@ namespace RendererQml
 		}
 		else
 		{
-			column->SetId(Utils::ConvertToLowerIdValue(column->GetId()));
+			column->SetId(context->ConvertToValidId(column->GetId()));
 		}
 
 		std::shared_ptr<QmlTag> uiContainer = GetNewContainer(column, context);
@@ -2082,7 +2083,7 @@ namespace RendererQml
         }
         else
         {
-            container->SetId(Utils::ConvertToLowerIdValue(container->GetId()));
+            container->SetId(context->ConvertToValidId(container->GetId()));
         }
 
         std::shared_ptr<QmlTag> uiContainer = GetNewContainer(container, context);
@@ -2597,7 +2598,7 @@ namespace RendererQml
 
 			if (targetElement != nullptr)
 			{
-				targetElementId = Utils::ConvertToLowerIdValue(targetElement->GetElementId());
+				targetElementId = context->ConvertToValidId(targetElement->GetElementId());
 
 				switch (targetElement->GetIsVisible())
 				{

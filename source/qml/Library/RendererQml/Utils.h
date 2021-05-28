@@ -106,9 +106,7 @@ namespace RendererQml
 		static std::string defaultTimeto12hour(std::string& defaultTime);
         static std::string defaultTimeto24hour(std::string& defaultTime);
 
-        static std::string ConvertToLowerIdValue(const std::string& value);
-
-		static bool isSystemTime12Hour();
+        static bool isSystemTime12Hour();
 
 		static RendererQml::DateFormat GetSystemDateFormat();
 
@@ -116,6 +114,9 @@ namespace RendererQml
 		static std::string HandleEscapeSequences(std::string& text);
 
 		static const bool isValidDate(const std::string& date);
+
+        static bool hasNonAlphaNumeric(const std::string& id);
+        static const std::string HandleKeywords(const std::string& id);
 
     private:
         Utils() {}

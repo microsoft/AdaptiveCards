@@ -393,15 +393,7 @@ namespace RendererQml
         return Formatter() << time_split[0] << ":" << time_split[1];
     }
 
-    std::string Utils::ConvertToLowerIdValue(const std::string& value)
-    {
-        std::string newId = value;
-
-        transform(newId.begin(), newId.end(), newId.begin(), ::tolower);
-        return newId;
-    }
-
-	std::string Utils::FetchSystemDateTime(const std::string& fetchFormat)
+    std::string Utils::FetchSystemDateTime(const std::string& fetchFormat)
 	{
 		char dateTimeBuffer[50];
 		struct tm newtime;
@@ -577,4 +569,25 @@ namespace RendererQml
 			return false;
 		}
 	}
+
+    bool Utils::hasNonAlphaNumeric(const std::string& id)
+    {
+        //QML does not allow special characters except underscore
+        //check if non alpha numeric character other than underscore exists
+        for (auto& character : id)
+        {
+            if (!std::isalnum(character) && character != '_')
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const std::string Utils::HandleKeywords(const std::string& id)
+    {
+        //Add underscore to take care of keywords
+        return Formatter() << "_" << id;
+    }
+
 }

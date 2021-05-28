@@ -45,6 +45,10 @@ namespace RendererQml
         void setCardRootId(const std::string& rootId);
         const std::string getCardRootId();
 
+        const int getDefaultIdCounter();
+        void setDefaultIdName(const std::string& defaultId);
+        const std::string getDefaultIdName();
+
 		void setCardRootElement(const std::shared_ptr<QmlTag>& rootElement);
 		const std::shared_ptr<QmlTag> getCardRootElement();
 
@@ -66,6 +70,8 @@ namespace RendererQml
 
 		const int getCardWidth();
 
+        const std::string ConvertToValidId(const std::string& id);
+
     private:
         std::vector<AdaptiveWarning> m_warnings;
         bool m_ancestorHasFallback;
@@ -75,6 +81,7 @@ namespace RendererQml
         std::string m_lang;
 
         std::string m_CardRootId;
+        std::string m_defaultId;
 		std::shared_ptr<QmlTag> m_CardRootElement;
         std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> m_elementRenderers;
 
@@ -90,5 +97,7 @@ namespace RendererQml
 		int m_ColumnCounter{ 0 };
         int m_ButtonCounter{ 0 };
         int m_SelectActionCounter{ 0 };
+        int m_DefaultIdCounter{ 0 };
+
     };
 }
