@@ -33,6 +33,9 @@
 #import "RichTextBlock.h"
 #import "RichTextElementProperties.h"
 #import "SharedAdaptiveCard.h"
+#import "Table.h"
+#import "TableCell.h"
+#import "TableRow.h"
 #import "TextBlock.h"
 #import "TextInput.h"
 #import "TextRun.h"
@@ -338,7 +341,25 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             }
             break;
         }
+
+        case CardElementType::Table: {
+            std::shared_ptr<Table> table = std::static_pointer_cast<Table>(elem);
+            for (const auto &row : table->GetRows()) {
+                [self processBaseCardElement:row registration:registration];
+            }
+            break;
+        }
+
+        case CardElementType::TableRow: {
+            const auto &row = std::static_pointer_cast<TableRow>(elem);
+            for (const auto &cell : row->GetCells()) {
+                [self processBaseCardElement:cell registration:registration];
+            }
+            break;
+        }
+
         // continue on search
+        case CardElementType::TableCell:
         case CardElementType::Container: {
             std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
 

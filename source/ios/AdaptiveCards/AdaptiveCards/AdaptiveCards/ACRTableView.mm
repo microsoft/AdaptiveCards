@@ -83,19 +83,35 @@
     ACOBaseCardElement *acoRowWrapper = [[ACOBaseCardElement alloc] init];
     NSLayoutYAxisAnchor *nextTopAnchor = self.topAnchor;
     ACRTableRowView *rowView = nil;
+    NSDictionary * (^additionalProperties)(void);
+    auto i = 0;
     for (const auto &row : table->GetRows()) {
         [acoRowWrapper setElem:row];
+
+        if (i == 0 && table->GetFirstRowAsHeaders()) {
+            additionalProperties = ^NSDictionary *(void)
+            {
+                return @{@"heading" : @YES};
+            };
+        }
+        [rootView.context pushBaseCardElementContext:acoRowWrapper additionalProperty:additionalProperties];
         rowView = [[ACRTableRowView alloc] init:acoRowWrapper
                               columnDefinitions:_columnDefinitions
                                        rootView:rootView
                                          inputs:inputs
                                      hostConfig:acoConfig
                                       gridStyle:_gridStyle];
+        additionalProperties = nil;
         [self addSubview:rowView];
         [self.widthAnchor constraintEqualToAnchor:rowView.widthAnchor].active = YES;
-        CGFloat offset = self.showGridLines ? 1 : 0.0;
+        // should be read from host config
+        CGFloat spacing = 8.0f;
+        CGFloat offset = self.showGridLines ? 1 : -spacing;
+
         [nextTopAnchor constraintEqualToAnchor:rowView.topAnchor constant:offset].active = YES;
         nextTopAnchor = rowView.bottomAnchor;
+        [rootView.context popBaseCardElementContext:acoRowWrapper];
+        i++;
     }
 
     if (rowView) {

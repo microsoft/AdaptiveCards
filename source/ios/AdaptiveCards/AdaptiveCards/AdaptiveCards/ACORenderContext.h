@@ -17,11 +17,13 @@
 @property (readonly) ACRRtl rtl;
 @property (readonly) BOOL hasSelectAction;
 @property (readonly) BOOL allHasActionIcons;
+@property (readonly) BOOL isFirstRowAsHeaders;
 
 @property (weak) ACOHostConfig *hostConfig;
 
 - (instancetype)init:(ACOHostConfig *)config;
 
+- (void)pushBaseCardElementContext:(ACOBaseCardElement *)acoElement additionalProperty:(NSDictionary* (^)(void))additionalProperty;
 - (void)pushBaseCardElementContext:(ACOBaseCardElement *)element;
 - (void)popBaseCardElementContext:(ACOBaseCardElement *)element;
 

@@ -31,7 +31,7 @@ static int kToggleVisibilityContext;
                     superview:(UIView *)superview
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    self = [self initWithFrame:superview.frame attributes:@{@"padding-spacing" : [NSNumber numberWithInt:config->GetSpacing().paddingSpacing]}];
+    self = [self initWithFrame:superview.frame attributes:nil];
     if (self) {
         _style = style;
         if (style != ACRNone &&
