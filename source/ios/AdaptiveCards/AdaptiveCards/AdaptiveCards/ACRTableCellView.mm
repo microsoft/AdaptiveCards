@@ -31,7 +31,6 @@
         [self addSubview:_contentView];
         [self setAutoLayout];
         [self configureForStyle:acoConfig];
-        _spacing = 8.0f;
     }
     return self;
 }
@@ -62,7 +61,8 @@
 - (void)configureForStyle:(ACOHostConfig *)acoConfig
 {
     if (_definition) {
-        self.layoutMargins = UIEdgeInsetsMake(8.0f, 8.0f, 8.0f, 8.0f);
+        _spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
+        self.layoutMargins = UIEdgeInsetsMake(_spacing, _spacing, _spacing, _spacing);
         _contentView.preservesSuperviewLayoutMargins = NO;
         self.preservesSuperviewLayoutMargins = NO;
         self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_definition.style];
