@@ -46,14 +46,14 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, CharSequence text, FactSetTextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
+    static TextView createTextView(Context context, CharSequence text, FactSetTextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle, RenderArgs renderArgs)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
 
-        TextBlockRenderer.applyTextColor(textView, hostConfig, TextStyle.Default, textConfig.getColor(), textConfig.getIsSubtle(), containerStyle);
-        TextBlockRenderer.applyTextSize(textView, hostConfig, TextStyle.Default, FontType.Default, textConfig.getSize());
-        TextBlockRenderer.getInstance().applyTextFormat(textView, hostConfig, TextStyle.Default, FontType.Default, textConfig.getWeight());
+        TextBlockRenderer.applyTextColor(textView, hostConfig, TextStyle.Default, textConfig.getColor(), textConfig.getIsSubtle(), containerStyle, renderArgs);
+        TextBlockRenderer.applyTextSize(textView, hostConfig, TextStyle.Default, FontType.Default, textConfig.getSize(), renderArgs);
+        TextBlockRenderer.applyTextFormat(textView, hostConfig, TextStyle.Default, FontType.Default, textConfig.getWeight(), renderArgs);
         textView.setOnTouchListener(new TextBlockRenderer.TouchTextView(new SpannableString(text)));
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
@@ -111,8 +111,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
                     factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
                 }
 
-                factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, renderArgs.getContainerStyle()));
-                factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, renderArgs.getContainerStyle()));
+                factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, renderArgs.getContainerStyle(), renderArgs));
+                factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, renderArgs.getContainerStyle(), renderArgs));
                 tableLayout.addView(factRow);
                 validFacts++;
            }
