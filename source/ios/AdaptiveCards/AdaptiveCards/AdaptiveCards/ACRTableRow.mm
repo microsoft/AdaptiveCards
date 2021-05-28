@@ -87,8 +87,8 @@
                     auto cell = cells.at(idx);
                     ACRTableCellDefinition *cellDefinition = [[ACRTableCellDefinition alloc] init];
                     cellDefinition.style = (ACRContainerStyle)row->GetStyle();
-                    cellDefinition.horizontalAlignment = (ACRHorizontalAlignment)row->GetHorizontalCellContentAlignment();
-                    cellDefinition.verticalAlignment = (ACRVerticalAlignment)row->GetVerticalCellContentAlignment();
+                    cellDefinition.horizontalAlignment = (ACRHorizontalAlignment)row->GetHorizontalCellContentAlignment().value_or(HorizontalAlignment::Left);
+                    cellDefinition.verticalAlignment = (ACRVerticalAlignment)row->GetVerticalCellContentAlignment().value_or(VerticalContentAlignment::Top);
                     cellView = [[ACRTableCellView alloc] init:[[ACOBaseCardElement alloc] initWithBaseCardElement:cell]
                                                cellDefinition:cellDefinition
                                                      rootView:rootView
