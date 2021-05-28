@@ -62,7 +62,34 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(xamlTextBlock->get_Inlines(&inlines));
 
-        RETURN_IF_FAILED(SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, false, inlines.Get()));
+        // Check if this text block has a style set to heading and if so apply the appropriate styling from the host config
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> textStyleRef;
+        RETURN_IF_FAILED(adaptiveTextBlock->get_Style(&textStyleRef));
+
+        ABI::AdaptiveCards::Rendering::Uwp::TextStyle textStyle = ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Default;
+        if (textStyleRef != nullptr)
+        {
+            RETURN_IF_FAILED(textStyleRef->get_Value(&textStyle));
+        }
+
+        if (textStyle == ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Heading)
+        {
+            ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+            ComPtr<IAdaptiveTextStylesConfig> textStylesConfig;
+            RETURN_IF_FAILED(hostConfig->get_TextStyles(&textStylesConfig));
+
+            ComPtr<IAdaptiveTextStyleConfig> headingTextStyleConfig;
+            RETURN_IF_FAILED(textStylesConfig->get_Heading(&headingTextStyleConfig));
+
+            RETURN_IF_FAILED(SetXamlInlinesWithTextStyleConfig(
+                adaptiveTextElement.Get(), renderContext, renderArgs, headingTextStyleConfig.Get(), xamlTextBlock.Get()));
+        }
+        else
+        {
+            RETURN_IF_FAILED(SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, false, inlines.Get()));
+        }
 
         // Ensure left edge of text is consistent regardless of font size, so both small and large fonts
         // are flush on the left edge of the card by enabling TrimSideBearings
@@ -76,9 +103,6 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", frameworkElement.Get()));
 
         // If this text block has a heading style, set the corresponding automation property
-        ABI::AdaptiveCards::Rendering::Uwp::TextStyle textStyle;
-        RETURN_IF_FAILED(adaptiveTextBlock->get_Style(&textStyle));
-
         if (textStyle == ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Heading)
         {
             ComPtr<IDependencyObject> textBlockAsDependencyObject;
@@ -122,11 +146,11 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        ComPtr<IAdaptiveHeadingsConfig> headingConfig;
-        RETURN_IF_FAILED(hostConfig->get_Headings(&headingConfig));
+        ComPtr<IAdaptiveTextBlockConfig> textBlockConfig;
+        RETURN_IF_FAILED(hostConfig->get_TextBlock(&textBlockConfig));
 
         unsigned int levelInt;
-        RETURN_IF_FAILED(headingConfig->get_Level(&levelInt));
+        RETURN_IF_FAILED(textBlockConfig->get_HeadingLevel(&levelInt));
 
         switch (levelInt)
         {

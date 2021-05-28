@@ -48,21 +48,25 @@
     for (const auto &columnDefinition : table->GetColumns()) {
         auto optionalNumericValue = columnDefinition->GetWidth();
         if (optionalNumericValue.has_value()) {
-            totalRelativeWidth += optionalNumericValue.value_or(1);
+            totalRelativeWidth += *optionalNumericValue;
         } else if (auto optionalPixelValue = columnDefinition->GetWidth(); optionalPixelValue.has_value()) {
-            totalPixelWidth += optionalPixelValue.value_or(1);
+            totalPixelWidth += *optionalPixelValue;
         }
         i++;
     }
+
+    // if total relative width is zero, dividend will be zero, and setting the value to 1
+    // ensures the relative width come out as zero
+    totalRelativeWidth = (totalRelativeWidth == 0) ? 1 : totalRelativeWidth;
 
     for (auto columnDefinition : table->GetColumns()) {
         auto optionalNumericValue = columnDefinition->GetWidth();
         ACRColumnDefinition *iOSColumnDefinition = nil;
         if (optionalNumericValue.has_value()) {
-            iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithRelativeWidth:optionalNumericValue.value_or(1) / totalRelativeWidth
+            iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithRelativeWidth:*optionalNumericValue / totalRelativeWidth
                                                                      totalPixelWidth:totalPixelWidth];
         } else if (auto optionalPixelValue = columnDefinition->GetPixelWidth(); optionalPixelValue.has_value()) {
-            iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithPixelWidth:optionalPixelValue.value_or(1)];
+            iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithPixelWidth:*optionalPixelValue];
         } else {
             iOSColumnDefinition = [[ACRColumnDefinition alloc] init];
             iOSColumnDefinition.isValid = NO;

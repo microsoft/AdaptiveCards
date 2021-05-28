@@ -113,16 +113,14 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
                 view.setBackgroundColor(separatorColor);
                 params = new FlexboxLayout.LayoutParams(separatorThickness, FlexboxLayout.LayoutParams.MATCH_PARENT);
                 params.setMargins(
-                    isHorizontalSpacing ? 0 : spacingSize / 2 /* left */,
-                    isHorizontalSpacing ? spacingSize / 2 : 0 /* top */,
-                    isHorizontalSpacing ? 0 : spacingSize / 2 /* right */,
-                    isHorizontalSpacing ? spacingSize / 2 : 0 /* bottom */);
+                    spacingSize / 2 /* left */,
+                    0 /* top */,
+                    spacingSize / 2 /* right */,
+                    0 /* bottom */);
             }
             else
             {
-                // As ImageSets use HorizontalFlowLayout, assigning the spacing between images as MatchParent will make them
-                // use more space than needed (making a second row of images to render below the space for the imageSet)
-                params = new FlexboxLayout.LayoutParams(spacingSize, isImageSet ? 0 : FlexboxLayout.LayoutParams.MATCH_PARENT);
+                params = new FlexboxLayout.LayoutParams(spacingSize, FlexboxLayout.LayoutParams.MATCH_PARENT);
             }
             params.setFlexShrink(0);
             params.setFlexGrow(0);
@@ -179,6 +177,8 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         View separator = null;
         TagContent tagContent = getTagContent(elementView);
 
+        int visibility = isVisible ? View.VISIBLE : View.GONE;
+
         if (tagContent != null)
         {
             separator = tagContent.GetSeparator();
@@ -188,19 +188,17 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             {
                 viewGroupsToUpdate.add(viewGroup);
             }
-        }
 
-        int visibility = isVisible ? View.VISIBLE : View.GONE;
+            View stretchContainer = tagContent.GetStretchContainer();
+            if (stretchContainer != null)
+            {
+                stretchContainer.setVisibility(visibility);
+            }
+        }
 
         if (separator != null)
         {
             separator.setVisibility(visibility);
-        }
-
-        View stretchContainer = tagContent.GetStretchContainer();
-        if (stretchContainer != null)
-        {
-            stretchContainer.setVisibility(visibility);
         }
 
         elementView.setVisibility(visibility);

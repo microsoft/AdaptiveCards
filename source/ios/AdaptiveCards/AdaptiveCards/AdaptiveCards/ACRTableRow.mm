@@ -92,8 +92,9 @@
                         style = cell->GetStyle();
                     }
                     cellDefinition.style = (ACRContainerStyle)style;
-                    cellDefinition.horizontalAlignment = (ACRHorizontalAlignment)row->GetHorizontalCellContentAlignment();
-                    cellDefinition.verticalAlignment = (ACRVerticalAlignment)row->GetVerticalCellContentAlignment();
+                    cellDefinition.horizontalAlignment = (ACRHorizontalAlignment)row->GetHorizontalCellContentAlignment().value_or(HorizontalAlignment::Left);
+                    cellDefinition.verticalAlignment =
+                        (ACRVerticalAlignment)cell->GetVerticalContentAlignment().value_or(row->GetVerticalCellContentAlignment().value_or(VerticalContentAlignment::Top));
                     cellView = [[ACRTableCellView alloc] init:[[ACOBaseCardElement alloc] initWithBaseCardElement:cell]
                                                cellDefinition:cellDefinition
                                                      rootView:rootView

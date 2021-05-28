@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveMedia.h"
+#include "AdaptiveMediaSource.h"
 #include "Vector.h"
 
+using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
@@ -28,7 +30,8 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetPoster(), m_poster.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetAltText(), m_altText.GetAddressOf()));
 
-        m_sources = Microsoft::WRL::Make<Vector<AdaptiveMediaSource*>>();
+        m_sources = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>>();
+
         GenerateMediaSourcesProjection(sharedMedia->GetSources(), m_sources.Get());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedMedia));
@@ -50,7 +53,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveMedia::put_AltText(_In_ HSTRING value) { return m_altText.Set(value); }
 
-    HRESULT AdaptiveMedia::get_Sources(_COM_Outptr_ IVector<AdaptiveMediaSource*>** sources)
+    HRESULT AdaptiveMedia::get_Sources(_COM_Outptr_ IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>** sources)
     {
         return m_sources.CopyTo(sources);
     }

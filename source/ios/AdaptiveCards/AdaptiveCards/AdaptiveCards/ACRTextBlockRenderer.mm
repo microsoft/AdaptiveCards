@@ -63,7 +63,7 @@
 
         if (![textMap objectForKey:key]) {
             RichTextElementProperties textProp;
-            TextBlockToRichTextElementProperties(txtBlck, textProp);
+            TextBlockToRichTextElementProperties(txtBlck, [acoConfig getHostConfig], textProp);
             buildIntermediateResultForText(rootView, acoConfig, textProp, key);
         }
 
@@ -92,11 +92,15 @@
 
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment() context:rootView.context];
+        paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left) context:rootView.context];
+
+        auto sharedStyle = txtBlck->GetStyle();
+        auto backUpColor = sharedStyle.has_value() ? txtBlck->GetTextColor().value_or(config->GetTextStyles().heading.color) : txtBlck->GetTextColor().value_or(ForegroundColor::Default);
+        auto backUpIsSubtle = sharedStyle.has_value() ? txtBlck->GetIsSubtle().value_or(config->GetTextStyles().heading.isSubtle) : txtBlck->GetIsSubtle().value_or(false);
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
-        auto foregroundColor = [acoConfig getTextBlockColor:style textColor:txtBlck->GetTextColor() subtleOption:txtBlck->GetIsSubtle()];
+        auto foregroundColor = [acoConfig getTextBlockColor:style textColor:backUpColor subtleOption:backUpIsSubtle];
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
 

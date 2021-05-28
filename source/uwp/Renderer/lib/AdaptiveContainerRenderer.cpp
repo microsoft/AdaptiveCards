@@ -107,8 +107,15 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
         }
 
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment;
-        RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignment));
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
+        RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignmentReference));
+
+        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Top;
+        if (verticalContentAlignmentReference != nullptr)
+        {
+            verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
+        }
 
         XamlHelpers::SetVerticalContentAlignmentToChildren(containerPanel.Get(), verticalContentAlignment);
 

@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+    "description": "Represents a cell within a row of a Table element.",
+    "extends": "Container",
+    "version": "1.5"
+}

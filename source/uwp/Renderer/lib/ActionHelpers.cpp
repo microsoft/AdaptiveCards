@@ -136,7 +136,11 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
-            THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Center));
+
+            THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(
+                winrt::box_value(winrt::AdaptiveCards::Rendering::Uwp::HAlignment::Center)
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>>()
+                    .get()));
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
             THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -397,7 +401,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
         EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
+        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                      /*args*/) -> HRESULT {
                                                    return actionInvoker->SendActionEvent(action.Get());
                                                }).Get(),
@@ -592,7 +596,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // Make the action the same size as the text box
         EventRegistrationToken eventToken;
         THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
-            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
+            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                 /*args*/) -> HRESULT {
                 ComPtr<IFrameworkElement> actionFrameworkElement;
                 RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
@@ -790,7 +794,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         THROW_IF_FAILED(localButton.As(&buttonBase));
 
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                           /*args*/) -> HRESULT {
                                                   THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
                                                   return S_OK;
@@ -948,7 +952,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         RETURN_IF_FAILED(actionsConfig->get_MaxActions(&maxActions));
 
         bool allActionsHaveIcons{true};
-        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
+        IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
             HString iconUrl;
             RETURN_IF_FAILED(child->get_IconUrl(iconUrl.GetAddressOf()));
 
@@ -968,7 +972,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
-        XamlHelpers::IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
+        IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
             if (currentAction < maxActions)
             {
                 // Render each action using the registered renderer

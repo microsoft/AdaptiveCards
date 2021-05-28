@@ -131,11 +131,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(2ui64, tableRow->GetCells().size(), L"This TableRow should have 2 cells");
             Assert::IsTrue(ContainerStyle::Accent == tableRow->GetStyle());
             Assert::IsTrue(HorizontalAlignment::Center == tableRow->GetHorizontalCellContentAlignment());
-            Assert::IsTrue(VerticalAlignment::Bottom == tableRow->GetVerticalCellContentAlignment());
+            Assert::IsTrue(VerticalContentAlignment::Bottom == tableRow->GetVerticalCellContentAlignment());
 
             // ensure correct serialization
             auto serializedResult = tableRow->Serialize();
-            Assert::AreEqual("{\"cells\":[{\"items\":[{\"text\":\"the first\",\"type\":\"TextBlock\"},{\"text\":\"the first part deux\",\"type\":\"TextBlock\"}],\"rtl\":true,\"type\":\"TableCell\"},{\"items\":[{\"text\":\"the second\",\"type\":\"TextBlock\"}],\"rtl\":true,\"type\":\"TableCell\"}],\"horizontalCellContentAlignment\":\"center\",\"style\":\"Accent\",\"type\":\"TableRow\",\"verticalCellContentAlignment\":\"bottom\"}\n"s, serializedResult);
+            Assert::AreEqual("{\"cells\":[{\"items\":[{\"text\":\"the first\",\"type\":\"TextBlock\"},{\"text\":\"the first part deux\",\"type\":\"TextBlock\"}],\"rtl\":true,\"type\":\"TableCell\"},{\"items\":[{\"text\":\"the second\",\"type\":\"TextBlock\"}],\"rtl\":true,\"type\":\"TableCell\"}],\"horizontalCellContentAlignment\":\"center\",\"style\":\"Accent\",\"type\":\"TableRow\",\"verticalCellContentAlignment\":\"Bottom\"}\n"s, serializedResult);
         }
 
         TEST_METHOD(TableColumnDefinitionSimpleParse)
@@ -158,11 +158,11 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             Assert::IsFalse(columnDefinition->GetPixelWidth().has_value(), L"if we have a width, we shouldn't have a pixel width");
             Assert::IsTrue(HorizontalAlignment::Center == columnDefinition->GetHorizontalCellContentAlignment());
-            Assert::IsTrue(VerticalAlignment::Bottom == columnDefinition->GetVerticalCellContentAlignment());
+            Assert::IsTrue(VerticalContentAlignment::Bottom == columnDefinition->GetVerticalCellContentAlignment());
 
             // ensure correct serialization
             auto serializedResult = columnDefinition->Serialize();
-            Assert::AreEqual("{\"horizontalCellContentAlignment\":\"center\",\"verticalCellContentAlignment\":\"bottom\",\"width\":1}\n"s, serializedResult);
+            Assert::AreEqual("{\"horizontalCellContentAlignment\":\"center\",\"verticalCellContentAlignment\":\"Bottom\",\"width\":1}\n"s, serializedResult);
         }
 
         TEST_METHOD(TableColumnDefinitionPixelParse)
@@ -184,10 +184,10 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(pixelWidth.has_value());
             Assert::IsTrue(100 == pixelWidth.value());
             Assert::IsTrue(HorizontalAlignment::Right == columnDefinition->GetHorizontalCellContentAlignment());
-            Assert::IsTrue(VerticalAlignment::Center == columnDefinition->GetVerticalCellContentAlignment());
+            Assert::IsTrue(VerticalContentAlignment::Center == columnDefinition->GetVerticalCellContentAlignment());
 
             auto serializedResult = columnDefinition->Serialize();
-            Assert::AreEqual("{\"horizontalCellContentAlignment\":\"right\",\"verticalCellContentAlignment\":\"center\",\"width\":\"100px\"}\n"s, serializedResult);
+            Assert::AreEqual("{\"horizontalCellContentAlignment\":\"right\",\"verticalCellContentAlignment\":\"Center\",\"width\":\"100px\"}\n"s, serializedResult);
         }
 
         TEST_METHOD(TableColumnDefinitionMissingUnitParse)
@@ -382,7 +382,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             // ensure correct serialization
             auto serializedResult = table->Serialize();
-            Assert::AreEqual("{\"columns\":[{\"width\":1},{\"width\":1},{\"width\":3}],\"firstRowAsHeaders\":true,\"rows\":[{\"cells\":[{\"items\":[{\"text\":\"Name\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Type\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Description\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"}],\"style\":\"Accent\",\"type\":\"TableRow\"},{\"cells\":[{\"items\":[{\"text\":\"columns\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"ColumnDefinition[]\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Defines the table's columns (number of columns, and column sizes).\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"}],\"type\":\"TableRow\"},{\"cells\":[{\"items\":[{\"text\":\"rows\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"TableRow[]\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Defines the rows of the Table, each being a collection of cells. Rows are not required, which allows empty Tables to be generated via templating without breaking the rendering of the whole card.\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"}],\"type\":\"TableRow\"}],\"type\":\"Table\"}\n"s,
+            Assert::AreEqual("{\"columns\":[{\"width\":1},{\"width\":1},{\"width\":3}],\"firstRowAsHeaders\":true,\"gridStyle\":\"Accent\",\"rows\":[{\"cells\":[{\"items\":[{\"text\":\"Name\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Type\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Description\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"}],\"style\":\"Accent\",\"type\":\"TableRow\"},{\"cells\":[{\"items\":[{\"text\":\"columns\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"ColumnDefinition[]\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Defines the table's columns (number of columns, and column sizes).\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"}],\"type\":\"TableRow\"},{\"cells\":[{\"items\":[{\"text\":\"rows\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"TableRow[]\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Defines the rows of the Table, each being a collection of cells. Rows are not required, which allows empty Tables to be generated via templating without breaking the rendering of the whole card.\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"}],\"type\":\"TableRow\"}],\"type\":\"Table\"}\n"s,
                 serializedResult);
         }
     };

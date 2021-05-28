@@ -5,10 +5,6 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
@@ -20,6 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.HashMap;
 
@@ -60,22 +63,21 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    public static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
+    public static void applyHorizontalAlignment(TextView textView, HorizontalAlignment horizontalAlignment, RenderArgs renderArgs)
     {
-        textView.setTextAlignment(TextRendererUtil.getTextAlignment(textAlignment));
+        horizontalAlignment = RendererUtil.computeHorizontalAlignment(horizontalAlignment, renderArgs);
+        textView.setTextAlignment(TextRendererUtil.getTextAlignment(horizontalAlignment));
     }
 
-    public static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
+    public static void applyTextSize(TextView textView, HostConfig hostConfig, TextStyle textStyle, FontType fontType, TextSize textSize, RenderArgs renderArgs)
     {
-        textView.setTextSize(TextRendererUtil.getTextSize(type, textSize, hostConfig));
+        textSize = TextRendererUtil.computeTextSize(hostConfig, textStyle, textSize, renderArgs);
+        fontType = TextRendererUtil.computeFontType(hostConfig, textStyle, fontType, renderArgs);
+
+        textView.setTextSize(TextRendererUtil.getTextSize(fontType, textSize, hostConfig));
     }
 
-    /**
-     * Applies given TextStyle to the given TextView
-     * @param textView TextView to apply style to
-     * @param style TextStyle to apply
-     */
-    private static void applyTextStyle(TextView textView, final TextStyle style)
+    public static void applyAccessibilityHeading(@NonNull final TextView textView, @Nullable final TextStyle textStyle)
     {
         // Indicate Heading to accessibility service
         // TODO: Refactor to ViewCompat.setAccessibilityHeading after AndroidX upgrade
@@ -83,13 +85,16 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             @Override
             public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
                 super.onInitializeAccessibilityNodeInfo(host, info);
-                info.setHeading(style == TextStyle.Heading);
+                info.setHeading(textStyle == TextStyle.Heading);
             }
         });
     }
 
-    public void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
+    public static void applyTextFormat(TextView textView, HostConfig hostConfig, TextStyle textStyle, FontType type, TextWeight textWeight, RenderArgs renderArgs)
     {
+        type = TextRendererUtil.computeFontType(hostConfig, textStyle, type, renderArgs);
+        textWeight = TextRendererUtil.computeTextWeight(hostConfig, textStyle, textWeight, renderArgs);
+
         Typeface typeface = TextRendererUtil.getTextFormat(hostConfig, type, textWeight == TextWeight.Lighter);
 
         // As of API 28, the create(Typeface, int, bool) method used below was added to the android API, the second parameter is the
@@ -113,8 +118,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
     }
 
-    public static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
+    public static void applyTextColor(TextView textView, HostConfig hostConfig, TextStyle textStyle, ForegroundColor foregroundColor, Boolean isSubtle, ContainerStyle containerStyle, RenderArgs renderArgs)
     {
+        foregroundColor = TextRendererUtil.computeTextColor(hostConfig, textStyle, foregroundColor, renderArgs);
+        isSubtle = TextRendererUtil.computeIsSubtle(hostConfig, textStyle, isSubtle, renderArgs);
+
         textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }
 
@@ -216,11 +224,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
         textView.setHorizontallyScrolling(false);
-        setTextFormat(textView, hostConfig, textBlock.GetFontType(), textBlock.GetTextWeight());
-        setTextSize(textView, textBlock.GetFontType(), textBlock.GetTextSize(), hostConfig);
-        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
-        setTextAlignment(textView, textBlock.GetHorizontalAlignment());
-        applyTextStyle(textView, textBlock.GetStyle());
+        applyTextFormat(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight(), renderArgs);
+        applyTextSize(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextSize(), renderArgs);
+        applyTextColor(textView, hostConfig, textBlock.GetStyle(), textBlock.GetTextColor(), textBlock.GetIsSubtle(), renderArgs.getContainerStyle(), renderArgs);
+        applyHorizontalAlignment(textView, textBlock.GetHorizontalAlignment(), renderArgs);
+        applyAccessibilityHeading(textView, textBlock.GetStyle());
 
         int maxLines = (int)textBlock.GetMaxLines();
         if (maxLines > 0 && textBlock.GetWrap())

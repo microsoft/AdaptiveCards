@@ -19,13 +19,13 @@ namespace AdaptiveCards
         ~CollectionTypeElement() = default;
         CollectionTypeElement(CardElementType type,
                               ContainerStyle style = ContainerStyle::None,
-                              VerticalContentAlignment alignment = VerticalContentAlignment::Top);
+                              std::optional<VerticalContentAlignment> alignment = std::nullopt);
 
         ContainerStyle GetStyle() const;
         void SetStyle(const ContainerStyle value);
 
-        VerticalContentAlignment GetVerticalContentAlignment() const;
-        void SetVerticalContentAlignment(const VerticalContentAlignment value);
+        std::optional<VerticalContentAlignment> GetVerticalContentAlignment() const;
+        void SetVerticalContentAlignment(const std::optional<VerticalContentAlignment> value);
 
         bool GetPadding() const;
         void SetPadding(const bool value);
@@ -76,7 +76,7 @@ namespace AdaptiveCards
         void SetBleedDirection(const ContainerBleedDirection bleedDirection) { m_bleedDirection = bleedDirection; }
 
         ContainerStyle m_style;
-        VerticalContentAlignment m_verticalContentAlignment;
+        std::optional<VerticalContentAlignment> m_verticalContentAlignment;
         ContainerBleedDirection m_bleedDirection;
 
         unsigned int m_minHeight;
@@ -104,8 +104,8 @@ namespace AdaptiveCards
         collection->SetStyle(
             ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
-        collection->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
-            value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
+        collection->SetVerticalContentAlignment(ParseUtil::GetOptionalEnumValue<VerticalContentAlignment>(
+            value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignmentFromString));
 
         collection->SetBleed(ParseUtil::GetBool(value, AdaptiveCardSchemaKey::Bleed, false));
 

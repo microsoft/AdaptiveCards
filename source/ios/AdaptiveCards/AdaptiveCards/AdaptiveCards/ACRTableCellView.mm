@@ -32,7 +32,6 @@
 
         [self setAutoLayout];
         [self configureForStyle:acoConfig];
-        _spacing = 8.0f;
         if (rootView.context.isFirstRowAsHeaders) {
             self.accessibilityTraits |= UIAccessibilityTraitHeader;
         }
@@ -90,6 +89,7 @@
 - (void)configureForStyle:(ACOHostConfig *)acoConfig
 {
     if (_definition) {
+        _spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
         self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_definition.style];
     }
 }
