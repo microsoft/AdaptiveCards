@@ -44,7 +44,6 @@
 - (void)defineColumnDefinitions:(const std::shared_ptr<Table> &)table
 {
     CGFloat totalRelativeWidth = 0, totalPixelWidth = 0;
-    NSInteger i = 0;
     for (const auto &columnDefinition : table->GetColumns()) {
         auto optionalNumericValue = columnDefinition->GetWidth();
         if (optionalNumericValue.has_value()) {
@@ -52,7 +51,6 @@
         } else if (auto optionalPixelValue = columnDefinition->GetWidth(); optionalPixelValue.has_value()) {
             totalPixelWidth += *optionalPixelValue;
         }
-        i++;
     }
 
     // if total relative width is zero, dividend will be zero, and setting the value to 1

@@ -65,22 +65,20 @@
         const auto element = [acoElem element];
         const auto row = std::dynamic_pointer_cast<TableRow>(element);
         self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:(ACRContainerStyle)row->GetStyle()];
-
+        self.spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
+        
         if (!row) {
             return self;
         }
 
-        auto idx = 0;
         const auto &cells = row->GetCells();
         const auto endIdx = [columnDefinition count];
 
-        // should be read from Hostconfig
-        CGFloat spacing = 8.0f;
-
         NSLayoutXAxisAnchor *trailingAnchor = self.leadingAnchor;
         UIView *prevView = nil;
-
-        for (; idx < endIdx; idx++) {
+        CGFloat lineOffset = 0;
+        
+        for (auto idx = 0; idx < endIdx; idx++) {
             ACRColumnDefinition *ithColumnDefinition = columnDefinition[idx];
             if (ithColumnDefinition.isValid) {
                 ACRTableCellView *cellView = nil;
@@ -105,37 +103,36 @@
                     cellView = [[ACRTableCellView alloc] init];
                 }
                 cellView.translatesAutoresizingMaskIntoConstraints = NO;
-
+                
                 if (cellView) {
+                    if (ithColumnDefinition.showGridLines) {
+                        [self setBorderOnCell:cellView hostConfig:acoConfig style:gridStyle];
+                        lineOffset = cellView.layer.borderWidth;
+                    }
+                    
                     [self addSubview:cellView];
                     if (ithColumnDefinition.isPixelWidth) {
-                        [cellView.widthAnchor constraintEqualToConstant:ithColumnDefinition.numeric].active = YES;
-                    } else if (!ithColumnDefinition.isPixelWidth) {
+                        [cellView.widthAnchor constraintEqualToConstant:ithColumnDefinition.numeric + lineOffset].active = YES;
+                    } else {
                         [cellView.widthAnchor constraintEqualToAnchor:self.widthAnchor
                                                            multiplier:ithColumnDefinition.numeric
-                                                             constant:-ithColumnDefinition.totalPixelWidth]
+                                                             constant:-ithColumnDefinition.totalPixelWidth + lineOffset]
                             .active = YES;
                     }
 
+                    // This constraint with the low priority will ensure
+                    // that the shorter cells get minimum heights instead of getting stretched.
                     [self.heightAnchor constraintEqualToAnchor:cellView.heightAnchor].active = YES;
                     NSLayoutConstraint *heightConstraint = [cellView.heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
                     heightConstraint.priority = UILayoutPriorityDefaultLow;
                     heightConstraint.active = YES;
-
+                    
                     [cellView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
                     if (prevView) {
-                        if (ithColumnDefinition.showGridLines) {
-                            spacing = -1;
-                        }
-                        [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor constant:spacing].active = YES;
+                        [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor constant:-lineOffset].active = YES;
                     } else {
                         [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor].active = YES;
                     }
-
-                    if (ithColumnDefinition.showGridLines) {
-                        [self setBorderOnCell:cellView hostConfig:acoConfig style:gridStyle];
-                    }
-
                     trailingAnchor = cellView.trailingAnchor;
                     prevView = cellView;
                 }
@@ -153,11 +150,15 @@
 - (CGSize)intrinsicContentSize
 {
     CGSize size = CGSizeZero;
+    UIView *lastSubView = [self.subviews lastObject];
     for (UIView *subview in self.subviews) {
         if (!subview.isHidden) {
             CGSize intrinsicContentSize = [subview intrinsicContentSize];
             size.width += intrinsicContentSize.width;
             size.height = MAX(size.height, intrinsicContentSize.height);
+            if (subview != lastSubView) {
+                size.width += self.spacing;
+            }
         }
     }
 

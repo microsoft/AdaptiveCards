@@ -22,7 +22,6 @@
 {
     self = [super init];
     if (self) {
-
         [[ACRTableCellRenderer getInstance] render:self rootView:rootView inputs:inputs baseCardElement:baseCardElement hostConfig:acoConfig];
         if (definition) {
             _definition = definition;
@@ -44,7 +43,7 @@
     if (_contentView) {
         self.translatesAutoresizingMaskIntoConstraints = NO;
         _contentView.translatesAutoresizingMaskIntoConstraints = NO;
-        NSLayoutConstraint *contentViewWidthAnchor0 = [_contentView.widthAnchor constraintLessThanOrEqualToAnchor:self.widthAnchor];
+        NSLayoutConstraint *contentViewWidthAnchor0 = [_contentView.widthAnchor constraintEqualToAnchor:self.widthAnchor];
         NSLayoutConstraint *contentViewHeightAnchor0 = [_contentView.heightAnchor constraintLessThanOrEqualToAnchor:self.heightAnchor];
         contentViewWidthAnchor0.priority = UILayoutPriorityRequired;
         contentViewHeightAnchor0.priority = UILayoutPriorityRequired;
@@ -89,7 +88,6 @@
 - (void)configureForStyle:(ACOHostConfig *)acoConfig
 {
     if (_definition) {
-        _spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
         self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_definition.style];
     }
 }

@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface ACRTableRowView : ACRContentStackView
+// spacing between cells
+@property CGFloat spacing;
 
 - (instancetype)init:(ACOBaseCardElement *)acoElem
     columnDefinitions:(NSArray<ACRColumnDefinition *> *)columnDefinition
