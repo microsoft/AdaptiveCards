@@ -612,7 +612,8 @@ CGFloat kFileBrowserWidth = 0;
 {
     dispatch_async(_global_queue,
                    ^{
-                       [self.chatWindow reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+                       [self.chatWindow beginUpdates];
+                       [self.chatWindow endUpdates];
                    });
 }
 @end

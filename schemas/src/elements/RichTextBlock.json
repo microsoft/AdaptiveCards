@@ -13,8 +13,8 @@
       "required": true
     },
     "horizontalAlignment": {
-      "type": "HorizontalAlignment",
-      "description": "Controls the horizontal text alignment."
+      "type": "HorizontalAlignment?",
+      "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
     }
   }
 }

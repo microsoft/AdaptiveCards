@@ -6,7 +6,7 @@
 // clang-format off
 namespace AdaptiveCards
 {
-    DEFINE_ADAPTIVECARD_ENUM_THROW(AdaptiveCardSchemaKey, {
+    DEFINE_ADAPTIVECARD_ENUM(AdaptiveCardSchemaKey, {
             {AdaptiveCardSchemaKey::Accent, "accent"},
             {AdaptiveCardSchemaKey::Action, "action"},
             {AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment"},
@@ -36,6 +36,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::ButtonSpacing, "buttonSpacing"},
             {AdaptiveCardSchemaKey::Buttons, "buttons"},
             {AdaptiveCardSchemaKey::Card, "card"},
+            {AdaptiveCardSchemaKey::CellSpacing, "cellSpacing"},
             {AdaptiveCardSchemaKey::Cells, "cells"},
             {AdaptiveCardSchemaKey::Center, "center"},
             {AdaptiveCardSchemaKey::ChoiceSet, "choiceSet"},
@@ -43,6 +44,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Color, "color"},
             {AdaptiveCardSchemaKey::ColorConfig, "colorConfig"},
             {AdaptiveCardSchemaKey::Column, "column"},
+            {AdaptiveCardSchemaKey::ColumnHeader, "columnHeader"},
             {AdaptiveCardSchemaKey::ColumnSet, "columnSet"},
             {AdaptiveCardSchemaKey::Columns, "columns"},
             {AdaptiveCardSchemaKey::ConnectionName, "connectionName"},
@@ -72,7 +74,8 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
             {AdaptiveCardSchemaKey::Good, "good"},
             {AdaptiveCardSchemaKey::GridStyle, "gridStyle"},
-            {AdaptiveCardSchemaKey::Headings, "headings"},
+            {AdaptiveCardSchemaKey::Heading, "heading"},
+            {AdaptiveCardSchemaKey::HeadingLevel, "headingLevel"},
             {AdaptiveCardSchemaKey::Height, "height"},
             {AdaptiveCardSchemaKey::Highlight, "highlight"},
             {AdaptiveCardSchemaKey::HighlightColor, "highlightColor"},
@@ -107,7 +110,6 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
             {AdaptiveCardSchemaKey::Left, "left"},
-            {AdaptiveCardSchemaKey::Level, "level"},
             {AdaptiveCardSchemaKey::Light, "light"},
             {AdaptiveCardSchemaKey::Lighter, "lighter"},
             {AdaptiveCardSchemaKey::LineColor, "lineColor"},
@@ -171,6 +173,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::TextBlock, "textBlock"},
             {AdaptiveCardSchemaKey::TextConfig, "textConfig"},
             {AdaptiveCardSchemaKey::TextInput, "textInput"},
+            {AdaptiveCardSchemaKey::TextStyles, "textStyles"},
             {AdaptiveCardSchemaKey::TextWeight, "weight"},
             {AdaptiveCardSchemaKey::Thickness, "thickness"},
             {AdaptiveCardSchemaKey::TimeInput, "timeInput"},
@@ -197,7 +200,7 @@ namespace AdaptiveCards
             {AdaptiveCardSchemaKey::Width, "width"},
             {AdaptiveCardSchemaKey::Wrap, "wrap"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unknown, {
+    DEFINE_ADAPTIVECARD_ENUM(CardElementType, {
             {CardElementType::ActionSet, "ActionSet"},
             {CardElementType::AdaptiveCard, "AdaptiveCard"},
             {CardElementType::ChoiceSetInput, "Input.ChoiceSet"},
@@ -222,7 +225,7 @@ namespace AdaptiveCards
             {CardElementType::ToggleInput, "Input.Toggle"},
             {CardElementType::Unknown, "Unknown"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionType, ActionType::Unsupported, {
+    DEFINE_ADAPTIVECARD_ENUM(ActionType, {
             {ActionType::Unsupported, "Unsupported"},
             {ActionType::Execute, "Action.Execute"},
             {ActionType::OpenUrl, "Action.OpenUrl"},
@@ -233,7 +236,7 @@ namespace AdaptiveCards
             {ActionType::UnknownAction, "UnknownAction"},
             {ActionType::Overflow, "Overflow"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HeightType, HeightType::Stretch, {
+    DEFINE_ADAPTIVECARD_ENUM(HeightType, {
             {HeightType::Auto, "Auto"},
             {HeightType::Stretch, "Stretch"}});
 
@@ -259,25 +262,25 @@ namespace AdaptiveCards
                 {"normal", ImageStyle::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
             }});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(VerticalAlignment, VerticalAlignment::Top, {
+    DEFINE_ADAPTIVECARD_ENUM(VerticalAlignment, {
         { VerticalAlignment::Top, "top" },
         { VerticalAlignment::Center, "center" },
         { VerticalAlignment::Bottom, "bottom" }});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageFillMode, ImageFillMode::Cover, {
+    DEFINE_ADAPTIVECARD_ENUM(ImageFillMode, {
         { ImageFillMode::Cover, "cover" },
         { ImageFillMode::RepeatHorizontally, "repeatHorizontally" },
         { ImageFillMode::RepeatVertically, "repeatVertically" },
         { ImageFillMode::Repeat, "repeat" }});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageSize, ImageSize::Auto, {
+    DEFINE_ADAPTIVECARD_ENUM(ImageSize, {
             {ImageSize::Auto, "Auto"},
             {ImageSize::Large, "Large"},
             {ImageSize::Medium, "Medium"},
             {ImageSize::Small, "Small"},
             {ImageSize::Stretch, "Stretch"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HorizontalAlignment, HorizontalAlignment::Left, {
+    DEFINE_ADAPTIVECARD_ENUM(HorizontalAlignment, {
             {HorizontalAlignment::Center, "center"},
             {HorizontalAlignment::Left, "left"},
             {HorizontalAlignment::Right, "right"}});
@@ -291,8 +294,8 @@ namespace AdaptiveCards
             {ForegroundColor::Light, "Light"},
             {ForegroundColor::Warning, "Warning"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(TextStyle , TextStyle::Paragraph, {
-            {TextStyle::Paragraph, "paragraph"},
+    DEFINE_ADAPTIVECARD_ENUM(TextStyle, {
+            {TextStyle::Default, "default"},
             {TextStyle::Heading, "heading"}});
 
     DEFINE_ADAPTIVECARD_ENUM(TextWeight, {
@@ -321,23 +324,23 @@ namespace AdaptiveCards
             {FontType::Default, "Default"},
             {FontType::Monospace, "Monospace"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionsOrientation, ActionsOrientation::Horizontal, {
+    DEFINE_ADAPTIVECARD_ENUM(ActionsOrientation, {
             {ActionsOrientation::Horizontal, "Horizontal"},
             {ActionsOrientation::Vertical, "Vertical"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionMode, ActionMode::Inline, {
+    DEFINE_ADAPTIVECARD_ENUM(ActionMode, {
             {ActionMode::Inline, "Inline"},
             {ActionMode::Popup, "Popup"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(AssociatedInputs, AssociatedInputs::Auto, {
+    DEFINE_ADAPTIVECARD_ENUM(AssociatedInputs, {
         {AssociatedInputs::Auto, "Auto"},
         {AssociatedInputs::None, "None"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ChoiceSetStyle, ChoiceSetStyle::Compact, {
+    DEFINE_ADAPTIVECARD_ENUM(ChoiceSetStyle, {
             {ChoiceSetStyle::Compact, "Compact"},
             {ChoiceSetStyle::Expanded, "Expanded"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(TextInputStyle, TextInputStyle::Text, {
+    DEFINE_ADAPTIVECARD_ENUM(TextInputStyle, {
             {TextInputStyle::Email, "Email"},
             {TextInputStyle::Tel, "Tel"},
             {TextInputStyle::Text, "Text"},
@@ -351,25 +354,25 @@ namespace AdaptiveCards
             {ContainerStyle::Warning, "Warning"},
             {ContainerStyle::Accent, "Accent"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionAlignment, ActionAlignment::Left, {
+    DEFINE_ADAPTIVECARD_ENUM(ActionAlignment, {
             {ActionAlignment::Left, "Left"},
             {ActionAlignment::Center, "Center"},
             {ActionAlignment::Right, "Right"},
             {ActionAlignment::Stretch, "Stretch"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(IconPlacement, IconPlacement::AboveTitle, {
+    DEFINE_ADAPTIVECARD_ENUM(IconPlacement, {
             {IconPlacement::AboveTitle, "AboveTitle"},
             {IconPlacement::LeftOfTitle, "LeftOfTitle"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(VerticalContentAlignment, VerticalContentAlignment::Top, {
+    DEFINE_ADAPTIVECARD_ENUM(VerticalContentAlignment, {
             {VerticalContentAlignment::Top, "Top"},
             {VerticalContentAlignment::Center, "Center"},
             {VerticalContentAlignment::Bottom, "Bottom"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
+    DEFINE_ADAPTIVECARD_ENUM(InlineElementType, {
             {InlineElementType::TextRun, "TextRun"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(Mode, Mode::Primary, {
+    DEFINE_ADAPTIVECARD_ENUM(Mode, {
             {Mode::Primary, "primary"},
             {Mode::Secondary, "secondary"}});
 }

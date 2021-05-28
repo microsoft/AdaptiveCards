@@ -1,0 +1,20 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+    "description": "Defines the characteristics of a column in a Table element.",
+    "version": "1.5",
+    "properties": {
+        "width": {
+            "type": "string|number",
+            "description": "Specifies the width of the column. If expressed as a number, width represents the weight a the column relative to the other columns in the table. If expressed as a string, width must by in the format \"<number>px\" (for instance, \"50px\") and represents an explicit number of pixels.",
+            "default": 1
+        },
+        "horizontalCellContentAlignment": {
+            "type": "HorizontalAlignment?",
+            "description": "Controls how the content of all cells in the column is horizontally aligned by default. When specified, this value overrides the setting at the table level. When not specified, horizontal alignment is defined at the table, row or cell level."
+        },
+        "verticalCellContentAlignment": {
+            "type": "VerticalAlignment?",
+            "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table level. When not specified, vertical alignment is defined at the table, row or cell level."
+        }
+    }
+}

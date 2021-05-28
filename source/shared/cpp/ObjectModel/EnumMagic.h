@@ -91,7 +91,7 @@ namespace AdaptiveCards
     const std::string& ENUMTYPE##ToString(const ENUMTYPE t) { return EnumHelpers::get##ENUMTYPE##Enum().toString(t); }
 
 // Define mapping functions for ENUMTYPE. Throw an exception if caller passes in a string that doesn't map
-#define DEFINE_ADAPTIVECARD_ENUM_THROW(ENUMTYPE, ...)                \
+#define DEFINE_ADAPTIVECARD_ENUM(ENUMTYPE, ...)                \
     _DEFINE_ADAPTIVECARD_ENUM_INVARIANT(ENUMTYPE, __VA_ARGS__);      \
     ENUMTYPE ENUMTYPE##FromString(const std::string& t)              \
     {                                                                \
@@ -104,27 +104,4 @@ namespace AdaptiveCards
             throw std::out_of_range("Invalid " #ENUMTYPE ": " + t);  \
         }                                                            \
     }
-
-// Define mapping from string function for ENUMTYPE. Use the specified DEFAULT when a caller passes in a string that
-// doesn't map.
-#define DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ENUMTYPE, DEFAULT, ...)     \
-    _DEFINE_ADAPTIVECARD_ENUM_INVARIANT(ENUMTYPE, __VA_ARGS__);      \
-    ENUMTYPE ENUMTYPE##FromString(const std::string& t)              \
-    {                                                                \
-        try                                                          \
-        {                                                            \
-            return EnumHelpers::get##ENUMTYPE##Enum().fromString(t); \
-        }                                                            \
-        catch (const std::out_of_range&)                             \
-        {                                                            \
-            return DEFAULT;                                          \
-        }                                                            \
-    }
-
-// Provide definition for ENUMTYPE using supplied initializer list. If list is of form { {ENUMTYPE, "string" }, ...},
-// automatically generate reverse mapping. If list is of form { { {ENUMTYPE, "string"}, ...}, { {"string", ENUMTYPE} ,
-// ..}}, use a union of the supplied second list and the reverse of the first list.
-#define DEFINE_ADAPTIVECARD_ENUM(ENUMTYPE, ...) \
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ENUMTYPE, ENUMTYPE::Default, __VA_ARGS__)
-
 }

@@ -41,14 +41,15 @@ export class DateInput extends React.Component {
 	 */
 	setDate(newDate) {
 		if (newDate !== undefined) {
-			this.setState({ chosenDate: newDate })
 			this.setState({
+				chosenDate: newDate,
 				value: newDate.getFullYear() + "-" +
 					`${newDate.getMonth() + 1}`.padStart(2, '0') + "-" +
-					`${newDate.getDate()}`.padStart(2, '0')
-			})
-		}
-		this.setState({ modalVisibleAndroid: false })
+					`${newDate.getDate()}`.padStart(2, '0'),
+				modalVisibleAndroid: false,
+			});
+		} else
+			this.setState({ modalVisibleAndroid: false })
 	}
 
 	/**
@@ -88,7 +89,8 @@ export class DateInput extends React.Component {
 	 */
 	parseDateString(dateString) {
 		elements = dateString.split('-');
-		return new Date(elements[0], elements[1], elements[2])
+		//month ranges from 0 to 11, so subtract 1
+		return new Date(elements[0], elements[1] - 1, elements[2])
 	}
 
 	render() {

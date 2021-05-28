@@ -27,20 +27,20 @@ namespace AdaptiveCards
         void SetText(const std::string& value);
         DateTimePreparser GetTextForDateParsing() const;
 
-        TextSize GetTextSize() const;
-        void SetTextSize(const TextSize value);
+        std::optional<TextSize> GetTextSize() const;
+        void SetTextSize(const std::optional<TextSize> value);
 
-        TextWeight GetTextWeight() const;
-        void SetTextWeight(const TextWeight value);
+        std::optional<TextWeight> GetTextWeight() const;
+        void SetTextWeight(const std::optional<TextWeight> value);
 
-        FontType GetFontType() const;
-        void SetFontType(const FontType value);
+        std::optional<FontType> GetFontType() const;
+        void SetFontType(const std::optional<FontType> value);
 
-        ForegroundColor GetTextColor() const;
-        void SetTextColor(const ForegroundColor value);
+        std::optional<ForegroundColor> GetTextColor() const;
+        void SetTextColor(const std::optional<ForegroundColor> value);
 
-        bool GetIsSubtle() const;
-        void SetIsSubtle(const bool value);
+        std::optional<bool> GetIsSubtle() const;
+        void SetIsSubtle(const std::optional<bool> value);
 
         bool GetItalic() const;
         void SetItalic(const bool value);

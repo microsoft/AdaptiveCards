@@ -1,6 +1,6 @@
 package io.adaptivecards.objectmodel;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
