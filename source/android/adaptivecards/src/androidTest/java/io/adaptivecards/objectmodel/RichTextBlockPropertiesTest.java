@@ -136,7 +136,7 @@ public class RichTextBlockPropertiesTest
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(defaultHorizontalAlignment), "1.0");
             RichTextBlock parsedRichTextBlock = TestUtil.castToRichTextBlock(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(HorizontalAlignment.Left, parsedRichTextBlock.GetHorizontalAlignment());
+            Assert.assertEquals(null, parsedRichTextBlock.GetHorizontalAlignment());
         }
 
         {
@@ -146,7 +146,8 @@ public class RichTextBlockPropertiesTest
                     "\"type\":\"RichTextBlock\"}\n";
 
             ArrayList<Pair<HorizontalAlignment, String>> tests = new ArrayList<>();
-            tests.add(new Pair<>(HorizontalAlignment.Left, defaultHorizontalAlignment));
+            tests.add(new Pair<>(null, defaultHorizontalAlignment));
+            tests.add(new Pair<>(HorizontalAlignment.Left, String.format(richTextBlockTestInlineText, "left")));
             tests.add(new Pair<>(HorizontalAlignment.Center, String.format(richTextBlockTestInlineText, "center")));
             tests.add(new Pair<>(HorizontalAlignment.Right, String.format(richTextBlockTestInlineText, "right")));
 

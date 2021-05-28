@@ -195,7 +195,7 @@ namespace AdaptiveCards
     struct ContainerStyleDefinition
     {
         std::string backgroundColor = "#FFFFFFFF";
-        std::string borderColor = "#FF7F7F7F7F";
+        std::string borderColor = "#FF7F7F7F";
         unsigned int borderThickness = 0; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
                                           // (see #1150)
         ColorsConfig foregroundColors;
@@ -206,7 +206,7 @@ namespace AdaptiveCards
     struct ContainerStylesDefinition
     {
         ContainerStyleDefinition defaultPalette = {"#FFFFFFFF",
-                                                   "#FF7F7F7F7F",
+                                                   "#FF7F7F7F",
                                                    0,
                                                    {
                                                        // Foreground Colors
@@ -232,7 +232,7 @@ namespace AdaptiveCards
                                                         {"#FF8B0000", "#B28B0000", {"#FFFFFF00", "#FFFFFFE0"}} // attention
                                                     }};
         ContainerStyleDefinition goodPalette = {"#FFD5F0DD",
-                                                "#FF7F7F7F7F",
+                                                "#FF7F7F7F",
                                                 0,
                                                 {
                                                     // Foreground Colors
@@ -246,7 +246,7 @@ namespace AdaptiveCards
                                                 }};
         ContainerStyleDefinition attentionPalette = {
             "#F7E9E9",
-            "#FF7F7F7F7F",
+            "#FF7F7F7F",
             0,
             {
                 // Foreground Colors
@@ -260,7 +260,7 @@ namespace AdaptiveCards
             },
         };
         ContainerStyleDefinition warningPalette = {"#F7F7DF",
-                                                   "#FF7F7F7F7F",
+                                                   "#FF7F7F7F",
                                                    0,
                                                    {
                                                        // Foreground Colors
@@ -273,7 +273,7 @@ namespace AdaptiveCards
                                                        {"#FF8B0000", "#B28B0000", {"#FFFFFF00", "#FFFFFFE0"}} // attention
                                                    }};
         ContainerStyleDefinition accentPalette = {"#DCE5F7",
-                                                  "#FF7F7F7F7F",
+                                                  "#FF7F7F7F",
                                                   0,
                                                   {
                                                       // Foreground Colors

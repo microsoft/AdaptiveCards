@@ -64,9 +64,9 @@ public class NumberInput extends BaseInputElement {
   }
 
   public @androidx.annotation.Nullable Double GetValue() {
-  StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetValue(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetValue(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetValue(@androidx.annotation.Nullable Double value) {
     StdOptionalDouble optvalue = (value == null) ? new StdOptionalDouble() : new StdOptionalDouble(value);
@@ -76,9 +76,9 @@ public class NumberInput extends BaseInputElement {
   }
 
   public @androidx.annotation.Nullable Double GetMax() {
-  StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetMax(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetMax(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetMax(@androidx.annotation.Nullable Double value) {
     StdOptionalDouble optvalue = (value == null) ? new StdOptionalDouble() : new StdOptionalDouble(value);
@@ -88,9 +88,9 @@ public class NumberInput extends BaseInputElement {
   }
 
   public @androidx.annotation.Nullable Double GetMin() {
-  StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetMin(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalDouble optvalue = new StdOptionalDouble(AdaptiveCardObjectModelJNI.NumberInput_GetMin(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetMin(@androidx.annotation.Nullable Double value) {
     StdOptionalDouble optvalue = (value == null) ? new StdOptionalDouble() : new StdOptionalDouble(value);

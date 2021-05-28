@@ -55,12 +55,16 @@ public class RichTextBlock extends BaseCardElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.RichTextBlock_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public HorizontalAlignment GetHorizontalAlignment() {
-    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.RichTextBlock_GetHorizontalAlignment(swigCPtr, this));
+  public @androidx.annotation.Nullable HorizontalAlignment GetHorizontalAlignment() {
+    StdOptionalHorizontalAlignment optvalue = new StdOptionalHorizontalAlignment(AdaptiveCardObjectModelJNI.RichTextBlock_GetHorizontalAlignment(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetHorizontalAlignment(HorizontalAlignment value) {
-    AdaptiveCardObjectModelJNI.RichTextBlock_SetHorizontalAlignment(swigCPtr, this, value.swigValue());
+  public void SetHorizontalAlignment(@androidx.annotation.Nullable HorizontalAlignment value) {
+    StdOptionalHorizontalAlignment optvalue = (value == null) ? new StdOptionalHorizontalAlignment() : new StdOptionalHorizontalAlignment(value);
+    {
+      AdaptiveCardObjectModelJNI.RichTextBlock_SetHorizontalAlignment(swigCPtr, this, StdOptionalHorizontalAlignment.getCPtr(optvalue), optvalue);
+    }
   }
 
   public InlineVector GetInlines() {

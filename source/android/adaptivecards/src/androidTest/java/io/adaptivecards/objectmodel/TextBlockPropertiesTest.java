@@ -146,11 +146,13 @@ public class TextBlockPropertiesTest
     @Test
     public void HorizontalAlignmentTest() throws Exception
     {
+        final String textBlockLeftAlignment = "{\"horizontalAlignment\":\"left\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockCenterAlignment = "{\"horizontalAlignment\":\"center\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
         final String textBlockRightAlignment = "{\"horizontalAlignment\":\"right\",\"text\":\"\",\"type\":\"TextBlock\"}\n";
 
         ArrayList<Pair<HorizontalAlignment, String>> tests = new ArrayList<>();
-        tests.add(new Pair<>(HorizontalAlignment.Left, s_defaultTextBlock));
+        tests.add(new Pair<>(null, s_defaultTextBlock));
+        tests.add(new Pair<>(HorizontalAlignment.Left, textBlockLeftAlignment));
         tests.add(new Pair<>(HorizontalAlignment.Center, textBlockCenterAlignment));
         tests.add(new Pair<>(HorizontalAlignment.Right, textBlockRightAlignment));
 

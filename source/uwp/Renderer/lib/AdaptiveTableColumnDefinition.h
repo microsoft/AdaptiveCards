@@ -19,11 +19,15 @@ namespace AdaptiveCards::Rendering::Uwp
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TableColumnDefinition>& sharedTableColumnDefinition);
 
         // IAdaptiveTableColumnDefinition
-        IFACEMETHODIMP get_VerticalCellContentAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment* verticalCellContentAlignment) override;
-        IFACEMETHODIMP put_VerticalCellContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalCellContentAlignment) override;
+        IFACEMETHODIMP get_VerticalCellContentAlignment(
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>** verticalCellContentAlignment) override;
+        IFACEMETHODIMP put_VerticalCellContentAlignment(
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalCellContentAlignment) override;
 
-        IFACEMETHODIMP get_HorizontalCellContentAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* horizontalCellContentAlignment) override;
-        IFACEMETHODIMP put_HorizontalCellContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment horizontalCellContentAlignment) override;
+        IFACEMETHODIMP get_HorizontalCellContentAlignment(
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalCellContentAlignment) override;
+        IFACEMETHODIMP put_HorizontalCellContentAlignment(
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalCellContentAlignment) override;
 
         IFACEMETHODIMP get_Width(_Outptr_ ABI::Windows::Foundation::IReference<UINT32>** width) override;
         IFACEMETHODIMP put_Width(_In_ ABI::Windows::Foundation::IReference<UINT32>* width) override;
@@ -37,8 +41,8 @@ namespace AdaptiveCards::Rendering::Uwp
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment m_verticalCellContentAlignment;
-        ABI::AdaptiveCards::Rendering::Uwp::HAlignment m_horizontalCellContentAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> m_verticalCellContentAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>> m_horizontalCellContentAlignment;
 
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<UINT32>> m_width;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<UINT32>> m_pixelWidth;

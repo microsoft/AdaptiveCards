@@ -37,8 +37,16 @@ namespace AdaptiveCards::Rendering::Uwp
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
 
         m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedColumn->GetStyle());
-        m_verticalAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>(
-            sharedColumn->GetVerticalContentAlignment());
+
+        if (sharedColumn->GetVerticalContentAlignment().has_value())
+        {
+            m_verticalContentAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>(
+                                     sharedColumn->GetVerticalContentAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>>()
+                    .get();
+        }
+
         m_bleed = sharedColumn->GetBleed();
         m_bleedDirection = static_cast<ABI::AdaptiveCards::Rendering::Uwp::BleedDirection>(sharedColumn->GetBleedDirection());
 
@@ -89,15 +97,16 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::get_VerticalContentAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment* verticalAlignment)
+    HRESULT AdaptiveColumn::get_VerticalContentAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>** verticalAlignment)
     {
-        *verticalAlignment = m_verticalAlignment;
-        return S_OK;
+        return m_verticalContentAlignment.CopyTo(verticalAlignment);
     }
 
-    HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalAlignment)
+    HRESULT AdaptiveColumn::put_VerticalContentAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalAlignment)
     {
-        m_verticalAlignment = verticalAlignment;
+        m_verticalContentAlignment = verticalAlignment;
         return S_OK;
     }
 
@@ -184,7 +193,13 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(CopySharedElementProperties(*column));
 
         column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
-        column->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(m_verticalAlignment));
+
+        if (m_verticalContentAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignmentValue;
+            RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
+            column->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));
+        }
 
         if (m_pixelWidth)
         {

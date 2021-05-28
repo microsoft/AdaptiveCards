@@ -10,11 +10,12 @@ import android.text.Spanned;
 import org.xml.sax.XMLReader;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import io.adaptivecards.objectmodel.DateTimePreparser;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.MarkDownParser;
+import io.adaptivecards.renderer.RenderArgs;
 
 public class RendererUtil
 {
@@ -155,5 +156,18 @@ public class RendererUtil
                 tagNumber = 1;
             }
         }
+    }
+
+    static HorizontalAlignment computeHorizontalAlignment(HorizontalAlignment declaredAlignment, RenderArgs renderArgs)
+    {
+        if (declaredAlignment != null)
+        {
+            return declaredAlignment;
+        }
+        if (renderArgs != null && renderArgs.getHorizontalAlignment() != null)
+        {
+            return renderArgs.getHorizontalAlignment();
+        }
+        return HorizontalAlignment.Left;
     }
 }

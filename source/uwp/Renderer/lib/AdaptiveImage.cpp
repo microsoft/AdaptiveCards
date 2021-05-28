@@ -39,8 +39,16 @@ namespace AdaptiveCards::Rendering::Uwp
         m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImage->GetImageSize());
         m_pixelWidth = sharedImage->GetPixelWidth();
         m_pixelHeight = sharedImage->GetPixelHeight();
-        m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
+
+        if (sharedImage->GetHorizontalAlignment().has_value())
+        {
+            m_horizontalAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::HAlignment>(
+                                     sharedImage->GetHorizontalAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>>()
+                    .get();
+        }
+
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
 
@@ -115,15 +123,16 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveImage::put_AltText(_In_ HSTRING text) { return m_altText.Set(text); }
 
-    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveImage::get_HorizontalAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment)
     {
-        *alignment = m_horizontalAlignment;
-        return S_OK;
+        return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
-    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveImage::put_HorizontalAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment)
     {
-        m_horizontalAlignment = alignment;
+        m_horizontalAlignment = horizontalAlignment;
         return S_OK;
     }
 
@@ -172,7 +181,13 @@ namespace AdaptiveCards::Rendering::Uwp
         image->SetImageSize(static_cast<AdaptiveCards::ImageSize>(m_imageSize));
         image->SetPixelHeight(m_pixelHeight);
         image->SetPixelWidth(m_pixelWidth);
-        image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+
+        if (m_horizontalAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::HAlignment horizontalAlignmentValue;
+            RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
+            image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
+        }
 
         sharedImage = std::move(image);
         return S_OK;
