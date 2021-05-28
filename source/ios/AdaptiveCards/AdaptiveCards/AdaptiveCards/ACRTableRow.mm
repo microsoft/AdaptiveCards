@@ -69,7 +69,6 @@
             return self;
         }
 
-        auto idx = 0;
         const auto &cells = row->GetCells();
         const auto endIdx = [columnDefinition count];
 
@@ -79,7 +78,7 @@
         NSLayoutXAxisAnchor *trailingAnchor = self.leadingAnchor;
         UIView *prevView = nil;
 
-        for (; idx < endIdx; idx++) {
+        for (auto idx = 0; idx < endIdx; idx++) {
             ACRColumnDefinition *ithColumnDefinition = columnDefinition[idx];
             if (ithColumnDefinition.isValid) {
                 ACRTableCellView *cellView = nil;
@@ -104,13 +103,15 @@
                     [self addSubview:cellView];
                     if (ithColumnDefinition.isPixelWidth) {
                         [cellView.widthAnchor constraintEqualToConstant:ithColumnDefinition.numeric].active = YES;
-                    } else if (!ithColumnDefinition.isPixelWidth) {
+                    } else {
                         [cellView.widthAnchor constraintEqualToAnchor:self.widthAnchor
                                                            multiplier:ithColumnDefinition.numeric
                                                              constant:-ithColumnDefinition.totalPixelWidth]
                             .active = YES;
                     }
 
+                    // This constraint with the low priority will ensure
+                    // that the shorter cells get minimum heights instead of getting stretched.
                     [self.heightAnchor constraintGreaterThanOrEqualToAnchor:cellView.heightAnchor].active = YES;
                     NSLayoutConstraint *heightConstraint = [cellView.heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
                     heightConstraint.priority = UILayoutPriorityDefaultLow;
