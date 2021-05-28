@@ -579,7 +579,7 @@ public class CardRendererRegistration
             Util.MoveChildrenViews(mockLayout, stretchElementLayout);
             container.addView(stretchElementLayout);
 
-            tagContent.SetStretchContainer(container);
+            tagContent.SetStretchContainer(stretchElementLayout);
         }
         else
         {
