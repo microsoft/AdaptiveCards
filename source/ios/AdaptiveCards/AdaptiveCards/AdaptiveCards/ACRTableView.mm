@@ -43,25 +43,25 @@
 
 - (void)defineColumnDefinitions:(const std::shared_ptr<Table> &)table
 {
-    CGFloat totalRelativeWidth = 0, totalPixelWidth = 0;
+    CGFloat totalPixelWidth = 0, minWidth = CGFLOAT_MAX;
     for (const auto &columnDefinition : table->GetColumns()) {
         auto optionalNumericValue = columnDefinition->GetWidth();
         if (optionalNumericValue.has_value()) {
-            totalRelativeWidth += *optionalNumericValue;
-        } else if (auto optionalPixelValue = columnDefinition->GetWidth(); optionalPixelValue.has_value()) {
+            minWidth = MIN(minWidth, *optionalNumericValue);
+        } else if (auto optionalPixelValue = columnDefinition->GetPixelWidth(); optionalPixelValue.has_value()) {
             totalPixelWidth += *optionalPixelValue;
         }
     }
 
-    // if total relative width is zero, dividend will be zero, and setting the value to 1
+    // if minWidth width is zero, dividend will be zero, and setting the value to 1
     // ensures the relative width come out as zero
-    totalRelativeWidth = (totalRelativeWidth == 0) ? 1 : totalRelativeWidth;
+    minWidth = (minWidth == 0) ? 1 : minWidth;
 
     for (auto columnDefinition : table->GetColumns()) {
         auto optionalNumericValue = columnDefinition->GetWidth();
         ACRColumnDefinition *iOSColumnDefinition = nil;
         if (optionalNumericValue.has_value()) {
-            iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithRelativeWidth:*optionalNumericValue / totalRelativeWidth
+            iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithRelativeWidth:*optionalNumericValue / minWidth
                                                                      totalPixelWidth:totalPixelWidth];
         } else if (auto optionalPixelValue = columnDefinition->GetPixelWidth(); optionalPixelValue.has_value()) {
             iOSColumnDefinition = [[ACRColumnDefinition alloc] initWithPixelWidth:*optionalPixelValue];
@@ -86,6 +86,8 @@
     NSLayoutYAxisAnchor *nextTopAnchor = self.topAnchor;
     ACRTableRowView *rowView = nil;
     NSDictionary * (^additionalProperties)(void);
+    self.spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
+    CGFloat spacing = 0.0f;
     auto i = 0;
     for (const auto &row : table->GetRows()) {
         [acoRowWrapper setElem:row];
@@ -106,12 +108,11 @@
         additionalProperties = nil;
         [self addSubview:rowView];
         [self.widthAnchor constraintEqualToAnchor:rowView.widthAnchor].active = YES;
-        // should be read from host config
-        CGFloat spacing = 8.0f;
-        CGFloat offset = self.showGridLines ? 1 : -spacing;
+        CGFloat offset = self.showGridLines ? 1 : 0;
 
-        [nextTopAnchor constraintEqualToAnchor:rowView.topAnchor constant:offset].active = YES;
+        [nextTopAnchor constraintEqualToAnchor:rowView.topAnchor constant:offset - spacing].active = YES;
         nextTopAnchor = rowView.bottomAnchor;
+        spacing = self.spacing;
         [rootView.context popBaseCardElementContext:acoRowWrapper];
         i++;
     }
@@ -124,11 +125,15 @@
 - (CGSize)intrinsicContentSize
 {
     CGSize size = CGSizeZero;
+    UIView *lastSubView = [self.subviews lastObject];
     for (UIView *subview in self.subviews) {
         if (!subview.isHidden) {
             CGSize intrinsicContentSize = [subview intrinsicContentSize];
             size.height += intrinsicContentSize.height;
             size.width = MAX(size.width, intrinsicContentSize.width);
+            if (subview != lastSubView) {
+                size.height += self.spacing;
+            }
         }
     }
 

@@ -61,9 +61,9 @@
         NSDictionary *descriptor = nil;
         NSString *text = nil;
 
-        if (![textMap objectForKey:key]) {
+        if (![textMap objectForKey:key] || rootView.context.isFirstRowAsHeaders) {
             RichTextElementProperties textProp;
-            TextBlockToRichTextElementProperties(txtBlck, [acoConfig getHostConfig], textProp);
+            TexStylesToRichTextElementProperties(txtBlck, [acoConfig getHostConfig]->GetTextStyles().columnHeader, textProp);
             buildIntermediateResultForText(rootView, acoConfig, textProp, key);
         }
 

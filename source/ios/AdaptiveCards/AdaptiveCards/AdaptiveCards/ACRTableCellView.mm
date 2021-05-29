@@ -88,6 +88,10 @@
 - (void)configureForStyle:(ACOHostConfig *)acoConfig
 {
     if (_definition) {
+        CGFloat spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
+        self.layoutMargins = UIEdgeInsetsMake(spacing, spacing, spacing, spacing);
+        _contentView.preservesSuperviewLayoutMargins = NO;
+        self.preservesSuperviewLayoutMargins = NO;
         self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_definition.style];
     }
 }

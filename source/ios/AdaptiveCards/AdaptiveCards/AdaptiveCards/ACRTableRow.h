@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property CGFloat numeric;
 // sum of all pixel width in a row
 @property CGFloat totalPixelWidth;
+// min width of the relative Width
+@property CGFloat minWidth;
 // the column definition was invalid; will be skipped in rendering
 @property BOOL isValid;
 // the column has pixel width;

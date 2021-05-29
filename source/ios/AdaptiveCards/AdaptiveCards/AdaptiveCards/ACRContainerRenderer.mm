@@ -43,6 +43,10 @@
                                                         parentStyle:[viewGroup style]
                                                          hostConfig:acoConfig
                                                           superview:viewGroup];
+    container.rtl = rootView.context.rtl;
+
+    [viewGroup addArrangedSubview:container];
+
     if (acoElem.type == ACRTableCell) {
         CGFloat top, left, bottom, right;
         top = left = bottom = right = [acoConfig getHostConfig]->GetSpacing().paddingSpacing;
@@ -53,13 +57,9 @@
                                right:right
                             priority:1000
                             location:ACRBleedToAll];
+    } else {
+        configBleed(rootView, elem, container, acoConfig);
     }
-
-    container.rtl = rootView.context.rtl;
-
-    [viewGroup addArrangedSubview:container];
-
-    configBleed(rootView, elem, container, acoConfig);
 
     renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
 

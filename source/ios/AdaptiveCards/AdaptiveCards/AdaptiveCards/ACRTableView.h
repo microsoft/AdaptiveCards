@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property BOOL showGridLines;
 @property ACRContainerStyle gridStyle;
+@property CGFloat spacing;
 
 - (instancetype)init:(ACOBaseCardElement *)acoElement
            viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup
