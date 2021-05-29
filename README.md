@@ -7,6 +7,7 @@
 ## Dive in
 
 * [Documentation](https://adaptivecards.io/documentation/)
+* [Roadmap](https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/5-launched)
 * [Schema Explorer](https://adaptivecards.io/explorer/)
 * [Sample Cards](https://adaptivecards.io/samples/)
 * [Designer](https://adaptivecards.io/designer/)
