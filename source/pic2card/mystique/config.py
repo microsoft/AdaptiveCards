@@ -91,7 +91,7 @@ MODEL_REGISTRY = {
     "pth_detr_cpp": "mystique.obj_detect.DetrCppOD",
 }
 
-ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf2_faster_rcnn")
+ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf_faster_rcnn")
 
 # Noise objects removal IOU threshold
 IOU_THRESHOLD = 0.5
