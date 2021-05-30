@@ -13,8 +13,7 @@ from .od_base import AbstractObjectDetection
 
 
 if StrictVersion(tf.__version__) < StrictVersion("2.4.0"):
-    raise ImportError(
-        "Please upgrade your TensorFlow installation to v2.4.x !")
+    raise ImportError("Please upgrade your TensorFlow installation to v2.4.x !")
 
 
 def _wrap_frozen_graph(graph_def, inputs, outputs):
@@ -22,6 +21,7 @@ def _wrap_frozen_graph(graph_def, inputs, outputs):
     Make the frozen graph ready for inference with required input and
     output graph nodes.
     """
+
     def _imports_graph_def():
         tf.compat.v1.import_graph_def(graph_def, name="")
 
@@ -29,7 +29,8 @@ def _wrap_frozen_graph(graph_def, inputs, outputs):
     import_graph = wrapped_import.graph
     return wrapped_import.prune(
         tf.nest.map_structure(import_graph.as_graph_element, inputs),
-        tf.nest.map_structure(import_graph.as_graph_element, outputs))
+        tf.nest.map_structure(import_graph.as_graph_element, outputs),
+    )
 
 
 class Tf2ObjectDetection(AbstractObjectDetection):
@@ -38,6 +39,7 @@ class Tf2ObjectDetection(AbstractObjectDetection):
     using tf2 object detection framework. The training and model export are
     done using this framework.
     """
+
     INPUT_NODES = ["input_tensor:0"]
     OUTPUT_NODES = ["Identity_1:0", "Identity_2:0", "Identity_4:0"]
 
@@ -56,9 +58,11 @@ class Tf2ObjectDetection(AbstractObjectDetection):
             graph_def = tf.compat.v1.GraphDef()
             _ = graph_def.ParseFromString(raw_f.read())
 
-        frozen_func = _wrap_frozen_graph(graph_def=graph_def,
-                                         inputs=self.INPUT_NODES,
-                                         outputs=self.OUTPUT_NODES)
+        frozen_func = _wrap_frozen_graph(
+            graph_def=graph_def,
+            inputs=self.INPUT_NODES,
+            outputs=self.OUTPUT_NODES,
+        )
         return frozen_func
 
     def get_bboxes(self, image_path: str, img_pipeline=False) -> Tuple:
@@ -68,9 +72,9 @@ class Tf2ObjectDetection(AbstractObjectDetection):
         image, image_np = load_image(image_path)
         # width, height = image.size
         result = self.get_objects(image_np=image_np, image=image)
-        classes = [id_to_label(i) for i in result['detection_classes']]
-        scores = result['detection_scores'].tolist()
-        boxes = result['detection_boxes'].tolist()
+        classes = [id_to_label(i) for i in result["detection_classes"]]
+        scores = result["detection_scores"].tolist()
+        boxes = result["detection_boxes"].tolist()
 
         # Denormalize the bounding box coordinates.
         # bbox_dnorm = []
@@ -96,8 +100,7 @@ class Tf2ObjectDetection(AbstractObjectDetection):
         output_dict = self.run_inference_for_single_image(image_np)
         width, height = image.size
         # format: ymin, xmin, ymax, xmax, renormalize the coords.
-        bboxes = output_dict[
-            "detection_boxes"] * [height, width, height, width]
+        bboxes = output_dict["detection_boxes"] * [height, width, height, width]
 
         # format: xmin, ymin, xmax, ymax
         output_dict["detection_boxes"] = bboxes[:, [1, 0, 3, 2]]

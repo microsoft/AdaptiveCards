@@ -20,7 +20,7 @@ PRE_DEFINE_CATEGORIES = {
     "checkbox": 3,
     "actionset": 4,
     "image": 5
-#    "rating": 6,
+    #    "rating": 6,
 }
 
 
