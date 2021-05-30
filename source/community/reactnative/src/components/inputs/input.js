@@ -16,9 +16,7 @@ import {
 
 import { InputContextConsumer } from '../../utils/context';
 import ElementWrapper from '../elements/element-wrapper';
-import { StyleManager } from '../../styles/style-config';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import InputLabel from "./input-label";
@@ -27,10 +25,10 @@ const ERROR_MESSAGE = "Inline ShowCard is not supported as of now";
 
 export class Input extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
-
 	constructor(props) {
 		super(props);
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
@@ -52,7 +50,7 @@ export class Input extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
 		this.parseHostConfig();
@@ -80,8 +78,8 @@ export class Input extends React.Component {
 						if (!inputArray[this.id])
 							addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
 						return (
-							<ElementWrapper style={styles.elementWrapper} json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
-								<InputLabel isRequired={this.isRequired} label={label} />
+							<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
+								<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 								<TextInput
 									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
@@ -208,11 +206,12 @@ export class Input extends React.Component {
 			return null;
 		}
 		else {
+			let opacityStyle = { opacity: inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.4 };
 			return (
 				<View>
-					<ElementWrapper json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
+					<ElementWrapper configManager={this.props.configManager} json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
 						<View style={styles.elementWrapper}>
-							<InputLabel isRequired={this.isRequired} label={label} />
+							<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 							<TextInput
 								style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
 								autoCapitalize={Constants.NoneString}
@@ -238,11 +237,14 @@ export class Input extends React.Component {
 								value={this.props.value}
 							/>
 						</View>
-						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}>
+						<TouchableOpacity
+							disabled={inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled} //isEnabled defaults to true
+							opacity={inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.5}
+							onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}>
 							{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
-								<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
+								<Text style={[styles.inlineActionText, opacityStyle]}>{inlineAction.title}</Text> :
 								<Image
-									style={styles.inlineActionImage}
+									style={[styles.inlineActionImage, opacityStyle]}
 									source=
 									{{ uri: inlineAction.iconUrl }} />
 							}
@@ -286,11 +288,19 @@ export class Input extends React.Component {
 		if (!this.props.isError && this.inlineAction.type === Constants.ActionSubmit) {
 			let actionObject = {
 				"type": Constants.ActionSubmit,
+				"title": this.inlineAction.title,
 				"data": this.state.text
 			};
 			onExecuteAction(actionObject, true);
-		}
-		else if (!this.props.isError && this.inlineAction.type === Constants.ActionOpenUrl) {
+		} else if (!this.props.isError && this.inlineAction.type === Constants.ActionExecute) {
+			let actionObject = {
+				"type": Constants.ActionExecute,
+				"verb": this.inlineAction.verb,
+				"title": this.inlineAction.title,
+				"data": this.state.text
+			};
+			onExecuteAction(actionObject, true);
+		} else if (!this.props.isError && this.inlineAction.type === Constants.ActionOpenUrl) {
 			if (!Utils.isNullOrEmpty(this.inlineAction.url)) {
 				let actionObject = {
 					"type": Constants.ActionOpenUrl,

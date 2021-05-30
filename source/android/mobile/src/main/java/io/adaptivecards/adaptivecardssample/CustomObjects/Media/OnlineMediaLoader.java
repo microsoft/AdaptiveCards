@@ -3,7 +3,7 @@ package io.adaptivecards.adaptivecardssample.CustomObjects.Media;
 import android.media.MediaDataSource;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import io.adaptivecards.objectmodel.MediaSourceVector;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;

@@ -6,7 +6,7 @@
 #include "Image.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 ImageSet::ImageSet() : BaseCardElement(CardElementType::ImageSet), m_imageSize(ImageSize::None)
 {

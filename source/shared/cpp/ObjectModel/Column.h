@@ -8,7 +8,7 @@
 #include "BaseActionElement.h"
 #include "CollectionTypeElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseActionElement;
 
@@ -24,8 +24,7 @@ namespace AdaptiveSharedNamespace
 
         std::string GetWidth() const;
         void SetWidth(const std::string& value);
-        void SetWidth(const std::string& value,
-                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings);
+        void SetWidth(const std::string& value, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>* warnings);
 
         // explicit width takes precedence over relative width
         int GetPixelWidth() const;
@@ -34,13 +33,17 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
         const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
+        std::optional<bool> GetRtl() const;
+        void SetRtl(const std::optional<bool>& value);
+
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
         void PopulateKnownPropertiesSet();
         std::string m_width;
         unsigned int m_pixelWidth;
-        std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+        std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> m_items;
+        std::optional<bool> m_rtl;
     };
 
     class ColumnParser : public BaseCardElementParser

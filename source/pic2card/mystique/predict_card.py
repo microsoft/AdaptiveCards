@@ -31,7 +31,9 @@ class PredictCard:
         """
         self.od_model = od_model
 
-    def collect_objects(self, output_dict=None, pil_image=None):
+    def collect_objects(
+        self, output_dict=None, pil_image=None
+    ):  # pylint: disable=too-many-locals, unused-argument, no-self-use
         """
         Returns the design elements from the faster rcnn model with its
         properties mapped
@@ -43,13 +45,14 @@ class PredictCard:
         boxes = output_dict["detection_boxes"]
         scores = output_dict["detection_scores"]
         classes = output_dict["detection_classes"]
-        r, c = boxes.shape
+        r_a, _ = boxes.shape
         detected_coords = []
         json_object = {}.fromkeys(["objects"], [])
-        for i in range(r):
+        for i in range(r_a):
             if scores[i] * 100 >= config.MODEL_CONFIDENCE:
                 object_json = dict().fromkeys(
-                    ["object", "xmin", "ymin", "xmax", "ymax"], "")
+                    ["object", "xmin", "ymin", "xmax", "ymax"], ""
+                )
                 object_json["object"] = config.ID_TO_LABEL[classes[i]]
                 if object_json["object"]:
                     xmin, ymin, xmax, ymax = boxes[i]
@@ -59,13 +62,18 @@ class PredictCard:
                     object_json["ymax"] = ymax
                     object_json["coords"] = (xmin, ymin, xmax, ymax)
                     object_json["score"] = scores[i]
-                    object_json['uuid'] = str(uuid.uuid4())
+                    object_json["uuid"] = str(uuid.uuid4())
                     object_json["class"] = classes[i]
 
                     if object_json["object"] == "textbox":
                         detected_coords.append(
-                            (xmin - config.TEXTBOX_PADDING, ymin,
-                             xmax + config.TEXTBOX_PADDING, ymax))
+                            (
+                                xmin - config.TEXTBOX_PADDING,
+                                ymin,
+                                xmax + config.TEXTBOX_PADDING,
+                                ymax,
+                            )
+                        )
                     else:
                         detected_coords.append((xmin, ymin, xmax, ymax))
 
@@ -73,8 +81,10 @@ class PredictCard:
 
         return json_object, detected_coords
 
-    def get_object_properties(self, design_objects: List[Dict],
-                              pil_image: Image, queue=None) -> None:
+    # pylint: disable=no-self-use
+    def get_object_properties(
+        self, design_objects: List[Dict], pil_image: Image, queue=None
+    ) -> None:
         """
         Extract each design object's properties.
         @param design_objects: List of design objects collected from the model.
@@ -86,16 +96,19 @@ class PredictCard:
         for design_object in design_objects:
             collect_prop.uuid = design_object.get("uuid")
             # Invoking the methods from dict according to the design object
-            property_object = get_property_method(collect_prop,
-                                                  design_object.get("object"))
-            property_element = property_object(pil_image,
-                                               design_object.get("coords"))
+            property_object = get_property_method(
+                collect_prop, design_object.get("object")
+            )
+            property_element = property_object(
+                pil_image, design_object.get("coords")
+            )
             design_object.update(property_element)
         design_objects = classify_font_weights(design_objects)
         # If any Queue object is passed , put the return value inside the
         # queue in-order to retrieve the value after the process finishes.
         if queue:
             queue.put(design_objects)
+        return design_objects
 
     def main(self, image=None, card_format=None):
         """
@@ -110,13 +123,17 @@ class PredictCard:
         image_np = np.asarray(image)
         image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
         # Extract the design objects from faster rcnn model
-        output_dict = self.od_model.get_objects(
-            image_np=image_np, image=image
-        )
+        output_dict = self.od_model.get_objects(image_np=image_np, image=image)
         return self.generate_card(output_dict, image, image_np, card_format)
 
-    def tf_serving_main(self, bs64_img: str, tf_server: str, model_name: str,
-                        card_format: str = None) -> Dict:
+    # pylint: disable=unused-argument
+    def tf_serving_main(
+        self,
+        bs64_img: str,
+        tf_server: str,
+        model_name: str,
+        card_format: str = None,
+    ) -> Dict:
         """
         Do model inference using TF-Serve service.
         """
@@ -124,20 +141,21 @@ class PredictCard:
         api_path = "v1/models/{model_name}:predict"
         payloads = {
             "signature_name": "serving_default",
-            "instances": [
-                {"b64": bs64_img}
-            ]
+            "instances": [{"b64": bs64_img}],
         }
         # Hit the tf-serving and get the prediction
-        response = send_json_payload(api_path,
-                                     body=payloads,
-                                     host_port=tf_server)
+        response = send_json_payload(
+            api_path, body=payloads, host_port=tf_server
+        )
 
         pred_res = response["predictions"][0]
 
         filtered_res = {}
-        for key_col in ["detection_boxes", "detection_scores",
-                        "detection_classes"]:
+        for key_col in [
+            "detection_boxes",
+            "detection_scores",
+            "detection_classes",
+        ]:
             filtered_res[key_col] = np.array(pred_res[key_col])
 
         # Prepare the card from object detection.
@@ -146,12 +164,17 @@ class PredictCard:
         image = image.convert("RGB")
         image_np = np.asarray(image)
         image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
-        card = self.generate_card(filtered_res,
-                                  image, image_np, card_format)
+        card = self.generate_card(filtered_res, image, image_np, card_format)
         return card
 
-    def generate_card(self, prediction: Dict, image: Image,
-                      image_np: np.array, card_format: str):
+    # pylint: disable=unused-argument
+    def generate_card(
+        self,
+        prediction: Dict,
+        image: Image,
+        image_np: np.array,
+        card_format: str,
+    ):
         """
         From the object detection result and image, generate adaptive
         card object.
@@ -162,10 +185,12 @@ class PredictCard:
         """
         # TODO: Remove the reduendant usage of image and image_np
         # Collect the objects along with its design properites
-        json_objects, detected_coords = self.collect_objects(
-            output_dict=prediction, pil_image=image)
+
+        predicted_objects, detected_coords = self.collect_objects(
+            output_dict=prediction, pil_image=image
+        )
         # Remove overlapping rcnn objects
-        bbox_utils.remove_noise_objects(json_objects)
+        bbox_utils.remove_noise_objects(predicted_objects)
 
         # Arrange the design elements
         return_dict = {}.fromkeys(["card_json"], "")
@@ -173,11 +198,17 @@ class PredictCard:
             "type": "AdaptiveCard",
             "version": "1.0",
             "body": [],
-            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         }
 
-        card_layout = row_column_group.generate_card_layout(json_objects,
-                                                            image, self)
+        if config.MULTI_PROC:
+            card_layout = row_column_group.generate_card_layout_multi(
+                predicted_objects, image, self
+            )
+        else:
+            card_layout = row_column_group.generate_card_layout_seq(
+                predicted_objects, image, self
+            )
         body = adaptive_card_export.export_to_card(card_layout, image)
 
         # if format==template - generate template data json
@@ -189,10 +220,7 @@ class PredictCard:
         # Prepare the response with error code
         error = None
         if not body or not detected_coords:
-            error = {
-                "msg": "Failed to generate card components",
-                "code": 1000
-            }
+            error = {"msg": "Failed to generate card components", "code": 1000}
         else:
             card_json["body"] = body
 

@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 # pip install lxml
+"""Convert Pascal VOC annotation to COCO format."""
 
 import os
 import json
@@ -26,47 +27,49 @@ PRE_DEFINE_CATEGORIES = {
 }
 
 
-def get(root, name):
-    vars = root.findall(name)
-    return vars
+def get(root, name):  # pylint: disable=missing-function-docstring
+    var = root.findall(name)
+    return var
 
 
-def get_and_check(root, name, length):
-    vars = root.findall(name)
-    if len(vars) == 0:
+def get_and_check(
+    root, name, length
+):  # pylint: disable=missing-function-docstring
+    var = root.findall(name)
+    if len(var) == 0:
         raise ValueError("Can not find %s in %s." % (name, root.tag))
-    if length > 0 and len(vars) != length:
+    if length > 0 and len(var) != length:
         raise ValueError(
             "The size of %s is supposed to be %d, but is %d."
-            % (name, length, len(vars))
+            % (name, length, len(var))
         )
     if length == 1:
-        vars = vars[0]
-    return vars
+        var = var[0]
+    return var
 
 
-def get_filename_as_int(filename):
+def get_filename_as_int(filename):  # pylint: disable=missing-function-docstring
     try:
         filename = filename.replace("\\", "/")
         filename = os.path.splitext(os.path.basename(filename))[0]
         return int(filename)
-    except Exception:
+    except Exception as exc:
         raise ValueError(
             "Filename %s is supposed to be an integer." % (filename)
-        )
+        ) from exc
 
 
-def get_categories(xml_files):
+def get_categories(xml__files):
     """Generate category name to id mapping from a list of xml files.
 
     Arguments:
-        xml_files {list} -- A list of xml file paths.
+        xml__files {list} -- A list of xml file paths.
 
     Returns:
         dict -- category name to id mapping.
     """
     classes_names = []
-    for xml_file in xml_files:
+    for xml_file in xml__files:
         tree = ET.parse(xml_file)
         root = tree.getroot()
         for member in root.findall("object"):
@@ -76,19 +79,23 @@ def get_categories(xml_files):
     return {name: i for i, name in enumerate(classes_names)}
 
 
-def convert(xml_files, json_file):
-    json_dict = {"images": [],
-                 "type": "instances",
-                 "annotations": [],
-                 "categories": []}
-    _image_fnames = {}
+def convert(xml__files, json_file):  # pylint: disable=too-many-locals
+    # pylint: disable=missing-function-docstring
+    json_dict = {
+        "images": [],
+        "type": "instances",
+        "annotations": [],
+        "categories": [],
+    }
+	
+
     if PRE_DEFINE_CATEGORIES is not None:
         categories = PRE_DEFINE_CATEGORIES
     else:
-        categories = get_categories(xml_files)
+        categories = get_categories(xml__files)
     bnd_id = START_BOUNDING_BOX_ID
-    for xml_file in xml_files:
-        print(xml_file)
+	_image_fnames = dict()
+    for xml_file in xml__files:
         tree = ET.parse(xml_file)
         root = tree.getroot()
         # Only take the file name as absolute name -- no full path.
@@ -148,7 +155,7 @@ def convert(xml_files, json_file):
         json_dict["categories"].append(cat)
 
     os.makedirs(os.path.dirname(json_file) or ".", exist_ok=True)
-    json_fp = open(json_file, "w")
+    json_fp = open(json_file, "w")  # pylint: disable=consider-using-with
     json_str = json.dumps(json_dict)
     json_fp.write(json_str)
     json_fp.close()
@@ -160,10 +167,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Convert Pascal VOC annotation to COCO format."
     )
-    parser.add_argument("xml_dir",
-                        help="Directory path to xml files.", type=str)
-    parser.add_argument("json_file",
-                        help="Output COCO format json file.", type=str)
+    parser.add_argument(
+        "xml_dir", help="Directory path to xml files.", type=str
+    )
+    parser.add_argument(
+        "json_file", help="Output COCO format json file.", type=str
+    )
     args = parser.parse_args()
     xml_files = glob.glob(os.path.join(args.xml_dir, "*.xml"))
 

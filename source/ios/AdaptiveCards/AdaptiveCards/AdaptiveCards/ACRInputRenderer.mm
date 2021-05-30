@@ -9,6 +9,7 @@
 #import "ACOBaseActionElement.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRAggregateTarget.h"
@@ -43,14 +44,13 @@
 + (ACRTextField *)configTextFiled:(std::shared_ptr<TextInput> const &)inputBlock renderAction:(BOOL)renderAction rootView:(ACRView *)rootView viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup
 {
     ACRTextField *txtInput = nil;
+    NSBundle *bundle = [[ACOBundle getInstance] getBundle];
     switch (inputBlock->GetTextInputStyle()) {
         case TextInputStyle::Email: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
             break;
         }
         case TextInputStyle::Tel: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextTelelphoneField" owner:rootView options:nil][0];
             CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
             UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
@@ -62,13 +62,11 @@
             break;
         }
         case TextInputStyle::Url: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextUrlField" owner:rootView options:nil][0];
             break;
         }
         case TextInputStyle::Text:
         default: {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
             break;
         }
@@ -98,9 +96,9 @@
     ACRQuickReplyView *quickReplyView = nil;
 
     BOOL renderAction = NO;
-    if (action != nullptr && [acoConfig getHostConfig] -> GetSupportsInteractivity()) {
+    if (action != nullptr && [acoConfig getHostConfig]->GetSupportsInteractivity()) {
         if (action->GetElementType() == ActionType::ShowCard) {
-            if ([acoConfig getHostConfig] -> GetActions().showCard.actionMode != ActionMode::Inline) {
+            if ([acoConfig getHostConfig]->GetActions().showCard.actionMode != ActionMode::Inline) {
                 renderAction = YES;
             }
         } else {
@@ -130,7 +128,9 @@
                                           constant:0]
                 .active = YES;
             inputview = multilineview;
-
+            configRtl(multilineview.contentView, rootView.context);
+            configRtl(txtview, rootView.context);
+            configRtl(button, rootView.context);
         } else {
             txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0) element:acoElem];
             txtview.allowsEditingTextAttributes = YES;
@@ -152,7 +152,9 @@
             [quickReplyView addTextField:txtInput];
             ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView accessibilityItem:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
-
+            configRtl(quickReplyView.stack, rootView.context);
+            configRtl(txtInput, rootView.context);
+            configRtl(button, rootView.context);
         } else {
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
             ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput accessibilityItem:txtInput viewGroup:viewGroup dataSource:textInputHandler];

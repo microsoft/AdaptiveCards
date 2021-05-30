@@ -1,0 +1,24 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+    "description": "Represents a row of cells within a Table element.",
+    "extends": "Element",
+    "version": "1.5",
+    "properties": {
+        "cells": {
+            "type": "TableCell[]",
+            "description": "The cells in this row. If a row contains more cells than there are columns defined on the Table element, the extra cells are ignored."
+        },
+		"style": {
+			"type": "ContainerStyle?",
+			"description": "Defines the style of the entire row."
+		},
+        "horizontalCellContentAlignment": {
+            "type": "HorizontalAlignment?",
+            "description": "Controls how the content of all cells in the row is horizontally aligned by default. When specified, this value overrides both the setting at the table and columns level. When not specified, horizontal alignment is defined at the table, column or cell level."
+        },
+        "verticalCellContentAlignment": {
+            "type": "VerticalAlignment?",
+            "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table and column level. When not specified, vertical alignment is defined either at the table, column or cell level."
+        }
+    }
+}

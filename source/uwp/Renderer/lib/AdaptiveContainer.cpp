@@ -6,17 +6,18 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
+#include <winrt/Windows.Foundation.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
-    AdaptiveContainer::AdaptiveContainer() : m_bleedDirection(ABI::AdaptiveNamespace::BleedDirection::None)
+    AdaptiveContainer::AdaptiveContainer() : m_bleedDirection(ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
@@ -24,12 +25,12 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveContainer::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
+        std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
         return RuntimeClassInitialize(container);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedContainer)
+    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Container>& sharedContainer)
     try
     {
         if (sharedContainer == nullptr)
@@ -37,14 +38,27 @@ namespace AdaptiveNamespace
             return E_INVALIDARG;
         }
 
+        if (sharedContainer->GetVerticalContentAlignment().has_value())
+        {
+            m_verticalContentAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>(
+                                     sharedContainer->GetVerticalContentAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>>()
+                    .get();
+        }
+
         GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
         GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
-        m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
-        m_verticalAlignment =
-            static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
+        m_style = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle>(sharedContainer->GetStyle());
         m_minHeight = sharedContainer->GetMinHeight();
         m_bleed = sharedContainer->GetBleed();
-        m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedContainer->GetBleedDirection());
+        m_bleedDirection = static_cast<ABI::AdaptiveCards::Rendering::Uwp::BleedDirection>(sharedContainer->GetBleedDirection());
+
+        const auto sharedRtl = sharedContainer->GetRtl();
+        if (sharedRtl)
+        {
+            m_rtl = winrt::box_value(sharedRtl.value()).as<ABI::Windows::Foundation::IReference<bool>>().get();
+        }
 
         auto backgroundImage = sharedContainer->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
@@ -79,27 +93,28 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style)
+    HRESULT AdaptiveContainer::get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    HRESULT AdaptiveContainer::get_VerticalContentAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>** verticalContentAlignment)
     {
-        *verticalAlignment = m_verticalAlignment;
-        return S_OK;
+        return m_verticalContentAlignment.CopyTo(verticalContentAlignment);
     }
 
-    HRESULT AdaptiveContainer::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    HRESULT AdaptiveContainer::put_VerticalContentAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalContentAlignment)
     {
-        m_verticalAlignment = verticalAlignment;
+        m_verticalContentAlignment = verticalContentAlignment;
         return S_OK;
     }
 
@@ -111,6 +126,17 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveContainer::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
     {
         m_backgroundImage = backgroundImage;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainer::get_Rtl(_Out_ ABI::Windows::Foundation::IReference<bool>** rtl)
+    {
+        return m_rtl.CopyTo(rtl);
+    }
+
+    HRESULT AdaptiveContainer::put_Rtl(ABI::Windows::Foundation::IReference<bool>* rtl)
+    {
+        m_rtl = rtl;
         return S_OK;
     }
 
@@ -138,7 +164,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::get_BleedDirection(ABI::AdaptiveNamespace::BleedDirection* bleedDirection)
+    HRESULT AdaptiveContainer::get_BleedDirection(ABI::AdaptiveCards::Rendering::Uwp::BleedDirection* bleedDirection)
     {
         // TODO: Current behavior is broken because it doesn't update when bleed updates. Unfortunately, neither does
         // the shared model logic.
@@ -146,10 +172,10 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
+        std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
         RETURN_IF_FAILED(CopySharedElementProperties(*container));
 
         if (m_selectAction != nullptr)
@@ -159,18 +185,33 @@ namespace AdaptiveNamespace
             container->SetSelectAction(std::move(sharedAction));
         }
 
-        container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
-        container->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
+        if (m_verticalContentAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignmentValue;
+            RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
+            container->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));
+        }
+
+        container->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
         container->SetMinHeight(m_minHeight);
 
         ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
-        std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
+        std::shared_ptr<AdaptiveCards::BackgroundImage> sharedBackgroundImage;
         if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
         {
             container->SetBackgroundImage(std::move(sharedBackgroundImage));
         }
 
         container->SetBleed(m_bleed);
+
+        std::optional<bool> rtl;
+        if (m_rtl)
+        {
+            boolean rtlValue;
+            RETURN_IF_FAILED(m_rtl->get_Value(&rtlValue));
+            rtl = rtlValue;
+        }
+        container->SetRtl(rtl);
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 

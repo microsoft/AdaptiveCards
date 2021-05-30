@@ -6,22 +6,22 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
+        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
         return RuntimeClassInitialize(textInput);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextInput>& sharedTextInput)
+    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextInput>& sharedTextInput)
     try
     {
         if (sharedTextInput == nullptr)
@@ -34,7 +34,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedTextInput->GetRegex(), m_regex.GetAddressOf()));
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
-        m_textInputStyle = static_cast<ABI::AdaptiveNamespace::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+        m_textInputStyle = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle>(sharedTextInput->GetTextInputStyle());
         GenerateActionProjection(sharedTextInput->GetInlineAction(), &m_inlineAction);
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedTextInput));
@@ -78,13 +78,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveNamespace::TextInputStyle* textInputStyle)
+    HRESULT AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle* textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveNamespace::TextInputStyle textInputStyle)
+    HRESULT AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle)
     {
         m_textInputStyle = textInputStyle;
         return S_OK;
@@ -111,16 +111,16 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
+        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
 
         RETURN_IF_FAILED(CopySharedElementProperties(*textInput));
 
         textInput->SetMaxLength(m_maxLength);
         textInput->SetIsMultiline(m_isMultiline);
-        textInput->SetTextInputStyle(static_cast<AdaptiveSharedNamespace::TextInputStyle>(m_textInputStyle));
+        textInput->SetTextInputStyle(static_cast<AdaptiveCards::TextInputStyle>(m_textInputStyle));
 
         textInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         textInput->SetValue(HStringToUTF8(m_value.Get()));

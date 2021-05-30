@@ -6,11 +6,11 @@
 #include "ParseContext.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 Image::Image() :
     BaseCardElement(CardElementType::Image), m_imageStyle(ImageStyle::Default), m_imageSize(ImageSize::None),
-    m_pixelWidth(0), m_pixelHeight(0), m_hAlignment(HorizontalAlignment::Left)
+    m_pixelWidth(0), m_pixelHeight(0), m_hAlignment(std::nullopt)
 {
     PopulateKnownPropertiesSet();
 }
@@ -60,9 +60,10 @@ Json::Value Image::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor)] = m_backgroundColor;
     }
 
-    if (m_hAlignment != HorizontalAlignment::Left)
+    if (m_hAlignment.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] =
+            HorizontalAlignmentToString(m_hAlignment.value_or(HorizontalAlignment::Left));
     }
 
     if (!m_altText.empty())
@@ -129,12 +130,12 @@ void Image::SetAltText(const std::string& value)
     m_altText = value;
 }
 
-HorizontalAlignment Image::GetHorizontalAlignment() const
+std::optional<HorizontalAlignment> Image::GetHorizontalAlignment() const
 {
     return m_hAlignment;
 }
 
-void Image::SetHorizontalAlignment(const HorizontalAlignment value)
+void Image::SetHorizontalAlignment(const std::optional<HorizontalAlignment> value)
 {
     m_hAlignment = value;
 }
@@ -180,8 +181,7 @@ std::shared_ptr<BaseCardElement> ImageParser::Deserialize(ParseContext& context,
     return ImageParser::DeserializeWithoutCheckingType(context, json);
 }
 
-std::shared_ptr<BaseCardElement>
-ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::Value& json)
+std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::Value& json)
 {
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(context, json);
 
@@ -189,24 +189,19 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
     image->SetBackgroundColor(ValidateColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor), context.warnings));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
-    image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
-        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+    image->SetHorizontalAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
+        json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignmentFromString));
 
-    std::vector<std::string> requestedDimensions;
-    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width));
-    requestedDimensions.push_back(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height));
-    std::vector<int> parsedDimensions;
+    const auto& widthDimension =
+        ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Width), &context.warnings);
+    const auto& heightDimension =
+        ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Height), &context.warnings);
 
-    for (auto eachDimension : requestedDimensions)
+    if (widthDimension.has_value() || heightDimension.has_value())
     {
-        const int parsedDimension = ParseSizeForPixelSize(eachDimension, &context.warnings);
-        parsedDimensions.push_back(parsedDimension);
-    }
-
-    if (parsedDimensions.at(0) != 0 || parsedDimensions.at(1) != 0)
-    {
-        image->SetPixelWidth(parsedDimensions.at(0));
-        image->SetPixelHeight(parsedDimensions.at(1));
+        // Need to take breaking change to only set width/height if parse was successful (see microsoft/AdaptiveCards#5781)
+        image->SetPixelWidth(widthDimension.value_or(0));
+        image->SetPixelHeight(heightDimension.value_or(0));
     }
     else
     {
@@ -220,15 +215,15 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
 
 void Image::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)});
 }
 
 void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -237,5 +232,4 @@ void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resou
     imageResourceInfo.url = GetUrl();
     imageResourceInfo.mimeType = "image";
     resourceInfo.push_back(imageResourceInfo);
-    return;
 }

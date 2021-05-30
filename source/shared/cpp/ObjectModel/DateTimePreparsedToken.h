@@ -3,7 +3,7 @@
 #pragma once
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class DateTimePreparsedToken
     {

@@ -42,6 +42,7 @@ namespace AdaptiveCards
                 [AdaptiveNumberInput.TypeName] = typeof(AdaptiveNumberInput),
                 [AdaptiveToggleInput.TypeName] = typeof(AdaptiveToggleInput),
                 [AdaptiveSubmitAction.TypeName] = typeof(AdaptiveSubmitAction),
+                [AdaptiveExecuteAction.TypeName] = typeof(AdaptiveExecuteAction),
                 [AdaptiveOpenUrlAction.TypeName] = typeof(AdaptiveOpenUrlAction),
                 [AdaptiveShowCardAction.TypeName] = typeof(AdaptiveShowCardAction),
                 [AdaptiveMedia.TypeName] = typeof(AdaptiveMedia),

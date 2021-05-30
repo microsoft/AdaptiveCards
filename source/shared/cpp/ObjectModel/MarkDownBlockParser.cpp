@@ -4,7 +4,7 @@
 #include <iostream>
 #include "MarkDownBlockParser.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 // Parses according to each key words
 void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
@@ -42,16 +42,8 @@ void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
         break;
     }
     // handles list block
-    case '-': case '+':
-    {
-        ListParser listParser;
-        // do syntax check of list
-        listParser.Match(stream);
-        // append list result to the rest
-        m_parsedResult.AppendParseResult(listParser.GetParsedResult());
-        break;
-    }
-    // handles list block
+    case '-':
+    case '+':
     case '*':
     {
         ListParser listParser;
@@ -108,14 +100,19 @@ void EmphasisParser::Match(std::stringstream& stream)
     }
 }
 
+bool EmphasisParser::IsEmphasisToken(int currentChar)
+{
+    return (currentChar == '[' || currentChar == ']' || currentChar == ')' || currentChar == '\n' || currentChar == '\r');
+}
+
 /// captures text until it see emphasis character. When it does, switch to Emphasis state
 EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser& parser, std::stringstream& stream, std::string& token)
 {
     const int currentChar = stream.peek();
+    const bool isEmphasisToken = IsEmphasisToken(currentChar);
 
     /// MarkDown keywords
-    if (currentChar == '[' || currentChar == ']' || currentChar == ')' || currentChar == '\n' || currentChar == '\r' ||
-        stream.eof())
+    if (stream.eof() || (parser.m_lookBehind != DelimiterType::Escape && isEmphasisToken))
     {
         parser.Flush(currentChar, token);
         return EmphasisState::Captured;
@@ -141,6 +138,12 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser& parser, 
     }
     else
     {
+        if (isEmphasisToken && parser.m_lookBehind == DelimiterType::Escape)
+        {
+            // remove escape char from stream
+            token.pop_back();
+        }
+
         parser.UpdateLookBehind(currentChar);
         char streamChar{};
         stream.get(streamChar);
@@ -481,8 +484,7 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
     if (lookahead.peek() > 0 &&
-        (MarkDownBlockParser::IsSpace(lookahead.peek()) ||
-         MarkDownBlockParser::IsCntrl(lookahead.peek())))
+        (MarkDownBlockParser::IsSpace(lookahead.peek()) || MarkDownBlockParser::IsCntrl(lookahead.peek())))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;

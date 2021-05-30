@@ -3,15 +3,11 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.graphics.Typeface;
-import android.text.style.TypefaceSpan;
-import android.view.Gravity;
+import android.view.View;
 
-import java.io.File;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontType;
@@ -19,7 +15,9 @@ import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextSize;
+import io.adaptivecards.objectmodel.TextStyle;
 import io.adaptivecards.objectmodel.TextWeight;
+import io.adaptivecards.renderer.RenderArgs;
 
 public class TextRendererUtil
 {
@@ -115,15 +113,15 @@ public class TextRendererUtil
         int alignment;
         if (textAlignment == HorizontalAlignment.Center)
         {
-            alignment = Gravity.CENTER;
+            alignment = View.TEXT_ALIGNMENT_CENTER;
         }
         else if (textAlignment == HorizontalAlignment.Left)
         {
-            alignment = Gravity.LEFT;
+            alignment = View.TEXT_ALIGNMENT_VIEW_START;
         }
         else if (textAlignment == HorizontalAlignment.Right)
         {
-            alignment = Gravity.RIGHT;
+            alignment = View.TEXT_ALIGNMENT_VIEW_END;
         }
         else
         {
@@ -131,6 +129,91 @@ public class TextRendererUtil
         }
 
         return alignment;
+    }
+
+    static TextSize computeTextSize(HostConfig hostConfig, TextStyle declaredStyle, TextSize declaredSize, RenderArgs renderArgs)
+    {
+        if (declaredSize != null)
+        {
+            return declaredSize;
+        }
+        if (declaredStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getSize();
+        }
+        if (declaredStyle == null && renderArgs != null && renderArgs.isColumnHeader())
+        {
+            return hostConfig.GetTextStyles().getColumnHeader().getSize();
+        }
+        return TextSize.Default;
+    }
+
+    static ForegroundColor computeTextColor(HostConfig hostConfig, TextStyle declaredStyle, ForegroundColor declaredColor, RenderArgs renderArgs)
+    {
+        if (declaredColor != null)
+        {
+            return declaredColor;
+        }
+        if (declaredStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getColor();
+        }
+        if (declaredStyle == null && renderArgs != null && renderArgs.isColumnHeader())
+        {
+            return hostConfig.GetTextStyles().getColumnHeader().getColor();
+        }
+        return ForegroundColor.Default;
+    }
+
+    static TextWeight computeTextWeight(HostConfig hostConfig, TextStyle declaredStyle, TextWeight declaredWeight, RenderArgs renderArgs)
+    {
+        if (declaredWeight != null)
+        {
+            return declaredWeight;
+        }
+        if (declaredStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getWeight();
+        }
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isColumnHeader())
+        {
+            return hostConfig.GetTextStyles().getColumnHeader().getWeight();
+        }
+        return TextWeight.Default;
+    }
+
+    static boolean computeIsSubtle(HostConfig hostConfig, TextStyle declaredStyle, Boolean declaredIsSubtle, RenderArgs renderArgs)
+    {
+        if (declaredIsSubtle != null)
+        {
+            return declaredIsSubtle;
+        }
+        if (declaredStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getIsSubtle();
+        }
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isColumnHeader())
+        {
+            return hostConfig.GetTextStyles().getColumnHeader().getIsSubtle();
+        }
+        return false;
+    }
+
+    static FontType computeFontType(HostConfig hostConfig, TextStyle declaredStyle, FontType declaredFontType, RenderArgs renderArgs)
+    {
+        if (declaredFontType != null)
+        {
+            return declaredFontType;
+        }
+        if (declaredStyle == TextStyle.Heading)
+        {
+            return hostConfig.GetTextStyles().getHeading().getFontType();
+        }
+        if (declaredStyle == null && renderArgs != null &&  renderArgs.isColumnHeader())
+        {
+            return hostConfig.GetTextStyles().getColumnHeader().getFontType();
+        }
+        return FontType.Default;
     }
 
     static long getTextSize(FontType type, TextSize textSize, HostConfig hostConfig)

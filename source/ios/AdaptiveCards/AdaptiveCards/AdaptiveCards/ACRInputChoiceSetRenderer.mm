@@ -37,12 +37,7 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
-    // creates a tableview with pre-defined style
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    if (!bundle) { // https://github.com/Microsoft/AdaptiveCards/issues/1834
-        return nil;
-    }
-    ACRInputTableView *choiceSetView = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
+    ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     choiceSetView.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height);
     NSObject<UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler> *dataSource = nil;
 
@@ -61,7 +56,7 @@
     }
 
     // removes leading padding
-    choiceSetView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
+    choiceSetView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;

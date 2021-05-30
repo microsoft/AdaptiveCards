@@ -5,13 +5,14 @@
 
 #include "AdaptiveCardParseException.h"
 #include "BaseElement.h"
+#include "ExecuteAction.h"
 #include "OpenUrlAction.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 #include "ToggleVisibilityAction.h"
 #include "UnknownAction.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     ActionElementParserWrapper::ActionElementParserWrapper(std::shared_ptr<ActionElementParser> parserToWrap) :
         m_parser{parserToWrap}
@@ -21,7 +22,7 @@ namespace AdaptiveSharedNamespace
     std::shared_ptr<BaseActionElement> ActionElementParserWrapper::Deserialize(ParseContext& context, const Json::Value& value)
     {
         const auto& idProperty = ParseUtil::GetString(value, AdaptiveCardSchemaKey::Id);
-        const AdaptiveSharedNamespace::InternalId internalId = AdaptiveSharedNamespace::InternalId::Next();
+        const AdaptiveCards::InternalId internalId = AdaptiveCards::InternalId::Next();
         context.PushElement(idProperty, internalId);
         std::shared_ptr<BaseActionElement> element = m_parser->Deserialize(context, value);
         context.PopElement();
@@ -37,6 +38,7 @@ namespace AdaptiveSharedNamespace
     ActionParserRegistration::ActionParserRegistration()
     {
         m_knownElements.insert({
+            ActionTypeToString(ActionType::Execute),
             ActionTypeToString(ActionType::OpenUrl),
             ActionTypeToString(ActionType::ShowCard),
             ActionTypeToString(ActionType::Submit),
@@ -45,7 +47,8 @@ namespace AdaptiveSharedNamespace
         });
 
         m_cardElementParsers.insert(
-            {{ActionTypeToString(ActionType::OpenUrl), std::make_shared<OpenUrlActionParser>()},
+            {{ActionTypeToString(ActionType::Execute), std::make_shared<ExecuteActionParser>()},
+             {ActionTypeToString(ActionType::OpenUrl), std::make_shared<OpenUrlActionParser>()},
              {ActionTypeToString(ActionType::ShowCard), std::make_shared<ShowCardActionParser>()},
              {ActionTypeToString(ActionType::Submit), std::make_shared<SubmitActionParser>()},
              {ActionTypeToString(ActionType::ToggleVisibility), std::make_shared<ToggleVisibilityActionParser>()},

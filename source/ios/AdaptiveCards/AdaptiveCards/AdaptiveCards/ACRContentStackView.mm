@@ -22,6 +22,7 @@ static int kToggleVisibilityContext;
     UIStackView *_stackView;
     NSHashTable<UIView *> *_hiddenSubviews;
     NSMutableDictionary<NSString *, NSValue *> *_subviewIntrinsicContentSizeCollection;
+    ACRRtl _rtl;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -31,7 +32,6 @@ static int kToggleVisibilityContext;
 {
     self = [self initWithFrame:superview.frame];
     if (self) {
-
         _style = style;
         if (style != ACRNone &&
             style != parentStyle) {
@@ -116,6 +116,21 @@ static int kToggleVisibilityContext;
 - (void)setAxis:(UILayoutConstraintAxis)axis
 {
     _stackView.axis = axis;
+}
+
+- (void)setRtl:(ACRRtl)rtl
+{
+    _rtl = rtl;
+    if (!_stackView || rtl == ACRRtlNone) {
+        return;
+    }
+
+    _stackView.semanticContentAttribute = (rtl == ACRRtlRTL) ? UISemanticContentAttributeForceRightToLeft : UISemanticContentAttributeForceLeftToRight;
+}
+
+- (ACRRtl)rtl
+{
+    return _rtl;
 }
 
 + (UIColor *)colorFromString:(const std::string &)colorString
@@ -559,6 +574,14 @@ static int kToggleVisibilityContext;
 {
     for (UIView *view in _stackView.arrangedSubviews) {
         [view removeObserver:self forKeyPath:@"hidden"];
+    }
+}
+
+- (void)toggleVisibilityOfFirstView
+{
+    if ([_stackView.subviews count] and _stackView.subviews[0].hidden) {
+        _stackView.subviews[0].hidden = NO;
+        _stackView.subviews[0].hidden = YES;
     }
 }
 

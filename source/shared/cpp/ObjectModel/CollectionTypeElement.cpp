@@ -4,9 +4,11 @@
 #include "CollectionTypeElement.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
-CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
+CollectionTypeElement::CollectionTypeElement(CardElementType type,
+                                             ContainerStyle style,
+                                             std::optional<VerticalContentAlignment> alignment) :
     BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment),
     m_bleedDirection(ContainerBleedDirection::BleedAll), m_minHeight(0), m_hasPadding(false), m_hasBleed(false), m_parentalId()
 {
@@ -22,12 +24,12 @@ void CollectionTypeElement::SetStyle(const ContainerStyle value)
     m_style = value;
 }
 
-VerticalContentAlignment CollectionTypeElement::GetVerticalContentAlignment() const
+std::optional<VerticalContentAlignment> CollectionTypeElement::GetVerticalContentAlignment() const
 {
     return m_verticalContentAlignment;
 }
 
-void CollectionTypeElement::SetVerticalContentAlignment(const VerticalContentAlignment value)
+void CollectionTypeElement::SetVerticalContentAlignment(const std::optional<VerticalContentAlignment> value)
 {
     m_verticalContentAlignment = value;
 }
@@ -65,7 +67,7 @@ void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& conte
 {
     // We allow bleed when the current container has padding and bleed set, and when the parents don't impose a
     // restiction via bleed direction
-    const AdaptiveSharedNamespace::InternalId id = context.PaddingParentInternalId();
+    const AdaptiveCards::InternalId id = context.PaddingParentInternalId();
     const bool canBleed = GetPadding() && GetBleed();
     if (canBleed && context.GetBleedDirection() != ContainerBleedDirection::BleedRestricted)
     {
@@ -78,12 +80,12 @@ void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& conte
     }
 }
 
-void CollectionTypeElement::SetParentalId(const AdaptiveSharedNamespace::InternalId& id)
+void CollectionTypeElement::SetParentalId(const AdaptiveCards::InternalId& id)
 {
     m_parentalId = id;
 }
 
-AdaptiveSharedNamespace::InternalId CollectionTypeElement::GetParentalId(void) const
+AdaptiveCards::InternalId CollectionTypeElement::GetParentalId(void) const
 {
     return m_parentalId;
 }
@@ -145,10 +147,10 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
     }
 
-    if (GetVerticalContentAlignment() != VerticalContentAlignment::Top)
+    if (GetVerticalContentAlignment().has_value())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
-            VerticalContentAlignmentToString(GetVerticalContentAlignment());
+            VerticalContentAlignmentToString(GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top));
     }
 
     if (GetBleed())

@@ -36,22 +36,22 @@ public class FactSetConfig {
     }
   }
 
-  public void setTitle(TextConfig value) {
-    AdaptiveCardObjectModelJNI.FactSetConfig_title_set(swigCPtr, this, TextConfig.getCPtr(value), value);
+  public void setTitle(FactSetTextConfig value) {
+    AdaptiveCardObjectModelJNI.FactSetConfig_title_set(swigCPtr, this, FactSetTextConfig.getCPtr(value), value);
   }
 
-  public TextConfig getTitle() {
+  public FactSetTextConfig getTitle() {
     long cPtr = AdaptiveCardObjectModelJNI.FactSetConfig_title_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new TextConfig(cPtr, false);
+    return (cPtr == 0) ? null : new FactSetTextConfig(cPtr, false);
   }
 
-  public void setValue(TextConfig value) {
-    AdaptiveCardObjectModelJNI.FactSetConfig_value_set(swigCPtr, this, TextConfig.getCPtr(value), value);
+  public void setValue(FactSetTextConfig value) {
+    AdaptiveCardObjectModelJNI.FactSetConfig_value_set(swigCPtr, this, FactSetTextConfig.getCPtr(value), value);
   }
 
-  public TextConfig getValue() {
+  public FactSetTextConfig getValue() {
     long cPtr = AdaptiveCardObjectModelJNI.FactSetConfig_value_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new TextConfig(cPtr, false);
+    return (cPtr == 0) ? null : new FactSetTextConfig(cPtr, false);
   }
 
   public void setSpacing(long value) {

@@ -1,0 +1,12 @@
+en:
+  title: Schema Explorer
+  choose_element: "Choose element:"
+  example: Example
+  properties: Properties
+  copy: Copy
+  copy_sample_json: Copy Adaptive Card sample JSON
+  copy_sample_data: Copy sample data JSON
+  data_json: Data JSON
+  template_json: Template JSON
+  copy_template_json: Copy Adaptive Card Template sample JSON
+  try_it_yourself: Try it Yourself

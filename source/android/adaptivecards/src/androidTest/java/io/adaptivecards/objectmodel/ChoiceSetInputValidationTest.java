@@ -1,13 +1,13 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

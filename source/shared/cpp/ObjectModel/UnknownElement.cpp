@@ -7,7 +7,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 UnknownElement::UnknownElement() : BaseCardElement(CardElementType::Unknown)
 {
@@ -28,8 +28,7 @@ std::shared_ptr<BaseCardElement> UnknownElementParser::Deserialize(ParseContext&
     return unknown;
 }
 
-std::shared_ptr<BaseCardElement>
-UnknownElementParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseCardElement> UnknownElementParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return UnknownElementParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

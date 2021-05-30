@@ -2,22 +2,24 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveMedia.h"
+#include "AdaptiveMediaSource.h"
 #include "Vector.h"
 
-using namespace ABI::AdaptiveNamespace;
+using namespace Microsoft::WRL;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveMedia::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
+        std::shared_ptr<AdaptiveCards::Media> media = std::make_shared<AdaptiveCards::Media>();
         return RuntimeClassInitialize(media);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Media>& sharedMedia)
+    HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Media>& sharedMedia)
     try
     {
         if (sharedMedia == nullptr)
@@ -28,7 +30,8 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetPoster(), m_poster.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetAltText(), m_altText.GetAddressOf()));
 
-        m_sources = Microsoft::WRL::Make<Vector<AdaptiveMediaSource*>>();
+        m_sources = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>>();
+
         GenerateMediaSourcesProjection(sharedMedia->GetSources(), m_sources.Get());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedMedia));
@@ -50,15 +53,15 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveMedia::put_AltText(_In_ HSTRING value) { return m_altText.Set(value); }
 
-    HRESULT AdaptiveMedia::get_Sources(_COM_Outptr_ IVector<AdaptiveMediaSource*>** sources)
+    HRESULT AdaptiveMedia::get_Sources(_COM_Outptr_ IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource*>** sources)
     {
         return m_sources.CopyTo(sources);
     }
 
-    HRESULT AdaptiveMedia::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedMedia)
+    HRESULT AdaptiveMedia::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedMedia)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
+        std::shared_ptr<AdaptiveCards::Media> media = std::make_shared<AdaptiveCards::Media>();
 
         RETURN_IF_FAILED(CopySharedElementProperties(*media));
 

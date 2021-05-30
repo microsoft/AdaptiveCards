@@ -4,6 +4,10 @@ export default payloads = [
     "json": require('./Accessibility.json')
   },
   {
+    "title": "Action.IsEnabled.json",
+    "json": require('./Action.IsEnabled.json')
+  },
+  {
     "title": "Action.NoBody.json",
     "json": require('./Action.NoBody.json')
   },
@@ -312,6 +316,10 @@ export default payloads = [
     "json": require('./RichTextBlock.json')
   },
   {
+    "title": "SelectAction.IsEnabled.json",
+    "json": require('./SelectAction.IsEnabled.json')
+  },
+  {
     "title": "TextBlock.Color.json",
     "json": require('./TextBlock.Color.json')
   },
@@ -358,6 +366,18 @@ export default payloads = [
   {
     "title": "TypeIsRequired.json",
     "json": require('./TypeIsRequired.json')
+  },
+  {
+    "title": "Universal.Action.json",
+    "json": require('./Universal.Action.json')
+  },
+  {
+    "title": "Universal.Select.Action.json",
+    "json": require('./Universal.Select.Action.json')
+  },
+  {
+    "title": "Universal.Inline.Action.json",
+    "json": require('./Universal.Inline.Action.json')
   },
   {
     "title": "VerticalStretch.json",

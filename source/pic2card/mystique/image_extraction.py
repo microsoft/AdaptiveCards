@@ -20,6 +20,7 @@ class ImageExtraction:
     the cropped out image obejcts as base64 to the card paylaod json.
     """
 
+    # pylint: disable=no-self-use
     def find_points(self, coord1, coord2, for_image=None):
         """
         Finds the intersecting bounding boxes by finding
@@ -35,28 +36,29 @@ class ImageExtraction:
                           objects
         @return: True/False
         """
-        x5 = max(coord1[0], coord2[0])
-        y5 = max(coord1[1], coord2[1])
-        x6 = min(coord1[2], coord2[2])
-        y6 = min(coord1[3], coord2[3])
-        if x5 > x6 or y5 > y6:
+        x5_ = max(coord1[0], coord2[0])
+        y5_ = max(coord1[1], coord2[1])
+        x6_ = min(coord1[2], coord2[2])
+        y6_ = min(coord1[3], coord2[3])
+        if x5_ > x6_ or y5_ > y6_:
             return False
 
         if for_image:
             return True
-        else:
+        intersection_area = (x6_ - x5_) * (y6_ - y5_)
+        point1_area = (coord1[2] - coord1[0]) * (coord1[3] - coord1[1])
+        point2_area = (coord2[2] - coord2[0]) * (coord2[3] - coord2[1])
+        if (
+            intersection_area / point1_area > 0.55
+            or intersection_area / point2_area > 0.55
+        ):
+            return True
+        return False
 
-            intersection_area = (x6 - x5) * (y6 - y5)
-            point1_area = (coord1[2] - coord1[0]) * (coord1[3] - coord1[1])
-            point2_area = (coord2[2] - coord2[0]) * (coord2[3] - coord2[1])
-            if (intersection_area / point1_area > 0.55 or
-                    intersection_area / point2_area > 0.55):
-                return True
-            else:
-                return False
-
-    def check_contains(self, point1: Tuple, point2: Tuple,
-                       between_models=False):
+    # pylint: disable=no-self-use
+    def check_contains(
+        self, point1: Tuple, point2: Tuple, between_models=False
+    ):
         """
         Check if a point[coordinates of an object] is inside another
         point or not
@@ -71,15 +73,19 @@ class ImageExtraction:
         """
         x_range = min(point2[0], point2[2]), max(point2[0], point2[2])
         y_range = min(point2[1], point2[3]), max(point2[1], point2[3])
-        contains = ((x_range[0] <= point1[0] <= x_range[1]
-                     and x_range[0] <= point2[2] <= x_range[1]) and
-                    (y_range[0] <= point1[1] <= y_range[1]
-                     and y_range[0] <= point2[3] <= y_range[1]))
+        contains = (
+            x_range[0] <= point1[0] <= x_range[1]
+            and x_range[0] <= point2[2] <= x_range[1]
+        ) and (
+            y_range[0] <= point1[1] <= y_range[1]
+            and y_range[0] <= point2[3] <= y_range[1]
+        )
         if between_models:
-            return contains or ((point2[0] <= point1[0] + 5 <= point2[2])
-                                and (point2[1] <= point1[1] + 5 <= point2[3]))
-        else:
-            return contains
+            return contains or (
+                (point2[0] <= point1[0] + 5 <= point2[2])
+                and (point2[1] <= point1[1] + 5 <= point2[3])
+            )
+        return contains
 
     def remove_noise_objects(self, points: List[Tuple]):
         """
@@ -92,7 +98,7 @@ class ImageExtraction:
         """
         positions_to_delete = []
         intersection_combination = []
-        for i in range(len(points)):
+        for i in range(len(points)):  # pylint: disable=too-many-nested-blocks
             for j in range(len(points)):
                 if j < len(points) and i < len(points) and i != j:
                     box1 = [float(c) for c in points[i]]
@@ -102,23 +108,33 @@ class ImageExtraction:
                     if intersection or contain:
                         if (i, j) not in intersection_combination:
                             # remove the smallest box
-                            box1_area = (
-                                box1[2] - box1[0]) * (box1[3] - box1[1])
+                            box1_area = (box1[2] - box1[0]) * (
+                                box1[3] - box1[1]
+                            )
                             box2_area = (box2[2] - box2[0]) * (
-                                box2[3] - box2[1])
-                            if (box1_area > box2_area and j
-                                    not in positions_to_delete):
+                                box2[3] - box2[1]
+                            )
+                            if (
+                                box1_area > box2_area
+                                and j not in positions_to_delete
+                            ):
                                 positions_to_delete.append(j)
                                 intersection_combination.append((i, j))
-                            elif (box1_area < box1_area and i
-                                  not in positions_to_delete):
+                            elif (
+                                box1_area  # pylint: disable=comparison-with-itself
+                                < box1_area
+                                and i not in positions_to_delete
+                            ):
                                 positions_to_delete.append(i)
                                 intersection_combination.append((i, j))
-        points = [p for ctr, p in enumerate(
-            points) if ctr not in positions_to_delete]
+        points = [
+            p for ctr, p in enumerate(points) if ctr not in positions_to_delete
+        ]
         return points
 
-    def image_edge_detection(self, image: Image):
+    def image_edge_detection(
+        self, image: Image
+    ):  # pylint: disable=no-self-use, too-many-locals
         """
         Detecs the image edges from the design.
 
@@ -131,7 +147,7 @@ class ImageExtraction:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         dst = cv2.equalizeHist(gray)
         blur = cv2.GaussianBlur(dst, (5, 5), 0)
-        ret, im_th = cv2.threshold(blur, 150, 255, cv2.THRESH_BINARY)
+        _, im_th = cv2.threshold(blur, 150, 255, cv2.THRESH_BINARY)
         # Set the kernel and perform opening
         # k_size = 6
         kernel = np.ones((5, 5), np.uint8)
@@ -140,19 +156,23 @@ class ImageExtraction:
         # edge detection
         edged = cv2.Canny(opened, 0, 255)
         # countours
-        _, contours, hierarchy = cv2.findContours(
-            edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        _, contours, _ = cv2.findContours(
+            edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
+        )
         # get the coords of the contours
-        for c in contours:
-            (x, y, w, h) = cv2.boundingRect(c)
-            image_points.append((x, y, x + w, y + h))
+        for con in contours:
+            (x_ax, y_ax, w_ax, h_ax) = cv2.boundingRect(con)
+            image_points.append((x_ax, y_ax, x_ax + w_ax, y_ax + h_ax))
 
         return image_points
 
-    def remove_model_intersection(self, points1: List[Tuple],
-                                  points2: List[Tuple],
-                                  included_points_positions: List,
-                                  image_first: bool):
+    def remove_model_intersection(
+        self,
+        points1: List[Tuple],
+        points2: List[Tuple],
+        included_points_positions: List,
+        image_first: bool,
+    ):
         """
         Removes all image object's intersecting or containing the rcnn
         detected objects.
@@ -170,19 +190,26 @@ class ImageExtraction:
             for point2_ctr, point2 in enumerate(points2):
                 if not image_first:
                     intersection = self.find_points(
-                        point1, point2, for_image=True)
+                        point1, point2, for_image=True
+                    )
                 else:
                     intersection = False
                 contains = self.check_contains(
-                    point1, point2, between_models=True)
+                    point1, point2, between_models=True
+                )
                 if contains or intersection:
                     if image_first:
                         included_points_positions[point1_ctr] = 1
                     else:
                         included_points_positions[point2_ctr] = 1
 
-    def get_image_with_boundary_boxes(self, image=None, detected_coords=None,
-                                      pil_image=None, faster_rcnn_image=None):
+    def get_image_with_boundary_boxes(
+        self,
+        image=None,
+        detected_coords=None,
+        pil_image=None,
+        faster_rcnn_image=None,
+    ):
         """
         Returns the Detected image object boundary boxes along with
         faster rcnn detected boxes.
@@ -198,9 +225,11 @@ class ImageExtraction:
 
         included_points_positions = [0] * len(image_points)
         self.remove_model_intersection(
-            image_points, detected_coords, included_points_positions, True)
+            image_points, detected_coords, included_points_positions, True
+        )
         self.remove_model_intersection(
-            detected_coords, image_points, included_points_positions, False)
+            detected_coords, image_points, included_points_positions, False
+        )
 
         # remove the included points in intersection removal
         image_points1 = []
@@ -213,16 +242,18 @@ class ImageExtraction:
         width, height = pil_image.size
         widths = [point[2] - point[0] for point in image_points]
         heights = [point[3] - point[1] for point in image_points]
-        for ctr, w in enumerate(widths):
-            if ((w*heights[ctr])/(width*height))*100 >= 70.0:
+        for ctr, wid in enumerate(widths):
+            if ((wid * heights[ctr]) / (width * height)) * 100 >= 70.0:
                 del image_points[ctr]
         image_points = self.remove_noise_objects(image_points)
 
         for point in image_points:
             cv2.rectangle(
                 faster_rcnn_image,
-                (point[0], point[1]), (point[2], point[3]), (0, 0, 255),
-                2
+                (point[0], point[1]),
+                (point[2], point[3]),
+                (0, 0, 255),
+                2,
             )
 
     def detect_image(self, image=None, detected_coords=None, pil_image=None):
@@ -243,9 +274,11 @@ class ImageExtraction:
 
         included_points_positions = [0] * len(image_points)
         self.remove_model_intersection(
-            image_points, detected_coords, included_points_positions, True)
+            image_points, detected_coords, included_points_positions, True
+        )
         self.remove_model_intersection(
-            detected_coords, image_points, included_points_positions, False)
+            detected_coords, image_points, included_points_positions, False
+        )
 
         # remove the included points in intersection removal
         image_points1 = []
@@ -258,13 +291,14 @@ class ImageExtraction:
         width, height = pil_image.size
         widths = [point[2] - point[0] for point in image_points]
         heights = [point[3] - point[1] for point in image_points]
-        for ctr, w in enumerate(widths):
-            if ((w*heights[ctr])/(width*height))*100 >= 70.0:
+        for ctr, wid in enumerate(widths):
+            if ((wid * heights[ctr]) / (width * height)) * 100 >= 70.0:
                 del image_points[ctr]
         image_points = self.remove_noise_objects(image_points)
 
         return image_points
 
+    # pylint: disable=no-self-use
     def image_crop_get_url(self, coords=None, image=None):
         """
         Crops the individual image objects from the input
@@ -277,7 +311,9 @@ class ImageExtraction:
         """
         images_urls = []
         images_sizes = []
-        for coords in coords:
+        for (
+            coords  # pylint: disable=redefined-argument-from-local
+        ) in coords:  # pylint: disable = undefined-variable
             cropped = image.crop((coords[0], coords[1], coords[2], coords[3]))
             images_sizes.append(cropped.size)
             buff = BytesIO()

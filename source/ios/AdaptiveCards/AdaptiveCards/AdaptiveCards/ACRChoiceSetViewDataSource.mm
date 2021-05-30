@@ -6,6 +6,7 @@
 //
 
 #import "ACRChoiceSetViewDataSource.h"
+#import "ACOBundle.h"
 #import "ACRInputLabelView.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
@@ -17,31 +18,43 @@ NSString *uncheckedCheckboxReuseID = @"unchecked-checkbox";
 NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
 NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
-const CGFloat padding = 16.0f;
+const CGFloat padding = 2.0f;
 
-@implementation ACRChoiceSetCell
+@implementation ACRChoiceSetCell {
+    CGSize _imageSize;
+}
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         UIImage *iconImage = nil;
+        NSBundle *bundle = [[ACOBundle getInstance] getBundle];
         if ([reuseIdentifier isEqualToString:@"checked-checkbox"]) {
-            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:bundle compatibleWithTraitCollection:nil];
         } else if ([reuseIdentifier isEqualToString:@"checked-radiobutton"]) {
-            iconImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"checked.png" inBundle:bundle compatibleWithTraitCollection:nil];
         } else if ([reuseIdentifier isEqualToString:@"unchecked-checkbox"]) {
-            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:bundle compatibleWithTraitCollection:nil];
         } else {
-            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:bundle compatibleWithTraitCollection:nil];
         }
         self.imageView.image = iconImage;
         self.textLabel.numberOfLines = 0;
         self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.textLabel.adjustsFontSizeToFitWidth = NO;
         self.backgroundColor = UIColor.clearColor;
+        _imageSize = iconImage.size;
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.imageView.frame = CGRectMake(0, 0, _imageSize.width, _imageSize.height);
+    self.imageView.center = CGPointMake(_imageSize.width / 2, self.bounds.size.height / 2);
+    self.textLabel.frame = CGRectMake(_imageSize.width + padding, 0, self.bounds.size.width - _imageSize.width + padding, self.bounds.size.height);
 }
 
 @end

@@ -84,6 +84,10 @@ public class BackgroundImage {
     AdaptiveCardObjectModelJNI.BackgroundImage_SetVerticalAlignment(swigCPtr, this, value.swigValue());
   }
 
+  public boolean ShouldSerialize() {
+    return AdaptiveCardObjectModelJNI.BackgroundImage_ShouldSerialize(swigCPtr, this);
+  }
+
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.BackgroundImage_Serialize(swigCPtr, this);
   }

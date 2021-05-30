@@ -99,6 +99,12 @@ namespace AdaptiveCards.Rendering
         public InputsConfig Inputs { get; set; } = new InputsConfig();
 
         /// <summary>
+        /// Controls the rendering of heading text.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public HeadingsConfig Headings { get; set; } = new HeadingsConfig();
+
+        /// <summary>
         /// Toggles whether or not to render inputs and actions.
         /// </summary>
         public bool SupportsInteractivity { get; set; } = true;

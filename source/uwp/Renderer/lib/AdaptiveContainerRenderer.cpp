@@ -11,13 +11,13 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveContainerRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
@@ -37,11 +37,37 @@ namespace AdaptiveNamespace
         ComPtr<IFrameworkElement> containerPanelAsFrameWorkElement;
         RETURN_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
 
+        // Get any RTL setting set on either the current context or on this container. Any value set on the container
+        // should be set on the context to apply to all children
+        ComPtr<IReference<bool>> previousContextRtl;
+        RETURN_IF_FAILED(renderContext->get_Rtl(&previousContextRtl));
+        ComPtr<IReference<bool>> currentRtl = previousContextRtl;
+
+        ComPtr<IReference<bool>> containerRtl;
+        RETURN_IF_FAILED(adaptiveContainer->get_Rtl(&containerRtl));
+
+        bool updatedRtl = false;
+        if (containerRtl != nullptr)
+        {
+            currentRtl = containerRtl;
+            RETURN_IF_FAILED(renderContext->put_Rtl(currentRtl.Get()));
+            updatedRtl = true;
+        }
+
+        if (currentRtl)
+        {
+            boolean rtlValue;
+            RETURN_IF_FAILED(currentRtl->get_Value(&rtlValue));
+
+            RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft :
+                                                                                            FlowDirection_LeftToRight));
+        }
+
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
-        ABI::AdaptiveNamespace::HeightType containerHeightType{};
+        ABI::AdaptiveCards::Rendering::Uwp::HeightType containerHeightType{};
         RETURN_IF_FAILED(cardElement->get_Height(&containerHeightType));
-        if (containerHeightType == ABI::AdaptiveNamespace::HeightType::Auto)
+        if (containerHeightType == ABI::AdaptiveCards::Rendering::Uwp::HeightType::Auto)
         {
             RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
         }
@@ -59,7 +85,7 @@ namespace AdaptiveNamespace
         ComPtr<IBorder> containerBorder =
             XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             containerAsContainerBase.Get(), containerBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -75,8 +101,21 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
             childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
 
-        ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
-        RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignment));
+        // If we changed the context's rtl setting, set it back after rendering the children
+        if (updatedRtl)
+        {
+            RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
+        }
+
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
+        RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignmentReference));
+
+        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Top;
+        if (verticalContentAlignmentReference != nullptr)
+        {
+            verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
+        }
 
         XamlHelpers::SetVerticalContentAlignmentToChildren(containerPanel.Get(), verticalContentAlignment);
 
@@ -138,13 +177,13 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveContainerRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
     try
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveContainer, AdaptiveSharedNamespace::Container, AdaptiveSharedNamespace::ContainerParser>(
+        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveContainer, AdaptiveCards::Container, AdaptiveCards::ContainerParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;

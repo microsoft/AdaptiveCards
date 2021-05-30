@@ -9,7 +9,8 @@
 			"weight": "bolder",
 			"text": "Input.Text elements",
 			"horizontalAlignment": "center",
-			"wrap": true
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "TextBlock",
@@ -100,7 +101,8 @@
 			"weight": "bolder",
 			"text": "Input.ChoiceSet",
 			"horizontalAlignment": "center",
-			"wrap": true
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "TextBlock",
@@ -183,7 +185,8 @@
 			"weight": "bolder",
 			"text": "Input.Toggle",
 			"horizontalAlignment": "center",
-			"wrap": true
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "Input.Toggle",

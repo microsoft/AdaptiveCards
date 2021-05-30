@@ -8,7 +8,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveFontTypesDefinition::RuntimeClassInitialize() noexcept
     try
@@ -26,23 +26,23 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveFontTypesDefinition::get_Default(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition** value)
+    HRESULT AdaptiveFontTypesDefinition::get_Default(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** value)
     {
         return m_default.CopyTo(value);
     }
 
-    HRESULT AdaptiveFontTypesDefinition::put_Default(_In_ ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition* value)
+    HRESULT AdaptiveFontTypesDefinition::put_Default(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* value)
     {
         m_default = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveFontTypesDefinition::get_Monospace(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition** value)
+    HRESULT AdaptiveFontTypesDefinition::get_Monospace(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** value)
     {
         return m_monospace.CopyTo(value);
     }
 
-    HRESULT AdaptiveFontTypesDefinition::put_Monospace(_In_ ABI::AdaptiveNamespace::IAdaptiveFontTypeDefinition* value)
+    HRESULT AdaptiveFontTypesDefinition::put_Monospace(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* value)
     {
         m_monospace = value;
         return S_OK;

@@ -4,13 +4,13 @@
 #include "ParseContext.h"
 #include "RichTextElementProperties.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 RichTextElementProperties::RichTextElementProperties() :
     TextElementProperties(), m_italic(false), m_strikethrough(false), m_underline(false)
 {
 }
 
-RichTextElementProperties::RichTextElementProperties(const TextConfig& config, const std::string& text, const std::string& language) :
+RichTextElementProperties::RichTextElementProperties(const TextStyleConfig& config, const std::string& text, const std::string& language) :
     TextElementProperties(config, text, language), m_italic(false), m_strikethrough(false), m_underline(false)
 {
 }

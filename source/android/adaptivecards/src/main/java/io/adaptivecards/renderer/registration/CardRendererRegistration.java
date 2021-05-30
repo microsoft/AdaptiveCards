@@ -3,50 +3,54 @@
 package io.adaptivecards.renderer.registration;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.google.android.flexbox.FlexboxLayout;
 
+import java.util.HashMap;
+
 import io.adaptivecards.objectmodel.ActionType;
-import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.AdaptiveCardObjectModel;
+import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
+import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSet;
-import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.objectmodel.Mode;
+import io.adaptivecards.renderer.ActionLayoutRenderer;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.IOnlineImageLoader;
-import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
+import io.adaptivecards.renderer.IBaseCardElementRenderer;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
+import io.adaptivecards.renderer.IOverflowActionRenderer;
+import io.adaptivecards.renderer.IResourceResolver;
+import io.adaptivecards.renderer.OverflowActionLayoutRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
-import io.adaptivecards.renderer.ActionLayoutRenderer;
 import io.adaptivecards.renderer.action.ActionSetRenderer;
+import io.adaptivecards.renderer.action.DropdownElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.BaseCardElementVector;
-import io.adaptivecards.objectmodel.CardElementType;
-import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.renderer.IBaseCardElementRenderer;
 import io.adaptivecards.renderer.input.ChoiceSetInputRenderer;
 import io.adaptivecards.renderer.input.DateInputRenderer;
 import io.adaptivecards.renderer.input.InputUtil;
@@ -67,14 +71,13 @@ import io.adaptivecards.renderer.readonly.ImageRenderer;
 import io.adaptivecards.renderer.readonly.ImageSetRenderer;
 import io.adaptivecards.renderer.readonly.MediaRenderer;
 import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
+import io.adaptivecards.renderer.readonly.TableRenderer;
+import io.adaptivecards.renderer.readonly.TableCellRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
-
-import java.util.HashMap;
 
 public class CardRendererRegistration
 {
-    private CardRendererRegistration()
-    {
+    private CardRendererRegistration() {
         // Register Readonly Renderers
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Column), ColumnRenderer.getInstance());
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ColumnSet), ColumnSetRenderer.getInstance());
@@ -86,6 +89,8 @@ public class CardRendererRegistration
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.RichTextBlock), RichTextBlockRenderer.getInstance());
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ActionSet), ActionSetRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Table), TableRenderer.INSTANCE);
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TableCell), TableCellRenderer.INSTANCE);
 
         // Register Input Renderers
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TextInput), TextInputRenderer.getInstance());
@@ -96,12 +101,16 @@ public class CardRendererRegistration
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ChoiceSetInput), ChoiceSetInputRenderer.getInstance());
 
         // Register Action Renderer
+        registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.Execute), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.Submit), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.OpenUrl), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ToggleVisibility), ActionElementRenderer.getInstance());
+        registerActionRenderer(AdaptiveCardObjectModel.ModeToString(Mode.Primary), ActionElementRenderer.getInstance());
+        registerActionRenderer(AdaptiveCardObjectModel.ModeToString(Mode.Secondary), DropdownElementRenderer.getInstance());
 
         m_actionLayoutRenderer = ActionLayoutRenderer.getInstance();
+        m_overflowActionLayoutRenderer = OverflowActionLayoutRenderer.getInstance();
     }
 
     public static CardRendererRegistration getInstance()
@@ -226,14 +235,34 @@ public class CardRendererRegistration
         return m_featureRegistration;
     }
 
+    public IOverflowActionRenderer getOverflowActionRenderer() {
+        return m_overflowActionRenderer;
+    }
+
+    public void registerOverflowActionRenderer(IOverflowActionRenderer overflowActionRenderer)
+    {
+        m_overflowActionRenderer = overflowActionRenderer;
+    }
+
+    public void registerOverflowActionLayoutRenderer(IActionLayoutRenderer actionLayoutRenderer)
+    {
+        m_overflowActionLayoutRenderer = actionLayoutRenderer;
+    }
+
+    public IActionLayoutRenderer getOverflowActionLayoutRenderer()
+    {
+        return m_overflowActionLayoutRenderer;
+    }
+
+
     public View renderElements(RenderedAdaptiveCard renderedCard,
-                       Context context,
-                       FragmentManager fragmentManager,
-                       ViewGroup viewGroup,
-                       BaseCardElementVector baseCardElementList,
-                       ICardActionHandler cardActionHandler,
-                       HostConfig hostConfig,
-                       RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
+                               Context context,
+                               FragmentManager fragmentManager,
+                               ViewGroup viewGroup,
+                               BaseCardElementVector baseCardElementList,
+                               ICardActionHandler cardActionHandler,
+                               HostConfig hostConfig,
+                               RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
@@ -298,6 +327,11 @@ public class CardRendererRegistration
             if ((featureRegistration != null) && (!cardElement.MeetsRequirements(featureRegistration)))
             {
                 throw new AdaptiveFallbackException(cardElement, featureRegistration);
+            }
+
+            if (cardElement.GetElementType() == CardElementType.ActionSet)
+            {
+                renderArgs.setRootLevelActions(false);
             }
 
             renderedElementView = renderer.render(renderedCard, context, fragmentManager, mockLayout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
@@ -545,7 +579,7 @@ public class CardRendererRegistration
             Util.MoveChildrenViews(mockLayout, stretchElementLayout);
             container.addView(stretchElementLayout);
 
-            tagContent.SetStretchContainer(container);
+            tagContent.SetStretchContainer(stretchElementLayout);
         }
         else
         {
@@ -588,4 +622,6 @@ public class CardRendererRegistration
     private HashMap<String, IResourceResolver> m_resourceResolvers = new HashMap<>();
     private IOnlineMediaLoader m_onlineMediaLoader = null;
     private FeatureRegistration m_featureRegistration = null;
+    private IOverflowActionRenderer m_overflowActionRenderer =null;
+    private IActionLayoutRenderer m_overflowActionLayoutRenderer = null;
 }

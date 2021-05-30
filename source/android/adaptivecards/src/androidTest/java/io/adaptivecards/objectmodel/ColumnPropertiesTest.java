@@ -2,7 +2,7 @@ package io.adaptivecards.objectmodel;
 
 import android.util.Pair;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

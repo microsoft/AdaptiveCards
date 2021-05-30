@@ -108,16 +108,6 @@ After the [Tensorflow ,Tensorflow models intsallation](https://tensorflow-object
 
 8. Can view the rcnn trained model's beaviour using the Jupyter notebook available under notebooks
 
-## Testing
-
-Unit tests have been written with python unittest module. Can run the tests module
-using the following commands
-
-To run all tests
-
-```
-python -m unittest discover
-```
 
 ## Measure the model Accuracy
 

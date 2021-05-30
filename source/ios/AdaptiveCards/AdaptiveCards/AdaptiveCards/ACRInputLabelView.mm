@@ -5,6 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRInputLabelViewPrivate.h"
@@ -28,8 +29,7 @@
 
 - (void)commonInit
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    UIView *contentView = [bundle loadNibNamed:@"ACRInputLabelView" owner:self options:nil][0];
+    UIView *contentView = [[[ACOBundle getInstance] getBundle] loadNibNamed:@"ACRInputLabelView" owner:self options:nil][0];
     [self addSubview:contentView];
     self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     [self.layoutMarginsGuide.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor].active = YES;
@@ -133,7 +133,32 @@
             [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"There exist required input, but there is no associated label with it, consider adding label to the input"];
         }
     }
+    [self setRtl:rootView.context.rtl];
     return self;
+}
+
+- (void)setRtl:(ACRRtl)rtl
+{
+    if (rtl == ACRRtlNone) {
+        return;
+    }
+    UISemanticContentAttribute semanticAttribute = (rtl == ACRRtlRTL) ? UISemanticContentAttributeForceRightToLeft : UISemanticContentAttributeForceLeftToRight;
+
+    if (self.errorMessage) {
+        self.errorMessage.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.label) {
+        self.label.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.stack) {
+        self.stack.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.inputView) {
+        self.inputView.semanticContentAttribute = semanticAttribute;
+    }
 }
 
 - (BOOL)validate:(NSError **)error

@@ -4,11 +4,12 @@
 #include "pch.h"
 #include "EnumMagic.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     enum class AdaptiveCardSchemaKey
     {
         Accent = 0,
+        Action,
         ActionAlignment,
         ActionMode,
         ActionOrientation,
@@ -22,6 +23,7 @@ namespace AdaptiveSharedNamespace
         AltText,
         AssociatedInputs,
         Attention,
+        Authentication,
         BackgroundColor,
         BackgroundImage,
         BackgroundImageUrl,
@@ -34,15 +36,20 @@ namespace AdaptiveSharedNamespace
         BorderThickness,
         Bottom,
         ButtonSpacing,
+        Buttons,
         Card,
+        CellSpacing,
+        Cells,
         Center,
         ChoiceSet,
         Choices,
         Color,
         ColorConfig,
         Column,
+        ColumnHeader,
         ColumnSet,
         Columns,
+        ConnectionName,
         Container,
         ContainerStyles,
         Dark,
@@ -59,6 +66,7 @@ namespace AdaptiveSharedNamespace
         Fallback,
         FallbackText,
         FillMode,
+        FirstRowAsHeaders,
         FontFamily,
         FontSizes,
         FontType,
@@ -67,11 +75,15 @@ namespace AdaptiveSharedNamespace
         ForegroundColor,
         ForegroundColors,
         Good,
+        GridStyle,
+        Heading,
+        HeadingLevel,
         Height,
         Highlight,
         HighlightColor,
         HighlightColors,
         HorizontalAlignment,
+        HorizontalCellContentAlignment,
         IconPlacement,
         IconSize,
         IconUrl,
@@ -83,10 +95,11 @@ namespace AdaptiveSharedNamespace
         ImageSizes,
         Images,
         InlineAction,
-        Inlines,
         InlineTopMargin,
-        Inputs,
+        Inlines,
         InputSpacing,
+        Inputs,
+        IsEnabled,
         IsMultiSelect,
         IsMultiline,
         IsRequired,
@@ -115,6 +128,7 @@ namespace AdaptiveSharedNamespace
         MimeType,
         Min,
         MinHeight,
+        Mode,
         Monospace,
         NumberInput,
         OptionalInputs,
@@ -122,6 +136,8 @@ namespace AdaptiveSharedNamespace
         Placeholder,
         PlayButton,
         Poster,
+        ProviderId,
+        Refresh,
         Regex,
         Repeat,
         RepeatHorizontally,
@@ -130,12 +146,15 @@ namespace AdaptiveSharedNamespace
         Requires,
         RichTextBlock,
         Right,
+        Rows,
+        Rtl,
         Schema,
         SelectAction,
         Separator,
         ShowActionMode,
         ShowCard,
         ShowCardActionConfig,
+        ShowGridLines,
         Size,
         Small,
         Sources,
@@ -148,25 +167,35 @@ namespace AdaptiveSharedNamespace
         Subtle,
         Suffix,
         SupportsInteractivity,
+        Table,
+        TableCell,
+        TableRow,
         TargetElements,
         Text,
         TextBlock,
         TextConfig,
         TextInput,
+        TextStyles,
         TextWeight,
         Thickness,
         TimeInput,
         Title,
         ToggleInput,
+        TokenExchangeResource,
+        Tooltip,
         Top,
         Type,
         Underline,
+        Uri,
         Url,
+        UserIds,
         Value,
         ValueOff,
         ValueOn,
+        Verb,
         Version,
         VerticalAlignment,
+        VerticalCellContentAlignment,
         VerticalContentAlignment,
         Warning,
         Weight,
@@ -177,7 +206,7 @@ namespace AdaptiveSharedNamespace
 
     enum class CardElementType
     {
-        // When the order of existing enums are changed, coresponding changes are needed in iOS (ACOBaseCardElement.h)
+        // When the order of existing enums are changed, corresponding changes are needed in iOS (ACOBaseCardElement.h)
         ActionSet = 0,
         AdaptiveCard,
         ChoiceInput,
@@ -194,6 +223,9 @@ namespace AdaptiveSharedNamespace
         Media,
         NumberInput,
         RichTextBlock,
+        Table,
+        TableCell,
+        TableRow,
         TextBlock,
         TextInput,
         TimeInput,
@@ -207,6 +239,13 @@ namespace AdaptiveSharedNamespace
         TextRun = 0
     };
     DECLARE_ADAPTIVECARD_ENUM(InlineElementType);
+
+    enum class TextStyle
+    {
+        Default = 0,
+        Heading
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextStyle);
 
     enum class TextSize
     {
@@ -300,12 +339,14 @@ namespace AdaptiveSharedNamespace
     enum class ActionType
     {
         Unsupported = 0,
+        Execute,
+        OpenUrl,
         ShowCard,
         Submit,
-        OpenUrl,
         ToggleVisibility,
         Custom,
         UnknownAction,
+        Overflow
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionType);
 
@@ -376,6 +417,13 @@ namespace AdaptiveSharedNamespace
         Accent
     };
     DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
+
+    enum class Mode
+    {
+        Primary = 0,
+        Secondary
+    };
+    DECLARE_ADAPTIVECARD_ENUM(Mode);
 
     enum class ErrorStatusCode
     {

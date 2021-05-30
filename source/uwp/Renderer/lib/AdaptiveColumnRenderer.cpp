@@ -11,13 +11,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveColumnRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
@@ -42,10 +43,37 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(columnBorder->put_Child(columnPanelAsUIElement.Get()));
 
+        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
+        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
+
+        ComPtr<IReference<bool>> previousContextRtl;
+        RETURN_IF_FAILED(renderContext->get_Rtl(&previousContextRtl));
+        ComPtr<IReference<bool>> currentRtl = previousContextRtl;
+
+        ComPtr<IReference<bool>> containerRtl;
+        RETURN_IF_FAILED(adaptiveColumn->get_Rtl(&containerRtl));
+
+        bool updatedRtl = false;
+        if (containerRtl != nullptr)
+        {
+            currentRtl = containerRtl;
+            RETURN_IF_FAILED(renderContext->put_Rtl(currentRtl.Get()));
+            updatedRtl = true;
+        }
+
+        if (currentRtl)
+        {
+            boolean rtlValue;
+            RETURN_IF_FAILED(currentRtl->get_Value(&rtlValue));
+
+            RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft :
+                                                                                         FlowDirection_LeftToRight));
+        }
+
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumn.As(&columnAsContainerBase));
 
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(
             XamlHelpers::HandleStylingAndPadding(columnAsContainerBase.Get(), columnBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -62,15 +90,26 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
             childItems.Get(), columnAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
 
-        ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
-        RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
+        // If we changed the context's rtl setting, set it back after rendering the children
+        if (updatedRtl)
+        {
+            RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
+        }
+
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
+        RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignmentReference));
+
+        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Top;
+        if (verticalContentAlignmentReference != nullptr)
+        {
+            verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
+        }
 
         XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel.Get(), verticalContentAlignment);
 
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
-        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
-        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
         RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         RETURN_IF_FAILED(
@@ -102,7 +141,7 @@ namespace AdaptiveNamespace
             XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
 
             // get HeightType for column
-            ABI::AdaptiveNamespace::HeightType columnHeightType{};
+            ABI::AdaptiveCards::Rendering::Uwp::HeightType columnHeightType{};
             RETURN_IF_FAILED(cardElement->get_Height(&columnHeightType));
 
             // Add columnBorder to rootElement
@@ -133,13 +172,13 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveColumnRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
     try
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumn, AdaptiveSharedNamespace::Column, AdaptiveSharedNamespace::ColumnParser>(
+        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveColumn, AdaptiveCards::Column, AdaptiveCards::ColumnParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;

@@ -63,7 +63,7 @@
 
         if (![textMap objectForKey:key]) {
             RichTextElementProperties textProp;
-            TextBlockToRichTextElementProperties(txtBlck, textProp);
+            TextBlockToRichTextElementProperties(txtBlck, [acoConfig getHostConfig], textProp);
             buildIntermediateResultForText(rootView, acoConfig, textProp, key);
         }
 
@@ -85,20 +85,25 @@
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
         }
-        lab.editable = NO;
+
         lab.textContainer.lineFragmentPadding = 0;
         lab.textContainerInset = UIEdgeInsetsZero;
         lab.layoutManager.usesFontLeading = false;
 
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment()];
+        paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left) context:rootView.context];
+
+        auto sharedStyle = txtBlck->GetStyle();
+        auto backUpColor = sharedStyle.has_value() ? txtBlck->GetTextColor().value_or(config->GetTextStyles().heading.color) : txtBlck->GetTextColor().value_or(ForegroundColor::Default);
+        auto backUpIsSubtle = sharedStyle.has_value() ? txtBlck->GetIsSubtle().value_or(config->GetTextStyles().heading.isSubtle) : txtBlck->GetIsSubtle().value_or(false);
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
-        auto foregroundColor = [acoConfig getTextBlockColor:style textColor:txtBlck->GetTextColor() subtleOption:txtBlck->GetIsSubtle()];
+        auto foregroundColor = [acoConfig getTextBlockColor:style textColor:backUpColor subtleOption:backUpIsSubtle];
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
+
         [content addAttributes:@{
             NSParagraphStyleAttributeName : paragraphStyle,
             NSForegroundColorAttributeName : foregroundColor,
@@ -121,6 +126,10 @@
         lab.textContainer.maximumNumberOfLines = 1;
     }
 
+    if (txtBlck->GetStyle() == TextStyle::Heading) {
+        lab.accessibilityTraits |= UIAccessibilityTraitHeader;
+    }
+
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     if (txtBlck->GetHeight() == HeightType::Auto) {
@@ -129,17 +138,7 @@
         [lab setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
     }
 
-    HorizontalAlignment adaptiveAlignment = txtBlck->GetHorizontalAlignment();
-
-    if (adaptiveAlignment == HorizontalAlignment::Left) {
-        lab.textAlignment = NSTextAlignmentLeft;
-    }
-    if (adaptiveAlignment == HorizontalAlignment::Right) {
-        lab.textAlignment = NSTextAlignmentRight;
-    }
-    if (adaptiveAlignment == HorizontalAlignment::Center) {
-        lab.textAlignment = NSTextAlignmentCenter;
-    }
+    configRtl(lab, rootView.context);
 
     configVisibility(lab, elem);
 

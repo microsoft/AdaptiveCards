@@ -23,7 +23,8 @@ export type CardElementPeerType = {
         parent: DesignerPeers.DesignerPeer,
         designerSurface: CardDesignerSurface,
         registration: DesignerPeers.DesignerPeerRegistrationBase,
-        cardElement: Adaptive.CardElement
+        cardElement: Adaptive.CardElement,
+        initializeCardElement?: boolean
     ): DesignerPeers.CardElementPeer
 };
 export type ActionPeerType = {
@@ -106,6 +107,9 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.Column, DesignerPeers.ColumnPeer, DesignerPeerCategory.Containers, "acd-icon-column");
         this.registerPeer(Adaptive.ImageSet, DesignerPeers.ImageSetPeer, DesignerPeerCategory.Containers, "acd-icon-imageSet");
         this.registerPeer(Adaptive.FactSet, DesignerPeers.FactSetPeer, DesignerPeerCategory.Containers, "acd-icon-factSet");
+        this.registerPeer(Adaptive.Table, DesignerPeers.TablePeer, DesignerPeerCategory.Containers, "acd-icon-table");
+        this.registerPeer(Adaptive.TableRow, DesignerPeers.TableRowPeer, DesignerPeerCategory.Containers, "acd-icon-tableRow");
+        this.registerPeer(Adaptive.TableCell, DesignerPeers.TableCellPeer, DesignerPeerCategory.Containers, "acd-icon-tableCell");
 
         this.registerPeer(Adaptive.TextBlock, DesignerPeers.TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
         this.registerPeer(Adaptive.RichTextBlock, DesignerPeers.RichTextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-richTextBlock");
@@ -121,10 +125,12 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.ChoiceSetInput, DesignerPeers.ChoiceSetInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputChoiceSet");
     }
 
-    createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, cardElement: Adaptive.CardElement): DesignerPeers.CardElementPeer {
+    createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, cardElement: Adaptive.CardElement, initializeCardElement?: boolean): DesignerPeers.CardElementPeer {
         var registrationInfo = this.findTypeRegistration((<any>cardElement).constructor);
 
-        var peer = registrationInfo ? new registrationInfo.peerType(parent, designerSurface, registrationInfo, cardElement) : new DesignerPeers.CardElementPeer(parent, designerSurface, this.defaultRegistration, cardElement);
+        var peer = registrationInfo ?
+            new registrationInfo.peerType(parent, designerSurface, registrationInfo, cardElement, initializeCardElement) :
+            new DesignerPeers.CardElementPeer(parent, designerSurface, this.defaultRegistration, cardElement, initializeCardElement);
 
         return peer;
     }
@@ -136,6 +142,7 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
 
         this.registerPeer(Adaptive.HttpAction, DesignerPeers.HttpActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionHttp");
         this.registerPeer(Adaptive.SubmitAction, DesignerPeers.SubmitActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionSubmit");
+        this.registerPeer(Adaptive.ExecuteAction, DesignerPeers.ExecuteActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionSubmit");
         this.registerPeer(Adaptive.OpenUrlAction, DesignerPeers.OpenUrlActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionOpenUrl");
         this.registerPeer(Adaptive.ShowCardAction, DesignerPeers.ShowCardActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionShowCard");
         this.registerPeer(Adaptive.ToggleVisibilityAction, DesignerPeers.ToggleVisibilityActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionToggleVisibility");
@@ -325,34 +332,7 @@ export class CardDesignerSurface {
 
         if (this.isPreviewMode) {
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
-                let message: string = "Action executed\n";
-                message += "    Title: " + action.title + "\n";
-
-                if (action instanceof Adaptive.OpenUrlAction) {
-                    message += "    Type: OpenUrl\n";
-                    message += "    Url: " + action.url + "\n";
-                }
-                else if (action instanceof Adaptive.SubmitAction) {
-                    message += "    Type: Submit";
-                    message += "    Data: " + JSON.stringify(action.data);
-                }
-                else if (action instanceof Adaptive.HttpAction) {
-                    message += "    Type: Http\n";
-                    message += "    Url: " + action.url + "\n";
-                    message += "    Method: " + action.method + "\n";
-                    message += "    Headers:\n";
-
-                    for (let header of action.headers) {
-                        message += "        " + header.name + ": " + header.value + "\n";
-                    }
-
-                    message += "    Body: " + action.body + "\n";
-                }
-                else {
-                    message += "    Type: <unknown>";
-                }
-
-                alert(message);
+                alert("Action executed\n" + JSON.stringify(action.toJSON(this._serializationContext), undefined, 4));
             };
         }
 

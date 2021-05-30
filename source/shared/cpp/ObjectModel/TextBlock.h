@@ -8,13 +8,14 @@
 #include "DateTimePreparser.h"
 #include "TextElementProperties.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class TextBlockParser;
 
     class TextBlock : public BaseCardElement
     {
         friend TextBlockParser;
+
     public:
         TextBlock();
         TextBlock(const TextBlock&) = default;
@@ -29,29 +30,32 @@ namespace AdaptiveSharedNamespace
         void SetText(const std::string& value);
         DateTimePreparser GetTextForDateParsing() const;
 
-        TextSize GetTextSize() const;
-        void SetTextSize(const TextSize value);
+        std::optional<TextStyle> GetStyle() const;
+        void SetStyle(const std::optional<TextStyle> value);
 
-        TextWeight GetTextWeight() const;
-        void SetTextWeight(const TextWeight value);
+        std::optional<TextSize> GetTextSize() const;
+        void SetTextSize(const std::optional<TextSize> value);
 
-        FontType GetFontType() const;
-        void SetFontType(const FontType value);
+        std::optional<TextWeight> GetTextWeight() const;
+        void SetTextWeight(const std::optional<TextWeight> value);
 
-        ForegroundColor GetTextColor() const;
-        void SetTextColor(const ForegroundColor value);
+        std::optional<FontType> GetFontType() const;
+        void SetFontType(const std::optional<FontType> value);
+
+        std::optional<ForegroundColor> GetTextColor() const;
+        void SetTextColor(const std::optional<ForegroundColor> value);
 
         bool GetWrap() const;
         void SetWrap(const bool value);
 
-        bool GetIsSubtle() const;
-        void SetIsSubtle(const bool value);
+        std::optional<bool> GetIsSubtle() const;
+        void SetIsSubtle(const std::optional<bool> value);
 
         unsigned int GetMaxLines() const;
         void SetMaxLines(const unsigned int value);
 
-        HorizontalAlignment GetHorizontalAlignment() const;
-        void SetHorizontalAlignment(const HorizontalAlignment value);
+        std::optional<HorizontalAlignment> GetHorizontalAlignment() const;
+        void SetHorizontalAlignment(const std::optional<HorizontalAlignment> value);
 
         void SetLanguage(const std::string& value);
         const std::string& GetLanguage() const;
@@ -59,7 +63,8 @@ namespace AdaptiveSharedNamespace
     private:
         bool m_wrap;
         unsigned int m_maxLines;
-        HorizontalAlignment m_hAlignment;
+        std::optional<HorizontalAlignment> m_hAlignment;
+        std::optional<TextStyle> m_textStyle;
         std::shared_ptr<TextElementProperties> m_textElementProperties;
         void PopulateKnownPropertiesSet();
     };
