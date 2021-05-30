@@ -1,7 +1,7 @@
 """Module for object detection using faster rcnn"""
 
 from distutils.version import StrictVersion
-from typing import Dict, Tuple
+from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
@@ -11,7 +11,7 @@ from mystique import config
 from mystique.utils import id_to_label, load_image
 from .od_base import AbstractObjectDetection
 
-
+# pylint: disable=no-member
 if StrictVersion(tf.__version__) < StrictVersion("2.4.0"):
     raise ImportError("Please upgrade your TensorFlow installation to v2.4.x !")
 
