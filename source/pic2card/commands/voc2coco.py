@@ -1,6 +1,3 @@
-#!/usr/bin/python
-
-# pip install lxml
 """Convert Pascal VOC annotation to COCO format."""
 
 import os
@@ -87,14 +84,12 @@ def convert(xml__files, json_file):  # pylint: disable=too-many-locals
         "annotations": [],
         "categories": [],
     }
-	
-
     if PRE_DEFINE_CATEGORIES is not None:
         categories = PRE_DEFINE_CATEGORIES
     else:
         categories = get_categories(xml__files)
     bnd_id = START_BOUNDING_BOX_ID
-	_image_fnames = dict()
+    _image_fnames = dict()
     for xml_file in xml__files:
         tree = ET.parse(xml_file)
         root = tree.getroot()
