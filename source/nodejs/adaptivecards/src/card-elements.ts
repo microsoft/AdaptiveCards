@@ -2919,179 +2919,152 @@ export class FileResult extends SerializableObject {
 }
 
 export class FileInput extends Input {
-  //#region Schema
+    //#region Schema
 
-  static readonly valueProperty = new SerializableObjectProperty(Versions.v1_0, "value", FileResult);
-  static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
-  static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
-  static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.File);
-  static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
+    static readonly valueProperty = new SerializableObjectProperty(Versions.v1_0, "value", FileResult);
+    static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
+    static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+    static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
 
-  @property(FileInput.valueProperty)
-  defaultValue?: FileResult;
+    @property(FileInput.valueProperty)
+    defaultValue?: FileResult;
 
-  @property(FileInput.maxLengthProperty)
-  maxLength?: number;
+    @property(FileInput.maxLengthProperty)
+    maxLength?: number;
 
-  @property(FileInput.placeholderProperty)
-  placeholder?: string;
+    @property(FileInput.placeholderProperty)
+    placeholder?: string;
 
-  @property(FileInput.styleProperty)
-  style: Enums.InputTextStyle = Enums.InputTextStyle.File;
+    @property(FileInput.regexProperty)
+    regex?: string;
 
-  @property(FileInput.regexProperty)
-  regex?: string;
+    //#endregion
 
-  //#endregion
+    private setupInput(input: HTMLInputElement) {
+        input.style.flex = "1 1 auto";
+        input.tabIndex = 0;
 
-  private setupInput(input: HTMLInputElement) {
-      input.style.flex = "1 1 auto";
-      input.tabIndex = 0;
+        if (this.placeholder) {
+            input.placeholder = this.placeholder;
+            input.setAttribute("aria-label", this.placeholder)
+        }
 
-      if (this.placeholder) {
-          input.placeholder = this.placeholder;
-          input.setAttribute("aria-label", this.placeholder)
-      }
+        if (this.maxLength && this.maxLength > 0) {
+            input.maxLength = this.maxLength;
+        }
 
-      if (this.maxLength && this.maxLength > 0) {
-          input.maxLength = this.maxLength;
-      }
+        input.oninput = () => {
+            this.valueChanged();
 
-      input.oninput = () => {
-          this.valueChanged();
-          let fileName = (<HTMLInputElement>this.renderedInputControlElement).value;
-          let file = (<HTMLInputElement>this.renderedInputControlElement).files?.item(0) as File;
-          let fileReader = new FileReader();
-          fileReader.onload = () => {
-              let content = fileReader.result as string;
-              this.defaultValue = new FileResult(fileName, content);
-          }
-          fileReader.readAsDataURL(file);
-      }
-  }
+            let fileName = (<HTMLInputElement>this.renderedInputControlElement).value;
 
-  protected internalRender(): HTMLElement | undefined {
-      let result: HTMLInputElement;
+            let file = (<HTMLInputElement>this.renderedInputControlElement).files?.item(0) as File;
 
-      result = document.createElement("input");
-      result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
-      result.type = Enums.InputTextStyle[this.style].toLowerCase();
+            let fileReader = new FileReader();
+            fileReader.onload = () => {
+                let content = fileReader.result as string;
+                this.defaultValue = new FileResult(fileName, content);
+            }
+            fileReader.readAsDataURL(file);
+        }
+    }
 
-      this.setupInput(result);
+    protected internalRender(): HTMLElement | undefined {
+        let result: HTMLInputElement;
 
-      return result;
-  }
+        result = document.createElement("input");
+        result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
 
-  protected overrideInternalRender(): HTMLElement | undefined {
-      let renderedInputControl = super.overrideInternalRender();
-      return renderedInputControl;
-  }
+        this.setupInput(result);
 
-  getJsonTypeName(): string {
-      return "Input.File";
-  }
+        return result;
+    }
 
-  getActionById(id: string) {
-      let result = super.getActionById(id);
-      return result;
-  }
+    getJsonTypeName(): string {
+        return "Input.File";
+    }
 
-  isSet(): boolean {
-      return this.value ? true : false;
-  }
+    isSet(): boolean {
+        return this.value ? true : false;
+    }
 
-  get value(): string | undefined {
-      if (this.defaultValue) {
-          return JSON.stringify(this.defaultValue, undefined, 4);
-      }
-      else {
-          return undefined;
-      }
-  }
+    get value(): string | undefined {
+        if (this.defaultValue) {
+            return JSON.stringify(this.defaultValue, undefined, 4);
+        }
+        else {
+            return undefined;
+        }
+    }
 }
 
 export class ColorInput extends Input {
-  //#region Schema
+    //#region Schema
 
-  static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
-  static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
-  static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
-  static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Color);
-  static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
+    static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
+    static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
+    static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
+    static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
 
-  @property(ColorInput.valueProperty)
-  defaultValue?: string;
+    @property(ColorInput.valueProperty)
+    defaultValue?: string;
 
-  @property(ColorInput.maxLengthProperty)
-  maxLength?: number;
+    @property(ColorInput.maxLengthProperty)
+    maxLength?: number;
 
-  @property(ColorInput.placeholderProperty)
-  placeholder?: string;
+    @property(ColorInput.placeholderProperty)
+    placeholder?: string;
 
-  @property(ColorInput.styleProperty)
-  style: Enums.InputTextStyle = Enums.InputTextStyle.Color;
+    @property(ColorInput.regexProperty)
+    regex?: string;
 
-  @property(ColorInput.regexProperty)
-  regex?: string;
+    //#endregion
 
-  //#endregion
+    private setupInput(input: HTMLInputElement) {
+        input.style.flex = "1 1 auto";
+        input.tabIndex = 0;
+        input.oninput = () => { this.valueChanged(); }
+    }
 
-  private setupInput(input: HTMLInputElement) {
-      input.style.flex = "1 1 auto";
-      input.tabIndex = 0;
-      input.oninput = () => { this.valueChanged(); }
-  }
+    protected internalRender(): HTMLElement | undefined {
+        let result: HTMLInputElement;
 
-  protected internalRender(): HTMLElement | undefined {
-      let result: HTMLInputElement;
+        result = document.createElement("input");
+        result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
 
-      result = document.createElement("input");
-      result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
-      result.type = Enums.InputTextStyle[this.style].toLowerCase();
+        this.setupInput(result);
 
-      this.setupInput(result);
+        return result;
+    }
 
-      return result;
-  }
+    getJsonTypeName(): string {
+        return "Input.Color";
+    }
 
-  protected overrideInternalRender(): HTMLElement | undefined {
-      let renderedInputControl = super.overrideInternalRender();
-      return renderedInputControl;
-  }
+    isSet(): boolean {
+        return this.value ? true : false;
+    }
 
-  getJsonTypeName(): string {
-      return "Input.Color";
-  }
+    isValid(): boolean {
+        if (!this.value) {
+            return true;
+        }
 
-  getActionById(id: string) {
-      let result = super.getActionById(id);
-      return result;
-  }
+        if (this.regex) {
+            return new RegExp(this.regex, "g").test(this.value);
+        }
 
-  isSet(): boolean {
-      return this.value ? true : false;
-  }
+        return true;
+    }
 
-  isValid(): boolean {
-      if (!this.value) {
-          return true;
-      }
-
-      if (this.regex) {
-          return new RegExp(this.regex, "g").test(this.value);
-      }
-
-      return true;
-  }
-
-  get value(): string | undefined {
-      if (this.renderedInputControlElement) {
-          return (<HTMLInputElement>this.renderedInputControlElement).value;
-      }
-      else {
-          return undefined;
-      }
-  }
+    get value(): string | undefined {
+        if (this.renderedInputControlElement) {
+            return (<HTMLInputElement>this.renderedInputControlElement).value;
+        }
+        else {
+            return undefined;
+        }
+    }
 }
 
 export class ToggleInput extends Input {
@@ -3244,9 +3217,8 @@ export class Choice extends SerializableObject {
         Versions.v1_0,
         "inlineAction",
         [
-            "Action.ShowCard",
-            "Action.Submit",
-            "Action.OpenUrl"
+            "*",
+            "-Action.ToggleVisibility"
         ]);
 
     @property(Choice.titleProperty)
@@ -3265,10 +3237,6 @@ export class Choice extends SerializableObject {
 
     protected getSchemaKey(): string {
         return "Choice";
-    }
-
-    protected isDesignMode(): boolean {
-        return false;
     }
 
     constructor(title?: string, value?: string, isEnabled?: boolean, inlineAction?: Action) {
@@ -3373,7 +3341,7 @@ export class ChoiceSetInput extends Input {
             input.style.display = "inline-block";
             input.style.verticalAlign = "middle";
             input.style.flex = "0 0 auto";
-            input.disabled = !choice.isEnabled!;
+            input.disabled = choice.isEnabled === undefined ? false : !choice.isEnabled;
             input.name = this.id ? this.id : this._uniqueCategoryName;
 
             if (this.isRequired) {
@@ -3396,24 +3364,8 @@ export class ChoiceSetInput extends Input {
 
             input.onchange = () => {
                 this.valueChanged();
-                if (choice.inlineAction instanceof ToggleVisibilityAction) {
-                    let toggleVisibilityAction = choice.inlineAction as ToggleVisibilityAction;
 
-                    let newTargetElements: { [key: string]: any } = {};
-                    for (let elementId of Object.keys(toggleVisibilityAction.targetElements)) {
-                        let targetElement = toggleVisibilityAction.targetElements[elementId];
-
-                        if (input.type !== "radio") {
-                            targetElement = input.checked;
-                        }
-
-                        newTargetElements[elementId] = targetElement;
-                    }
-
-                    toggleVisibilityAction.targetElements = newTargetElements;
-                    toggleVisibilityAction.setParent(this);
-                    toggleVisibilityAction.execute();
-                }
+                if (input.checked && choice.inlineAction) { choice.inlineAction.execute(); }
             }
 
             this._toggleInputs.push(input);
