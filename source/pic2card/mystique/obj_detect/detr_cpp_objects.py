@@ -46,6 +46,7 @@ class DetrCppOD(AbstractObjectDetection):
 
         # pylint: disable=import-outside-toplevel, import-error
         import detr
+
         self.model = detr.Detr(self.model_path)  # pylint: disable=no-member
         self.threshold = threshold
 

@@ -5,6 +5,7 @@
 
 import os
 import unittest
+
 # pylint: disable=import-error
 import detr
 import numpy as np
