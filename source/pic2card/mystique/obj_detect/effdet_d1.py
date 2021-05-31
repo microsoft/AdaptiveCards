@@ -1,5 +1,6 @@
-"""Module for object detection using faster rcnn"""
-
+"""
+EfficientDet-D1 Model Inference Integration module.
+"""
 from distutils.version import StrictVersion
 from typing import Tuple
 
@@ -17,16 +18,16 @@ if StrictVersion(tf.__version__) < StrictVersion("2.4.0"):
     raise ImportError("Please upgrade your TensorFlow installation to v2.4.x !")
 
 
-class Tf2ObjectDetection(AbstractObjectDetection):
+class Tf2EfficientDetD1Model(AbstractObjectDetection):
     """
     This class helps to load and inference the object detection model trained
     using tf2 object detection framework. The training and model export are
     done using this framework.
     """
 
-    MODEL_PATH = config.TF2_FROZEN_MODEL_PATH
-    INPUT_NODES = ["input_tensor:0"]
-    OUTPUT_NODES = ["Identity_1:0", "Identity_2:0", "Identity_4:0"]
+    MODEL_PATH = config.TF2_EFFDET_FROZEN_MODEL_PATH
+    INPUT_NODES = ["image_arrays:0"]
+    OUTPUT_NODES = ["detections:0"]
 
     def __init__(self):
         """
@@ -60,33 +61,23 @@ class Tf2ObjectDetection(AbstractObjectDetection):
 
         @return: ouput dict from the faster rcnn inference
         """
-        output_dict = self.run_inference_for_single_image(image_np)
-        width, height = image.size
-        # format: ymin, xmin, ymax, xmax, renormalize the coords.
-        bboxes = output_dict["detection_boxes"] * [height, width, height, width]
-
-        # format: xmin, ymin, xmax, ymax
-        output_dict["detection_boxes"] = bboxes[:, [1, 0, 3, 2]]
-
-        # renormalize the the box cooridinates
-        return output_dict
-
-    def run_inference_for_single_image(self, image: np.array):
-        """
-        Runs the inference graph for the given image
-        @param image: numpy array of input design image
-        @return: output dict of objects, classes and coordinates
-        """
         # Run inference
-        bboxes, labels, scores = self.model(
-            tf.expand_dims(tf.constant(image), 0)
+        # Model returns [img_id, ymin, xmin, ymax, xmax, score, class]
+        detections = (
+            self.model(tf.expand_dims(tf.constant(image), 0))[0]
+            .numpy()
+            .squeeze()
         )
+        # format: xmin, ymin, xmax, ymax
+        bboxes = detections[:, [2, 1, 4, 3]]
+        scores = detections[:, 5]
+        labels = detections[:, 6]
 
         # all outputs are float32 numpy arrays, so convert types as
         # appropriate
         output_dict = {}
-        output_dict["detection_classes"] = labels.numpy().squeeze(0)
-        output_dict["detection_boxes"] = bboxes.numpy().squeeze(0)
-        output_dict["detection_scores"] = scores.numpy().squeeze(0)
+        output_dict["detection_classes"] = labels
+        output_dict["detection_boxes"] = bboxes
+        output_dict["detection_scores"] = scores
 
         return output_dict

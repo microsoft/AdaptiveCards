@@ -16,6 +16,12 @@ TF_FROZEN_MODEL_PATH = os.path.join(
 TF2_FROZEN_MODEL_PATH = os.path.join(
     os.path.dirname(__file__), "../model/frozen_inference_graph_v2.pb"
 )
+
+# Efficientdet-d1 model
+TF2_EFFDET_FROZEN_MODEL_PATH = os.path.join(
+    os.path.dirname(__file__), "../model/efficientdet-d1_frozen.pb"
+)
+
 TF_LABEL_PATH = os.path.join(
     os.path.dirname(__file__), "training/object-detection.pbtxt"
 )
@@ -89,9 +95,10 @@ MODEL_REGISTRY = {
     "tf2_faster_rcnn": "mystique.obj_detect.tf2_frcnn.Tf2ObjectDetection",
     "pth_detr": "mystique.obj_detect.DetrOD",
     "pth_detr_cpp": "mystique.obj_detect.DetrCppOD",
+    "tf2_effdet_d1": "mystique.obj_detect.effdet_d1.Tf2EfficientDetD1Model",
 }
 
-ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf_faster_rcnn")
+ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf2_effdet_d1")
 
 # Noise objects removal IOU threshold
 IOU_THRESHOLD = 0.5
