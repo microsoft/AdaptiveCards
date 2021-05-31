@@ -3035,6 +3035,7 @@ export class FileInput extends Input {
 
         result = document.createElement("input");
         result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
+        result.type = "file";
 
         this.setupInput(result);
 
@@ -3092,6 +3093,7 @@ export class ColorInput extends Input {
 
         result = document.createElement("input");
         result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
+        result.type = "color";
 
         this.setupInput(result);
 
@@ -3300,6 +3302,10 @@ export class Choice extends SerializableObject {
         return "Choice";
     }
 
+    protected isDesignMode(): boolean {
+      return false;
+    }
+
     constructor(title?: string, value?: string, isEnabled?: boolean, inlineAction?: Action) {
         super();
 
@@ -3426,7 +3432,10 @@ export class ChoiceSetInput extends Input {
             input.onchange = () => {
                 this.valueChanged();
 
-                if (input.checked && choice.inlineAction) { choice.inlineAction.execute(); }
+                if (choice.inlineAction) {
+                    choice.inlineAction.setParent(this);
+                    choice.inlineAction.execute();
+                }
             }
 
             this._toggleInputs.push(input);
