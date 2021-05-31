@@ -5,14 +5,16 @@
 #include "pch.h"
 #include "ParseContext.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class TokenExchangeResource
     {
     public:
         TokenExchangeResource() {}
         TokenExchangeResource(std::string id, std::string uri, std::string providerId) :
-            m_id(id), m_uri(uri), m_providerId(providerId) {}
+            m_id(id), m_uri(uri), m_providerId(providerId)
+        {
+        }
 
         std::string GetId();
         const std::string GetId() const;

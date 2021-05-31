@@ -9,7 +9,7 @@
 #include "ActionParserRegistration.h"
 #include "AdaptiveCardParseWarning.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class CollectionTypeElement;
     class ParseContext
@@ -23,9 +23,7 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<ActionParserRegistration> actionParserRegistration;
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
         // Push/PopElement are used during parsing to track the tree structure of a card.
-        void PushElement(const std::string& idJsonProperty,
-                         const AdaptiveSharedNamespace::InternalId& internalId,
-                         const bool isFallback = false);
+        void PushElement(const std::string& idJsonProperty, const AdaptiveCards::InternalId& internalId, const bool isFallback = false);
         void PopElement();
 
         // tells if it's possible to fallback to ancestor
@@ -37,7 +35,7 @@ namespace AdaptiveSharedNamespace
 
         ContainerStyle GetParentalContainerStyle() const;
         void SetParentalContainerStyle(const ContainerStyle style);
-        AdaptiveSharedNamespace::InternalId PaddingParentInternalId() const;
+        AdaptiveCards::InternalId PaddingParentInternalId() const;
         void SaveContextForCollectionTypeElement(const CollectionTypeElement& current);
         void RestoreContextForCollectionTypeElement(const CollectionTypeElement& current);
 
@@ -46,7 +44,7 @@ namespace AdaptiveSharedNamespace
         void PopBleedDirection();
 
     private:
-        const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
+        const AdaptiveCards::InternalId GetNearestFallbackId(const AdaptiveCards::InternalId& skipId) const;
         // This enum is just a helper to keep track of the position of contents within the std::tuple used in
         // m_idStack below. We don't use enum class here because we don't want typed values for use in std::get
         enum TupleIndex : unsigned int
@@ -62,17 +60,17 @@ namespace AdaptiveSharedNamespace
         // duplicate entries are valid in some circumstances (i.e. where fallback content shares an ID with its parent)
         //
         //             map ID json property           ->             fallback ID
-        std::unordered_multimap<std::string, AdaptiveSharedNamespace::InternalId> m_elementIds;
+        std::unordered_multimap<std::string, AdaptiveCards::InternalId> m_elementIds;
 
         // m_idStack is the stack we use during parse time to track the hierarchy of cards as they are encountered.
         // Any time we parse an element we push it on to the stack, parse its children (if any), then pop it off the
         // stack. When we pop off the stack, we perform id collision detection.
         //
         //                             (ID,  internal ID, isFallback)[]
-        std::vector<std::tuple<std::string, AdaptiveSharedNamespace::InternalId, bool>> m_idStack;
+        std::vector<std::tuple<std::string, AdaptiveCards::InternalId, bool>> m_idStack;
 
         std::vector<ContainerStyle> m_parentalContainerStyles;
-        std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
+        std::vector<AdaptiveCards::InternalId> m_parentalPadding;
         std::vector<ContainerBleedDirection> m_parentalBleedDirection;
 
         bool m_canFallbackToAncestor;

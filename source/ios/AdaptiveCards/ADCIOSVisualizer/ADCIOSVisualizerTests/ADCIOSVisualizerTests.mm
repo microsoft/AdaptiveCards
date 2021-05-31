@@ -191,7 +191,7 @@
                                          error:nil];
 
         NSString *fileName = [pathToFile lastPathComponent];
-        
+
         ACOAdaptiveCardParseResult *cardParseResult = nil;
         @try {
             if ([_setOfExcludedFiles containsObject:fileName]) {

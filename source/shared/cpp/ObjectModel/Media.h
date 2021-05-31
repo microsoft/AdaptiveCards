@@ -7,7 +7,7 @@
 #include "ElementParserRegistration.h"
 #include "MediaSource.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class Media : public BaseCardElement
     {

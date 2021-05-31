@@ -3,18 +3,17 @@
 #include "pch.h"
 #include "AdaptiveMediaSource.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveMediaSource::RuntimeClassInitialize() noexcept
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::MediaSource> mediaSource =
-            std::make_shared<AdaptiveSharedNamespace::MediaSource>();
+        std::shared_ptr<AdaptiveCards::MediaSource> mediaSource = std::make_shared<AdaptiveCards::MediaSource>();
         return RuntimeClassInitialize(mediaSource);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveMediaSource::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource)
+    HRESULT AdaptiveMediaSource::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::MediaSource>& sharedMediaSource)
     try
     {
         if (sharedMediaSource == nullptr)
@@ -37,11 +36,10 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveMediaSource::put_Url(_In_ HSTRING value) { return m_url.Set(value); }
 
-    HRESULT AdaptiveMediaSource::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource)
+    HRESULT AdaptiveMediaSource::GetSharedModel(std::shared_ptr<AdaptiveCards::MediaSource>& sharedMediaSource)
     try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::MediaSource> mediaSource =
-            std::make_shared<AdaptiveSharedNamespace::MediaSource>();
+        std::shared_ptr<AdaptiveCards::MediaSource> mediaSource = std::make_shared<AdaptiveCards::MediaSource>();
 
         mediaSource->SetMimeType(HStringToUTF8(m_mimeType.Get()));
         mediaSource->SetUrl(HStringToUTF8(m_url.Get()));

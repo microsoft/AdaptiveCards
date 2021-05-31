@@ -9,7 +9,7 @@
 #include "Refresh.h"
 #include "Authentication.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class Container;
     class BackgroundImage;
@@ -122,22 +122,22 @@ namespace AdaptiveSharedNamespace
 #pragma GCC diagnostic ignored "-Wdynamic-exception-spec"
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 std::string rendererVersion,
-                                                                ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+                                                                ParseContext& context) throw(AdaptiveCards::AdaptiveCardParseException);
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-                                                                std::string rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+                                                                std::string rendererVersion) throw(AdaptiveCards::AdaptiveCardParseException);
 
         static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
                                                         std::string rendererVersion,
-                                                        ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+                                                        ParseContext& context) throw(AdaptiveCards::AdaptiveCardParseException);
 
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
                                                                   std::string rendererVersion,
-                                                                  ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+                                                                  ParseContext& context) throw(AdaptiveCards::AdaptiveCardParseException);
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-                                                                  std::string rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+                                                                  std::string rendererVersion) throw(AdaptiveCards::AdaptiveCardParseException);
         static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(const std::string& fallbackText,
                                                                   const std::string& language,
-                                                                  const std::string& speak) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+                                                                  const std::string& speak) throw(AdaptiveCards::AdaptiveCardParseException);
 #else
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 const std::string& rendererVersion,

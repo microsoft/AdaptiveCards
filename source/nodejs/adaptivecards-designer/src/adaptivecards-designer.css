@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'FabricMDL2Icons';
-    src: url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.woff") format("woff"), url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.ttf") format("truetype");
+    src: url("https://static2.sharepointonline.com/files/fabric/assets/icons/fabricmdl2icons-3.54.woff") format("woff");
     font-weight: normal;
     font-style: normal;
 }
@@ -40,6 +40,10 @@
     flex-direction: column;
     background-color: white;
     border-right: 1px solid #D2D2D2;
+}
+
+.acd-treeView {
+    margin: 0;
 }
 
 .acd-treeView-pane {
@@ -304,6 +308,10 @@
     content: "\E7C2";
 }
 
+.acd-icon-defaultElementIcon::before {
+    content: "\F50B";
+}
+
 .acd-icon-image::before {
     content: "\ECAB";
 }
@@ -462,6 +470,18 @@
 
 .acd-icon-customPaletteItem::before {
     content: "\ECAA";
+}
+
+.acd-icon-table::before {
+    content: "\ED86";
+}
+
+.acd-icon-tableRow::before {
+    content: "\F82A";
+}
+
+.acd-icon-tableCell::before {
+    content: "\F50A";
 }
 
 /*
@@ -711,6 +731,7 @@
 .acd-tree-item-expandCollapseButton {
     font-family: 'FabricMDL2Icons';
     font-size: 10px;
+    width: 16px;
 }
 
 .acd-tree-item-text {

@@ -4,7 +4,7 @@
 
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class SemanticVersion
     {
@@ -19,7 +19,7 @@ namespace AdaptiveSharedNamespace
         operator std::string() const
         {
             std::stringstream version{};
-            version << _major << '.' << _minor << '.' << _build << '.'  << _revision;
+            version << _major << '.' << _minor << '.' << _build << '.' << _revision;
             return version.str();
         }
 

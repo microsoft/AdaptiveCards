@@ -5,9 +5,9 @@
 #include "AdaptiveMediaConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveMediaConfig::RuntimeClassInitialize() noexcept
     try

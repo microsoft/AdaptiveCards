@@ -4,7 +4,7 @@
 
 #include "pch.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class BaseCardElement;
     class ParseContext;
@@ -12,6 +12,7 @@ namespace AdaptiveSharedNamespace
     class BaseCardElementParser
     {
     public:
+        virtual ~BaseCardElementParser() = default;
         virtual std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
         virtual std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& value) = 0;
     };
@@ -40,12 +41,12 @@ namespace AdaptiveSharedNamespace
     public:
         ElementParserRegistration();
 
-        void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> parser);
+        void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveCards::BaseCardElementParser> parser);
         void RemoveParser(std::string const& elementType);
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const& elementType) const;
+        std::shared_ptr<AdaptiveCards::BaseCardElementParser> GetParser(std::string const& elementType) const;
 
     private:
         std::unordered_set<std::string> m_knownElements;
-        std::unordered_map<std::string, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
+        std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::BaseCardElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
     };
 }

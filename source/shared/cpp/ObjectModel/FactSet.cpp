@@ -6,7 +6,7 @@
 #include "Fact.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 FactSet::FactSet() : BaseCardElement(CardElementType::FactSet)
 {
@@ -48,9 +48,9 @@ std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& contex
         ParseUtil::GetElementCollectionOfSingleType<Fact>(context, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, false);
 
     if (facts.empty())
-    { 
+    {
         context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
-                                                                                  "required property, \"fact\", is missing"));
+                                                                                 "required property, \"fact\", is missing"));
     }
 
     factSet->m_facts = std::move(facts);

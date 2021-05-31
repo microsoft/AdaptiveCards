@@ -4,7 +4,7 @@
 #include "HostConfig.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 HostConfig HostConfig::DeserializeFromString(const std::string& jsonString)
 {

@@ -6,7 +6,7 @@
 #include "ParseUtil.h"
 #include "SemanticVersion.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     unsigned int InternalId::s_currentInternalId = 1;
 
@@ -59,7 +59,7 @@ namespace AdaptiveSharedNamespace
     void BaseElement::SetAdditionalProperties(const Json::Value& value) { m_additionalProperties = value; }
 
     // Given a map of what our host provides, determine if this element's requirements are satisfied.
-    bool BaseElement::MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& featureRegistration) const
+    bool BaseElement::MeetsRequirements(const AdaptiveCards::FeatureRegistration& featureRegistration) const
     {
         for (const auto& requirement : m_requires)
         {
@@ -87,12 +87,12 @@ namespace AdaptiveSharedNamespace
         return true;
     }
 
-    std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& BaseElement::GetRequirements()
+    std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& BaseElement::GetRequirements()
     {
         return m_requires;
     }
 
-    const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& BaseElement::GetRequirements() const
+    const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& BaseElement::GetRequirements() const
     {
         return m_requires;
     }

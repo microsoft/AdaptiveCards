@@ -23,7 +23,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "ObjectModel",
-            path: "source/shared/cpp/ObjectModel"
+            path: "source/shared/cpp/ObjectModel",
+            exclude: [
+                "CMakeLists.txt"
+            ]
             ),
         .target(
             name: "AdaptiveCards",
@@ -44,14 +47,13 @@ let package = Package(
                 "cscope.in.out",
                 "CMakeCache.txt",
                 "CMakeFiles/CMakeError.log",
-                "CMakeFiles/3.11.1"
+                "CMakeFiles/3.11.1",
+                "*.orig"
             ],
             resources: [
-                .process("Images/checked.png"),
-                .process("Images/unchecked.png"),
-                .process("Images/checked-checkbox-24.png"),
-                .process("Images/unchecked-checkbox-24.png")
+                .process("Resources")
             ],
+            publicHeadersPath: "include",
             cxxSettings: [CXXSetting.headerSearchPath("../../../../shared/cpp/ObjectModel")],
             linkerSettings:[
                 LinkerSetting.linkedFramework("AVFoundation"),
@@ -60,7 +62,12 @@ let package = Package(
                 LinkerSetting.linkedFramework("CoreGraphics"),
                 LinkerSetting.linkedFramework("QuartzCore")
             ]
-            )        
+            ),
+        .testTarget(
+            name:"AdaptiveCardsTest",
+            dependencies: ["AdaptiveCards"],
+            path:"source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCardsTests"
+        )
     ],
     cxxLanguageStandard: CXXLanguageStandard.cxx17
 )

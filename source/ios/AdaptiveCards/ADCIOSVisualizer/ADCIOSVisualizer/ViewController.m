@@ -24,6 +24,7 @@
 // the width of the AdaptiveCards does not need to be set.
 // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
 CGFloat kAdaptiveCardsWidth = 0;
+CGFloat kFileBrowserWidth = 0;
 
 @interface ViewController () {
     BOOL _enableCustomRenderer;
@@ -173,7 +174,8 @@ CGFloat kAdaptiveCardsWidth = 0;
     [super viewDidLoad];
     _global_queue = dispatch_get_main_queue();
 
-    kAdaptiveCardsWidth = [[UIScreen mainScreen] bounds].size.width - 32.0f;
+    kFileBrowserWidth = [[UIScreen mainScreen] bounds].size.width - 32.0f;
+    kAdaptiveCardsWidth = kFileBrowserWidth;
     [self registerForKeyboardNotifications];
 
     _enableCustomRenderer = NO;
@@ -221,7 +223,7 @@ CGFloat kAdaptiveCardsWidth = 0;
         .active = YES;
 
     UIView *fileBrowserView =
-        [[AdaptiveFileBrowserSource alloc] initWithFrame:CGRectMake(20, 40, kAdaptiveCardsWidth, 55)
+        [[AdaptiveFileBrowserSource alloc] initWithFrame:CGRectMake(20, 40, kFileBrowserWidth, 55)
                                         WithDataDelegate:self.ACVTabVC];
     fileBrowserView.translatesAutoresizingMaskIntoConstraints = NO;
     [_compositeFileBrowserView addArrangedSubview:fileBrowserView];
@@ -547,7 +549,7 @@ CGFloat kAdaptiveCardsWidth = 0;
     buttonLayout.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:buttonLayout];
 
-    [buttonLayout.widthAnchor constraintEqualToConstant:kAdaptiveCardsWidth].active = YES;
+    [buttonLayout.widthAnchor constraintEqualToConstant:kFileBrowserWidth].active = YES;
     [buttonLayout.centerXAnchor constraintEqualToAnchor:centerXAnchor].active = YES;
 
     buttonLayout.alignment = UIStackViewAlignmentCenter;
