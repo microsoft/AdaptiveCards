@@ -43,8 +43,9 @@ class DetrCppOD(AbstractObjectDetection):
     def __init__(
         self, pt_path="./detr_trace.pt", threshold=0.8
     ):  # pylint: disable=unused-argument
-        import detr
 
+        # pylint: disable=import-outside-toplevel, import-error
+        import detr
         self.model = detr.Detr(self.model_path)  # pylint: disable=no-member
         self.threshold = threshold
 

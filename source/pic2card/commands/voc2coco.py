@@ -150,10 +150,9 @@ def convert(xml__files, json_file):  # pylint: disable=too-many-locals
         json_dict["categories"].append(cat)
 
     os.makedirs(os.path.dirname(json_file) or ".", exist_ok=True)
-    json_fp = open(json_file, "w")  # pylint: disable=consider-using-with
-    json_str = json.dumps(json_dict)
-    json_fp.write(json_str)
-    json_fp.close()
+    with open(json_file, "w") as json_fp:
+        json_str = json.dumps(json_dict)
+        json_fp.write(json_str)
 
 
 if __name__ == "__main__":
