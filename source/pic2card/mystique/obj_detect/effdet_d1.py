@@ -64,7 +64,7 @@ class Tf2EfficientDetD1Model(AbstractObjectDetection):
         # Run inference
         # Model returns [img_id, ymin, xmin, ymax, xmax, score, class]
         detections = (
-            self.model(tf.expand_dims(tf.constant(image), 0))[0]
+            self.model(tf.expand_dims(tf.constant(image_np), 0))[0]
             .numpy()
             .squeeze()
         )

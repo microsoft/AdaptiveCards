@@ -98,7 +98,7 @@ MODEL_REGISTRY = {
     "tf2_effdet_d1": "mystique.obj_detect.effdet_d1.Tf2EfficientDetD1Model",
 }
 
-ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf2_effdet_d1")
+ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf_faster_rcnn")
 
 # Noise objects removal IOU threshold
 IOU_THRESHOLD = 0.5
