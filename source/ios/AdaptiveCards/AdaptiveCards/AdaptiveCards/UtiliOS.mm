@@ -579,8 +579,11 @@ ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
 
 void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action)
 {
-    recipientView.userInteractionEnabled = YES;
+    recipientView.userInteractionEnabled = [action isEnabled];
     recipientView.accessibilityTraits |= action.accessibilityTraits;
+    if (![action isEnabled]) {
+        recipientView.accessibilityTraits |= UIAccessibilityTraitNotEnabled;
+    }
 }
 
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
@@ -772,7 +775,7 @@ unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &conf
         case Spacing::Padding:
             return config->GetSpacing().paddingSpacing;
         case Spacing::Default:
-            return config->GetSpacing().defaultSpacing;        
+            return config->GetSpacing().defaultSpacing;
         default:
             break;
     }

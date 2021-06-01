@@ -111,6 +111,7 @@
     button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     button.isAccessibilityElement = YES;
     button.accessibilityLabel = title;
+    button.enabled = [acoAction isEnabled];
 
     button.sentiment = acoAction.sentiment;
     button.actionType = acoAction.type;
