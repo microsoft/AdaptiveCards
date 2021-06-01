@@ -321,7 +321,7 @@ namespace AdaptiveCards
                 AdaptiveTextBlock();
 
                 Boolean Wrap;
-                HAlignment HorizontalAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
                 UInt32 MaxLines;
                 Windows.Foundation.IReference<TextStyle> Style;
             };
@@ -343,7 +343,7 @@ namespace AdaptiveCards
             {
                 AdaptiveRichTextBlock();
 
-                HAlignment HorizontalAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
                 Windows.Foundation.Collections.IVector<IAdaptiveInline> Inlines { get; };
             };
 
@@ -467,7 +467,7 @@ namespace AdaptiveCards
                 ImageSize Size;
                 UInt32 PixelWidth;
                 UInt32 PixelHeight;
-                HAlignment HorizontalAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
                 String AltText;
                 IAdaptiveActionElement SelectAction;
             };
@@ -568,7 +568,7 @@ namespace AdaptiveCards
             {
                 AdaptiveContainer();
 
-                VerticalContentAlignment VerticalContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
                 Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
                 AdaptiveBackgroundImage BackgroundImage;
                 Windows.Foundation.IReference<Boolean> Rtl;
@@ -580,7 +580,7 @@ namespace AdaptiveCards
 
                 String Width;
                 UInt32 PixelWidth;
-                VerticalContentAlignment VerticalContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
                 Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
                 AdaptiveBackgroundImage BackgroundImage;
                 Windows.Foundation.IReference<Boolean> Rtl;
@@ -614,7 +614,7 @@ namespace AdaptiveCards
             {
                 AdaptiveTableCell();
 
-                VerticalContentAlignment VerticalContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
                 AdaptiveBackgroundImage BackgroundImage;
                 Windows.Foundation.IReference<Boolean> Rtl;
 
@@ -625,8 +625,8 @@ namespace AdaptiveCards
             {
                 AdaptiveTableRow();
 
-                HAlignment HorizontalCellContentAlignment;
-                VerticalContentAlignment VerticalCellContentAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
                 ContainerStyle Style;
 
                 Windows.Foundation.Collections.IVector<AdaptiveTableCell> Cells { get; };
@@ -636,8 +636,8 @@ namespace AdaptiveCards
             {
                 AdaptiveTableColumnDefinition();
 
-                HAlignment HorizontalCellContentAlignment;
-                VerticalContentAlignment VerticalCellContentAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
 
                 Windows.Foundation.IReference<UInt32> Width;
                 Windows.Foundation.IReference<UInt32> PixelWidth;
@@ -649,8 +649,8 @@ namespace AdaptiveCards
 
                 Boolean ShowGridLines;
                 Boolean FirstRowAsHeaders;
-                HAlignment HorizontalCellContentAlignment;
-                VerticalContentAlignment VerticalCellContentAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
                 ContainerStyle GridStyle;
 
                 Windows.Foundation.Collections.IVector<AdaptiveTableColumnDefinition> Columns { get; };

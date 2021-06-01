@@ -493,5 +493,4 @@ public final class Util {
         );
         imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, iconUrl);
     }
-
 }

@@ -95,12 +95,16 @@ public class Image extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Image_SetAltText(swigCPtr, this, value);
   }
 
-  public HorizontalAlignment GetHorizontalAlignment() {
-    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Image_GetHorizontalAlignment(swigCPtr, this));
+  public @androidx.annotation.Nullable HorizontalAlignment GetHorizontalAlignment() {
+    StdOptionalHorizontalAlignment optvalue = new StdOptionalHorizontalAlignment(AdaptiveCardObjectModelJNI.Image_GetHorizontalAlignment(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetHorizontalAlignment(HorizontalAlignment value) {
-    AdaptiveCardObjectModelJNI.Image_SetHorizontalAlignment(swigCPtr, this, value.swigValue());
+  public void SetHorizontalAlignment(@androidx.annotation.Nullable HorizontalAlignment value) {
+    StdOptionalHorizontalAlignment optvalue = (value == null) ? new StdOptionalHorizontalAlignment() : new StdOptionalHorizontalAlignment(value);
+    {
+      AdaptiveCardObjectModelJNI.Image_SetHorizontalAlignment(swigCPtr, this, StdOptionalHorizontalAlignment.getCPtr(optvalue), optvalue);
+    }
   }
 
   public BaseActionElement GetSelectAction() {

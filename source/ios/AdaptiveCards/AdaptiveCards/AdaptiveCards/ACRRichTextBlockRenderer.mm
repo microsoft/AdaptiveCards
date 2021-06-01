@@ -100,7 +100,7 @@
                 // Set paragraph style such as line break mode and alignment
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
                 paragraphStyle.alignment =
-                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()
+                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left)
                                                  context:rootView.context];
 
                 // Obtain text color to apply to the attributed string
@@ -185,7 +185,7 @@
 
     [viewGroup addArrangedSubview:lab];
 
-    HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment();
+    HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left);
 
     if (adaptiveAlignment == HorizontalAlignment::Left) {
         lab.textAlignment = NSTextAlignmentLeft;

@@ -48,7 +48,6 @@ public class ImageSetPropertiesTest
             Image imageExplicitSize = TestUtil.createMockImage();
             imageExplicitSize.SetAltText("altText");
             imageExplicitSize.SetBackgroundColor("#FF128192");
-            imageExplicitSize.SetHorizontalAlignment(HorizontalAlignment.Left);
             imageExplicitSize.SetImageStyle(ImageStyle.Person);
             imageExplicitSize.SetPixelHeight(50);
             imageExplicitSize.SetPixelWidth(50);
@@ -80,7 +79,7 @@ public class ImageSetPropertiesTest
             Image parsedExplicitSizeImage = TestUtil.castToImage(parsedImageSet.GetImages().get(0));
             Assert.assertEquals("altText", parsedExplicitSizeImage.GetAltText());
             Assert.assertEquals("#FF128192", parsedExplicitSizeImage.GetBackgroundColor());
-            Assert.assertEquals(HorizontalAlignment.Left, parsedExplicitSizeImage.GetHorizontalAlignment());
+            Assert.assertEquals(null, parsedExplicitSizeImage.GetHorizontalAlignment());
             Assert.assertEquals(ImageStyle.Person, parsedExplicitSizeImage.GetImageStyle());
             Assert.assertEquals(50, parsedExplicitSizeImage.GetPixelHeight());
             Assert.assertEquals(50, parsedExplicitSizeImage.GetPixelWidth());
@@ -165,7 +164,6 @@ public class ImageSetPropertiesTest
             Image imageExplicitSize = TestUtil.createMockImage();
             imageExplicitSize.SetAltText("altText");
             imageExplicitSize.SetBackgroundColor("#FF128192");
-            imageExplicitSize.SetHorizontalAlignment(HorizontalAlignment.Left);
             imageExplicitSize.SetImageStyle(ImageStyle.Person);
             imageExplicitSize.SetPixelHeight(50);
             imageExplicitSize.SetPixelWidth(50);
@@ -204,7 +202,7 @@ public class ImageSetPropertiesTest
             Image parsedExplicitSizeImage = TestUtil.castToImage(parsedImageSet.GetImages().get(0));
             Assert.assertEquals("altText", parsedExplicitSizeImage.GetAltText());
             Assert.assertEquals("#FF128192", parsedExplicitSizeImage.GetBackgroundColor());
-            Assert.assertEquals(HorizontalAlignment.Left, parsedExplicitSizeImage.GetHorizontalAlignment());
+            Assert.assertEquals(null, parsedExplicitSizeImage.GetHorizontalAlignment());
             Assert.assertEquals(ImageStyle.Person, parsedExplicitSizeImage.GetImageStyle());
             Assert.assertEquals(50, parsedExplicitSizeImage.GetPixelHeight());
             Assert.assertEquals(50, parsedExplicitSizeImage.GetPixelWidth());

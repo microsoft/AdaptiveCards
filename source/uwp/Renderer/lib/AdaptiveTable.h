@@ -33,11 +33,15 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_FirstRowAsHeaders(_Out_ boolean* firstRowAsHeaders);
         IFACEMETHODIMP put_FirstRowAsHeaders(boolean firstRowAsHeaders);
 
-        IFACEMETHODIMP get_VerticalCellContentAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment* verticalCellContentAlignment) override;
-        IFACEMETHODIMP put_VerticalCellContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalCellContentAlignment) override;
+        IFACEMETHODIMP get_VerticalCellContentAlignment(
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>** verticalCellContentAlignment) override;
+        IFACEMETHODIMP put_VerticalCellContentAlignment(
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalCellContentAlignment) override;
 
-        IFACEMETHODIMP get_HorizontalCellContentAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* horizontalCellContentAlignment) override;
-        IFACEMETHODIMP put_HorizontalCellContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment horizontalCellContentAlignment) override;
+        IFACEMETHODIMP get_HorizontalCellContentAlignment(
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalCellContentAlignment) override;
+        IFACEMETHODIMP put_HorizontalCellContentAlignment(
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalCellContentAlignment) override;
 
         IFACEMETHODIMP get_GridStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style) override;
         IFACEMETHODIMP put_GridStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style) override;
@@ -137,8 +141,8 @@ namespace AdaptiveCards::Rendering::Uwp
     private:
         boolean m_showGridLines;
         boolean m_firstRowAsHeaders;
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment m_verticalCellContentAlignment;
-        ABI::AdaptiveCards::Rendering::Uwp::HAlignment m_horizontalCellContentAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> m_verticalCellContentAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>> m_horizontalCellContentAlignment;
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle m_gridStyle;
 
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableRow*>> m_rows;
