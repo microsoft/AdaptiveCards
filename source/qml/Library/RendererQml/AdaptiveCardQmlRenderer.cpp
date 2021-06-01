@@ -938,16 +938,16 @@ namespace RendererQml
 		//TODO : Add Height
 
         const std::string iconId = choiceset.id + "_icon";
-		auto dropIcon = std::make_shared<QmlTag>("Image");
-        dropIcon->Property("id", iconId);
-		dropIcon->Property("source", RendererQml::arrow_down_12, true);
-		dropIcon->Property("anchors.right", "parent.right");
-		dropIcon->Property("anchors.verticalCenter", "parent.verticalCenter");
-		dropIcon->Property("anchors.margins", "5");
-		dropIcon->Property("fillMode", "Image.PreserveAspectFit");
-		dropIcon->Property("mipmap", "true");
+		auto iconTag = GetIconTag(context);
+        iconTag->Property("id", iconId);
+        iconTag->Property("horizontalPadding", "9");
+        iconTag->Property("verticalPadding", "9");
+        iconTag->Property("icon.source", RendererQml::arrow_down_12, true);
+        iconTag->Property("enabled", "false");
+        iconTag->Property("icon.width", "12");
+        iconTag->Property("icon.height", "12");
 
-		uiComboBox->Property("indicator", dropIcon->ToString());
+        uiComboBox->Property("indicator", iconTag->ToString());
 		uiComboBox->Property("model", GetModel(choiceset.choices));
 
         auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
@@ -1250,23 +1250,13 @@ namespace RendererQml
         uiDateInput->Property("background", backgroundTag->ToString());
 
         const std::string iconId = input->GetId() + "_icon";
-        auto imageTag = std::make_shared<QmlTag>("Image");
-        imageTag->Property("id", iconId);
-        imageTag->Property("anchors.fill", "parent");
-        imageTag->Property("anchors.margins", "5");
-		imageTag->Property("fillMode", "Image.PreserveAspectFit");
-		imageTag->Property("mipmap", "true");
-        imageTag->Property("source", RendererQml::calendar_icon_32, true);
-
-        auto mouseAreaTag = std::make_shared<QmlTag>("MouseArea");
-        mouseAreaTag->AddChild(imageTag);
-        mouseAreaTag->Property("height", "parent.height");
-        mouseAreaTag->Property("width", "height");
-        mouseAreaTag->Property("anchors.right", "parent.right");
-        mouseAreaTag->Property("enabled", "true");
         std::string onClicked_value = "{ parent.forceActiveFocus(); " + calendar_box_id + ".visible=!" + calendar_box_id + ".visible; parent.z=" + calendar_box_id + ".visible?1:0; }";
-        mouseAreaTag->Property("onClicked", onClicked_value);
-        uiDateInput->AddChild(mouseAreaTag);
+        
+        auto iconTag = GetIconTag(context);
+        iconTag->Property("id", iconId);
+        iconTag->Property("icon.source", RendererQml::calendar_icon_18, true);
+        iconTag->Property("onClicked", onClicked_value);
+        uiDateInput->AddChild(iconTag);
 
         auto calendarTag = std::make_shared<QmlTag>("Calendar");
         calendarTag->AddImports("import QtQuick.Controls 1.4");
@@ -1652,22 +1642,11 @@ namespace RendererQml
 		uiTimeInput->Property("background", backgroundTag->ToString());
 
         const std::string iconId = id + "_icon";
-		auto imageTag = std::make_shared<QmlTag>("Image");
-        imageTag->Property("id", iconId);
-		imageTag->Property("anchors.fill", "parent");
-		imageTag->Property("anchors.margins", "5");
-		imageTag->Property("fillMode", "Image.PreserveAspectFit");
-		imageTag->Property("mipmap", "true");
-        imageTag->Property("source", RendererQml::clock_icon_30, true);
-
-		auto mouseAreaTag = std::make_shared<QmlTag>("MouseArea");
-		mouseAreaTag->AddChild(imageTag);
-		mouseAreaTag->Property("height", "parent.height");
-		mouseAreaTag->Property("width", "height");
-		mouseAreaTag->Property("anchors.right", "parent.right");
-		mouseAreaTag->Property("enabled", "true");
-		mouseAreaTag->Property("onClicked", Formatter() << "{" << id << ".forceActiveFocus();\n" << timeBox_id << ".visible=!" << timeBox_id << ".visible;\n" << "parent.z=" << timeBox_id << ".visible?1:0;\n" << listViewHours_id << ".currentIndex=parseInt(parent.getText(0,2));\n" << listViewMin_id << ".currentIndex=parseInt(parent.getText(3,5));\n" << "}");
-		uiTimeInput->AddChild(mouseAreaTag);
+        auto iconTag = GetIconTag(context);
+        iconTag->Property("id", iconId);
+        iconTag->Property("icon.source", RendererQml::clock_icon_18, true);
+        iconTag->Property("onClicked", Formatter() << "{" << id << ".forceActiveFocus();\n" << timeBox_id << ".visible=!" << timeBox_id << ".visible;\n" << "parent.z=" << timeBox_id << ".visible?1:0;\n" << listViewHours_id << ".currentIndex=parseInt(parent.getText(0,2));\n" << listViewMin_id << ".currentIndex=parseInt(parent.getText(3,5));\n" << "}");
+        uiTimeInput->AddChild(iconTag);
 
 		//Rectangle that contains the hours and min ListViews
 		auto timeBoxTag = std::make_shared<QmlTag>("Rectangle");
@@ -1693,7 +1672,7 @@ namespace RendererQml
 				" if(focus===false){ z=0;" << "if(text===\": \" ) { inputMask=\"\" }" << "if(" << timeBox_id << ".visible===true)" << timeBox_id << ".visible=false ;" << "}}");
 			uiTimeInput->Property("onTextChanged", Formatter() << "{" << listViewHours_id << ".currentIndex=parseInt(getText(0,2))-1;" << listViewMin_id << ".currentIndex=parseInt(getText(3,5));"
 				<< "var tt_index=3;var hh = getText(0,2);" << "switch(getText(6,8)){ case 'PM':tt_index = 1; if(parseInt(getText(0,2))!==12){hh=parseInt(getText(0,2))+12;} break;case 'AM':tt_index = 0; if(parseInt(getText(0,2))===12){hh=parseInt(getText(0,2))-12;} break;}" << listViewtt_id << ".currentIndex=tt_index;" << "if(getText(0,2) === '--' || getText(3,5) === '--' || getText(6,8) === '--'){" << id <<".selectedTime ='';} else{" << id <<".selectedTime = (hh === 0 ? '00' : hh) + ':' + getText(3,5);}}");
-			mouseAreaTag->Property("onClicked", Formatter() << "{" << id << ".forceActiveFocus();\n" << timeBox_id << ".visible=!" << timeBox_id << ".visible;\n" << "parent.z=" << timeBox_id << ".visible?1:0;\n" << listViewHours_id << ".currentIndex=parseInt(parent.getText(0,2))-1;\n" << listViewMin_id << ".currentIndex=parseInt(parent.getText(3,5));\n"
+			iconTag->Property("onClicked", Formatter() << "{" << id << ".forceActiveFocus();\n" << timeBox_id << ".visible=!" << timeBox_id << ".visible;\n" << "parent.z=" << timeBox_id << ".visible?1:0;\n" << listViewHours_id << ".currentIndex=parseInt(parent.getText(0,2))-1;\n" << listViewMin_id << ".currentIndex=parseInt(parent.getText(3,5));\n"
 				<< "var tt_index=3;" << "switch(parent.getText(6,8)){ case 'PM':tt_index = 1; break;case 'AM':tt_index = 0; break;}" << listViewtt_id << ".currentIndex=tt_index;" << "}");
 
 
@@ -3151,5 +3130,28 @@ namespace RendererQml
 
 		return minWidthFactSet;
 	}
+
+    std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetIconTag(std::shared_ptr<AdaptiveRenderContext> context)
+    {
+        auto iconBackgroundTag = std::make_shared<QmlTag>("Rectangle");
+        iconBackgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
+        iconBackgroundTag->Property("width", "parent.width");
+        iconBackgroundTag->Property("height", "parent.height");
+
+        auto iconTag = std::make_shared<QmlTag>("Button");
+        iconTag->Property("background", iconBackgroundTag->ToString());
+        iconTag->Property("width", "30");
+        iconTag->Property("anchors.top", "parent.top");
+        iconTag->Property("anchors.bottom", "parent.bottom");
+        iconTag->Property("anchors.right", "parent.right");
+        iconTag->Property("anchors.margins", "2");
+        iconTag->Property("horizontalPadding", "4");
+        iconTag->Property("verticalPadding", "4");
+        iconTag->Property("icon.width", "18");
+        iconTag->Property("icon.height", "18");
+        iconTag->Property("focusPolicy", "Qt.NoFocus");
+        iconTag->Property("icon.color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
+        return iconTag;
+    }
 }
 
