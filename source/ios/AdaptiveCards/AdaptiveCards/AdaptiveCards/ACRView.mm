@@ -33,6 +33,9 @@
 #import "RichTextBlock.h"
 #import "RichTextElementProperties.h"
 #import "SharedAdaptiveCard.h"
+#import "Table.h"
+#import "TableCell.h"
+#import "TableRow.h"
 #import "TextBlock.h"
 #import "TextInput.h"
 #import "TextRun.h"
@@ -173,8 +176,18 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         case CardElementType::TextBlock: {
             std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
             RichTextElementProperties textProp;
-
-            TextBlockToRichTextElementProperties(textBlockElement, [_hostConfig getHostConfig], textProp);
+            auto style = textBlockElement->GetStyle();
+            if (style.has_value() && *style == TextStyle::Heading) {
+                TexStylesToRichTextElementProperties(textBlockElement, [_hostConfig getHostConfig]->GetTextStyles().heading, textProp);
+            } else {
+                TextStyleConfig textStyleConfig;
+                textStyleConfig.size = textBlockElement->GetTextSize().value_or(TextSize::Default);
+                textStyleConfig.weight = textBlockElement->GetTextWeight().value_or(TextWeight::Default);
+                textStyleConfig.fontType = textBlockElement->GetFontType().value_or(FontType::Default);
+                textStyleConfig.color = textBlockElement->GetTextColor().value_or(ForegroundColor::Default);
+                textStyleConfig.isSubtle = textBlockElement->GetIsSubtle().value_or(false);
+                TexStylesToRichTextElementProperties(textBlockElement, textStyleConfig, textProp);
+            }
 
             /// tag a base card element with unique key
             NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
@@ -339,7 +352,25 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             }
             break;
         }
+
+        case CardElementType::Table: {
+            std::shared_ptr<Table> table = std::static_pointer_cast<Table>(elem);
+            for (const auto &row : table->GetRows()) {
+                [self processBaseCardElement:row registration:registration];
+            }
+            break;
+        }
+
+        case CardElementType::TableRow: {
+            const auto &row = std::static_pointer_cast<TableRow>(elem);
+            for (const auto &cell : row->GetCells()) {
+                [self processBaseCardElement:cell registration:registration];
+            }
+            break;
+        }
+
         // continue on search
+        case CardElementType::TableCell:
         case CardElementType::Container: {
             std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
 

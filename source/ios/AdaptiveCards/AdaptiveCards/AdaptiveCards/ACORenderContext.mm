@@ -14,6 +14,9 @@
 #import "Column.h"
 #import "ColumnSet.h"
 #import "Container.h"
+#import "Table.h"
+#import "TableCell.h"
+#import "TableRow.h"
 #import "UtiliOS.h"
 
 @implementation ACORenderContext {
@@ -21,6 +24,7 @@
     NSMutableArray<NSNumber *> *_rtlContext;
     NSMutableArray<NSNumber *> *_selectActionContext;
     NSMutableArray<NSNumber *> *_actionIconPlacementContext;
+    NSMutableArray<NSNumber *> *_firstRowsAsheadersContext;
 }
 
 - (instancetype)init
@@ -32,6 +36,7 @@
         _rtlContext = [[NSMutableArray alloc] init];
         _selectActionContext = [[NSMutableArray alloc] init];
         _actionIconPlacementContext = [[NSMutableArray alloc] init];
+        _firstRowsAsheadersContext = [[NSMutableArray alloc] init];
     }
 
     return self;
@@ -75,6 +80,17 @@
     return NO;
 }
 
+- (BOOL)isFirstRowAsHeaders
+{
+    if (_firstRowsAsheadersContext && [_firstRowsAsheadersContext count]) {
+        NSNumber *number = [_firstRowsAsheadersContext lastObject];
+        if (number) {
+            return [number boolValue];
+        }
+    }
+    return NO;
+}
+
 
 - (void)pushBaseActionElementContext:(ACOBaseActionElement *)element
 {
@@ -86,7 +102,11 @@
     return;
 }
 
-- (void)addToANewContext:(const std::optional<bool> &)crtl key:(NSNumber *)key hasSelectAction:(BOOL)hasSelectAction iconPlacement:(NSNumber *)iconPlacement
+- (void)addToANewContext:(const std::optional<bool> &)crtl
+                     key:(NSNumber *)key
+         hasSelectAction:(BOOL)hasSelectAction
+           iconPlacement:(NSNumber *)iconPlacement
+     isFirstRowAsHeaders:(BOOL)isFirstRowAsHeaders
 {
     NSMutableArray<NSMutableArray *> *contexts = [[NSMutableArray alloc] init];
     ACRRtl rtl = ACRRtlNone;
@@ -110,6 +130,12 @@
         [contexts addObject:_actionIconPlacementContext];
     }
 
+    if (isFirstRowAsHeaders) {
+        shouldPush = YES;
+        [_firstRowsAsheadersContext addObject:[NSNumber numberWithBool:isFirstRowAsHeaders]];
+        [contexts addObject:_firstRowsAsheadersContext];
+    }
+
     if (shouldPush) {
         _internalIdContext[key] = contexts;
     }
@@ -117,14 +143,42 @@
 
 - (void)pushBaseCardElementContext:(ACOBaseCardElement *)acoElement
 {
+    [self pushBaseCardElementContext:acoElement additionalProperty:nil];
+}
+
+- (void)pushBaseCardElementContext:(ACOBaseCardElement *)acoElement additionalProperty:(NSDictionary * (^)(void))additionalProperty
+{
     if (!acoElement || ![acoElement element]) {
         return;
     }
 
     std::optional<bool> crtl;
     BOOL hasSelectAction = NO;
+    BOOL isFirstRowAsHeaders = NO;
     std::shared_ptr<BaseCardElement> element = [acoElement element];
     NSNumber *key = iOSInternalIdHash(element->GetInternalId().Hash());
+
+    if (acoElement.type == ACRTableRow) {
+        std::shared_ptr<TableRow> table = std::dynamic_pointer_cast<TableRow>(element);
+        if (additionalProperty) {
+            id property = additionalProperty();
+            if ([property isKindOfClass:[NSDictionary class]]) {
+                id heading = ((NSDictionary *)property)[@"heading"];
+                if ([heading isKindOfClass:[NSNumber class]]) {
+                    isFirstRowAsHeaders = [((NSNumber *)heading) boolValue];
+                }
+            }
+        }
+    }
+
+    if (acoElement.type == ACRTableCell) {
+        const std::shared_ptr<TableCell> &cell = std::dynamic_pointer_cast<TableCell>(element);
+        crtl = cell->GetRtl();
+        if (cell->GetSelectAction()) {
+            hasSelectAction = YES;
+        }
+    }
+
     if (acoElement.type == ACRColumn) {
         std::shared_ptr<Column> column = std::dynamic_pointer_cast<Column>(element);
         crtl = column->GetRtl();
@@ -155,7 +209,11 @@
 
     std::shared_ptr<BaseElement> baseElement = std::dynamic_pointer_cast<BaseElement>(element);
 
-    [self addToANewContext:crtl key:key hasSelectAction:hasSelectAction iconPlacement:iconPlacement];
+    [self addToANewContext:crtl
+                        key:key
+            hasSelectAction:hasSelectAction
+              iconPlacement:iconPlacement
+        isFirstRowAsHeaders:isFirstRowAsHeaders];
 }
 
 - (void)removeContext:(NSNumber *)key
@@ -192,7 +250,11 @@
     BOOL hasSelectAction = adaptiveCard->GetSelectAction() ? YES : NO;
     NSNumber *iconPlacement = [self.hostConfig getIconPlacement:key];
 
-    [self addToANewContext:crtl key:key hasSelectAction:hasSelectAction iconPlacement:iconPlacement];
+    [self addToANewContext:crtl
+                        key:key
+            hasSelectAction:hasSelectAction
+              iconPlacement:iconPlacement
+        isFirstRowAsHeaders:NO];
 }
 
 - (void)popCardContext:(ACOAdaptiveCard *)card

@@ -30,12 +30,12 @@ static int kToggleVisibilityContext;
                    hostConfig:(ACOHostConfig *)acoConfig
                     superview:(UIView *)superview
 {
-    self = [self initWithFrame:superview.frame];
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    self = [self initWithFrame:superview.frame attributes:nil];
     if (self) {
         _style = style;
         if (style != ACRNone &&
             style != parentStyle) {
-            std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
             self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_style];
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
@@ -199,6 +199,11 @@ static int kToggleVisibilityContext;
         NSNumber *spacingAttrib = attributes[@"spacing"];
         if ([spacingAttrib boolValue]) {
             _stackView.spacing = [spacingAttrib floatValue];
+        }
+
+        NSNumber *paddingSpacing = attributes[@"padding-spacing"];
+        if ([paddingSpacing boolValue]) {
+            top = left = bottom = right = [paddingSpacing floatValue];
         }
 
         NSNumber *topPaddingAttrib = attributes[@"padding-top"];
