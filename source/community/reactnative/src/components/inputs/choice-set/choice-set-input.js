@@ -1,6 +1,6 @@
 /**
  * ChoiceSet Component.
- * 
+ *
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputchoiceset
  */
 
@@ -60,12 +60,12 @@ export class ChoiceSetInput extends React.PureComponent {
 		}
 	}
 
-	componentDidMount(){	
+	componentDidMount(){
 		if(this.payload.choicesSource != undefined){
 			if(this.payload.choicesSource.type = 'Data.Query'){
-				fetch('https://tygu9.sse.codesandbox.io').then((response) => response.json())
+				fetch('https://tygu9.sse.codesandbox.io').then((response) => response.json())//link to fetch the items
 				.then((json) => {
-				  json.data.map((data,index)=>{	
+				  json.data.map((data,index)=>{
 					  this.choices.push(data);
 					  this.forceUpdate();
 					  this.dynamicChoiceData = true;
@@ -112,7 +112,7 @@ export class ChoiceSetInput extends React.PureComponent {
 
 	/**
 	 * @description Fetches the value from the selected picker option
-	 * @param {string} value 
+	 * @param {string} value
 	 */
 	getPickerSelectedValue = (value, addInputItem) => {
 
@@ -133,7 +133,7 @@ export class ChoiceSetInput extends React.PureComponent {
 
 	/**
 	 * @description Fetches the index of the selected radio button choice
-	 * @param {string} value 
+	 * @param {string} value
 	 * @param {array} choiceArray
 	 */
 	getRadioButtonIndex = (value, choiceArray, addInputItem) => {
@@ -153,7 +153,7 @@ export class ChoiceSetInput extends React.PureComponent {
 
 	/**
 	 * @description Selects the checkBoxes for the initial set of values from json
-	 * @param {string} value 
+	 * @param {string} value
 	 */
 	setInitialCheckedValues = (value, addInputItem) => {
 		var array = this.getCheckedIndexes(value);
@@ -167,7 +167,7 @@ export class ChoiceSetInput extends React.PureComponent {
 
 	/**
 	 * @description Fetches the indexes of selected checkbox options
-	 * @param {string} value 
+	 * @param {string} value
 	 */
 	getCheckedIndexes = (value) => {
 		if (Utils.isNullOrEmpty(value)) {
@@ -251,7 +251,7 @@ export class ChoiceSetInput extends React.PureComponent {
 							value={this.setPickerValue(addInputItem)}
 							onChangeText={(text) => {
 								if (!this.state.isPickerSelected) {
-									
+
 									this.setState({ isPickerSelected: true })
 								}
 								this.setState({
@@ -263,13 +263,13 @@ export class ChoiceSetInput extends React.PureComponent {
 										return e.title.includes(text);
 									});
 									this.setState({ pickerChoicesArr: searchResult })
-				
+
 							}}
 							style={[styles.text, this.styleConfig.defaultFontConfig], styles.autoCompPicker}
 							accessible={true}
 						>
 						</TextInput>
-						
+
 
 					</View>
 				</View>}
@@ -300,7 +300,7 @@ export class ChoiceSetInput extends React.PureComponent {
 						<Picker
 							mode={'dropdown'}
 							selectedValue={this.getPickerInitialValue(addInputItem)}
-							onValueChange={		
+							onValueChange={
 								(itemValue) => {
 									this.setState({
 										selectedPickerValue: itemValue,
