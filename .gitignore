@@ -276,6 +276,8 @@ product.pbxproj
 **/.DS_Store
 .build/
 xcuserdata/
+Pods/
+Podfile.lock
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.Rendering.Uwp.h
@@ -291,6 +293,7 @@ cscope.files
 cscope.out
 cscope.in.out
 cscope.po.out
+*.swp
 
 # Teamwork.com VS extension
 twp.json

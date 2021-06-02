@@ -14,6 +14,7 @@
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
 #import "UtiliOS.h"
+#import <FluentUI/FluentUI-Swift.h>
 
 @implementation ACRInputChoiceSetRenderer
 
@@ -47,8 +48,12 @@
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
 
     if (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
-        dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
-        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+//        dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
+//        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        MSFPeoplePicker *peoplePicker = [[MSFPeoplePicker alloc] init];
+        [viewGroup addArrangedSubview:peoplePicker];
+        configVisibility(peoplePicker, elem);
+        return peoplePicker;
     } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config];
         ((ACRChoiceSetViewDataSource *)dataSource).spacing = choiceSetView.inputTableViewSpacing;
