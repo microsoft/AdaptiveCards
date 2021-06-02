@@ -121,4 +121,5 @@ private class FakeACRViewDelegate: ACRViewDelegate {
     }
     
     func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView) { }
+    func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) { }
 }

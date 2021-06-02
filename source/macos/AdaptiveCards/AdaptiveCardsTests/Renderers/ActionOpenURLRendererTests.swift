@@ -59,5 +59,5 @@ private class FakeACRViewOpenURLDelegate: ACRViewDelegate {
     }
     
     func acrView(_ view: ACRView, didSubmitUserResponses dict: [String : Any], actionView: NSView) { }
-    
+    func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) { }
 }

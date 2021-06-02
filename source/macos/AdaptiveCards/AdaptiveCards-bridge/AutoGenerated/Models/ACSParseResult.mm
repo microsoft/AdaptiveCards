@@ -33,8 +33,9 @@
 {
  
     auto getAdaptiveCardCpp = mCppObj->GetAdaptiveCard();
-    return [[ACSAdaptiveCard alloc] initWithAdaptiveCard:getAdaptiveCardCpp];
-
+    if (getAdaptiveCardCpp)
+        return [[ACSAdaptiveCard alloc] initWithAdaptiveCard:getAdaptiveCardCpp];
+    return nil;
 }
 
 - (NSArray<ACSAdaptiveCardParseWarning *> * _Nonnull)getWarnings

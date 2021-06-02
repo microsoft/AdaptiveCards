@@ -131,6 +131,7 @@ private class FakeACRViewDelegate: NSView, ACRViewDelegate {
     var submitActionCount = 0
     var dictValues = 0
     func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView) {}
+    func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) {}
     
     func acrView(_ view: ACRView, didSubmitUserResponses dict: [String : Any], actionView: NSView) {
         submitActionCount += 1

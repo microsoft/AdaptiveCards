@@ -21,9 +21,18 @@ NSString *const ACRParseErrorDomain = @"ACRParseErrorDomain";
 
 + (ACSParseResult *) parseAdaptiveCardFromJSON:(NSString *)jsonString
 {
-    auto jsonStringCpp = string([jsonString UTF8String]);
-    auto resultCpp = AdaptiveCard::DeserializeFromString(jsonStringCpp, "1.3");
-    return [[ACSParseResult alloc] initWithParseResult:resultCpp];
+    auto warningsCpp = std::vector<std::shared_ptr<AdaptiveCardParseWarning>>();
+    auto parseResultCpp = std::make_shared<ParseResult>(nullptr, warningsCpp);
+    if (jsonString) {
+        try {
+            auto jsonStringCpp = string([jsonString UTF8String]);
+            auto resultCpp = AdaptiveCard::DeserializeFromString(jsonStringCpp, "1.3");
+            return [[ACSParseResult alloc] initWithParseResult:resultCpp];
+        } catch (const AdaptiveCardParseException &e) {
+            NSLog(@"AdaptiveCards: Card JSON parsing failed with Status code - %d", e.GetStatusCode());
+        }
+    }
+    return [[ACSParseResult alloc] initWithParseResult:parseResultCpp];
 };
 
 + (ACSHostConfigParseResult *)parseHostConfigFromJSON:(NSString *)jsonString
