@@ -7,10 +7,10 @@
 #import "ACOBaseActionElement.h"
 #import "ACRRegistrationPrivate.h"
 #import "BaseActionElement.h"
+#import "ExecuteAction.h"
 #import "OpenUrlAction.h"
 #import "SubmitAction.h"
 #import "UnknownAction.h"
-#import "ExecuteAction.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -142,6 +142,14 @@ using namespace AdaptiveCards;
     return nil;
 }
 
+- (BOOL)isEnabled
+{
+    if (_elem) {
+        return _elem->GetIsEnabled();
+    }
+    return YES;
+}
+
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg
 {
     if (_elem) {
@@ -172,7 +180,7 @@ using namespace AdaptiveCards;
             break;
         case ACROverflow:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::Overflow)];
-			break;
+            break;
         case ACRUnknownAction:
         default:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];
