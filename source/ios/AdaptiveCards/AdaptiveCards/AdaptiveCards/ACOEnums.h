@@ -54,8 +54,8 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
     ACRDefault,
     ACREmphasis,
     ACRGood,
-    ACRWarning,
     ACRAttention,
+    ACRWarning,
     ACRAccent
 };
 

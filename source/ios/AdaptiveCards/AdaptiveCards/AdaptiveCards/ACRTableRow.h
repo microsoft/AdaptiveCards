@@ -5,8 +5,9 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "AdaptiveCards.h"
 #import "ACRContentStackView.h"
+#import "ACREnums.h"
+
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -18,10 +19,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property CGFloat numeric;
 // sum of all pixel width in a row
 @property CGFloat totalPixelWidth;
+// min width of the relative Width
+@property CGFloat minWidth;
 // the column definition was invalid; will be skipped in rendering
 @property BOOL isValid;
 // the column has pixel width;
 @property BOOL isPixelWidth;
+
+@property BOOL showGridLines;
 
 - (instancetype)initWithPixelWidth:(CGFloat)numeric;
 
@@ -31,12 +36,15 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface ACRTableRowView : ACRContentStackView
+// spacing between cells
+@property CGFloat spacing;
 
 - (instancetype)init:(ACOBaseCardElement *)acoElem
     columnDefinitions:(NSArray<ACRColumnDefinition *> *)columnDefinition
              rootView:(ACRView *)rootView
                inputs:(NSMutableArray *)inputs
-           hostConfig:(ACOHostConfig *)acoConfig;
+           hostConfig:(ACOHostConfig *)acoConfig
+           gridStyle:(ACRContainerStyle)gridStyle;
 
 @end
 

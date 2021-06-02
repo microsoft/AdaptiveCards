@@ -9,7 +9,7 @@ namespace AdaptiveCards
     Table::Table() :
         BaseCardElement(CardElementType::Table), m_columnDefinitions({}), m_rows({}),
         m_horizontalCellContentAlignment(HorizontalAlignment::Left), m_verticalCellContentAlignment(VerticalContentAlignment::Top),
-        m_gridStyle(ContainerStyle::None), m_showGridLines(false), m_firstRowAsHeaders(false)
+        m_gridStyle(ContainerStyle::None), m_showGridLines(true), m_firstRowAsHeaders(false)
     {
         PopulateKnownPropertiesSet();
     }
