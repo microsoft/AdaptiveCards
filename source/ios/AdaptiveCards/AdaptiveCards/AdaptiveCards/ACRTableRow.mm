@@ -12,6 +12,7 @@
 #import "ACRTableCellRenderer.h"
 #import "ACRTableCellView.h"
 #import "TableRow.h"
+#import "UtiliOS.h"
 
 @implementation ACRColumnDefinition
 
@@ -57,6 +58,7 @@
              rootView:(ACRView *)rootView
                inputs:(NSMutableArray *)inputs
            hostConfig:(ACOHostConfig *)acoConfig
+            gridStyle:(ACRContainerStyle)gridStyle
 {
     self = [super init];
     if (self) {
@@ -69,14 +71,15 @@
             return self;
         }
 
+        self.spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
         const auto &cells = row->GetCells();
         const auto endIdx = [columnDefinition count];
 
-        // should be read from Hostconfig
-        CGFloat spacing = 8.0f;
-
         NSLayoutXAxisAnchor *trailingAnchor = self.leadingAnchor;
         UIView *prevView = nil;
+        CGFloat spacing = self.spacing, lineOffset = 0.0f;
+        NSMutableDictionary<NSNumber *, NSNumber *> *viewToRelativeSize = [[NSMutableDictionary alloc] init];
+        NSMutableArray<UIView *> *viewsWithRelativeWidth = [[NSMutableArray alloc] init];
 
         for (auto idx = 0; idx < endIdx; idx++) {
             ACRColumnDefinition *ithColumnDefinition = columnDefinition[idx];
@@ -85,9 +88,14 @@
                 if (idx < cells.size()) {
                     auto cell = cells.at(idx);
                     ACRTableCellDefinition *cellDefinition = [[ACRTableCellDefinition alloc] init];
-                    cellDefinition.style = (ACRContainerStyle)row->GetStyle();
+                    auto style = row->GetStyle();
+                    if (style == ContainerStyle::None) {
+                        style = cell->GetStyle();
+                    }
+                    cellDefinition.style = (ACRContainerStyle)style;
                     cellDefinition.horizontalAlignment = (ACRHorizontalAlignment)row->GetHorizontalCellContentAlignment().value_or(HorizontalAlignment::Left);
-                    cellDefinition.verticalAlignment = (ACRVerticalAlignment)row->GetVerticalCellContentAlignment().value_or(VerticalContentAlignment::Top);
+                    cellDefinition.verticalAlignment =
+                        (ACRVerticalAlignment)cell->GetVerticalContentAlignment().value_or(row->GetVerticalCellContentAlignment().value_or(VerticalContentAlignment::Top));
                     cellView = [[ACRTableCellView alloc] init:[[ACOBaseCardElement alloc] initWithBaseCardElement:cell]
                                                cellDefinition:cellDefinition
                                                      rootView:rootView
@@ -100,31 +108,63 @@
                 cellView.translatesAutoresizingMaskIntoConstraints = NO;
 
                 if (cellView) {
+                    if (ithColumnDefinition.showGridLines) {
+                        [self setBorderOnCell:cellView hostConfig:acoConfig style:gridStyle];
+                        lineOffset = cellView.layer.borderWidth;
+                        spacing = 0;
+                    }
+
                     [self addSubview:cellView];
                     if (ithColumnDefinition.isPixelWidth) {
-                        [cellView.widthAnchor constraintEqualToConstant:ithColumnDefinition.numeric].active = YES;
+                        [cellView.widthAnchor constraintEqualToConstant:ithColumnDefinition.numeric + lineOffset].active = YES;
                     } else {
-                        [cellView.widthAnchor constraintEqualToAnchor:self.widthAnchor
-                                                           multiplier:ithColumnDefinition.numeric
-                                                             constant:-ithColumnDefinition.totalPixelWidth]
-                            .active = YES;
+                        // collect cells with relative width, and build map it with its relative width for
+                        // comparison later
+                        [viewsWithRelativeWidth addObject:cellView];
+                        [viewToRelativeSize setObject:[NSNumber numberWithFloat:ithColumnDefinition.numeric]
+                                               forKey:[NSNumber numberWithLong:cellView.hash]];
                     }
 
                     // This constraint with the low priority will ensure
                     // that the shorter cells get minimum heights instead of getting stretched.
-                    [self.heightAnchor constraintGreaterThanOrEqualToAnchor:cellView.heightAnchor].active = YES;
+                    [self.heightAnchor constraintEqualToAnchor:cellView.heightAnchor].active = YES;
                     NSLayoutConstraint *heightConstraint = [cellView.heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
                     heightConstraint.priority = UILayoutPriorityDefaultLow;
                     heightConstraint.active = YES;
 
-                    [cellView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
+                    [cellView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
                     if (prevView) {
-                        [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor constant:spacing].active = YES;
+                        [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor constant:spacing - lineOffset].active = YES;
                     } else {
                         [cellView.leadingAnchor constraintEqualToAnchor:trailingAnchor].active = YES;
                     }
                     trailingAnchor = cellView.trailingAnchor;
                     prevView = cellView;
+                }
+            }
+        }
+
+        if (prevView) {
+            [prevView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
+        }
+
+        // sort the views with relative width
+        NSArray *sortedArray = [viewsWithRelativeWidth sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
+            // retrieve the width from the map
+            NSNumber *sizeA = viewToRelativeSize[[NSNumber numberWithLong:((UIView *)a).hash]];
+            NSNumber *sizeB = viewToRelativeSize[[NSNumber numberWithLong:((UIView *)b).hash]];
+            return [sizeA compare:sizeB];
+        }];
+
+        if (sortedArray && [sortedArray count]) {
+            UIView *baseView = sortedArray[0];
+            // set width constraint to a given view relative to the base view that has the minimum width
+            for (UIView *view in sortedArray) {
+                if (view != baseView) {
+                    [view.widthAnchor constraintEqualToAnchor:baseView.widthAnchor
+                                                   multiplier:[viewToRelativeSize[[NSNumber numberWithLong:view.hash]] floatValue]
+                                                     constant:lineOffset]
+                        .active = YES;
                 }
             }
         }
@@ -140,11 +180,15 @@
 - (CGSize)intrinsicContentSize
 {
     CGSize size = CGSizeZero;
+    UIView *lastSubView = [self.subviews lastObject];
     for (UIView *subview in self.subviews) {
         if (!subview.isHidden) {
             CGSize intrinsicContentSize = [subview intrinsicContentSize];
             size.width += intrinsicContentSize.width;
             size.height = MAX(size.height, intrinsicContentSize.height);
+            if (subview != lastSubView) {
+                size.width += self.spacing;
+            }
         }
     }
 
@@ -152,4 +196,16 @@
     size.height = (size.height == 0) ? UIViewNoIntrinsicMetric : size.height;
     return size;
 }
+
+- (void)setBorderOnCell:(UIView *)cell hostConfig:(ACOHostConfig *)hostConfig style:(ACRContainerStyle)style
+{
+    if (style != ACRNone) {
+        auto config = [hostConfig getHostConfig];
+        auto borderColor = config->GetBorderColor([ACOHostConfig getSharedContainerStyle:style]);
+        UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:borderColor];
+        cell.layer.borderColor = [color CGColor];
+        cell.layer.borderWidth = 1.0;
+    }
+}
+
 @end
