@@ -885,8 +885,8 @@ try
 CATCH_RETURN;
 
 HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style,
-                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                    _Out_ ABI::Windows::UI::Color* borderColor) noexcept
+                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                _Out_ ABI::Windows::UI::Color* borderColor) noexcept
 try
 {
     ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
