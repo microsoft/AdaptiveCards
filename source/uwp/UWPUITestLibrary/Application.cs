@@ -57,19 +57,8 @@ namespace UWPUITestLibrary
         }
 
         #region Properties
-        // public UIObject CoreWindow { get; private set; }
-        // public UIObject ApplicationFrameWindow { get; private set; }
         public Process Process { get; private set; }
 
-        /*
-        public IntPtr Hwnd
-        {
-            get
-            {
-                return CoreWindow.NativeWindowHandle;
-            }
-        }
-        */
         #endregion
 
         #region Methods
