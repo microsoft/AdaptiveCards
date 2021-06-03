@@ -1,4 +1,4 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -69,5 +69,5 @@ let package = Package(
             path:"source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCardsTests"
         )
     ],
-    cxxLanguageStandard: CXXLanguageStandard.cxx17
+    cxxLanguageStandard: CXXLanguageStandard.cxx14
 )
