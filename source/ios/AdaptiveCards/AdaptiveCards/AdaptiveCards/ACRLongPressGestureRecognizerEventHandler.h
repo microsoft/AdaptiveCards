@@ -9,6 +9,7 @@
 
 @protocol ACRSelectActionDelegate
 - (void)doSelectAction;
+- (void)showToolTip:(UIView *)anchorView;
 @end
 
 @interface ACRLongPressGestureRecognizerEventHandler : NSObject <UIGestureRecognizerDelegate>

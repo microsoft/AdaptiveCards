@@ -7,10 +7,10 @@
 #import "ACOBaseActionElement.h"
 #import "ACRRegistrationPrivate.h"
 #import "BaseActionElement.h"
+#import "ExecuteAction.h"
 #import "OpenUrlAction.h"
 #import "SubmitAction.h"
 #import "UnknownAction.h"
-#import "ExecuteAction.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -172,7 +172,7 @@ using namespace AdaptiveCards;
             break;
         case ACROverflow:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::Overflow)];
-			break;
+            break;
         case ACRUnknownAction:
         default:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];
@@ -180,5 +180,11 @@ using namespace AdaptiveCards;
 
     return key;
 }
+
+- (NSString *)toolTip
+{
+    return [NSString stringWithCString:_elem->GetTooltip().c_str() encoding:NSUTF8StringEncoding];
+}
+
 
 @end

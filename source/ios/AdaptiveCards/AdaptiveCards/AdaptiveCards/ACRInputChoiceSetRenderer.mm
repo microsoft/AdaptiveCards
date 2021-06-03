@@ -48,12 +48,8 @@
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
 
     if (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
-//        dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
-//        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        MSFPeoplePicker *peoplePicker = [[MSFPeoplePicker alloc] init];
-        [viewGroup addArrangedSubview:peoplePicker];
-        configVisibility(peoplePicker, elem);
-        return peoplePicker;
+        dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
+        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config];
         ((ACRChoiceSetViewDataSource *)dataSource).spacing = choiceSetView.inputTableViewSpacing;

@@ -21,6 +21,7 @@
 - (NSString *)url;
 - (NSString *)data;
 - (NSString *)verb;
+- (NSString *)toolTip;
 - (NSData *)additionalProperty;
 
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg;
