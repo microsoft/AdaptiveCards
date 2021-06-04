@@ -1,15 +1,16 @@
 """Module responsible for grouping the related row of elements and to it's
 respective columns"""
-# pylint: disable=relative-beyond-top-level
-
-from typing import List, Dict
 from multiprocessing import Process, Queue
-from PIL import Image
+from typing import List, Dict
 
+# pylint: disable=relative-beyond-top-level
+import pandas as pd
+from PIL import Image
 from mystique.extract_properties import CollectProperties
+
 from .container_group import ContainerGroup
-from .objects_group import RowColumnGrouping
 from .ds_helper import DsHelper, ContainerDetailTemplate
+from .objects_group import RowColumnGrouping
 
 
 def get_layout_structure(predicted_objects: List, queue=None) -> List:
@@ -23,14 +24,13 @@ def get_layout_structure(predicted_objects: List, queue=None) -> List:
     card_layout = []
     # group row and columns
     # sorting the design objects y way
-    column_y_minimums = [
-        design_object.get("ymin") for design_object in predicted_objects
-    ]
-
     predicted_objects = [
         value
         for _, value in sorted(
-            zip(column_y_minimums, predicted_objects),
+            zip(
+                pd.DataFrame(predicted_objects).to_dict(orient="list")["ymin"],
+                predicted_objects,
+            ),
             key=lambda value: value[0],
         )
     ]
@@ -135,29 +135,9 @@ class RowColumnGroup:
         self.columns_grouping = RowColumnGrouping()
         self.ds_template = DsHelper()
 
-    # pylint: disable=no-self-use
-    def _check_same_iteration(
-        self, previous: List[Dict], current: List[Dict]
-    ) -> bool:
-        """
-        Checks the if the previous and current grouped column have same
-        objects or not.
-        @param previous: Previous column objects
-        @param current: Current column objects
-        @return: Boolean value of the check
-        """
-        if not previous:
-            return False
-        same = True
-        for item in current:
-            if item not in previous:
-                same = False
-                break
-        return same
-
     # pylint: disable=inconsistent-return-statements
     def _add_rows(
-        self, column_set: List[Dict], card_layout: List[Dict]
+        self, column_set: Dict, card_layout: List[Dict]
     ) -> [None, List[Dict]]:
         """
         Add the grouped rows to the card layout and update the row's
@@ -166,120 +146,74 @@ class RowColumnGroup:
         :param card_layout: Design structure layout
         :return: Collected columns if any
         """
-        if len(column_set) == 1:
+        if len(column_set["objects"]) == 1:
             self.ds_template.add_element_to_ds(
-                "item", card_layout, element=column_set[0]
+                "item", card_layout, element=column_set["objects"][0]
             )
-        if len(column_set) > 1:
+        elif len(column_set["objects"]) > 1:
             # sort x wise for columns grouping
-            x_mins = [
-                obj.get("coords", obj.get("coordinates"))[0]
-                for obj in column_set
-            ]
-            column_set = [
+            column_set["objects"] = [
                 value
                 for _, value in sorted(
-                    zip(x_mins, column_set), key=lambda value: value[0]
+                    zip(
+                        pd.DataFrame(column_set["objects"]).to_dict(
+                            orient="list"
+                        )["xmin"],
+                        column_set["objects"],
+                    ),
+                    key=lambda value: value[0],
                 )
             ]
-
             columns = self.columns_grouping.object_grouping(
-                column_set, self.columns_grouping.column_condition
+                column_set["objects"], self.columns_grouping.column_condition
             )
+
             return columns
 
     def _add_columns(
         self,
         columns: List[Dict],
         card_layout: List[Dict],
-        previous_column: List[Dict],
+        column_set_coords=None,
     ) -> None:
         """
         Iterate and add the column and column items and update the column's
         new coordinates.
-        :param columns: List of columns with column items
-        :param card_layout: Design structure layout
-        :param previous_column: List of items of the previous column
+        @param columns: List of columns with column items
+        @param column_set_coords: list of coordinates for the row
+        @param card_layout: Design structure layout
         """
-
-        self.ds_template.add_element_to_ds("row", card_layout)
+        self.ds_template.add_element_to_ds(
+            "row", card_layout, coords=column_set_coords
+        )
         row_counter = len(card_layout) - 1
         for column in columns:
-            if len(column) == 1:
-                row_columns = card_layout[row_counter]["row"]
-                self.ds_template.add_element_to_ds("column", row_columns)
-                self.ds_template.add_element_to_ds(
-                    "item",
-                    row_columns[-1]["column"]["items"],
-                    element=column[0],
+            row_columns = card_layout[row_counter]["row"]
+            self.ds_template.add_element_to_ds(
+                "column", row_columns, coords=column["coordinates"]
+            )
+            column_counter = len(row_columns) - 1
+            column["objects"] = [
+                value
+                for _, value in sorted(
+                    zip(
+                        pd.DataFrame(column["objects"]).to_dict(orient="list")[
+                            "ymin"
+                        ],
+                        column["objects"],
+                    ),
+                    key=lambda value: value[0],
                 )
-                card_layout[row_counter]["row"][-1]["coordinates"] = column[
-                    0
-                ].get("coords")
-            else:
-                row_columns = card_layout[row_counter]["row"]
-                if not self._check_same_iteration(previous_column, column):
-                    self.ds_template.add_element_to_ds("column", row_columns)
-                    column_counter = len(row_columns) - 1
-                    y_mins = [
-                        obj.get("coords", obj.get("coordinates"))[1]
-                        for obj in column
-                    ]
-                    column = [
-                        value
-                        for _, value in sorted(
-                            zip(y_mins, column), key=lambda value: value[0]
-                        )
-                    ]
-                    self.row_column_grouping(
-                        column,
-                        row_columns[column_counter]["column"]["items"],
-                        previous_column=column,
-                    )
-                    if self.same_iteration:
-                        card_layout[row_counter]["row"][column_counter][
-                            "column"
-                        ]["items"] = row_columns[column_counter]["column"][
-                            "items"
-                        ][
-                            :-1
-                        ]
-                        _ = [
-                            self.ds_template.add_element_to_ds(
-                                "item",
-                                row_columns[column_counter]["column"].get(
-                                    "items", []
-                                ),
-                                element=item,
-                            )
-                            for item in column
-                        ]
-                        self.same_iteration = False
-
-                    coordinates = [
-                        c.get("coordinates")
-                        for c in row_columns[column_counter]["column"]["items"]
-                    ]
-                    card_layout[row_counter]["row"][column_counter][
-                        "coordinates"
-                    ] = self.ds_template.build_container_coordinates(
-                        coordinates
-                    )
-                else:
-                    self.same_iteration = True
-
-            if not self.same_iteration:
-                coordinates = [
-                    c.get("coordinates")
-                    for c in card_layout[row_counter]["row"]
-                ]
-                card_layout[row_counter][
-                    "coordinates"
-                ] = self.ds_template.build_container_coordinates(coordinates)
-                row_counter = len(card_layout) - 1
+            ]
+            self.row_column_grouping(
+                column["objects"],
+                row_columns[column_counter]["column"]["items"],
+                column_coords=column["coordinates"],
+            )
+            row_counter = len(card_layout) - 1
 
     def row_column_grouping(
-        self, design_objects, card_layout: List[Dict], previous_column=None
+        self, design_objects, card_layout: List[Dict], column_coords=None
     ) -> List[Dict]:
         """
         Group the detected design elements recursively
@@ -287,27 +221,28 @@ class RowColumnGroup:
         columns as smallest unit [i.e. a separate card hierarchy].
         @param design_objects: list of detected design objects
         @param card_layout: layout data structure
-        @param previous_column: previous grouped column objects to check for
-                                same grouping happening repeatedly
+        @param column_coords: list of column coordinates
         @return: The grouped and updated card layout structure
         """
         columns_grouping = RowColumnGrouping()
         column_sets = columns_grouping.object_grouping(
             design_objects, columns_grouping.row_condition
         )
-        ds_template = DsHelper()
         for column_set in column_sets:
             columns = self._add_rows(column_set, card_layout)
-            if columns:
-                if len(columns) == 1:
-                    _ = [
-                        ds_template.add_element_to_ds(
-                            "item", card_layout, element=element
-                        )
-                        for element in columns[0]
-                    ]
-                else:
-                    self._add_columns(
-                        columns, card_layout, previous_column=previous_column
+            if (
+                columns
+                and column_coords
+                and len(columns) == 1
+                and columns[0]["coordinates"] == column_coords
+            ):
+                for item in columns[0]["objects"]:
+                    self.ds_template.add_element_to_ds(
+                        "item", card_layout, element=item
                     )
+            elif columns:
+                self._add_columns(
+                    columns, card_layout, column_set["coordinates"]
+                )
+
         return card_layout
