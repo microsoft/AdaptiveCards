@@ -1,94 +1,52 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include <vector>
-#include <iomanip>
-#include <iostream>
 #include "MarkDownParser.h"
 
-using namespace AdaptiveCards;
-
-MarkDownParser::MarkDownParser(const std::string& txt) : m_text(txt), m_hasHTMLTag(false), m_isEscaped(false)
+namespace AdaptiveCards
 {
-}
+    MarkDownParser::MarkDownParser(const std::string& txt) : m_text(txt) {}
 
-// transforms string to html
-std::string MarkDownParser::TransformToHtml()
-{
-    if (m_text.empty())
+    void MarkDownParser::md_output(const MD_CHAR* processedChunk, MD_SIZE chunkSize, void* pvData)
     {
-        return "<p></p>";
+        std::ostringstream* output = static_cast<std::ostringstream*>(pvData);
+        output->write(processedChunk, static_cast<size_t>(chunkSize));
     }
-    // begin parsing html blocks
-    ParseBlock();
 
-    // process further what is parsed before outputting
-    // html string
-    m_parsedResult.Translate();
-
-    // add block tags such as <p> <ul>
-    m_parsedResult.AddBlockTags();
-
-    m_hasHTMLTag = m_parsedResult.HasHtmlTags();
-    return m_parsedResult.GenerateHtmlString();
-}
-
-bool MarkDownParser::HasHtmlTags()
-{
-    return m_hasHTMLTag;
-}
-
-bool MarkDownParser::IsEscaped() const
-{
-    return m_isEscaped;
-}
-
-std::string MarkDownParser::GetRawText() const
-{
-    return m_text;
-}
-
-// MarkDown is consisted of Blocks, this methods parses blocks
-void MarkDownParser::ParseBlock()
-{
-    std::stringstream stream(EscapeText());
-    EmphasisParser parser;
-    while (!stream.eof())
+    // transforms string to html
+    std::string MarkDownParser::TransformToHtml()
     {
-        parser.ParseBlock(stream);
-    }
-    m_parsedResult.AppendParseResult(parser.GetParsedResult());
-}
-
-std::string MarkDownParser::EscapeText()
-{
-    std::string escaped;
-    unsigned int nonEscapedCounts = 0;
-
-    for (std::string::size_type i = 0; i < m_text.length(); i++)
-    {
-        switch (m_text.at(i))
+        std::ostringstream processedOutput;
+        const auto result = md_html(m_text.c_str(),
+                                    static_cast<unsigned>(m_text.length()),
+                                    md_output,
+                                    &processedOutput,
+                                    MD_FLAG_NOINDENTEDCODEBLOCKS | MD_FLAG_NOHTMLBLOCKS | MD_FLAG_NOHTMLSPANS,
+                                    0);
+        if (result == 0)
         {
-        case '<':
-            escaped += "&lt;";
-            break;
-        case '>':
-            escaped += "&gt;";
-            break;
-        case '"':
-            escaped += "&quot;";
-            break;
-        case '&':
-            escaped += "&amp;";
-            break;
-        default:
-            escaped += m_text.at(i);
-            nonEscapedCounts++;
-            break;
+            auto outputStr = processedOutput.str();
+            if (!outputStr.empty())
+            {
+                if (outputStr.back() == '\n')
+                {
+                    outputStr.pop_back();
+                }
+
+                // detect if we've got more tags than the standard <p></p> wrapper:
+                //
+                // look for the second '<' from the front of the string and the first '<' from the end of the string. if
+                // they're different, there's another tag in there somewhere...
+                m_hasHTMLTag = (outputStr.length() > 1 && outputStr.find('<', 1) != outputStr.rfind('<'));
+            }
+
+            return outputStr;
         }
+
+        return m_text;
     }
 
-    m_isEscaped = (nonEscapedCounts != m_text.length());
+    bool MarkDownParser::HasHtmlTags() const { return m_hasHTMLTag; }
 
-    return escaped;
+    std::string MarkDownParser::GetRawText() const { return m_text; }
 }

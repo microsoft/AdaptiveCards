@@ -1,12 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-
-#include "pch.h"
-#include "BaseCardElement.h"
-#include "MarkDownParsedResult.h"
-#include "MarkDownBlockParser.h"
-#include "MarkDownHtmlGenerator.h"
+#include "md4c/md4c-html.h"
 
 namespace AdaptiveCards
 {
@@ -16,19 +11,12 @@ namespace AdaptiveCards
         MarkDownParser(const std::string& txt);
 
         std::string TransformToHtml();
-
         std::string GetRawText() const;
-
-        bool HasHtmlTags();
-
-        bool IsEscaped() const;
+        bool HasHtmlTags() const;
 
     private:
-        void ParseBlock();
-        std::string EscapeText();
+        static void md_output(const MD_CHAR* processedChunk, MD_SIZE chunkSize, void* pvData);
         std::string m_text;
-        MarkDownParsedResult m_parsedResult;
-        bool m_hasHTMLTag;
-        bool m_isEscaped;
+        bool m_hasHTMLTag{false};
     };
 }

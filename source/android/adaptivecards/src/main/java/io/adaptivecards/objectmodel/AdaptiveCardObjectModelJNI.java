@@ -1407,7 +1407,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String MarkDownParser_TransformToHtml(long jarg1, MarkDownParser jarg1_);
   public final static native String MarkDownParser_GetRawText(long jarg1, MarkDownParser jarg1_);
   public final static native boolean MarkDownParser_HasHtmlTags(long jarg1, MarkDownParser jarg1_);
-  public final static native boolean MarkDownParser_IsEscaped(long jarg1, MarkDownParser jarg1_);
   public final static native void delete_MarkDownParser(long jarg1);
   public final static native long new_DateTimePreparsedToken__SWIG_0();
   public final static native long new_DateTimePreparsedToken__SWIG_1(String jarg1, int jarg2);

@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ExecuteAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Inline.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\md4c\entity.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\md4c\md4c-html.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\md4c\md4c.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseContext.cpp" />
@@ -67,9 +70,6 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateInput.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseResult.cpp" />
@@ -134,10 +134,10 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Inline.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParser.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\md4c\entity.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\md4c\md4c-html.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\md4c\md4c.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Media.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MediaSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />

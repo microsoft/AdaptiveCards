@@ -35,9 +35,6 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
@@ -71,6 +68,15 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TableCell.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TableRow.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\md4c\entity.cpp">
+      <Filter>md4c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\md4c\md4c.cpp">
+      <Filter>md4c</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\md4c\md4c-html.cpp">
+      <Filter>md4c</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -110,9 +116,6 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParser.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />
@@ -148,10 +151,22 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TableCell.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TableRow.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\md4c\entity.h">
+      <Filter>md4c</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\md4c\md4c.h">
+      <Filter>md4c</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\md4c\md4c-html.h">
+      <Filter>md4c</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">
       <UniqueIdentifier>{beeafc87-6665-4590-bad9-a4a9e552cdef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="md4c">
+      <UniqueIdentifier>{572c600d-389e-42f3-bc42-9e363aea8e58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

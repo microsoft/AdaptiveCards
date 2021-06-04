@@ -13,15 +13,15 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(MarkDownBasicSanityTest_CanHandleEmptyStringTest)
         {
             MarkDownParser parser("");
-            Assert::AreEqual<std::string>("<p></p>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("", parser.TransformToHtml());
             Assert::AreEqual<bool>(false, parser.HasHtmlTags());
         }
 
         TEST_METHOD(MarkDownBasicSanityTest_CanHandleEmphasisTest)
         {
             MarkDownParser parser("*");
-            Assert::AreEqual<std::string>("<p>*</p>", parser.TransformToHtml());
-            Assert::AreEqual<bool>(false, parser.HasHtmlTags());
+            Assert::AreEqual<std::string>("<ul>\n<li></li>\n</ul>", parser.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(MarkDownBasicSanityTest_CanHandleStrongEmphasisTest)
@@ -206,43 +206,43 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(DelimiterNestingTest_PunctuationDelimitersTest)
         {
             MarkDownParser parser("_foo __bar__ baz_");
-            Assert::AreEqual<std::string>("<p><em>foo <strong>bar</strong> baz</em></p>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em>foo <strong>bar</strong> baz</em></p>", parser.TransformToHtml(), L"1");
 
             MarkDownParser parser2("*foo *bar**");
-            Assert::AreEqual<std::string>("<p><em>foo <em>bar</em></em></p>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em>foo <em>bar</em></em></p>", parser2.TransformToHtml(), L"2");
 
             MarkDownParser parser3("_foo _bar_ baz_");
-            Assert::AreEqual<std::string>("<p><em>foo <em>bar</em> baz</em></p>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em>foo <em>bar</em> baz</em></p>", parser3.TransformToHtml(), L"3");
 
             MarkDownParser parser4("*foo **bar** baz*");
-            Assert::AreEqual<std::string>("<p><em>foo <strong>bar</strong> baz</em></p>", parser4.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em>foo <strong>bar</strong> baz</em></p>", parser4.TransformToHtml(), L"4");
 
             MarkDownParser parser5("*foo **bar *baz* bim** bop*");
-            Assert::AreEqual<std::string>("<p><em>foo <strong>bar <em>baz</em> bim</strong> bop</em></p>", parser5.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em>foo <strong>bar <em>baz</em> bim</strong> bop</em></p>", parser5.TransformToHtml(), L"5");
 
             MarkDownParser parser6("***foo** bar*");
-            Assert::AreEqual<std::string>("<p><em><strong>foo</strong> bar</em></p>", parser6.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em><strong>foo</strong> bar</em></p>", parser6.TransformToHtml(), L"6");
 
             MarkDownParser parser7("*foo **bar***");
-            Assert::AreEqual<std::string>("<p><em>foo <strong>bar</strong></em></p>", parser7.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em>foo <strong>bar</strong></em></p>", parser7.TransformToHtml(), L"7");
 
             MarkDownParser parser8("** is not an empty emphasis");
-            Assert::AreEqual<std::string>("<p>** is not an empty emphasis</p>", parser8.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>** is not an empty emphasis</p>", parser8.TransformToHtml(), L"8");
 
             MarkDownParser parser9("**** is not an empty emphasis");
-            Assert::AreEqual<std::string>("<p>**** is not an empty emphasis</p>", parser9.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>**** is not an empty emphasis</p>", parser9.TransformToHtml(), L"9");
 
             MarkDownParser parser10("**foo\nbar**");
-            Assert::AreEqual<std::string>("<p><strong>foo\nbar</strong></p>", parser10.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><strong>foo\nbar</strong></p>", parser10.TransformToHtml(), L"10");
 
             MarkDownParser parser11("__foo __bar__ baz__");
-            Assert::AreEqual<std::string>("<p><strong>foo <strong>bar</strong> baz</strong></p>", parser11.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><strong>foo <strong>bar</strong> baz</strong></p>", parser11.TransformToHtml(), L"11");
 
             MarkDownParser parser12("**foo **bar****");
-            Assert::AreEqual<std::string>("<p><strong>foo <strong>bar</strong></strong></p>", parser12.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><strong>foo <strong>bar</strong></strong></p>", parser12.TransformToHtml(), L"12");
 
             MarkDownParser parser13("**foo *bar **baz**\n bim* bop**");
-            Assert::AreEqual<std::string>("<p><strong>foo <em>bar <strong>baz</strong>\n bim</em> bop</strong></p>", parser13.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><strong>foo <em>bar <strong>baz</strong>\nbim</em> bop</strong></p>", parser13.TransformToHtml(), L"13");
 
         }
 
@@ -294,10 +294,10 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(Rule14Test_strongAndEmphasisNesting)
         {
             MarkDownParser parser("***foo***");
-            Assert::AreEqual<std::string>("<p><strong><em>foo</em></strong></p>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em><strong>foo</strong></em></p>", parser.TransformToHtml());
 
             MarkDownParser parser2("_____foo_____");
-            Assert::AreEqual<std::string>("<p><strong><strong><em>foo</em></strong></strong></p>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<p><em><strong><strong>foo</strong></strong></em></p>", parser2.TransformToHtml());
         }
 
         TEST_METHOD(Rule15Test_OverlappingTest)
@@ -433,7 +433,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(LinkBasicValidationTest_ValidLinkTestWithEscapedDelimiters)
         {
-            MarkDownParser parser("[[cool link!]](https://contoso.com/New%20Document%20(1\\).docx)");
+            MarkDownParser parser("[[cool link!]](https://contoso.com/New%20Document%20(1).docx)");
             Assert::AreEqual<std::string>("<p><a href=\"https://contoso.com/New%20Document%20(1).docx\">[cool link!]</a></p>", parser.TransformToHtml());
         }
 
@@ -491,96 +491,96 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(ListTest_SimpleValidListTest)
         {
             MarkDownParser parser("- hello");
-            Assert::AreEqual<std::string>("<ul><li>hello</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello</li>\n</ul>", parser.TransformToHtml(), L"1");
             MarkDownParser parser2("* hello");
-            Assert::AreEqual<std::string>("<ul><li>hello</li></ul>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello</li>\n</ul>", parser2.TransformToHtml(), L"2");
             MarkDownParser parser3("+ hello");
-            Assert::AreEqual<std::string>("<ul><li>hello</li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello</li>\n</ul>", parser3.TransformToHtml(), L"3");
         }
 
         TEST_METHOD(ListTest_MultipleSimpleValidListTest)
         {
             MarkDownParser parser("- hello\n- world\n- hi");
-            Assert::AreEqual<std::string>("<ul><li>hello</li><li>world</li><li>hi</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello</li>\n<li>world</li>\n<li>hi</li>\n</ul>", parser.TransformToHtml(), L"1");
             MarkDownParser parser2("* hello\n* world\n* hi");
-            Assert::AreEqual<std::string>("<ul><li>hello</li><li>world</li><li>hi</li></ul>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello</li>\n<li>world</li>\n<li>hi</li>\n</ul>", parser2.TransformToHtml(), L"2");
             MarkDownParser parser3("* hello\n- Hi");
-            Assert::AreEqual<std::string>("<ul><li>hello</li><li>Hi</li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello</li>\n</ul>\n<ul>\n<li>Hi</li>\n</ul>", parser3.TransformToHtml(), L"3");
             MarkDownParser parser4("+ hello\n+ world\n+ hi");
-            Assert::AreEqual<std::string>("<ul><li>hello</li><li>world</li><li>hi</li></ul>", parser4.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello</li>\n<li>world</li>\n<li>hi</li>\n</ul>", parser4.TransformToHtml(), L"4");
         }
 
         TEST_METHOD(ListTest_ListTestsWithInterHyphen)
         {
             MarkDownParser parser("- hello world - hello hello");
-            Assert::AreEqual<std::string>("<ul><li>hello world - hello hello</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world - hello hello</li>\n</ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello world - hello hello");
-            Assert::AreEqual<std::string>("<ul><li>hello world - hello hello</li></ul>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world - hello hello</li>\n</ul>", parser2.TransformToHtml());
             MarkDownParser parser3("- hello world + hello hello");
-            Assert::AreEqual<std::string>("<ul><li>hello world + hello hello</li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world + hello hello</li>\n</ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_MultipleListWithHyphenTests)
         {
             MarkDownParser parser("- hello world - hello hello\r- winner winner chicken dinner");
-            Assert::AreEqual<std::string>("<ul><li>hello world - hello hello</li><li>winner winner chicken dinner</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world - hello hello</li>\n<li>winner winner chicken dinner</li>\n</ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello world * hello hello\r* winner winner chicken dinner");
-            Assert::AreEqual<std::string>("<ul><li>hello world * hello hello</li><li>winner winner chicken dinner</li></ul>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world * hello hello</li>\n<li>winner winner chicken dinner</li>\n</ul>", parser2.TransformToHtml());
             MarkDownParser parser3("+ hello world * hello hello\r+ winner winner chicken dinner");
-            Assert::AreEqual<std::string>("<ul><li>hello world * hello hello</li><li>winner winner chicken dinner</li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world * hello hello</li>\n<li>winner winner chicken dinner</li>\n</ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_MultipleListWithHyphenAndEmphasisTests)
         {
             MarkDownParser parser("- hello world - hello hello\r- ***winner* winner** chicken dinner");
-            Assert::AreEqual<std::string>("<ul><li>hello world - hello hello</li><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world - hello hello</li>\n<li><strong><em>winner</em> winner</strong> chicken dinner</li>\n</ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello world * hello hello\r* ***winner* winner** chicken dinner");
-            Assert::AreEqual<std::string>("<ul><li>hello world * hello hello</li><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world * hello hello</li>\n<li><strong><em>winner</em> winner</strong> chicken dinner</li>\n</ul>", parser2.TransformToHtml());
             MarkDownParser parser3("+ hello world * hello hello\r+ ***winner* winner** chicken dinner");
-            Assert::AreEqual<std::string>("<ul><li>hello world * hello hello</li><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world * hello hello</li>\n<li><strong><em>winner</em> winner</strong> chicken dinner</li>\n</ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_MultipleListWithLinkTest)
         {
             MarkDownParser parser("- hello world\r- hello hello\r- new site = [adaptive card](www.adaptivecards.io)");
-            Assert::AreEqual<std::string>("<ul><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world</li>\n<li>hello hello</li>\n<li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li>\n</ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello world\r* hello hello\r* new site = [adaptive card](www.adaptivecards.io)");
-            Assert::AreEqual<std::string>("<ul><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ul>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world</li>\n<li>hello hello</li>\n<li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li>\n</ul>", parser2.TransformToHtml());
             MarkDownParser parser3("+ hello world\r+ hello hello\r+ new site = [adaptive card](www.adaptivecards.io)");
-            Assert::AreEqual<std::string>("<ul><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>hello world</li>\n<li>hello hello</li>\n<li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li>\n</ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_PtagedBlockElementFollowedByListTest)
         {
             MarkDownParser parser("Hello\r- my list");
-            Assert::AreEqual<std::string>("<p>Hello</p><ul><li>my list</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>Hello</p>\n<ul>\n<li>my list</li>\n</ul>", parser.TransformToHtml(), L"1");
             Assert::AreEqual<bool>(true, parser.HasHtmlTags());
             MarkDownParser parser2("Hello\r* my list");
-            Assert::AreEqual<std::string>("<p>Hello</p><ul><li>my list</li></ul>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>Hello</p>\n<ul>\n<li>my list</li>\n</ul>", parser2.TransformToHtml(), L"2");
             Assert::AreEqual<bool>(true, parser2.HasHtmlTags());
             MarkDownParser parser3("Hello\r+ my list");
-            Assert::AreEqual<std::string>("<p>Hello</p><ul><li>my list</li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>Hello</p>\n<ul>\n<li>my list</li>\n</ul>", parser3.TransformToHtml(), L"3");
             Assert::AreEqual<bool>(true, parser3.HasHtmlTags());
         }
 
         TEST_METHOD(ListTest_ListFollowedByPtagedBlockElementTest)
         {
             MarkDownParser parser("- my list\r\rHello");
-            Assert::AreEqual<std::string>("<ul><li>my list</li></ul><p>Hello</p>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>my list</li>\n</ul>\n<p>Hello</p>", parser.TransformToHtml());
             MarkDownParser parser2("* my list\r\rHello");
-            Assert::AreEqual<std::string>("<ul><li>my list</li></ul><p>Hello</p>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>my list</li>\n</ul>\n<p>Hello</p>", parser2.TransformToHtml());
             MarkDownParser parser3("+ my list\r\rHello");
-            Assert::AreEqual<std::string>("<ul><li>my list</li></ul><p>Hello</p>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>my list</li>\n</ul>\n<p>Hello</p>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_ListFollowedWithNewLineCharTest)
         {
             MarkDownParser parser("- my list\rHello");
-            Assert::AreEqual<std::string>("<ul><li>my list\rHello</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>my list\nHello</li>\n</ul>", parser.TransformToHtml(), L"1");
             MarkDownParser parser2("* my list\rHello");
-            Assert::AreEqual<std::string>("<ul><li>my list\rHello</li></ul>", parser2.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>my list\nHello</li>\n</ul>", parser2.TransformToHtml(), L"2");
             MarkDownParser parser3("+ my list\rHello");
-            Assert::AreEqual<std::string>("<ul><li>my list\rHello</li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>my list\nHello</li>\n</ul>", parser3.TransformToHtml(), L"3");
         }
 
         TEST_METHOD(ListTest_InvalidListStringReturnedUnchangedTest)
@@ -593,70 +593,70 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(ListTest_LeftDelimiterFalseCaseWithSpaceTest)
         {
             MarkDownParser parser("* foo bar*");
-            Assert::AreEqual<std::string>("<ul><li>foo bar*</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ul>\n<li>foo bar*</li>\n</ul>", parser.TransformToHtml());
             Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(OrderedListTest_SimpleValidListTest)
         {
             MarkDownParser parser("1. hello");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>hello</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol>\n<li>hello</li>\n</ol>", parser.TransformToHtml());
         }
 
         TEST_METHOD(OrderedListTest_MultipleSimpleValidListTest)
         {
             MarkDownParser parser("1. hello\n2. Hi");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>hello</li><li>Hi</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol>\n<li>hello</li>\n<li>Hi</li>\n</ol>", parser.TransformToHtml());
         }
 
         TEST_METHOD(OrderedListTest_ListTestsWithInterHyphen)
         {
             MarkDownParser parser("1. hello world - hello hello");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>hello world - hello hello</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol>\n<li>hello world - hello hello</li>\n</ol>", parser.TransformToHtml());
             Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(OrderedListTest_MultipleListWithHyphenTests)
         {
             MarkDownParser parser("1. hello world - hello hello\r2. winner winner chicken dinner");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>hello world - hello hello</li><li>winner winner chicken dinner</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol>\n<li>hello world - hello hello</li>\n<li>winner winner chicken dinner</li>\n</ol>", parser.TransformToHtml());
         }
 
         TEST_METHOD(OrderedListTest_MultipleListWithHyphenAndEmphasisTests)
         {
             MarkDownParser parser("1. hello world - hello hello\r- ***winner* winner** chicken dinner");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>hello world - hello hello</li></ol><ul><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol>\n<li>hello world - hello hello</li>\n</ol>\n<ul>\n<li><strong><em>winner</em> winner</strong> chicken dinner</li>\n</ul>", parser.TransformToHtml());
         }
 
         TEST_METHOD(OrderedListTest_MultipleListWithLinkTest)
         {
             MarkDownParser parser("1. hello world\r2. hello hello\r3. new site = [adaptive card](www.adaptivecards.io)");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol>\n<li>hello world</li>\n<li>hello hello</li>\n<li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li>\n</ol>", parser.TransformToHtml());
         }
 
         TEST_METHOD(OrderedListTest_PtagedBlockElementFollowedByListTest)
         {
             MarkDownParser parser("Hello\r1. my list");
-            Assert::AreEqual<std::string>("<p>Hello</p><ol start=\"1\"><li>my list</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<p>Hello</p>\n<ol>\n<li>my list</li>\n</ol>", parser.TransformToHtml());
             Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(OrderedListTest_ListFollowedByPtagedBlockElementTest)
         {
             MarkDownParser parser("1. my list\r\rHello");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>my list</li></ol><p>Hello</p>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol>\n<li>my list</li>\n</ol>\n<p>Hello</p>", parser.TransformToHtml());
         }
 
         TEST_METHOD(OrderedListTest_ListFollowedWithNewLineCharTest)
         {
             MarkDownParser parser("1. my list\rHello");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>my list\rHello</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol>\n<li>my list\nHello</li>\n</ol>", parser.TransformToHtml());
         }
 
         TEST_METHOD(OrderedListTest_ListStartsWithRandomNumberTest)
         {
             MarkDownParser parser("777. my list\rHello");
-            Assert::AreEqual<std::string>("<ol start=\"777\"><li>my list\rHello</li></ol>", parser.TransformToHtml());
+            Assert::AreEqual<std::string>("<ol start=\"777\">\n<li>my list\nHello</li>\n</ol>", parser.TransformToHtml());
         }
 
         TEST_METHOD(EscapeHtmlCharactersTest_GreaterThanTest)
@@ -721,44 +721,23 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(NonLatinCharacters_NewlineWithLink)
         {
-            MarkDownParser parser("It's OK!\rClick [以前の製品のリンクで検索](https://www.microsoft.com)\rClick [以前の製品のリンクで検索](https://www.microsoft.com)");
-            Assert::AreEqual<std::string>("<p>It's OK!\rClick <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a>\rClick <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></p>",
+            MarkDownParser parser("It's OK!\nClick [以前の製品のリンクで検索](https://www.microsoft.com)\nClick [以前の製品のリンクで検索](https://www.microsoft.com)");
+            Assert::AreEqual<std::string>("<p>It's OK!\nClick <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a>\nClick <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></p>",
                 parser.TransformToHtml());
         }
 
         TEST_METHOD(NonLatinCharacters_NumberedListWithLink)
         {
             MarkDownParser parser("1. Click [以前の製品のリンクで検索](https://www.microsoft.com)\r2. Click [以前の製品のリンクで検索](https://www.microsoft.com)");
-            Assert::AreEqual<std::string>("<ol start=\"1\"><li>Click <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></li><li>Click <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></li></ol>",
+            Assert::AreEqual<std::string>("<ol>\n<li>Click <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></li>\n<li>Click <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></li>\n</ol>",
                 parser.TransformToHtml());
         }
 
         TEST_METHOD(NonLatinCharacters_NumberedListWithLinkLeadingText)
         {
             MarkDownParser parser("It's not OK!\r1. Click [以前の製品のリンクで検索](https://www.microsoft.com)\r2. Click [以前の製品のリンクで検索](https://www.microsoft.com)");
-            Assert::AreEqual<std::string>("<p>It's not OK!</p><ol start=\"1\"><li>Click <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></li><li>Click <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></li></ol>",
+            Assert::AreEqual<std::string>("<p>It's not OK!</p>\n<ol>\n<li>Click <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></li>\n<li>Click <a href=\"https://www.microsoft.com\">以前の製品のリンクで検索</a></li>\n</ol>",
                 parser.TransformToHtml());
-        }
-
-        TEST_METHOD(EscapeHtmlCharactersTest_CanDetectEscapeTest)
-        {
-            MarkDownParser parser("");
-            Assert::AreEqual<bool>(false, parser.IsEscaped());
-
-            (void) parser.TransformToHtml();
-            Assert::AreEqual<bool>(false, parser.IsEscaped());
-
-            MarkDownParser parser1("&");
-            (void) parser1.TransformToHtml();
-            Assert::AreEqual<bool>(true, parser1.IsEscaped());
-
-            MarkDownParser parser2("Hello World&");
-            (void) parser2.TransformToHtml();
-            Assert::AreEqual<bool>(true, parser2.IsEscaped());
-
-            MarkDownParser parser3(" & ");
-            (void) parser3.TransformToHtml();
-            Assert::AreEqual<bool>(true, parser3.IsEscaped());
         }
     };
 }

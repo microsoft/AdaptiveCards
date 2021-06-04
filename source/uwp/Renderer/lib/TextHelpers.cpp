@@ -412,59 +412,62 @@ HRESULT AddListInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextEle
     bool isFirstListElement = true;
     while (listChild != nullptr)
     {
-        std::wstring listElementString = isFirstListElement ? L"" : L"\n";
-        if (!isListOrdered)
+        if (boolean hasChildren; SUCCEEDED(listChild->HasChildNodes(&hasChildren)) && hasChildren)
         {
-            // Add a bullet
-            listElementString += L"\x2022 ";
+            std::wstring listElementString = isFirstListElement ? L"" : L"\n";
+            if (!isListOrdered)
+            {
+                // Add a bullet
+                listElementString += L"\x2022 ";
+            }
+            else
+            {
+                listElementString += std::to_wstring(iteration);
+                listElementString += L". ";
+            }
+
+            HString listElementHString;
+            RETURN_IF_FAILED(listElementHString.Set(listElementString.c_str()));
+
+            totalCharacterLength += WindowsGetStringLen(listElementHString.Get());
+
+            ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run =
+                XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
+                    HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+            RETURN_IF_FAILED(run->put_Text(listElementHString.Get()));
+
+            ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
+            RETURN_IF_FAILED(run.As(&runAsTextElement));
+
+            // Make sure the bullet or list number is styled correctly
+            RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement,
+                                              renderContext,
+                                              renderArgs,
+                                              TextRunStyleParameters(false, false, false, isInHyperlink),
+                                              runAsTextElement.Get()));
+
+            ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
+            RETURN_IF_FAILED(run.As(&runAsInline));
+
+            RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
+
+            UINT textCharacterLength = 0;
+            RETURN_IF_FAILED(AddTextInlines(adaptiveTextElement,
+                                            renderContext,
+                                            renderArgs,
+                                            listChild.Get(),
+                                            TextRunStyleParameters(false, false, false, isInHyperlink),
+                                            inlines,
+                                            &textCharacterLength));
+            totalCharacterLength += textCharacterLength;
+
+            iteration++;
+            isFirstListElement = false;
         }
-        else
-        {
-            listElementString += std::to_wstring(iteration);
-            listElementString += L". ";
-        }
-
-        HString listElementHString;
-        RETURN_IF_FAILED(listElementHString.Set(listElementString.c_str()));
-
-        totalCharacterLength += WindowsGetStringLen(listElementHString.Get());
-
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run =
-            XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
-                HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-        RETURN_IF_FAILED(run->put_Text(listElementHString.Get()));
-
-        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
-        RETURN_IF_FAILED(run.As(&runAsTextElement));
-
-        // Make sure the bullet or list number is styled correctly
-        RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement,
-                                          renderContext,
-                                          renderArgs,
-                                          TextRunStyleParameters(false, false, false, isInHyperlink),
-                                          runAsTextElement.Get()));
-
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
-        RETURN_IF_FAILED(run.As(&runAsInline));
-
-        RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
-
-        UINT textCharacterLength = 0;
-        RETURN_IF_FAILED(AddTextInlines(adaptiveTextElement,
-                                        renderContext,
-                                        renderArgs,
-                                        listChild.Get(),
-                                        TextRunStyleParameters(false, false, false, isInHyperlink),
-                                        inlines,
-                                        &textCharacterLength));
-        totalCharacterLength += textCharacterLength;
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextListChild;
         RETURN_IF_FAILED(listChild->get_NextSibling(&nextListChild));
-
-        iteration++;
         listChild = nextListChild;
-        isFirstListElement = false;
     }
 
     *characterLength = totalCharacterLength;
@@ -665,6 +668,7 @@ HRESULT AddHtmlInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextEle
 
     // We *might* be looking at a toplevel chunk of HTML that we've wrapped with <root></root> (see SetXamlInlines())
     // If so, strip that off.
+    if (childNode != nullptr)
     {
         HString childNodeName;
         RETURN_IF_FAILED(childNode->get_NodeName(childNodeName.GetAddressOf()));
@@ -683,6 +687,19 @@ HRESULT AddHtmlInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextEle
         HString nodeName;
         RETURN_IF_FAILED(childNode->get_NodeName(nodeName.GetAddressOf()));
 
+        UINT nodeCharacterLength = 0;
+
+        // check for h[1-6]
+        bool isHeader = false;
+        if (UINT32 nodeNameLength = WindowsGetStringLen(nodeName.Get()); nodeNameLength == 2)
+        {
+            HString firstCharInName;
+            RETURN_IF_FAILED(WindowsSubstringWithSpecifiedLength(nodeName.Get(), 0ui32, 1ui32, firstCharInName.GetAddressOf()));
+            INT32 isHeaderResult;
+            RETURN_IF_FAILED(WindowsCompareStringOrdinal(firstCharInName.Get(), HStringReference(L"h").Get(), &isHeaderResult));
+            isHeader = (isHeaderResult == 0);
+        }
+
         INT32 isOrderedListResult;
         RETURN_IF_FAILED(WindowsCompareStringOrdinal(nodeName.Get(), HStringReference(L"ol").Get(), &isOrderedListResult));
 
@@ -692,13 +709,12 @@ HRESULT AddHtmlInlines(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextEle
         INT32 isParagraphResult;
         RETURN_IF_FAILED(WindowsCompareStringOrdinal(nodeName.Get(), HStringReference(L"p").Get(), &isParagraphResult));
 
-        UINT nodeCharacterLength = 0;
         if ((isOrderedListResult == 0) || (isUnorderedListResult == 0))
         {
             RETURN_IF_FAILED(AddListInlines(
                 adaptiveTextElement, renderContext, renderArgs, childNode.Get(), (isOrderedListResult == 0), isInHyperlink, inlines, &nodeCharacterLength));
         }
-        else if (isParagraphResult == 0)
+        else if (isHeader || isParagraphResult == 0)
         {
             RETURN_IF_FAILED(AddTextInlines(adaptiveTextElement,
                                             renderContext,

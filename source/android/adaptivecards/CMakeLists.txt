@@ -12,7 +12,8 @@ set(CMAKE_CXX_STANDARD 17)
 # Gradle automatically packages shared libraries with your APK.
 
 include_directories(../../shared/cpp/ObjectModel
-                    ../../shared/cpp/ObjectModel/json)
+                    ../../shared/cpp/ObjectModel/json
+                    ../../shared/cpp/ObjectModel/md4c)
 
 add_library( # Sets the name of the library.
              adaptivecards-native-lib
@@ -23,6 +24,9 @@ add_library( # Sets the name of the library.
              # Provides a relative path to your source file(s).
              # Associated headers in the same location as their source
              # file are automatically included.
+             ../../shared/cpp/ObjectModel/md4c/md4c.cpp
+             ../../shared/cpp/ObjectModel/md4c/md4c-html.cpp
+             ../../shared/cpp/ObjectModel/md4c/entity.cpp
              ../../shared/cpp/ObjectModel/jsoncpp.cpp
              ../../shared/cpp/ObjectModel/ActionParserRegistration.cpp
              ../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp
@@ -55,9 +59,6 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/Image.cpp
              ../../shared/cpp/ObjectModel/ImageSet.cpp
              ../../shared/cpp/ObjectModel/Inline.cpp
-             ../../shared/cpp/ObjectModel/MarkDownBlockParser.cpp
-             ../../shared/cpp/ObjectModel/MarkDownHtmlGenerator.cpp
-             ../../shared/cpp/ObjectModel/MarkDownParsedResult.cpp
              ../../shared/cpp/ObjectModel/MarkDownParser.cpp
              ../../shared/cpp/ObjectModel/Media.cpp
              ../../shared/cpp/ObjectModel/MediaSource.cpp

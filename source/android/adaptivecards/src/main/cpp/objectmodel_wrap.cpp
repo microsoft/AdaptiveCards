@@ -28421,22 +28421,7 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::MarkDownParser **)&jarg1; 
-  result = (bool)(arg1)->HasHtmlTags();
-  jresult = (jboolean)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_MarkDownParser_1IsEscaped(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jboolean jresult = 0 ;
-  AdaptiveCards::MarkDownParser *arg1 = (AdaptiveCards::MarkDownParser *) 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(AdaptiveCards::MarkDownParser **)&jarg1; 
-  result = (bool)((AdaptiveCards::MarkDownParser const *)arg1)->IsEscaped();
+  result = (bool)((AdaptiveCards::MarkDownParser const *)arg1)->HasHtmlTags();
   jresult = (jboolean)result; 
   return jresult;
 }

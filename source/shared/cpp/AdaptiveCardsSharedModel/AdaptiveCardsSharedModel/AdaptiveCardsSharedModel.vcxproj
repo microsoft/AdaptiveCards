@@ -222,6 +222,9 @@
     <ClCompile Include="..\..\ObjectModel\CollectionTypeElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\Inline.cpp" />
+    <ClCompile Include="..\..\ObjectModel\md4c\entity.cpp" />
+    <ClCompile Include="..\..\ObjectModel\md4c\md4c-html.cpp" />
+    <ClCompile Include="..\..\ObjectModel\md4c\md4c.cpp" />
     <ClCompile Include="..\..\ObjectModel\RichTextElementProperties.cpp" />
     <ClCompile Include="..\..\ObjectModel\Table.cpp" />
     <ClCompile Include="..\..\ObjectModel\TableCell.cpp" />
@@ -264,9 +267,6 @@
     <ClCompile Include="..\..\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\ObjectModel\ImageSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\jsoncpp.cpp" />
-    <ClCompile Include="..\..\ObjectModel\MarkDownBlockParser.cpp" />
-    <ClCompile Include="..\..\ObjectModel\MarkDownHtmlGenerator.cpp" />
-    <ClCompile Include="..\..\ObjectModel\MarkDownParsedResult.cpp" />
     <ClCompile Include="..\..\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\OpenUrlAction.cpp" />
