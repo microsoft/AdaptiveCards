@@ -232,6 +232,10 @@
         if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getQuickReplyTargetBuilderDirector], acoSelectAction, button, &target)) {
             if (action->GetElementType() == ActionType::Submit) {
                 quickReplyView.target = (ACRAggregateTarget *)target;
+                quickReplyView.userInteractionEnabled = [acoSelectAction isEnabled];
+                if (![acoSelectAction isEnabled]) {
+                    quickReplyView.accessibilityTraits |= UIAccessibilityTraitNotEnabled;
+                }
             }
             [viewGroup addTarget:target];
         }
