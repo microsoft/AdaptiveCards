@@ -26,7 +26,34 @@ namespace UWPUITestLibrary
     public class Application
     {
         protected const string WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
-        private WindowsDriver<WindowsElement> TestAppSession = null;
+        private WindowsDriver<WindowsElement> _TestAppSession = null;
+
+        public WindowsDriver<WindowsElement> TestAppSession
+        {
+            get
+            {
+                return _TestAppSession;
+            }
+
+            private set
+            {
+                _TestAppSession = value;
+            }
+        }
+
+        private static Application _Instance = null;
+
+        public static Application Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    _Instance = new Application();
+                }
+                return _Instance;
+            }
+        }
 
         private readonly string _simplePackageName;
 
@@ -37,7 +64,7 @@ namespace UWPUITestLibrary
         private readonly string _certSerialNumber;
         private readonly string _baseAppxDir;
 
-        public Application()
+        private Application()
         {
             _simplePackageName = "UWPUITestApp";
 
