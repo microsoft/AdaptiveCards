@@ -1230,7 +1230,7 @@ namespace RendererQml
         uiDateInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
         uiDateInput->Property("property string selectedDate", input->GetValue(), true);
-		uiDateInput->AddFunctions(Formatter() << "signal " << uiDateInput->GetId() << "TextChanged(var dateText)");
+		uiDateInput->AddFunctions(Formatter() << "signal " << "textChanged" << uiDateInput->GetId() << "(var dateText)");
 
 		//TODO: Add stretch property
 
@@ -1283,7 +1283,10 @@ namespace RendererQml
 			<< "if (d!==null && m!==null && y!==null){selectedDate=new Date(y[0],Months[m[0]],d[0]) }"
 			<< "}" );
 
-		calendarTag->Property("Component.onCompleted", Formatter() << "{" << uiDateInput->GetId() << "." << uiDateInput->GetId() << "TextChanged.connect(setCalendarDate);" << uiDateInput->GetId() << "." << uiDateInput->GetId() << "TextChanged( "<< uiDateInput->GetId() <<".text)" << "}");
+        calendarTag->Property("Component.onCompleted", Formatter() << "{"
+            << uiDateInput->GetId() << "." << "textChanged" << uiDateInput->GetId() << ".connect(setCalendarDate);"
+            << uiDateInput->GetId() << "." << "textChanged" << uiDateInput->GetId() << "( " << uiDateInput->GetId() << ".text)"
+            << "}");
 
 		auto calendarBoxTag = std::make_shared<QmlTag>("Rectangle");
         calendarBoxTag->Property("id", calendar_box_id);
@@ -1357,21 +1360,25 @@ namespace RendererQml
 			<< "{" << "selectedDate = d.toLocaleString(Qt.locale(\"en_US\"),\"yyyy-MM-dd\");" << "}"
 			<< "else { selectedDate = '' };" << "}");
 
-		uiDateInput->Property("onTextChanged", Formatter() << "{" << uiDateInput->GetId() << "TextChanged(text);" << "setValidDate(text);" << "}");
+        uiDateInput->Property("onTextChanged", Formatter() << "{"
+            << "textChanged" << uiDateInput->GetId() << "(text);"
+            << "setValidDate(text);" 
+            << "}");
 
 		if (!input->GetValue().empty() && Utils::isValidDate(input->GetValue()))
 		{
 			uiDateInput->Property("text", Formatter() << Utils::GetDate(input->GetValue()) << ".toLocaleString(Qt.locale(\"en_US\")," << "\"" << StringDateFormat << "\"" << ")" );
 		}
 
-		uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? input->GetPlaceholder() : "Select date") << " in " << Utils::ToLower(StringDateFormat), true);
 		uiDateInput->Property("validator", Formatter() << "RegExpValidator { regExp: " << DateRegex << "}");
 		uiDateInput->Property("onFocusChanged", Formatter() << "{" << "if(focus===true) inputMask=\"" << inputMask << "\";" <<
 			"if(focus === false){ z=0;" << "if(text === \""<< std::string(dateSeparator) + std::string(dateSeparator) << "\"){ inputMask = \"\" ; } " <<"if( " << calendar_box_id << ".visible === true){ " << calendar_box_id << ".visible=false}}} ");
         calendarTag->Property("onReleased", Formatter() << "{parent.visible=false; " << input->GetId() << ".text=selectedDate.toLocaleString(Qt.locale(\"en_US\")," << "\"" << StringDateFormat << "\")}");
 
 		calendarBoxTag->Property("Component.onCompleted", "{ Qt.createQmlObject('" + calendarTag->ToString() + "'," + calendar_box_id + ",'calendar')}");
-		uiDateInput->AddChild(calendarBoxTag);
+
+        uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? input->GetPlaceholder() : "Select date") << " in " << Utils::ToLower(StringDateFormat), true);
+        uiDateInput->AddChild(calendarBoxTag);
 
         context->addToInputElementList(origionalElementId, (uiDateInput->GetId() + ".selectedDate"));
 
