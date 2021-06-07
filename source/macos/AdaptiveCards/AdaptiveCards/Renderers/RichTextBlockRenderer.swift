@@ -18,7 +18,11 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
         textView.layoutManager?.usesFontLeading = false
         textView.setContentHuggingPriority(.required, for: .vertical)
         textView.backgroundColor = .clear
-        
+        textView.linkTextAttributes = [
+            NSAttributedString.Key.foregroundColor: config.hyperlinkColorConfig.foregroundColor,
+            NSAttributedString.Key.underlineColor: config.hyperlinkColorConfig.underlineColor,
+            NSAttributedString.Key.underlineStyle: config.hyperlinkColorConfig.underlineStyle.rawValue
+        ]
         // init content
         let content = NSMutableAttributedString()
         

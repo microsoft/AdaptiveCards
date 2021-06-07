@@ -7,7 +7,7 @@
             "facts": [
                 {
                     "title": "First Name followed by a long string",
-                    "value": "Mukul"
+                    "value": "Mukul [Microsoft's Adaptive Cards](https://adaptivecards.io/)"
                 },
                 {
                     "title": "Last Name",

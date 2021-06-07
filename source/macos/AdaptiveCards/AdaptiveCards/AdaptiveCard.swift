@@ -39,16 +39,18 @@ open class AdaptiveCard {
 }
 
 public struct RenderConfig {
-    public static let `default` = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false)
+    public static let `default` = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default)
     let isDarkMode: Bool
     let buttonConfig: ButtonConfig
     // swiftlint:disable identifier_name
     let supportsSchemeV1_3: Bool
+    let hyperlinkColorConfig: HyperlinkColorConfig
     
-    public init(isDarkMode: Bool, buttonConfig: ButtonConfig, supportsSchemeV1_3: Bool) {
+    public init(isDarkMode: Bool, buttonConfig: ButtonConfig, supportsSchemeV1_3: Bool, hyperlinkColorConfig: HyperlinkColorConfig) {
         self.isDarkMode = isDarkMode
         self.buttonConfig = buttonConfig
 		self.supportsSchemeV1_3 = supportsSchemeV1_3
+        self.hyperlinkColorConfig = hyperlinkColorConfig
     }
 }
 
@@ -90,5 +92,21 @@ public struct ButtonConfig {
         self.destructive = destructive
         self.default = `default`
         self.inline = inline
+    }
+}
+
+public struct HyperlinkColorConfig {
+    public static let `default` = HyperlinkColorConfig(foregroundColor: .systemBlue, isUnderlined: false, underlineColor: .blue, underlineStyle: .single)
+    
+    let foregroundColor: NSColor
+    let isUnderlined: Bool
+    let underlineColor: NSColor
+    let underlineStyle: NSUnderlineStyle
+    
+    public init(foregroundColor: NSColor, isUnderlined: Bool, underlineColor: NSColor, underlineStyle: NSUnderlineStyle) {
+        self.foregroundColor = foregroundColor
+        self.isUnderlined = isUnderlined
+        self.underlineColor = isUnderlined ? underlineColor : .clear
+        self.underlineStyle = underlineStyle
     }
 }

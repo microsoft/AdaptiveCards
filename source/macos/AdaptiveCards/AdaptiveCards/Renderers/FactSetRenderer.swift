@@ -46,8 +46,20 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
                 titleView.textColor = textColor
                 valueView.textColor = textColor
                 if markdownParserResult.isHTML {
-                    attributedContent.addAttributes([.foregroundColor: textColor], range: NSRange(location: 0, length: attributedContent.length))
-                    valueView.attributedTextValue = attributedContent
+                    if let attributedString = valueView.attributedTextValue {
+                        let attributedStringCopy = NSMutableAttributedString(attributedString: attributedString)
+                        attributedString.enumerateAttributes(in: NSRange(location: 0, length: attributedString.length), options: .longestEffectiveRangeNotRequired, using: { attributes, range, _ in
+                            if (attributes[.foregroundColor] as? NSColor) != nil {
+                                attributedStringCopy.addAttribute(.foregroundColor, value: textColor as Any, range: range)
+                            }
+                            if (attributes[NSAttributedString.Key.link ] as? NSURL) != nil {
+                                attributedStringCopy.addAttribute(.foregroundColor, value: config.hyperlinkColorConfig.foregroundColor, range: range)
+                                attributedStringCopy.addAttribute(.underlineColor, value: config.hyperlinkColorConfig.underlineColor, range: range)
+                                attributedStringCopy.addAttribute(.underlineStyle, value: config.hyperlinkColorConfig.underlineStyle.rawValue, range: range)
+                            }
+                        })
+                        valueView.attributedTextValue = attributedStringCopy
+                    }
                 }
             }
             

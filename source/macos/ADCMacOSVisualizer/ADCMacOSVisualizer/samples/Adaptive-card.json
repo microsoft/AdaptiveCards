@@ -1,0 +1,33 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Card Specifications",
+            "size": "Medium",
+            "weight": "Bolder"
+        },
+        {
+            "type": "Image",
+            "altText": "",
+            "url": "https://github.com/WebexSamples/webex-card-school/blob/master/public/images/AdaptiveCards.png?raw=true"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Webex Buttons and Cards use [Microsoft's Adaptive Cards](https://adaptivecards.io/) open-source specification to define the content of the card in a JSON object. The Webex Teams clients render cards with a similar look and feel across the clients, letting you put more focus on the content and the interaction and less on the presentation.\n\n\n",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "A card is defined by creating a JSON object that describes the various Adaptive Card schema elements that should be displayed.\n",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "In the next lesson, we will look a little further into what is included in the card data. ",
+            "wrap": true
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

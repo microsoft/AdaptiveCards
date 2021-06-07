@@ -37,6 +37,11 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
         textView.textStorage?.setAttributedString(attributedString)
         textView.textContainer?.widthTracksTextView = true
         textView.backgroundColor = .clear
+        textView.linkTextAttributes = [
+            NSAttributedString.Key.foregroundColor: config.hyperlinkColorConfig.foregroundColor,
+            NSAttributedString.Key.underlineColor: config.hyperlinkColorConfig.underlineColor,
+            NSAttributedString.Key.underlineStyle: config.hyperlinkColorConfig.underlineStyle.rawValue
+        ]
         
         if attributedString.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             // Hide accessibility Element
