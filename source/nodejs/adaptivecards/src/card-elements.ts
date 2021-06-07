@@ -3280,8 +3280,10 @@ export class Choice extends SerializableObject {
         Versions.v1_0,
         "inlineAction",
         [
-            "*",
-            "-Action.ToggleVisibility"
+            "Action.ShowCard",
+            "Action.Submit",
+            "Action.OpenUrl",
+            "Action.Execute"
         ]);
 
     @property(Choice.titleProperty)
@@ -3294,7 +3296,7 @@ export class Choice extends SerializableObject {
     isEnabled?: boolean;
 
     @property(Choice.inlineActionProperty)
-    inlineAction?: Action;
+    inlineAction?: ToggleVisibilityAction;
 
     //#endregion
 
@@ -3303,10 +3305,10 @@ export class Choice extends SerializableObject {
     }
 
     protected isDesignMode(): boolean {
-      return false;
+        return false;
     }
 
-    constructor(title?: string, value?: string, isEnabled?: boolean, inlineAction?: Action) {
+    constructor(title?: string, value?: string, isEnabled?: boolean, inlineAction?: ToggleVisibilityAction) {
         super();
 
         this.title = title;
@@ -3432,7 +3434,8 @@ export class ChoiceSetInput extends Input {
             input.onchange = () => {
                 this.valueChanged();
 
-                if (choice.inlineAction) {
+                if ((!this.isMultiSelect && input.checked && choice.inlineAction)
+                    || (this.isMultiSelect && choice.inlineAction)) {
                     choice.inlineAction.setParent(this);
                     choice.inlineAction.execute();
                 }
