@@ -147,7 +147,11 @@ void AdaptiveCard::_ValidateLanguage(const std::string& language, std::vector<st
 {
     try
     {
-        if (language.empty() || language.length() == 2 || language.length() == 3)
+        if (language.empty())
+        {
+            // no need to validate locale
+        }
+        else if (language.length() == 2)
         {
             auto locale = std::locale(language.c_str());
         }
