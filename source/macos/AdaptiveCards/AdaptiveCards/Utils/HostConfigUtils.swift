@@ -137,7 +137,14 @@ class ColorUtils {
 }
 
 class TextUtils {
-    static func getMarkdownString(parserResult: ACSMarkdownParserResult) -> NSMutableAttributedString {
+    static func getMarkdownString(for view: ACRView, with parserResult: ACSMarkdownParserResult) -> NSMutableAttributedString {
+        guard parserResult.isHTML, let attributedString = view.resolveAttributedString(for: parserResult.parsedString) else {
+            return getMarkdownString(parserResult: parserResult)
+        }
+        return NSMutableAttributedString(attributedString: attributedString)
+    }
+    
+    private static func getMarkdownString(parserResult: ACSMarkdownParserResult) -> NSMutableAttributedString {
         let content: NSMutableAttributedString
         if parserResult.isHTML, let htmlData = parserResult.htmlData {
             do {

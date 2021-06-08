@@ -131,6 +131,7 @@ private class FakeACRViewDelegate: NSView, ACRViewDelegate {
     var submitActionCount = 0
     var dictValues = 0
     func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView) {}
+    func acrView(_ view: ACRView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect) {}
     func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) {}
     
     func acrView(_ view: ACRView, didSubmitUserResponses dict: [String : Any], actionView: NSView) {
@@ -149,19 +150,5 @@ private class FakeImageHoldingView: NSView, ImageHoldingView {
     var imageDidSet = false
     func setImage(_ image: NSImage) {
         imageDidSet = true
-    }
-}
-
-private class FakeResourceResolver: ACRViewResourceResolverDelegate {
-    var calledCount = 0
-    var calledURLs: [String] = []
-    func resolve(_ adaptiveCard: ImageResourceHandlerView, requestImageFor url: String) {
-        calledCount += 1
-        calledURLs.append(url)
-        adaptiveCard.setImage(NSImage(), for: url)
-    }
-    
-    func resolve(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize? {
-        return nil
     }
 }

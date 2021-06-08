@@ -30,7 +30,7 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
         // Main loop to iterate over Array of facts
         for fact in factArray {
             let markdownParserResult = BridgeTextUtils.processText(from: fact, hostConfig: hostConfig)
-            let markdownString = TextUtils.getMarkdownString(parserResult: markdownParserResult)
+            let markdownString = TextUtils.getMarkdownString(for: rootView, with: markdownParserResult)
             let attributedContent = TextUtils.addFontProperties(attributedString: markdownString, textProperties: BridgeTextUtils.convertFact(toRichTextElementProperties: fact), hostConfig: hostConfig)
             let titleView = ACRFactTextField()
             let valueView = ACRFactTextField()

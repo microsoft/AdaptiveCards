@@ -71,6 +71,7 @@ class AdaptiveCardRenderer {
             rootView.registerImageHandlingView(rootView.backgroundImageView, for: url)
         }
         
+        rootView.appearance = NSAppearance.getAppearance(isDark: config.isDarkMode)
         rootView.dispatchResolveRequests()
         rootView.layoutSubtreeIfNeeded()
         return rootView
@@ -89,6 +90,10 @@ extension AdaptiveCardRenderer: ACRViewDelegate {
     func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) {
         actionDelegate?.adaptiveCard(view, didShowCardWith: actionView, previousHeight: previousHeight, newHeight: newHeight)
     }
+
+    func acrView(_ view: ACRView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect) {
+        actionDelegate?.adaptiveCard(view, didUpdateBoundsFrom: oldValue, to: newValue)
+    }
 }
 
 extension AdaptiveCardRenderer: ACRViewResourceResolverDelegate {
@@ -98,5 +103,20 @@ extension AdaptiveCardRenderer: ACRViewResourceResolverDelegate {
     
     func resolve(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize? {
         resolverDelegate?.adaptiveCard(adaptiveCard, dimensionsForImageWith: url)
+    }
+    
+    func resolve(_ adaptiveCard: NSView, attributedStringFor htmlString: String) -> NSAttributedString? {
+        resolverDelegate?.adaptiveCard(adaptiveCard, attributedStringFor: htmlString)
+    }
+}
+
+extension NSAppearance {
+    static func getAppearance(isDark: Bool) -> NSAppearance? {
+        guard isDark else { return NSAppearance(named: .aqua) }
+        if #available(macOS 10.14, *) {
+            return NSAppearance(named: .darkAqua)
+        } else {
+            return NSAppearance(named: .vibrantDark)
+        }
     }
 }

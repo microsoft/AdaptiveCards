@@ -13,7 +13,7 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
         textView.translatesAutoresizingMaskIntoConstraints = false
         
         let markdownResult = BridgeTextUtils.processText(from: textBlock, hostConfig: hostConfig)
-        let markdownString = TextUtils.getMarkdownString(parserResult: markdownResult)
+        let markdownString = TextUtils.getMarkdownString(for: rootView, with: markdownResult)
         let attributedString = TextUtils.addFontProperties(attributedString: markdownString, textProperties: BridgeTextUtils.convertTextBlock(toRichTextElementProperties: textBlock), hostConfig: hostConfig)
         
         textView.isEditable = false

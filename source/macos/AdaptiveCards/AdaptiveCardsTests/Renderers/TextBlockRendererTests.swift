@@ -6,12 +6,14 @@ class TextBlockRendererTests: XCTestCase {
     private var hostConfig: FakeHostConfig!
     private var textBlock: FakeTextBlock!
     private var textBlockRenderer: TextBlockRenderer!
+    private var resourceResolver: FakeResourceResolver!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         hostConfig = .make()
         textBlock = .make()
         textBlockRenderer = TextBlockRenderer()
+        resourceResolver = FakeResourceResolver()
     }
     
     func testRendererSetsText() {
@@ -28,6 +30,7 @@ class TextBlockRendererTests: XCTestCase {
         
         let textView = renderTextView()
         XCTAssertEqual(textView.string, "Hello world!")
+        XCTAssertTrue(resourceResolver.textResolverCalled)
     }
     
     func testRendererSetsWrap() {
@@ -77,7 +80,9 @@ class TextBlockRendererTests: XCTestCase {
     }
     
     private func renderTextView() -> ACRTextView {
-        let view = textBlockRenderer.render(element: textBlock, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
+        let rootView = FakeRootView()
+        rootView.resolverDelegate = resourceResolver
+        let view = textBlockRenderer.render(element: textBlock, with: hostConfig, style: .default, rootView: rootView, parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRTextView)
         guard let textView = view as? ACRTextView else { fatalError() }

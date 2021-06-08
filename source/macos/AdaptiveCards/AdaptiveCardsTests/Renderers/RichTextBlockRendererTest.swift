@@ -6,6 +6,7 @@ class RichTextBlockRendererTests: XCTestCase {
     private var hostConfig: FakeHostConfig!
     private var richTextBlock: FakeRichTextBlock!
     private var richTextBlockRenderer: RichTextBlockRenderer!
+    private var resourceResolver: FakeResourceResolver!
     private let sampleText = "Hello world!"
     private let renderConfig: RenderConfig = .default
     
@@ -15,6 +16,7 @@ class RichTextBlockRendererTests: XCTestCase {
         hostConfig = .make()
         richTextBlock = FakeRichTextBlock.make()
         richTextBlockRenderer = RichTextBlockRenderer()
+        resourceResolver = FakeResourceResolver()
     }
     
     func testRendererSetsText() {
@@ -24,6 +26,7 @@ class RichTextBlockRendererTests: XCTestCase {
         
         let textView = renderTextView()
         XCTAssertEqual(textView.string, sampleText)
+        XCTAssertTrue(resourceResolver.textResolverCalled)
     }
     
     func testRendererRightAlignsText() {
@@ -85,7 +88,9 @@ class RichTextBlockRendererTests: XCTestCase {
     
 
     private func renderTextView() -> ACRTextView {
-        let view = richTextBlockRenderer.render(element: richTextBlock, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
+        let rootView = FakeRootView()
+        rootView.resolverDelegate = resourceResolver
+        let view = richTextBlockRenderer.render(element: richTextBlock, with: hostConfig, style: .default, rootView: rootView, parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRTextView)
         guard let textView = view as? ACRTextView else { fatalError() }

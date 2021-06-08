@@ -5,11 +5,13 @@ public protocol AdaptiveCardActionDelegate: AnyObject {
     func adaptiveCard(_ adaptiveCard: NSView, didSelectOpenURL urlString: String, actionView: NSView)
     func adaptiveCard(_ adaptiveCard: NSView, didSubmitUserResponses dict: [String: Any], actionView: NSView)
     func adaptiveCard(_ adaptiveCard: NSView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat)
+    func adaptiveCard(_ adaptiveCard: NSView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect)
 }
 
 public protocol AdaptiveCardResourceResolver: AnyObject {
     func adaptiveCard(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize?
     func adaptiveCard(_ adaptiveCard: ImageResourceHandlerView, requestImageFor url: String)
+    func adaptiveCard(_ adaptiveCard: NSView, attributedStringFor htmlString: String) -> NSAttributedString?
 }
 
 enum HostConfigParseError: Error {

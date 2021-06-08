@@ -63,12 +63,6 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         switch AdaptiveCard.parseHostConfig(from: hostConfigString) {
         case .success(let config):
             let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme, buttonConfig: buttonConfig, supportsSchemeV1_3: false, hyperlinkColorConfig: .default ))
-            // This changes the appearance of the native components depending on the hostConfig
-            if #available(OSX 10.14, *) {
-                cardView.appearance = NSAppearance(named: darkTheme ? .darkAqua : .aqua)
-            } else {
-                cardView.appearance = NSAppearance(named: .aqua)
-            }
             
             if let renderedView = stackView.arrangedSubviews.first {
                 renderedView.removeFromSuperview()
@@ -176,6 +170,10 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
 }
 
 extension RootViewController: AdaptiveCardActionDelegate {
+    func adaptiveCard(_ adaptiveCard: NSView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect) {
+        print("LAYOUT CHANGE: Height changed from \(oldValue.height) to \(newValue.height)")
+    }
+    
     func adaptiveCard(_ adaptiveCard: NSView, didSelectOpenURL urlString: String, actionView: NSView) {
         print("OPEN URL ACTION: \(urlString)")
         guard let url = URL(string: urlString) else { return }
@@ -242,5 +240,9 @@ extension RootViewController: AdaptiveCardResourceResolver {
                 }
             }
         }
+    }
+    
+    func adaptiveCard(_ adaptiveCard: NSView, attributedStringFor htmlString: String) -> NSAttributedString? {
+        return nil
     }
 }

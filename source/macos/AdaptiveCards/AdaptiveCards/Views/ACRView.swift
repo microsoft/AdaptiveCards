@@ -5,11 +5,13 @@ protocol ACRViewDelegate: AnyObject {
     func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView)
     func acrView(_ view: ACRView, didSubmitUserResponses dict: [String: Any], actionView: NSView)
     func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat)
+    func acrView(_ view: ACRView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect)
 }
 
 protocol ACRViewResourceResolverDelegate: AnyObject {
     func resolve(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize?
     func resolve(_ adaptiveCard: ImageResourceHandlerView, requestImageFor url: String)
+    func resolve(_ adaptiveCard: NSView, attributedStringFor htmlString: String) -> NSAttributedString?
 }
 
 class ACRView: ACRColumnView {
@@ -47,6 +49,17 @@ class ACRView: ACRColumnView {
         super.init(coder: coder)
     }
     
+    private var previousBounds: NSRect?
+    override func layout() {
+        super.layout()
+        guard window != nil else { return }
+        if let pBounds = previousBounds, bounds.height != pBounds.height {
+            logInfo("AdaptiveCards: layout change called from \(pBounds.height) to \(bounds.height) for id: \(identifier?.rawValue ?? "nil")")
+            delegate?.acrView(self, didUpdateBoundsFrom: pBounds, to: bounds)
+        }
+        previousBounds = bounds
+    }
+
     override func setupViews() {
         super.setupViews()
         addSubview(showCardStackView)
@@ -76,6 +89,10 @@ class ACRView: ACRColumnView {
         cardView.parent = self
         showCardStackView.addArrangedSubview(cardView)
         cardView.widthAnchor.constraint(equalTo: showCardStackView.widthAnchor).isActive = true
+    }
+    
+    func resolveAttributedString(for htmlString: String) -> NSAttributedString? {
+        return resolverDelegate?.resolve(self, attributedStringFor: htmlString)
     }
     
     func registerImageHandlingView(_ view: ImageHoldingView, for url: String) {
