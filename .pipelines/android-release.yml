@@ -19,25 +19,30 @@ steps:
     publishJUnitResults: false
 
 - task: Gradle@2
-  displayName: 'publish'
+  displayName: 'Gradle Unsigned Publication'
   inputs:
     gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
-    tasks: 'adaptivecards:publishReleasePublicationToLocalDirectoryRepository'
+    tasks: 'adaptivecards:publishUnsignedReleasePublicationToUnsignedArtifactRepository'
     publishJUnitResults: false
 
 - task: Powershell@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  displayName: 'Copy Files For Signing'
   inputs:
     targetType: inline
     script: |
      ls $(build.sourcesdirectory) -File -Recur | ?{
-       $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar|.pom)$"
+       $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar)$"
      } | %{
-       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) $_.Name)
-       
-       # Additional copy to be converted into detached PGP signature by ESRP task
-       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
+       cp $_.FullName ($_.FullName + ".asc")
+       [System.Environment]::SetEnvironmentVariable('AC_AAR_SIGNATURE_PATH',($_.FullName + ".asc"),'User')
+     }
+
+     ls $(build.sourcesdirectory) -File -Recur | ?{
+       $_.FullName -Match ".*\\io\\adaptivecards\\.*(.pom)$"
+     } | %{
+       cp $_.FullName ($_.FullName + ".asc")
+       [System.Environment]::SetEnvironmentVariable('AC_POM_SIGNATURE_PATH',($_.FullName + ".asc"),'User')
      }
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
@@ -57,6 +62,26 @@ steps:
          "ToolVersion":"1.0"
        }
      ]
+
+
+- task: Gradle@2
+  displayName: 'Gradle Signed Publication'
+  inputs:
+    gradleWrapperFile: source/android/gradlew.bat
+    workingDirectory: source/android
+    tasks: 'adaptivecards:publishSignedReleasePublicationToSignedArtifactRepository'
+    publishJUnitResults: false
+
+- task: Powershell@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    targetType: inline
+    script: |
+     ls $(build.sourcesdirectory) -File -Recur | ?{
+       $_.FullName -Match ".*\\signedArtifact\\.*(.aar|.pom|.aar.asc|.pom.asc)$"
+     } | %{
+       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) $_.Name)
+     }
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
