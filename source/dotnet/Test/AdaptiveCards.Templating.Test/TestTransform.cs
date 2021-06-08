@@ -10947,6 +10947,80 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestNullValueWithoutSubstitution()
+        {
+            string jsonTemplate = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""$data"": {
+                ""person"": {
+                    ""firstName"": null,
+                    ""lastName"": ""Leader""
+                }
+     },
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello ${person.firstName}""
+        }
+    ]
+}";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            var context = new EvaluationContext();
+
+            string cardJson = transformer.Expand(context);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello ${person.firstName}""
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestNullValueWithSubstitution()
+        {
+            string jsonTemplate = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""$data"": {
+                ""person"": {
+                    ""firstName"": null,
+                    ""lastName"": ""Leader""
+                }
+     },
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello ${person.firstName}""
+        }
+    ]
+}";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            var context = new EvaluationContext();
+
+            string cardJson = transformer.Expand(context, name => "Default First Name");
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello Default First Name""
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
         public void TestComplexAELParsing()
         {
             string jsonTemplate = @"{
