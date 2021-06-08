@@ -157,6 +157,28 @@ class TextUtils {
         }
         return content
     }
+    
+    static func addFontProperties(attributedString: NSMutableAttributedString, textProperties: ACSRichTextElementProperties, hostConfig: ACSHostConfig) -> NSMutableAttributedString {
+        let content = NSMutableAttributedString(attributedString: attributedString)
+        attributedString.enumerateAttributes(in: NSRange(location: 0, length: attributedString.length), options: .longestEffectiveRangeNotRequired, using: { attributes, range, _ in
+            guard let font = attributes[.font] as? NSFont else { return }
+            let fontWithProperties = FontUtils.getFont(for: hostConfig, with: textProperties)
+            var descriptor = font.fontDescriptor
+            
+            if descriptor.symbolicTraits.contains(.italic) {
+                descriptor = descriptor.withFamily(fontWithProperties.familyName ?? "").withSymbolicTraits(.italic)
+            } else if descriptor.symbolicTraits.contains(.bold) {
+                descriptor = descriptor.withFamily(fontWithProperties.familyName ?? "").withSymbolicTraits(.bold)
+            } else {
+                descriptor = descriptor.withFamily(fontWithProperties.familyName ?? "")
+                let weightAttributes = CTFontDescriptorCopyAttributes(fontWithProperties.fontDescriptor)
+                descriptor = CTFontDescriptorCreateCopyWithAttributes(descriptor, weightAttributes)
+            }
+            let newFont = NSFont(descriptor: descriptor, size: fontWithProperties.pointSize)
+            content.addAttribute(.font, value: newFont as Any, range: range)
+        })
+        return content
+    }
 }
 
 class HostConfigUtils {

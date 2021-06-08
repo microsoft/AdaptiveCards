@@ -35,7 +35,8 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
                 
             let markdownResult = BridgeTextUtils.processText(fromRichTextBlock: textRun, hostConfig: hostConfig)
             
-            let textRunContent = TextUtils.getMarkdownString(parserResult: markdownResult)
+            let markdownString = TextUtils.getMarkdownString(parserResult: markdownResult)
+            let textRunContent = TextUtils.addFontProperties(attributedString: markdownString, textProperties: BridgeTextUtils.convertTextRun(toRichTextElementProperties: textRun), hostConfig: hostConfig)
                 
             // Set paragraph style such as line break mode and alignment
             let paragraphStyle = NSMutableParagraphStyle()
