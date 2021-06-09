@@ -4,9 +4,6 @@ package io.adaptivecards.renderer.input;
 
 import android.content.Context;
 import android.content.res.Resources;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -14,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -21,13 +19,25 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
+
 import io.adaptivecards.R;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
+import io.adaptivecards.objectmodel.ChoiceSetInput;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
@@ -40,16 +50,9 @@ import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinner;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.ChoiceSetInput;
-import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.inputhandler.FilteredComboBoxInputHandler;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
 
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
@@ -384,6 +387,162 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         }
     }
 
+    public View renderFilteredComboBox(
+        RenderedAdaptiveCard renderedCard,
+        Context context,
+        ChoiceSetInput choiceSetInput,
+        HostConfig hostConfig,
+        RenderArgs renderArgs)
+    {
+
+        final Vector<String> titleList = new Vector<>();
+        ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
+        long size = choiceInputVector.size();
+        int selection = 0;
+        String value = choiceSetInput.GetValue();
+
+        for (int i = 0; i < size; i++)
+        {
+            ChoiceInput choiceInput = choiceInputVector.get(i);
+
+            titleList.addElement(choiceInput.GetTitle());
+            if (choiceInput.GetValue().equals(value))
+            {
+                selection = i;
+            }
+        }
+
+        // If the default value is empty, then create an empty option at the end to avoid any mess
+        // with indexes
+        boolean hasEmptyDefault = value.isEmpty();
+        if (hasEmptyDefault)
+        {
+            // Android has an undocumented behaviour where a spinner with an empty option selected
+            // will not receive accessibility focus, if we add an single space ' ' then the spinner
+            // can receive focus.
+            String placeholder = choiceSetInput.GetPlaceholder();
+            if (placeholder.isEmpty())
+            {
+                placeholder = " ";
+            }
+            titleList.addElement(placeholder);
+
+            selection = (int) size;
+        }
+
+        boolean usingCustomInputs = isUsingCustomInputs(context);
+        final AutoCompleteTextView textView = new AutoCompleteTextView(context);
+
+        final FilteredComboBoxInputHandler inputHandler = new FilteredComboBoxInputHandler(choiceSetInput);
+
+        boolean isRequired = choiceSetInput.GetIsRequired();
+        ValidatedInputLayout inputLayout = null;
+
+        // if using custom inputs, we don't have to create the surrounding linear layout
+        boolean needsOuterLayout = (isRequired && !usingCustomInputs);
+        if (needsOuterLayout)
+        {
+            inputLayout = new ValidatedSpinnerLayout(context,
+                getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
+            inputLayout.setTag(new TagContent(choiceSetInput, inputHandler));
+            inputHandler.setView(inputLayout);
+        }
+        else
+        {
+            textView.setTag(new TagContent(choiceSetInput, inputHandler));
+            inputHandler.setView(textView);
+        }
+        renderedCard.registerInputHandler(inputHandler, renderArgs.getContainerCardId());
+
+        class TextSpinnerAdapter extends ArrayAdapter<String>
+        {
+            TextSpinnerAdapter(Context context, int resource,
+                               Vector<String> items, boolean hasEmptyDefault)
+            {
+                super(context, resource, items);
+                m_hasEmptyDefault = hasEmptyDefault;
+                m_itemCount = items.size();
+            }
+
+            public int getCount()
+            {
+                if (m_hasEmptyDefault)
+                {
+                    return m_itemCount - 1;
+                }
+                else
+                {
+                    return m_itemCount;
+                }
+            }
+
+            private int m_itemCount = 0;
+            private boolean m_hasEmptyDefault = false;
+        }
+
+        class WrappedTextSpinnerAdapter extends TextSpinnerAdapter
+        {
+            WrappedTextSpinnerAdapter(Context context, int resource,
+                                      Vector<String> items, boolean hasEmptyDefault)
+            {
+                super(context, resource, items, hasEmptyDefault);
+            }
+
+            @NonNull
+            @Override
+            // getView returns the view when spinner is not selected
+            // override method disables single line setting
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+            {
+                View view = super.getView(position, convertView, parent);
+                TextView txtView = view.findViewById(android.R.id.text1);
+                txtView.setSingleLine(false);
+                return view;
+            }
+        }
+
+        ArrayAdapter<String> spinnerArrayAdapter;
+        if (choiceSetInput.GetWrap())
+        {
+            spinnerArrayAdapter = new WrappedTextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
+        }
+        else
+        {
+            spinnerArrayAdapter = new TextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
+        }
+
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        textView.setAdapter(spinnerArrayAdapter);
+
+        textView.setListSelection(selection);
+        textView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(inputHandler.getId(), inputHandler.getInput());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(inputHandler.getId(), inputHandler.getInput());
+            }
+        });
+
+        textView.setFocusable(true);
+
+        if (needsOuterLayout)
+        {
+            inputLayout.addView(textView);
+            return inputLayout;
+        }
+        else
+        {
+            return textView;
+        }
+    }
+
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -419,7 +578,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             else if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Compact)
             {
                 // create ComboBox (Spinner)
-                inputView = renderComboBox(renderedCard, context, choiceSetInput, hostConfig, renderArgs);
+                inputView = renderFilteredComboBox(renderedCard, context, choiceSetInput, hostConfig, renderArgs);
             }
             else
             {
