@@ -17,6 +17,7 @@ steps:
     workingDirectory: source/android
     tasks: 'adaptivecards:build'
     publishJUnitResults: false
+    options: '-Dhttp.socketTimeout=60000 -Dhttp.connectionTimeout=60000'
 
 - task: Gradle@2
   displayName: 'Gradle Unsigned Publication'
@@ -25,6 +26,7 @@ steps:
     workingDirectory: source/android
     tasks: 'adaptivecards:publishUnsignedReleasePublicationToUnsignedArtifactRepository'
     publishJUnitResults: false
+    options: '-Dhttp.socketTimeout=60000 -Dhttp.connectionTimeout=60000'
 
 - task: Powershell@2
   displayName: 'Copy Files For Signing'
@@ -71,6 +73,7 @@ steps:
     workingDirectory: source/android
     tasks: 'adaptivecards:publishSignedReleasePublicationToSignedArtifactRepository'
     publishJUnitResults: false
+    options: '-Dhttp.socketTimeout=60000 -Dhttp.connectionTimeout=60000'
 
 - task: Powershell@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'

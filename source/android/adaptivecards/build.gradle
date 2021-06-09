@@ -4,11 +4,11 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -39,6 +39,13 @@ android {
 task sourceJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier "sources"
+}
+
+task version {
+    doLast {
+        println "Gradle version: " + project.getGradle().getGradleVersion()
+        println "Groovy version: " + GroovySystem.getVersion()
+    }
 }
 
 def projectInfo = {
