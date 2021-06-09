@@ -134,7 +134,7 @@
 
     [rootView.context popBaseCardElementContext:acoElem];
 
-    column.accessibilityElements = column.subviews;
+    column.accessibilityElements = [column getArrangedSubviews];
 
     return column;
 }
