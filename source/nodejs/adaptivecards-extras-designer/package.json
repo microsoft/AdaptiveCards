@@ -27,17 +27,12 @@
 		"iterate": "webpack --cache --mode=production --progress && npm run dts",
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
-	"dependencies": {
-		"adaptivecards": "^2.9.0",
-		"adaptivecards-extras": "^0.1.1",
-		"adaptivecards-designer": "^2.2.0"
-	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
 		"adaptivecards": "^2.9.0",
-		"adaptivecards-extras": "^0.1.1",
 		"adaptivecards-designer": "^2.2.0",
+		"adaptivecards-extras": "^0.1.1",
 		"dotenv-webpack": "^1.7.0",
 		"eslint": "^7.3.1",
 		"rimraf": "^3.0.2",
@@ -46,5 +41,10 @@
 		"webpack-cli": "^3.3.12",
 		"webpack-concat-plugin": "^3.0.0",
 		"webpack-dev-server": "^3.11.0"
+	},
+	"dependencies": {
+		"adaptivecards": "^2.9.0",
+		"adaptivecards-designer": "^2.2.0",
+		"adaptivecards-extras": "^0.1.1"
 	}
 }
