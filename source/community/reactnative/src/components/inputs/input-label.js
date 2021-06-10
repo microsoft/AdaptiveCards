@@ -19,6 +19,7 @@ export default class InputLabel extends React.Component {
 		this.style = props.style || {};
 		this.isRequired = props.isRequired || false;
 		this.hostConfig = props.configManager.hostConfig;
+		this.altText = props.altText;
 	}
 
 	render() {
@@ -31,7 +32,8 @@ export default class InputLabel extends React.Component {
 						text={label}
 						style={[this.props.configManager.styleConfig.defaultFontConfig, style]}
 						configManager={this.props.configManager}
-						wrap={wrap} />
+						wrap={wrap}
+						altText={this.props.altText} />
 				);
 			} else if (typeof label == Constants.TypeObject && this.isValidLabelType(label.type)) {
 				let element = [];
