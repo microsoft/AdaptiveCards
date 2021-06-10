@@ -16,7 +16,7 @@ open class InputDateRenderer: NSObject, BaseCardElementRendererProtocol {
             view.translatesAutoresizingMaskIntoConstraints = false
             view.maxDateValue = dateElement.getMax() ?? ""
             view.minDateValue = dateElement.getMin() ?? ""
-            view.dateValue = dateElement.getValue() ?? ""
+            view.initialDateValue = dateElement.getValue() ?? ""
             view.placeholder = dateElement.getPlaceholder() ?? ""
             view.idString = dateElement.getId()
             view.isHidden = !dateElement.getIsVisible()

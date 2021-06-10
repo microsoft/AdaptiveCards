@@ -15,7 +15,7 @@ class InputDateRendererTest: XCTestCase {
     }
 
     func testRendererSetsValue() {
-        let val: String = "23/11/2000"
+        let val: String = "2000-10-12"
         inputDate = .make(value: val)
 
         let inputDateField = renderDateInput()
@@ -31,7 +31,7 @@ class InputDateRendererTest: XCTestCase {
     }
 
     func testRendererForMinValue() {
-        let minVal: String = "23/11/1999"
+        let minVal: String = "1999-03-23"
         inputDate = .make(min: minVal)
 
         let inputDateField = renderDateInput()
@@ -39,11 +39,54 @@ class InputDateRendererTest: XCTestCase {
     }
 
     func testRendererForMaxValue() {
-        let maxValue: String = "23/11/2022"
+        let maxValue: String = "2022-02-20"
         inputDate = .make(max: maxValue)
 
         let inputDateField = renderDateInput()
         XCTAssertEqual(inputDateField.maxDateValue, maxValue)
+    }
+    
+    func testClearsText() {
+        let val: String = "2000-11-23"
+        inputDate = .make(value: val)
+
+        let inputDateField = renderDateInput()
+        inputDateField.clearButton.performClick()
+        XCTAssertEqual(inputDateField.textField.stringValue, "")
+        XCTAssertNil(inputDateField.dateValue)
+        XCTAssertTrue(inputDateField.clearButton.isHidden)
+    }
+    
+    func testClearButtonHiddenWithPlaceholder() {
+        let placeholderString: String = "Sample Placeholder"
+        inputDate = .make(placeholder: placeholderString)
+
+        let inputDateField = renderDateInput()
+        XCTAssertTrue(inputDateField.clearButton.isHidden)
+    }
+    
+    func testClearButtonHiddenWithNoText() {
+        inputDate = .make()
+        
+        let inputDateField = renderDateInput()
+        XCTAssertTrue(inputDateField.clearButton.isHidden)
+    }
+    
+    func testClearButtonVisibleWithText() {
+        let val: String = "2000-02-10"
+        inputDate = .make(value: val)
+        
+        let inputDateField = renderDateInput()
+        XCTAssertFalse(inputDateField.clearButton.isHidden)
+    }
+    
+    func testValueShownOnlyForRightInputFormat() {
+        let val: String = "12/10/2000"
+        inputDate = .make(value: val)
+
+        let inputDateField = renderDateInput()
+        XCTAssertNil(inputDateField.dateValue)
+        XCTAssertEqual(inputDateField.textField.stringValue, "")
     }
 
     private func renderDateInput() -> ACRDateField {
@@ -55,3 +98,11 @@ class InputDateRendererTest: XCTestCase {
     }
 }
 
+private extension NSButton {
+    func performClick() {
+        guard !isHidden else { return }
+        if let target = target, let action = action {
+            sendAction(action, to: target)
+        }
+    }
+}

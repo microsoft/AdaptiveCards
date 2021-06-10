@@ -19,7 +19,7 @@ open class InputTimeRenderer: NSObject, BaseCardElementRendererProtocol {
             view.translatesAutoresizingMaskIntoConstraints = false
             view.maxDateValue = timeMax
             view.minDateValue = timeMin
-            view.dateValue = timeValue
+            view.initialDateValue = timeValue
             view.placeholder = timeElement.getPlaceholder() ?? ""
             view.idString = timeElement.getId()
             view.isHidden = !timeElement.getIsVisible()

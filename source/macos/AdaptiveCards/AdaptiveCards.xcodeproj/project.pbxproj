@@ -477,6 +477,8 @@
 		28D7A52425EFAD8000AEA09C /* ImageSetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A52325EFAD8000AEA09C /* ImageSetRenderer.swift */; };
 		28D7A57725F1E7E800AEA09C /* ACRCollectionViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A57625F1E7E800AEA09C /* ACRCollectionViewItem.swift */; };
 		28D7A57C25F1E84800AEA09C /* ACRCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A57B25F1E84800AEA09C /* ACRCollectionView.swift */; };
+		28F812D92670B47D0052AD0B /* clear_18.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F812D82670B47D0052AD0B /* clear_18.png */; };
+		28F812DE2670B4E80052AD0B /* clear_18_w.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F812DD2670B4E80052AD0B /* clear_18_w.png */; };
 		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
 		29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */; };
 		29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */; };
@@ -1028,6 +1030,8 @@
 		28D7A52325EFAD8000AEA09C /* ImageSetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSetRenderer.swift; sourceTree = "<group>"; };
 		28D7A57625F1E7E800AEA09C /* ACRCollectionViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRCollectionViewItem.swift; sourceTree = "<group>"; };
 		28D7A57B25F1E84800AEA09C /* ACRCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRCollectionView.swift; sourceTree = "<group>"; };
+		28F812D82670B47D0052AD0B /* clear_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear_18.png; sourceTree = "<group>"; };
+		28F812DD2670B4E80052AD0B /* clear_18_w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear_18_w.png; sourceTree = "<group>"; };
 		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
 		29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputToggle.swift; sourceTree = "<group>"; };
 		29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRendererTests.swift; sourceTree = "<group>"; };
@@ -1800,7 +1804,9 @@
 			children = (
 				13BE7602261C5F4600FC9636 /* calendar-month-light.png */,
 				13BE7606261C7EDA00FC9636 /* calendar-month-dark.png */,
+				28F812DD2670B4E80052AD0B /* clear_18_w.png */,
 				81C037282604B1F700B33324 /* cisco.jpg */,
+				28F812D82670B47D0052AD0B /* clear_18.png */,
 				81A94A7825FF86E70018213A /* arrowup.png */,
 				81A94A7725FF86E70018213A /* attachment.png */,
 				81A94A6F25FF80D60018213A /* arrowdown.png */,
@@ -2191,12 +2197,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28F812DE2670B4E80052AD0B /* clear_18_w.png in Resources */,
 				13BE7603261C5F4600FC9636 /* calendar-month-light.png in Resources */,
 				13BE7607261C7EDA00FC9636 /* calendar-month-dark.png in Resources */,
 				81A94A7025FF80D60018213A /* arrowdown.png in Resources */,
 				81C037292604B1F700B33324 /* cisco.jpg in Resources */,
 				08299F9E25AF279E00799C66 /* AdaptiveCards.xcconfig in Resources */,
 				81A94A7A25FF86E70018213A /* arrowup.png in Resources */,
+				28F812D92670B47D0052AD0B /* clear_18.png in Resources */,
 				28CE1A7D25E7553700BFCFD9 /* ACRFactTextField.xib in Resources */,
 				81A94A7925FF86E70018213A /* attachment.png in Resources */,
 				2871B11D25DD225C0040AB27 /* ACRMultilineInputTextView.xib in Resources */,

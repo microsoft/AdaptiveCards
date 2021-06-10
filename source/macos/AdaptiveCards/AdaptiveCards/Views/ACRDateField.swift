@@ -18,13 +18,23 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         return formatter
     }()
     
-    private lazy var textField: NSTextField = {
+    private (set) lazy var textField: NSTextField = {
         let view = NSTextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isEditable = true
         view.isSelectable = false
         view.isBordered = true
        return view
+    }()
+    
+    private (set) lazy var clearButton: NSButtonWithImageSpacing = {
+        let resourceName = isDarkMode ? "clear_18_w" : "clear_18"
+        let view = NSButtonWithImageSpacing(image: BundleUtils.getImage(resourceName, ofType: "png") ?? NSImage(), target: self, action: #selector(handleClearAction))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor.clear.cgColor
+        view.isBordered = false
+        return view
     }()
 
     private lazy var iconButton: NSButtonWithImageSpacing = {
@@ -51,15 +61,35 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     let isTimeMode: Bool
     let isDarkMode: Bool
     
-    var selectedDate: Date? = Date()
+    var selectedDate: Date? {
+        didSet {
+            if let selectedDate = selectedDate {
+                textField.stringValue = dateFormatterOut.string(from: selectedDate)
+                datePickerCalendar.dateValue = selectedDate
+                datePickerTextfield.dateValue = selectedDate
+                clearButton.isHidden = false
+            } else {
+                textField.stringValue = ""
+                clearButton.isHidden = true
+            }
+        }
+    }
+    var initialDateValue: String? {
+        didSet {
+            if let initialDateValue = initialDateValue {
+                selectedDate = dateFormatter.date(from: initialDateValue)
+            }
+        }
+    }
     var minDateValue: String?
     var maxDateValue: String?
     var idString: String?
     var dateValue: String? {
-        didSet {
-            if let dateValue = dateValue, let date = dateFormatter.date(from: dateValue) {
-                textField.stringValue = dateFormatterOut.string(from: date)
-                selectedDate = date
+        get {
+            if let selectedDate = selectedDate {
+                return dateFormatter.string(from: selectedDate)
+            } else {
+                return nil
             }
         }
     }
@@ -105,6 +135,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     
     private func setupViews() {
         addSubview(textField)
+        addSubview(clearButton)
         addSubview(iconButton)
     }
     
@@ -113,6 +144,8 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         textField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         textField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         textField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        clearButton.trailingAnchor.constraint(equalTo: iconButton.leadingAnchor).isActive = true
+        clearButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         iconButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         iconButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
@@ -120,6 +153,10 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     private func setupTrackingArea() {
         let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
         addTrackingArea(trackingArea)
+    }
+    
+    @objc private func handleClearAction() {
+        selectedDate = nil
     }
     
     override func mouseEntered(with event: NSEvent) {
@@ -174,10 +211,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     }
     
     @objc private func handleDateAction(_ datePicker: NSDatePicker) {
-        textField.stringValue = dateFormatterOut.string(from: datePicker.dateValue)
         selectedDate = datePicker.dateValue
-        datePickerCalendar.dateValue = datePicker.dateValue
-        datePickerTextfield.dateValue = datePicker.dateValue
     }
 }
 
