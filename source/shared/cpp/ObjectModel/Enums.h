@@ -369,7 +369,8 @@ namespace AdaptiveCards
     enum class ChoiceSetStyle
     {
         Compact = 0,
-        Expanded
+        Expanded,
+        Filtered
     };
     DECLARE_ADAPTIVECARD_ENUM(ChoiceSetStyle);
 
