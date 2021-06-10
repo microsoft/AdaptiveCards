@@ -430,28 +430,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             selection = (int) size;
         }
 
-        boolean usingCustomInputs = isUsingCustomInputs(context);
         final AutoCompleteTextView textView = new AutoCompleteTextView(context);
 
         final FilteredComboBoxInputHandler inputHandler = new FilteredComboBoxInputHandler(choiceSetInput);
 
-        boolean isRequired = choiceSetInput.GetIsRequired();
-        ValidatedInputLayout inputLayout = null;
-
-        // if using custom inputs, we don't have to create the surrounding linear layout
-        boolean needsOuterLayout = (isRequired && !usingCustomInputs);
-        if (needsOuterLayout)
-        {
-            inputLayout = new ValidatedSpinnerLayout(context,
-                getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
-            inputLayout.setTag(new TagContent(choiceSetInput, inputHandler));
-            inputHandler.setView(inputLayout);
-        }
-        else
-        {
-            textView.setTag(new TagContent(choiceSetInput, inputHandler));
-            inputHandler.setView(textView);
-        }
+        textView.setTag(new TagContent(choiceSetInput, inputHandler));
+        inputHandler.setView(textView);
         renderedCard.registerInputHandler(inputHandler, renderArgs.getContainerCardId());
 
         class TextSpinnerAdapter extends ArrayAdapter<String>
@@ -480,36 +464,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             private boolean m_hasEmptyDefault = false;
         }
 
-        class WrappedTextSpinnerAdapter extends TextSpinnerAdapter
-        {
-            WrappedTextSpinnerAdapter(Context context, int resource,
-                                      Vector<String> items, boolean hasEmptyDefault)
-            {
-                super(context, resource, items, hasEmptyDefault);
-            }
-
-            @NonNull
-            @Override
-            // getView returns the view when spinner is not selected
-            // override method disables single line setting
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
-            {
-                View view = super.getView(position, convertView, parent);
-                TextView txtView = view.findViewById(android.R.id.text1);
-                txtView.setSingleLine(false);
-                return view;
-            }
-        }
-
-        ArrayAdapter<String> spinnerArrayAdapter;
-        if (choiceSetInput.GetWrap())
-        {
-            spinnerArrayAdapter = new WrappedTextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
-        }
-        else
-        {
-            spinnerArrayAdapter = new TextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
-        }
+        ArrayAdapter<String> spinnerArrayAdapter = new TextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
 
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         textView.setAdapter(spinnerArrayAdapter);
@@ -532,15 +487,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         textView.setFocusable(true);
 
-        if (needsOuterLayout)
-        {
-            inputLayout.addView(textView);
-            return inputLayout;
-        }
-        else
-        {
-            return textView;
-        }
+        return textView;
     }
 
     @Override
