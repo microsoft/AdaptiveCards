@@ -10,6 +10,13 @@ pool:
 
 steps:
 
+- bash: |
+   #!/usr/bin/env bash
+   
+   curl -v https://jcenter.bintray.com/org/codehaus/groovy/groovy-all/2.4.15/groovy-all-2.4.15.jar
+   ls
+  displayName: 'Bash Script'
+
 - task: Gradle@2
   displayName: build
   inputs:
