@@ -16,7 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.adaptivecards.uitestapp.R;
@@ -34,11 +36,7 @@ public class TestCasesFragment extends Fragment {
         testCasesViewModel = new ViewModelProvider(requireActivity()).get(TestCasesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_test_cases, container, false);
 
-        items = new ArrayList<String>();
-        for(int i = 0; i < 5; ++i)
-        {
-            items.add("" + i);
-        }
+        populateTestCaseList();
 
         TestCasesFragment.TestCasesAdapter<String> itemsAdapter = new TestCasesFragment.TestCasesAdapter(getContext(), android.R.layout.test_list_item, items);
 
@@ -46,6 +44,23 @@ public class TestCasesFragment extends Fragment {
         listView.setAdapter(itemsAdapter);
 
         return root;
+    }
+
+    private void populateTestCaseList() {
+
+        try
+        {
+            items = new ArrayList<String>(Arrays.asList(getActivity().getAssets().list("")));
+
+            // there are some extra directories retrieved, so we'll remove them
+            items.remove("images");
+            items.remove("webkit");
+        }
+        catch (IOException e)
+        {
+            // Raise toast
+            e.printStackTrace();
+        }
     }
 
     private class TestCasesAdapter<T> extends ArrayAdapter
@@ -67,8 +82,13 @@ public class TestCasesFragment extends Fragment {
             }
 
             Button testCaseButton = convertView.findViewById(R.id.list_item_button);
-            String testCaseButtonContent = getItem(position).toString();
-            testCaseButton.setText(testCaseButtonContent);
+
+            String testCaseButtonContent = (String) getItem(position);
+
+            // Remove the .json suffix
+            String testCaseButtonText = testCaseButtonContent.substring(0, testCaseButtonContent.lastIndexOf('.'));
+
+            testCaseButton.setText(testCaseButtonText);
             testCaseButton.setOnClickListener(new TestCasesFragment.TestCasesAdapter.TestCaseButtonClickListener(testCaseButtonContent));
 
             return convertView;
@@ -90,6 +110,5 @@ public class TestCasesFragment extends Fragment {
             }
         }
     }
-
 
 }

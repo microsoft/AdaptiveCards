@@ -4,17 +4,21 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class RenderedCardViewModel extends ViewModel {
+import java.util.List;
 
-    private MutableLiveData<String> mText;
+import io.adaptivecards.uitestapp.ui.inputs.RetrievedInput;
+
+public class RenderedCardViewModel extends ViewModel
+{
+    private MutableLiveData<List<RetrievedInput>> mInputs;
 
     public RenderedCardViewModel()
     {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is where the adaptive card should be rendered");
+        mInputs = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public MutableLiveData<List<RetrievedInput>> getInputs()
+    {
+        return mInputs;
     }
 }
