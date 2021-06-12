@@ -123,7 +123,7 @@ using namespace AdaptiveCards;
         numbersOfItemsInRow++;
     }
 
-    NSUInteger numbersOfRows = ceil(((CGFloat)cellCounts) / numbersOfItemsInRow);
+    NSUInteger numbersOfRows = numbersOfItemsInRow <= 0 ? 1 : ceil(((CGFloat)cellCounts) / numbersOfItemsInRow);
     return (frameWidth) ? CGSizeMake(frameWidth, (numbersOfRows) * (imageSize.height) + (numbersOfRows - 1) * lineSpacing) : CGSizeMake(cellCounts * imageWidthWithSpacing - ((cellCounts > 1) ? spacing : 0), imageSize.height);
 }
 
