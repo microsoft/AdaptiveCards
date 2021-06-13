@@ -2161,7 +2161,11 @@ export class ImageSet extends CardElementContainer {
                 let renderedImage = image.render();
 
                 if (renderedImage) {
-                    renderedImage.style.display = "inline-flex";
+
+                    if(image.isVisible){
+                        renderedImage.style.display = "inline-flex";
+                    }
+                    
                     renderedImage.style.margin = "0px";
                     renderedImage.style.marginRight = "10px";
 
