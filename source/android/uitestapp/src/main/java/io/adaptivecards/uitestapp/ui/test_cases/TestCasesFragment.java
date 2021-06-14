@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.uitestapp.ui.test_cases;
 
 import android.content.Context;
@@ -96,17 +98,17 @@ public class TestCasesFragment extends Fragment {
 
         private class TestCaseButtonClickListener implements View.OnClickListener
         {
-            String m_content;
+            String mContent;
 
             public TestCaseButtonClickListener(String content)
             {
-                m_content = content;
+                mContent = content;
             }
 
             @Override
             public void onClick(View v)
             {
-                mTestCasesViewModel.setLastClickedItem(m_content);
+                mTestCasesViewModel.setLastClickedItem(mContent);
                 mNavigationController.navigate(R.id.navigation_rendered_card);
             }
         }

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.uitestapp.ui.rendered_card;
 
 import android.content.res.AssetManager;
