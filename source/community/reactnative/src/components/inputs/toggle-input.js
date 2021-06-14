@@ -68,15 +68,23 @@ export class ToggleInput extends React.Component {
 						}
 						return (
 							<View
-								accessible={Platform.OS===Constants.PlatformIOS ? true : undefined}
-								accessibilityLabel={Platform.OS===Constants.PlatformIOS ? this.altText : undefined}
+								accessible={true}
+								accessibilityLabel={this.altText}
 								style={styles.toggleView}
-								accessibilityRole={Platform.OS === Constants.PlatformIOS ? 'switch' : undefined}
-								onAccessibilityTap={
-									() => {Platform.OS === Constants.PlatformIOS && this.toggleValueChanged(!this.state.toggleValue, addInputItem)}
+								accessibilityRole={'switch'}
+								onAccessibilityAction={
+									(event) => {
+										if (event.nativeEvent.actionName === 'activate') {
+											this.toggleValueChanged(!this.state.toggleValue, addInputItem);
+										}
+									}
 								}
-								accessibilityState={Platform.OS === Constants.PlatformIOS ? {checked: this.state.toggleValue} : undefined}>
+								accessibilityActions={[{name: 'activate'}]}
+								accessibilityState={{checked: this.state.toggleValue}}
+							>
 								<Switch
+									accessible={false}
+									importantForAccessibility='no-hide-descendants'
 									style={styles.switch}
 									value={toggleValue}
 									onValueChange={toggleValue => {
@@ -84,7 +92,7 @@ export class ToggleInput extends React.Component {
 									}}>
 								</Switch>
 								<View style={styles.titleContainer}>
-									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} altText={this.altText}/>
+									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title}/>
 								</View>
 							</View>
 						)
