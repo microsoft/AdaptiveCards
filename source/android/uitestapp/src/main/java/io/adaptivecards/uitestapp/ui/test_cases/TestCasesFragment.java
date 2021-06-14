@@ -15,6 +15,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +32,8 @@ public class TestCasesFragment extends Fragment {
 
     private TestCasesViewModel testCasesViewModel;
 
+    private NavController m_navigationController;
+
     private List<String> items;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -35,6 +41,9 @@ public class TestCasesFragment extends Fragment {
     {
         testCasesViewModel = new ViewModelProvider(requireActivity()).get(TestCasesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_test_cases, container, false);
+
+        Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        m_navigationController = ((NavHostFragment) fragment).getNavController();
 
         populateTestCaseList();
 
@@ -107,6 +116,7 @@ public class TestCasesFragment extends Fragment {
             public void onClick(View v)
             {
                 testCasesViewModel.setLastClickedItem(m_content);
+                m_navigationController.navigate(R.id.navigation_rendered_card);
             }
         }
     }
