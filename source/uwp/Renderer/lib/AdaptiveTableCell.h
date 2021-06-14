@@ -10,6 +10,7 @@ namespace AdaptiveCards::Rendering::Uwp
     class DECLSPEC_UUID("8670BAA9-7DAC-4714-81F3-8D1553CD0E4E") AdaptiveTableCell
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableCell,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainer,
                                               ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerBase,
                                               ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
@@ -22,7 +23,7 @@ namespace AdaptiveCards::Rendering::Uwp
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TableCell>& sharedTableCell);
 
-        // IAdaptiveTableCell
+        // IAdaptiveContainer
         IFACEMETHODIMP get_Items(
             _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>** items) override;
 
