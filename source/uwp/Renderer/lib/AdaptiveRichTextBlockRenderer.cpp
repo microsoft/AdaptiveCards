@@ -42,7 +42,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(localAdaptiveCardElement.As(&adaptiveRichTextBlock));
 
         // Set the horizontal Alingment
-        RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveRichTextBlock.Get(), xamlRichTextBlock.Get()));
+        RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveRichTextBlock.Get(), renderContext, xamlRichTextBlock.Get()));
 
         // Get the highlighters
         ComPtr<IRichTextBlock5> xamlRichTextBlock5;
