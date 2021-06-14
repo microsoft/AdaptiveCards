@@ -407,10 +407,6 @@ namespace RendererQml
 		uiTextBlock->Property("clip", "true");
 		uiTextBlock->Property("textFormat", "Text.MarkdownText");
 
-		std::string text = TextUtils::ApplyTextFunctions(textBlock->GetText(), context->GetLang());
-		text = Utils::HandleEscapeSequences(text);
-		uiTextBlock->Property("text", text, true);
-
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
 
 		std::string color = context->GetColor(textBlock->GetTextColor(), textBlock->GetIsSubtle(), false);
@@ -447,6 +443,27 @@ namespace RendererQml
 		{
             uiTextBlock->Property("font.family", fontFamily, true);
         }
+
+		std::string text = TextUtils::ApplyTextFunctions(textBlock->GetText(), context->GetLang());
+		text = Utils::HandleEscapeSequences(text);
+
+		const std::string linkColor = context->GetColor(AdaptiveCards::ForegroundColor::Accent, false, false);
+
+		//CSS Property for underline, striketrhough,etc
+		const std::string textDecoration = "none";
+		text = Utils::MarkdownUrlToHtml(text, linkColor, textDecoration);
+		
+		uiTextBlock->Property("text", text, true);
+
+		//MouseArea to Change Cursor on Hovering Links
+		auto MouseAreaTag = GetTextBlockMouseArea();
+		uiTextBlock->AddChild(MouseAreaTag);
+
+		std::string onLinkActivatedFunction = Formatter() << "{"
+			<< "adaptiveCard.buttonClicked(\"\", \"Action.OpenUrl\", link);"
+			<< "console.log(link);"
+			<< "}";
+		uiTextBlock->Property("onLinkActivated", onLinkActivatedFunction);
 
 		return uiTextBlock;
 
@@ -793,6 +810,10 @@ namespace RendererQml
 		}
 		uiTextBlock->Property("text", textrun_all, true);
 
+		//MouseArea to Change Cursor on Hovering Links
+		auto MouseAreaTag = GetTextBlockMouseArea();
+		uiTextBlock->AddChild(MouseAreaTag);
+
         context->addToTextRunSelectActionList(uiTextBlock, selectActionList);
 
 		return uiTextBlock;
@@ -835,7 +856,12 @@ namespace RendererQml
 
         if (textRun->GetSelectAction() != nullptr)
         {
-            uiTextRun.append("<a href='" + selectaction + "'>");
+			const std::string linkColor = context->GetColor(AdaptiveCards::ForegroundColor::Accent, false, false);
+			//CSS Property for underline, striketrhough,etc
+			std::string textDecoration = "none";
+			const std::string styleString = Formatter() << "style=\\\"color:" << linkColor << ";" << "text-decoration:" << textDecoration << ";\\\"";
+
+            uiTextRun.append(Formatter() << "<a href='" << selectaction << "'" << styleString << " >");
             std::string text = TextUtils::ApplyTextFunctions(textRun->GetText(), context->GetLang());
             text = Utils::HandleEscapeSequences(text);
             uiTextRun.append(text);
@@ -3160,5 +3186,15 @@ namespace RendererQml
         iconTag->Property("icon.color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
         return iconTag;
     }
+
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetTextBlockMouseArea()
+	{
+		auto MouseAreaTag = std::make_shared<QmlTag>("MouseArea");
+		MouseAreaTag->Property("anchors.fill", "parent");
+		MouseAreaTag->Property("cursorShape", "parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor");
+		MouseAreaTag->Property("acceptedButtons", "Qt.NoButton");
+
+		return MouseAreaTag;
+	}
 }
 
