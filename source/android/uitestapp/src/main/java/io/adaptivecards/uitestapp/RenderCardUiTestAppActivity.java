@@ -21,38 +21,6 @@ import io.adaptivecards.uitestapp.ui.test_cases.TestCasesFragment;
 public class RenderCardUiTestAppActivity extends AppCompatActivity
 {
 
-    public static class PagerAdapter extends FragmentPagerAdapter
-    {
-        private static int NUM_FRAGMENTS = 3;
-
-        public PagerAdapter(FragmentManager fragmentManager)
-        {
-            super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position)
-        {
-            switch(position)
-            {
-                case 0:
-                    return new TestCasesFragment();
-                case 1:
-                    return new RenderedCardFragment();
-                case 2:
-                    return new InputsFragment();
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount()
-        {
-            return NUM_FRAGMENTS;
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -62,7 +30,7 @@ public class RenderCardUiTestAppActivity extends AppCompatActivity
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-            R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+            R.id.navigation_test_cases, R.id.navigation_rendered_card, R.id.navigation_inputs)
             .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

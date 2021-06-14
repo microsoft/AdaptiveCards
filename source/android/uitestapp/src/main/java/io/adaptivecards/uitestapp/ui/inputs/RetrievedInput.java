@@ -1,5 +1,7 @@
 package io.adaptivecards.uitestapp.ui.inputs;
 
+import androidx.annotation.Nullable;
+
 import io.adaptivecards.uitestapp.ui.rendered_card.RenderedCardViewModel;
 
 public class RetrievedInput
@@ -21,5 +23,18 @@ public class RetrievedInput
     public String getValue()
     {
         return m_value;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj)
+    {
+        if (obj instanceof RetrievedInput)
+        {
+            RetrievedInput cmp = (RetrievedInput) obj;
+            return (m_id.compareToIgnoreCase(cmp.getId()) == 0)
+                && (m_value.compareToIgnoreCase(cmp.getValue()) == 0);
+        }
+
+        return false;
     }
 }
