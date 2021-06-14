@@ -18,6 +18,8 @@
 @property (readonly) BOOL hasSelectAction;
 @property (readonly) BOOL allHasActionIcons;
 @property (readonly) BOOL isFirstRowAsHeaders;
+@property (readonly) ACRVerticalAlignment verticalContentAlignment;
+@property (readonly) ACRHorizontalAlignment horizontalContentAlignment;
 
 @property (weak) ACOHostConfig *hostConfig;
 

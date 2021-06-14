@@ -140,6 +140,10 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::Rendering::Uwp::Containe
                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
 
+HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style,
+                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                _Out_ ABI::Windows::UI::Color* borderColor) noexcept;
+
 HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
@@ -329,8 +333,7 @@ CATCH_RETURN;
     GenerateVectorProjection<AdaptiveCards::ToggleVisibilityTarget, \
                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveToggleVisibilityTarget, \
                              ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget, \
-                             AdaptiveToggleVisibilityTarget>( \
-        SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS);
+                             AdaptiveToggleVisibilityTarget>(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS);
 
 #define GenerateTableCellsProjection(SHAREDTABLECELLS, WINRTTABLECELLS) \
     GenerateVectorProjection<AdaptiveCards::TableCell, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableCell, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableCell, AdaptiveTableCell>( \
@@ -341,8 +344,10 @@ CATCH_RETURN;
         SHAREDTABLEROWS, WINRTTABLEROWS);
 
 #define GenerateTableColumnDefinitionsProjection(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS) \
-    GenerateVectorProjection<AdaptiveCards::TableColumnDefinition, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableColumnDefinition, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableColumnDefinition, AdaptiveTableColumnDefinition>( \
-        SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS);
+    GenerateVectorProjection<AdaptiveCards::TableColumnDefinition, \
+                             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableColumnDefinition, \
+                             ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableColumnDefinition, \
+                             AdaptiveTableColumnDefinition>(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS);
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
@@ -471,6 +476,8 @@ namespace AdaptiveCards::Rendering::Uwp
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveMediaRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"RichTextBlock").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveRichTextBlockRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Table").Get(),
+                                           Make<AdaptiveCards::Rendering::Uwp::AdaptiveTableRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"TextBlock").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveTextBlockRenderer>().Get()));
 

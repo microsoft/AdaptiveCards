@@ -62,29 +62,44 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(xamlTextBlock->get_Inlines(&inlines));
 
-        // Check if this text block has a style set to heading and if so apply the appropriate styling from the host config
+        // Check if this text block has a style and if so apply the appropriate styling from the host config
+        ABI::AdaptiveCards::Rendering::Uwp::TextStyle textStyle = ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Default;
+
         ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> textStyleRef;
         RETURN_IF_FAILED(adaptiveTextBlock->get_Style(&textStyleRef));
 
-        ABI::AdaptiveCards::Rendering::Uwp::TextStyle textStyle = ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Default;
+        if (textStyleRef == nullptr)
+        {
+            // If there's no style on the text block, check the renderContext to see if we inherit one from our parent
+            RETURN_IF_FAILED(renderContext->get_TextStyle(&textStyleRef));
+        }
+
         if (textStyleRef != nullptr)
         {
             RETURN_IF_FAILED(textStyleRef->get_Value(&textStyle));
         }
 
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IAdaptiveTextStylesConfig> textStylesConfig;
+        RETURN_IF_FAILED(hostConfig->get_TextStyles(&textStylesConfig));
+
         if (textStyle == ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Heading)
         {
-            ComPtr<IAdaptiveHostConfig> hostConfig;
-            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-            ComPtr<IAdaptiveTextStylesConfig> textStylesConfig;
-            RETURN_IF_FAILED(hostConfig->get_TextStyles(&textStylesConfig));
-
             ComPtr<IAdaptiveTextStyleConfig> headingTextStyleConfig;
             RETURN_IF_FAILED(textStylesConfig->get_Heading(&headingTextStyleConfig));
 
             RETURN_IF_FAILED(SetXamlInlinesWithTextStyleConfig(
                 adaptiveTextElement.Get(), renderContext, renderArgs, headingTextStyleConfig.Get(), xamlTextBlock.Get()));
+        }
+        else if (textStyle == ABI::AdaptiveCards::Rendering::Uwp::TextStyle::ColumnHeader)
+        {
+            ComPtr<IAdaptiveTextStyleConfig> columnHeaderTextStyleConfig;
+            RETURN_IF_FAILED(textStylesConfig->get_ColumnHeader(&columnHeaderTextStyleConfig));
+
+            RETURN_IF_FAILED(SetXamlInlinesWithTextStyleConfig(
+                adaptiveTextElement.Get(), renderContext, renderArgs, columnHeaderTextStyleConfig.Get(), xamlTextBlock.Get()));
         }
         else
         {

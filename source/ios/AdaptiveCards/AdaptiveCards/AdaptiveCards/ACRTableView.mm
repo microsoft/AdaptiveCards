@@ -98,18 +98,25 @@
                 return @{@"heading" : @YES};
             };
         }
+
         [rootView.context pushBaseCardElementContext:acoRowWrapper additionalProperty:additionalProperties];
+        additionalProperties = nil;
+
         rowView = [[ACRTableRowView alloc] init:acoRowWrapper
                               columnDefinitions:_columnDefinitions
                                        rootView:rootView
                                          inputs:inputs
                                      hostConfig:acoConfig
                                       gridStyle:_gridStyle];
-        additionalProperties = nil;
+
         [self addSubview:rowView];
         [self.widthAnchor constraintEqualToAnchor:rowView.widthAnchor].active = YES;
-        CGFloat offset = self.showGridLines ? 1 : 0;
 
+        CGFloat offset = 0;
+        if (self.showGridLines) {
+            offset = 1;
+            spacing = 0;
+        }
         [nextTopAnchor constraintEqualToAnchor:rowView.topAnchor constant:offset - spacing].active = YES;
         nextTopAnchor = rowView.bottomAnchor;
         spacing = self.spacing;
