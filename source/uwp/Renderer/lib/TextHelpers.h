@@ -86,15 +86,23 @@ HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveCards::Rendering::Uwp::IA
                                      _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock);
 
 template<typename TAdaptiveType, typename TXamlTextBlockType>
-HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock, _In_ TXamlTextBlockType* xamlTextBlock)
+HRESULT SetHorizontalAlignment(_In_ TAdaptiveType* adaptiveTextBlock,
+                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                               _In_ TXamlTextBlockType* xamlTextBlock)
 {
-    ComPtr<IReference<HAlignment>> horizontalAlignmentReference;
-    RETURN_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&horizontalAlignmentReference));
+    ComPtr<IReference<HAlignment>> adaptiveHorizontalAlignmentReference;
+    RETURN_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));
+
+    // If the text block doesn't have horizontal alignment set, check the render args for a parent value
+    if (adaptiveHorizontalAlignmentReference == nullptr)
+    {
+        RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
+    }
 
     HAlignment horizontalAlignment = ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left;
-    if (horizontalAlignmentReference != nullptr)
+    if (adaptiveHorizontalAlignmentReference != nullptr)
     {
-        horizontalAlignmentReference->get_Value(&horizontalAlignment);
+        RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&horizontalAlignment));
     }
 
     ComPtr<TXamlTextBlockType> xamlTextBlockComptr(xamlTextBlock);
