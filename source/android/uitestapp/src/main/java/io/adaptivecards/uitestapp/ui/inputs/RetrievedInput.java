@@ -2,27 +2,25 @@ package io.adaptivecards.uitestapp.ui.inputs;
 
 import androidx.annotation.Nullable;
 
-import io.adaptivecards.uitestapp.ui.rendered_card.RenderedCardViewModel;
-
 public class RetrievedInput
 {
-    private String m_id;
-    private String m_value;
+    private String mId;
+    private String mValue;
 
     public RetrievedInput(String id, String value)
     {
-        m_id = id;
-        m_value = value;
+        mId = id;
+        mValue = value;
     }
 
     public String getId()
     {
-        return m_id;
+        return mId;
     }
 
     public String getValue()
     {
-        return m_value;
+        return mValue;
     }
 
     @Override
@@ -31,8 +29,8 @@ public class RetrievedInput
         if (obj instanceof RetrievedInput)
         {
             RetrievedInput cmp = (RetrievedInput) obj;
-            return (m_id.compareToIgnoreCase(cmp.getId()) == 0)
-                && (m_value.compareToIgnoreCase(cmp.getValue()) == 0);
+            return (mId.compareToIgnoreCase(cmp.getId()) == 0)
+                && (mValue.compareToIgnoreCase(cmp.getValue()) == 0);
         }
 
         return false;

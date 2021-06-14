@@ -6,17 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,12 +24,9 @@ import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.ParseContext;
 import io.adaptivecards.objectmodel.ParseResult;
-import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.uitestapp.R;
 import io.adaptivecards.uitestapp.ui.inputs.RetrievedInput;
@@ -43,22 +34,22 @@ import io.adaptivecards.uitestapp.ui.test_cases.TestCasesViewModel;
 
 public class RenderedCardFragment extends Fragment implements ICardActionHandler
 {
-    private RenderedCardViewModel renderedCardViewModel;
-    private TestCasesViewModel testCasesViewModel;
-    private LinearLayout m_cardContainer;
+    private RenderedCardViewModel mRenderedCardViewModel;
+    private TestCasesViewModel mTestCasesViewModel;
+    private LinearLayout mCardContainer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        renderedCardViewModel = new ViewModelProvider(requireActivity()).get(RenderedCardViewModel.class);
+        mRenderedCardViewModel = new ViewModelProvider(requireActivity()).get(RenderedCardViewModel.class);
 
-        testCasesViewModel = new ViewModelProvider(requireActivity()).get(TestCasesViewModel.class);
+        mTestCasesViewModel = new ViewModelProvider(requireActivity()).get(TestCasesViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_rendered_card, container, false);
 
-        m_cardContainer = root.findViewById(R.id.layout_cardContainer);
+        mCardContainer = root.findViewById(R.id.layout_cardContainer);
 
-        testCasesViewModel.getLastClickedItem().observe(getViewLifecycleOwner(),
+        mTestCasesViewModel.getLastClickedItem().observe(getViewLifecycleOwner(),
                                                         new TestCaseObserver(this));
 
         return root;
@@ -77,7 +68,7 @@ public class RenderedCardFragment extends Fragment implements ICardActionHandler
             {
                 retrievedInputList.add(new RetrievedInput(entry.getKey(), entry.getValue()));
             }
-            renderedCardViewModel.getInputs().setValue(retrievedInputList);
+            mRenderedCardViewModel.getInputs().setValue(retrievedInputList);
         }
     }
 
@@ -115,13 +106,13 @@ public class RenderedCardFragment extends Fragment implements ICardActionHandler
                 ParseResult parseResult = AdaptiveCard.DeserializeFromString(adaptiveCardContents,
                                                                              AdaptiveCardRenderer.VERSION);
 
-                m_cardContainer.removeAllViews();
+                mCardContainer.removeAllViews();
                 RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(getContext(),
                                                                                               getActivity().getSupportFragmentManager(),
                                                                                               parseResult.GetAdaptiveCard(),
                                                                                               m_cardActionHandler,
                                                                                               new HostConfig());
-                m_cardContainer.addView(renderedCard.getView());
+                mCardContainer.addView(renderedCard.getView());
             }
             catch (Exception ex)
             {

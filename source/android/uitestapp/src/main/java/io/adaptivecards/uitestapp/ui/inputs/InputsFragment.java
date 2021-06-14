@@ -22,30 +22,30 @@ import io.adaptivecards.uitestapp.ui.rendered_card.RenderedCardViewModel;
 
 public class InputsFragment extends Fragment {
 
-    private InputsViewModel inputsViewModel;
+    private InputsViewModel mInputsViewModel;
 
-    private RenderedCardViewModel renderedCardViewModel;
+    private RenderedCardViewModel mRenderedCardViewModel;
 
-    private List<RetrievedInput> m_retrievedInputs;
+    private List<RetrievedInput> mRetrievedInputs;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        inputsViewModel = new ViewModelProvider(requireActivity()).get(InputsViewModel.class);
-        renderedCardViewModel = new ViewModelProvider(requireActivity()).get(RenderedCardViewModel.class);
-        m_retrievedInputs = new ArrayList<RetrievedInput>();
+        mInputsViewModel = new ViewModelProvider(requireActivity()).get(InputsViewModel.class);
+        mRenderedCardViewModel = new ViewModelProvider(requireActivity()).get(RenderedCardViewModel.class);
+        mRetrievedInputs = new ArrayList<RetrievedInput>();
 
         View root = inflater.inflate(R.layout.fragment_inputs, container, false);
 
-        InputsFragment.InputsAdapter<String> itemsAdapter = new InputsFragment.InputsAdapter(getContext(), android.R.layout.test_list_item, m_retrievedInputs);
+        InputsFragment.InputsAdapter<String> itemsAdapter = new InputsFragment.InputsAdapter(getContext(), android.R.layout.test_list_item, mRetrievedInputs);
         final ListView listView = root.findViewById(R.id.inputs_list_view);
         listView.setAdapter(itemsAdapter);
 
-        renderedCardViewModel.getInputs().observe(getViewLifecycleOwner(), new Observer<List<RetrievedInput>>() {
+        mRenderedCardViewModel.getInputs().observe(getViewLifecycleOwner(), new Observer<List<RetrievedInput>>() {
             @Override
             public void onChanged(List<RetrievedInput> retrievedInputs)
             {
-                m_retrievedInputs = retrievedInputs;
-                listView.setAdapter(new InputsFragment.InputsAdapter(getContext(), android.R.layout.test_list_item, m_retrievedInputs));
+                mRetrievedInputs = retrievedInputs;
+                listView.setAdapter(new InputsFragment.InputsAdapter(getContext(), android.R.layout.test_list_item, mRetrievedInputs));
             }
         });
 
@@ -54,12 +54,9 @@ public class InputsFragment extends Fragment {
 
     private class InputsAdapter<T> extends ArrayAdapter
     {
-        private List<T> m_testCaseList = null;
-
         public InputsAdapter(@NonNull Context context, int resource, List<T> itemsList)
         {
             super(context, resource, itemsList);
-            m_testCaseList = itemsList;
         }
 
         @Override

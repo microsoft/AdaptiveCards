@@ -8,17 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,28 +21,27 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.adaptivecards.uitestapp.R;
-import io.adaptivecards.uitestapp.ui.inputs.InputsFragment;
 
 public class TestCasesFragment extends Fragment {
 
-    private TestCasesViewModel testCasesViewModel;
+    private TestCasesViewModel mTestCasesViewModel;
 
-    private NavController m_navigationController;
+    private NavController mNavigationController;
 
-    private List<String> items;
+    private List<String> mItems;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        testCasesViewModel = new ViewModelProvider(requireActivity()).get(TestCasesViewModel.class);
+        mTestCasesViewModel = new ViewModelProvider(requireActivity()).get(TestCasesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_test_cases, container, false);
 
         Fragment fragment = requireActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        m_navigationController = ((NavHostFragment) fragment).getNavController();
+        mNavigationController = ((NavHostFragment) fragment).getNavController();
 
         populateTestCaseList();
 
-        TestCasesFragment.TestCasesAdapter<String> itemsAdapter = new TestCasesFragment.TestCasesAdapter(getContext(), android.R.layout.test_list_item, items);
+        TestCasesFragment.TestCasesAdapter<String> itemsAdapter = new TestCasesFragment.TestCasesAdapter(getContext(), android.R.layout.test_list_item, mItems);
 
         ListView listView = root.findViewById(R.id.test_cases_list_view);
         listView.setAdapter(itemsAdapter);
@@ -59,11 +53,11 @@ public class TestCasesFragment extends Fragment {
 
         try
         {
-            items = new ArrayList<String>(Arrays.asList(getActivity().getAssets().list("")));
+            mItems = new ArrayList<String>(Arrays.asList(getActivity().getAssets().list("")));
 
             // there are some extra directories retrieved, so we'll remove them
-            items.remove("images");
-            items.remove("webkit");
+            mItems.remove("images");
+            mItems.remove("webkit");
         }
         catch (IOException e)
         {
@@ -74,12 +68,9 @@ public class TestCasesFragment extends Fragment {
 
     private class TestCasesAdapter<T> extends ArrayAdapter
     {
-        private List<T> m_testCaseList = null;
-
         public TestCasesAdapter(@NonNull Context context, int resource, List<T> itemsList)
         {
             super(context, resource, itemsList);
-            m_testCaseList = itemsList;
         }
 
         @Override
@@ -115,8 +106,8 @@ public class TestCasesFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                testCasesViewModel.setLastClickedItem(m_content);
-                m_navigationController.navigate(R.id.navigation_rendered_card);
+                mTestCasesViewModel.setLastClickedItem(m_content);
+                mNavigationController.navigate(R.id.navigation_rendered_card);
             }
         }
     }
