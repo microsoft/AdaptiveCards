@@ -164,7 +164,7 @@ export class ChoiceSetInput extends React.Component {
 					activeOpacity={1}
 					onPress={onPress}
 					accessible={true}
-					accessibilityRole={'combobox'}
+					accessibilityRole={'button'}
 					accessibilityState={{expanded: this.state.isPickerSelected}}
 					>
 					<View style={this.styleConfig.dropdown}>
