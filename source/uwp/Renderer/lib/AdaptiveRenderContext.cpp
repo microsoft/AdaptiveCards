@@ -182,6 +182,31 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
+    HRESULT AdaptiveRenderContext::get_TextStyle(
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** textStyle)
+    {
+        return m_textStyle.CopyTo(textStyle);
+    }
+
+    HRESULT AdaptiveRenderContext::put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* textStyle)
+    {
+        m_textStyle = textStyle;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderContext::get_HorizontalContentAlignment(
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment)
+    {
+        return m_horizontalAlignment.CopyTo(horizontalAlignment);
+    }
+
+    HRESULT AdaptiveRenderContext::put_HorizontalContentAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment)
+    {
+        m_horizontalAlignment = horizontalAlignment;
+        return S_OK;
+    }
+
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {
         return m_actionSentimentDefaultDictionary;
