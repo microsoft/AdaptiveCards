@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -414,23 +415,24 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         // If the default value is empty, then create an empty option at the end to avoid any mess
         // with indexes
-        boolean hasEmptyDefault = value.isEmpty();
-        if (hasEmptyDefault)
-        {
-            // Android has an undocumented behaviour where a spinner with an empty option selected
-            // will not receive accessibility focus, if we add an single space ' ' then the spinner
-            // can receive focus.
-            String placeholder = choiceSetInput.GetPlaceholder();
-            if (placeholder.isEmpty())
-            {
-                placeholder = " ";
-            }
-            titleList.addElement(placeholder);
-
-            selection = (int) size;
-        }
+//        boolean hasEmptyDefault = value.isEmpty();
+//        if (hasEmptyDefault)
+//        {
+//            // Android has an undocumented behaviour where a spinner with an empty option selected
+//            // will not receive accessibility focus, if we add an single space ' ' then the spinner
+//            // can receive focus.
+//            String placeholder = choiceSetInput.GetPlaceholder();
+//            if (placeholder.isEmpty())
+//            {
+//                placeholder = " ";
+//            }
+//            titleList.addElement(placeholder);
+//
+//            selection = (int) size;
+//        }
 
         final AutoCompleteTextView textView = new AutoCompleteTextView(context);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         final FilteredComboBoxInputHandler inputHandler = new FilteredComboBoxInputHandler(choiceSetInput);
 
@@ -464,26 +466,26 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             private boolean m_hasEmptyDefault = false;
         }
 
-        ArrayAdapter<String> spinnerArrayAdapter = new TextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, titleList);
 
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         textView.setAdapter(spinnerArrayAdapter);
 
-        textView.setListSelection(selection);
-        textView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                CardRendererRegistration.getInstance().notifyInputChange(inputHandler.getId(), inputHandler.getInput());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-                CardRendererRegistration.getInstance().notifyInputChange(inputHandler.getId(), inputHandler.getInput());
-            }
-        });
+//        textView.setListSelection(selection);
+//        textView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+//        {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+//            {
+//                CardRendererRegistration.getInstance().notifyInputChange(inputHandler.getId(), inputHandler.getInput());
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent)
+//            {
+//                CardRendererRegistration.getInstance().notifyInputChange(inputHandler.getId(), inputHandler.getInput());
+//            }
+//        });
 
         textView.setFocusable(true);
 
