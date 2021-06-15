@@ -8,6 +8,9 @@ pool:
   vmImage: vs2017-win2016
   demands: java
 
+variables:
+- group: AdaptiveCards-KVLink
+
 steps:
 
 - task: Gradle@2
@@ -34,15 +37,19 @@ steps:
      ls $(build.sourcesdirectory) -File -Recur | ?{
        $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar)$"
      } | %{
-       cp $_.FullName ($_.FullName + ".asc")
-       [System.Environment]::SetEnvironmentVariable('AC_AAR_SIGNATURE_PATH',($_.FullName + ".asc"),'User')
+       $dest = (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
+       [System.Environment]::SetEnvironmentVariable('AC_AAR_SIGNATURE_PATH', $dest, 'User')
+       cp $_.FullName $dest
+       echo "Copied aar to $dest for signing"
      }
 
      ls $(build.sourcesdirectory) -File -Recur | ?{
        $_.FullName -Match ".*\\io\\adaptivecards\\.*(.pom)$"
      } | %{
-       cp $_.FullName ($_.FullName + ".asc")
-       [System.Environment]::SetEnvironmentVariable('AC_POM_SIGNATURE_PATH',($_.FullName + ".asc"),'User')
+       $dest = (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
+       [System.Environment]::SetEnvironmentVariable('AC_POM_SIGNATURE_PATH', $dest, 'User')
+       cp $_.FullName $dest
+       echo "Copied pom to $dest for signing"
      }
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
@@ -82,6 +89,16 @@ steps:
      } | %{
        cp $_.FullName (Join-Path $(build.artifactstagingdirectory) $_.Name)
      }
+
+- task: Gradle@2
+  displayName: 'Gradle Publish to OSSRH Staging'
+  inputs:
+    gradleWrapperFile: source/android/gradlew.bat
+    workingDirectory: source/android
+    tasks: 'adaptivecards:publishSignedReleasePublicationToSonatypeStagingRepository'
+    publishJUnitResults: false
+  env:
+    AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'

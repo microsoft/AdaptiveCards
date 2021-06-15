@@ -134,7 +134,15 @@ afterEvaluate {
                 name = 'signedArtifact'
                 url = "signedArtifact"
             }
-            // TODO: Add SonaType OSS repository to publish directly
+            // Publish to Sonatype Nexus OSSRH staging
+            maven {
+                name = 'sonatypeStaging'
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username "adaptivecards"
+                    password System.getenv("AC_SONATYPE_CREDENTIAL") ?: "${NexusPassword}"
+                }
+            }
         }
     }
 }
