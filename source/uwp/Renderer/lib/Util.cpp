@@ -884,6 +884,19 @@ try
 }
 CATCH_RETURN;
 
+HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style,
+                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                _Out_ ABI::Windows::UI::Color* borderColor) noexcept
+try
+{
+    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
+    RETURN_IF_FAILED(GetContainerStyleDefinition(style, hostConfig, &styleDefinition));
+    RETURN_IF_FAILED(styleDefinition->get_BorderColor(borderColor));
+
+    return S_OK;
+}
+CATCH_RETURN;
+
 HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                                 ABI::AdaptiveCards::Rendering::Uwp::FontType fontType,
                                 ABI::AdaptiveCards::Rendering::Uwp::TextSize desiredSize,

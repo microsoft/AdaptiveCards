@@ -12,7 +12,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(TextBlockConfig headingLevelsConfig) noexcept;
+        HRESULT RuntimeClassInitialize(TextBlockConfig textBlockConfig) noexcept;
 
         IFACEMETHODIMP get_HeadingLevel(UINT32* value) override;
         IFACEMETHODIMP put_HeadingLevel(UINT32 value) override;

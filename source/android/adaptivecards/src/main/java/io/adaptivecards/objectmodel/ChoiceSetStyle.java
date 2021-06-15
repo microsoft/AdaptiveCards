@@ -10,7 +10,8 @@ package io.adaptivecards.objectmodel;
 
 public enum ChoiceSetStyle {
   Compact(0),
-  Expanded;
+  Expanded,
+  Filtered;
 
   public final int swigValue() {
     return swigValue;
