@@ -32,8 +32,16 @@ namespace AdaptiveCards::Rendering::Uwp
 
         m_wrap = sharedTextBlock->GetWrap();
         m_maxLines = sharedTextBlock->GetMaxLines();
-        m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
+
+        if (sharedTextBlock->GetHorizontalAlignment().has_value())
+        {
+            m_horizontalAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::HAlignment>(
+                                     sharedTextBlock->GetHorizontalAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>>()
+                    .get();
+        }
+
         if (sharedTextBlock->GetStyle().has_value())
         {
             m_style = winrt::box_value(
@@ -72,15 +80,16 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment)
     {
-        *alignment = m_horizontalAlignment;
-        return S_OK;
+        return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment)
     {
-        m_horizontalAlignment = alignment;
+        m_horizontalAlignment = horizontalAlignment;
         return S_OK;
     }
 
@@ -111,7 +120,13 @@ namespace AdaptiveCards::Rendering::Uwp
 
         textBlock->SetWrap(m_wrap);
         textBlock->SetMaxLines(m_maxLines);
-        textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
+
+        if (m_horizontalAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::HAlignment horizontalAlignmentValue;
+            RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
+            textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
+        }
 
         if (m_style != nullptr)
         {

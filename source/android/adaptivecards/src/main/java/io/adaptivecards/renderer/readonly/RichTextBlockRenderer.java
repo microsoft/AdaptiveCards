@@ -126,11 +126,11 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                     throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
                 }
 
-                TextSize textSize = TextRendererUtil.getTextSizeFromStyle(hostConfig, TextStyle.Default, textRun.GetTextSize());
-                ForegroundColor textColor = TextRendererUtil.getTextColorFromStyle(hostConfig, TextStyle.Default, textRun.GetTextColor());
-                TextWeight textWeight = TextRendererUtil.getTextWeightFromStyle(hostConfig, TextStyle.Default, textRun.GetTextWeight());
-                boolean isSubtle = TextRendererUtil.getIsSubtleFromStyle(hostConfig, TextStyle.Default, textRun.GetIsSubtle());
-                FontType fontType = TextRendererUtil.getFontTypeFromStyle(hostConfig, TextStyle.Default, textRun.GetFontType());
+                TextSize textSize = TextRendererUtil.computeTextSize(hostConfig, TextStyle.Default, textRun.GetTextSize(), renderArgs);
+                ForegroundColor textColor = TextRendererUtil.computeTextColor(hostConfig, TextStyle.Default, textRun.GetTextColor(), renderArgs);
+                TextWeight textWeight = TextRendererUtil.computeTextWeight(hostConfig, TextStyle.Default, textRun.GetTextWeight(), renderArgs);
+                boolean isSubtle = TextRendererUtil.computeIsSubtle(hostConfig, TextStyle.Default, textRun.GetIsSubtle(), renderArgs);
+                FontType fontType = TextRendererUtil.computeFontType(hostConfig, TextStyle.Default, textRun.GetFontType(), renderArgs);
 
                 DateTimeParser parser = new DateTimeParser(textRun.GetLanguage());
                 String formattedText = parser.GenerateString(textRun.GetTextForDateParsing());
@@ -212,7 +212,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // HorizontalAlignment
         // Inlines
 
-        textView.setTextAlignment(TextRendererUtil.getTextAlignment(richTextBlock.GetHorizontalAlignment()));
+        TextBlockRenderer.applyHorizontalAlignment(textView, richTextBlock.GetHorizontalAlignment(), renderArgs);
 
         // This is the section for rendering the paragraphs
         // Every paragraph may contain contains any number of inlines

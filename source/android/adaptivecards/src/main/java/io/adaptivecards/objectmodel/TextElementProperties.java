@@ -69,9 +69,9 @@ public class TextElementProperties {
   }
 
   public @androidx.annotation.Nullable TextSize GetTextSize() {
-  StdOptionalTextSize optvalue = new StdOptionalTextSize(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextSize(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalTextSize optvalue = new StdOptionalTextSize(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextSize(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetTextSize(@androidx.annotation.Nullable TextSize value) {
     StdOptionalTextSize optvalue = (value == null) ? new StdOptionalTextSize() : new StdOptionalTextSize(value);
@@ -81,9 +81,9 @@ public class TextElementProperties {
   }
 
   public @androidx.annotation.Nullable TextWeight GetTextWeight() {
-  StdOptionalTextWeight optvalue = new StdOptionalTextWeight(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextWeight(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalTextWeight optvalue = new StdOptionalTextWeight(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextWeight(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetTextWeight(@androidx.annotation.Nullable TextWeight value) {
     StdOptionalTextWeight optvalue = (value == null) ? new StdOptionalTextWeight() : new StdOptionalTextWeight(value);
@@ -93,9 +93,9 @@ public class TextElementProperties {
   }
 
   public @androidx.annotation.Nullable FontType GetFontType() {
-  StdOptionalFontType optvalue = new StdOptionalFontType(AdaptiveCardObjectModelJNI.TextElementProperties_GetFontType(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalFontType optvalue = new StdOptionalFontType(AdaptiveCardObjectModelJNI.TextElementProperties_GetFontType(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetFontType(@androidx.annotation.Nullable FontType value) {
     StdOptionalFontType optvalue = (value == null) ? new StdOptionalFontType() : new StdOptionalFontType(value);
@@ -105,9 +105,9 @@ public class TextElementProperties {
   }
 
   public @androidx.annotation.Nullable ForegroundColor GetTextColor() {
-  StdOptionalForegroundColor optvalue = new StdOptionalForegroundColor(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextColor(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalForegroundColor optvalue = new StdOptionalForegroundColor(AdaptiveCardObjectModelJNI.TextElementProperties_GetTextColor(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetTextColor(@androidx.annotation.Nullable ForegroundColor value) {
     StdOptionalForegroundColor optvalue = (value == null) ? new StdOptionalForegroundColor() : new StdOptionalForegroundColor(value);
@@ -117,9 +117,9 @@ public class TextElementProperties {
   }
 
   public @androidx.annotation.Nullable Boolean GetIsSubtle() {
-  StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.TextElementProperties_GetIsSubtle(swigCPtr, this), false);
-  return optvalue.has_value() ? optvalue.value() : null;
-}
+    StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.TextElementProperties_GetIsSubtle(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
 
   public void SetIsSubtle(@androidx.annotation.Nullable Boolean value) {
     StdOptionalBool optvalue = (value == null) ? new StdOptionalBool() : new StdOptionalBool(value);

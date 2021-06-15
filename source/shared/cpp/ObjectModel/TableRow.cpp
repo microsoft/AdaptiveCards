@@ -11,7 +11,7 @@ namespace AdaptiveCards
     TableRow::TableRow() :
         BaseCardElement(CardElementType::TableRow), m_style(ContainerStyle::None),
         m_horizontalCellContentAlignment(HorizontalAlignment::Left),
-        m_verticalCellContentAlignment(VerticalAlignment::Top), m_cells({}), m_rtl({})
+        m_verticalCellContentAlignment(VerticalContentAlignment::Top), m_cells({}), m_rtl({})
     {
         PopulateKnownPropertiesSet();
     }
@@ -29,11 +29,11 @@ namespace AdaptiveCards
     const std::vector<std::shared_ptr<TableCell>>& TableRow::GetCells() const { return m_cells; }
     void TableRow::SetCells(const std::vector<std::shared_ptr<TableCell>>& value) { m_cells = value; }
 
-    VerticalAlignment TableRow::GetVerticalCellContentAlignment() const { return m_verticalCellContentAlignment; }
-    void TableRow::SetVerticalCellContentAlignment(VerticalAlignment value) { m_verticalCellContentAlignment = value; }
+    std::optional<VerticalContentAlignment> TableRow::GetVerticalCellContentAlignment() const { return m_verticalCellContentAlignment; }
+    void TableRow::SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value) { m_verticalCellContentAlignment = value; }
 
-    HorizontalAlignment TableRow::GetHorizontalCellContentAlignment() const { return m_horizontalCellContentAlignment; }
-    void TableRow::SetHorizontalCellContentAlignment(HorizontalAlignment value)
+    std::optional<HorizontalAlignment> TableRow::GetHorizontalCellContentAlignment() const { return m_horizontalCellContentAlignment; }
+    void TableRow::SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value)
     {
         m_horizontalCellContentAlignment = value;
     }
@@ -55,16 +55,16 @@ namespace AdaptiveCards
             }
         }
 
-        if (m_horizontalCellContentAlignment != HorizontalAlignment::Left)
+        if (m_horizontalCellContentAlignment.has_value())
         {
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalCellContentAlignment)] =
-                HorizontalAlignmentToString(m_horizontalCellContentAlignment);
+                HorizontalAlignmentToString(m_horizontalCellContentAlignment.value_or(HorizontalAlignment::Left));
         }
 
-        if (m_verticalCellContentAlignment != VerticalAlignment::Top)
+        if (m_verticalCellContentAlignment.has_value())
         {
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalCellContentAlignment)] =
-                VerticalAlignmentToString(m_verticalCellContentAlignment);
+                VerticalContentAlignmentToString(m_verticalCellContentAlignment.value_or(VerticalContentAlignment::Top));
         }
 
         if (m_style != ContainerStyle::None)
@@ -81,10 +81,10 @@ namespace AdaptiveCards
 
         std::shared_ptr<TableRow> tableRow = BaseCardElement::Deserialize<TableRow>(context, json);
 
-        tableRow->SetHorizontalCellContentAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
-            json, AdaptiveCardSchemaKey::HorizontalCellContentAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
-        tableRow->SetVerticalCellContentAlignment(ParseUtil::GetEnumValue<VerticalAlignment>(
-            json, AdaptiveCardSchemaKey::VerticalCellContentAlignment, VerticalAlignment::Top, VerticalAlignmentFromString));
+        tableRow->SetHorizontalCellContentAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
+            json, AdaptiveCardSchemaKey::HorizontalCellContentAlignment, HorizontalAlignmentFromString));
+        tableRow->SetVerticalCellContentAlignment(ParseUtil::GetOptionalEnumValue<VerticalContentAlignment>(
+            json, AdaptiveCardSchemaKey::VerticalCellContentAlignment, VerticalContentAlignmentFromString));
         tableRow->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
         auto cells = ParseUtil::GetElementCollection<TableCell>(
             false, context, json, AdaptiveCardSchemaKey::Cells, false, CardElementTypeToString(CardElementType::TableCell));

@@ -46,6 +46,7 @@ namespace AdaptiveCards
         Color,
         ColorConfig,
         Column,
+        ColumnHeader,
         ColumnSet,
         Columns,
         ConnectionName,
@@ -368,7 +369,8 @@ namespace AdaptiveCards
     enum class ChoiceSetStyle
     {
         Compact = 0,
-        Expanded
+        Expanded,
+        Filtered
     };
     DECLARE_ADAPTIVECARD_ENUM(ChoiceSetStyle);
 

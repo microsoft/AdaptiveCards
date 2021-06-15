@@ -244,6 +244,7 @@ namespace AdaptiveCards
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum TextStyle {
                 Default = 0,
                 Heading,
+                ColumnHeader,
             } TextStyle;
 
             declare
@@ -321,7 +322,7 @@ namespace AdaptiveCards
                 AdaptiveTextBlock();
 
                 Boolean Wrap;
-                HAlignment HorizontalAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
                 UInt32 MaxLines;
                 Windows.Foundation.IReference<TextStyle> Style;
             };
@@ -343,7 +344,7 @@ namespace AdaptiveCards
             {
                 AdaptiveRichTextBlock();
 
-                HAlignment HorizontalAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
                 Windows.Foundation.Collections.IVector<IAdaptiveInline> Inlines { get; };
             };
 
@@ -467,7 +468,7 @@ namespace AdaptiveCards
                 ImageSize Size;
                 UInt32 PixelWidth;
                 UInt32 PixelHeight;
-                HAlignment HorizontalAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
                 String AltText;
                 IAdaptiveActionElement SelectAction;
             };
@@ -564,14 +565,17 @@ namespace AdaptiveCards
                 UInt32 MinHeight;
             };
 
-            runtimeclass AdaptiveContainer : IAdaptiveContainerBase, IAdaptiveCardElement
+            interface IAdaptiveContainer
             {
-                AdaptiveContainer();
-
-                VerticalContentAlignment VerticalContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
                 Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
                 AdaptiveBackgroundImage BackgroundImage;
                 Windows.Foundation.IReference<Boolean> Rtl;
+            };
+
+            [default_interface] runtimeclass AdaptiveContainer : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
+            {
+                AdaptiveContainer();
             };
 
             runtimeclass AdaptiveColumn : IAdaptiveContainerBase, IAdaptiveCardElement
@@ -580,7 +584,7 @@ namespace AdaptiveCards
 
                 String Width;
                 UInt32 PixelWidth;
-                VerticalContentAlignment VerticalContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
                 Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
                 AdaptiveBackgroundImage BackgroundImage;
                 Windows.Foundation.IReference<Boolean> Rtl;
@@ -610,23 +614,17 @@ namespace AdaptiveCards
                 Windows.Foundation.Collections.IVector<AdaptiveFact> Facts { get; };
             };
 
-            [default_interface] runtimeclass AdaptiveTableCell : IAdaptiveContainerBase, IAdaptiveCardElement
+            [default_interface] runtimeclass AdaptiveTableCell : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
             {
                 AdaptiveTableCell();
-
-                VerticalContentAlignment VerticalContentAlignment;
-                AdaptiveBackgroundImage BackgroundImage;
-                Windows.Foundation.IReference<Boolean> Rtl;
-
-                Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
             }
 
             runtimeclass AdaptiveTableRow : IAdaptiveCardElement
             {
                 AdaptiveTableRow();
 
-                HAlignment HorizontalCellContentAlignment;
-                VerticalContentAlignment VerticalCellContentAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
                 ContainerStyle Style;
 
                 Windows.Foundation.Collections.IVector<AdaptiveTableCell> Cells { get; };
@@ -636,8 +634,8 @@ namespace AdaptiveCards
             {
                 AdaptiveTableColumnDefinition();
 
-                HAlignment HorizontalCellContentAlignment;
-                VerticalContentAlignment VerticalCellContentAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
 
                 Windows.Foundation.IReference<UInt32> Width;
                 Windows.Foundation.IReference<UInt32> PixelWidth;
@@ -649,8 +647,8 @@ namespace AdaptiveCards
 
                 Boolean ShowGridLines;
                 Boolean FirstRowAsHeaders;
-                HAlignment HorizontalCellContentAlignment;
-                VerticalContentAlignment VerticalCellContentAlignment;
+                Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+                Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
                 ContainerStyle GridStyle;
 
                 Windows.Foundation.Collections.IVector<AdaptiveTableColumnDefinition> Columns { get; };
@@ -710,6 +708,7 @@ namespace AdaptiveCards
                 AdaptiveContainerStyleDefinition();
 
                 Windows.UI.Color BackgroundColor;
+                Windows.UI.Color BorderColor;
                 AdaptiveColorsConfig ForegroundColors;
             };
 
@@ -808,6 +807,7 @@ namespace AdaptiveCards
                 AdaptiveTextStylesConfig();
 
                 AdaptiveTextStyleConfig Heading;
+                AdaptiveTextStyleConfig ColumnHeader;
             };
 
             runtimeclass AdaptiveFactSetTextConfig : IAdaptiveTextStyleConfig
@@ -955,6 +955,13 @@ namespace AdaptiveCards
                 UInt32 HeadingLevel;
             };
 
+            runtimeclass AdaptiveTableConfig
+            {
+                AdaptiveTableConfig();
+
+                UInt32 CellSpacing;
+            };
+
             runtimeclass AdaptiveHostConfig
             {
                 AdaptiveHostConfig();
@@ -978,6 +985,7 @@ namespace AdaptiveCards
                 AdaptiveInputsConfig Inputs;
                 AdaptiveTextBlockConfig TextBlock;
                 AdaptiveTextStylesConfig TextStyles;
+                AdaptiveTableConfig Table;
 
                 static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
                 static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);
@@ -1193,6 +1201,7 @@ namespace AdaptiveCards
                 Boolean IsInShowCard;
                 Boolean AllowAboveTitleIconPlacement;
                 Boolean AncestorHasFallback;
+                Boolean AddContainerPadding;
                 AdaptiveCard ParentCard;
             };
 
@@ -1230,6 +1239,8 @@ namespace AdaptiveCards
                 Windows.UI.Xaml.ResourceDictionary OverrideStyles { get; };
                 AdaptiveInputs UserInputs { get; };
                 Windows.Foundation.IReference<Boolean> Rtl;
+                Windows.Foundation.IReference<TextStyle> TextStyle;
+                Windows.Foundation.IReference<HAlignment> HorizontalContentAlignment;
 
                 void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
                 void LinkSubmitActionToCard(IAdaptiveActionElement submitAction, AdaptiveRenderArgs renderArgs);
@@ -1363,6 +1374,11 @@ namespace AdaptiveCards
             [default_interface] runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
             {
                 AdaptiveToggleVisibilityActionRenderer();
+            };
+
+            [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
+            {
+                AdaptiveTableRenderer();
             };
 
             runtimeclass AdaptiveError

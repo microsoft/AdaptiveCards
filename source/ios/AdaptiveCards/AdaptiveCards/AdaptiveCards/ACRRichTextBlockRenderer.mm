@@ -100,7 +100,7 @@
                 // Set paragraph style such as line break mode and alignment
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
                 paragraphStyle.alignment =
-                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()
+                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left)
                                                  context:rootView.context];
 
                 // Obtain text color to apply to the attributed string
@@ -112,12 +112,12 @@
                 // Config and add Select Action
                 std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
                 ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:baseAction];
-                if (baseAction) {
+                if (baseAction && [acoAction isEnabled]) {
                     NSObject *target;
                     if (ACRRenderingStatus::ACROk ==
                         buildTarget([rootView getSelectActionsTargetBuilderDirector], acoAction,
                                     &target)) {
-                        NSRange selectActionRange = NSMakeRange(0, textRunContent.length - 1);
+                        NSRange selectActionRange = NSMakeRange(0, textRunContent.length);
 
                         [textRunContent addAttribute:@"SelectAction"
                                                value:target
@@ -185,7 +185,7 @@
 
     [viewGroup addArrangedSubview:lab];
 
-    HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment();
+    HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left);
 
     if (adaptiveAlignment == HorizontalAlignment::Left) {
         lab.textAlignment = NSTextAlignmentLeft;

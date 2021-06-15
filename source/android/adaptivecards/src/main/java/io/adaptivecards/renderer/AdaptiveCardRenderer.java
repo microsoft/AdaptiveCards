@@ -158,6 +158,7 @@ public class AdaptiveCardRenderer
 
         RenderArgs renderArgs = new RenderArgs();
         renderArgs.setContainerStyle(style);
+        renderArgs.setAncestorHasSelectAction(adaptiveCard.GetSelectAction() != null);
 
         long cardId = Util.getViewId(rootLayout);
         renderArgs.setContainerCardId(cardId);

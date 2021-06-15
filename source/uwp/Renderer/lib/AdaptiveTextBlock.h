@@ -29,8 +29,10 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_MaxLines(_Out_ UINT32* value) override;
         IFACEMETHODIMP put_MaxLines(UINT32 value) override;
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* HorizontalAlignment) override;
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment HorizontalAlignment) override;
+        IFACEMETHODIMP get_HorizontalAlignment(
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment) override;
+        IFACEMETHODIMP put_HorizontalAlignment(
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment) override;
 
         IFACEMETHODIMP get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** value) override;
         IFACEMETHODIMP put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* value) override;
@@ -187,7 +189,7 @@ namespace AdaptiveCards::Rendering::Uwp
     private:
         boolean m_wrap;
         UINT32 m_maxLines;
-        ABI::AdaptiveCards::Rendering::Uwp::HAlignment m_horizontalAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>> m_horizontalAlignment;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>> m_style;
     };
 

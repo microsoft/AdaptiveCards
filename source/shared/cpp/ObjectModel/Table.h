@@ -28,11 +28,11 @@ namespace AdaptiveCards
         bool GetFirstRowAsHeaders() const;
         void SetFirstRowAsHeaders(bool value);
 
-        HorizontalAlignment GetHorizontalCellContentAlignment() const;
-        void SetHorizontalCellContentAlignment(HorizontalAlignment value);
+        std::optional<HorizontalAlignment> GetHorizontalCellContentAlignment() const;
+        void SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value);
 
-        VerticalAlignment GetVerticalCellContentAlignment() const;
-        void SetVerticalCellContentAlignment(VerticalAlignment value);
+        std::optional<VerticalContentAlignment> GetVerticalCellContentAlignment() const;
+        void SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value);
 
         ContainerStyle GetGridStyle() const;
         void SetGridStyle(ContainerStyle value);
@@ -51,8 +51,8 @@ namespace AdaptiveCards
         std::vector<std::shared_ptr<AdaptiveCards::TableColumnDefinition>> m_columnDefinitions;
         std::vector<std::shared_ptr<AdaptiveCards::TableRow>> m_rows;
 
-        HorizontalAlignment m_horizontalCellContentAlignment;
-        VerticalAlignment m_verticalCellContentAlignment;
+        std::optional<HorizontalAlignment> m_horizontalCellContentAlignment;
+        std::optional<VerticalContentAlignment> m_verticalCellContentAlignment;
         ContainerStyle m_gridStyle;
 
         bool m_showGridLines;

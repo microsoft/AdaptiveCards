@@ -96,13 +96,19 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
         }
 
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment;
-        RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
+        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
+        RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignmentReference));
+
+        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Top;
+        if (verticalContentAlignmentReference != nullptr)
+        {
+            verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
+        }
 
         XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel.Get(), verticalContentAlignment);
 
-        // Assign vertical alignment to the top so that on fixed height cards, the content
-        // still renders at the top even if the content is shorter than the full card
+        // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
         RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         RETURN_IF_FAILED(

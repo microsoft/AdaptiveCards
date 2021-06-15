@@ -1202,7 +1202,7 @@ namespace UWPUnitTests
             AdaptiveTable table = new AdaptiveTable
             {
                 // Table Properties
-                ShowGridLines = true,
+                ShowGridLines = false,
                 FirstRowAsHeaders = true,
                 HorizontalCellContentAlignment = HAlignment.Right,
                 VerticalCellContentAlignment = VerticalContentAlignment.Bottom,
@@ -1217,7 +1217,7 @@ namespace UWPUnitTests
 
             ValidateBaseElementProperties(table, "TableId", false, true, Spacing.ExtraLarge, HeightType.Stretch);
 
-            Assert.IsTrue(table.ShowGridLines);
+            Assert.IsFalse(table.ShowGridLines);
             Assert.IsTrue(table.FirstRowAsHeaders);
             Assert.AreEqual(HAlignment.Right, table.HorizontalCellContentAlignment);
             Assert.AreEqual(VerticalContentAlignment.Bottom, table.VerticalCellContentAlignment);
@@ -1315,7 +1315,7 @@ namespace UWPUnitTests
             AdaptiveCard adaptiveCard = new AdaptiveCard();
             adaptiveCard.Body.Add(table);
 
-            string expectedSerialization = "{\"actions\":[],\"body\":[{\"columns\":[{\"horizontalCellContentAlignment\":\"center\",\"verticalCellContentAlignment\":\"center\"},{\"horizontalCellContentAlignment\":\"right\",\"verticalCellContentAlignment\":\"bottom\"}],\"firstRowAsHeaders\":true,\"horizontalCellContentAlignment\":\"right\",\"rows\":[{\"cells\":[{\"bleed\":true,\"height\":\"Stretch\",\"id\":\"Cell1Id\",\"isVisible\":false,\"items\":[{\"text\":\"Cell1 Text Block\",\"type\":\"TextBlock\"}],\"rtl\":true,\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"TableCell\",\"verticalContentAlignment\":\"Bottom\"},{\"items\":[],\"type\":\"TableCell\"}],\"horizontalCellContentAlignment\":\"center\",\"style\":\"Emphasis\",\"type\":\"TableRow\",\"verticalCellContentAlignment\":\"center\"}],\"showGridLines\":true,\"type\":\"Table\",\"verticalCellContentAlignment\":\"bottom\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"columns\":[{\"horizontalCellContentAlignment\":\"center\",\"verticalCellContentAlignment\":\"Center\"},{\"horizontalCellContentAlignment\":\"right\",\"verticalCellContentAlignment\":\"Bottom\"}],\"height\":\"Stretch\",\"horizontalCellContentAlignment\":\"right\",\"id\":\"TableId\",\"isVisible\":false,\"rows\":[{\"cells\":[{\"bleed\":true,\"height\":\"Stretch\",\"id\":\"Cell1Id\",\"isVisible\":false,\"items\":[{\"text\":\"Cell1 Text Block\",\"type\":\"TextBlock\"}],\"rtl\":true,\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"TableCell\",\"verticalContentAlignment\":\"Bottom\"},{\"items\":[],\"type\":\"TableCell\"}],\"horizontalCellContentAlignment\":\"center\",\"style\":\"Emphasis\",\"type\":\"TableRow\",\"verticalCellContentAlignment\":\"Center\"}],\"separator\":true,\"showGridLines\":false,\"spacing\":\"extraLarge\",\"type\":\"Table\",\"verticalCellContentAlignment\":\"Bottom\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
 
             var jsonString = adaptiveCard.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);

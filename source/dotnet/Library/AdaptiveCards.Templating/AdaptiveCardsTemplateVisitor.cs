@@ -576,7 +576,7 @@ namespace AdaptiveCards.Templating
             {
                 DataContext currentDataContext = GetCurrentDataContext();
                 string templateString = node.GetText();
-                return new AdaptiveCardsTemplateResult(Expand(templateString, currentDataContext.AELMemory, isExpanded));
+                return new AdaptiveCardsTemplateResult(Expand(templateString, currentDataContext.AELMemory, isExpanded, options));
             }
 
             return new AdaptiveCardsTemplateResult(node.GetText());
@@ -588,8 +588,9 @@ namespace AdaptiveCards.Templating
         /// <param name="unboundString"></param>
         /// <param name="data"></param>
         /// <param name="isTemplatedString"></param>
+        /// <param name="options"></param>
         /// <returns><c>string</c></returns>
-        public static string Expand(string unboundString, IMemory data, bool isTemplatedString = false)
+        public static string Expand(string unboundString, IMemory data, bool isTemplatedString = false, Options options = null)
         {
             if (unboundString == null)
             {
@@ -611,10 +612,13 @@ namespace AdaptiveCards.Templating
                 return unboundString;
             }
 
-            var options = new Options
+            if (options == null)
             {
-                NullSubstitution = (path) => $"${{{path}}}"
-            };
+                options = new Options
+                {
+                    NullSubstitution = (path) => $"${{{path}}}"
+                };
+            }
 
             StringBuilder result = new StringBuilder();
             var (value, error) = exp.TryEvaluate(data, options);

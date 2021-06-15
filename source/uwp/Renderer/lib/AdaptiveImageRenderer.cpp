@@ -327,8 +327,21 @@ namespace AdaptiveCards::Rendering::Uwp
             }
         }
 
-        ABI::AdaptiveCards::Rendering::Uwp::HAlignment adaptiveHorizontalAlignment;
-        RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
+        ComPtr<IReference<HAlignment>> adaptiveHorizontalAlignmentReference;
+        RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));
+
+        // If the image doesn't have horizontal alignment set, check the render context for a parent value
+        if (adaptiveHorizontalAlignmentReference == nullptr)
+        {
+            RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
+        }
+
+        HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left;
+        if (adaptiveHorizontalAlignmentReference != nullptr)
+        {
+            RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
+            RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment));
+        }
 
         switch (adaptiveHorizontalAlignment)
         {
@@ -737,7 +750,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
 
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs *
+                    Callback<IRoutedEventHandler>([ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs*
                                                                                                      /*args*/) -> HRESULT {
                         if (isVisible)
                         {
@@ -804,7 +817,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([weakImage, weakParent, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
+                    Callback<IRoutedEventHandler>([weakImage, weakParent, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                           /*args*/) -> HRESULT {
                         ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
                         RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));

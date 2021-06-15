@@ -47,6 +47,7 @@ public enum AdaptiveCardSchemaKey {
   Color,
   ColorConfig,
   Column,
+  ColumnHeader,
   ColumnSet,
   Columns,
   ConnectionName,

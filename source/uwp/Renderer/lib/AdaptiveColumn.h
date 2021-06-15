@@ -32,8 +32,10 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_Items(
             _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>** items);
 
-        IFACEMETHODIMP get_VerticalContentAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment* verticalAlignment);
-        IFACEMETHODIMP put_VerticalContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalAlignment);
+        IFACEMETHODIMP get_VerticalContentAlignment(
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>** verticalAlignment);
+        IFACEMETHODIMP put_VerticalContentAlignment(
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalAlignment);
 
         IFACEMETHODIMP get_BackgroundImage(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveBackgroundImage** backgroundImage);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveBackgroundImage* backgroundImage);
@@ -148,7 +150,8 @@ namespace AdaptiveCards::Rendering::Uwp
         Microsoft::WRL::Wrappers::HString m_width;
         UINT32 m_pixelWidth;
         ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle m_style;
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment m_verticalAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> m_verticalContentAlignment;
+
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveBackgroundImage> m_backgroundImage;
         UINT32 m_minHeight;
         boolean m_bleed;

@@ -20,6 +20,7 @@
 #include "AdaptiveMediaConfig.h"
 #include "AdaptiveSeparatorConfig.h"
 #include "AdaptiveSpacingConfig.h"
+#include "AdaptiveTableConfig.h"
 #include "AdaptiveTextBlockConfig.h"
 #include "AdaptiveTextStylesConfig.h"
 
@@ -98,6 +99,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputsConfig>(m_inputs.GetAddressOf(), sharedHostConfig.GetInputs()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextBlockConfig>(m_textBlock.GetAddressOf(), sharedHostConfig.GetTextBlock()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextStylesConfig>(m_textStyles.GetAddressOf(), sharedHostConfig.GetTextStyles()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTableConfig>(m_table.GetAddressOf(), sharedHostConfig.GetTable()));
 
         return S_OK;
     }
@@ -276,6 +278,17 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT AdaptiveHostConfig::put_TextBlock(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlockConfig* textBlockConfig)
     {
         m_textBlock = textBlockConfig;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_Table(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig** tableConfig)
+    {
+        return m_table.CopyTo(tableConfig);
+    }
+
+    HRESULT AdaptiveHostConfig::put_Table(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig* tableConfig)
+    {
+        m_table = tableConfig;
         return S_OK;
     }
 

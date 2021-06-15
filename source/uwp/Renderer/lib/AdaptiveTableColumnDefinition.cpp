@@ -24,11 +24,23 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT AdaptiveTableColumnDefinition::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TableColumnDefinition>& sharedTableColumnDefinition)
     try
     {
-        m_verticalCellContentAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>(
-            sharedTableColumnDefinition->GetVerticalCellContentAlignment());
+        if (sharedTableColumnDefinition->GetVerticalCellContentAlignment().has_value())
+        {
+            m_verticalCellContentAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>(
+                                     sharedTableColumnDefinition->GetVerticalCellContentAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>>()
+                    .get();
+        }
 
-        m_horizontalCellContentAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>(
-            sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
+        if (sharedTableColumnDefinition->GetHorizontalCellContentAlignment().has_value())
+        {
+            m_horizontalCellContentAlignment =
+                winrt::box_value(static_cast<winrt::AdaptiveCards::Rendering::Uwp::HAlignment>(
+                                     sharedTableColumnDefinition->GetHorizontalCellContentAlignment().value()))
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>>()
+                    .get();
+        }
 
         const auto sharedWidth = sharedTableColumnDefinition->GetWidth();
         if (sharedWidth)
@@ -46,25 +58,27 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTableColumnDefinition::get_VerticalCellContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment* verticalCellContentAlignment)
+    HRESULT AdaptiveTableColumnDefinition::get_VerticalCellContentAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>** verticalCellContentAlignment)
     {
-        *verticalCellContentAlignment = m_verticalCellContentAlignment;
-        return S_OK;
+        return m_verticalCellContentAlignment.CopyTo(verticalCellContentAlignment);
     }
 
-    HRESULT AdaptiveTableColumnDefinition::put_VerticalCellContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalCellContentAlignment)
+    HRESULT AdaptiveTableColumnDefinition::put_VerticalCellContentAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>* verticalCellContentAlignment)
     {
         m_verticalCellContentAlignment = verticalCellContentAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTableColumnDefinition::get_HorizontalCellContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment* horizontalCellContentAlignment)
+    HRESULT AdaptiveTableColumnDefinition::get_HorizontalCellContentAlignment(
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalCellContentAlignment)
     {
-        *horizontalCellContentAlignment = m_horizontalCellContentAlignment;
-        return S_OK;
+        return m_horizontalCellContentAlignment.CopyTo(horizontalCellContentAlignment);
     }
 
-    HRESULT AdaptiveTableColumnDefinition::put_HorizontalCellContentAlignment(ABI::AdaptiveCards::Rendering::Uwp::HAlignment horizontalCellContentAlignment)
+    HRESULT AdaptiveTableColumnDefinition::put_HorizontalCellContentAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalCellContentAlignment)
     {
         m_horizontalCellContentAlignment = horizontalCellContentAlignment;
         return S_OK;
@@ -100,11 +114,21 @@ namespace AdaptiveCards::Rendering::Uwp
         std::shared_ptr<AdaptiveCards::TableColumnDefinition> tableColumnDefinition =
             std::make_shared<AdaptiveCards::TableColumnDefinition>();
 
-        tableColumnDefinition->SetVerticalCellContentAlignment(
-            static_cast<AdaptiveCards::VerticalAlignment>(m_verticalCellContentAlignment));
+        if (m_verticalCellContentAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalCellContentAlignmentValue;
+            RETURN_IF_FAILED(m_verticalCellContentAlignment->get_Value(&verticalCellContentAlignmentValue));
+            tableColumnDefinition->SetVerticalCellContentAlignment(
+                static_cast<AdaptiveCards::VerticalContentAlignment>(verticalCellContentAlignmentValue));
+        }
 
-        tableColumnDefinition->SetHorizontalCellContentAlignment(
-            static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalCellContentAlignment));
+        if (m_horizontalCellContentAlignment != nullptr)
+        {
+            ABI::AdaptiveCards::Rendering::Uwp::HAlignment horizontalCellContentAlignmentValue;
+            RETURN_IF_FAILED(m_horizontalCellContentAlignment->get_Value(&horizontalCellContentAlignmentValue));
+            tableColumnDefinition->SetHorizontalCellContentAlignment(
+                static_cast<AdaptiveCards::HorizontalAlignment>(horizontalCellContentAlignmentValue));
+        }
 
         std::optional<UINT32> width;
         if (m_width)

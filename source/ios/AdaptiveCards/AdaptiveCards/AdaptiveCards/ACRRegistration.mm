@@ -34,6 +34,8 @@
 #import "ACRInputToggleRenderer.h"
 #import "ACRMediaRenderer.h"
 #import "ACRRichTextBlockRenderer.h"
+#import "ACRTableCellRenderer.h"
+#import "ACRTableRenderer.h"
 #import "ACRTextBlockRenderer.h"
 #import "BaseCardElement.h"
 #import "FeatureRegistration.h"
@@ -80,6 +82,8 @@ using namespace AdaptiveCards;
                                              [ACRColumnSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],
                                              [ACRColumnRenderer getInstance], [NSNumber numberWithInt:(int)[ACRColumnRenderer elemType]],
                                              [ACRActionSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRActionSetRenderer elemType]],
+                                             [ACRTableCellRenderer getInstance], [NSNumber numberWithInt:(int)[ACRTableCellRenderer elemType]],
+                                             [ACRTableRenderer getInstance], [NSNumber numberWithInt:(int)[ACRTableRenderer elemType]],
                                              [ACRCustomRenderer getInstance], [NSNumber numberWithInt:(int)[ACRCustomRenderer elemType]],
                                              nil];
         actionRendererDict =

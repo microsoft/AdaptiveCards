@@ -56,8 +56,8 @@ public class InputUtil
         labelView.setText(paragraph);
         labelView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
 
-        TextBlockRenderer.applyTextFormat(labelView, hostConfig, TextStyle.Default, FontType.Default, inputLabelConfig.getWeight());
-        TextBlockRenderer.applyTextSize(labelView, hostConfig, TextStyle.Default, FontType.Default, inputLabelConfig.getSize());
+        TextBlockRenderer.applyTextFormat(labelView, hostConfig, TextStyle.Default, FontType.Default, inputLabelConfig.getWeight(), renderArgs);
+        TextBlockRenderer.applyTextSize(labelView, hostConfig, TextStyle.Default, FontType.Default, inputLabelConfig.getSize(), renderArgs);
 
         return labelView;
     }
@@ -74,8 +74,8 @@ public class InputUtil
         errorMessageView.setText(paragraph);
 
         ErrorMessageConfig errorMessageConfig  = hostConfig.GetInputs().getErrorMessage();
-        TextBlockRenderer.applyTextFormat(errorMessageView, hostConfig, TextStyle.Default, FontType.Default, errorMessageConfig.getWeight());
-        TextBlockRenderer.applyTextSize(errorMessageView, hostConfig, TextStyle.Default, FontType.Default, errorMessageConfig.getSize());
+        TextBlockRenderer.applyTextFormat(errorMessageView, hostConfig, TextStyle.Default, FontType.Default, errorMessageConfig.getWeight(), renderArgs);
+        TextBlockRenderer.applyTextSize(errorMessageView, hostConfig, TextStyle.Default, FontType.Default, errorMessageConfig.getSize(), renderArgs);
 
         errorMessageView.setVisibility(View.GONE);
 

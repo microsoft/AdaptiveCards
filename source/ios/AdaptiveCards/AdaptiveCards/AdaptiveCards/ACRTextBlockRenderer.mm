@@ -61,9 +61,9 @@
         NSDictionary *descriptor = nil;
         NSString *text = nil;
 
-        if (![textMap objectForKey:key]) {
+        if (![textMap objectForKey:key] || rootView.context.isFirstRowAsHeaders) {
             RichTextElementProperties textProp;
-            TextBlockToRichTextElementProperties(txtBlck, [acoConfig getHostConfig], textProp);
+            TexStylesToRichTextElementProperties(txtBlck, [acoConfig getHostConfig]->GetTextStyles().columnHeader, textProp);
             buildIntermediateResultForText(rootView, acoConfig, textProp, key);
         }
 
@@ -92,7 +92,7 @@
 
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment() context:rootView.context];
+        paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left) context:rootView.context];
 
         auto sharedStyle = txtBlck->GetStyle();
         auto backUpColor = sharedStyle.has_value() ? txtBlck->GetTextColor().value_or(config->GetTextStyles().heading.color) : txtBlck->GetTextColor().value_or(ForegroundColor::Default);
@@ -126,7 +126,7 @@
         lab.textContainer.maximumNumberOfLines = 1;
     }
 
-    if (txtBlck->GetStyle() == TextStyle::Heading) {
+    if (txtBlck->GetStyle() == TextStyle::Heading || rootView.context.isFirstRowAsHeaders) {
         lab.accessibilityTraits |= UIAccessibilityTraitHeader;
     }
 

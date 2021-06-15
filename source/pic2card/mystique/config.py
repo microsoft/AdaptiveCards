@@ -90,9 +90,6 @@ MODEL_REGISTRY = {
 
 ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf_faster_rcnn")
 
-# Noise objects removal IOU threshold
-IOU_THRESHOLD = 0.5
-
 # Threshold values of w,h ratio of each image object labels
 IMAGE_SIZE_RATIOS = {
     (10.23, 11.92): "Small",
@@ -140,4 +137,4 @@ LINE_ALIGNMENT_THRESHOLD = {"minimum": 0.20, "maximum": 0.75}
 
 # Multi Process flag to run card-layout and properties extraction as a
 # parallel or sequential tasks, True by default
-MULTI_PROC = False
+MULTI_PROC = True
