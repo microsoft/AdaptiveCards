@@ -932,18 +932,18 @@ a.default-ac-anchor:visited:active {
     height: 31px;
     background-color: #EEEEEE;
     color: black;
-    border: 1px solid #CCCCCC;
+    border: 1px solid #888888;
     border-radius: 2px;
 }
 
 .default-ac-pushButton:hover, .acd-dialog-button:hover {
     /* background-color: #DDDDDD; */
-    border: 1px solid #BBBBBB;
+    border: 1px solid #777777;
 }
 
 .default-ac-pushButton:active, .acd-dialog-button:active {
     /* background-color: #CCCCCC; */
-    border: 1px solid #BBBBBB;
+    border: 1px solid #777777;
 }
 
 .default-ac-pushButton.subdued {
