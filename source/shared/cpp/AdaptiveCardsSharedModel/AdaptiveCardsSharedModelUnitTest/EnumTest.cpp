@@ -43,7 +43,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         ENUM_TEST(ActionType, ActionType::OpenUrl, "Action.OpenUrl"s);
         ENUM_TEST(AdaptiveCardSchemaKey, AdaptiveCardSchemaKey::Accent, "accent"s);
         ENUM_TEST(CardElementType, CardElementType::AdaptiveCard, "AdaptiveCard"s);
-        ENUM_TEST(ChoiceSetStyle, ChoiceSetStyle::Expanded, "Expanded"s);
+        ENUM_TEST(ChoiceSetStyle, ChoiceSetStyle::Filtered, "Filtered"s);
         ENUM_TEST(ContainerStyle, ContainerStyle::Emphasis, "Emphasis"s);
         ENUM_TEST(FontType, FontType::Monospace, "Monospace"s);
         ENUM_TEST(ForegroundColor, ForegroundColor::Accent, "Accent"s);
