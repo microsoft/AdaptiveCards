@@ -47,6 +47,8 @@
 
 - (UIView *_Nullable)getLastArrangedSubview;
 
+- (NSArray<UIView *> *)getArrangedSubviews;
+
 // return the largest width from the given subviews Excluding the view
 - (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *_Nonnull)view;
 

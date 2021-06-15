@@ -10,13 +10,6 @@ pool:
 
 steps:
 
-- bash: |
-   #!/usr/bin/env bash
-   
-   curl -v https://jcenter.bintray.com/org/codehaus/groovy/groovy-all/2.4.15/groovy-all-2.4.15.jar
-   ls
-  displayName: 'Bash Script'
-
 - task: Gradle@2
   displayName: build
   inputs:
@@ -24,7 +17,6 @@ steps:
     workingDirectory: source/android
     tasks: 'adaptivecards:build'
     publishJUnitResults: false
-    options: '-Dhttp.socketTimeout=60000 -Dhttp.connectionTimeout=60000'
 
 - task: Gradle@2
   displayName: 'Gradle Unsigned Publication'
@@ -33,7 +25,6 @@ steps:
     workingDirectory: source/android
     tasks: 'adaptivecards:publishUnsignedReleasePublicationToUnsignedArtifactRepository'
     publishJUnitResults: false
-    options: '-Dhttp.socketTimeout=60000 -Dhttp.connectionTimeout=60000'
 
 - task: Powershell@2
   displayName: 'Copy Files For Signing'
@@ -80,7 +71,6 @@ steps:
     workingDirectory: source/android
     tasks: 'adaptivecards:publishSignedReleasePublicationToSignedArtifactRepository'
     publishJUnitResults: false
-    options: '-Dhttp.socketTimeout=60000 -Dhttp.connectionTimeout=60000'
 
 - task: Powershell@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'

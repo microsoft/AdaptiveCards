@@ -27,11 +27,13 @@
     baseCardElement:(ACOBaseCardElement *)acoElem
          hostConfig:(ACOHostConfig *)acoConfig;
 {
+    [rootView.context pushBaseCardElementContext:acoElem];
     ACRTableView *tableView = [[ACRTableView alloc] init:acoElem
                                                viewGroup:viewGroup
                                                 rootView:rootView
                                                   inputs:inputs
                                               hostConfig:acoConfig];
+    [rootView.context popBaseCardElementContext:acoElem];
 
     return tableView;
 }

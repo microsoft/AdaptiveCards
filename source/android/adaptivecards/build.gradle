@@ -41,13 +41,6 @@ task sourceJar(type: Jar) {
     classifier "sources"
 }
 
-task version {
-    doLast {
-        println "Gradle version: " + project.getGradle().getGradleVersion()
-        println "Groovy version: " + GroovySystem.getVersion()
-    }
-}
-
 def projectInfo = {
     name = 'Android Adaptive Cards Library'
     description = 'Android Adaptive Cards Lib'
