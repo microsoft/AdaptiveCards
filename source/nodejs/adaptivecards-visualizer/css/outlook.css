@@ -201,7 +201,7 @@ a.ac-anchor:visited:active {
 }
 
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
-    border: 1px solid #DDDDDD;
+    border: 1px solid #888888;
     padding: 4px 8px 4px 8px;
 }
 
