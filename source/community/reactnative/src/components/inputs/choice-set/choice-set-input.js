@@ -162,7 +162,11 @@ export class ChoiceSetInput extends React.Component {
 			<View style={styles.containerView}>
 				{(Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
 					activeOpacity={1}
-					onPress={onPress}>
+					onPress={onPress}
+					accessible={true}
+					accessibilityRole={'button'}
+					accessibilityState={{expanded: this.state.isPickerSelected}}
+					>
 					<View style={this.styleConfig.dropdown}>
 						<Text
 							style={[this.styleConfig.dropdownText, this.styleConfig.defaultFontConfig]}
@@ -298,7 +302,7 @@ export class ChoiceSetInput extends React.Component {
 					<ElementWrapper configManager={this.props.configManager} json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
 						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 						<View
-							accessible={true}
+							accessible={false}
 							accessibilityLabel={this.payload.altText}
 							style={styles.choiceSetView}>
 							{!isMultiSelect ?

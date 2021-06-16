@@ -290,7 +290,7 @@ export class Img extends React.Component {
 					onPageLayout={this.onPageLayoutHandler}>
 
 					<Image style={imageComputedStyle}
-						accessible={true}
+						accessible={this.payload.altText ? true : false}
 						accessibilityLabel={this.payload.altText}
 						source={{ uri: imageUrl }} />
 				</ElementWrapper>

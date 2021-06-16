@@ -8,7 +8,8 @@ import React from 'react';
 import {
 	Switch,
 	StyleSheet,
-	View
+	View,
+	Platform
 } from 'react-native';
 
 import { InputContextConsumer } from '../../utils/context';
@@ -69,8 +70,21 @@ export class ToggleInput extends React.Component {
 							<View
 								accessible={true}
 								accessibilityLabel={this.altText}
-								style={styles.toggleView}>
+								style={styles.toggleView}
+								accessibilityRole={'switch'}
+								onAccessibilityAction={
+									(event) => {
+										if (event.nativeEvent.actionName === 'activate') {
+											this.toggleValueChanged(!this.state.toggleValue, addInputItem);
+										}
+									}
+								}
+								accessibilityActions={[{name: 'activate'}]}
+								accessibilityState={{checked: this.state.toggleValue}}
+							>
 								<Switch
+									accessible={false}
+									importantForAccessibility='no-hide-descendants'
 									style={styles.switch}
 									value={toggleValue}
 									onValueChange={toggleValue => {
@@ -78,7 +92,7 @@ export class ToggleInput extends React.Component {
 									}}>
 								</Switch>
 								<View style={styles.titleContainer}>
-									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} />
+									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title}/>
 								</View>
 							</View>
 						)
