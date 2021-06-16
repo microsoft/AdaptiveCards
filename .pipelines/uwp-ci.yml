@@ -48,3 +48,17 @@ steps:
     maximumCpuCount: true
     createLogFile: true
     logFileVerbosity: detailed
+- task: VSTest@2
+  displayName: 'VsTest - testAssemblies'
+  inputs:
+    testAssemblyVer2: |
+     **\UWPUITestLibrary.dll
+     **\UWPUnitTests.exe
+     !**\obj\**
+    runInParallel: true
+    runTestsInIsolation: true
+    codeCoverageEnabled: false
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    diagnosticsEnabled: True
+    collectDumpOn: always
