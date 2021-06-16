@@ -30,6 +30,7 @@ steps:
     publishJUnitResults: false
 
 - task: Powershell@2
+  name: prepareSigningTask
   displayName: 'Copy Files For Signing'
   inputs:
     targetType: inline
@@ -38,7 +39,7 @@ steps:
        $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar)$"
      } | %{
        $dest = (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
-       [System.Environment]::SetEnvironmentVariable('AC_AAR_SIGNATURE_PATH', $dest, 'User')
+       echo "##vso[task.setvariable variable=aarSignaturePath;isSecret=false;]$dest"
        cp $_.FullName $dest
        echo "Copied aar to $dest for signing"
      }
@@ -47,7 +48,7 @@ steps:
        $_.FullName -Match ".*\\io\\adaptivecards\\.*(.pom)$"
      } | %{
        $dest = (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
-       [System.Environment]::SetEnvironmentVariable('AC_POM_SIGNATURE_PATH', $dest, 'User')
+       echo "##vso[task.setvariable variable=pomSignaturePath;isSecret=false;]$dest"
        cp $_.FullName $dest
        echo "Copied pom to $dest for signing"
      }
@@ -77,6 +78,9 @@ steps:
     script: |
      echo "aar.asc path: $Env:AC_AAR_SIGNATURE_PATH"
      echo "pom.asc path: $Env:AC_POM_SIGNATURE_PATH"
+  env:
+    AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
+    AC_POM_SIGNATURE_PATH: $(prepareSigningTask.pomSignaturePath)
 
 - task: Gradle@2
   displayName: 'Gradle Signed Publication'
@@ -85,6 +89,9 @@ steps:
     workingDirectory: source/android
     tasks: 'adaptivecards:publishSignedReleasePublicationToSignedArtifactRepository'
     publishJUnitResults: false
+  env:
+    AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
+    AC_POM_SIGNATURE_PATH: $(prepareSigningTask.pomSignaturePath)
 
 - task: Powershell@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
@@ -107,6 +114,8 @@ steps:
     publishJUnitResults: false
   env:
     AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
+    AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
+    AC_POM_SIGNATURE_PATH: $(prepareSigningTask.pomSignaturePath)
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
