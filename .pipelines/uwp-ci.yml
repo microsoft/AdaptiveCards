@@ -1,8 +1,10 @@
 # Multi-job configuration must be converted to matrix strategy: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#multi-job-configuration
 # Multi-job configuration must be converted to matrix strategy: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#multi-job-configuration
 variables:
-- name: BuildParameters.solution
-  value: source/uwp/AdaptiveCards.sln
+  solution: source/uwp/AdaptiveCards.sln
+  buildConfiguration: Release
+  buildPlatform: x64
+
 trigger:
   branches:
     include:
@@ -12,44 +14,36 @@ trigger:
     exclude:
     - release/1.2
   batch: True
+
 name: $(date:yyMM).$(date:dd)$(rev:rrr)
-resources:
-  repositories:
-  - repository: self
-    type: git
-    ref: main
-jobs:
-- job: Phase_1
-  displayName: Build
-  timeoutInMinutes: 100
-  cancelTimeoutInMinutes: 1
-  pool:
-    name: Azure Pipelines
-    vmImage: vs2017-win2016
-  steps:
-  - checkout: self
-    clean: true
-    fetchDepth: 1
-  - task: NuGetToolInstaller@0
-    name: NuGetToolInstaller1
-    displayName: Use NuGet 5.x
-    inputs:
-      versionSpec: 5.x
-  - task: NuGetRestore@1
-    name: NuGetCommand2
-    displayName: NuGet restore source/uwp/AdaptiveCards.sln
-    inputs:
-      solution: $(BuildParameters.solution)
-      verbosity: '-'
-  - task: VSBuild@1
-    name: VSBuild3
-    displayName: Build solution source/uwp/AdaptiveCards.sln
-    inputs:
-      solution: $(BuildParameters.solution)
-      vsVersion: 16.0
-      msbuildArgs: /p:AppxBundlePlatforms="$(BuildPlatform)" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackages\\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload
-      platform: $(BuildPlatform)
-      configuration: $(BuildConfiguration)
-      maximumCpuCount: true
-      createLogFile: true
-      logFileVerbosity: detailed
+
+pool:
+  name: Azure Pipelines
+  vmImage: vs2017-win2016
+steps:
+- checkout: self
+  clean: true
+  fetchDepth: 1
+- task: NuGetToolInstaller@0
+  name: NuGetToolInstaller1
+  displayName: Use NuGet 5.x
+  inputs:
+    versionSpec: 5.x
+- task: NuGetRestore@1
+  name: NuGetCommand2
+  displayName: NuGet restore source/uwp/AdaptiveCards.sln
+  inputs:
+    solution: $(solution)
+    verbosity: '-'
+- task: VSBuild@1
+  name: VSBuild3
+  displayName: Build solution source/uwp/AdaptiveCards.sln
+  inputs:
+    solution: $(solution)
+    vsVersion: 16.0
+    msbuildArgs: /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackages\\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload
+    platform: $(buildPlatform)
+    configuration: $(buildConfiguration)
+    maximumCpuCount: true
+    createLogFile: true
+    logFileVerbosity: detailed
