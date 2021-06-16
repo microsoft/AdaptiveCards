@@ -70,6 +70,13 @@ steps:
        }
      ]
 
+- task: Powershell@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    targetType: inline
+    script: |
+     echo "aar.asc path: $Env:AC_AAR_SIGNATURE_PATH"
+     echo "pom.asc path: $Env:AC_POM_SIGNATURE_PATH"
 
 - task: Gradle@2
   displayName: 'Gradle Signed Publication'
@@ -87,6 +94,7 @@ steps:
      ls $(build.sourcesdirectory) -File -Recur | ?{
        $_.FullName -Match ".*\\signedArtifact\\.*(.aar|.pom|.aar.asc|.pom.asc)$"
      } | %{
+       echo "Copying artifact $_.Name"
        cp $_.FullName (Join-Path $(build.artifactstagingdirectory) $_.Name)
      }
 
