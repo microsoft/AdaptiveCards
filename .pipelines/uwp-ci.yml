@@ -52,8 +52,7 @@ steps:
   displayName: 'VsTest - testAssemblies'
   inputs:
     testAssemblyVer2: |
-     **\UWPUITestLibrary.dll
-     **\UWPUnitTests.exe
+     **\Release\UWPUITestApp.build.appxrecipe
      !**\obj\**
     runInParallel: true
     runTestsInIsolation: true
