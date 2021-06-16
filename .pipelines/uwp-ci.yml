@@ -53,7 +53,7 @@ steps:
   inputs:
     testAssemblyVer2: |
      **\UWPUITestLibrary.dll
-     **\UWPUnitTests.exe
+     **\UWPUnitTestsDll.dll
      !**\obj\**
     runInParallel: true
     runTestsInIsolation: true
