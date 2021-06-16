@@ -132,17 +132,7 @@ stages:
 
 - stage: NexusValidation
   jobs:
-  - job: ManualApproval
-    pool: server
-    steps:
-    - task: ManualValidation@0
-      inputs:
-        notifyUsers: |
-         rirajolu@microsoft.com
-        instructions: 'Please verify artifact integrity at http://oss.sonatype.org/'
-
   - job: NexusValidation
-    dependsOn: ManualApproval
     steps:
     - task: Gradle@2
       displayName: 'Validate Staging Artifact'
@@ -154,19 +144,24 @@ stages:
       env:
         AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
         
-
-# - stage: PublishToMavenCentral
-#   jobs:
-#   - job: PublishToMavenCentral
-#     steps:
-#     - task: Gradle@2
-#       displayName: 'Validate Staging Artifact'
-#       inputs:
-#         gradleWrapperFile: source/android/gradlew.bat
-#         workingDirectory: source/android
-#         tasks: 'adaptivecards:releaseRepository'
-#         publishJUnitResults: false
-#       env:
-#         AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
-
-
+- stage: PublishToMavenCentral
+  jobs:
+  - job: ManualApproval
+    pool: server
+    steps:
+    - task: ManualValidation@0
+      inputs:
+        instructions: 'Please verify artifact integrity at http://oss.sonatype.org/'
+  
+  - job: ReleaseValidatedArtifact
+    dependsOn: ManualApproval
+    steps:
+    - task: Gradle@2
+      displayName: 'Release Validated Artifact to Maven Central'
+      inputs:
+        gradleWrapperFile: source/android/gradlew.bat
+        workingDirectory: source/android
+        tasks: 'adaptivecards:releaseRepository'
+        publishJUnitResults: false
+      env:
+        AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)

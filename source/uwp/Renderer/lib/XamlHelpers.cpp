@@ -175,6 +175,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
         DOUBLE paddingAsDouble = static_cast<DOUBLE>(padding);
 
+        boolean addContainerPadding;
+        RETURN_IF_FAILED(renderArgs->get_AddContainerPadding(&addContainerPadding));
+
         // If container style was explicitly assigned, apply background color and padding
         if (hasExplicitContainerStyle)
         {
@@ -184,11 +187,13 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
             RETURN_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
 
             // If the container style doesn't match its parent apply padding.
-            if (localContainerStyle != parentContainerStyle)
-            {
-                Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
-                RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
-            }
+            addContainerPadding |= (localContainerStyle != parentContainerStyle);
+        }
+
+        if (addContainerPadding)
+        {
+            Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
+            RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
         }
 
         // Find out which direction(s) we bleed in, and apply a negative margin to cause the
@@ -241,6 +246,39 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return Boolify(supportsInteractivity);
     }
 
+    GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
+    {
+        const boolean isValidWidth = isAuto || isStretch || pixelWidth || isUnsetWidth || (ratioWidth > 0);
+
+        GridLength columnWidth;
+        if (!isVisible || isAuto || !isValidWidth)
+        {
+            // If the column isn't visible, or is set to "auto" or an invalid value ("-1", "foo"), set it to Auto
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
+            columnWidth.Value = 0;
+        }
+        else if (pixelWidth)
+        {
+            // If it's visible and pixel width is specified, use pixel width
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
+            columnWidth.Value = pixelWidth;
+        }
+        else if (isStretch || isUnsetWidth)
+        {
+            // If it's visible and stretch is specified, or width is unset, use stretch with default of 1
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.Value = 1;
+        }
+        else
+        {
+            // If it's visible and the user specified a valid non-pixel width, use that as a star width
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.Value = ratioWidth;
+        }
+
+        return columnWidth;
+    }
+
     HRESULT HandleColumnWidth(_In_ IAdaptiveColumn* column, boolean isVisible, _In_ IColumnDefinition* columnDefinition)
     {
         HString adaptiveColumnWidth;
@@ -258,34 +296,37 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         UINT32 pixelWidth = 0;
         RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
 
-        // Valid widths are "auto", "stretch", a pixel width ("50px"), unset, or a value greater than 0 to use as a star value ("2")
-        const boolean isValidWidth = isAuto || isStretch || pixelWidth || !adaptiveColumnWidth.IsValid() || (widthAsDouble > 0);
+        GridLength columnWidth =
+            CalculateColumnWidth(isVisible, isAuto, isStretch, !adaptiveColumnWidth.IsValid(), pixelWidth, widthAsDouble);
 
-        GridLength columnWidth;
-        if (!isVisible || isAuto || !isValidWidth)
+        RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
+
+        return S_OK;
+    }
+
+    HRESULT HandleTableColumnWidth(_In_ IAdaptiveTableColumnDefinition* column, _In_ IColumnDefinition* columnDefinition)
+    {
+        ComPtr<IReference<UINT32>> width;
+        RETURN_IF_FAILED(column->get_Width(&width));
+
+        UINT32 widthValue = 0;
+        if (width != nullptr)
         {
-            // If the column isn't visible, or is set to "auto" or an invalid value ("-1", "foo"), set it to Auto
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
-            columnWidth.Value = 0;
+            RETURN_IF_FAILED(width->get_Value(&widthValue));
         }
-        else if (pixelWidth)
+
+        ComPtr<IReference<UINT32>> pixelWidth;
+        RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
+
+        UINT32 pixelWidthValue = 0;
+        if (pixelWidth != nullptr)
         {
-            // If it's visible and pixel width is specified, use pixel width
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
-            columnWidth.Value = pixelWidth;
+            RETURN_IF_FAILED(pixelWidth->get_Value(&pixelWidthValue));
         }
-        else if (isStretch || !adaptiveColumnWidth.IsValid())
-        {
-            // If it's visible and stretch is specified, or width is unset, use stretch with default of 1
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
-            columnWidth.Value = 1;
-        }
-        else
-        {
-            // If it's visible and the user specified a valid non-pixel width, use that as a star width
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
-            columnWidth.Value = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
-        }
+
+        bool isWidthUnset = (width == nullptr) && (pixelWidth == nullptr);
+
+        GridLength columnWidth = CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidthValue, widthValue);
 
         RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
 

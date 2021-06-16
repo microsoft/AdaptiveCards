@@ -7,9 +7,8 @@
 namespace AdaptiveCards
 {
     Table::Table() :
-        BaseCardElement(CardElementType::Table), m_columnDefinitions({}), m_rows({}),
-        m_horizontalCellContentAlignment(HorizontalAlignment::Left), m_verticalCellContentAlignment(VerticalContentAlignment::Top),
-        m_gridStyle(ContainerStyle::None), m_showGridLines(true), m_firstRowAsHeaders(false)
+        BaseCardElement(CardElementType::Table), m_columnDefinitions({}), m_rows({}), m_gridStyle(ContainerStyle::None),
+        m_showGridLines(true), m_firstRowAsHeaders(true)
     {
         PopulateKnownPropertiesSet();
     }
@@ -33,16 +32,25 @@ namespace AdaptiveCards
 
     void Table::SetFirstRowAsHeaders(bool value) { m_firstRowAsHeaders = value; }
 
-    std::optional<HorizontalAlignment> Table::GetHorizontalCellContentAlignment() const { return m_horizontalCellContentAlignment; }
+    std::optional<HorizontalAlignment> Table::GetHorizontalCellContentAlignment() const
+    {
+        return m_horizontalCellContentAlignment;
+    }
 
     void Table::SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value)
     {
         m_horizontalCellContentAlignment = value;
     }
 
-    std::optional<VerticalContentAlignment> Table::GetVerticalCellContentAlignment() const { return m_verticalCellContentAlignment; }
+    std::optional<VerticalContentAlignment> Table::GetVerticalCellContentAlignment() const
+    {
+        return m_verticalCellContentAlignment;
+    }
 
-    void Table::SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value) { m_verticalCellContentAlignment = value; }
+    void Table::SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value)
+    {
+        m_verticalCellContentAlignment = value;
+    }
 
     ContainerStyle Table::GetGridStyle() const { return m_gridStyle; }
 
@@ -90,7 +98,7 @@ namespace AdaptiveCards
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ShowGridLines)] = m_showGridLines;
         }
 
-        if (m_firstRowAsHeaders)
+        if (m_firstRowAsHeaders != true)
         {
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FirstRowAsHeaders)] = m_firstRowAsHeaders;
         }
@@ -121,8 +129,9 @@ namespace AdaptiveCards
 
         std::shared_ptr<Table> table = BaseCardElement::Deserialize<Table>(context, json);
         table->SetShowGridLines(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::ShowGridLines, true, false));
-        table->SetGridStyle(ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::GridStyle, ContainerStyle::None, ContainerStyleFromString));
-        table->SetFirstRowAsHeaders(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::FirstRowAsHeaders, false, false));
+        table->SetGridStyle(
+            ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::GridStyle, ContainerStyle::None, ContainerStyleFromString));
+        table->SetFirstRowAsHeaders(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::FirstRowAsHeaders, true, false));
         table->SetHorizontalCellContentAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
             json, AdaptiveCardSchemaKey::HorizontalCellContentAlignment, HorizontalAlignmentFromString));
         table->SetVerticalCellContentAlignment(ParseUtil::GetOptionalEnumValue<VerticalContentAlignment>(
