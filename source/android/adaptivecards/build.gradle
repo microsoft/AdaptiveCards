@@ -1,3 +1,6 @@
+plugins {
+    id 'io.codearte.nexus-staging' version '0.30.0'
+}
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven'
@@ -145,6 +148,16 @@ afterEvaluate {
             }
         }
     }
+}
+
+// TODO: Enable module metadata with signing support
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+nexusStaging {
+    username "adaptivecards"
+    password System.getenv("AC_SONATYPE_CREDENTIAL") ?: "${NexusPassword}"
 }
 
 dependencies {

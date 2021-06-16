@@ -74,19 +74,8 @@ stages:
            }
          ]
 
-    - task: Powershell@2
-      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      inputs:
-        targetType: inline
-        script: |
-         echo "aar.asc path: $Env:AC_AAR_SIGNATURE_PATH"
-         echo "pom.asc path: $Env:AC_POM_SIGNATURE_PATH"
-      env:
-        AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
-        AC_POM_SIGNATURE_PATH: $(prepareSigningTask.pomSignaturePath)
-
     - task: Gradle@2
-      displayName: 'Gradle Signed Publication'
+      displayName: 'Gradle Signed Publish to Local Directory'
       inputs:
         gradleWrapperFile: source/android/gradlew.bat
         workingDirectory: source/android
@@ -109,7 +98,7 @@ stages:
          }
 
     - task: Gradle@2
-      displayName: 'Gradle Publish to OSSRH Staging'
+      displayName: 'Gradle Signed Publish to OSSRH Staging'
       inputs:
         gradleWrapperFile: source/android/gradlew.bat
         workingDirectory: source/android
@@ -124,15 +113,38 @@ stages:
       displayName: 'Publish Artifact: drop'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
-- stage: PublishToMavenCentral
+
+- stage: NexusValidation
   jobs:
-  - job: PublishToMavenCentral
+  - job: ManualApproval
+    pool: server
     steps:
-    - task: Powershell@2
-      displayName: 'Publish to Maven Central'
+    - task: ManualValidation@0
       inputs:
-        targetType: inline
-        script: |
-         throw
+        notifyUsers: |
+         rirajolu@microsoft.com
+        instructions: 'Please verify artifact integrity at http://oss.sonatype.org/'
+  - job: NexusValidation
+    steps:
+    - task: Gradle@2
+      displayName: 'Validate Staging Artifact'
+      inputs:
+        gradleWrapperFile: source/android/gradlew.bat
+        workingDirectory: source/android
+        tasks: 'adaptivecards:closeRepository'
+        publishJUnitResults: false
+        
+
+# - stage: PublishToMavenCentral
+#   jobs:
+#   - job: PublishToMavenCentral
+#     steps:
+#     - task: Gradle@2
+#       displayName: 'Validate Staging Artifact'
+#       inputs:
+#         gradleWrapperFile: source/android/gradlew.bat
+#         workingDirectory: source/android
+#         tasks: 'adaptivecards:releaseRepository'
+#         publishJUnitResults: false
 
 
