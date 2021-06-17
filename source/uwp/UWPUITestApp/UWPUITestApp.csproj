@@ -170,4 +170,5 @@
   -->
   <Target Name="AfterBuild">
     <MSBuild Projects="$(MSBuildProjectFullPath)" Properties="Platform=$(Platform);Configuration=$(Configuration);DeployOnBuild=true;" />
+  </Target>
 </Project>
