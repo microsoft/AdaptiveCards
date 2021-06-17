@@ -21,6 +21,7 @@ using namespace AdaptiveCards;
     std::shared_ptr<ImageSet> _imgSet;
     ImageSize _imageSize;
     ACRView *_rootView;
+    CGSize _size;
 }
 
 - (instancetype)init:(std::shared_ptr<ImageSet> const &)imageSet
@@ -43,7 +44,9 @@ using namespace AdaptiveCards;
         }
 
         ACRImageSize acrImageSize = getACRImageSize(_imageSize, NO);
-        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = [_acoConfig getImageSizeAsCGSize:acrImageSize width:0.0f height:0.0f];
+        CGSize itemSize = [_acoConfig getImageSizeAsCGSize:acrImageSize width:0.0f height:0.0f];
+        _size = itemSize;
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = itemSize;
         self.scrollEnabled = NO;
         self.translatesAutoresizingMaskIntoConstraints = NO;
     }
@@ -77,16 +80,12 @@ using namespace AdaptiveCards;
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 
     if (!cell) {
-        cell = [[UICollectionViewCell alloc] initWithFrame:content.frame];
+        cell = [[UICollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, _size.width, _size.height)];
     } else {
-        cell.contentView.frame = content.frame;
+        cell.contentView.frame = CGRectMake(0, 0, _size.width, _size.height);
     }
 
     [cell.contentView addSubview:content];
-
-    [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:content attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-
-    [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:content attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
 
     return cell;
 }
@@ -105,26 +104,37 @@ using namespace AdaptiveCards;
 
 - (CGSize)collectionViewContentSize
 {
-    size_t cellCounts = _imgSet->GetImages().size();
+    NSUInteger cellCounts = _imgSet->GetImages().size();
     CGSize imageSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
-    float spacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumInteritemSpacing;
-    float lineSpacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumLineSpacing;
+    CGFloat spacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumInteritemSpacing;
+    CGFloat lineSpacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumLineSpacing;
 
     // sanity check
-    if (!imageSize.width || !self.frame.size.width || !cellCounts) {
+    if (!imageSize.width || !cellCounts) {
         return CGSizeMake(0, 0);
     }
-    float frameWidth = self.frame.size.width;
-    float imageWidthWithSpacing = imageSize.width + spacing;
+    CGFloat frameWidth = self.frame.size.width;
+    CGFloat imageWidthWithSpacing = imageSize.width + spacing;
 
     // if there is spacing to the right edge, it's o.k.
-    int numbersOfItemsInRow = frameWidth / imageWidthWithSpacing;
+    NSUInteger numbersOfItemsInRow = (frameWidth) ? (frameWidth) / imageWidthWithSpacing : cellCounts;
     // if addtional image can be fit by removing spacing, do so
     if (numbersOfItemsInRow * imageWidthWithSpacing + imageSize.width <= frameWidth) {
         numbersOfItemsInRow++;
     }
 
-    int numbersOfRows = ceil(((float)cellCounts) / numbersOfItemsInRow);
-    return CGSizeMake(self.frame.size.width, (numbersOfRows) * (imageSize.height) + (numbersOfRows - 1) * lineSpacing);
+    NSUInteger numbersOfRows = numbersOfItemsInRow <= 0 ? 1 : ceil(((CGFloat)cellCounts) / numbersOfItemsInRow);
+    return (frameWidth) ? CGSizeMake(frameWidth, (numbersOfRows) * (imageSize.height) + (numbersOfRows - 1) * lineSpacing) : CGSizeMake(cellCounts * imageWidthWithSpacing - ((cellCounts > 1) ? spacing : 0), imageSize.height);
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    // with the width set, re-measure the intrinsic content size
+    // update the height if the height is not enough
+    CGSize size = [self intrinsicContentSize];
+    if (floor(self.frame.size.height) < floor(size.height)) {
+        [self invalidateIntrinsicContentSize];
+    }
 }
 @end

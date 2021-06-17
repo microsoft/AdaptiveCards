@@ -12,8 +12,8 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT AdaptiveTextBlockConfig::RuntimeClassInitialize() noexcept
     try
     {
-        TextBlockConfig headingLevelsConfig;
-        return RuntimeClassInitialize(headingLevelsConfig);
+        TextBlockConfig textBlockConfig;
+        return RuntimeClassInitialize(textBlockConfig);
     }
     CATCH_RETURN;
 

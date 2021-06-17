@@ -41,7 +41,7 @@ HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveCards::Rendering::Uwp::IA
         RETURN_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
     }
 
-    RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveTextBlock, xamlTextBlock));
+    RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveTextBlock, renderContext, xamlTextBlock));
 
     ComPtr<IAdaptiveTextBlock> localAdaptiveTextBlock(adaptiveTextBlock);
     ComPtr<IAdaptiveTextElement> adaptiveTextElement;

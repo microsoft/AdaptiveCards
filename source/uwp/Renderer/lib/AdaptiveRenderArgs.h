@@ -14,7 +14,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     public:
         AdaptiveRenderArgs() :
-            m_isInShowCard(false), m_allowAboveTitleIconPlacement(false), m_ancestorHasFallback(false)
+            m_isInShowCard(false), m_allowAboveTitleIconPlacement(false), m_ancestorHasFallback(false), m_addContainerPadding(false)
         {
         }
 
@@ -41,8 +41,11 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_AllowAboveTitleIconPlacement(_Out_ boolean* value) override;
         IFACEMETHODIMP put_AllowAboveTitleIconPlacement(boolean value) override;
 
-        IFACEMETHODIMP get_AncestorHasFallback(_Out_ boolean* hasFallback);
-        IFACEMETHODIMP put_AncestorHasFallback(boolean hasFallback);
+        IFACEMETHODIMP get_AncestorHasFallback(_Out_ boolean* hasFallback) override;
+        IFACEMETHODIMP put_AncestorHasFallback(boolean hasFallback) override;
+
+        IFACEMETHODIMP get_AddContainerPadding(_Out_ boolean* addContainerPadding) override;
+        IFACEMETHODIMP put_AddContainerPadding(boolean addContainerPadding) override;
 
         IFACEMETHODIMP get_ParentCard(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard** value) override;
         IFACEMETHODIMP put_ParentCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* value) override;
@@ -53,6 +56,7 @@ namespace AdaptiveCards::Rendering::Uwp
         boolean m_isInShowCard;
         boolean m_allowAboveTitleIconPlacement;
         boolean m_ancestorHasFallback;
+        boolean m_addContainerPadding;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard> m_parentCard;
     };
 
