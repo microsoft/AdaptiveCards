@@ -52,6 +52,8 @@ CGFloat kFileBrowserWidth = 0;
 
 - (IBAction)editText:(id)sender
 {
+    [self.view endEditing:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     if (!self.editableStr) {
         return;
     }
@@ -119,6 +121,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (IBAction)toggleCustomRenderer:(id)sender
 {
+    [self.view endEditing:YES];
     _enableCustomRenderer = !_enableCustomRenderer;
     ACRRegistration *registration = [ACRRegistration getInstance];
 
@@ -157,6 +160,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (IBAction)applyText:(id)sender
 {
+    [self.view endEditing:YES];
     if (_editView.text != NULL && ![_editView.text isEqualToString:@""]) {
         [self update:self.editView.text];
     }
@@ -560,6 +564,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (void)update:(NSString *)jsonStr
 {
+    [self.view endEditing:YES];
     NSInteger prevCount = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
     // resources such as images may not be ready when AdaptiveCard is added to its super view
     // AdaptiveCard can notify when its resources are all loaded via - (void)didLoadElements delegate

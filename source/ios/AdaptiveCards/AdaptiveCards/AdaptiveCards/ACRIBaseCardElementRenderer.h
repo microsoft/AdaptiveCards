@@ -20,6 +20,12 @@
              inputs:(NSMutableArray *)inputs
     baseCardElement:(ACOBaseCardElement *)acoElem
          hostConfig:(ACOHostConfig *)acoConfig;
+@optional
+- (void)configure:(UIView *)view
+         rootView:(ACRView *)rootView
+  baseCardElement:(ACOBaseCardElement *)acoElem
+       hostConfig:(ACOHostConfig *)acoConfig;
+
 @end
 
 @protocol ACRIKVONotificationHandler

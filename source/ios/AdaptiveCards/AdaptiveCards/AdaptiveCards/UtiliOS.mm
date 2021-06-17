@@ -986,3 +986,15 @@ NSNumber *iOSInternalIdHash(const std::size_t internalIdHash)
 {
     return [NSNumber numberWithLong:internalIdHash];
 }
+
+id traverseResponderChainForUIViewController(UIView *view)
+{
+    id nextResponder = [view nextResponder];
+    if ([nextResponder isKindOfClass:[UIViewController class]]) {
+        return nextResponder;
+    } else if ([nextResponder isKindOfClass:[UIView class]]) {
+        return traverseResponderChainForUIViewController((UIView *)nextResponder);
+    } else {
+        return nil;
+    }
+}
