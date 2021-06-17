@@ -48,11 +48,16 @@ steps:
     maximumCpuCount: true
     createLogFile: true
     logFileVerbosity: detailed
+- task: WinAppDriver.winappdriver-pipelines-task.winappdriver-pipelines-task.Windows Application Driver@0
+  displayName: 'WinAppDriver - Start'
+  inputs:
+    AgentResolution: 1080p
 - task: VSTest@2
   displayName: 'VsTest - testAssemblies'
   inputs:
     testAssemblyVer2: |
-     **\Release\UWPUITestApp.build.appxrecipe
+     **\Release\UWPTestApp.build.appxrecipe
+     **\Release\UWPUITestLibrary.dll
      !**\obj\**
     runInParallel: true
     runTestsInIsolation: true
@@ -61,3 +66,7 @@ steps:
     configuration: '$(BuildConfiguration)'
     diagnosticsEnabled: True
     collectDumpOn: always
+- task: WinAppDriver.winappdriver-pipelines-task.winappdriver-pipelines-task.Windows Application Driver@0
+  displayName: 'WinAppDriver - Stop'
+  inputs:
+    OperationType: Stop
