@@ -167,8 +167,7 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  -->
   <Target Name="AfterBuild">
-    <MSBuild Projects="$(MSBuildProjectFullPath)" Properties="Platform=$(Platform);Configuration=$(Configuration);DeployOnBuild=true;" />
   </Target>
+  -->
 </Project>

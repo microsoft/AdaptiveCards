@@ -57,8 +57,8 @@ steps:
   inputs:
     testAssemblyVer2: |
      **\Release\UWPTestApp.build.appxrecipe
-     **\Release\UWPUITestLibrary.dll
      !**\obj\**
+    # **\Release\UWPUITestLibrary.dll
     runInParallel: true
     runTestsInIsolation: true
     codeCoverageEnabled: false
