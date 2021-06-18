@@ -87,7 +87,7 @@ using namespace AdaptiveCards;
 
         NSString *defaultValue = [NSString stringWithCString:_choiceSetInput->GetValue().c_str()
                                                     encoding:NSUTF8StringEncoding];
-        
+
         for (auto choice : _choiceSetInput->GetChoices()) {
             NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
             NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
@@ -355,7 +355,7 @@ using namespace AdaptiveCards;
         cell = [[UITableViewCell alloc] init];
     }
     cell.textLabel.text = _filteredList[indexPath.row];
-    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.numberOfLines = _choiceSetInput->GetWrap() ? 0 : 1;
     cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, cell.textLabel.text];
     cell.accessibilityTraits = UIAccessibilityTraitButton;
     return cell;
