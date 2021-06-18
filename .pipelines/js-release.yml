@@ -1,0 +1,28 @@
+# 'Allow scripts to access the OAuth token' was selected in pipeline.  Add the following YAML to any steps requiring access:
+#       env:
+#           MY_ACCESS_TOKEN: $(System.AccessToken)
+# Variable 'system.prefergit' was defined in the Variables tab
+name: $(date:yyMM).$(date:dd)$(rev:rrr)
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: main
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-20.04
+  demands:
+  - npm
+steps:
+- task: NodeTool@0
+  name: NodeTool1
+  displayName: Use Node 12.x
+  inputs:
+    versionSpec: 12.x
+- bash: |
+   npm ci 
+   npx lerna bootstrap --ci
+   npx lerna run release
+   npx lerna version prerelease --preid beta02 --no-git-tag-version --no-push --yes
+  workingDirectory: source/nodejs
+  displayName: 'Bash - lerna bootstrap'
