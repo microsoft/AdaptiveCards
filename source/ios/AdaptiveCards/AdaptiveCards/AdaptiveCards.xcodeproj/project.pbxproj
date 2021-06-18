@@ -1234,7 +1234,6 @@
 		F42979321F30074900E89914 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
-				6B92A7E72679227C00CAE3BF /* CompactStyleChoiceSet */,
 				6BD025EB254784660009B019 /* ACOInputResults.h */,
 				6BD025EC254784670009B019 /* ACOInputResults.mm */,
 				F495FC092022A18F0093D4DE /* ACRChoiceSetViewDataSource.h */,
@@ -1265,6 +1264,7 @@
 				6B9BDF7120E1BD0E00F13155 /* ACRToggleInputDataSource.mm */,
 				6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */,
 				6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */,
+				6B92A7E72679227C00CAE3BF /* CompactStyleChoiceSet */,
 				6B70ABA425797B720095D925 /* InputRenderers */,
 			);
 			name = Inputs;

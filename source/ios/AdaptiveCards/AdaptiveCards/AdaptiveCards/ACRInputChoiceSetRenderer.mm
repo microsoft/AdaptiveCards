@@ -93,7 +93,11 @@
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
-    if (choiceSet && choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact) {
+    if (!choiceSet) {
+        return;
+    }
+    const auto style = choiceSet->GetChoiceSetStyle();
+    if (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered) {
         ACRChoiceSetCompactStyleView *choiceSetView = (ACRChoiceSetCompactStyleView *)view;
         choiceSetView.borderStyle = UITextBorderStyleRoundedRect;
         choiceSetView.backgroundColor = UIColor.groupTableViewBackgroundColor;

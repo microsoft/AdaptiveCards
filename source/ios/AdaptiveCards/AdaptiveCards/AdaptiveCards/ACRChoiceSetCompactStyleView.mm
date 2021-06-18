@@ -25,6 +25,7 @@ using namespace AdaptiveCards;
     UIButton *_button;
     BOOL _isValid;
     BOOL _filteringEnabled;
+    BOOL _isListViewVisible;
     NSMutableDictionary<NSString *, NSString *> *_titlesMap;
     std::shared_ptr<ChoiceSetInput> _choiceSetInput;
     __weak UIViewController *_viewController;
@@ -87,13 +88,14 @@ using namespace AdaptiveCards;
 
         NSString *defaultValue = [NSString stringWithCString:_choiceSetInput->GetValue().c_str()
                                                     encoding:NSUTF8StringEncoding];
-
+        BOOL shouldFilterList = NO;
         for (auto choice : _choiceSetInput->GetChoices()) {
             NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
             NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
             _titlesMap[title] = value;
             if ([value isEqualToString:defaultValue]) {
                 self.text = title;
+                shouldFilterList = YES;
             }
             [mutableArrayStrings addObject:title];
             ++index;
@@ -101,7 +103,11 @@ using namespace AdaptiveCards;
 
         if ([mutableArrayStrings count]) {
             _titles = [NSArray arrayWithArray:mutableArrayStrings];
-            _filteredList = _titles;
+            if (shouldFilterList) {
+                [self filterList:self.text];
+            } else {
+                _filteredList = _titles;
+            }
         }
 
         self.hasValidationProperties = self.isRequired;
@@ -127,11 +133,20 @@ using namespace AdaptiveCards;
         [self endEditing:YES];
         // if showFilteredListControl is not in the selected state,
         // show the filtered list
-        if (!_button.isSelected) {
+        if (!_isListViewVisible) {
             [self showListView];
-            _button.selected = YES;
             // announce layout change, and move the VO focus to the filtered list
             UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, _listView);
+        } else {
+            [self hideListView];
+            // announce layout change, and move the VO focus to the filtered list
+            UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
+        }
+
+        if (!_button.isSelected) {
+            _button.selected = YES;
+        } else {
+            _button.selected = NO;
         }
     }
 }
@@ -151,7 +166,11 @@ using namespace AdaptiveCards;
     // filtered list when input field is empty
     if ([newString length]) {
         [self filterList:newString];
-        [self showListView];
+        if (!_isListViewVisible) {
+            [self showListView];
+        } else {
+            [_listView reloadData];
+        }
         // button state has to be checked
         // button state is not binary values that toggles
         if (!_button.isSelected) {
@@ -159,6 +178,12 @@ using namespace AdaptiveCards;
         }
     } else {
         [self resetFilteredList];
+        if (_isListViewVisible) {
+            [self hideListView];
+        }
+        if (_button.isSelected) {
+            _button.selected = NO;
+        }
     }
 
     return YES;
@@ -192,7 +217,6 @@ using namespace AdaptiveCards;
 {
     if (!button.isSelected) {
         [self showListView];
-
     } else {
         [self hideListView];
     }
@@ -201,6 +225,7 @@ using namespace AdaptiveCards;
 
 - (void)showListView
 {
+    _isListViewVisible = YES;
     if (_filteringEnabled) {
         // overlay keyboard
         [self becomeFirstResponder];
@@ -217,7 +242,9 @@ using namespace AdaptiveCards;
 
 - (BOOL)resignFirstResponder
 {
-    [self hideListView];
+    if (_isListViewVisible) {
+        [self hideListView];
+    }
     if (_button.isSelected) {
         _button.selected = NO;
     }
@@ -227,6 +254,7 @@ using namespace AdaptiveCards;
 - (void)hideListView
 {
     [_view removeFromSuperview];
+    _isListViewVisible = NO;
 }
 
 - (void)layoutSubviews
@@ -307,7 +335,9 @@ using namespace AdaptiveCards;
 {
     self.accessibilityLabel = view.accessibilityLabel;
     if (shouldBecomeFirstResponder) {
-        [self showListView];
+        if (!_isListViewVisible) {
+            [self showListView];
+        }
         [_listView becomeFirstResponder];
         UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, _listView);
     } else {
@@ -368,7 +398,9 @@ using namespace AdaptiveCards;
     if (_filteringEnabled) {
         [self filterList:self.text];
     }
-    [self hideListView];
+    if (_isListViewVisible) {
+        [self hideListView];
+    }
     if (_button.isSelected) {
         _button.selected = NO;
     }
