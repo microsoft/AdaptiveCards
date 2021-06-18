@@ -77,18 +77,29 @@ public class ChoiceSetInputValidationTest
     private AutoCompleteTextViewHandler createAutoCompleteTextViewInputHandler(ChoiceSetInput choiceSetInput)
     {
         final AutoCompleteTextViewHandler choiceSetInputHandler = new AutoCompleteTextViewHandler(choiceSetInput);
+        choiceSetInputHandler.setView(createAutoCompleteTextView());
+        return choiceSetInputHandler;
+    }
 
+    private AutoCompleteTextViewHandler createAutoCompleteTextViewInputHandler(ChoiceSetInput choiceSetInput, AutoCompleteTextView autoCompleteTextView)
+    {
+        final AutoCompleteTextViewHandler choiceSetInputHandler = new AutoCompleteTextViewHandler(choiceSetInput);
+        choiceSetInputHandler.setView(autoCompleteTextView);
+        return choiceSetInputHandler;
+    }
+
+    private AutoCompleteTextView createAutoCompleteTextView()
+    {
+        final AutoCompleteTextView[] autoCompleteTextView = new AutoCompleteTextView[1];
         InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run()
             {
-                AutoCompleteTextView autoCompleteTextView = new AutoCompleteTextView(getContext());
-                autoCompleteTextView.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, new String[]{"sample title"}));
-                choiceSetInputHandler.setView(autoCompleteTextView);
+                autoCompleteTextView[0] = new AutoCompleteTextView(getContext());
+                autoCompleteTextView[0].setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, new String[]{"sample title"}));
             }
         });
-
-        return choiceSetInputHandler;
+        return autoCompleteTextView[0];
     }
 
     private RadioGroupInputHandler createRadioGroupInputHandler(ChoiceSetInput choiceSetInput)
@@ -233,9 +244,12 @@ public class ChoiceSetInputValidationTest
     public void VerifyValidationFailsWithSetInvalidValueForFilteredChoiceSet()
     {
         ChoiceSetInput choiceSetInput = createFilteredChoiceSetInputWithValidationProperties(false);
-        AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput);
+        AutoCompleteTextView autoCompleteTextView = createAutoCompleteTextView();
+        AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput, autoCompleteTextView);
 
-        inputHandler.setInput(invalidValue);
+        // Instead of using setInput we set the text by accessing the underlying control as setInput sets the text as an
+        // empty string if the value is not found
+        autoCompleteTextView.setText(invalidValue);
         Assert.assertFalse(inputHandler.isValid());
     }
 

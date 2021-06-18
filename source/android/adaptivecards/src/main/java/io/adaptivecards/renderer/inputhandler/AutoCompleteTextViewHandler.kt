@@ -20,10 +20,14 @@ class AutoCompleteTextViewHandler(baseInputElement: BaseInputElement?) : BaseInp
                 (m_view as ValidatedInputLayout).getChildAt(0) as AutoCompleteTextView
             } else m_view as AutoCompleteTextView
 
+    private var inputIsEmpty = false;
+
     override fun getInput(): String {
         // To get the input, we have to transform the text inside of the AutoCompleteTextView into the value
         val choiceSetInput = m_baseInputElement as ChoiceSetInput
-        return getValueForTitle(autoCompleteTextView.editableText.toString(), choiceSetInput.GetChoices())
+        val inputText = autoCompleteTextView.editableText.toString()
+        inputIsEmpty = inputText.isEmpty()
+        return getValueForTitle(inputText, choiceSetInput.GetChoices())
     }
 
     override fun setInput(value: String) {
@@ -39,9 +43,14 @@ class AutoCompleteTextViewHandler(baseInputElement: BaseInputElement?) : BaseInp
     }
 
     override fun isValidOnSpecifics(inputValue: String): Boolean {
+        // Before looking for the value we verify if the input was initially empty, if so the input is valid
+        if (inputIsEmpty){
+            return true;
+        }
+
         val choiceSetInput = m_baseInputElement as ChoiceSetInput
         // if we can't find the title in the choice list, then the returned value is -1
-        return findTitleIndex(inputValue, choiceSetInput.GetChoices()) != -1
+        return findValueIndex(inputValue, choiceSetInput.GetChoices()) != -1
     }
 
     private fun findIndexForChoiceInput(choiceInputVector: ChoiceInputVector, expectedValue: String, retriever: (ChoiceInput) -> String): Int {
