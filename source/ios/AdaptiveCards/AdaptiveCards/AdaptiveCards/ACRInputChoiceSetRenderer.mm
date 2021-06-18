@@ -38,7 +38,8 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     ACRInputLabelView *inputLabelView = nil;
-    if (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
+    const auto style = choiceSet->GetChoiceSetStyle();
+    if (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered) {
         ACRChoiceSetCompactStyleView *compactStyleView = [[ACRChoiceSetCompactStyleView alloc] initWithInputChoiceSet:acoElem rootView:rootView hostConfig:acoConfig];
         inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:choiceSet inputView:compactStyleView accessibilityItem:compactStyleView viewGroup:viewGroup dataSource:nil];
     } else {

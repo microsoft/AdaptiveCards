@@ -43,7 +43,7 @@ using namespace AdaptiveCards;
                                      encoding:NSUTF8StringEncoding];
         self.isRequired = choiceSet->GetIsRequired();
         self.allowsEditingTextAttributes = NO;
-        _filteringEnabled = YES;
+        _filteringEnabled = choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered;
         if (!_filteringEnabled) {
             self.accessibilityTraits |= (UIAccessibilityTraitButton | UIAccessibilityTraitStaticText);
         }
