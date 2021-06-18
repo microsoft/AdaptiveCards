@@ -413,7 +413,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         boolean usingCustomInputs = isUsingCustomInputs(context);
         final AutoCompleteTextView autoCompleteTextView = new ValidatedAutoCompleteTextView(context, usingCustomInputs);
-        autoCompleteTextView.setThreshold(1);
+        autoCompleteTextView.setThreshold(0);
 
         final AutoCompleteTextViewHandler autoCompleteTextInputHandler = new AutoCompleteTextViewHandler(choiceSetInput);
 
@@ -421,7 +421,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         ValidatedInputLayout inputLayout = null;
 
         // if using custom inputs, we don't have to create the surrounding linear layout
-        boolean needsOuterLayout = (isRequired && !usingCustomInputs);
+        boolean needsOuterLayout = (!usingCustomInputs);
         if (needsOuterLayout)
         {
             inputLayout = new ValidatedSpinnerLayout(context,

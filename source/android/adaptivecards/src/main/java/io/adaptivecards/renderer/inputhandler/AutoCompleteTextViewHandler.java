@@ -51,6 +51,14 @@ public class AutoCompleteTextViewHandler extends BaseInputHandler
         m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 
+    @Override
+    public boolean isValidOnSpecifics(String inputValue)
+    {
+        ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
+        // if we can't find the title in the choice list, then the returned value is -1
+        return (findTitleIndex(inputValue, choiceSetInput.GetChoices()) != -1);
+    }
+
     protected interface ChoiceInputPropertyValueRetriever
     {
         String getPropertyValue(ChoiceInput choiceInput);

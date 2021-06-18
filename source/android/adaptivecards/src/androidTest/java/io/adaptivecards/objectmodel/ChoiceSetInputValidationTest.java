@@ -230,13 +230,13 @@ public class ChoiceSetInputValidationTest
      * @testDescription Verifies that a not required input will succeed when a value not in the list of values has been set
      */
     @Test
-    public void VerifyValidationSucceedsWithSetInvalidValueForFilteredChoiceSet()
+    public void VerifyValidationFailsWithSetInvalidValueForFilteredChoiceSet()
     {
         ChoiceSetInput choiceSetInput = createFilteredChoiceSetInputWithValidationProperties(false);
         AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput);
 
         inputHandler.setInput(invalidValue);
-        Assert.assertTrue(inputHandler.isValid());
+        Assert.assertFalse(inputHandler.isValid());
     }
 
     /**
