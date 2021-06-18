@@ -72,6 +72,9 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_TextStyles(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStylesConfig** textStylesConfig) override;
         IFACEMETHODIMP put_TextStyles(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStylesConfig* textStylesConfig) override;
 
+        IFACEMETHODIMP get_Table(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig** tableConfig) override;
+        IFACEMETHODIMP put_Table(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig* tableConfig) override;
+
     private:
         Microsoft::WRL::Wrappers::HString m_fontFamily;
         boolean m_supportsInteractivity;
@@ -93,6 +96,7 @@ namespace AdaptiveCards::Rendering::Uwp
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputsConfig> m_inputs;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlockConfig> m_textBlock;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStylesConfig> m_textStyles;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig> m_table;
     };
 
     class AdaptiveHostConfigStaticsImpl WrlFinal

@@ -1,0 +1,284 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "You can configure the horizontal alignment of table content with HorizontalCellContentAlignement",
+			"wrap": true,
+			"weight": "Bolder"
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Left",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"horizontalCellContentAlignment": "Left"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Center",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"horizontalCellContentAlignment": "Center"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Right",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"horizontalCellContentAlignment": "Right"
+								}
+							]
+						}
+					]
+				}
+			],
+			"showGridLines": false,
+			"firstRowAsHeaders": false,
+			"verticalCellContentAlignment": "Center"
+		}
+	]
+}
