@@ -1,12 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.input.customcontrols;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.TypedValue;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.core.content.ContextCompat;
 
 import io.adaptivecards.R;
@@ -15,8 +16,7 @@ import io.adaptivecards.R;
  * ValidatedAutoCompleteTextView is an extension of AutoCompleteTextView that supports the usage of
  * the adaptive_state_input_invalid boolean flag defined in attrs.xml for using a custom background drawable
  */
-@SuppressLint("AppCompatCustomView")
-public class ValidatedAutoCompleteTextView extends AutoCompleteTextView implements IValidatedInputView
+public class ValidatedAutoCompleteTextView extends AppCompatAutoCompleteTextView implements IValidatedInputView
 {
     /**
      * Creates an instance of a ValidatedAutoCompleteTextView and verifies if custom drawables are being used.

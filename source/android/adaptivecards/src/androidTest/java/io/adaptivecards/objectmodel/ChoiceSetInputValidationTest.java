@@ -226,8 +226,8 @@ public class ChoiceSetInputValidationTest
     }
 
     /**
-     * VerifyValidationSucceedsWithSetInvalidValueForCompactChoiceSet
-     * @testDescription Verifies that a not required input will succeed when a value not in the list of values has been set
+     * VerifyValidationFailsWithSetInvalidValueForCompactChoiceSet
+     * @testDescription Verifies that a not required input will fail when a value not in the list of values has been set
      */
     @Test
     public void VerifyValidationFailsWithSetInvalidValueForFilteredChoiceSet()
