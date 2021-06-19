@@ -1853,7 +1853,7 @@ export class Image extends CardElement {
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
                 imageElement.onkeypress = (e) => {
-                    if (this.selectAction && this.selectAction.isEnabled && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
+                    if (this.selectAction && this.selectAction.isEnabled && (e.code == "Enter" || e.code == "Space")) { // enter or space pressed
                         e.preventDefault();
                         e.cancelBubble = true;
 
@@ -2026,7 +2026,7 @@ export abstract class CardElementContainer extends CardElement {
                 }
 
                 element.onkeypress = (e) => {
-                    if (this._selectAction && this._selectAction.isEnabled && (e.keyCode == 13 || e.keyCode == 32)) {
+                    if (this._selectAction && this._selectAction.isEnabled && (e.code == "Enter" || e.code == "Space")) {
                         // Enter or space pressed
                         e.preventDefault();
                         e.cancelBubble = true;
@@ -2399,7 +2399,7 @@ export class Media extends CardElement {
             }
 
             playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
-                if (e.keyCode == 13 || e.keyCode == 32) { // space or enter
+                if (e.code == "Enter" || e.code == "Space") { // space or enter
                     this.handlePlayButtonInvoke(e);
                 }
             }
