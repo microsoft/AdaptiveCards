@@ -11,21 +11,23 @@
 #import "ACRActionDelegate.h"
 #import "ACRBaseCardElementRenderer.h"
 #import "ACRInputLabelView.h"
+#import "ChoiceInput.h"
+#import "ChoiceSetInput.h"
+#import "HostConfig.h"
 #import "UtiliOS.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRChoiceSetCompactStyleView {
+    ACOFilteredDataSource *_filteredDataSource;
+    ACOFilteredListStateManager *_stateManager;
     NSString *_defaultString;
     NSString *_inputLabel;
-    NSArray<NSString *> *_titles;
-    NSArray<NSString *> *_filteredList;
     UITableView *_listView;
     UIView *_view;
     UIButton *_button;
     BOOL _isValid;
     BOOL _filteringEnabled;
-    BOOL _isListViewVisible;
     NSMutableDictionary<NSString *, NSString *> *_titlesMap;
     std::shared_ptr<ChoiceSetInput> _choiceSetInput;
     __weak UIViewController *_viewController;
@@ -42,6 +44,7 @@ using namespace AdaptiveCards;
         std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
         self.id = [NSString stringWithCString:choiceSet->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
+        _stateManager = [[ACOFilteredListStateManager alloc] init];
         self.isRequired = choiceSet->GetIsRequired();
         self.allowsEditingTextAttributes = NO;
         _filteringEnabled = choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered;
@@ -50,7 +53,6 @@ using namespace AdaptiveCards;
         }
 
         self.delegate = self;
-        _rootView = rootView;
         _choiceSetInput = choiceSet;
         _defaultString = [NSString stringWithCString:choiceSet->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
         self.placeholder = _defaultString;
@@ -75,11 +77,9 @@ using namespace AdaptiveCards;
             [renderer configure:self rootView:rootView baseCardElement:acoElem hostConfig:acoConfig];
         }
 
-        _viewController = traverseResponderChainForUIViewController(_rootView);
-
+        _viewController = traverseResponderChainForUIViewController(rootView);
         _isValid = YES;
         _titlesMap = [[NSMutableDictionary alloc] init];
-        NSMutableArray *mutableArrayStrings = [[NSMutableArray alloc] init];
         NSInteger index = 0;
         auto inputLabel = _choiceSetInput->GetLabel();
         if (!inputLabel.empty()) {
@@ -89,6 +89,7 @@ using namespace AdaptiveCards;
         NSString *defaultValue = [NSString stringWithCString:_choiceSetInput->GetValue().c_str()
                                                     encoding:NSUTF8StringEncoding];
         BOOL shouldFilterList = NO;
+        _filteredDataSource = [[ACOFilteredDataSource alloc] init];
         for (auto choice : _choiceSetInput->GetChoices()) {
             NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
             NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
@@ -97,17 +98,12 @@ using namespace AdaptiveCards;
                 self.text = title;
                 shouldFilterList = YES;
             }
-            [mutableArrayStrings addObject:title];
+            [_filteredDataSource addToSource:title];
             ++index;
         }
 
-        if ([mutableArrayStrings count]) {
-            _titles = [NSArray arrayWithArray:mutableArrayStrings];
-            if (shouldFilterList) {
-                [self filterList:self.text];
-            } else {
-                _filteredList = _titles;
-            }
+        if (shouldFilterList) {
+            [_filteredDataSource filter:self.text];
         }
 
         self.hasValidationProperties = self.isRequired;
@@ -116,6 +112,24 @@ using namespace AdaptiveCards;
     }
 
     return self;
+}
+
+- (void)updateControls
+{
+    if (_button.isSelected) {
+        if (!_stateManager.isShowFilteredListControlSelected) {
+            _button.selected = NO;
+        }
+    } else if (_stateManager.isShowFilteredListControlSelected) {
+        _button.selected = YES;
+    }
+    if (_stateManager.shouldUpdateFilteredList) {
+        if (_stateManager.isFilteredListVisible) {
+            [self showListView];
+        } else {
+            [self hideListView];
+        }
+    }
 }
 
 /// configures position of showFilteredListControl
@@ -129,24 +143,23 @@ using namespace AdaptiveCards;
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (!_filteringEnabled) {
+
+        BOOL prevState = _stateManager.isFilteredListVisible;
         // don't show keyboard if filtering is not enabled
         [self endEditing:YES];
-        // if showFilteredListControl is not in the selected state,
-        // show the filtered list
-        if (!_isListViewVisible) {
-            [self showListView];
-            // announce layout change, and move the VO focus to the filtered list
-            UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, _listView);
-        } else {
-            [self hideListView];
-            // announce layout change, and move the VO focus to the filtered list
-            UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
+
+        // if prevState was visible, endEditing will toggle the state,
+        // so skip the toggle
+        if (!prevState) {
+            [_stateManager toggleFilteredListView];
+            [self updateControls];
         }
 
-        if (!_button.isSelected) {
-            _button.selected = YES;
+        if (_stateManager.isFilteredListVisible) {
+            UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, _listView);
         } else {
-            _button.selected = NO;
+            // announce layout change, and move the VO focus to the filtered list
+            UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
         }
     }
 }
@@ -166,41 +179,30 @@ using namespace AdaptiveCards;
     // filtered list when input field is empty
     if ([newString length]) {
         [self filterList:newString];
-        if (!_isListViewVisible) {
-            [self showListView];
-        } else {
+        [_stateManager showFilteredListView];
+        if (!_stateManager.shouldUpdateFilteredList) {
             [_listView reloadData];
-        }
-        // button state has to be checked
-        // button state is not binary values that toggles
-        if (!_button.isSelected) {
-            _button.selected = YES;
         }
     } else {
         [self resetFilteredList];
-        if (_isListViewVisible) {
-            [self hideListView];
-        }
-        if (_button.isSelected) {
-            _button.selected = NO;
-        }
+        [_stateManager hideFilteredListView];
     }
 
+    [self updateControls];
     return YES;
 }
 
 - (void)resetFilteredList
 {
-    _filteredList = _titles;
+    [_filteredDataSource resetFilter];
     [_listView reloadData];
 }
 
 /// handles `return` key
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (_button.isSelected) {
-        _button.selected = NO;
-    }
+    [_stateManager filteredListControlDeselected];
+    [self updateControls];
     // ask UIKit to dimiss the keyboard
     [self resignFirstResponder];
     return YES;
@@ -208,24 +210,17 @@ using namespace AdaptiveCards;
 
 - (void)filterList:(NSString *)text
 {
-    NSString *filter = @"SELF CONTAINS[c] %@";
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:filter, text.lowercaseString];
-    _filteredList = [_titles filteredArrayUsingPredicate:predicate];
+    [_filteredDataSource filter:text];
 }
 
 - (void)toggleListView:(UIButton *)button
 {
-    if (!button.isSelected) {
-        [self showListView];
-    } else {
-        [self hideListView];
-    }
-    button.selected = !button.selected;
+    [_stateManager toggleShowFilteredListControl];
+    [self updateControls];
 }
 
 - (void)showListView
 {
-    _isListViewVisible = YES;
     if (_filteringEnabled) {
         // overlay keyboard
         [self becomeFirstResponder];
@@ -242,19 +237,14 @@ using namespace AdaptiveCards;
 
 - (BOOL)resignFirstResponder
 {
-    if (_isListViewVisible) {
-        [self hideListView];
-    }
-    if (_button.isSelected) {
-        _button.selected = NO;
-    }
+    [_stateManager hideFilteredListView];
+    [self updateControls];
     return [super resignFirstResponder];
 }
 
 - (void)hideListView
 {
     [_view removeFromSuperview];
-    _isListViewVisible = NO;
 }
 
 - (void)layoutSubviews
@@ -335,9 +325,8 @@ using namespace AdaptiveCards;
 {
     self.accessibilityLabel = view.accessibilityLabel;
     if (shouldBecomeFirstResponder) {
-        if (!_isListViewVisible) {
-            [self showListView];
-        }
+        [_stateManager showFilteredListView];
+        [self updateControls];
         [_listView becomeFirstResponder];
         UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, _listView);
     } else {
@@ -371,11 +360,7 @@ using namespace AdaptiveCards;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (_filteredList) {
-        return [_filteredList count];
-    } else {
-        return 0;
-    }
+    return _filteredDataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -384,7 +369,7 @@ using namespace AdaptiveCards;
     if (!cell) {
         cell = [[UITableViewCell alloc] init];
     }
-    cell.textLabel.text = _filteredList[indexPath.row];
+    cell.textLabel.text = [_filteredDataSource getItemAt:indexPath.row];
     cell.textLabel.numberOfLines = _choiceSetInput->GetWrap() ? 0 : 1;
     cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, cell.textLabel.text];
     cell.accessibilityTraits = UIAccessibilityTraitButton;
@@ -394,16 +379,14 @@ using namespace AdaptiveCards;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    self.text = _filteredList[indexPath.row];
+    self.text = [_filteredDataSource getItemAt:indexPath.row];
     if (_filteringEnabled) {
         [self filterList:self.text];
     }
-    if (_isListViewVisible) {
-        [self hideListView];
-    }
-    if (_button.isSelected) {
-        _button.selected = NO;
-    }
+
+    [_stateManager hideFilteredListView];
+    [self updateControls];
+
     [self resignFirstResponder];
 }
 
@@ -414,5 +397,143 @@ using namespace AdaptiveCards;
 @synthesize isRequired;
 
 @synthesize hasVisibilityChanged;
+
+@end
+
+@implementation ACOFilteredDataSource {
+    NSMutableArray<NSString *> *_unfilteredList;
+    NSArray<NSString *> *_filteredList;
+    NSString *_filter;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _unfilteredList = [[NSMutableArray alloc] init];
+        _filteredList = _unfilteredList;
+        _filter = @"SELF CONTAINS[c] %@";
+    }
+    return self;
+}
+
+- (void)addToSource:(NSString *)item
+{
+    if (item) {
+        [_unfilteredList addObject:item];
+    }
+}
+
+- (NSUInteger)count
+{
+    return !_filteredList ? 0 : _filteredList.count;
+}
+
+- (NSString *)getItemAt:(NSInteger)index
+{
+    return (index < 0 or index >= self.count) ? @"" : _filteredList[index];
+}
+
+- (void)filter:(NSString *)key
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:_filter, key.lowercaseString];
+    _filteredList = [_unfilteredList filteredArrayUsingPredicate:predicate];
+}
+
+- (void)resetFilter
+{
+    _filteredList = _unfilteredList;
+}
+
+@end
+
+@implementation ACOFilteredListStateManager {
+    NSInteger _filteredListVisibility;
+    BOOL _showFilstedListControlState;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _filteredListVisibility = -1;
+    }
+    return self;
+}
+
+- (BOOL)shouldUpdateFilteredList
+{
+    return _filteredListVisibility == 1 || _filteredListVisibility == -1;
+}
+
+- (BOOL)isFilteredListVisible
+{
+    return _filteredListVisibility > 0;
+}
+
+- (BOOL)isShowFilteredListControlSelected
+{
+    return _showFilstedListControlState;
+}
+
+- (void)filteredListControlSelected
+{
+    [self incrementFilteredListVisibility];
+    _showFilstedListControlState = YES;
+}
+
+- (void)filteredListControlDeselected
+{
+    [self decrementFilteredListVisibility];
+    _showFilstedListControlState = NO;
+}
+
+- (void)showFilteredListView
+{
+    [self incrementFilteredListVisibility];
+    _showFilstedListControlState = YES;
+}
+
+- (void)hideFilteredListView
+{
+    [self decrementFilteredListVisibility];
+    _showFilstedListControlState = NO;
+}
+
+- (void)incrementFilteredListVisibility
+{
+    if (_filteredListVisibility > 0) {
+        _filteredListVisibility += 1;
+    } else {
+        _filteredListVisibility = 1;
+    }
+}
+
+- (void)decrementFilteredListVisibility
+{
+    if (_filteredListVisibility > 0) {
+        _filteredListVisibility = -1;
+    } else {
+        _filteredListVisibility -= 1;
+    }
+}
+
+- (void)toggleFilteredListView
+{
+    if (self.isFilteredListVisible) {
+        [self hideFilteredListView];
+    } else {
+        [self showFilteredListView];
+    }
+}
+
+- (void)toggleShowFilteredListControl
+{
+    if (self.isShowFilteredListControlSelected) {
+        [self filteredListControlDeselected];
+    } else {
+        [self filteredListControlSelected];
+    }
+}
 
 @end

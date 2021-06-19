@@ -125,7 +125,7 @@
 		6B8C769926461F1A009548FA /* ACRChoiceSetCellUnchecked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B8C768126461F1A009548FA /* ACRChoiceSetCellUnchecked.xib */; };
 		6B8C769B26462249009548FA /* ACRTextNumberField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B8C769A26462249009548FA /* ACRTextNumberField.xib */; };
 		6B92A7E42677DC8B00CAE3BF /* ACRChoiceSetCompactStyleView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B92A7E32677DC8B00CAE3BF /* ACRChoiceSetCompactStyleView.mm */; };
-		6B92A7E62677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B92A7E52677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h */; };
+		6B92A7E62677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B92A7E52677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B92A7F22679750D00CAE3BF /* chevronup.svg in Resources */ = {isa = PBXBuildFile; fileRef = 6B92A7F02679750C00CAE3BF /* chevronup.svg */; };
 		6B92A7F32679750D00CAE3BF /* chevrondown.svg in Resources */ = {isa = PBXBuildFile; fileRef = 6B92A7F12679750D00CAE3BF /* chevrondown.svg */; };
 		6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B94F2DB24C7997D00E2B310 /* ACRTextInputHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1537,7 +1537,6 @@
 				6B22425E21E80647000ACDA1 /* ACOParseContext.h in Headers */,
 				6BF4307F219129600068E432 /* ACRQuickReplyMultilineView.h in Headers */,
 				6BC30F7A21E6E49E00B9FAAE /* ACRCustomActionRenderer.h in Headers */,
-				6B92A7E62677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h in Headers */,
 				6B22425D21E80647000ACDA1 /* ACOParseContextPrivate.h in Headers */,
 				F4C1F5E81F2ABB3C0018CB78 /* ACRIBaseActionElementRenderer.h in Headers */,
 				6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */,
@@ -1589,6 +1588,7 @@
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 				6B8C766726461E98009548FA /* ACOBundle.h in Headers */,
 				0D34860A261A859800614EB9 /* ACOActionOverflowPrivate.h in Headers */,
+				6B92A7E62677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h in Headers */,
 				0D3485FD26193BA500614EB9 /* ACROverflowTarget.h in Headers */,
 				0D45F5A7261731E400EF03C5 /* ACRActionOverflowRenderer.h in Headers */,
 			);

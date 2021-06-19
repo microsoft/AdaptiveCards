@@ -74,6 +74,7 @@
 		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B70AB88256490CC0095D925 /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B70AB87256490CC0095D925 /* Image.SelectAction.json */; };
 		6B70ABB5257B18390095D925 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
+		6B92A7F5267D15DA00CAE3BF /* ACRInputTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B92A7F4267D15DA00CAE3BF /* ACRInputTest.mm */; };
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
 		6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980930215AE4310024B79B /* CoreGraphics.framework */; };
@@ -200,6 +201,7 @@
 		6B37723E26015FA30024E527 /* Action.Execute.Auth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.Auth.json; sourceTree = "<group>"; };
 		6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
 		6B70AB87256490CC0095D925 /* Image.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.SelectAction.json; sourceTree = "<group>"; };
+		6B92A7F4267D15DA00CAE3BF /* ACRInputTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputTest.mm; sourceTree = "<group>"; };
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6B980933215AE6EC0024B79B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6B980935215AE8780024B79B /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -461,6 +463,7 @@
 				F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.mm */,
 				F423C0941EE1FB6100905679 /* Info.plist */,
 				6BFF9A11260132800028069F /* Action.ExecuteTest.mm */,
+				6B92A7F4267D15DA00CAE3BF /* ACRInputTest.mm */,
 			);
 			path = ADCIOSVisualizerTests;
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				6B70ABB5257B18390095D925 /* CustomActionNewType.mm in Sources */,
 				F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */,
 				6BFF9A12260132800028069F /* Action.ExecuteTest.mm in Sources */,
+				6B92A7F5267D15DA00CAE3BF /* ACRInputTest.mm in Sources */,
 				6BD6E86125B28475007B0168 /* ACRImageRenderingTest.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
