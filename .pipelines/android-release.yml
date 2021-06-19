@@ -8,58 +8,160 @@ pool:
   vmImage: vs2017-win2016
   demands: java
 
-steps:
+parameters:
+- name: is_prerelease
+  displayName: Is prerelease version? (Indicates non-stable version, with suffix specified below)
+  type: boolean
+  default: false
+- name: prerelease_tag
+  displayName: Prerelease suffix (e.g. 1.0.0-beta01), used only if prerelease indicated above
+  type: string
+  default: 'beta01'
 
-- task: Gradle@2
-  displayName: build
-  inputs:
-    gradleWrapperFile: source/android/gradlew.bat
-    workingDirectory: source/android
-    tasks: 'adaptivecards:build'
-    publishJUnitResults: false
+variables:
+- group: AdaptiveCards-KVLink
+- name: AC_IS_PRERELEASE
+  value: ${{ parameters.is_prerelease }}
+- name: AC_PRERELEASE_TAG
+  value: ${{ parameters.prerelease_tag }}
+- name: AC_APPEND_BUILD_NUMBER
+  value: false
 
-- task: Gradle@2
-  displayName: 'publish'
-  inputs:
-    gradleWrapperFile: source/android/gradlew.bat
-    workingDirectory: source/android
-    tasks: 'adaptivecards:publishReleasePublicationToLocalDirectoryRepository'
-    publishJUnitResults: false
+stages:
+- stage: Staging
+  jobs:
+  - job: Staging
+    steps:
+    - task: Gradle@2
+      displayName: build
+      inputs:
+        gradleWrapperFile: source/android/gradlew.bat
+        workingDirectory: source/android
+        tasks: 'adaptivecards:build'
+        publishJUnitResults: false
 
-- task: Powershell@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    targetType: inline
-    script: |
-     ls $(build.sourcesdirectory) -File -Recur | ?{
-       $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar|.pom)$"
-     } | %{
-       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) $_.Name)
-       
-       # Additional copy to be converted into detached PGP signature by ESRP task
-       cp $_.FullName (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
-     }
+    - task: Gradle@2
+      displayName: 'Gradle Unsigned Publication'
+      inputs:
+        gradleWrapperFile: source/android/gradlew.bat
+        workingDirectory: source/android
+        tasks: 'adaptivecards:publishUnsignedReleasePublicationToUnsignedArtifactRepository'
+        publishJUnitResults: false
 
-- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
-  displayName: 'ESRP CodeSign (Detached PGP)'
-  inputs:
-    ConnectedServiceName: 'AdaptiveCards ESRP CodeSigning'
-    FolderPath: $(build.artifactstagingdirectory)
-    Pattern: '*.asc'
-    signConfigType: inlineSignParams
-    inlineOperation: |
-     [
-       {
-         "KeyCode":"CP-464385-Pgp",
-         "OperationCode":"LinuxSign",
-         "Parameters":{},
-         "ToolName":"sign",
-         "ToolVersion":"1.0"
-       }
-     ]
+    - task: Powershell@2
+      name: prepareSigningTask
+      displayName: 'Copy Files For Signing'
+      inputs:
+        targetType: inline
+        script: |
+         ls $(build.sourcesdirectory) -File -Recur | ?{
+           $_.FullName -Match ".*\\io\\adaptivecards\\.*(.aar)$"
+         } | %{
+           $dest = (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
+           echo "##vso[task.setvariable variable=aarSignaturePath;isOutput=true;]$dest"
+           cp $_.FullName $dest
+           echo "Copied aar to $dest for signing"
+         }
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+         ls $(build.sourcesdirectory) -File -Recur | ?{
+           $_.FullName -Match ".*\\io\\adaptivecards\\.*(.pom)$"
+         } | %{
+           $dest = (Join-Path $(build.artifactstagingdirectory) ($_.Name + ".asc"))
+           echo "##vso[task.setvariable variable=pomSignaturePath;isOutput=true;]$dest"
+           cp $_.FullName $dest
+           echo "Copied pom to $dest for signing"
+         }
 
+    - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+      displayName: 'ESRP CodeSign (Detached PGP)'
+      inputs:
+        ConnectedServiceName: 'AdaptiveCards ESRP CodeSigning'
+        FolderPath: $(build.artifactstagingdirectory)
+        Pattern: '*.asc'
+        signConfigType: inlineSignParams
+        inlineOperation: |
+         [
+           {
+             "KeyCode":"CP-464385-Pgp",
+             "OperationCode":"LinuxSign",
+             "Parameters":{},
+             "ToolName":"sign",
+             "ToolVersion":"1.0"
+           }
+         ]
+
+    - task: Gradle@2
+      displayName: 'Gradle Signed Publish to Local Directory'
+      inputs:
+        gradleWrapperFile: source/android/gradlew.bat
+        workingDirectory: source/android
+        tasks: 'adaptivecards:publishSignedReleasePublicationToSignedArtifactRepository'
+        publishJUnitResults: false
+      env:
+        AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
+        AC_POM_SIGNATURE_PATH: $(prepareSigningTask.pomSignaturePath)
+
+    - task: Powershell@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        targetType: inline
+        script: |
+         ls $(build.sourcesdirectory) -File -Recur | ?{
+           $_.FullName -Match ".*\\signedArtifact\\.*(.aar|.pom|.aar.asc|.pom.asc)$"
+         } | %{
+           echo "Copying artifact $_.Name"
+           cp $_.FullName (Join-Path $(build.artifactstagingdirectory) $_.Name)
+         }
+
+    - task: Gradle@2
+      displayName: 'Gradle Signed Publish to OSSRH Staging'
+      inputs:
+        gradleWrapperFile: source/android/gradlew.bat
+        workingDirectory: source/android
+        tasks: 'adaptivecards:publishSignedReleasePublicationToSonatypeStagingRepository'
+        publishJUnitResults: false
+      env:
+        AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
+        AC_AAR_SIGNATURE_PATH: $(prepareSigningTask.aarSignaturePath)
+        AC_POM_SIGNATURE_PATH: $(prepareSigningTask.pomSignaturePath)
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+
+- stage: NexusValidation
+  jobs:
+  - job: NexusValidation
+    steps:
+    - task: Gradle@2
+      displayName: 'Validate Staging Artifact'
+      inputs:
+        gradleWrapperFile: source/android/gradlew.bat
+        workingDirectory: source/android
+        tasks: 'adaptivecards:closeRepository'
+        publishJUnitResults: false
+      env:
+        AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
+        
+- stage: PublishToMavenCentral
+  jobs:
+  - job: ManualApproval
+    pool: server
+    steps:
+    - task: ManualValidation@0
+      inputs:
+        instructions: 'Please verify artifact integrity at http://oss.sonatype.org/'
+  
+  - job: ReleaseValidatedArtifact
+    dependsOn: ManualApproval
+    steps:
+    - task: Gradle@2
+      displayName: 'Release Validated Artifact to Maven Central'
+      inputs:
+        gradleWrapperFile: source/android/gradlew.bat
+        workingDirectory: source/android
+        tasks: 'adaptivecards:releaseRepository'
+        publishJUnitResults: false
+      env:
+        AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)

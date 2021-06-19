@@ -1,15 +1,17 @@
+plugins {
+    id 'io.codearte.nexus-staging' version '0.30.0'
+}
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-apply plugin: 'signing'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -46,6 +48,7 @@ def projectInfo = {
     name = 'Android Adaptive Cards Library'
     description = 'Android Adaptive Cards Lib'
     url = 'https://github.com/Microsoft/AdaptiveCards'
+    packaging = 'aar'
 
     scm {
         url = 'https://github.com/Microsoft/AdaptiveCards'
@@ -72,30 +75,46 @@ def projectInfo = {
     }
 }
 
+def releasePublication = {
+    from components.release
+
+    groupId = 'io.adaptivecards'
+    artifactId = 'adaptivecards-android'
+
+    version = "${acVersionMajor}.${acVersionMinor}.${acVersionPatch}"
+
+    // Append pre-release tag/suffix, if AC_IS_PRERELEASE is true
+    if(Boolean.valueOf(System.getenv('AC_IS_PRERELEASE')) && System.getenv('AC_PRERELEASE_TAG')) {
+        version += "-${System.getenv('AC_PRERELEASE_TAG')}"
+    }
+
+    // Append pipeline build number, if AC_APPEND_BUILD_NUMBER is true
+    if(Boolean.valueOf(System.getenv('AC_APPEND_BUILD_NUMBER')) && System.getenv('BUILD_BUILDNUMBER')) {
+        version += ".${System.getenv('BUILD_BUILDNUMBER')}"
+    }
+
+    pom projectInfo
+}
+
 afterEvaluate {
     publishing {
         publications {
-            release(MavenPublication) {
-                from components.release
+            unsignedRelease(MavenPublication, releasePublication)
 
-                groupId = 'io.adaptivecards'
-                artifactId = 'adaptivecards-android'
-
-                version = "${acVersionMajor}.${acVersionMinor}.${acVersionPatch}"
-
-                // Append pre-release identifier, if AC_PRERELEASE_TAG is non-empty
-                if(System.getenv('AC_PRERELEASE_TAG')) {
-                    version += "-${System.getenv('AC_PRERELEASE_TAG')}"
+            signedRelease(MavenPublication) {
+                releasePublication.delegate = it
+                releasePublication()
+                if(System.getenv('AC_AAR_SIGNATURE_PATH')) {
+                    artifact(System.getenv('AC_AAR_SIGNATURE_PATH')) {
+                        extension = "aar.asc"
+                    }
                 }
-
-                // Append pipeline build number, if AC_APPEND_BUILD_NUMBER is true
-                if(System.getenv('BUILD_BUILDNUMBER') && Boolean.valueOf(System.getenv('AC_APPEND_BUILD_NUMBER'))) {
-                    version += ".${System.getenv('BUILD_BUILDNUMBER')}"
+                if(System.getenv('AC_POM_SIGNATURE_PATH')) {
+                    artifact(System.getenv('AC_POM_SIGNATURE_PATH')) {
+                        extension = "pom.asc"
+                    }
                 }
-
-                pom projectInfo
             }
-
         }
 
         repositories {
@@ -108,14 +127,39 @@ afterEvaluate {
                     password System.getenv("AZURE_ARTIFACTS_ENV_ACCESS_TOKEN") ?: "${azureArtifactsGradleAccessToken}"
                 }
             }
-            // Save to local directory "artifact"
+            // Save to local directory "unsignedArtifact"
             maven {
-                name = 'localDirectory'
-                url = "artifact"
+                name = 'unsignedArtifact'
+                url = "unsignedArtifact"
             }
-            // TODO: Add SonaType OSS repository to publish directly
+            // Save to local directory "signedArtifact"
+            maven {
+                name = 'signedArtifact'
+                url = "signedArtifact"
+            }
+            // Publish to Sonatype Nexus OSSRH staging
+            maven {
+                name = 'sonatypeStaging'
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                credentials {
+                    username "adaptivecards"
+                    password System.getenv("AC_SONATYPE_CREDENTIAL") ?: "${NexusPassword}"
+                }
+            }
         }
     }
+}
+
+// TODO: Enable module metadata with signing support
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+nexusStaging {
+    username "adaptivecards"
+    password System.getenv("AC_SONATYPE_CREDENTIAL") ?: "${NexusPassword}"
+    packageGroup 'io.adaptivecards'
+    stagingProfileId '9ee8e04fa2eec'
 }
 
 dependencies {
