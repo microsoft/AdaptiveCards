@@ -10,5 +10,29 @@
 
     <Grid>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0, 20, 0, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="HomeButton" AutomationProperties.Name="HomeButton" Content="Home" 
+                    Click="HomeButton_Click" Grid.Column="0" Visibility="Collapsed" />
+            <TextBlock x:Name="TitleTextBlock" AutomationProperties.Name="TitleTextBlock" 
+                       Text="Home" FontSize="20" Grid.Column="1" HorizontalAlignment="Center" Height="27" VerticalAlignment="Bottom" />
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel Width="800" Height="600">
+                <ContentPresenter x:Name="PagePresenter" />
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Page>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +25,30 @@ namespace UWPUITestApp
         public MainPage()
         {
             this.InitializeComponent();
+
+            TestCaseListPresenter.Instance.SetContainer(this);
+            CardPresenter.Instance.SetMainWindow(this);
+
+            PagePresenter.Content = TestCaseListPresenter.Instance;
+        }
+
+        internal void ItemClicked(string testCaseName)
+        {
+            CardPresenter.Instance.TestCase = testCaseName;
+            PagePresenter.Content = CardPresenter.Instance;
+            HomeButton.Visibility = Visibility.Visible;
+        }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            PagePresenter.Content = TestCaseListPresenter.Instance;
+            TitleTextBlock.Text = "Home";
+            HomeButton.Visibility = Visibility.Collapsed;
+        }
+
+        internal void UpdateTitle(string newTitle)
+        {
+            TitleTextBlock.Text = newTitle;
         }
     }
 }
