@@ -1,12 +1,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Windows.Apps.Test.Foundation;
 using Microsoft.Windows.Apps.Test.Foundation.Controls;
+using System;
+using System.Threading;
 using Windows.UI.Xaml.Tests.MUXControls.InteractionTests.Common;
 
 namespace UWPUITestLibraryMITA
 {
     [TestClass]
-    public class UnitTest1
+    public class UITest
     {
         protected static Application application = null;
 
@@ -18,7 +20,7 @@ namespace UWPUITestLibraryMITA
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void ActivityUpdateSmokeTest()
         {
             TestHelpers.GoToTestCase("ActivityUpdate");
 
@@ -29,11 +31,12 @@ namespace UWPUITestLibraryMITA
             var dateInput = TestHelpers.FindElementByClassName("CalendarDatePicker");
             dateInput.Click();
 
-            var calendarView = TestHelpers.FindElementByAutomationId("CalendarView");
-            TestHelpers.FindElementByAutomationId("NextButton").Click();
-            TestHelpers.FindElementByName("16").Click();
+            var calendarView = TestHelpers.FindFlyoutByAutomationId("CalendarView");
+            TestHelpers.FindElementByAutomationId("NextButton", calendarView).Click();
+            Thread.Sleep(1000);
+            TestHelpers.FindElementByName("16", calendarView).Click();
 
-            var commentTextBox = (Edit)TestHelpers.FindElementByName("Add a comment");
+            var commentTextBox = TestHelpers.CastTo<Edit>(TestHelpers.FindElementByName("Add a comment"));
             commentTextBox.SendKeys("A comment");
 
             TestHelpers.FindElementByName("OK").Click();
