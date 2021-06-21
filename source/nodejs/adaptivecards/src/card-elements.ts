@@ -703,6 +703,29 @@ export class ActionProperty extends PropertyDefinition {
     }
 }
 
+export class ChoiceInlineActionProperty extends PropertyDefinition {
+  parse(sender: SerializableObject, source: PropertyBag, context: SerializationContext): Action | undefined {
+      let parent = (<Choice>sender).owner;
+
+      return context.parseAction(
+          parent,
+          source[this.name],
+          this.forbiddenActionTypes,
+          parent.isDesignMode());
+  }
+
+  toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined, context: SerializationContext) {
+      context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined, undefined, true);
+  }
+
+  constructor(
+      readonly targetVersion: Version,
+      readonly name: string,
+      readonly forbiddenActionTypes: string[] = []) {
+      super(targetVersion, name, undefined);
+  }
+}
+
 export abstract class BaseTextBlock extends CardElement {
     //#region Schema
 
@@ -3276,7 +3299,7 @@ export class Choice extends SerializableObject {
     static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
     static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
     static readonly isEnabledProperty = new BoolProperty(Versions.v1_0, "isEnabled", true);
-    static readonly inlineActionProperty = new ActionProperty(
+    static readonly inlineActionProperty = new ChoiceInlineActionProperty(
         Versions.v1_0,
         "inlineAction",
         [
@@ -3298,14 +3321,12 @@ export class Choice extends SerializableObject {
     @property(Choice.inlineActionProperty)
     inlineAction?: ToggleVisibilityAction;
 
+    owner: CardElement;
+
     //#endregion
 
     protected getSchemaKey(): string {
         return "Choice";
-    }
-
-    protected isDesignMode(): boolean {
-        return false;
     }
 
     constructor(title?: string, value?: string, isEnabled?: boolean, inlineAction?: ToggleVisibilityAction) {
@@ -3322,7 +3343,26 @@ export class ChoiceSetInput extends Input {
     //#region Schema
 
     static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
-    static readonly choicesProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "choices", Choice);
+
+    static readonly choicesProperty = new CustomProperty<Choice[]>(
+        Versions.v1_0,
+        "choices",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext): Choice[] => {
+            let choices = source[property.name];
+            for (let choice of choices) {
+              let index = choices.indexOf(choice);
+              choice.owner = sender as CardElement;
+              choice.inlineAction = Object.assign(new ToggleVisibilityAction(), choice.inlineAction);
+              choice.inlineAction.setParent(sender);
+              (<Choice>choices[index]) = Object.assign(new Choice(), choice);
+            }
+
+            return choices;
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Choice[], context: BaseSerializationContext) => {
+
+        });
+
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_0,
         "style",
@@ -3436,7 +3476,6 @@ export class ChoiceSetInput extends Input {
 
                 if ((!this.isMultiSelect && input.checked && choice.inlineAction)
                     || (this.isMultiSelect && choice.inlineAction)) {
-                    choice.inlineAction.setParent(this);
                     choice.inlineAction.execute();
                 }
             }
