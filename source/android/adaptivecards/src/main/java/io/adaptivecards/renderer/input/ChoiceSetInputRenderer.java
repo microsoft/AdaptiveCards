@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -33,11 +34,13 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedAutoCompleteTextView;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBoxLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedInputLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedRadioGroup;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinner;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
+import io.adaptivecards.renderer.inputhandler.AutoCompleteTextViewHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -384,6 +387,121 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         }
     }
 
+    public View renderFilteredComboBox(
+        RenderedAdaptiveCard renderedCard,
+        Context context,
+        ChoiceSetInput choiceSetInput,
+        HostConfig hostConfig,
+        RenderArgs renderArgs)
+    {
+        final Vector<String> titleList = new Vector<>();
+        ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
+        long size = choiceInputVector.size();
+        int valueIndex = -1;
+        String value = choiceSetInput.GetValue();
+
+        for (int i = 0; i < size; i++)
+        {
+            ChoiceInput choiceInput = choiceInputVector.get(i);
+            titleList.addElement(choiceInput.GetTitle());
+
+            if (choiceInput.GetValue().equals(value))
+            {
+                valueIndex = i;
+            }
+        }
+
+        boolean usingCustomInputs = isUsingCustomInputs(context);
+        final AutoCompleteTextView autoCompleteTextView = new ValidatedAutoCompleteTextView(context, usingCustomInputs);
+        autoCompleteTextView.setThreshold(0);
+
+        final AutoCompleteTextViewHandler autoCompleteTextInputHandler = new AutoCompleteTextViewHandler(choiceSetInput);
+
+        boolean isRequired = choiceSetInput.GetIsRequired();
+        ValidatedInputLayout inputLayout = null;
+
+        // if using custom inputs, we don't have to create the surrounding linear layout
+        boolean needsOuterLayout = (!usingCustomInputs);
+        if (needsOuterLayout)
+        {
+            inputLayout = new ValidatedSpinnerLayout(context,
+                getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
+            inputLayout.setTag(new TagContent(choiceSetInput, autoCompleteTextInputHandler));
+            autoCompleteTextInputHandler.setView(inputLayout);
+        }
+        else
+        {
+            autoCompleteTextView.setTag(new TagContent(choiceSetInput, autoCompleteTextInputHandler));
+            autoCompleteTextInputHandler.setView(autoCompleteTextView);
+        }
+        renderedCard.registerInputHandler(autoCompleteTextInputHandler, renderArgs.getContainerCardId());
+
+        class FilteredChoiceSetAdapter extends ArrayAdapter<String>
+        {
+            boolean m_mustWrap = false;
+
+            FilteredChoiceSetAdapter(Context context, int resource,
+                                     Vector<String> items, boolean mustWrap)
+            {
+                super(context, resource, items);
+                m_mustWrap = mustWrap;
+            }
+
+            @NonNull
+            @Override
+            // getView returns the view when spinner is not selected
+            // override method disables single line setting
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+            {
+                View view = super.getView(position, convertView, parent);
+                TextView txtView = view.findViewById(android.R.id.text1);
+
+                if (m_mustWrap)
+                {
+                    txtView.setSingleLine(false);
+                }
+
+                return view;
+            }
+        }
+
+        autoCompleteTextView.setAdapter(new FilteredChoiceSetAdapter(context,
+                                            android.R.layout.select_dialog_item,
+                                            titleList,
+                                            choiceSetInput.GetWrap()));
+        autoCompleteTextView.setFocusable(true);
+        if (valueIndex != -1)
+        {
+            autoCompleteTextView.setText(titleList.get(valueIndex));
+        }
+
+        autoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(autoCompleteTextInputHandler.getId(), autoCompleteTextInputHandler.getInput());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(autoCompleteTextInputHandler.getId(), autoCompleteTextInputHandler.getInput());
+            }
+        });
+
+        if (needsOuterLayout)
+        {
+            inputLayout.addView(autoCompleteTextView);
+            return inputLayout;
+        }
+        else
+        {
+            return autoCompleteTextView;
+        }
+    }
+
+
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -420,6 +538,10 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             {
                 // create ComboBox (Spinner)
                 inputView = renderComboBox(renderedCard, context, choiceSetInput, hostConfig, renderArgs);
+            }
+            else if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Filtered)
+            {
+                inputView = renderFilteredComboBox(renderedCard, context, choiceSetInput, hostConfig, renderArgs);
             }
             else
             {
