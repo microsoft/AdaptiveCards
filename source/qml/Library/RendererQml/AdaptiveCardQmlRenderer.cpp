@@ -963,15 +963,23 @@ namespace RendererQml
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetComboBox(ChoiceSet choiceset, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		auto uiComboBox = std::make_shared<QmlTag>("ComboBox");
+		const auto fontFamily = context->GetConfig()->GetFontFamily(AdaptiveCards::FontType::Default);
+		const auto fontSize = context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default);
 		const auto textColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false);
 		const auto backgroundColor = context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor);
+
+		//TODO: Make Padding uniform across all input elements
+		//Padding for top, bottom and right
+		const auto padding = context->GetConfig()->GetSpacing().smallSpacing;
+		const auto leftPadding = 10;
+		const int dropDownHeight = 250;
 
 		uiComboBox->Property("id",choiceset.id);
 		uiComboBox->Property("textRole", "'text'");
 		uiComboBox->Property("valueRole", "'value'");
 		uiComboBox->Property("width", "parent.width");
-		//TODO : Add Height
-
+		uiComboBox->Property("height", "contentItem.contentHeight + 2*contentItem.padding < 30 ? 30 : contentItem.contentHeight + 2*contentItem.padding ");
+		
         const std::string iconId = choiceset.id + "_icon";
 		auto iconTag = GetIconTag(context);
         iconTag->Property("id", iconId);
@@ -988,9 +996,8 @@ namespace RendererQml
         auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
         backgroundTag->Property("radius", "5");
         //TODO: These color styling should come from css
-        //TODO: Add hover effect
         backgroundTag->Property("color", backgroundColor);
-        backgroundTag->Property("border.color", "'grey'");
+        backgroundTag->Property("border.color", "inputElementsBorderColor");
         backgroundTag->Property("border.width", "1");
 		uiComboBox->Property("background", backgroundTag->ToString());
 
@@ -1009,23 +1016,26 @@ namespace RendererQml
 			uiComboBox->Property("displayText", "currentText");
 		}
 
+		auto itemDelegateId = choiceset.id + "_itemDelegate";
 		auto uiItemDelegate = std::make_shared<QmlTag>("ItemDelegate");
+		uiItemDelegate->Property("id", itemDelegateId);
 		uiItemDelegate->Property("width", "parent.width");
+		uiItemDelegate->Property("verticalPadding", std::to_string(padding));
+		uiItemDelegate->Property("horizontalPadding", std::to_string(padding));
+		uiItemDelegate->Property("leftPadding", std::to_string(leftPadding));
+		uiItemDelegate->Property("highlighted", "ListView.isCurrentItem");
 
         auto backgroundTagDelegate = std::make_shared<QmlTag>("Rectangle");
-        backgroundTag->Property("radius", "5");
         //TODO: These color styling should come from css
-        //TODO: Add hover effect
-        backgroundTagDelegate->Property("color", backgroundColor);
-        backgroundTagDelegate->Property("border.color", "'grey'");
-        backgroundTagDelegate->Property("border.width", "1");
+        backgroundTagDelegate->Property("color", Formatter() << itemDelegateId << ".highlighted?" << context->GetColor(AdaptiveCards::ForegroundColor::Accent, false, false) << " : " << backgroundColor);
         uiItemDelegate->Property("background", backgroundTagDelegate->ToString());
 
 		auto uiItemDelegate_Text = std::make_shared<QmlTag>("Text");
 		uiItemDelegate_Text->Property("text", "modelData.text");
-		uiItemDelegate_Text->Property("font", "parent.font");
+		uiItemDelegate_Text->Property("font.family", fontFamily, true);
+		uiItemDelegate_Text->Property("font.pixelSize", std::to_string(fontSize));
 		uiItemDelegate_Text->Property("verticalAlignment", "Text.AlignVCenter");
-		uiItemDelegate_Text->Property("color", textColor);
+		uiItemDelegate_Text->Property("color", Formatter() << itemDelegateId << ".highlighted?" << "'white' : " << textColor);
 
 		if (choiceset.choices[0].isWrap)
 		{
@@ -1036,20 +1046,51 @@ namespace RendererQml
 			uiItemDelegate_Text->Property("elide", "Text.ElideRight");
 		}
 
+		auto uiContentItem_Text = std::make_shared<QmlTag>("Text");
+		uiContentItem_Text->Property("text", "parent.displayText");
+		uiItemDelegate_Text->Property("font.family", fontFamily, true);
+		uiContentItem_Text->Property("font.pixelSize", std::to_string(fontSize));
+		uiContentItem_Text->Property("verticalAlignment", "Text.AlignVCenter");
+		uiContentItem_Text->Property("padding", std::to_string(padding));
+		uiContentItem_Text->Property("leftPadding", std::to_string(leftPadding));
+		uiContentItem_Text->Property("elide", "Text.ElideRight");
+		uiContentItem_Text->Property("color", textColor);
+
+		uiComboBox->Property("contentItem", uiContentItem_Text->ToString());
+
 		uiItemDelegate->Property("contentItem", uiItemDelegate_Text->ToString());
 
 		uiComboBox->Property("delegate", uiItemDelegate->ToString());
 
-		auto uiContentItem_Text = std::make_shared<QmlTag>("Text");
-		uiContentItem_Text->Property("text", "parent.displayText");
-		uiContentItem_Text->Property("font", "parent.font");
-		uiContentItem_Text->Property("verticalAlignment", "Text.AlignVCenter");
-		uiContentItem_Text->Property("padding", std::to_string(context->GetConfig()->GetSpacing().paddingSpacing));
-		uiContentItem_Text->Property("elide", "Text.ElideRight");
-		uiContentItem_Text->Property("color", textColor);
+		auto contentListViewId = choiceset.id + "_listView";
+		auto contentListViewTag = std::make_shared<QmlTag>("ListView");
+		contentListViewTag->Property("id", contentListViewId);
+		contentListViewTag->Property("clip", "true");
+		contentListViewTag->Property("model", Formatter() << choiceset.id << ".delegateModel");
+		contentListViewTag->Property("currentIndex", Formatter() << choiceset.id << ".highlightedIndex");
+		
+		auto scrollBarTag = std::make_shared<QmlTag>("ScrollBar");
+		scrollBarTag->Property("width", "10");
+		scrollBarTag->Property("policy", Formatter() << contentListViewId << ".contentHeight > " << std::to_string(dropDownHeight) << "?" << "ScrollBar.AlwaysOn : ScrollBar.AsNeeded");
 
+		contentListViewTag->Property("ScrollBar.vertical", scrollBarTag->ToString());
 
-		uiComboBox->Property("contentItem", uiContentItem_Text->ToString());
+		auto popupBackgroundTag = std::make_shared<QmlTag>("Rectangle");
+		popupBackgroundTag->Property("anchors.fill", "parent");
+		popupBackgroundTag->Property("color", backgroundColor);
+		popupBackgroundTag->Property("border.color", "inputElementsBorderColor");
+
+		auto popupTag = std::make_shared<QmlTag>("Popup");
+		popupTag->Property("y", Formatter() << choiceset.id << ".height-1");
+		popupTag->Property("width", Formatter() << choiceset.id << ".width");
+		popupTag->Property("horizontalPadding", "2");
+		popupTag->Property("verticalPadding", "2");
+		popupTag->Property("height", Formatter() << contentListViewId << ".contentHeight" << " > " << std::to_string(dropDownHeight) << " ? " << std::to_string(dropDownHeight) << ":" << contentListViewId << ".contentHeight");
+
+		popupTag->Property("background", popupBackgroundTag->ToString());
+		popupTag->Property("contentItem", contentListViewTag->ToString());
+
+		uiComboBox->Property("popup", popupTag->ToString());
 
 		return uiComboBox;
 	}
