@@ -318,6 +318,8 @@ CGFloat kFileBrowserWidth = 0;
             if (action.verb && action.verb.length) {
                 [fetchedInputList addObject:[NSString stringWithFormat:@"\"verb\" : %@", action.verb]];
             }
+        } else {
+            [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
         }
         NSString *str = [NSString stringWithFormat:@"{\n%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
         [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
