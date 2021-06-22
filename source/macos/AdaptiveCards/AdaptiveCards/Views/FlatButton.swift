@@ -29,12 +29,13 @@ open class FlatButton: NSButton, CALayerDelegate {
     internal var titleLayer = CATextLayer()
     internal var mouseDown: Bool = false
     internal var chevronSetupFlag: Bool = true
+    private var isHover: Bool = false
     public var iconImageName: String = "attachment"
     public var iconFileType: String = "png"
     public var iconPositioned: NSControl.ImagePosition = .imageLeft
     public var momentary: Bool = true {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var onAnimationDuration: Double = 0
@@ -42,13 +43,13 @@ open class FlatButton: NSButton, CALayerDelegate {
     public var glowRadius: CGFloat = 0 {
         didSet {
             containerLayer.shadowRadius = glowRadius
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var glowOpacity: Float = 0 {
         didSet {
             containerLayer.shadowOpacity = glowOpacity
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var cornerRadius: CGFloat = 16 {
@@ -63,42 +64,48 @@ open class FlatButton: NSButton, CALayerDelegate {
     }
     public var borderColor: NSColor = .darkGray {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var selectedBorderColor: NSColor = .white {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var buttonColor: NSColor = .white {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var selectedButtonColor: NSColor = .white {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var iconColor: NSColor = .gray {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var selectedIconColor: NSColor = .black {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var textColor: NSColor = .gray {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     public var selectedTextColor: NSColor = .gray {
         didSet {
-            animateColor(state == .on)
+            updateAppearance()
+        }
+    }
+    
+    public var hoverButtonColor: NSColor = .white {
+        didSet {
+            updateAppearance()
         }
     }
     
@@ -145,8 +152,7 @@ open class FlatButton: NSButton, CALayerDelegate {
     
     override open var state: NSControl.StateValue {
         didSet {
-            guard state != oldValue else { return }
-            animateColor(state == .on)
+            updateAppearance()
         }
     }
     
@@ -160,6 +166,7 @@ open class FlatButton: NSButton, CALayerDelegate {
     public var chevronImageSize: NSSize = NSSize(width: 14, height: 14)
     private let horizontalInternalSpacing: CGFloat = 6
     private let verticalInternalSpacing: CGFloat = 3
+    private var currentTrackingArea: NSTrackingArea?
 
     // MARK: Setup & Initialization
     
@@ -227,6 +234,22 @@ open class FlatButton: NSButton, CALayerDelegate {
         titleLayer.fontSize = font.pointSize
         titleLayer.truncationMode = .end
         positionTitleAndImage()
+    }
+    
+    override open func updateTrackingAreas() {
+        if let trackingArea = currentTrackingArea {
+            removeTrackingArea(trackingArea)
+        }
+        
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
+        addTrackingArea(trackingArea)
+        currentTrackingArea = trackingArea
+        
+        if let location = window?.mouseLocationOutsideOfEventStream {
+            let cLocation = convert(location, from: nil)
+            NSPointInRect(cLocation, bounds) ? mouseEntered(with: NSApp.currentEvent ?? NSEvent()) : mouseExited(with: NSApp.currentEvent ?? NSEvent())
+        }
+        super.updateTrackingAreas()
     }
     
     func positionTitleAndImage() {
@@ -372,6 +395,7 @@ open class FlatButton: NSButton, CALayerDelegate {
     private func setupTrackingArea() {
         let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
         addTrackingArea(trackingArea)
+        currentTrackingArea = trackingArea
     }
     
     // MARK: Animations
@@ -385,13 +409,15 @@ open class FlatButton: NSButton, CALayerDelegate {
         }
     }
     
-    public func animateColor(_ isOn: Bool) {
+    public func updateAppearance() {
         removeAnimations()
+        let isOn = state == .on
+        
         let duration = isOn ? onAnimationDuration : offAnimationDuration
-        let bgColor = isOn ? selectedButtonColor : buttonColor
-        let titleColor = isOn ? selectedTextColor : textColor
+        let bgColor = isOn ? selectedButtonColor : (mouseDown ? selectedButtonColor : (isHover ? hoverButtonColor : buttonColor))
+        let titleColor = isOn ? selectedTextColor : (isHover ? selectedTextColor : textColor)
         let imageColor = isOn ? selectedIconColor : iconColor
-        let borderColor = isOn ? selectedBorderColor : self.borderColor
+        let borderColor = isOn ? selectedBorderColor : (isHover ? selectedBorderColor : self.borderColor)
         layer?.backgroundColor = bgColor.cgColor
         layer?.borderColor = borderColor.cgColor
         titleLayer.foregroundColor = titleColor.cgColor
@@ -425,29 +451,30 @@ open class FlatButton: NSButton, CALayerDelegate {
     override open func mouseDown(with event: NSEvent) {
         if isEnabled {
             mouseDown = true
-            toggleState()
+            updateAppearance()
         }
     }
     
     override open func mouseEntered(with event: NSEvent) {
-        if mouseDown {
-            toggleState()
-        }
+        isHover = true
+        updateAppearance()
     }
     
     override open func mouseExited(with event: NSEvent) {
+        isHover = false
         if mouseDown {
-            toggleState()
             mouseDown = false
         }
+        updateAppearance()
     }
     
     override open func mouseUp(with event: NSEvent) {
         if mouseDown {
             mouseDown = false
-            if momentary {
+            if !momentary {
                 toggleState()
             }
+            updateAppearance()
             _ = target?.perform(action, with: self)
         }
     }

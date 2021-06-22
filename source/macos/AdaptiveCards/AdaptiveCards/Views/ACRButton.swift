@@ -8,11 +8,6 @@ enum ActionStyle: String {
 }
 
 class ACRButton: FlatButton, ImageHoldingView {
-    public var backgroundColor: NSColor = .clear
-    
-    private var disabledTextColor: NSColor = .linkColor
-    private var disabledBorderColor: NSColor = .linkColor
-    private var hoverButtonColor: NSColor = .linkColor
     private var buttonActionStyle: ActionStyle = .default
         
     override init(frame: NSRect) {
@@ -72,27 +67,6 @@ class ACRButton: FlatButton, ImageHoldingView {
         self.image = image
         mouseExited(with: NSEvent()) // this is to force trigger the event for image updation
     }
-
-    override open func mouseEntered(with event: NSEvent) {
-        buttonColor = hoverButtonColor
-        borderColor = selectedBorderColor
-        textColor = selectedTextColor
-        super.mouseEntered(with: event)
-    }
-    
-    override open func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
-        buttonColor = backgroundColor
-        borderColor = disabledBorderColor
-        textColor = disabledTextColor
-    }
-    
-    override func mouseDown(with event: NSEvent) {
-        super.mouseDown(with: event)
-        buttonColor = selectedButtonColor
-        borderColor = selectedBorderColor
-        textColor = selectedTextColor
-    }
     
     private func setupButtonStyle(style: ActionStyle, buttonConfig: ButtonConfig) {
         // Common styling b/w all Action Style
@@ -110,10 +84,8 @@ class ACRButton: FlatButton, ImageHoldingView {
             contentInsets.right = 5
         }
         
-        backgroundColor = colorConfig.buttonColor
         borderColor = colorConfig.borderColor
         selectedBorderColor = colorConfig.selectedBorderColor
-        disabledBorderColor = borderColor
         
         buttonColor = colorConfig.buttonColor
         hoverButtonColor = colorConfig.hoverButtonColor
@@ -121,6 +93,5 @@ class ACRButton: FlatButton, ImageHoldingView {
         
         textColor = colorConfig.textColor
         selectedTextColor = colorConfig.selectedTextColor
-        disabledTextColor = textColor
     }
 }

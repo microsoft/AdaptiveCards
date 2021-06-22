@@ -477,6 +477,10 @@
 		28D7A52425EFAD8000AEA09C /* ImageSetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A52325EFAD8000AEA09C /* ImageSetRenderer.swift */; };
 		28D7A57725F1E7E800AEA09C /* ACRCollectionViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A57625F1E7E800AEA09C /* ACRCollectionViewItem.swift */; };
 		28D7A57C25F1E84800AEA09C /* ACRCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A57B25F1E84800AEA09C /* ACRCollectionView.swift */; };
+		28F4E2142681DA77000B5131 /* ACRTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F4E2132681DA76000B5131 /* ACRTextView.swift */; };
+		28F4E2192681DAE3000B5131 /* ACRScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F4E2182681DAE3000B5131 /* ACRScrollView.swift */; };
+		28F813D12677AACE0052AD0B /* recents_20.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F813D02677AAC60052AD0B /* recents_20.png */; };
+		28F813D62677AADA0052AD0B /* recents_20_w.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F813D52677AAD90052AD0B /* recents_20_w.png */; };
 		28F812D92670B47D0052AD0B /* clear_18.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F812D82670B47D0052AD0B /* clear_18.png */; };
 		28F812DE2670B4E80052AD0B /* clear_18_w.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F812DD2670B4E80052AD0B /* clear_18_w.png */; };
 		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
@@ -1030,6 +1034,10 @@
 		28D7A52325EFAD8000AEA09C /* ImageSetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSetRenderer.swift; sourceTree = "<group>"; };
 		28D7A57625F1E7E800AEA09C /* ACRCollectionViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRCollectionViewItem.swift; sourceTree = "<group>"; };
 		28D7A57B25F1E84800AEA09C /* ACRCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRCollectionView.swift; sourceTree = "<group>"; };
+		28F4E2132681DA76000B5131 /* ACRTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRTextView.swift; sourceTree = "<group>"; };
+		28F4E2182681DAE3000B5131 /* ACRScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRScrollView.swift; sourceTree = "<group>"; };
+		28F813D02677AAC60052AD0B /* recents_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = recents_20.png; path = ../../../../../../../Downloads/recents_20_png/recents_20.png; sourceTree = "<group>"; };
+		28F813D52677AAD90052AD0B /* recents_20_w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = recents_20_w.png; path = ../../../../../../../Downloads/recents_20_w_png/recents_20_w.png; sourceTree = "<group>"; };
 		28F812D82670B47D0052AD0B /* clear_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear_18.png; sourceTree = "<group>"; };
 		28F812DD2670B4E80052AD0B /* clear_18_w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear_18_w.png; sourceTree = "<group>"; };
 		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
@@ -1747,6 +1755,8 @@
 				08D9547425D17FF9001442D3 /* ACRView.swift */,
 				0872608725E6AD420036061C /* ACRColumnView.swift */,
 				2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */,
+				28F4E2132681DA76000B5131 /* ACRTextView.swift */,
+				28F4E2182681DAE3000B5131 /* ACRScrollView.swift */,
 				2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */,
 				28CE1A7C25E7553600BFCFD9 /* ACRFactTextField.xib */,
 				28D7A57625F1E7E800AEA09C /* ACRCollectionViewItem.swift */,
@@ -1806,6 +1816,8 @@
 				13BE7606261C7EDA00FC9636 /* calendar-month-dark.png */,
 				28F812DD2670B4E80052AD0B /* clear_18_w.png */,
 				81C037282604B1F700B33324 /* cisco.jpg */,
+				28F813D52677AAD90052AD0B /* recents_20_w.png */,
+				28F813D02677AAC60052AD0B /* recents_20.png */,
 				28F812D82670B47D0052AD0B /* clear_18.png */,
 				81A94A7825FF86E70018213A /* arrowup.png */,
 				81A94A7725FF86E70018213A /* attachment.png */,
@@ -2200,7 +2212,9 @@
 				28F812DE2670B4E80052AD0B /* clear_18_w.png in Resources */,
 				13BE7603261C5F4600FC9636 /* calendar-month-light.png in Resources */,
 				13BE7607261C7EDA00FC9636 /* calendar-month-dark.png in Resources */,
+				28F813D12677AACE0052AD0B /* recents_20.png in Resources */,
 				81A94A7025FF80D60018213A /* arrowdown.png in Resources */,
+				28F813D62677AADA0052AD0B /* recents_20_w.png in Resources */,
 				81C037292604B1F700B33324 /* cisco.jpg in Resources */,
 				08299F9E25AF279E00799C66 /* AdaptiveCards.xcconfig in Resources */,
 				81A94A7A25FF86E70018213A /* arrowup.png in Resources */,
@@ -2285,6 +2299,7 @@
 				08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */,
 				A032272525E93C7400E7172E /* ImageUtils.swift in Sources */,
 				2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */,
+				28F4E2142681DA77000B5131 /* ACRTextView.swift in Sources */,
 				2806E8EC26010C3800CF7A40 /* ActionSubmitRenderer.swift in Sources */,
 				29E8DF5225E69B2B000EC12F /* ACRChoiceButton.swift in Sources */,
 				0830D55125F90D4C00BBC245 /* Targets.swift in Sources */,
@@ -2295,6 +2310,7 @@
 				29430A5C25F216AA00CBA72E /* ContainerRenderer.swift in Sources */,
 				29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */,
 				81C0371B26047C1E00B33324 /* ACRBackgroundImageView.swift in Sources */,
+				28F4E2192681DAE3000B5131 /* ACRScrollView.swift in Sources */,
 				08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */,
 				A032272025E9254C00E7172E /* ACRImageProperties.swift in Sources */,
 				13C465E525DD3C07006E4605 /* InputDateRenderer.swift in Sources */,

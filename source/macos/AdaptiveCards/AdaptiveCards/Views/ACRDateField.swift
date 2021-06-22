@@ -38,8 +38,9 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     }()
 
     private lazy var iconButton: NSButtonWithImageSpacing = {
-        let resourceName = isDarkMode ? "calendar-month-dark" : "calendar-month-light"
-        let view = NSButtonWithImageSpacing(image: (isTimeMode ? NSImage(named: "NSTouchBarHistoryTemplate") : BundleUtils.getImage(resourceName, ofType: "png")) ?? NSImage(), target: self, action: #selector(mouseDown(with:)))
+        let calendarResourceName = isDarkMode ? "calendar-month-dark" : "calendar-month-light"
+        let clockResourceName = isDarkMode ? "recents_20_w" : "recents_20"
+        let view = NSButtonWithImageSpacing(image: (isTimeMode ? BundleUtils.getImage(clockResourceName, ofType: "png") ?? NSImage() : BundleUtils.getImage(calendarResourceName, ofType: "png") ?? NSImage()), target: self, action: #selector(mouseDown(with:)))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.clear.cgColor

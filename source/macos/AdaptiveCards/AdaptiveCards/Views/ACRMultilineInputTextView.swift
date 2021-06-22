@@ -3,7 +3,7 @@ import AppKit
 
 class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     @IBOutlet var contentView: NSView!
-    @IBOutlet var scrollView: NSScrollView!
+    @IBOutlet var scrollView: ACRScrollView!
     @IBOutlet var textView: ACRTextView!
     
     private var placeholderAttrString: NSAttributedString?
@@ -32,7 +32,7 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         contentView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        heightAnchor.constraint(equalToConstant: 45.0).isActive = true
+        heightAnchor.constraint(equalToConstant: 100.0).isActive = true
     }
     
     override func awakeFromNib() {
@@ -40,7 +40,9 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         scrollView.focusRingType = .exterior
         scrollView.borderType = NSBorderType.bezelBorder
         scrollView.autohidesScrollers = true
+        scrollView.disableScroll = true
         textView.delegate = self
+        textView.responderDelegate = self
         // For hover need tracking area
         let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
         addTrackingArea(trackingArea)
@@ -82,13 +84,11 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     }
     
     override func mouseEntered(with event: NSEvent) {
-        guard let contentView = event.trackingArea?.owner as? ACRMultilineInputTextView else { return }
-        contentView.textView.backgroundColor = ColorUtils.hoverColorOnMouseEnter()
+        textView.backgroundColor = ColorUtils.hoverColorOnMouseEnter()
     }
     
     override func mouseExited(with event: NSEvent) {
-        guard let contentView = event.trackingArea?.owner as? ACRMultilineInputTextView else { return }
-        contentView.textView.backgroundColor = ColorUtils.hoverColorOnMouseExit()
+        textView.backgroundColor = ColorUtils.hoverColorOnMouseExit()
     }
 }
 
@@ -107,5 +107,15 @@ extension ACRMultilineInputTextView: InputHandlingViewProtocol {
     
     var isValid: Bool {
         return !isHidden && !(superview?.isHidden ?? false)
+    }
+}
+
+extension ACRMultilineInputTextView: ACRTextViewResponderDelegate {
+    func textViewDidResignFirstResponder() {
+        scrollView.disableScroll = true
+    }
+    
+    func textViewDidBecomeFirstResponder() {
+        scrollView.disableScroll = false
     }
 }

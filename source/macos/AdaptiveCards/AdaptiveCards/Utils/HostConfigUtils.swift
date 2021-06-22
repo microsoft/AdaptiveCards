@@ -171,11 +171,12 @@ class TextUtils {
             guard let font = attributes[.font] as? NSFont else { return }
             let fontWithProperties = FontUtils.getFont(for: hostConfig, with: textProperties)
             var descriptor = font.fontDescriptor
-            
-            if descriptor.symbolicTraits.contains(.italic) {
-                descriptor = descriptor.withFamily(fontWithProperties.familyName ?? "").withSymbolicTraits(.italic)
+            if descriptor.symbolicTraits.contains(.italic) && descriptor.symbolicTraits.contains(.bold) {
+                descriptor = descriptor.withFamily(fontWithProperties.familyName ?? "").withSymbolicTraits([.italic, .bold])
             } else if descriptor.symbolicTraits.contains(.bold) {
                 descriptor = descriptor.withFamily(fontWithProperties.familyName ?? "").withSymbolicTraits(.bold)
+            } else if descriptor.symbolicTraits.contains(.italic) {
+                descriptor = descriptor.withFamily(fontWithProperties.familyName ?? "").withSymbolicTraits(.italic)
             } else {
                 descriptor = descriptor.withFamily(fontWithProperties.familyName ?? "")
                 let weightAttributes = CTFontDescriptorCopyAttributes(fontWithProperties.fontDescriptor)
