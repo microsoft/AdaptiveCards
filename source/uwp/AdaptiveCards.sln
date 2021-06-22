@@ -24,7 +24,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PerfApp", "PerfApp\PerfApp.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPUITestApp", "UWPUITestApp\UWPUITestApp.csproj", "{1BDC51AF-4D95-44E3-92BD-BD1C8492C13D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPUITestLibrary", "UWPUITestLibrary\UWPUITestLibrary.csproj", "{C65B7488-ED39-4E9E-8A66-C53D72262660}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPUITests", "UWPUITests\UWPUITests.csproj", "{C65B7488-ED39-4E9E-8A66-C53D72262660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace UWPUITestLibrary
+namespace UWPUITests
 {
     [TestClass]
     public class UITest

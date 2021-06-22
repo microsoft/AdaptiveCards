@@ -20,7 +20,7 @@ using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Appium;
 using Windows.Foundation;
 
-namespace UWPUITestLibrary
+namespace UWPUITests
 {
 
     public class Application
