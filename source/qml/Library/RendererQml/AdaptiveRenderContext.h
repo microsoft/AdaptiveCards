@@ -11,14 +11,14 @@
 namespace RendererQml
 {
     class AdaptiveRenderContext;
-    using CardRendererFunction = std::function<std::shared_ptr<QmlTag>(std::shared_ptr<AdaptiveCards::AdaptiveCard>, std::shared_ptr<AdaptiveRenderContext>)>;
+    using CardRendererFunction = std::function<std::shared_ptr<QmlTag>(std::shared_ptr<AdaptiveCards::AdaptiveCard>, std::shared_ptr<AdaptiveRenderContext>, bool)>;
 
     class AdaptiveRenderContext : public std::enable_shared_from_this<AdaptiveRenderContext>
     {
     public:
         AdaptiveRenderContext(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig, std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> elementRenderers);
 
-        std::shared_ptr<QmlTag> Render(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, CardRendererFunction renderFunction);
+        std::shared_ptr<QmlTag> Render(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, CardRendererFunction renderFunction, bool isChildCard = false);
         std::shared_ptr<QmlTag> Render(std::shared_ptr<AdaptiveCards::BaseElement> element);
 
         const std::vector<AdaptiveWarning>& GetWarnings();
@@ -72,7 +72,26 @@ namespace RendererQml
 
         const std::string ConvertToValidId(const std::string& id);
 
+        const bool isShowCardInAction();
+        void setIsShowCardInAction(const bool isShowCardInAction);
+
+        AdaptiveCards::InternalId getLastActionSetInternalId();
+        void setLastActionSetInternalId(AdaptiveCards::InternalId LastActionSetInternalId);
+
+        const int GetActionSetCounter();
+
+        void addToShowCardsLoaderIdsList(const std::string &loaderId);
+        const std::vector<std::string>& getShowCardsLoaderIdsList();
+
+        void setIsShowCardLastBodyElement(bool isShowCardLastBodyElement);
+        const bool isShowCardLastBodyElement();
+
     private:
+        bool m_isShowCardinAction{ false };
+        bool m_isShowCardLastBodyElement{ false };
+        AdaptiveCards::InternalId m_LastActionSetInternalIds;
+        std::vector<std::string> m_ShowCardLoaderIdList;
+
         std::vector<AdaptiveWarning> m_warnings;
         bool m_ancestorHasFallback;
         std::shared_ptr<AdaptiveCards::HostConfig> m_hostConfig;
@@ -98,6 +117,7 @@ namespace RendererQml
         int m_ButtonCounter{ 0 };
         int m_SelectActionCounter{ 0 };
         int m_DefaultIdCounter{ 0 };
+        int m_ActionSetCounter{ 0 };
 
     };
 }
