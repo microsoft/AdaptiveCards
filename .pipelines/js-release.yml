@@ -36,8 +36,6 @@ parameters:
   default: 'beta'
 
 variables:
-- name: AC_ADAPTIVECARDS_PRERELEASE_IDENTIFIER
-  value: ${{ parameters.adaptivecards_prerelease_identifier }}
 - name: AC_ADAPTIVECARDS_CONTROLS_PRERELEASE_IDENTIFIER
   value: ${{ parameters.adaptivecards_controls_prerelease_identifier }}
 - name: AC_ADAPTIVECARDS_DESIGNER_PRERELEASE_IDENTIFIER
@@ -54,7 +52,14 @@ steps:
 - bash: |
    npm ci 
    npx lerna bootstrap --ci
-   npx lerna run release
-   npm version prerelease --preid beta --no-git-tag-version --no-push --yes
+   cd adaptivecards
+   npm version prerelease --preid ${{ parameters.adaptivecards_prerelease_identifier }} --no-git-tag-version --no-push --yes
+   cd ../adaptivecards-controls
+   npm version prerelease --preid ${{ parameters.adaptivecards_controls_prerelease_identifier }} --no-git-tag-version --no-push --yes
+   cd ../adaptivecards-designer
+   npm version prerelease --preid ${{ parameters.adaptivecards_designer_prerelease_identifier }} --no-git-tag-version --no-push --yes
+   cd ../adaptivecards-templating
+   npm version prerelease --preid ${{ parameters.adaptivecards_templating_prerelease_identifier }} --no-git-tag-version --no-push --yes
+   cd ..
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna bootstrap'

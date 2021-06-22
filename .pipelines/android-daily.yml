@@ -32,23 +32,6 @@ variables:
   AC_APPEND_BUILD_NUMBER: ${{ parameters.append_build_number }}
 
 steps:
-# Automated publish to Sonatype is not yet configured, so skip Nexus credentials
-# - task: DownloadSecureFile@1
-#   name: gradleproperties
-#   displayName: 'Download secure file'
-#   inputs:
-#     secureFile: gradle.properties.4
-# - bash: |
-#    cp -f $(gradleproperties.secureFilePath)  ./source/android/adaptivecards/gradle.properties
-#   displayName: 'Bash Script'
-
-  # TODO: Remove when Android Gradle Plugin 4.1 is stable.
-  # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
-# - script: |
-#    setx ANDROID_NDK_HOME ""
-#    "%ANDROID_HOME%\tools\bin\sdkmanager.bat" --verbose "ndk;21.0.6113669"
-#   displayName: 'Get NDK (TODO: Remove this step)'
-
 - task: Gradle@2
   displayName: 'gradlew adaptivecards:build'
   inputs:
@@ -57,11 +40,19 @@ steps:
     tasks: 'adaptivecards:build'
 
 - task: Gradle@2
-  displayName: 'gradlew publish'
+  displayName: 'Gradle Unsigned Publish Local'
   inputs:
     gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
-    tasks: 'adaptivecards:publish'
+    tasks: 'adaptivecards:publishUnsignedReleasePublicationToUnsignedArtifactRepository'
+    publishJUnitResults: false
+
+- task: Gradle@2
+  displayName: 'Gradle Unsigned Publish to ADO'
+  inputs:
+    gradleWrapperFile: source/android/gradlew.bat
+    workingDirectory: source/android
+    tasks: 'adaptivecards:publishUnsignedReleasePublicationToAzuredevopsRepository'
     publishJUnitResults: false
 
 - task: Powershell@2
