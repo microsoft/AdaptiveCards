@@ -3372,8 +3372,8 @@ export class ChoiceSetInput extends Input {
 
             return choices;
         },
-        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: Choice[], context: BaseSerializationContext) => {
-
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: PropertyBag, context: BaseSerializationContext) => {
+          context.serializeValue(target, property.name, value);
         });
 
     static readonly styleProperty = new ValueSetProperty(
@@ -3489,6 +3489,7 @@ export class ChoiceSetInput extends Input {
 
                 if ((!this.isMultiSelect && input.checked && choice.inlineAction)
                     || (this.isMultiSelect && choice.inlineAction)) {
+                    choice.inlineAction.setParent(this);
                     choice.inlineAction.execute();
                 }
             }
