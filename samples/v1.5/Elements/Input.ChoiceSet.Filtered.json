@@ -10,6 +10,8 @@
 			"label": "Please choose an animal:",
             "style": "filtered",
             "id": "chosenAnimal",
+            "isRequired": true,
+            "errorMessage": "Please choose an animal",
             "choices": [
                 {
                     "value": "Abyssal whiptail",
@@ -69,7 +71,7 @@
                 },
                 {
                     "value": "Alaska tree coral",
-                    "title": "Alaska tree coral"
+                    "title": "CORAL"
                 },
                 {
                     "value": "Alaskan ronquil",
