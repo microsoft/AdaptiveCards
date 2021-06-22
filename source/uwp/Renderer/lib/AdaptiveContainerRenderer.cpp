@@ -63,13 +63,12 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                                             FlowDirection_LeftToRight));
         }
 
-        // Assign vertical alignment to the top so that on fixed height cards, the content
-        // still renders at the top even if the content is shorter than the full card
+        // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
         ABI::AdaptiveCards::Rendering::Uwp::HeightType containerHeightType{};
         RETURN_IF_FAILED(cardElement->get_Height(&containerHeightType));
         if (containerHeightType == ABI::AdaptiveCards::Rendering::Uwp::HeightType::Auto)
         {
-            RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
+            RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Stretch));
         }
 
         ComPtr<IAdaptiveContainerBase> containerAsContainerBase;

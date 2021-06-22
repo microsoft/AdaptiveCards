@@ -14,9 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 @class ACOBaseCardElement;
 @class ACOHostConfig;
 
-typedef struct  ACRWidth ACRWidth;
-
 @interface ACRTableView : UIView
+
+@property BOOL showGridLines;
+@property ACRContainerStyle gridStyle;
+@property CGFloat spacing;
 
 - (instancetype)init:(ACOBaseCardElement *)acoElement
            viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup

@@ -4,20 +4,13 @@ import unittest
 from unittest.mock import patch
 from mystique.extract_properties import CollectProperties
 from mystique.ac_export.adaptive_card_export import AdaptiveCardExport
-from mystique.card_layout.objects_group import (
-    RowColumnGrouping,
-    ChoicesetGrouping,
-)
+from mystique.card_layout.objects_group import RowColumnGrouping
 from mystique.card_layout import row_column_group
 from mystique.card_layout.ds_helper import DsHelper
 from mystique.card_layout import bbox_utils
 
 # pylint: disable=no-name-in-module
-from tests.variables import (
-    debug_string_test,
-    test_cset_obj1,
-    test_cset_obj2,
-)
+from tests.variables import debug_string_test
 
 # pylint: disable=no-name-in-module
 from tests.base_test_class import BaseSetUpClass
@@ -108,25 +101,37 @@ class TestColumnsGrouping(BaseSetUpClass):
 
     def test_horizontal_inclusive(self):
         """Tests for the horizontal inclusion of two design objects"""
+        self.test_coord1 = list(self.test_coord1)
+        self.test_coord1.append("textbox")
+        self.test_coord2 = list(self.test_coord2)
+        self.test_coord2.append("textbox")
         # pylint: disable=protected-access
-        horiz_inc = self.groupobj._check_intersection_over_range(
-            self.test_coord1, self.test_coord2, "x"
+        horiz_inc = self.groupobj.column_condition(
+            self.test_coord1, self.test_coord2
         )
         self.assertFalse(horiz_inc)
 
     def test_vertical_inclusive(self):
         """Tests for the vertical inclusion of two design objects"""
         # pylint: disable=protected-access
-        vert_inc = self.groupobj._check_intersection_over_range(
-            self.test_coord1, self.test_coord2, "y"
+        self.test_coord1 = list(self.test_coord1)
+        self.test_coord1.append("textbox")
+        self.test_coord2 = list(self.test_coord2)
+        self.test_coord2.append("textbox")
+        vert_inc = self.groupobj.row_condition(
+            self.test_coord1, self.test_coord2
         )
         self.assertFalse(vert_inc)
 
     def test_columns_condition(self):
         """Tests if columns are in columnset two design objects"""
-        coordinates_1 = list(self.json_objects["objects"][3].get("coords", ()))
+        coordinates_1 = list(
+            self.json_objects["objects"][3].get("coordinates", ())
+        )
         coordinates_1.append("image")
-        coordinates_2 = list(self.json_objects["objects"][4].get("coords", ()))
+        coordinates_2 = list(
+            self.json_objects["objects"][4].get("coordinates", ())
+        )
         coordinates_2.append("textbox")
 
         column_condition_true = self.groupobj.row_condition(
@@ -141,22 +146,6 @@ class TestColumnsGrouping(BaseSetUpClass):
         )
         self.assertTrue(column_condition_true)
         self.assertFalse(column_condition_false)
-
-
-class TestChoiceSetGrouping(BaseSetUpClass):
-    """Tests for the Choiceset grouping objects"""
-
-    def test_choiceset_condition(self):
-        """Tests if choice set obj are in choiceset"""
-        groupobj = ChoicesetGrouping()
-        condition_true = groupobj.choiceset_condition(
-            test_cset_obj1, test_cset_obj2
-        )
-        condition_false = groupobj.choiceset_condition(
-            self.test_coord1, self.test_coord2
-        )
-        self.assertTrue(condition_true)
-        self.assertFalse(condition_false)
 
 
 if __name__ == "__main__":

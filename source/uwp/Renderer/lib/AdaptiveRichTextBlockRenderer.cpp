@@ -42,7 +42,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(localAdaptiveCardElement.As(&adaptiveRichTextBlock));
 
         // Set the horizontal Alingment
-        RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveRichTextBlock.Get(), xamlRichTextBlock.Get()));
+        RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveRichTextBlock.Get(), renderContext, xamlRichTextBlock.Get()));
 
         // Get the highlighters
         ComPtr<IRichTextBlock5> xamlRichTextBlock5;
@@ -79,6 +79,13 @@ namespace AdaptiveCards::Rendering::Uwp
             ComPtr<IAdaptiveActionElement> selectAction;
             RETURN_IF_FAILED(adaptiveTextRun->get_SelectAction(&selectAction));
 
+            boolean selectActionIsEnabled = false;
+            if (selectAction != nullptr)
+            {
+                // If the select action is disabled we won't render this as a link
+                RETURN_IF_FAILED(selectAction->get_IsEnabled(&selectActionIsEnabled));
+            }
+
             ComPtr<IAdaptiveTextElement> adaptiveTextElement;
             RETURN_IF_FAILED(localInline.As(&adaptiveTextElement));
 
@@ -95,7 +102,7 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(adaptiveTextRun->get_Underline(&isUnderline));
 
             UINT inlineLength;
-            if (selectAction != nullptr)
+            if (selectAction != nullptr && selectActionIsEnabled)
             {
                 // If there's a select action, create a hyperlink that triggers the action
                 ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
