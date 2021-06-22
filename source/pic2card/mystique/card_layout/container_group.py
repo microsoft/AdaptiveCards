@@ -1,8 +1,11 @@
 """Module responsible for merging the same type items into it's respective
 containers like image-set[images], choice-set[radio-buttons]. This merging
 criteria is checked for both root level and column level elements """
-# pylint: disable=relative-beyond-top-level
+from operator import itemgetter
 from typing import List, Dict, Union, Tuple
+
+# pylint: disable=relative-beyond-top-level
+import pandas as pd
 
 from .ds_helper import DsHelper, ContainerTemplate, ContainerDetailTemplate
 
@@ -60,28 +63,30 @@ class ContainerGroup:
         )
         ds_template = DsHelper()
         for items in container_items:
-            if len(items) > 1:
-                ds_template.add_element_to_ds(object_type, card_layout)
+            if len(items["objects"]) > 1:
+                ds_template.add_element_to_ds(
+                    object_type, card_layout, coords=items["coordinates"]
+                )
                 coordinates = []
-                key = [
-                    key
-                    for key, values in card_layout[-1][object_type].items()
-                    if isinstance(values, list)
-                ][0]
-                for item in items:
+                sub_layout = card_layout[-1][object_type]
+                sub_layout_values = sub_layout.values()
+
+                key = list(sub_layout)[
+                    list(sub_layout_values).index(
+                        list(
+                            filter(
+                                lambda ele: isinstance(ele, list),
+                                sub_layout_values,
+                            )
+                        )[0]
+                    )
+                ]
+                for item in items["objects"]:
                     card_layout[-1][object_type][key].append(item)
                     coordinates.append(item.get("coordinates", []))
 
-                container_coords = [
-                    c.get("coordinates")
-                    for c in card_layout[-1][object_type][key]
-                ]
-                card_layout[-1][
-                    "coordinates"
-                ] = ds_template.build_container_coordinates(container_coords)
-
                 card_layout = [
-                    item for item in card_layout if item not in items
+                    item for item in card_layout if item not in items["objects"]
                 ]
         return card_layout
 
@@ -99,27 +104,40 @@ class ContainerGroup:
         items, remaining_items = self.collect_items_for_container(
             column_items, object_class
         )
-        # order the container elements based on the order_key
-        order = [item.get("coordinates")[order_key] for item in items]
-        items = [
-            value
-            for _, value in sorted(
-                zip(order, items), key=lambda value: value[0]
-            )
-        ]
+        if items:
+            # order the container elements based on the order_key
+            items = [
+                value
+                for _, value in sorted(
+                    zip(
+                        list(zip(*pd.DataFrame(items)["coordinates"]))[
+                            order_key
+                        ],
+                        items,
+                    ),
+                    key=lambda value: value[0],
+                )
+            ]
         updated_column_items = self.add_merged_items(
             items, column_items, payload
         )
-        column_y_minimums = [
-            c.get("coordinates")[1] for c in updated_column_items
-        ]
-        updated_column_items = [
-            value
-            for _, value in sorted(
-                zip(column_y_minimums, updated_column_items),
-                key=lambda value: value[0],
-            )
-        ]
+        if updated_column_items:
+            updated_column_items = [
+                value
+                for _, value in sorted(
+                    zip(
+                        list(
+                            zip(
+                                *pd.DataFrame(updated_column_items)[
+                                    "coordinates"
+                                ]
+                            )
+                        )[1],
+                        updated_column_items,
+                    ),
+                    key=lambda value: value[0],
+                )
+            ]
         if remaining_items:
             self.merge_column_items(updated_column_items, payload)
         return updated_column_items
@@ -238,7 +256,7 @@ class ContainerGroup:
                 counter += 1
             else:
                 # if it's a image-set column
-                container_coords = [c.get("coordinates") for c in data]
+                container_coords = list(map(itemgetter("coordinates"), data))
                 ds_template = DsHelper()
                 container_coords = ds_template.build_container_coordinates(
                     container_coords
@@ -277,7 +295,9 @@ class ContainerGroup:
         # if the column-set has only columns of images, then change it to
         # image-set from the root level
         if not column_wise_imageset_data and imageset_data:
-            container_coords = [c.get("coordinates") for c in imageset_data]
+            container_coords = list(
+                map(itemgetter("coordinates"), imageset_data)
+            )
             ds_template = DsHelper()
             container_coords = ds_template.build_container_coordinates(
                 container_coords
@@ -294,9 +314,9 @@ class ContainerGroup:
 
             if update_element["row"]:
                 # build column-set coordinates
-                container_coords = [
-                    c.get("coordinates") for c in update_element["row"]
-                ]
+                container_coords = list(
+                    map(itemgetter("coordinates"), update_element["row"])
+                )
                 ds_template = DsHelper()
                 container_coords = ds_template.build_container_coordinates(
                     container_coords

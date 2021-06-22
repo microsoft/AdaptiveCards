@@ -21,6 +21,7 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveColorsConfig>(m_foregroundColors.GetAddressOf(), styleDefinition.foregroundColors));
         RETURN_IF_FAILED(GetColorFromString(styleDefinition.backgroundColor, &m_backgroundColor));
+        RETURN_IF_FAILED(GetColorFromString(styleDefinition.borderColor, &m_borderColor));
         return S_OK;
     }
 
@@ -33,6 +34,18 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT AdaptiveContainerStyleDefinition::put_BackgroundColor(ABI::Windows::UI::Color color)
     {
         m_backgroundColor = color;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainerStyleDefinition::get_BorderColor(_Out_ ABI::Windows::UI::Color* value)
+    {
+        *value = m_borderColor;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainerStyleDefinition::put_BorderColor(ABI::Windows::UI::Color value)
+    {
+        m_borderColor = value;
         return S_OK;
     }
 

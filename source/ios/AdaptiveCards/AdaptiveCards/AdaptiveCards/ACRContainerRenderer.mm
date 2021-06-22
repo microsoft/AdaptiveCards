@@ -39,7 +39,6 @@
 
     [rootView.context pushBaseCardElementContext:acoElem];
 
-
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style]
                                                          hostConfig:acoConfig
@@ -48,7 +47,19 @@
 
     [viewGroup addArrangedSubview:container];
 
-    configBleed(rootView, elem, container, acoConfig);
+    if (acoElem.type == ACRTableCell) {
+        CGFloat top, left, bottom, right;
+        top = left = bottom = right = [acoConfig getHostConfig]->GetSpacing().paddingSpacing;
+        [container removeConstraints:container.constraints];
+        [container applyPaddingToTop:top
+                                left:left
+                              bottom:bottom
+                               right:right
+                            priority:1000
+                            location:ACRBleedToAll];
+    } else {
+        configBleed(rootView, elem, container, acoConfig);
+    }
 
     renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
 

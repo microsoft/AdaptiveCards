@@ -53,7 +53,7 @@
         }
     }
 
-    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];    
+    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];
     _setOfExcludedFiles = [NSSet setWithArray:@[ @"TooltipTestCard.json" ]];
 
     self.continueAfterFailure = NO;
@@ -678,6 +678,8 @@
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::NumberInput) == ACRNumberInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TextBlock) == ACRTextBlock);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TextInput) == ACRTextInput);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Table) == ACRTable);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TableCell) == ACRTableCell);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::TimeInput) == ACRTimeInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::ToggleInput) == ACRToggleInput);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::CardElementType::Unknown) == ACRUnknown);
@@ -686,7 +688,13 @@
     XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::Submit) == ACRSubmit);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::OpenUrl) == ACROpenUrl);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::ToggleVisibility) == ACRToggleVisibility);
-    XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::UnknownAction) == ACRUnknownAction);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ContainerStyle::None) == ACRNone);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ContainerStyle::Default) == ACRDefault);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ContainerStyle::Emphasis) == ACREmphasis);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ContainerStyle::Good) == ACRGood);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ContainerStyle::Warning) == ACRWarning);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ContainerStyle::Attention) == ACRAttention);
+    XCTAssertTrue(static_cast<int>(AdaptiveCards::ContainerStyle::Accent) == ACRAccent);
 }
 
 - (void)testACRInputToggleViewCustomRendering

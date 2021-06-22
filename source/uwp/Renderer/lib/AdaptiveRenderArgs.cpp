@@ -111,6 +111,18 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
+    HRESULT AdaptiveRenderArgs::get_AddContainerPadding(_Out_ boolean* addContainerPadding)
+    {
+        *addContainerPadding = m_addContainerPadding;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::put_AddContainerPadding(boolean addContainerPadding)
+    {
+        m_addContainerPadding = addContainerPadding;
+        return S_OK;
+    }
+
     HRESULT AdaptiveRenderArgs::get_ParentCard(_COM_Outptr_ IAdaptiveCard** value)
     {
         return m_parentCard.CopyTo(value);
