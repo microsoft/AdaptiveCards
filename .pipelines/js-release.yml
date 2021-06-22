@@ -13,6 +13,38 @@ pool:
   vmImage: ubuntu-20.04
   demands:
   - npm
+
+parameters:
+- name: adaptivecards_prerelease_identifier
+  displayName: "[adaptivecards] Prerelease identifier, used only if prerelease indicated above"
+  type: string
+  default: 'beta'
+
+- name: adaptivecards_controls_prerelease_identifier
+  displayName: "[adaptivecards-controls] Prerelease identifier, used only if prerelease indicated above"
+  type: string
+  default: 'beta'
+
+- name: adaptivecards_designer_prerelease_identifier
+  displayName: "[adaptivecards-designer] Prerelease identifier, used only if prerelease indicated above"
+  type: string
+  default: 'beta'
+
+- name: adaptivecards_templating_prerelease_identifier
+  displayName: "[adaptivecards-templating] Prerelease identifier, used only if prerelease indicated above"
+  type: string
+  default: 'beta'
+
+variables:
+- name: AC_ADAPTIVECARDS_PRERELEASE_IDENTIFIER
+  value: ${{ parameters.adaptivecards_prerelease_identifier }}
+- name: AC_ADAPTIVECARDS_CONTROLS_PRERELEASE_IDENTIFIER
+  value: ${{ parameters.adaptivecards_controls_prerelease_identifier }}
+- name: AC_ADAPTIVECARDS_DESIGNER_PRERELEASE_IDENTIFIER
+  value: ${{ parameters.adaptivecards_designer_prerelease_identifier }}
+- name: AC_ADAPTIVECARDS_TEMPLATING_PRERELEASE_IDENTIFIER
+  value: ${{ parameters.adaptivecards_templating_prerelease_identifier }}
+
 steps:
 - task: NodeTool@0
   name: NodeTool1
@@ -23,6 +55,6 @@ steps:
    npm ci 
    npx lerna bootstrap --ci
    npx lerna run release
-   npx lerna version prerelease --preid beta02 --no-git-tag-version --no-push --yes
+   npm version prerelease --preid beta --no-git-tag-version --no-push --yes
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna bootstrap'
