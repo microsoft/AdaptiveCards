@@ -704,14 +704,22 @@ export class ActionProperty extends PropertyDefinition {
 }
 
 export class ChoiceInlineActionProperty extends PropertyDefinition {
-  parse(sender: SerializableObject, source: PropertyBag, context: SerializationContext): Action | undefined {
+  parse(sender: SerializableObject, source: PropertyBag, context: SerializationContext): ToggleVisibilityAction | undefined {
       let parent = (<Choice>sender).owner;
 
-      return context.parseAction(
+      let action = context.parseAction(
           parent,
           source[this.name],
-          this.forbiddenActionTypes,
-          parent.isDesignMode());
+          [],
+          !parent.isDesignMode());
+
+      if (action !== undefined) {
+          if (action instanceof ToggleVisibilityAction){
+              return action;
+          }
+      }
+
+      return undefined;
   }
 
   toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined, context: SerializationContext) {
@@ -720,8 +728,7 @@ export class ChoiceInlineActionProperty extends PropertyDefinition {
 
   constructor(
       readonly targetVersion: Version,
-      readonly name: string,
-      readonly forbiddenActionTypes: string[] = []) {
+      readonly name: string) {
       super(targetVersion, name, undefined);
   }
 }
@@ -3299,15 +3306,7 @@ export class Choice extends SerializableObject {
     static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
     static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
     static readonly isEnabledProperty = new BoolProperty(Versions.v1_0, "isEnabled", true);
-    static readonly inlineActionProperty = new ChoiceInlineActionProperty(
-        Versions.v1_0,
-        "inlineAction",
-        [
-            "Action.ShowCard",
-            "Action.Submit",
-            "Action.OpenUrl",
-            "Action.Execute"
-        ]);
+    static readonly inlineActionProperty = new ChoiceInlineActionProperty(Versions.v1_0, "inlineAction");
 
     @property(Choice.titleProperty)
     title?: string;
@@ -3320,6 +3319,19 @@ export class Choice extends SerializableObject {
 
     @property(Choice.inlineActionProperty)
     inlineAction?: ToggleVisibilityAction;
+
+    // @property(Choice.inlineActionProperty)
+    // get inlineAction(): ToggleVisibilityAction | undefined {
+    //     return this.getValue(Choice.inlineActionProperty);
+    // }
+
+    // set inlineAction(value: ToggleVisibilityAction | undefined) {
+    //     this.setValue(Choice.inlineActionProperty, value);
+
+    //     if (value !== undefined) {
+    //         value.setParent(this.owner);
+    //     }
+    // }
 
     owner: CardElement;
 
@@ -3344,17 +3356,18 @@ export class ChoiceSetInput extends Input {
 
     static readonly valueProperty = new StringProperty(Versions.v1_0, "value");
 
-    static readonly choicesProperty = new CustomProperty<Choice[]>(
+    static readonly choicesProperty = new CustomProperty<PropertyBag>(
         Versions.v1_0,
         "choices",
-        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext): Choice[] => {
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: SerializationContext) => {
             let choices = source[property.name];
             for (let choice of choices) {
-              let index = choices.indexOf(choice);
-              choice.owner = sender as CardElement;
-              choice.inlineAction = Object.assign(new ToggleVisibilityAction(), choice.inlineAction);
-              choice.inlineAction.setParent(sender);
-              (<Choice>choices[index]) = Object.assign(new Choice(), choice);
+                if (!(choice instanceof Choice)) {
+                    let index = choices.indexOf(choice);
+                    choice.owner = sender as CardElement;
+                    choice.inlineAction = context.parseAction(choice.owner, choice.inlineAction, [], !choice.owner.isDesignMode());
+                    (<Choice>choices[index]) = Object.assign(new Choice(), choice);
+                }
             }
 
             return choices;
