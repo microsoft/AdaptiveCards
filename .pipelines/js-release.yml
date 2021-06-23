@@ -26,6 +26,10 @@ parameters:
   - name: adaptivecards-templating
     increment: prerelease
     prerelease-identifier: beta
+- name: dry_run
+  displayName: "Dry run without pushing to npmjs"
+  type: object
+  default: true
 
 steps:
 - task: NodeTool@0
@@ -61,17 +65,19 @@ steps:
   displayName: 'Bash - git diff'
 
 - ${{ each target_package in parameters.target_packages }}:
-  - task: Npm@1
-    displayName: '[${{ target_package.name }}] npm publish --dry-run'
-    inputs:
-      command: custom
-      customCommand: publish --dry-run
-      workingDir: source/nodejs/${{ target_package.name }}
+  - ${{ if eq(parameters.dry_run, true) }}:
+    - task: Npm@1
+      displayName: '[${{ target_package.name }}] npm publish --dry-run'
+      inputs:
+        command: custom
+        customCommand: publish --dry-run
+        workingDir: source/nodejs/${{ target_package.name }}
 
-  - task: Npm@1
-    displayName: '[${{ target_package.name }}] npm publish'
-    inputs:
-      command: publish
-      workingDir: source/nodejs/${{ target_package.name }}
-      publishEndpoint: npmjs.com
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'))
+  - ${{ if eq(parameters.dry_run, false) }}:
+    - task: Npm@1
+      displayName: '[${{ target_package.name }}] npm publish'
+      inputs:
+        command: publish
+        workingDir: source/nodejs/${{ target_package.name }}
+        publishEndpoint: npmjs.com
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
