@@ -1,7 +1,3 @@
-# 'Allow scripts to access the OAuth token' was selected in pipeline.  Add the following YAML to any steps requiring access:
-#       env:
-#           MY_ACCESS_TOKEN: $(System.AccessToken)
-# Variable 'system.prefergit' was defined in the Variables tab
 name: $(date:yyMM).$(date:dd)$(rev:rrr)
 
 pool:
@@ -28,34 +24,6 @@ parameters:
     increment: prerelease
     prerelease-identifier: beta
 
-# - name: adaptivecards_prerelease_identifier
-#   displayName: "[adaptivecards] Prerelease identifier, used only if prerelease indicated above"
-#   type: string
-#   default: 'beta'
-
-# - name: adaptivecards_controls_prerelease_identifier
-#   displayName: "[adaptivecards-controls] Prerelease identifier, used only if prerelease indicated above"
-#   type: string
-#   default: 'beta'
-
-# - name: adaptivecards_designer_prerelease_identifier
-#   displayName: "[adaptivecards-designer] Prerelease identifier, used only if prerelease indicated above"
-#   type: string
-#   default: 'beta'
-
-# - name: adaptivecards_templating_prerelease_identifier
-#   displayName: "[adaptivecards-templating] Prerelease identifier, used only if prerelease indicated above"
-#   type: string
-#   default: 'beta'
-
-# variables:
-# - name: AC_ADAPTIVECARDS_CONTROLS_PRERELEASE_IDENTIFIER
-#   value: ${{ parameters.adaptivecards_controls_prerelease_identifier }}
-# - name: AC_ADAPTIVECARDS_DESIGNER_PRERELEASE_IDENTIFIER
-#   value: ${{ parameters.adaptivecards_designer_prerelease_identifier }}
-# - name: AC_ADAPTIVECARDS_TEMPLATING_PRERELEASE_IDENTIFIER
-#   value: ${{ parameters.adaptivecards_templating_prerelease_identifier }}
-
 steps:
 - task: NodeTool@0
   name: NodeTool1
@@ -70,6 +38,11 @@ steps:
    npm run audit-all -- --no-fix
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna bootstrap'
+
+- bash: |
+   npm run audit-all -- --no-fix
+  workingDirectory: source/nodejs
+  displayName: 'Bash - lerna-audit --no-fix'
 
 - ${{ each target_package in parameters.target_packages }}:
   - task: Npm@1
@@ -86,12 +59,11 @@ steps:
 
 - ${{ each target_package in parameters.target_packages }}:
   - task: Npm@1
-    displayName: '[${{ target_package.name }}] npm publish'
+    displayName: '[${{ target_package.name }}] npm publish --dry-run'
     inputs:
       command: custom
       customCommand: publish --dry-run
       workingDir: source/nodejs/${{ target_package.name }}
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'))
 
   - task: Npm@1
     displayName: '[${{ target_package.name }}] npm publish'
