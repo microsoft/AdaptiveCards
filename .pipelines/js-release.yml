@@ -76,8 +76,8 @@ steps:
     displayName: '[${{ target_package.name }}] npm version'
     inputs:
       command: custom
-      workingDir: 'source/nodejs/${{ target_package.name }}'
       customCommand: 'version ${{ target_package.increment }} --preid ${{ target_package.prerelease_identifier }} --no-git-tag-version --no-push --yes'
+      workingDir: 'source/nodejs/${{ target_package.name }}'
 
 - bash: |
    git status
@@ -86,9 +86,17 @@ steps:
 
 - ${{ each target_package in parameters.target_packages }}:
   - task: Npm@1
-    displayName: '[adaptivecards] npm publish'
+    displayName: '[${{ target_package.name }}] npm publish'
+    inputs:
+      command: custom
+      customCommand: publish --dry-run
+      workingDir: source/nodejs/${{ target_package.name }}
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'))
+
+  - task: Npm@1
+    displayName: '[${{ target_package.name }}] npm publish'
     inputs:
       command: publish
-      workingDir: source/nodejs/adaptivecards
+      workingDir: source/nodejs/${{ target_package.name }}
       publishEndpoint: npmjs.com
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'))
