@@ -3,11 +3,7 @@
 #           MY_ACCESS_TOKEN: $(System.AccessToken)
 # Variable 'system.prefergit' was defined in the Variables tab
 name: $(date:yyMM).$(date:dd)$(rev:rrr)
-resources:
-  repositories:
-  - repository: self
-    type: git
-    ref: main
+
 pool:
   name: Azure Pipelines
   vmImage: ubuntu-20.04
@@ -16,7 +12,7 @@ pool:
 
 parameters:
 - name: target_packages
-  displayName: "Which packages to publish?"
+  displayName: "Which packages to publish? Provide YAML sequence of package details (name, increment-level, prerelease-identifier). See https://docs.npmjs.com/cli/v7/commands/npm-version for how to configure version increment."
   type: object
   default:
   - name: adaptivecards
@@ -70,6 +66,8 @@ steps:
 - bash: |
    npm ci 
    npx lerna bootstrap --ci
+   npx lerna run release
+   npm run audit-all --no-fix   
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna bootstrap'
 
@@ -80,3 +78,16 @@ steps:
       command: custom
       workingDir: 'source/nodejs/${{ target_package.name }}'
       customCommand: 'version ${{ target_package.increment }} --preid ${{ target_package.prerelease_identifier }} --no-git-tag-version --no-push --yes'
+
+- bash: |
+   git status
+  workingDirectory: source/nodejs
+  displayName: 'Bash - lerna bootstrap'
+
+# - ${{ each target_package in parameters.target_packages }}:
+#   - task: Npm@1
+#     displayName: '[adaptivecards] npm publish'
+#     inputs:
+#       command: publish
+#       workingDir: source/nodejs/adaptivecards
+#       publishEndpoint: npmjs.com
