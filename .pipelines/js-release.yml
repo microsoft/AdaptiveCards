@@ -42,7 +42,6 @@ steps:
    npm ci 
    npx lerna bootstrap --ci
    npx lerna run release
-   npm run audit-all -- --no-fix
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna bootstrap'
 
