@@ -67,7 +67,7 @@ steps:
    npm ci 
    npx lerna bootstrap --ci
    npx lerna run release
-   npm run audit-all --no-fix   
+   npm run audit-all -- --no-fix
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna bootstrap'
 
@@ -84,10 +84,11 @@ steps:
   workingDirectory: source/nodejs
   displayName: 'Bash - lerna bootstrap'
 
-# - ${{ each target_package in parameters.target_packages }}:
-#   - task: Npm@1
-#     displayName: '[adaptivecards] npm publish'
-#     inputs:
-#       command: publish
-#       workingDir: source/nodejs/adaptivecards
-#       publishEndpoint: npmjs.com
+- ${{ each target_package in parameters.target_packages }}:
+  - task: Npm@1
+    displayName: '[adaptivecards] npm publish'
+    inputs:
+      command: publish
+      workingDir: source/nodejs/adaptivecards
+      publishEndpoint: npmjs.com
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'))
