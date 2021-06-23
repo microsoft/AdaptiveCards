@@ -1,7 +1,10 @@
 package io.adaptivecards.objectmodel;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import android.content.Context;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,6 +17,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.adaptivecards.renderer.inputhandler.AutoCompleteTextViewHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
@@ -27,6 +31,11 @@ public class ChoiceSetInputValidationTest
     private final String validValue = "sample value";
     private final String invalidValue = "an invalid value";
 
+    private Context getContext()
+    {
+        return InstrumentationRegistry.getInstrumentation().getContext();
+    }
+
     private ChoiceSetInput createCompactChoiceSetInputWithValidationProperties(boolean isRequired)
     {
         ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
@@ -36,37 +45,69 @@ public class ChoiceSetInputValidationTest
 
     private ChoiceSetInput createExpandedChoiceSetInputWithValidationProperties(boolean isRequired)
     {
-        ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
+        ChoiceSetInput choiceSetInput = createCompactChoiceSetInputWithValidationProperties(isRequired);
         choiceSetInput.SetChoiceSetStyle(ChoiceSetStyle.Expanded);
-        choiceSetInput.SetIsRequired(isRequired);
+        return choiceSetInput;
+    }
+
+    private ChoiceSetInput createFilteredChoiceSetInputWithValidationProperties(boolean isRequired)
+    {
+        ChoiceSetInput choiceSetInput = createCompactChoiceSetInputWithValidationProperties(isRequired);
+        choiceSetInput.SetChoiceSetStyle(ChoiceSetStyle.Filtered);
         return choiceSetInput;
     }
 
     private ChoiceSetInput createMultiSelectChoiceSetInputWithValidationProperties(boolean isRequired)
     {
-        ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
-        choiceSetInput.SetChoiceSetStyle(ChoiceSetStyle.Expanded);
+        ChoiceSetInput choiceSetInput = createExpandedChoiceSetInputWithValidationProperties(isRequired);
         choiceSetInput.SetIsMultiSelect(true);
-        choiceSetInput.SetIsRequired(isRequired);
         return choiceSetInput;
     }
 
     private ComboBoxInputHandler createComboBoxInputHandler(ChoiceSetInput choiceSetInput)
     {
         ComboBoxInputHandler choiceSetInputHandler = new ComboBoxInputHandler(choiceSetInput);
-        Spinner spinner = new Spinner(InstrumentationRegistry.getContext());
-        spinner.setAdapter(new ArrayAdapter<String>(InstrumentationRegistry.getContext(), android.R.layout.simple_spinner_item, new String[]{"sample title", ""}));
+        Spinner spinner = new Spinner(getContext());
+        spinner.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, new String[]{"sample title", ""}));
         spinner.setSelection(1);
         choiceSetInputHandler.setView(spinner);
         return choiceSetInputHandler;
+    }
+
+    private AutoCompleteTextViewHandler createAutoCompleteTextViewInputHandler(ChoiceSetInput choiceSetInput)
+    {
+        final AutoCompleteTextViewHandler choiceSetInputHandler = new AutoCompleteTextViewHandler(choiceSetInput);
+        choiceSetInputHandler.setView(createAutoCompleteTextView());
+        return choiceSetInputHandler;
+    }
+
+    private AutoCompleteTextViewHandler createAutoCompleteTextViewInputHandler(ChoiceSetInput choiceSetInput, AutoCompleteTextView autoCompleteTextView)
+    {
+        final AutoCompleteTextViewHandler choiceSetInputHandler = new AutoCompleteTextViewHandler(choiceSetInput);
+        choiceSetInputHandler.setView(autoCompleteTextView);
+        return choiceSetInputHandler;
+    }
+
+    private AutoCompleteTextView createAutoCompleteTextView()
+    {
+        final AutoCompleteTextView[] autoCompleteTextView = new AutoCompleteTextView[1];
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run()
+            {
+                autoCompleteTextView[0] = new AutoCompleteTextView(getContext());
+                autoCompleteTextView[0].setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, new String[]{"sample title"}));
+            }
+        });
+        return autoCompleteTextView[0];
     }
 
     private RadioGroupInputHandler createRadioGroupInputHandler(ChoiceSetInput choiceSetInput)
     {
         RadioGroupInputHandler choiceSetInputHandler = new RadioGroupInputHandler(choiceSetInput);
 
-        RadioGroup radioGroup = new RadioGroup(InstrumentationRegistry.getContext());
-        RadioButton radioButton = new RadioButton(InstrumentationRegistry.getContext());
+        RadioGroup radioGroup = new RadioGroup(getContext());
+        RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText("sample title");
         radioGroup.addView(radioButton);
         choiceSetInputHandler.setView(radioGroup);
@@ -77,12 +118,12 @@ public class ChoiceSetInputValidationTest
     private CheckBoxSetInputHandler createCheckBoxSetInputHandler(ChoiceSetInput choiceSetInput)
     {
         List<CheckBox> checkBoxes = new ArrayList<>();
-        CheckBox checkBox = new CheckBox(InstrumentationRegistry.getContext());
+        CheckBox checkBox = new CheckBox(getContext());
         checkBox.setText("sample title");
         checkBoxes.add(checkBox);
 
         CheckBoxSetInputHandler choiceSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxes);
-        choiceSetInputHandler.setView(new CheckBox(InstrumentationRegistry.getContext()));
+        choiceSetInputHandler.setView(new CheckBox(getContext()));
         return choiceSetInputHandler;
     }
 
@@ -166,6 +207,91 @@ public class ChoiceSetInputValidationTest
 
         comboBoxInputHandler.setInput(invalidValue);
         Assert.assertFalse(comboBoxInputHandler.isValid());
+    }
+
+    /**
+     * VerifyValidationSucceedsWithNoSetValueForCompactChoiceSet
+     * @testDescription Verifies that a not required input will succeed when no value has been set
+     */
+    @Test
+    public void VerifyValidationSucceedsWithNoSetValueForFilteredChoiceSet()
+    {
+        ChoiceSetInput choiceSetInput = createFilteredChoiceSetInputWithValidationProperties(false);
+        AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput);
+
+        Assert.assertTrue(inputHandler.isValid());
+    }
+
+    /**
+     * VerifyValidationSucceedsWithSetValueForCompactChoiceSet
+     * @testDescription Verifies that a not required input will succeed when a valid value has been set
+     */
+    @Test
+    public void VerifyValidationSucceedsWithSetValueForFilteredChoiceSet()
+    {
+        ChoiceSetInput choiceSetInput = createFilteredChoiceSetInputWithValidationProperties(false);
+        AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput);
+
+        inputHandler.setInput(validValue);
+        Assert.assertTrue(inputHandler.isValid());
+    }
+
+    /**
+     * VerifyValidationFailsWithSetInvalidValueForCompactChoiceSet
+     * @testDescription Verifies that a not required input will fail when a value not in the list of values has been set
+     */
+    @Test
+    public void VerifyValidationFailsWithSetInvalidValueForFilteredChoiceSet()
+    {
+        ChoiceSetInput choiceSetInput = createFilteredChoiceSetInputWithValidationProperties(false);
+        AutoCompleteTextView autoCompleteTextView = createAutoCompleteTextView();
+        AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput, autoCompleteTextView);
+
+        // Instead of using setInput we set the text by accessing the underlying control as setInput sets the text as an
+        // empty string if the value is not found
+        autoCompleteTextView.setText(invalidValue);
+        Assert.assertFalse(inputHandler.isValid());
+    }
+
+    /**
+     * VerifyIsRequiredValidationFailsWithNoSetValueForCompactChoiceSet
+     * @testDescription Verifies that a required input will fail when no value has been set
+     */
+    @Test
+    public void VerifyIsRequiredValidationFailsWithNoSetValueForFilteredChoiceSet()
+    {
+        ChoiceSetInput choiceSetInput = createFilteredChoiceSetInputWithValidationProperties(true);
+        AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput);
+
+        Assert.assertFalse(inputHandler.isValid());
+    }
+
+    /**
+     * VerifyIsRequiredValidationSucceedsWithSetValueForCompactChoiceSet
+     * @testDescription Verifies that a required input will succeed when a valid value has been set
+     */
+    @Test
+    public void VerifyIsRequiredValidationSucceedsWithSetValueForFilteredChoiceSet()
+    {
+        ChoiceSetInput choiceSetInput = createFilteredChoiceSetInputWithValidationProperties(true);
+        AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput);
+
+        inputHandler.setInput(validValue);
+        Assert.assertTrue(inputHandler.isValid());
+    }
+
+    /**
+     * VerifyIsRequiredValidationFailsWithSetInvalidValue
+     * @testDescription Verifies that a required input will fail when a value not in the list of values has been set
+     */
+    @Test
+    public void VerifyIsRequiredValidationFailsWithSetInvalidValueForFilteredChoiceSet()
+    {
+        ChoiceSetInput choiceSetInput = createFilteredChoiceSetInputWithValidationProperties(true);
+        AutoCompleteTextViewHandler inputHandler = createAutoCompleteTextViewInputHandler(choiceSetInput);
+
+        inputHandler.setInput(invalidValue);
+        Assert.assertFalse(inputHandler.isValid());
     }
 
     /**
@@ -332,18 +458,6 @@ public class ChoiceSetInputValidationTest
         Assert.assertFalse(checkBoxSetInputHandler.isValid());
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     @Test
     public void isRequiredMultiselectValidation()
     {
@@ -353,12 +467,12 @@ public class ChoiceSetInputValidationTest
         choiceSetInput.SetIsRequired(true);
 
         List<CheckBox> checkBoxes = new ArrayList<>();
-        CheckBox checkBox = new CheckBox(InstrumentationRegistry.getContext());
+        CheckBox checkBox = new CheckBox(getContext());
         checkBox.setText("sample title");
         checkBoxes.add(checkBox);
 
         CheckBoxSetInputHandler choiceSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxes);
-        choiceSetInputHandler.setView(new CheckBox(InstrumentationRegistry.getContext()));
+        choiceSetInputHandler.setView(new CheckBox(getContext()));
 
         // Validate that empty input is always invalid
         Assert.assertEquals(false, choiceSetInputHandler.isValid());
