@@ -1,5 +1,8 @@
 name: $(date:yyMM).$(date:dd)$(rev:rrr)
 
+pr: none
+trigger: none
+
 pool:
   name: Azure Pipelines
   vmImage: ubuntu-20.04
@@ -53,9 +56,9 @@ steps:
       workingDir: 'source/nodejs/${{ target_package.name }}'
 
 - bash: |
-   git status
+   git diff
   workingDirectory: source/nodejs
-  displayName: 'Bash - lerna bootstrap'
+  displayName: 'Bash - git diff'
 
 - ${{ each target_package in parameters.target_packages }}:
   - task: Npm@1
