@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		300ECB63219A12D100371DC5 /* AdaptiveBase64Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */; };
 		300ECB64219A12D100371DC5 /* AdaptiveBase64Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */; };
+		30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */; };
 		6B096D4E225431D0006CC034 /* ACRRichTextBlockRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B096D4F225431D0006CC034 /* ACRRichTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */; };
 		6B096D7E22694776006CC034 /* ACRRegistrationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D7D22694775006CC034 /* ACRRegistrationPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -270,7 +272,6 @@
 		F49683531F6CA24600DF0D3A /* ACRRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F496834F1F6CA24600DF0D3A /* ACRRenderer.mm */; };
 		F49683541F6CA24600DF0D3A /* ACRRenderResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F49683501F6CA24600DF0D3A /* ACRRenderResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F49683551F6CA24600DF0D3A /* ACRRenderResult.mm in Sources */ = {isa = PBXBuildFile; fileRef = F49683511F6CA24600DF0D3A /* ACRRenderResult.mm */; };
-		F4A5CABA1F623F4500242D62 /* AdaptiveCardsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */; };
 		F4C1F5D61F2187900018CB78 /* ACRInputDateRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */; };
 		F4C1F5DA1F218ABC0018CB78 /* ACRInputTimeRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */; };
 		F4C1F5DD1F218F920018CB78 /* ACRInputNumberRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5DB1F218F920018CB78 /* ACRInputNumberRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -377,6 +378,8 @@
 /* Begin PBXFileReference section */
 		300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveBase64Util.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp; sourceTree = "<group>"; };
 		300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveBase64Util.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h; sourceTree = "<group>"; };
+		30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsTests.mm; sourceTree = "<group>"; };
+		30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsTextBlockTests.mm; sourceTree = "<group>"; };
 		6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRichTextBlockRenderer.h; sourceTree = "<group>"; };
 		6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRichTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6B096D7D22694775006CC034 /* ACRRegistrationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRegistrationPrivate.h; sourceTree = "<group>"; };
@@ -635,7 +638,6 @@
 		F496834F1F6CA24600DF0D3A /* ACRRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRenderer.mm; sourceTree = "<group>"; };
 		F49683501F6CA24600DF0D3A /* ACRRenderResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRenderResult.h; sourceTree = "<group>"; };
 		F49683511F6CA24600DF0D3A /* ACRRenderResult.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRenderResult.mm; sourceTree = "<group>"; };
-		F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdaptiveCardsTests.m; sourceTree = "<group>"; };
 		F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputDateRenderer.h; sourceTree = "<group>"; };
 		F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputDateRenderer.mm; sourceTree = "<group>"; };
 		F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputTimeRenderer.h; sourceTree = "<group>"; };
@@ -850,7 +852,8 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
-				F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */,
+				30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */,
+				30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */,
 			);
 			path = AdaptiveCardsTests;
 			sourceTree = "<group>";
@@ -1643,7 +1646,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4A5CABA1F623F4500242D62 /* AdaptiveCardsTests.m in Sources */,
+				30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */,
+				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
