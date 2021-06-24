@@ -6,7 +6,7 @@
 #include "BaseElement.h"
 #include "CollectionTypeElement.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     ParseContext::ParseContext() :
         elementParserRegistration{std::make_shared<ElementParserRegistration>()},
@@ -144,9 +144,7 @@ namespace AdaptiveSharedNamespace
     // ================================================================================
 
     // Push the provided state on to our ID stack (see comment above)
-    void ParseContext::PushElement(const std::string& idJsonProperty,
-                                   const AdaptiveSharedNamespace::InternalId& internalId,
-                                   const bool isFallback /*=false*/)
+    void ParseContext::PushElement(const std::string& idJsonProperty, const AdaptiveCards::InternalId& internalId, const bool isFallback /*=false*/)
     {
         if (internalId == InternalId::Invalid)
         {
@@ -174,7 +172,7 @@ namespace AdaptiveSharedNamespace
             // Walk through the list of elements we've seen with this ID
             for (auto currentEntry = m_elementIds.find(elementId); currentEntry != m_elementIds.end(); ++currentEntry)
             {
-                const AdaptiveSharedNamespace::InternalId& entryFallbackId = currentEntry->second;
+                const AdaptiveCards::InternalId& entryFallbackId = currentEntry->second;
 
                 // If the element we're about to pop is the fallback parent for this entry, then there's no collision
                 // (fallback content is allowed to have the same ID as its parent)
@@ -229,21 +227,21 @@ namespace AdaptiveSharedNamespace
 
     // Walk stack looking for first element to be marked fallback (which isn't the ID we're supposed to skip), then
     // return its internal ID. If none, return an invalid ID. (see comment above)
-    const AdaptiveSharedNamespace::InternalId ParseContext::GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const
+    const AdaptiveCards::InternalId ParseContext::GetNearestFallbackId(const AdaptiveCards::InternalId& skipId) const
     {
         for (auto curElement = m_idStack.crbegin(); curElement != m_idStack.crend(); ++curElement)
         {
             if (std::get<TupleIndex::IsFallback>(*curElement)) // if element is fallback
             {
                 // retrieve the internal ID
-                const AdaptiveSharedNamespace::InternalId& internalId = std::get<TupleIndex::InternalId>(*curElement);
+                const AdaptiveCards::InternalId& internalId = std::get<TupleIndex::InternalId>(*curElement);
                 if (internalId != skipId)
                 {
                     return internalId;
                 }
             }
         }
-        AdaptiveSharedNamespace::InternalId invalidId;
+        AdaptiveCards::InternalId invalidId;
         return invalidId;
     }
 
@@ -260,13 +258,13 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    AdaptiveSharedNamespace::InternalId ParseContext::PaddingParentInternalId(void) const
+    AdaptiveCards::InternalId ParseContext::PaddingParentInternalId(void) const
     {
         if (m_parentalPadding.size())
         {
             return m_parentalPadding.back();
         }
-        AdaptiveSharedNamespace::InternalId invalidId;
+        AdaptiveCards::InternalId invalidId;
         return invalidId;
     }
 

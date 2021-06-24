@@ -113,16 +113,14 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
                 view.setBackgroundColor(separatorColor);
                 params = new FlexboxLayout.LayoutParams(separatorThickness, FlexboxLayout.LayoutParams.MATCH_PARENT);
                 params.setMargins(
-                    isHorizontalSpacing ? 0 : spacingSize / 2 /* left */,
-                    isHorizontalSpacing ? spacingSize / 2 : 0 /* top */,
-                    isHorizontalSpacing ? 0 : spacingSize / 2 /* right */,
-                    isHorizontalSpacing ? spacingSize / 2 : 0 /* bottom */);
+                    spacingSize / 2 /* left */,
+                    0 /* top */,
+                    spacingSize / 2 /* right */,
+                    0 /* bottom */);
             }
             else
             {
-                // As ImageSets use HorizontalFlowLayout, assigning the spacing between images as MatchParent will make them
-                // use more space than needed (making a second row of images to render below the space for the imageSet)
-                params = new FlexboxLayout.LayoutParams(spacingSize, isImageSet ? 0 : LinearLayout.LayoutParams.MATCH_PARENT);
+                params = new FlexboxLayout.LayoutParams(spacingSize, FlexboxLayout.LayoutParams.MATCH_PARENT);
             }
             params.setFlexShrink(0);
             params.setFlexGrow(0);
@@ -179,6 +177,8 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         View separator = null;
         TagContent tagContent = getTagContent(elementView);
 
+        int visibility = isVisible ? View.VISIBLE : View.GONE;
+
         if (tagContent != null)
         {
             separator = tagContent.GetSeparator();
@@ -188,19 +188,17 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             {
                 viewGroupsToUpdate.add(viewGroup);
             }
-        }
 
-        int visibility = isVisible ? View.VISIBLE : View.GONE;
+            View stretchContainer = tagContent.GetStretchContainer();
+            if (stretchContainer != null)
+            {
+                stretchContainer.setVisibility(visibility);
+            }
+        }
 
         if (separator != null)
         {
             separator.setVisibility(visibility);
-        }
-
-        View stretchContainer = tagContent.GetStretchContainer();
-        if (stretchContainer != null)
-        {
-            stretchContainer.setVisibility(visibility);
         }
 
         elementView.setVisibility(visibility);
@@ -231,26 +229,23 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
     }
 
     /**
-     * Sets the minimum height for Collection elements
-     * @param minHeight minimum height in pixels. Retrieved from minHeight property
-     * @param flexboxLayout Column or ColumnSet element view to apply minimum height to
-     * @param context Context for calculating actual height to render
+     * Applies the layout direction specified by rtl flag to the given layout
+     * @param rtl indicates right-to-left direction when true, left-to-right when false, otherwise inherit layout direction when null
+     * @param layout ViewGroup to apply the appropriate layout direction on
      */
-    protected static ViewGroup setMinHeight(long minHeight, FlexboxLayout flexboxLayout, Context context)
+    public static void applyRtl(Boolean rtl, ViewGroup layout)
     {
-        if (minHeight != 0)
+        if(rtl == null)
         {
-            // For some reason, flexbox has problems managing the minHeight property, so we have to create an extra linear layout
-            LinearLayout nestedLinearLayout = new LinearLayout(context);
-            nestedLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            nestedLinearLayout.setOrientation(LinearLayout.VERTICAL);
-            flexboxLayout.addView(nestedLinearLayout);
-
-            setMinHeight(minHeight, nestedLinearLayout, context);
-
-            return nestedLinearLayout;
+            layout.setLayoutDirection(View.LAYOUT_DIRECTION_INHERIT);
         }
-
-        return flexboxLayout;
+        else if(rtl)
+        {
+            layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        }
+        else
+        {
+            layout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
     }
 }

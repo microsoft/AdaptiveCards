@@ -6,6 +6,7 @@
 //
 
 #import "ACRIContentHoldingView.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView>
@@ -17,8 +18,12 @@
 @property UILayoutConstraintAxis axis;
 @property UIStackViewDistribution distribution;
 @property UIStackViewAlignment alignment;
-
+@property (weak, nullable) NSObject<ACRSelectActionDelegate> *selectActionTarget;
 @property BOOL isActionSet;
+// tells if a background image is set
+@property BOOL isBackgroundImageSet;
+// if true, RTL's set
+@property ACRRtl rtl;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 
@@ -42,6 +47,8 @@
 
 - (UIView *_Nullable)getLastArrangedSubview;
 
+- (NSArray<UIView *> *)getArrangedSubviews;
+
 // return the largest width from the given subviews Excluding the view
 - (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *_Nonnull)view;
 
@@ -52,9 +59,18 @@
 
 - (void)decreaseIntrinsicContentSize:(UIView *_Nonnull)view;
 
+- (CGSize)getIntrinsicContentSizeInArragedSubviews:(UIView *_Nonnull)view;
+
+- (void)updateIntrinsicContentSize;
+
+- (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop))block;
+
 - (void)hideIfSubviewsAreAllHidden;
 
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nullable)parent;
 
 - (void)removeViewFromContentStackView:(UIView *_Nonnull)view;
+
+- (UIView *_Nonnull)addPaddingSpace;
+
 @end

@@ -1,3 +1,6 @@
+"""
+Utils for the tests
+"""
 import os
 import base64
 import string
@@ -5,12 +8,19 @@ from random import choice
 
 os.environ["test_img_path"] = "./tests/test_images/test01.png"
 headers = {"Content-Type": "application/json"}
-payload_empty_dict_data = "{'image': null}"
+payload_empty_dict_data = "{'image': null}"  # pylint: disable=invalid-name
+# pylint: disable=invalid-name
 payload_data_some_string = "{'image': 'some string'}"
+api_dict = {
+    "GetCardTemplatesTestAPI": "/get_card_templates",
+    "PredictJsonTestAPI": "/predict_json",
+    "TestSampleImages": "/predict_json",
+    "PredictJsonDebugTestAPI": "/predict_json_debug",
+}
 
 
 def img_to_base64(img_path):
-    """ Returns base64 string in payload format for a given image path """
+    """Returns base64 string in payload format for a given image path"""
     with open(img_path, "rb") as img_file:
         imgb64_string = base64.b64encode(img_file.read()).decode("utf-8")
         payload_data = f'{{"image": "{imgb64_string}"}}'
@@ -18,7 +28,7 @@ def img_to_base64(img_path):
 
 
 def generate_base64():
-    """ Returns a random generated base64 string of size 3MB """
+    """Returns a random generated base64 string of size 3MB"""
     upper = string.ascii_uppercase
     lower = string.ascii_lowercase
     digits = string.digits
@@ -27,7 +37,7 @@ def generate_base64():
     return payload_data
 
 
-def get_response(client, api, headers, data):
-    """ Returns the response of a post request """
-    response = client.post(api, headers=headers, data=data)
+def get_response(client, api, header, data):
+    """Returns the response of a post request"""
+    response = client.post(api, headers=header, data=data)
     return response

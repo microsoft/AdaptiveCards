@@ -6,7 +6,7 @@
 #include "BaseActionElement.h"
 #include "ActionParserRegistration.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class OpenUrlAction : public BaseActionElement
     {

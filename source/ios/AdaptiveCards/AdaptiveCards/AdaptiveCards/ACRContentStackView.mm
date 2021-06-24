@@ -8,6 +8,8 @@
 #include "ACRContentStackView.h"
 #include "ACOHostConfigPrivate.h"
 #import "ACRShowCardTarget.h"
+#import "ACRViewPrivate.h"
+#import "UtiliOS.h"
 
 using namespace AdaptiveCards;
 
@@ -18,7 +20,9 @@ static int kToggleVisibilityContext;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
     UIStackView *_stackView;
-    NSMutableSet<UIView *> *_hiddenSubviews;
+    NSHashTable<UIView *> *_hiddenSubviews;
+    NSMutableDictionary<NSString *, NSValue *> *_subviewIntrinsicContentSizeCollection;
+    ACRRtl _rtl;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -26,13 +30,12 @@ static int kToggleVisibilityContext;
                    hostConfig:(ACOHostConfig *)acoConfig
                     superview:(UIView *)superview
 {
-    self = [self initWithFrame:superview.frame];
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    self = [self initWithFrame:superview.frame attributes:nil];
     if (self) {
-
         _style = style;
         if (style != ACRNone &&
             style != parentStyle) {
-            std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
             self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_style];
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
@@ -49,7 +52,8 @@ static int kToggleVisibilityContext;
     self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSMutableSet alloc] init];
+        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
+        _subviewIntrinsicContentSizeCollection = [[NSMutableDictionary alloc] init];
         self.clipsToBounds = NO;
         [self config:attributes];
     }
@@ -67,7 +71,7 @@ static int kToggleVisibilityContext;
 
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSMutableSet alloc] init];
+        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         [self config:nil];
     }
 
@@ -112,6 +116,21 @@ static int kToggleVisibilityContext;
 - (void)setAxis:(UILayoutConstraintAxis)axis
 {
     _stackView.axis = axis;
+}
+
+- (void)setRtl:(ACRRtl)rtl
+{
+    _rtl = rtl;
+    if (!_stackView || rtl == ACRRtlNone) {
+        return;
+    }
+
+    _stackView.semanticContentAttribute = (rtl == ACRRtlRTL) ? UISemanticContentAttributeForceRightToLeft : UISemanticContentAttributeForceLeftToRight;
+}
+
+- (ACRRtl)rtl
+{
+    return _rtl;
 }
 
 + (UIColor *)colorFromString:(const std::string &)colorString
@@ -182,6 +201,11 @@ static int kToggleVisibilityContext;
             _stackView.spacing = [spacingAttrib floatValue];
         }
 
+        NSNumber *paddingSpacing = attributes[@"padding-spacing"];
+        if ([paddingSpacing boolValue]) {
+            top = left = bottom = right = [paddingSpacing floatValue];
+        }
+
         NSNumber *topPaddingAttrib = attributes[@"padding-top"];
         if ([topPaddingAttrib boolValue]) {
             top = [topPaddingAttrib floatValue];
@@ -199,6 +223,20 @@ static int kToggleVisibilityContext;
 - (CGSize)intrinsicContentSize
 {
     return self.combinedContentSize;
+}
+
+- (void)updateIntrinsicContentSize
+{
+}
+
+- (void)updateIntrinsicContentSize:(void (^)(UIView *view, NSUInteger idx, BOOL *stop))block
+{
+    [_stackView.arrangedSubviews enumerateObjectsUsingBlock:block];
+}
+
+- (NSArray<UIView *> *)getArrangedSubviews
+{
+    return _stackView.arrangedSubviews;
 }
 
 - (void)addArrangedSubview:(UIView *)view
@@ -279,7 +317,15 @@ static int kToggleVisibilityContext;
             [_hiddenSubviews removeObject:view];
         }
     }
-    [view removeObserver:self forKeyPath:@"hidden"];
+    if ([view isKindOfClass:[ACRSeparator class]]) {
+        ACRSeparator *separator = (ACRSeparator *)view;
+        if (separator.isVisibilityObserved) {
+            [view removeObserver:self forKeyPath:@"hidden"];
+            separator.isVisibilityObserved = NO;
+        }
+    } else {
+        [view removeObserver:self forKeyPath:@"hidden"];
+    }
     [_stackView removeArrangedSubview:view];
     [view removeFromSuperview];
 }
@@ -423,6 +469,11 @@ static int kToggleVisibilityContext;
 {
     [super layoutSubviews];
 
+    if ([self.subviews count]) {
+        // configures background when this view contains a background image, and does only once
+        renderBackgroundCoverMode(self.subviews[0], self);
+    }
+
     if (_isActionSet) {
         float accumulatedWidth = 0, accumulatedHeight = 0, spacing = _stackView.spacing, maxWidth = 0, maxHeight = 0;
 
@@ -450,6 +501,18 @@ static int kToggleVisibilityContext;
 
 - (void)increaseIntrinsicContentSize:(UIView *)view
 {
+    NSString *key = [NSString stringWithFormat:@"%p", view];
+    _subviewIntrinsicContentSizeCollection[key] = [NSValue valueWithCGSize:[view intrinsicContentSize]];
+}
+
+- (CGSize)getIntrinsicContentSizeInArragedSubviews:(UIView *)view
+{
+    if (not view) {
+        return CGSizeZero;
+    }
+    NSString *key = [NSString stringWithFormat:@"%p", view];
+    NSValue *value = _subviewIntrinsicContentSizeCollection[key];
+    return value ? [value CGSizeValue] : CGSizeZero;
 }
 
 - (void)decreaseIntrinsicContentSize:(UIView *)view
@@ -460,7 +523,9 @@ static int kToggleVisibilityContext;
 {
     return [self getViewWithMaxDimensionAfterExcluding:view
                                              dimension:^CGFloat(UIView *v) {
-                                                 return [v intrinsicContentSize].height;
+                                                 NSString *key = [NSString stringWithFormat:@"%p", v];
+                                                 NSValue *value = self->_subviewIntrinsicContentSizeCollection[key];
+                                                 return (value ? [value CGSizeValue] : CGSizeZero).height;
                                              }];
 }
 
@@ -468,7 +533,9 @@ static int kToggleVisibilityContext;
 {
     return [self getViewWithMaxDimensionAfterExcluding:view
                                              dimension:^CGFloat(UIView *v) {
-                                                 return [v intrinsicContentSize].width;
+                                                 NSString *key = [NSString stringWithFormat:@"%p", v];
+                                                 NSValue *value = self->_subviewIntrinsicContentSizeCollection[key];
+                                                 return (value ? [value CGSizeValue] : CGSizeZero).width;
                                              }];
 }
 
@@ -477,16 +544,54 @@ static int kToggleVisibilityContext;
     CGFloat currentBest = 0.0;
     for (UIView *v in _stackView.arrangedSubviews) {
         if (![v isEqual:view]) {
-            currentBest = MAX(currentBest, dimension(view));
+            currentBest = MAX(currentBest, dimension(v));
         }
     }
     return currentBest;
+}
+
+- (void)configureForSelectAction:(ACOBaseActionElement *)action rootView:(ACRView *)rootView
+{
+    if (action != nullptr) {
+        NSObject<ACRSelectActionDelegate> *target = nil;
+        if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target)) {
+            [self addTarget:target];
+            self.selectActionTarget = target;
+            setAccessibilityTrait(self, action);
+        }
+    }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if (self.selectActionTarget) {
+        [self.selectActionTarget doSelectAction];
+    } else {
+        [self.nextResponder touchesBegan:touches withEvent:event];
+    }
+}
+
+- (UIView *)addPaddingSpace
+{
+    UIView *blankTrailingSpace = [[UIView alloc] init];
+    blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
+    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+    [self addArrangedSubview:blankTrailingSpace];
+    return blankTrailingSpace;
 }
 
 - (void)dealloc
 {
     for (UIView *view in _stackView.arrangedSubviews) {
         [view removeObserver:self forKeyPath:@"hidden"];
+    }
+}
+
+- (void)toggleVisibilityOfFirstView
+{
+    if ([_stackView.subviews count] and _stackView.subviews[0].hidden) {
+        _stackView.subviews[0].hidden = NO;
+        _stackView.subviews[0].hidden = YES;
     }
 }
 

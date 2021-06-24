@@ -52,18 +52,48 @@ void configSeparatorVisibility(ACRSeparator *view,
                                                          encoding:NSUTF8StringEncoding];
     [hashkey appendString:@"-separator"];
     view.tag = hashkey.hash;
+    view.isVisibilityObserved = YES;
+}
+
+ACRRtl getiOSRtl(std::optional<bool> const rtl)
+{
+    ACRRtl acrtl = ACRRtlNone;
+    if (rtl.has_value()) {
+        BOOL doSetRTL = rtl.value_or(false);
+        if (doSetRTL) {
+            acrtl = ACRRtlRTL;
+        } else {
+            acrtl = ACRRtlLTR;
+        }
+    }
+    return acrtl;
+}
+
+void configRtl(UIView *view, ACORenderContext *context)
+{
+    if (!view || !context) {
+        return;
+    }
+
+    ACRRtl rtl = context.rtl;
+    if (rtl == ACRRtlNone) {
+        return;
+    } else if (rtl == ACRRtlRTL) {
+        view.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+    } else if (rtl == ACRRtlRTL) {
+        view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
 }
 
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
-                           UIView *containerView, ACRView *rootView)
+                           ACRContentStackView *containerView, ACRView *rootView)
 {
-    if (backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
+    if (rootView == nil || backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
         return;
     }
 
     std::string imageUrl = backgroundImage->GetUrl();
-    NSString *key = [NSString stringWithCString:imageUrl.c_str()
-                                       encoding:[NSString defaultCStringEncoding]];
+    NSString *key = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(backgroundImage.get())] stringValue];
     if ([key length]) {
         UIImageView *imgView = nil;
         UIImage *img = [rootView getImageMap][key];
@@ -94,24 +124,96 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
             [containerView insertSubview:imgView atIndex:0];
 
-            if (img) {
-                // apply now if image is ready, otherwise wait until it is loaded
-                applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
+            if (imgView.image) {
+                // if image is ready, proceed to setting contraints
+                renderBackgroundImage(rootView, backgroundImage.get(), imgView, imgView.image);
             }
         }
     }
 }
 
-void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
+void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *image)
 {
+    if (rootView == nil || backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
+        return;
+    }
+
     if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
         imageView.backgroundColor = [UIColor colorWithPatternImage:image];
+        [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
         imageView.image = nil;
     }
     applyBackgroundImageConstraints(backgroundImageProperties, imageView, image);
+    [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
+}
+
+// apply contraints for 'Cover' fill mode
+// the backgroundView is set on the targetView
+void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView)
+{
+    if (!backgroundView || !targetView || ![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
+        return;
+    }
+
+    UIImageView *imageView = (UIImageView *)backgroundView;
+    UIImage *image = imageView.image;
+
+    if (!image) {
+        return;
+    }
+
+    targetView.isBackgroundImageSet = YES;
+
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    // Fill Mode Description
+    // ScaleAspectFill increases one dimension of image proportionally if
+    // corresponding dimension increases but it does not increase view surroinding the image
+    // find which dimension is in deficit and act accordingly
+    // when both dimensions are in deficit find the most deficient dimension
+    // and increase
+    // center the modified image view to the target view.
+
+    CGSize targetViewSize = targetView.frame.size;
+    CGSize sourceSize = image.size;
+    BOOL isDeficientInWidth = NO;
+    BOOL isDeficientInHeight = NO;
+
+    if (sourceSize.width < targetViewSize.width) {
+        isDeficientInWidth = YES;
+    }
+
+    if (sourceSize.height < targetViewSize.height) {
+        isDeficientInHeight = YES;
+    }
+
+    if (isDeficientInWidth and isDeficientInHeight) {
+        CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
+        CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
+        // m * a >= x
+        // m * b >= y
+        // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
+        // then m is max of (a/x, b/y)
+        // we applies m to image view's corresponding axis.
+        // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
+        if (widthDeficiencyRaito >= heightDifficiencyRaito) {
+            configWidthAndHeightAnchors(targetView, imageView, false);
+        } else {
+            configWidthAndHeightAnchors(targetView, imageView, true);
+        }
+    } else if (isDeficientInWidth) {
+        configWidthAndHeightAnchors(targetView, imageView, false);
+    } else if (isDeficientInHeight) {
+        configWidthAndHeightAnchors(targetView, imageView, true);
+    } else {
+        // constraint the background image to the container's width according to the spec
+        [imageView.widthAnchor constraintEqualToAnchor:targetView.widthAnchor].active = YES;
+        if (imageView.image.size.width > 0) {
+            [imageView.widthAnchor constraintEqualToAnchor:imageView.heightAnchor multiplier:imageView.image.size.height / imageView.image.size.width].active = YES;
+        }
+    }
 }
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
@@ -223,46 +325,10 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         }
         case ImageFillMode::Cover:
         default: {
-            imageView.contentMode = UIViewContentModeScaleAspectFill;
-            // Fill Mode Description
-            // ScaleAspectFill increases one dimension of image proportionally if
-            // corresponding dimension increases but it does not increase view surroinding the image
-            // find which dimension is in deficit and act accordingly
-            // when both dimensions are in deficit find the most deficient dimension
-            // and increase
-            // center the modified image view to the target view.
-
-            CGSize targetViewSize = superView.frame.size;
-            CGSize sourceSize = image.size;
-            BOOL isDeficientInWidth = NO;
-            BOOL isDeficientInHeight = NO;
-
-            if (sourceSize.width < targetViewSize.width) {
-                isDeficientInWidth = YES;
-            }
-
-            if (sourceSize.height < targetViewSize.height) {
-                isDeficientInHeight = YES;
-            }
-
-            if (isDeficientInWidth and isDeficientInHeight) {
-                CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
-                CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
-                // m * a >= x
-                // m * b >= y
-                // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
-                // then m is max of (a/x, b/y)
-                // we applies m to image view's corresponding axis.
-                // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
-                if (widthDeficiencyRaito >= heightDifficiencyRaito) {
-                    configWidthAndHeightAnchors(superView, imageView, false);
-                } else {
-                    configWidthAndHeightAnchors(superView, imageView, true);
-                }
-            } else if (isDeficientInWidth) {
-                configWidthAndHeightAnchors(superView, imageView, false);
-            } else if (isDeficientInHeight) {
-                configWidthAndHeightAnchors(superView, imageView, true);
+            // we should not apply the constraints if the superView's frame is not ready
+            // check layoutSubview of ACRContentStackView to see the alternate case
+            if (superView.frame.size.width != 0 && superView.frame.size.height != 0) {
+                renderBackgroundCoverMode(imageView, (ACRContentStackView *)superView);
             }
 
             configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
@@ -496,7 +562,7 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
 }
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
-                                        std::shared_ptr<BaseActionElement> const &action,
+                                        ACOBaseActionElement *action,
                                         UIButton *button, NSObject **target)
 {
     *target = [director build:action forButton:button];
@@ -504,17 +570,30 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
 }
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
-                               std::shared_ptr<BaseActionElement> const &action,
+                               ACOBaseActionElement *action,
                                NSObject **target)
 {
     *target = [director build:action];
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
+void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action)
+{
+    recipientView.userInteractionEnabled = [action isEnabled];
+    recipientView.accessibilityTraits |= action.accessibilityTraits;
+    if (![action isEnabled]) {
+        recipientView.accessibilityTraits |= UIAccessibilityTraitNotEnabled;
+    }
+}
+
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
 {
-    int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
-                                             textWeight:textProperties.GetTextWeight()];
+    FontType sharedFontType = textProperties.GetFontType().value_or(FontType::Default);
+    TextWeight sharedTextWeight = textProperties.GetTextWeight().value_or(TextWeight::Default);
+    TextSize sharedTextSize = textProperties.GetTextSize().value_or(TextSize::Default);
+
+    int fontweight = [hostConfig getTextBlockFontWeight:sharedFontType
+                                             textWeight:sharedTextWeight];
     // sanity check, 400 is the normal font;
     if (fontweight <= 0 || fontweight > 900) {
         fontweight = 400;
@@ -523,10 +602,10 @@ UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementP
     fontweight -= 100;
     fontweight /= 100;
 
-    if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
+    if (![hostConfig getFontFamily:sharedFontType]) {
         const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
                                                     @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
-        const CGFloat size = [hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()];
+        const CGFloat size = [hostConfig getTextBlockTextSize:sharedFontType textSize:sharedTextSize];
         if (textProperties.GetFontType() == FontType::Monospace) {
             const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                         @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
@@ -534,7 +613,7 @@ UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementP
                                                                                                 UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
             descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
 
-            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:sharedFontType textSize:sharedTextSize]];
         } else {
             font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
 
@@ -550,12 +629,12 @@ UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementP
         const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                     @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
         UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
-                                                             @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:textProperties.GetFontType()],
+                                                             @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:sharedFontType],
                                                                UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
 
         descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
 
-        font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+        font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:sharedFontType textSize:sharedTextSize]];
     }
     return font;
 }
@@ -565,31 +644,37 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProperties.GetText() language:textProperties.GetLanguage()]);
 
     // MarkDownParser transforms text with MarkDown to a html string
-    NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+    auto markdownString = markDownParser->TransformToHtml();
+    NSString *parsedString = (markDownParser->HasHtmlTags()) ? [NSString stringWithCString:markdownString.c_str() encoding:NSUTF8StringEncoding] : [NSString stringWithCString:markDownParser->GetRawText().c_str() encoding:NSUTF8StringEncoding];
+
     NSDictionary *data = nil;
 
+    FontType sharedFontType = textProperties.GetFontType().value_or(FontType::Default);
+    TextWeight sharedTextWeight = textProperties.GetTextWeight().value_or(TextWeight::Default);
+    TextSize sharedTextSize = textProperties.GetTextSize().value_or(TextSize::Default);
+
     // use Apple's html rendering only if the string has markdowns
-    if (markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
+    if (markDownParser->HasHtmlTags()) {
         NSString *fontFamilyName = nil;
 
-        if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
-            if (textProperties.GetFontType() == FontType::Monospace) {
+        if (![hostConfig getFontFamily:sharedFontType]) {
+            if (sharedFontType == FontType::Monospace) {
                 fontFamilyName = @"'Courier New'";
             } else {
                 fontFamilyName = @"'-apple-system',  'San Francisco'";
             }
         } else {
-            fontFamilyName = [hostConfig getFontFamily:textProperties.GetFontType()];
+            fontFamilyName = [hostConfig getFontFamily:sharedFontType];
         }
 
         NSString *font_style = textProperties.GetItalic() ? @"italic" : @"normal";
         // Font and text size are applied as CSS style by appending it to the html string
         parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d; font-style: %@;}</style>",
                                                                                         fontFamilyName,
-                                                                                        [hostConfig getTextBlockTextSize:textProperties.GetFontType()
-                                                                                                                textSize:textProperties.GetTextSize()],
-                                                                                        [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
-                                                                                                                textWeight:textProperties.GetTextWeight()],
+                                                                                        [hostConfig getTextBlockTextSize:sharedFontType
+                                                                                                                textSize:sharedTextSize],
+                                                                                        [hostConfig getTextBlockFontWeight:sharedFontType
+                                                                                                                textWeight:sharedTextWeight],
                                                                                         font_style]];
 
         NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
@@ -608,15 +693,19 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     }
 }
 
-void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, RichTextElementProperties &textProp)
+void TexStylesToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock,
+                                          const TextStyleConfig &textStyleConfig,
+                                          RichTextElementProperties &textProp)
 {
     textProp.SetText(textBlock->GetText());
-    textProp.SetTextSize(textBlock->GetTextSize());
-    textProp.SetTextWeight(textBlock->GetTextWeight());
-    textProp.SetFontType(textBlock->GetFontType());
-    textProp.SetTextColor(textBlock->GetTextColor());
-    textProp.SetIsSubtle(textBlock->GetIsSubtle());
     textProp.SetLanguage(textBlock->GetLanguage());
+    textProp.SetText(textBlock->GetText());
+    textProp.SetLanguage(textBlock->GetLanguage());
+    textProp.SetTextSize(textBlock->GetTextSize().value_or(textStyleConfig.size));
+    textProp.SetTextWeight(textBlock->GetTextWeight().value_or(textStyleConfig.weight));
+    textProp.SetFontType(textBlock->GetFontType().value_or(textStyleConfig.fontType));
+    textProp.SetTextColor(textBlock->GetTextColor().value_or(textStyleConfig.color));
+    textProp.SetIsSubtle(textBlock->GetIsSubtle().value_or(textStyleConfig.isSubtle));
 }
 
 void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp)
@@ -677,6 +766,8 @@ unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &conf
             return config->GetSpacing().mediumSpacing;
         case Spacing::Small:
             return config->GetSpacing().smallSpacing;
+        case Spacing::Padding:
+            return config->GetSpacing().paddingSpacing;
         case Spacing::Default:
             return config->GetSpacing().defaultSpacing;
         default:
@@ -747,7 +838,7 @@ void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style)
 {
     UIFont *font = getFont(acoConfig, textElementProperties);
-    auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textElementProperties.GetTextColor() subtleOption:NO];
+    auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textElementProperties.GetTextColor().value_or(ForegroundColor::Default) subtleOption:NO];
 
     return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : font, NSForegroundColorAttributeName : foregroundColor}];
 }
@@ -773,4 +864,125 @@ NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDiction
         key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-imageView-viewIF"] : pieces[@"playicon-url-imageView"];
     }
     return key;
+}
+
+CGSize getAspectRatio(CGSize size)
+{
+    CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
+    if (size.width > 0) {
+        heightToWidthRatio = size.height / size.width;
+    }
+
+    if (size.height > 0) {
+        widthToHeightRatio = size.width / size.height;
+    }
+    return CGSizeMake(widthToHeightRatio, heightToWidthRatio);
+}
+
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions)
+{
+    if (hasExplicitDimensions) {
+        return ACRImageSizeExplicit;
+    }
+
+    switch (adaptiveImageSize) {
+        case ImageSize::None:
+            return ACRImageSizeNone;
+        case ImageSize::Auto:
+            return ACRImageSizeAuto;
+        case ImageSize::Stretch:
+            return ACRImageSizeStretch;
+        case ImageSize::Small:
+            return ACRImageSizeSmall;
+        case ImageSize::Medium:
+            return ACRImageSizeMedium;
+        case ImageSize::Large:
+            return ACRImageSizeLarge;
+        default:
+            return ACRImageSizeAuto;
+    }
+}
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment)
+{
+    switch (horizontalAlignment) {
+        case HorizontalAlignment::Left:
+            return ACRLeft;
+        case HorizontalAlignment::Center:
+            return ACRCenter;
+        case HorizontalAlignment::Right:
+            return ACRRight;
+        default:
+            return ACRLeft;
+    }
+}
+
+void printSize(NSString *msg, CGSize size)
+{
+    NSLog(@"%@, size = %f x %f", msg, size.width, size.height);
+}
+
+NSData *JsonToNSData(const Json::Value &blob)
+{
+    Json::StreamWriterBuilder streamWriterBuilder;
+    std::unique_ptr<Json::StreamWriter> writer(streamWriterBuilder.newStreamWriter());
+    std::stringstream sstream;
+    writer->write(blob, &sstream);
+    NSString *jsonString =
+        [[NSString alloc] initWithCString:sstream.str().c_str()
+                                 encoding:NSUTF8StringEncoding];
+    return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+}
+
+void partitionActions(
+    const std::vector<std::shared_ptr<BaseActionElement>> &elems,
+    std::vector<std::shared_ptr<BaseActionElement>> &primary,
+    std::vector<std::shared_ptr<BaseActionElement>> &secondary,
+    unsigned int maxActions,
+    ACRView *rootView)
+{
+    std::partition_copy(std::begin(elems),
+                        std::end(elems),
+                        std::inserter(secondary, std::end(secondary)),
+                        std::inserter(primary, std::end(primary)),
+                        [](std::shared_ptr<BaseActionElement> elem) {
+                            return elem->GetMode() == Mode::Secondary;
+                        });
+
+    unsigned long uMaxActionsToRender = MIN(maxActions, primary.size());
+
+    BOOL allowMoreThanMaxActionsInOverflowMenu = NO;
+    if ([rootView.acrActionDelegate respondsToSelector:@selector(shouldAllowMoreThanMaxActionsInOverflowMenu)]) {
+        allowMoreThanMaxActionsInOverflowMenu =
+            [rootView.acrActionDelegate shouldAllowMoreThanMaxActionsInOverflowMenu];
+    }
+
+    if (uMaxActionsToRender < primary.size()) {
+        auto start = std::begin(primary) + uMaxActionsToRender;
+        auto end = std::end(primary);
+
+        if (allowMoreThanMaxActionsInOverflowMenu) {
+            std::copy(start, end, std::back_inserter(secondary));
+        } else {
+            [rootView addWarnings:ACRWarningStatusCode::ACRMaxActionsExceeded
+                           mesage:@"Some actions were not rendered due to exceeding the maximum number "
+                                  @"of actions allowed"];
+        }
+
+        primary.erase(start, end);
+    }
+}
+
+UIImage *scaleImageToSize(UIImage *image, CGSize newSize)
+{
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+NSNumber *iOSInternalIdHash(const std::size_t internalIdHash)
+{
+    return [NSNumber numberWithLong:internalIdHash];
 }

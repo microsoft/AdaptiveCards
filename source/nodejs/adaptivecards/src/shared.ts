@@ -2,6 +2,24 @@
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 
+export type Refresh = {
+    mode: Enums.RefreshMode;
+    timeBetweenAutomaticRefreshes: number;
+    maximumConsecutiveAutomaticRefreshes: number;
+    allowManualRefreshesAfterAutomaticRefreshes: boolean;
+}
+
+export type AppletsSettings = {
+    logEnabled: boolean;
+    logLevel: Enums.LogLevel;
+    maximumRetryAttempts: number;
+    defaultTimeBetweenRetryAttempts: number;
+    authPromptWidth: number;
+    authPromptHeight: number;
+    readonly refresh: Refresh;
+    onLogEvent?: (level: Enums.LogLevel, message?: any, ...optionalParams: any[]) => void;
+}
+
 export class GlobalSettings {
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
@@ -13,6 +31,23 @@ export class GlobalSettings {
     static allowPreProcessingPropertyValues: boolean = false;
     static setTabIndexAtCardRoot: boolean = true;
     static enableFallback: boolean = true;
+    static useWebkitLineClamp: boolean = true;
+    static allowMoreThanMaxActionsInOverflowMenu: boolean = false;
+
+    static readonly applets: AppletsSettings = {
+        logEnabled: true,
+        logLevel: Enums.LogLevel.Error,
+        maximumRetryAttempts: 3,
+        defaultTimeBetweenRetryAttempts: 3000, // 3 seconds
+        authPromptWidth: 400,
+        authPromptHeight: 600,
+        refresh: {
+            mode: Enums.RefreshMode.Manual,
+            timeBetweenAutomaticRefreshes: 3000, // 3 seconds
+            maximumConsecutiveAutomaticRefreshes: 3,
+            allowManualRefreshesAfterAutomaticRefreshes: true
+        }
+    }
 }
 
 export const ContentTypes = {

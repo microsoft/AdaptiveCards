@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* RNAdaptiveCardsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNAdaptiveCardsTests.m */; };
-		0EFBF57EB5EEBCF6B8355C11 /* libPods-RNAdaptiveCards-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AECC4018CDCF45DE9889D4BA /* libPods-RNAdaptiveCards-tvOS.a */; };
 		0F859A9E243CAD0900BE2DAC /* rnadaptivecards-test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F859A9D243CAD0900BE2DAC /* rnadaptivecards-test.swift */; };
 		0F940937240C20E100F43116 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F940907240C20E000F43116 /* JavaScriptCore.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -20,9 +19,10 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* RNAdaptiveCardsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNAdaptiveCardsTests.m */; };
-		91EFC8A8E6C2A89DF9074E33 /* libPods-RNAdaptiveCards.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5730611DEA15698FDAD00820 /* libPods-RNAdaptiveCards.a */; };
-		B1CE8D9BB4CA69F23B00082A /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B829B39A446285DAEE9EE262 /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a */; };
-		EB21586B6850518A3F0AB86E /* libPods-RNAdaptiveCards-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 11ADCF10CF3F3E5F371D9784 /* libPods-RNAdaptiveCards-tvOSTests.a */; };
+		709AB371071504CEE8E97FDC /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD67A70754AF4BF34C23A0C2 /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a */; };
+		A3F38A141797FB0DEBDA5739 /* libPods-RNAdaptiveCards-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73258BCA38FB8A55CB4974E7 /* libPods-RNAdaptiveCards-tvOS.a */; };
+		A8127E3C8BAA82ADC8032FB9 /* libPods-RNAdaptiveCards.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC606B167B41E6FD9013CDDE /* libPods-RNAdaptiveCards.a */; };
+		CF2C2F2A8423241960FC9B64 /* libPods-RNAdaptiveCards-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 000CA5E63799B4D920007043 /* libPods-RNAdaptiveCards-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		000CA5E63799B4D920007043 /* libPods-RNAdaptiveCards-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNAdaptiveCards-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* RNAdaptiveCardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNAdaptiveCardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -50,8 +51,6 @@
 		0F859A9C243CAD0800BE2DAC /* RNAdaptiveCards-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNAdaptiveCards-Bridging-Header.h"; sourceTree = "<group>"; };
 		0F859A9D243CAD0900BE2DAC /* rnadaptivecards-test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "rnadaptivecards-test.swift"; sourceTree = "<group>"; };
 		0F940907240C20E000F43116 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		11ADCF10CF3F3E5F371D9784 /* libPods-RNAdaptiveCards-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNAdaptiveCards-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1303E64BA4E299143F61AA04 /* Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-tvOSTests/Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* RNAdaptiveCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNAdaptiveCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RNAdaptiveCards/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RNAdaptiveCards/AppDelegate.m; sourceTree = "<group>"; };
@@ -59,20 +58,21 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RNAdaptiveCards/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNAdaptiveCards/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNAdaptiveCards/main.m; sourceTree = "<group>"; };
-		189C71296BE153555B8270A2 /* Pods-RNAdaptiveCards-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-tvOS.release.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-tvOS/Pods-RNAdaptiveCards-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		190CA36FBF53A8BBB6116D98 /* Pods-RNAdaptiveCards-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-tvOS/Pods-RNAdaptiveCards-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* RNAdaptiveCards-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RNAdaptiveCards-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* RNAdaptiveCards-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RNAdaptiveCards-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4C4B2751A3AB70A5D2C0BD32 /* Pods-RNAdaptiveCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards.release.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards/Pods-RNAdaptiveCards.release.xcconfig"; sourceTree = "<group>"; };
-		5730611DEA15698FDAD00820 /* libPods-RNAdaptiveCards.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNAdaptiveCards.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		38378DED030E5FC6BAA7BD64 /* Pods-RNAdaptiveCards-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-tvOSTests/Pods-RNAdaptiveCards-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		411B54E713D676E0A967E720 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-RNAdaptiveCardsTests/Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		44BCDD4F8F70AD22459E1DD6 /* Pods-RNAdaptiveCards-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-tvOS.release.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-tvOS/Pods-RNAdaptiveCards-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		50E54403C16015C7DD2D415F /* Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-tvOSTests/Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6267161704091B87359AB036 /* Pods-RNAdaptiveCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards.debug.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards/Pods-RNAdaptiveCards.debug.xcconfig"; sourceTree = "<group>"; };
 		664172956F4042B9A3C88087 /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
-		7A153DD039E0794D1AE11044 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-RNAdaptiveCardsTests/Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig"; sourceTree = "<group>"; };
-		9C217CAC9A57F48904BFD917 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-RNAdaptiveCardsTests/Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig"; sourceTree = "<group>"; };
-		AECC4018CDCF45DE9889D4BA /* libPods-RNAdaptiveCards-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNAdaptiveCards-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B829B39A446285DAEE9EE262 /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E29EEDE046A96804877D4C1A /* Pods-RNAdaptiveCards.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards.debug.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards/Pods-RNAdaptiveCards.debug.xcconfig"; sourceTree = "<group>"; };
-		ED6BBAB00DE5CD029937B171 /* Pods-RNAdaptiveCards-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-tvOS/Pods-RNAdaptiveCards-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		FD620743DD611A520F54A94C /* Pods-RNAdaptiveCards-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-tvOSTests/Pods-RNAdaptiveCards-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		73258BCA38FB8A55CB4974E7 /* libPods-RNAdaptiveCards-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNAdaptiveCards-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		968D2D8C61B5DE1620D0426A /* Pods-RNAdaptiveCards.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards.release.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards/Pods-RNAdaptiveCards.release.xcconfig"; sourceTree = "<group>"; };
+		AEE4A88E1B7A2227D3AE5CF7 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig"; path = "Target Support Files/Pods-RNAdaptiveCards-RNAdaptiveCardsTests/Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig"; sourceTree = "<group>"; };
+		CC606B167B41E6FD9013CDDE /* libPods-RNAdaptiveCards.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNAdaptiveCards.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD67A70754AF4BF34C23A0C2 /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1CE8D9BB4CA69F23B00082A /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a in Frameworks */,
+				709AB371071504CEE8E97FDC /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F940937240C20E100F43116 /* JavaScriptCore.framework in Frameworks */,
-				91EFC8A8E6C2A89DF9074E33 /* libPods-RNAdaptiveCards.a in Frameworks */,
+				A8127E3C8BAA82ADC8032FB9 /* libPods-RNAdaptiveCards.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +98,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */,
-				0EFBF57EB5EEBCF6B8355C11 /* libPods-RNAdaptiveCards-tvOS.a in Frameworks */,
+				A3F38A141797FB0DEBDA5739 /* libPods-RNAdaptiveCards-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB21586B6850518A3F0AB86E /* libPods-RNAdaptiveCards-tvOSTests.a in Frameworks */,
+				CF2C2F2A8423241960FC9B64 /* libPods-RNAdaptiveCards-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,10 +159,10 @@
 			children = (
 				0F940907240C20E000F43116 /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				5730611DEA15698FDAD00820 /* libPods-RNAdaptiveCards.a */,
-				B829B39A446285DAEE9EE262 /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a */,
-				AECC4018CDCF45DE9889D4BA /* libPods-RNAdaptiveCards-tvOS.a */,
-				11ADCF10CF3F3E5F371D9784 /* libPods-RNAdaptiveCards-tvOSTests.a */,
+				CC606B167B41E6FD9013CDDE /* libPods-RNAdaptiveCards.a */,
+				DD67A70754AF4BF34C23A0C2 /* libPods-RNAdaptiveCards-RNAdaptiveCardsTests.a */,
+				73258BCA38FB8A55CB4974E7 /* libPods-RNAdaptiveCards-tvOS.a */,
+				000CA5E63799B4D920007043 /* libPods-RNAdaptiveCards-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -170,14 +170,14 @@
 		5A04978888A3B0800B3B6D54 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E29EEDE046A96804877D4C1A /* Pods-RNAdaptiveCards.debug.xcconfig */,
-				4C4B2751A3AB70A5D2C0BD32 /* Pods-RNAdaptiveCards.release.xcconfig */,
-				9C217CAC9A57F48904BFD917 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig */,
-				7A153DD039E0794D1AE11044 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig */,
-				ED6BBAB00DE5CD029937B171 /* Pods-RNAdaptiveCards-tvOS.debug.xcconfig */,
-				189C71296BE153555B8270A2 /* Pods-RNAdaptiveCards-tvOS.release.xcconfig */,
-				1303E64BA4E299143F61AA04 /* Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig */,
-				FD620743DD611A520F54A94C /* Pods-RNAdaptiveCards-tvOSTests.release.xcconfig */,
+				6267161704091B87359AB036 /* Pods-RNAdaptiveCards.debug.xcconfig */,
+				968D2D8C61B5DE1620D0426A /* Pods-RNAdaptiveCards.release.xcconfig */,
+				411B54E713D676E0A967E720 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig */,
+				AEE4A88E1B7A2227D3AE5CF7 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig */,
+				190CA36FBF53A8BBB6116D98 /* Pods-RNAdaptiveCards-tvOS.debug.xcconfig */,
+				44BCDD4F8F70AD22459E1DD6 /* Pods-RNAdaptiveCards-tvOS.release.xcconfig */,
+				50E54403C16015C7DD2D415F /* Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig */,
+				38378DED030E5FC6BAA7BD64 /* Pods-RNAdaptiveCards-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -223,10 +223,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RNAdaptiveCardsTests" */;
 			buildPhases = (
-				B8692076C6E93E3E3CC61CC9 /* [CP] Check Pods Manifest.lock */,
+				613227A264C46261674B43F5 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				1AA96410B7C8BEE52EA45D2E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -242,11 +243,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNAdaptiveCards" */;
 			buildPhases = (
-				5C3DB38D25027EAD9700CF7E /* [CP] Check Pods Manifest.lock */,
+				F140962522AD0016D2B5B5BA /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				75EDE2A5FF5ACFFB2A51A5F5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -261,7 +263,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RNAdaptiveCards-tvOS" */;
 			buildPhases = (
-				65E160FC2BF2B9D6D848E5D9 /* [CP] Check Pods Manifest.lock */,
+				31277B82FA1430947589F258 /* [CP] Check Pods Manifest.lock */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
 				2D02E4791E0B4A5D006451C7 /* Resources */,
@@ -280,7 +282,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "RNAdaptiveCards-tvOSTests" */;
 			buildPhases = (
-				48473E13025B5B9B62E8A9FC /* [CP] Check Pods Manifest.lock */,
+				9D280048A76B3D5B6F02DE87 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -312,7 +314,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = GY84S9P9XS;
 						LastSwiftMigration = 1140;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -398,6 +400,24 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		1AA96410B7C8BEE52EA45D2E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNAdaptiveCards-RNAdaptiveCardsTests/Pods-RNAdaptiveCards-RNAdaptiveCardsTests-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNAdaptiveCards-RNAdaptiveCardsTests/Pods-RNAdaptiveCards-RNAdaptiveCardsTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -412,51 +432,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		48473E13025B5B9B62E8A9FC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNAdaptiveCards-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5C3DB38D25027EAD9700CF7E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNAdaptiveCards-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		65E160FC2BF2B9D6D848E5D9 /* [CP] Check Pods Manifest.lock */ = {
+		31277B82FA1430947589F258 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -478,7 +454,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B8692076C6E93E3E3CC61CC9 /* [CP] Check Pods Manifest.lock */ = {
+		613227A264C46261674B43F5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -494,6 +470,68 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-RNAdaptiveCards-RNAdaptiveCardsTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		75EDE2A5FF5ACFFB2A51A5F5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNAdaptiveCards/Pods-RNAdaptiveCards-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNAdaptiveCards/Pods-RNAdaptiveCards-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9D280048A76B3D5B6F02DE87 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RNAdaptiveCards-tvOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F140962522AD0016D2B5B5BA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RNAdaptiveCards-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -568,7 +606,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C217CAC9A57F48904BFD917 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig */;
+			baseConfigurationReference = 411B54E713D676E0A967E720 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -587,6 +625,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFB_SONARKIT_ENABLED=1",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -599,7 +641,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A153DD039E0794D1AE11044 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig */;
+			baseConfigurationReference = AEE4A88E1B7A2227D3AE5CF7 /* Pods-RNAdaptiveCards-RNAdaptiveCardsTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -615,6 +657,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFB_SONARKIT_ENABLED=1",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -627,21 +673,26 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E29EEDE046A96804877D4C1A /* Pods-RNAdaptiveCards.debug.xcconfig */;
+			baseConfigurationReference = 6267161704091B87359AB036 /* Pods-RNAdaptiveCards.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = GY84S9P9XS;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = RNAdaptiveCards/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFB_SONARKIT_ENABLED=1",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -649,7 +700,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rnadaptivecards;
 				PRODUCT_NAME = RNAdaptiveCards;
-				PROVISIONING_PROFILE_SPECIFIER = "AdaptiveCards-Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNAdaptiveCards-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -659,20 +710,25 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4C4B2751A3AB70A5D2C0BD32 /* Pods-RNAdaptiveCards.release.xcconfig */;
+			baseConfigurationReference = 968D2D8C61B5DE1620D0426A /* Pods-RNAdaptiveCards.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GY84S9P9XS;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = RNAdaptiveCards/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFB_SONARKIT_ENABLED=1",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -680,7 +736,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rnadaptivecards;
 				PRODUCT_NAME = RNAdaptiveCards;
-				PROVISIONING_PROFILE_SPECIFIER = "AdaptiveCards-Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RNAdaptiveCards-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -689,7 +745,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ED6BBAB00DE5CD029937B171 /* Pods-RNAdaptiveCards-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 190CA36FBF53A8BBB6116D98 /* Pods-RNAdaptiveCards-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -709,6 +765,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFB_SONARKIT_ENABLED=1",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -724,7 +784,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 189C71296BE153555B8270A2 /* Pods-RNAdaptiveCards-tvOS.release.xcconfig */;
+			baseConfigurationReference = 44BCDD4F8F70AD22459E1DD6 /* Pods-RNAdaptiveCards-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -745,6 +805,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFB_SONARKIT_ENABLED=1",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -759,7 +823,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1303E64BA4E299143F61AA04 /* Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 50E54403C16015C7DD2D415F /* Pods-RNAdaptiveCards-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -779,6 +843,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFB_SONARKIT_ENABLED=1",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -793,7 +861,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FD620743DD611A520F54A94C /* Pods-RNAdaptiveCards-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 38378DED030E5FC6BAA7BD64 /* Pods-RNAdaptiveCards-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -812,6 +880,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFB_SONARKIT_ENABLED=1",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

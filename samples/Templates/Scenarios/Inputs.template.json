@@ -8,11 +8,14 @@
 			"size": "Medium",
 			"weight": "Bolder",
 			"text": " ${ParticipantInfoForm.title}",
-			"horizontalAlignment": "Center"
+			"horizontalAlignment": "Center",
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "TextBlock",
-			"text": "Name"
+			"text": "Name",
+			"wrap": true
 		},
 		{
 			"type": "Input.Text",
@@ -21,7 +24,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Homepage"
+			"text": "Homepage",
+			"wrap": true
 		},
 		{
 			"type": "Input.Text",
@@ -30,7 +34,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Email"
+			"text": "Email",
+			"wrap": true
 		},
 		{
 			"type": "Input.Text",
@@ -39,7 +44,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Phone"
+			"text": "Phone",
+			"wrap": true
 		},
 		{
 			"type": "Input.Text",
@@ -48,7 +54,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Comments"
+			"text": "Comments",
+			"wrap": true
 		},
 		{
 			"type": "Input.Text",
@@ -58,7 +65,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Quantity"
+			"text": "Quantity",
+			"wrap": true
 		},
 		{
 			"type": "Input.Number",
@@ -69,7 +77,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Due Date"
+			"text": "Due Date",
+			"wrap": true
 		},
 		{
 			"type": "Input.Date",
@@ -78,7 +87,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Start time"
+			"text": "Start time",
+			"wrap": true
 		},
 		{
 			"type": "Input.Time",
@@ -90,11 +100,14 @@
 			"size": "Medium",
 			"weight": "Bolder",
 			"text": "${Survey.title} ",
-			"horizontalAlignment": "Center"
+			"horizontalAlignment": "Center",
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "TextBlock",
-			"text": "${Survey.questions[0].question}"
+			"text": "${Survey.questions[0].question}",
+			"wrap": true
 		},
 		{
 			"type": "Input.ChoiceSet",
@@ -110,7 +123,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "${Survey.questions[1].question}"
+			"text": "${Survey.questions[1].question}",
+			"wrap": true
 		},
 		{
 			"type": "Input.ChoiceSet",
@@ -127,7 +141,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "${Survey.questions[2].question}"
+			"text": "${Survey.questions[2].question}",
+			"wrap": true
 		},
 		{
 			"type": "Input.ChoiceSet",
@@ -147,7 +162,9 @@
 			"size": "Medium",
 			"weight": "Bolder",
 			"text": "Input.Toggle",
-			"horizontalAlignment": "Center"
+			"horizontalAlignment": "Center",
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "Input.Toggle",
@@ -182,7 +199,8 @@
 				"body": [
 					{
 						"type": "TextBlock",
-						"text": "Enter comment"
+						"text": "Enter comment",
+						"wrap": true
 					},
 					{
 						"type": "Input.Text",

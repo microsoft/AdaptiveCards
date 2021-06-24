@@ -13,6 +13,8 @@
 
 @interface ACRSeparator : UIView
 
+@property BOOL isVisibilityObserved;
+
 + (ACRSeparator *)renderSeparation:(std::shared_ptr<AdaptiveCards::BaseCardElement> const &)elem
                       forSuperview:(UIView *)view
                     withHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)config;

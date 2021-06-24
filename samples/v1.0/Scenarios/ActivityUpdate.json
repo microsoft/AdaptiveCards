@@ -7,7 +7,9 @@
 			"type": "TextBlock",
 			"text": "Publish Adaptive Card Schema",
 			"weight": "bolder",
-			"size": "medium"
+			"size": "medium",
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "ColumnSet",
@@ -72,37 +74,37 @@
 			]
 		}
 	],
-    "actions": [
-        {
-            "type": "Action.ShowCard",
-            "title": "Set due date",
-            "card": {
-                "type": "AdaptiveCard",
-                "body": [
-                    {
-                        "type": "Input.Date",
-                        "id": "dueDate"
-                    },
-                    {
-                        "type": "Input.Text",
-                        "id": "comment",
-                        "placeholder": "Add a comment",
-                        "isMultiline": true
-                    }
-                ],
-                "actions": [
-                    {
-                        "type": "Action.Submit",
-                        "title": "OK"
-                    }
-                ],
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
-            }
-        },
-        {
-            "type": "Action.OpenUrl",
-            "title": "View",
-            "url": "https://adaptivecards.io"
-        }
-    ]
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Set due date",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Date",
+						"id": "dueDate"
+					},
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"placeholder": "Add a comment",
+						"isMultiline": true
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK"
+					}
+				],
+				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+			}
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "View",
+			"url": "https://adaptivecards.io"
+		}
+	]
 }

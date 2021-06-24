@@ -4,9 +4,9 @@
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
-SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit), m_ignoreInputValidation(false)
+SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit), m_associatedInputs(AssociatedInputs::Auto)
 {
     PopulateKnownPropertiesSet();
 }
@@ -31,14 +31,14 @@ void SubmitAction::SetDataJson(const Json::Value& value)
     m_dataJson = value;
 }
 
-bool SubmitAction::GetIgnoreInputValidation() const
+AssociatedInputs SubmitAction::GetAssociatedInputs() const
 {
-    return m_ignoreInputValidation;
+    return m_associatedInputs;
 }
 
-void SubmitAction::SetIgnoreInputValidation(const bool value)
+void SubmitAction::SetAssociatedInputs(const AssociatedInputs value)
 {
-    m_ignoreInputValidation = value;
+    m_associatedInputs = value;
 }
 
 Json::Value SubmitAction::SerializeToJsonValue() const
@@ -50,9 +50,9 @@ Json::Value SubmitAction::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data)] = m_dataJson;
     }
 
-    if (m_ignoreInputValidation)
+    if (m_associatedInputs != AssociatedInputs::Auto)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IgnoreInputValidation)] = m_ignoreInputValidation;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AssociatedInputs)] = AssociatedInputsToString(m_associatedInputs);
     }
 
     return root;
@@ -63,7 +63,8 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(ParseContext&
     std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(context, json);
 
     submitAction->SetDataJson(ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::Data));
-    submitAction->SetIgnoreInputValidation(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IgnoreInputValidation, false));
+    submitAction->SetAssociatedInputs(ParseUtil::GetEnumValue<AssociatedInputs>(
+        json, AdaptiveCardSchemaKey::AssociatedInputs, AssociatedInputs::Auto, AssociatedInputsFromString));
 
     return submitAction;
 }
@@ -76,5 +77,5 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::DeserializeFromString(Par
 void SubmitAction::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IgnoreInputValidation)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AssociatedInputs)});
 }

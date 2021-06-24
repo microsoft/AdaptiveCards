@@ -1,7 +1,11 @@
 export default payloads = [
   {
-    "title": "TextBlock.Markdown.json",
-    "json": require('./TextBlock.Markdown.json')
+    "title": "Accessibility.json",
+    "json": require('./Accessibility.json')
+  },
+  {
+    "title": "Action.IsEnabled.json",
+    "json": require('./Action.IsEnabled.json')
   },
   {
     "title": "Action.NoBody.json",
@@ -172,8 +176,24 @@ export default payloads = [
     "json": require('./ColumnSet_Container.VerticalStretch.json')
   },
   {
-    "title": "CustomElement.Rendering.json",
+    "title": "Custom.Actions.Rendering.json",
+    "json": require('./CustomActions.Rendering.json')
+  },
+  {
+    "title": "Custom.Element.Rendering.json",
     "json": require('./CustomElement.Rendering.json')
+  },
+  {
+    "title": "Custom.TextBlock.Rendering.json",
+    "json": require('./CustomTextBlock.Rendering.json')
+  },
+  {
+    "title": "Custom.Image.Rendering.json",
+    "json": require('./CustomImage.Rendering.json')
+  },
+  {
+    "title": "Custom.ActionButton.Rendering.json",
+    "json": require('./CustomActionButton.Rendering.json')
   },
   {
     "title": "CustomParsingTestUsingProgressBar.json",
@@ -248,6 +268,10 @@ export default payloads = [
     "json": require('./Image.Style.json')
   },
   {
+    "title": "Input.Label.json",
+    "json": require('./Input.Label.json')
+  },
+  {
     "title": "Input.ChoiceSet.json",
     "json": require('./Input.ChoiceSet.json')
   },
@@ -292,6 +316,10 @@ export default payloads = [
     "json": require('./RichTextBlock.json')
   },
   {
+    "title": "SelectAction.IsEnabled.json",
+    "json": require('./SelectAction.IsEnabled.json')
+  },
+  {
     "title": "TextBlock.Color.json",
     "json": require('./TextBlock.Color.json')
   },
@@ -310,6 +338,10 @@ export default payloads = [
   {
     "title": "TextBlock.json",
     "json": require('./TextBlock.json')
+  },
+  {
+    "title": "TextBlock.Markdown.json",
+    "json": require('./TextBlock.Markdown.json')
   },
   {
     "title": "TextBlock.MaxLines.json",
@@ -334,6 +366,18 @@ export default payloads = [
   {
     "title": "TypeIsRequired.json",
     "json": require('./TypeIsRequired.json')
+  },
+  {
+    "title": "Universal.Action.json",
+    "json": require('./Universal.Action.json')
+  },
+  {
+    "title": "Universal.Select.Action.json",
+    "json": require('./Universal.Select.Action.json')
+  },
+  {
+    "title": "Universal.Inline.Action.json",
+    "json": require('./Universal.Inline.Action.json')
   },
   {
     "title": "VerticalStretch.json",

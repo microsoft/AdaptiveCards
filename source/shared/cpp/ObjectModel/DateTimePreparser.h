@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "DateTimePreparsedToken.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class DateTimePreparser
     {

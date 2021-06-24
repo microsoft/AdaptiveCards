@@ -39,34 +39,6 @@ export class TextColorDefinition {
 	}
 }
 
-export class HostConfigManager {
-
-	static hostConfig = null;
-
-	/**
-	 * @returns {HostConfigManager}
-	 */
-	static getHostConfig() {
-		if (HostConfigManager.hostConfig === null) {
-			HostConfigManager.hostConfig = new HostConfig(defaultHostConfig);
-		}
-
-		return this.hostConfig;
-	}
-
-	static setHostConfig(value) {
-		this.hostConfig = new HostConfig(value);
-	}
-
-	/**
-	 * @description Return whether supports interactivity is enabled or not in the host config
-	 * @returns {boolean} - true|false based on the hostconfig supportsInteractivity value
-	 */
-	static supportsInteractivity() {
-		return this.getHostConfig().supportsInteractivity;
-	}
-}
-
 export class AdaptiveCardConfig {
 	allowCustomStyle = false;
 
@@ -231,7 +203,7 @@ export class ActionsConfig {
 	showCard = new ShowCardActionConfig();
 	preExpandSingleShowCardAction = false;
 	actionsOrientation = Enums.Orientation.Horizontal;
-	actionAlignment = Enums.ActionAlignment.Left;
+	actionAlignment = Enums.ActionAlignment.Stretch;
 	iconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
 	allowTitleToWrap = false;
 	iconSize = 24;
@@ -244,7 +216,7 @@ export class ActionsConfig {
 			this.showCard = new ShowCardActionConfig(obj["showCard"]);
 			this.preExpandSingleShowCardAction = Utils.getValueOrDefault(obj["preExpandSingleShowCardAction"], false);
 			this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
-			this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
+			this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Stretch);
 			this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
 			this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
@@ -408,13 +380,13 @@ class FontConfig {
 			this.fontSizes = config["fontSizes"] ? { ...this.fontSizes, ...config["fontSizes"] } : this.fontSizes;
 			this.fontWeights = config["fontWeights"] ? { ...this.fontWeights, ...config["fontWeights"] } : this.fontWeights;
 		}
-		else if (!Utils.isNullOrEmpty(customConfig["fontFamily"])) {
+		if (!Utils.isNullOrEmpty(customConfig["fontFamily"])) {
 			this.fontFamily = customConfig["fontFamily"];
 		}
-		else if (!Utils.isNullOrEmpty(customConfig["fontWeights"])) {
+		if (!Utils.isNullOrEmpty(customConfig["fontWeights"])) {
 			this.fontWeights = customConfig["fontWeights"];
 		}
-		else if (!Utils.isNullOrEmpty(customConfig["fontSizes"])) {
+		if (!Utils.isNullOrEmpty(customConfig["fontSizes"])) {
 			this.fontSizes = customConfig["fontSizes"];
 		}
 	}
@@ -424,9 +396,6 @@ export class HostConfig {
 	choiceSetInputValueSeparator = ",";
 	supportsInteractivity = true;
 	lineHeights;
-
-	fontFamily = "Helvetica";
-
 	spacing = {
 		none: 0,
 		small: 3,
@@ -436,28 +405,15 @@ export class HostConfig {
 		extraLarge: 40,
 		padding: 5
 	};
-
 	separator = {
 		lineThickness: 1,
 		lineColor: "#A9A9A9"
 	};
 
-	fontSizes = {
-		small: 12,
-		default: 14,
-		medium: 17,
-		large: 21,
-		extraLarge: 26
-	};
 	horizontalAlignment = {
 		left: "left",
 		center: "center",
 		right: "right"
-	};
-	fontWeights = {
-		lighter: 200,
-		default: 400,
-		bolder: 600
 	};
 	imageSizes = {
 		small: 40,
@@ -526,14 +482,6 @@ export class HostConfig {
 			}
 			this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
 			this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
-			this.fontFamily = obj["fontFamily"] || this.fontFamily;
-			this.fontSizes = {
-				small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
-				default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
-				medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
-				large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
-				extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
-			};
 
 			if (obj.lineHeights) {
 				this.lineHeights = {
@@ -545,12 +493,6 @@ export class HostConfig {
 				};
 			};
 
-			this.fontWeights = {
-				lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
-				default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
-				bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
-			};
-
 			this.imageSizes = {
 				small: obj.imageSizes && obj.imageSizes["small"] || this.imageSizes.small,
 				medium: obj.imageSizes && obj.imageSizes["medium"] || this.imageSizes.medium,
@@ -558,15 +500,17 @@ export class HostConfig {
 			};
 
 			this.containerStyles = new ContainerStyleSet(obj["containerStyles"]);
-			this.spacing = {
-				none: obj.spacing && obj.spacing["none"] || this.spacing.none,
-				small: obj.spacing && obj.spacing["small"] || this.spacing.small,
-				default: obj.spacing && obj.spacing["default"] || this.spacing.default,
-				medium: obj.spacing && obj.spacing["medium"] || this.spacing.medium,
-				large: obj.spacing && obj.spacing["large"] || this.spacing.large,
-				extraLarge: obj.spacing && obj.spacing["extraLarge"] || this.spacing.extraLarge,
-				padding: obj.spacing && obj.spacing["padding"] || this.spacing.padding
-			};
+			if (obj.spacing) {
+				this.spacing = {
+					none: Utils.isaNumber(obj.spacing["none"]) ? obj.spacing["none"] : this.spacing.none,
+					small: Utils.isaNumber(obj.spacing["small"]) ? obj.spacing["small"] : this.spacing.small,
+					default: Utils.isaNumber(obj.spacing["default"]) ? obj.spacing["default"] : this.spacing.default,
+					medium: Utils.isaNumber(obj.spacing["medium"]) ? obj.spacing["medium"] : this.spacing.medium,
+					large: Utils.isaNumber(obj.spacing["large"]) ? obj.spacing["large"] : this.spacing.large,
+					extraLarge: Utils.isaNumber(obj.spacing["extraLarge"]) ? obj.spacing["extraLarge"] : this.spacing.extraLarge,
+					padding: Utils.isaNumber(obj.spacing["padding"]) ? obj.spacing["padding"] : this.spacing.padding
+				};
+			}
 
 			this.separator = {
 				lineThickness: obj.separator && obj.separator["lineThickness"] || this.separator.lineThickness,
@@ -748,10 +692,10 @@ export class HostCapabilities {
 	}
 
 	constructor(capabilities) {
-		if(capabilities) {
-			for(let capability in capabilities) {
+		if (capabilities) {
+			for (let capability in capabilities) {
 				let version = new Version(capabilities[capability])
-				if(version.isValid) {
+				if (version.isValid) {
 					this.setCapability(capability, version)
 				}
 			}
@@ -759,9 +703,9 @@ export class HostCapabilities {
 	}
 
 	satisfied = (capabilities) => {
-		for(let capability in this.capabilities) {
+		for (let capability in this.capabilities) {
 			let satisfied = capabilities.hasCapability(capability, this.capabilities[capability])
-			if(!satisfied) {
+			if (!satisfied) {
 				return false
 			}
 		}
@@ -770,7 +714,7 @@ export class HostCapabilities {
 
 	hasCapability = (capability, version) => {
 		if (this.capabilities.hasOwnProperty(capability)) {
-			if(version.version == "*") {
+			if (version.version == "*") {
 				return true;
 			} else {
 				return version.compareTo(this.capabilities[capability]) <= 0;
@@ -794,26 +738,26 @@ export class Version {
 		if (matches != null && matches.length == 3) {
 			this.major = parseInt(matches[1])
 			this.minor = parseInt(matches[2])
-		} else if(version != '*') {
+		} else if (version != '*') {
 			this.isValid = false
 		}
 	}
 
 	compareTo(other) {
-        if (!this.isValid || !other.isValid) {
-            return 1
-        }
- 		if (this.major > other.major) {
-            return 1;
-        } else if (this.major < other.major) {
-            return -1;
-        } else if (this.minor > other.minor) {
-            return 1; 
-        } else if (this.minor < other.minor) {
-            return -1;
-        }
-        return 0;
-    }
+		if (!this.isValid || !other.isValid) {
+			return 1
+		}
+		if (this.major > other.major) {
+			return 1;
+		} else if (this.major < other.major) {
+			return -1;
+		} else if (this.minor > other.minor) {
+			return 1;
+		} else if (this.minor < other.minor) {
+			return -1;
+		}
+		return 0;
+	}
 }
 
 export const defaultHostConfig = {
@@ -860,7 +804,7 @@ export const defaultHostConfig = {
 		medium: 20,
 		large: 30,
 		extraLarge: 40,
-		padding: 10
+		padding: 5
 	},
 	separator: {
 		lineThickness: 1,
@@ -1150,7 +1094,7 @@ export const defaultHostConfig = {
 			inlineTopMargin: 16
 		},
 		actionsOrientation: Enums.Orientation.Horizontal,
-		actionAlignment: Enums.ActionAlignment.Left
+		actionAlignment: Enums.ActionAlignment.Stretch
 	},
 	adaptiveCard: {
 		allowCustomStyle: false

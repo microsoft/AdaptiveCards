@@ -15,17 +15,12 @@ import {
 	StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { HostConfigManager } from "../../utils/host-config";
-import { StyleManager } from "../../styles/style-config";
 import { InputContext } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 
 export default class ElementWrapper extends React.Component {
-
-	hostConfig = HostConfigManager.getHostConfig();
-	styleConfig = StyleManager.getManager().styles;
 
 	static contextType = InputContext;
 
@@ -38,8 +33,9 @@ export default class ElementWrapper extends React.Component {
 	};
 
 	render() {
+		this.styleConfig = this.props.configManager.styleConfig;
 		const computedStyles = this.getComputedStyles();
-		const showValidationText = this.props.isError && this.context.showErrors;
+		const showValidationText = this.props.isError && this.context.showErrors && Utils.isNullOrEmpty(this.props.json.inlineAction);
 		const { isFirst } = this.props; //isFirst represent, it is first element
 		const isColumnSet = this.props.json.type === Constants.TypeColumnSet;
 		return (
@@ -70,7 +66,7 @@ export default class ElementWrapper extends React.Component {
 				Enums.Height,
 				payload.height,
 				Enums.Height.Auto);
-			const height = this.hostConfig.getEffectiveHeight(heightEnumValue);
+			const height = this.props.configManager.hostConfig.getEffectiveHeight(heightEnumValue);
 			computedStyles.push({ flex: height });
 		}
 
@@ -84,12 +80,9 @@ export default class ElementWrapper extends React.Component {
 	getValidationText = () => {
 		const payload = this.props.json;
 		const validationTextStyles = [this.styleConfig.fontFamilyName, this.styleConfig.defaultDestructiveButtonForegroundColor];
-		const errorMessage = (payload.validation && payload.validation.errorMessage) ?
-			payload.validation.errorMessage : Constants.ErrorMessage;
-
 		return (
 			<Text style={validationTextStyles}>
-				{errorMessage}
+				{payload.errorMessage || Constants.ErrorMessage}
 			</Text>
 		)
 	}
@@ -104,7 +97,7 @@ export default class ElementWrapper extends React.Component {
 			Enums.Spacing,
 			payload.spacing,
 			Enums.Spacing.Default);
-		const spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
+		const spacing = this.props.configManager.hostConfig.getEffectiveSpacing(spacingEnumValue);
 		const separator = payload.separator || false;
 
 		// spacing styles

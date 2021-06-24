@@ -12,18 +12,15 @@ import {
 
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
-import { StyleManager } from '../../styles/style-config';
-import { HostConfigManager } from "../../utils/host-config";
 import * as Utils from '../../utils/util';
 import { Label } from '../elements';
 
 export class FactSet extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
-	hostConfig = HostConfigManager.getHostConfig();
-
 	constructor(props) {
 		super(props);
+
+		this.hostConfig = props.configManager.hostConfig;
 
 		this.payload = props.json;
 		// state
@@ -106,6 +103,7 @@ export class FactSet extends React.Component {
 						color={titleConfig.color}
 						isSubtle={titleConfig.isSubtle}
 						wrap={titleConfig.wrap}
+						configManager={this.props.configManager}
 						style={{ width: this.state.keyWidth }} />
 					<Label
 						text={element.value}
@@ -114,6 +112,7 @@ export class FactSet extends React.Component {
 						color={valueConfig.color}
 						isSubtle={valueConfig.isSubtle}
 						wrap={valueConfig.wrap}
+						configManager={this.props.configManager}
 						style={[styles.valueTextStyle, { width: this.state.valueWidth }]} />
 				</View>
 			);
@@ -129,7 +128,7 @@ export class FactSet extends React.Component {
 		let factSetObject = null;
 		factSetObject = this.parsePayload(containerJson)
 		return (
-			<ElementWrapper json={containerJson} isFirst={this.props.isFirst}>
+			<ElementWrapper configManager={this.props.configManager} json={containerJson} isFirst={this.props.isFirst}>
 				<View style={[styles.container]} onLayout={(event) => { this.measureView(event) }}>
 					{factSetObject}
 				</View>

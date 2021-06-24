@@ -8,7 +8,7 @@
 #include "DateTimePreparser.h"
 #include "Inline.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class RichTextBlock : public BaseCardElement
     {
@@ -24,14 +24,14 @@ namespace AdaptiveSharedNamespace
 
         Json::Value SerializeToJsonValue() const override;
 
-        HorizontalAlignment GetHorizontalAlignment() const;
-        void SetHorizontalAlignment(const HorizontalAlignment value);
+        std::optional<HorizontalAlignment> GetHorizontalAlignment() const;
+        void SetHorizontalAlignment(const std::optional<HorizontalAlignment> value);
 
         std::vector<std::shared_ptr<Inline>>& GetInlines();
         const std::vector<std::shared_ptr<Inline>>& GetInlines() const;
 
     private:
-        HorizontalAlignment m_hAlignment;
+        std::optional<HorizontalAlignment> m_hAlignment;
         void PopulateKnownPropertiesSet();
 
         std::vector<std::shared_ptr<Inline>> m_inlines;

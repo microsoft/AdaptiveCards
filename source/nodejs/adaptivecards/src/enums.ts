@@ -10,6 +10,11 @@ export class ActionStyle {
     static readonly Destructive: "destructive" = "destructive";
 }
 
+export class ActionMode {
+    static readonly Primary: "primary" = "primary";
+    static readonly Secondary: "secondary" = "secondary";
+}
+
 export enum Size {
     Auto,
     Stretch,
@@ -178,4 +183,21 @@ export enum ContainerFitStatus {
     FullyInContainer,
     Overflowing,
     FullyOutOfContainer
+}
+
+export enum TypeErrorType {
+    UnknownType,
+    ForbiddenType
+}
+
+export enum RefreshMode {
+    Disabled,
+    Manual,
+    Automatic
+}
+
+export enum LogLevel {
+    Info,
+    Warning,
+    Error
 }

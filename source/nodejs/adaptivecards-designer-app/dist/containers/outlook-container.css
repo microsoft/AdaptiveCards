@@ -70,7 +70,7 @@ a.ac-anchor:visited:active {
     text-overflow: ellipsis;
     text-align: center;
     vertical-align: middle;
-    cursor: default;
+    cursor: pointer;
     font-family: "Segoe UI", sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -83,6 +83,26 @@ a.ac-anchor:visited:active {
     background-color: white;
     color: #0079db;
     border: 1px solid #6290FF;
+}
+
+.ac-pushButton-disabled {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 10px 5px 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 31px;
+    border: 1px solid #EEEEEE;
+	background-color: #EEEEEE;
+	color: #666666;
 }
 
 .ac-pushButton:hover {
@@ -130,10 +150,20 @@ a.ac-anchor:visited:active {
     border: 1px solid #0078D7;
 }
 
-.ac-pushButton.expanded {
-    background-color: #0078D7;
-    color: white;
-    border: 1px solid #0078D7;
+@media (forced-colors: none) {
+    .ac-pushButton.expanded {
+        background-color: #0078D7;
+        color: white;
+        border: 1px solid #0078D7;
+    }
+}
+
+@media (forced-colors: active) {
+    .ac-pushButton.expanded {
+        background-color: highlight;
+        color: highlightText;
+        forced-color-adjust: none;
+    }
 }
 
 .ac-pushButton.expandable:after {
@@ -225,4 +255,140 @@ a.ac-anchor:visited:active {
 
 .ac-inlineActionButton:active {
     background-color: #CCCCCC;
+}
+
+.ac-inlineActionButton-disabled {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+    height: 31px;
+}
+
+.ac-inlineActionButton-disabled.textOnly {
+    padding: 0 8px;
+}
+
+.ac-inlineActionButton-disabled.iconOnly {
+    padding: 0;
+}
+
+/* Popup menu */
+
+.ac-ctrl-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+}
+  
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+}
+  
+@keyframes slideTopToBottom {
+    0% {
+        transform: translate(0, -20px);
+    }
+}
+  
+@keyframes slideBottomToTop {
+    0% {
+        transform: translate(0, 20px);
+    }
+}
+  
+@keyframes slideLeftToRight {
+    0% {
+        transform: translate(-20px, 0);
+    }
+}
+  
+@keyframes slideRightToLeft {
+    0% {
+        transform: translate(20px, 0);
+    }
+}
+  
+.ac-ctrl-slide {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+  
+.ac-ctrl-slide.ac-ctrl-slideTopToBottom {
+    animation-name: fadeIn, slideTopToBottom;
+}
+  
+.ac-ctrl-slide.ac-ctrl-slideBottomToTop {
+    animation-name: fadeIn, slideBottomToTop;
+}
+  
+.ac-ctrl-slide.ac-ctrl-slideLeftToRight {
+    animation-name: fadeIn, slideLeftToRight;
+}
+  
+.ac-ctrl-slide.ac-ctrl-slideRightToLeft {
+    animation-name: fadeIn, slideRightToLeft;
+}
+  
+.ac-ctrl {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+  
+.ac-ctrl-dropdown-item {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    padding: 0px 12px 0px 12px;
+    line-height: 30px;
+    cursor: pointer;
+}
+  
+.ac-ctrl-dropdown-item-disabled {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    padding: 0px 12px 0px 12px;
+    line-height: 30px;
+    cursor: pointer;
+    color: #666666;
+}
+  
+.ac-ctrl-dropdown-item:hover {
+    background-color: #EEEEEE;
+}
+  
+.ac-ctrl-dropdown-item:focus {
+    outline: 0;
+    background-color: #CCCCCC;
+}
+  
+.ac-ctrl-popup-container {
+    border: 1px solid #EEEEEE;
+    background-color: white;
+    position: absolute;
+    box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.4);
+    overflow-y: auto;
+}
+  
+.ac-ctrl-popup-container:focus {
+    outline: 0;
 }

@@ -5,10 +5,10 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     AdaptiveActionRendererRegistration::AdaptiveActionRendererRegistration() {}
 

@@ -8,44 +8,33 @@ import React from 'react';
 import {
 	Switch,
 	StyleSheet,
-	View,
-	Text
+	View
 } from 'react-native';
 
-import { StyleManager } from '../../styles/style-config';
-import { HostConfigManager } from '../../utils/host-config';
 import { InputContextConsumer } from '../../utils/context';
-import { Label } from '../elements';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
-import * as Enums from '../../utils/enums';
+import InputLabel from "./input-label";
 
 export class ToggleInput extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
-
 	constructor(props) {
 		super(props);
+		this.hostConfig = props.configManager.hostConfig;
 
 		this.title = props.json.title;
 		this.valueOn = props.json.valueOn || Constants.TrueString;
 		this.valueOff = props.json.valueOff || Constants.FalseString;
 		this.value = props.json.value || this.valueOff;
 		this.id = props.json.id || Constants.ToggleValueOn
-
-		this.isValidationRequired = !!props.json.validation &&
-			(Enums.ValidationNecessity.Required == props.json.validation.necessity ||
-				Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
-
-		this.validationRequiredWithVisualCue = (!props.json.validation ||
-			Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
-
+		this.altText = props.json.altText;
+		this.isRequired = props.json.isRequired || false;
 		this.wrapText = props.json.wrap || false
 
 		// state
 		this.state = {
-			toggleValue: (this.value === this.valueOn),
-			isError: this.isValidationRequired && (this.value === this.valueOff)
+			toggleValue: (this.value == this.valueOn),
+			isError: this.isRequired && (this.value == this.valueOff)
 		}
 	}
 
@@ -56,36 +45,40 @@ export class ToggleInput extends React.Component {
 	 */
 	toggleValueChanged = (toggleValue, addInputItem) => {
 		const changedValue = toggleValue ? this.valueOn : this.valueOff;
-		const isError = this.isValidationRequired ? changedValue === this.valueOff : false;
+		const isError = this.isRequired ? changedValue === this.valueOff : false;
 		this.setState({ toggleValue, isError });
 		addInputItem(this.id, { value: changedValue, errorState: isError });
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
 		const { toggleValue } = this.state;
+
 		return (
-			<ElementWrapper json={this.props.json} style={styles.toggleContainer} isError={this.state.isError} isFirst={this.props.isFirst}>
+			<ElementWrapper configManager={this.props.configManager} json={this.props.json} style={styles.toggleContainer} isError={this.state.isError} isFirst={this.props.isFirst}>
 				<InputContextConsumer>
-					{({ addInputItem, inputArray, showErrors }) => {
+					{({ addInputItem, inputArray }) => {
 						if (!inputArray[this.id]) {
 							const initialValue = toggleValue ? this.valueOn : this.valueOff;
-							const isError = this.isValidationRequired ? initialValue === this.valueOff : false;
+							const isError = this.isRequired ? initialValue === this.valueOff : false;
 							addInputItem(this.id, { value: initialValue, errorState: isError });
 						}
 						return (
-							<View>
-								<View style={this.getComputedStyles(showErrors)}>
-									<Label text={this.title} wrap={this.wrapText} style={styles.title} />
-									<Switch
-										style={styles.switch}
-										value={toggleValue}
-										onValueChange={toggleValue => {
-											this.toggleValueChanged(toggleValue, addInputItem)
-										}}>
-									</Switch>
+							<View
+								accessible={true}
+								accessibilityLabel={this.altText}
+								style={styles.toggleView}>
+								<Switch
+									style={styles.switch}
+									value={toggleValue}
+									onValueChange={toggleValue => {
+										this.toggleValueChanged(toggleValue, addInputItem)
+									}}>
+								</Switch>
+								<View style={styles.titleContainer}>
+									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} />
 								</View>
 							</View>
 						)
@@ -93,19 +86,6 @@ export class ToggleInput extends React.Component {
 				</InputContextConsumer>
 			</ElementWrapper>
 		)
-	}
-
-	/**
-	 * @description get styles for showing validation errors
-	 * @param showErrors show errors based on this flag.
-	 */
-	getComputedStyles = (showErrors) => {
-		let computedStyles = [styles.toggleView];
-		if (this.state.isError && (showErrors || this.validationRequiredWithVisualCue)) {
-			computedStyles.push(this.styleConfig.borderAttention);
-			computedStyles.push({ borderWidth: 1 });
-		}
-		return computedStyles;
 	}
 }
 
@@ -116,12 +96,17 @@ const styles = StyleSheet.create({
 	},
 	toggleView: {
 		padding: 5,
-		flexDirection: Constants.FlexRow,
+		flexDirection: Constants.FlexRowReverse,
 		justifyContent: Constants.SpaceBetween,
 		alignItems: Constants.CenterString,
 	},
 	title: {
 		flexShrink: 1,
-		marginRight: 10
+	},
+	titleContainer: {
+		flex: 1
+	},
+	switch: {
+		marginLeft: 10
 	}
 });

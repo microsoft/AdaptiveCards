@@ -13,20 +13,20 @@ import { SelectAction } from '../actions';
 import ElementWrapper from '../elements/element-wrapper';
 import { Column } from "./column";
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
 import { ContainerWrapper } from './';
 
 export class ColumnSet extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
+		this.hostConfig = props.configManager.hostConfig;
 		this.payload = props.json;
 	}
 
-    /**
-     * @description Parse the given payload and render the card accordingly
+	/**
+	 * @description Parse the given payload and render the card accordingly
 	 * @returns {object} Return the child elements of the columnset
-     */
+	 */
 	parsePayload = () => {
 		const payload = this.payload;
 		const children = [];
@@ -38,6 +38,7 @@ export class ColumnSet extends React.PureComponent {
 			children.push(
 				<Column json={element}
 					columns={payload.columns}
+					configManager={this.props.configManager}
 					hasBackgroundImage={payload.parent.backgroundImage}
 					key={`ELEMENT-${index}`}
 					isFirst={index === 0}
@@ -51,18 +52,17 @@ export class ColumnSet extends React.PureComponent {
 		const payload = this.payload;
 
 		var columnSetContent = (
-			<ContainerWrapper style={{ flex: this.payload.columns.length }} json={payload} containerStyle={this.props.containerStyle}>
-				<ElementWrapper json={payload} style={styles.defaultBGStyle} isFirst={this.props.isFirst}>
+			<ContainerWrapper configManager={this.props.configManager} style={{ flex: this.payload.columns.length }} json={payload} containerStyle={this.props.containerStyle}>
+				<ElementWrapper configManager={this.props.configManager} json={payload} style={styles.defaultBGStyle} isFirst={this.props.isFirst}>
 					{this.parsePayload()}
 				</ElementWrapper>
 			</ContainerWrapper>
 		);
 
-		if ((payload.selectAction === undefined) ||
-			(HostConfigManager.supportsInteractivity() === false)) {
+		if ((payload.selectAction === undefined) || !this.hostConfig.supportsInteractivity) {
 			return columnSetContent;
 		} else {
-			return <SelectAction selectActionData={payload.selectAction}>
+			return <SelectAction configManager={this.props.configManager} selectActionData={payload.selectAction}>
 				{columnSetContent}
 			</SelectAction>;
 		}

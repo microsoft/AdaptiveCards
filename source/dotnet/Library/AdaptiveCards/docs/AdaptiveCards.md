@@ -28,6 +28,19 @@
   - [TypeName](#F-AdaptiveCards-AdaptiveActionSet-TypeName 'AdaptiveCards.AdaptiveActionSet.TypeName')
   - [Actions](#P-AdaptiveCards-AdaptiveActionSet-Actions 'AdaptiveCards.AdaptiveActionSet.Actions')
   - [Type](#P-AdaptiveCards-AdaptiveActionSet-Type 'AdaptiveCards.AdaptiveActionSet.Type')
+- [AdaptiveAssociatedInputs](#T-AdaptiveCards-AdaptiveAssociatedInputs 'AdaptiveCards.AdaptiveAssociatedInputs')
+  - [Auto](#F-AdaptiveCards-AdaptiveAssociatedInputs-Auto 'AdaptiveCards.AdaptiveAssociatedInputs.Auto')
+  - [None](#F-AdaptiveCards-AdaptiveAssociatedInputs-None 'AdaptiveCards.AdaptiveAssociatedInputs.None')
+- [AdaptiveAuthCardButton](#T-AdaptiveCards-AdaptiveAuthCardButton 'AdaptiveCards.AdaptiveAuthCardButton')
+  - [Image](#P-AdaptiveCards-AdaptiveAuthCardButton-Image 'AdaptiveCards.AdaptiveAuthCardButton.Image')
+  - [Title](#P-AdaptiveCards-AdaptiveAuthCardButton-Title 'AdaptiveCards.AdaptiveAuthCardButton.Title')
+  - [Type](#P-AdaptiveCards-AdaptiveAuthCardButton-Type 'AdaptiveCards.AdaptiveAuthCardButton.Type')
+  - [Value](#P-AdaptiveCards-AdaptiveAuthCardButton-Value 'AdaptiveCards.AdaptiveAuthCardButton.Value')
+- [AdaptiveAuthentication](#T-AdaptiveCards-AdaptiveAuthentication 'AdaptiveCards.AdaptiveAuthentication')
+  - [Buttons](#P-AdaptiveCards-AdaptiveAuthentication-Buttons 'AdaptiveCards.AdaptiveAuthentication.Buttons')
+  - [ConnectionName](#P-AdaptiveCards-AdaptiveAuthentication-ConnectionName 'AdaptiveCards.AdaptiveAuthentication.ConnectionName')
+  - [Text](#P-AdaptiveCards-AdaptiveAuthentication-Text 'AdaptiveCards.AdaptiveAuthentication.Text')
+  - [TokenExchangeResource](#P-AdaptiveCards-AdaptiveAuthentication-TokenExchangeResource 'AdaptiveCards.AdaptiveAuthentication.TokenExchangeResource')
 - [AdaptiveBackgroundImage](#T-AdaptiveCards-AdaptiveBackgroundImage 'AdaptiveCards.AdaptiveBackgroundImage')
   - [#ctor()](#M-AdaptiveCards-AdaptiveBackgroundImage-#ctor 'AdaptiveCards.AdaptiveBackgroundImage.#ctor')
   - [#ctor(url)](#M-AdaptiveCards-AdaptiveBackgroundImage-#ctor-System-String- 'AdaptiveCards.AdaptiveBackgroundImage.#ctor(System.String)')
@@ -56,6 +69,7 @@
   - [KnownSchemaVersion](#F-AdaptiveCards-AdaptiveCard-KnownSchemaVersion 'AdaptiveCards.AdaptiveCard.KnownSchemaVersion')
   - [TypeName](#F-AdaptiveCards-AdaptiveCard-TypeName 'AdaptiveCards.AdaptiveCard.TypeName')
   - [Actions](#P-AdaptiveCards-AdaptiveCard-Actions 'AdaptiveCards.AdaptiveCard.Actions')
+  - [Authentication](#P-AdaptiveCards-AdaptiveCard-Authentication 'AdaptiveCards.AdaptiveCard.Authentication')
   - [BackgroundImage](#P-AdaptiveCards-AdaptiveCard-BackgroundImage 'AdaptiveCards.AdaptiveCard.BackgroundImage')
   - [Body](#P-AdaptiveCards-AdaptiveCard-Body 'AdaptiveCards.AdaptiveCard.Body')
   - [FallbackText](#P-AdaptiveCards-AdaptiveCard-FallbackText 'AdaptiveCards.AdaptiveCard.FallbackText')
@@ -65,6 +79,7 @@
   - [MinVersion](#P-AdaptiveCards-AdaptiveCard-MinVersion 'AdaptiveCards.AdaptiveCard.MinVersion')
   - [OnDeserializingMissingVersion](#P-AdaptiveCards-AdaptiveCard-OnDeserializingMissingVersion 'AdaptiveCards.AdaptiveCard.OnDeserializingMissingVersion')
   - [PixelMinHeight](#P-AdaptiveCards-AdaptiveCard-PixelMinHeight 'AdaptiveCards.AdaptiveCard.PixelMinHeight')
+  - [Refresh](#P-AdaptiveCards-AdaptiveCard-Refresh 'AdaptiveCards.AdaptiveCard.Refresh')
   - [SelectAction](#P-AdaptiveCards-AdaptiveCard-SelectAction 'AdaptiveCards.AdaptiveCard.SelectAction')
   - [Speak](#P-AdaptiveCards-AdaptiveCard-Speak 'AdaptiveCards.AdaptiveCard.Speak')
   - [Title](#P-AdaptiveCards-AdaptiveCard-Title 'AdaptiveCards.AdaptiveCard.Title')
@@ -106,6 +121,7 @@
   - [TypeName](#F-AdaptiveCards-AdaptiveChoiceSetInput-TypeName 'AdaptiveCards.AdaptiveChoiceSetInput.TypeName')
   - [Choices](#P-AdaptiveCards-AdaptiveChoiceSetInput-Choices 'AdaptiveCards.AdaptiveChoiceSetInput.Choices')
   - [IsMultiSelect](#P-AdaptiveCards-AdaptiveChoiceSetInput-IsMultiSelect 'AdaptiveCards.AdaptiveChoiceSetInput.IsMultiSelect')
+  - [Placeholder](#P-AdaptiveCards-AdaptiveChoiceSetInput-Placeholder 'AdaptiveCards.AdaptiveChoiceSetInput.Placeholder')
   - [Style](#P-AdaptiveCards-AdaptiveChoiceSetInput-Style 'AdaptiveCards.AdaptiveChoiceSetInput.Style')
   - [Type](#P-AdaptiveCards-AdaptiveChoiceSetInput-Type 'AdaptiveCards.AdaptiveChoiceSetInput.Type')
   - [Value](#P-AdaptiveCards-AdaptiveChoiceSetInput-Value 'AdaptiveCards.AdaptiveChoiceSetInput.Value')
@@ -121,6 +137,7 @@
   - [ShouldSerializeStyleXml()](#M-AdaptiveCards-AdaptiveCollectionElement-ShouldSerializeStyleXml 'AdaptiveCards.AdaptiveCollectionElement.ShouldSerializeStyleXml')
 - [AdaptiveColumn](#T-AdaptiveCards-AdaptiveColumn 'AdaptiveCards.AdaptiveColumn')
   - [TypeName](#F-AdaptiveCards-AdaptiveColumn-TypeName 'AdaptiveCards.AdaptiveColumn.TypeName')
+  - [Rtl](#P-AdaptiveCards-AdaptiveColumn-Rtl 'AdaptiveCards.AdaptiveColumn.Rtl')
   - [Size](#P-AdaptiveCards-AdaptiveColumn-Size 'AdaptiveCards.AdaptiveColumn.Size')
   - [Type](#P-AdaptiveCards-AdaptiveColumn-Type 'AdaptiveCards.AdaptiveColumn.Type')
   - [Width](#P-AdaptiveCards-AdaptiveColumn-Width 'AdaptiveCards.AdaptiveColumn.Width')
@@ -140,6 +157,7 @@
   - [TypeName](#F-AdaptiveCards-AdaptiveContainer-TypeName 'AdaptiveCards.AdaptiveContainer.TypeName')
   - [BackgroundImage](#P-AdaptiveCards-AdaptiveContainer-BackgroundImage 'AdaptiveCards.AdaptiveContainer.BackgroundImage')
   - [Items](#P-AdaptiveCards-AdaptiveContainer-Items 'AdaptiveCards.AdaptiveContainer.Items')
+  - [Rtl](#P-AdaptiveCards-AdaptiveContainer-Rtl 'AdaptiveCards.AdaptiveContainer.Rtl')
   - [Type](#P-AdaptiveCards-AdaptiveContainer-Type 'AdaptiveCards.AdaptiveContainer.Type')
 - [AdaptiveContainerStyle](#T-AdaptiveCards-AdaptiveContainerStyle 'AdaptiveCards.AdaptiveContainerStyle')
   - [Accent](#F-AdaptiveCards-AdaptiveContainerStyle-Accent 'AdaptiveCards.AdaptiveContainerStyle.Accent')
@@ -173,6 +191,13 @@
   - [#ctor()](#M-AdaptiveCards-AdaptiveException-#ctor 'AdaptiveCards.AdaptiveException.#ctor')
   - [#ctor()](#M-AdaptiveCards-AdaptiveException-#ctor-System-String- 'AdaptiveCards.AdaptiveException.#ctor(System.String)')
   - [#ctor()](#M-AdaptiveCards-AdaptiveException-#ctor-System-String,System-Exception- 'AdaptiveCards.AdaptiveException.#ctor(System.String,System.Exception)')
+- [AdaptiveExecuteAction](#T-AdaptiveCards-AdaptiveExecuteAction 'AdaptiveCards.AdaptiveExecuteAction')
+  - [TypeName](#F-AdaptiveCards-AdaptiveExecuteAction-TypeName 'AdaptiveCards.AdaptiveExecuteAction.TypeName')
+  - [AssociatedInputs](#P-AdaptiveCards-AdaptiveExecuteAction-AssociatedInputs 'AdaptiveCards.AdaptiveExecuteAction.AssociatedInputs')
+  - [Data](#P-AdaptiveCards-AdaptiveExecuteAction-Data 'AdaptiveCards.AdaptiveExecuteAction.Data')
+  - [DataJson](#P-AdaptiveCards-AdaptiveExecuteAction-DataJson 'AdaptiveCards.AdaptiveExecuteAction.DataJson')
+  - [Type](#P-AdaptiveCards-AdaptiveExecuteAction-Type 'AdaptiveCards.AdaptiveExecuteAction.Type')
+  - [Verb](#P-AdaptiveCards-AdaptiveExecuteAction-Verb 'AdaptiveCards.AdaptiveExecuteAction.Verb')
 - [AdaptiveFact](#T-AdaptiveCards-AdaptiveFact 'AdaptiveCards.AdaptiveFact')
   - [#ctor()](#M-AdaptiveCards-AdaptiveFact-#ctor 'AdaptiveCards.AdaptiveFact.#ctor')
   - [#ctor(title,value)](#M-AdaptiveCards-AdaptiveFact-#ctor-System-String,System-String- 'AdaptiveCards.AdaptiveFact.#ctor(System.String,System.String)')
@@ -250,6 +275,7 @@
   - [FontSizes](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-FontSizes 'AdaptiveCards.Rendering.AdaptiveHostConfig.FontSizes')
   - [FontTypes](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-FontTypes 'AdaptiveCards.Rendering.AdaptiveHostConfig.FontTypes')
   - [FontWeights](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-FontWeights 'AdaptiveCards.Rendering.AdaptiveHostConfig.FontWeights')
+  - [Headings](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-Headings 'AdaptiveCards.Rendering.AdaptiveHostConfig.Headings')
   - [ImageBaseUrl](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-ImageBaseUrl 'AdaptiveCards.Rendering.AdaptiveHostConfig.ImageBaseUrl')
   - [ImageSet](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-ImageSet 'AdaptiveCards.Rendering.AdaptiveHostConfig.ImageSet')
   - [ImageSizes](#P-AdaptiveCards-Rendering-AdaptiveHostConfig-ImageSizes 'AdaptiveCards.Rendering.AdaptiveHostConfig.ImageSizes')
@@ -344,6 +370,9 @@
   - [Type](#P-AdaptiveCards-AdaptiveOpenUrlAction-Type 'AdaptiveCards.AdaptiveOpenUrlAction.Type')
   - [Url](#P-AdaptiveCards-AdaptiveOpenUrlAction-Url 'AdaptiveCards.AdaptiveOpenUrlAction.Url')
   - [UrlString](#P-AdaptiveCards-AdaptiveOpenUrlAction-UrlString 'AdaptiveCards.AdaptiveOpenUrlAction.UrlString')
+- [AdaptiveRefresh](#T-AdaptiveCards-AdaptiveRefresh 'AdaptiveCards.AdaptiveRefresh')
+  - [Action](#P-AdaptiveCards-AdaptiveRefresh-Action 'AdaptiveCards.AdaptiveRefresh.Action')
+  - [UserIds](#P-AdaptiveCards-AdaptiveRefresh-UserIds 'AdaptiveCards.AdaptiveRefresh.UserIds')
 - [AdaptiveRenderException](#T-AdaptiveCards-Rendering-AdaptiveRenderException 'AdaptiveCards.Rendering.AdaptiveRenderException')
   - [CardFallbackText](#P-AdaptiveCards-Rendering-AdaptiveRenderException-CardFallbackText 'AdaptiveCards.Rendering.AdaptiveRenderException.CardFallbackText')
 - [AdaptiveRichTextBlock](#T-AdaptiveCards-AdaptiveRichTextBlock 'AdaptiveCards.AdaptiveRichTextBlock')
@@ -387,6 +416,7 @@
   - [Small](#F-AdaptiveCards-AdaptiveSpacing-Small 'AdaptiveCards.AdaptiveSpacing.Small')
 - [AdaptiveSubmitAction](#T-AdaptiveCards-AdaptiveSubmitAction 'AdaptiveCards.AdaptiveSubmitAction')
   - [TypeName](#F-AdaptiveCards-AdaptiveSubmitAction-TypeName 'AdaptiveCards.AdaptiveSubmitAction.TypeName')
+  - [AssociatedInputs](#P-AdaptiveCards-AdaptiveSubmitAction-AssociatedInputs 'AdaptiveCards.AdaptiveSubmitAction.AssociatedInputs')
   - [Data](#P-AdaptiveCards-AdaptiveSubmitAction-Data 'AdaptiveCards.AdaptiveSubmitAction.Data')
   - [DataJson](#P-AdaptiveCards-AdaptiveSubmitAction-DataJson 'AdaptiveCards.AdaptiveSubmitAction.DataJson')
   - [Type](#P-AdaptiveCards-AdaptiveSubmitAction-Type 'AdaptiveCards.AdaptiveSubmitAction.Type')
@@ -412,10 +442,14 @@
   - [MaxWidth](#P-AdaptiveCards-AdaptiveTextBlock-MaxWidth 'AdaptiveCards.AdaptiveTextBlock.MaxWidth')
   - [Size](#P-AdaptiveCards-AdaptiveTextBlock-Size 'AdaptiveCards.AdaptiveTextBlock.Size')
   - [Strikethrough](#P-AdaptiveCards-AdaptiveTextBlock-Strikethrough 'AdaptiveCards.AdaptiveTextBlock.Strikethrough')
+  - [Style](#P-AdaptiveCards-AdaptiveTextBlock-Style 'AdaptiveCards.AdaptiveTextBlock.Style')
   - [Text](#P-AdaptiveCards-AdaptiveTextBlock-Text 'AdaptiveCards.AdaptiveTextBlock.Text')
   - [Type](#P-AdaptiveCards-AdaptiveTextBlock-Type 'AdaptiveCards.AdaptiveTextBlock.Type')
   - [Weight](#P-AdaptiveCards-AdaptiveTextBlock-Weight 'AdaptiveCards.AdaptiveTextBlock.Weight')
   - [Wrap](#P-AdaptiveCards-AdaptiveTextBlock-Wrap 'AdaptiveCards.AdaptiveTextBlock.Wrap')
+- [AdaptiveTextBlockStyle](#T-AdaptiveCards-AdaptiveTextBlockStyle 'AdaptiveCards.AdaptiveTextBlockStyle')
+  - [Heading](#F-AdaptiveCards-AdaptiveTextBlockStyle-Heading 'AdaptiveCards.AdaptiveTextBlockStyle.Heading')
+  - [Paragraph](#F-AdaptiveCards-AdaptiveTextBlockStyle-Paragraph 'AdaptiveCards.AdaptiveTextBlockStyle.Paragraph')
 - [AdaptiveTextColor](#T-AdaptiveCards-AdaptiveTextColor 'AdaptiveCards.AdaptiveTextColor')
   - [Accent](#F-AdaptiveCards-AdaptiveTextColor-Accent 'AdaptiveCards.AdaptiveTextColor.Accent')
   - [Attention](#F-AdaptiveCards-AdaptiveTextColor-Attention 'AdaptiveCards.AdaptiveTextColor.Attention')
@@ -489,6 +523,10 @@
   - [TypeName](#F-AdaptiveCards-AdaptiveToggleVisibilityAction-TypeName 'AdaptiveCards.AdaptiveToggleVisibilityAction.TypeName')
   - [TargetElements](#P-AdaptiveCards-AdaptiveToggleVisibilityAction-TargetElements 'AdaptiveCards.AdaptiveToggleVisibilityAction.TargetElements')
   - [Type](#P-AdaptiveCards-AdaptiveToggleVisibilityAction-Type 'AdaptiveCards.AdaptiveToggleVisibilityAction.Type')
+- [AdaptiveTokenExchangeResource](#T-AdaptiveCards-AdaptiveTokenExchangeResource 'AdaptiveCards.AdaptiveTokenExchangeResource')
+  - [Id](#P-AdaptiveCards-AdaptiveTokenExchangeResource-Id 'AdaptiveCards.AdaptiveTokenExchangeResource.Id')
+  - [ProviderId](#P-AdaptiveCards-AdaptiveTokenExchangeResource-ProviderId 'AdaptiveCards.AdaptiveTokenExchangeResource.ProviderId')
+  - [Uri](#P-AdaptiveCards-AdaptiveTokenExchangeResource-Uri 'AdaptiveCards.AdaptiveTokenExchangeResource.Uri')
 - [AdaptiveTypedBaseElementConverter](#T-AdaptiveCards-AdaptiveTypedBaseElementConverter 'AdaptiveCards.AdaptiveTypedBaseElementConverter')
   - [ParseContext](#P-AdaptiveCards-AdaptiveTypedBaseElementConverter-ParseContext 'AdaptiveCards.AdaptiveTypedBaseElementConverter.ParseContext')
 - [AdaptiveTypedElement](#T-AdaptiveCards-AdaptiveTypedElement 'AdaptiveCards.AdaptiveTypedElement')
@@ -528,6 +566,8 @@
   - [#ctor(code,message)](#M-AdaptiveCards-AdaptiveWarning-#ctor-System-Int32,System-String- 'AdaptiveCards.AdaptiveWarning.#ctor(System.Int32,System.String)')
   - [Code](#P-AdaptiveCards-AdaptiveWarning-Code 'AdaptiveCards.AdaptiveWarning.Code')
   - [Message](#P-AdaptiveCards-AdaptiveWarning-Message 'AdaptiveCards.AdaptiveWarning.Message')
+- [BlockRules](#T-Microsoft-MarkedNet-BlockRules 'Microsoft.MarkedNet.BlockRules')
+- [BreaksInlineRules](#T-Microsoft-MarkedNet-BreaksInlineRules 'Microsoft.MarkedNet.BreaksInlineRules')
 - [ColorUtil](#T-AdaptiveCards-ColorUtil 'AdaptiveCards.ColorUtil')
   - [alphaColorLength](#F-AdaptiveCards-ColorUtil-alphaColorLength 'AdaptiveCards.ColorUtil.alphaColorLength')
   - [colorStringLength](#F-AdaptiveCards-ColorUtil-colorStringLength 'AdaptiveCards.ColorUtil.colorStringLength')
@@ -540,6 +580,7 @@
 - [ContextType](#T-AdaptiveCards-ParseContext-ContextType 'AdaptiveCards.ParseContext.ContextType')
   - [Action](#F-AdaptiveCards-ParseContext-ContextType-Action 'AdaptiveCards.ParseContext.ContextType.Action')
   - [Element](#F-AdaptiveCards-ParseContext-ContextType-Element 'AdaptiveCards.ParseContext.ContextType.Element')
+- [EmojiMarkdownRenderer](#T-Microsoft-MarkedNet-EmojiMarkdownRenderer 'Microsoft.MarkedNet.EmojiMarkdownRenderer')
 - [ErrorMessageConfig](#T-AdaptiveCards-Rendering-ErrorMessageConfig 'AdaptiveCards.Rendering.ErrorMessageConfig')
   - [Size](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Size 'AdaptiveCards.Rendering.ErrorMessageConfig.Size')
   - [Spacing](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Spacing 'AdaptiveCards.Rendering.ErrorMessageConfig.Spacing')
@@ -550,14 +591,19 @@
   - [Value](#P-AdaptiveCards-Rendering-FactSetConfig-Value 'AdaptiveCards.Rendering.FactSetConfig.Value')
 - [FontColorConfig](#T-AdaptiveCards-Rendering-FontColorConfig 'AdaptiveCards.Rendering.FontColorConfig')
   - [Default](#P-AdaptiveCards-Rendering-FontColorConfig-Default 'AdaptiveCards.Rendering.FontColorConfig.Default')
+- [GfmBlockRules](#T-Microsoft-MarkedNet-GfmBlockRules 'Microsoft.MarkedNet.GfmBlockRules')
+- [GfmInlineRules](#T-Microsoft-MarkedNet-GfmInlineRules 'Microsoft.MarkedNet.GfmInlineRules')
 - [HashColorConverter](#T-AdaptiveCards-HashColorConverter 'AdaptiveCards.HashColorConverter')
   - [CanWrite](#P-AdaptiveCards-HashColorConverter-CanWrite 'AdaptiveCards.HashColorConverter.CanWrite')
   - [Warnings](#P-AdaptiveCards-HashColorConverter-Warnings 'AdaptiveCards.HashColorConverter.Warnings')
   - [CanConvert()](#M-AdaptiveCards-HashColorConverter-CanConvert-System-Type- 'AdaptiveCards.HashColorConverter.CanConvert(System.Type)')
   - [ReadJson()](#M-AdaptiveCards-HashColorConverter-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.HashColorConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
   - [WriteJson()](#M-AdaptiveCards-HashColorConverter-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.HashColorConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+- [HeadingsConfig](#T-AdaptiveCards-Rendering-HeadingsConfig 'AdaptiveCards.Rendering.HeadingsConfig')
+  - [Level](#P-AdaptiveCards-Rendering-HeadingsConfig-Level 'AdaptiveCards.Rendering.HeadingsConfig.Level')
 - [HighlightColorConfig](#T-AdaptiveCards-Rendering-HighlightColorConfig 'AdaptiveCards.Rendering.HighlightColorConfig')
   - [Default](#P-AdaptiveCards-Rendering-HighlightColorConfig-Default 'AdaptiveCards.Rendering.HighlightColorConfig.Default')
+- [HtmlRenderer](#T-Microsoft-MarkedNet-HtmlRenderer 'Microsoft.MarkedNet.HtmlRenderer')
 - [IAdaptiveTextElement](#T-AdaptiveCards-IAdaptiveTextElement 'AdaptiveCards.IAdaptiveTextElement')
   - [Color](#P-AdaptiveCards-IAdaptiveTextElement-Color 'AdaptiveCards.IAdaptiveTextElement.Color')
   - [FontType](#P-AdaptiveCards-IAdaptiveTextElement-FontType 'AdaptiveCards.IAdaptiveTextElement.FontType')
@@ -581,6 +627,12 @@
   - [Warnings](#P-AdaptiveCards-IgnoreNullEnumConverter`1-Warnings 'AdaptiveCards.IgnoreNullEnumConverter`1.Warnings')
   - [ReadJson()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-ReadJson-Newtonsoft-Json-JsonReader,System-Type,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreNullEnumConverter`1.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)')
   - [WriteJson()](#M-AdaptiveCards-IgnoreNullEnumConverter`1-WriteJson-Newtonsoft-Json-JsonWriter,System-Object,Newtonsoft-Json-JsonSerializer- 'AdaptiveCards.IgnoreNullEnumConverter`1.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)')
+- [InlineLexer](#T-Microsoft-MarkedNet-InlineLexer 'Microsoft.MarkedNet.InlineLexer')
+  - [Mangle()](#M-Microsoft-MarkedNet-InlineLexer-Mangle-System-String- 'Microsoft.MarkedNet.InlineLexer.Mangle(System.String)')
+  - [Output()](#M-Microsoft-MarkedNet-InlineLexer-Output-System-String- 'Microsoft.MarkedNet.InlineLexer.Output(System.String)')
+  - [OutputLink()](#M-Microsoft-MarkedNet-InlineLexer-OutputLink-System-Collections-Generic-IList{System-String},Microsoft-MarkedNet-LinkObj- 'Microsoft.MarkedNet.InlineLexer.OutputLink(System.Collections.Generic.IList{System.String},Microsoft.MarkedNet.LinkObj)')
+  - [Smartypants()](#M-Microsoft-MarkedNet-InlineLexer-Smartypants-System-String- 'Microsoft.MarkedNet.InlineLexer.Smartypants(System.String)')
+- [InlineRules](#T-Microsoft-MarkedNet-InlineRules 'Microsoft.MarkedNet.InlineRules')
 - [InputLabelConfig](#T-AdaptiveCards-Rendering-InputLabelConfig 'AdaptiveCards.Rendering.InputLabelConfig')
   - [Color](#P-AdaptiveCards-Rendering-InputLabelConfig-Color 'AdaptiveCards.Rendering.InputLabelConfig.Color')
   - [IsSubtle](#P-AdaptiveCards-Rendering-InputLabelConfig-IsSubtle 'AdaptiveCards.Rendering.InputLabelConfig.IsSubtle')
@@ -592,15 +644,32 @@
   - [IsHexDigit(c)](#M-AdaptiveCards-JsonExtensions-IsHexDigit-System-Char- 'AdaptiveCards.JsonExtensions.IsHexDigit(System.Char)')
 - [LabelConfig](#T-AdaptiveCards-Rendering-LabelConfig 'AdaptiveCards.Rendering.LabelConfig')
   - [InputSpacing](#P-AdaptiveCards-Rendering-LabelConfig-InputSpacing 'AdaptiveCards.Rendering.LabelConfig.InputSpacing')
+- [Lexer](#T-Microsoft-MarkedNet-Lexer 'Microsoft.MarkedNet.Lexer')
+  - [Lex()](#M-Microsoft-MarkedNet-Lexer-Lex-System-String,Microsoft-MarkedNet-Options- 'Microsoft.MarkedNet.Lexer.Lex(System.String,Microsoft.MarkedNet.Options)')
+  - [Lex()](#M-Microsoft-MarkedNet-Lexer-Lex-System-String- 'Microsoft.MarkedNet.Lexer.Lex(System.String)')
+  - [Token()](#M-Microsoft-MarkedNet-Lexer-Token-System-String,System-Boolean,Microsoft-MarkedNet-TokensResult- 'Microsoft.MarkedNet.Lexer.Token(System.String,System.Boolean,Microsoft.MarkedNet.TokensResult)')
+- [MarkdownRenderer](#T-Microsoft-MarkedNet-MarkdownRenderer 'Microsoft.MarkedNet.MarkdownRenderer')
+  - [Postprocess(text)](#M-Microsoft-MarkedNet-MarkdownRenderer-Postprocess-System-String- 'Microsoft.MarkedNet.MarkdownRenderer.Postprocess(System.String)')
+  - [Preprocess(text)](#M-Microsoft-MarkedNet-MarkdownRenderer-Preprocess-System-String- 'Microsoft.MarkedNet.MarkdownRenderer.Preprocess(System.String)')
 - [MediaConfig](#T-AdaptiveCards-Rendering-MediaConfig 'AdaptiveCards.Rendering.MediaConfig')
   - [AllowInlinePlayback](#P-AdaptiveCards-Rendering-MediaConfig-AllowInlinePlayback 'AdaptiveCards.Rendering.MediaConfig.AllowInlinePlayback')
   - [DefaultPoster](#P-AdaptiveCards-Rendering-MediaConfig-DefaultPoster 'AdaptiveCards.Rendering.MediaConfig.DefaultPoster')
   - [PlayButton](#P-AdaptiveCards-Rendering-MediaConfig-PlayButton 'AdaptiveCards.Rendering.MediaConfig.PlayButton')
+- [NormalBlockRules](#T-Microsoft-MarkedNet-NormalBlockRules 'Microsoft.MarkedNet.NormalBlockRules')
+- [NormalInlineRules](#T-Microsoft-MarkedNet-NormalInlineRules 'Microsoft.MarkedNet.NormalInlineRules')
 - [ParseContext](#T-AdaptiveCards-ParseContext 'AdaptiveCards.ParseContext')
   - [Type](#P-AdaptiveCards-ParseContext-Type 'AdaptiveCards.ParseContext.Type')
   - [GetNearestFallbackID(skipID)](#M-AdaptiveCards-ParseContext-GetNearestFallbackID-AdaptiveCards-AdaptiveInternalID- 'AdaptiveCards.ParseContext.GetNearestFallbackID(AdaptiveCards.AdaptiveInternalID)')
   - [PopElement()](#M-AdaptiveCards-ParseContext-PopElement 'AdaptiveCards.ParseContext.PopElement')
   - [PushElement(idJsonProperty,internalId)](#M-AdaptiveCards-ParseContext-PushElement-System-String,AdaptiveCards-AdaptiveInternalID- 'AdaptiveCards.ParseContext.PushElement(System.String,AdaptiveCards.AdaptiveInternalID)')
+- [Parser](#T-Microsoft-MarkedNet-Parser 'Microsoft.MarkedNet.Parser')
+  - [Next()](#M-Microsoft-MarkedNet-Parser-Next 'Microsoft.MarkedNet.Parser.Next')
+  - [Parse()](#M-Microsoft-MarkedNet-Parser-Parse-Microsoft-MarkedNet-TokensResult,Microsoft-MarkedNet-Options- 'Microsoft.MarkedNet.Parser.Parse(Microsoft.MarkedNet.TokensResult,Microsoft.MarkedNet.Options)')
+  - [Parse()](#M-Microsoft-MarkedNet-Parser-Parse-Microsoft-MarkedNet-TokensResult- 'Microsoft.MarkedNet.Parser.Parse(Microsoft.MarkedNet.TokensResult)')
+  - [ParseText()](#M-Microsoft-MarkedNet-Parser-ParseText 'Microsoft.MarkedNet.Parser.ParseText')
+  - [Peek()](#M-Microsoft-MarkedNet-Parser-Peek 'Microsoft.MarkedNet.Parser.Peek')
+  - [Tok()](#M-Microsoft-MarkedNet-Parser-Tok 'Microsoft.MarkedNet.Parser.Tok')
+- [PedanticInlineRules](#T-Microsoft-MarkedNet-PedanticInlineRules 'Microsoft.MarkedNet.PedanticInlineRules')
 - [RemoteResourceInformation](#T-AdaptiveCards-RemoteResourceInformation 'AdaptiveCards.RemoteResourceInformation')
   - [#ctor(url,mimeType)](#M-AdaptiveCards-RemoteResourceInformation-#ctor-System-String,System-String- 'AdaptiveCards.RemoteResourceInformation.#ctor(System.String,System.String)')
 - [RenderedAdaptiveCardBase](#T-AdaptiveCards-Rendering-RenderedAdaptiveCardBase 'AdaptiveCards.Rendering.RenderedAdaptiveCardBase')
@@ -624,6 +693,7 @@
   - [InlineTopMargin](#P-AdaptiveCards-Rendering-ShowCardConfig-InlineTopMargin 'AdaptiveCards.Rendering.ShowCardConfig.InlineTopMargin')
   - [Style](#P-AdaptiveCards-Rendering-ShowCardConfig-Style 'AdaptiveCards.Rendering.ShowCardConfig.Style')
 - [SpacingsConfig](#T-AdaptiveCards-Rendering-SpacingsConfig 'AdaptiveCards.Rendering.SpacingsConfig')
+- [TablesBlockRules](#T-Microsoft-MarkedNet-TablesBlockRules 'Microsoft.MarkedNet.TablesBlockRules')
 - [TextBlockConfig](#T-AdaptiveCards-Rendering-TextBlockConfig 'AdaptiveCards.Rendering.TextBlockConfig')
   - [Color](#P-AdaptiveCards-Rendering-TextBlockConfig-Color 'AdaptiveCards.Rendering.TextBlockConfig.Color')
   - [IsSubtle](#P-AdaptiveCards-Rendering-TextBlockConfig-IsSubtle 'AdaptiveCards.Rendering.TextBlockConfig.IsSubtle')
@@ -631,13 +701,29 @@
   - [Size](#P-AdaptiveCards-Rendering-TextBlockConfig-Size 'AdaptiveCards.Rendering.TextBlockConfig.Size')
   - [Weight](#P-AdaptiveCards-Rendering-TextBlockConfig-Weight 'AdaptiveCards.Rendering.TextBlockConfig.Weight')
   - [Wrap](#P-AdaptiveCards-Rendering-TextBlockConfig-Wrap 'AdaptiveCards.Rendering.TextBlockConfig.Wrap')
+- [TextMarkdownRenderer](#T-Microsoft-MarkedNet-TextMarkdownRenderer 'Microsoft.MarkedNet.TextMarkdownRenderer')
 - [WarningLoggingContractResolver](#T-AdaptiveCards-WarningLoggingContractResolver 'AdaptiveCards.WarningLoggingContractResolver')
   - [CreateProperty(member,memberSerialization)](#M-AdaptiveCards-WarningLoggingContractResolver-CreateProperty-System-Reflection-MemberInfo,Newtonsoft-Json-MemberSerialization- 'AdaptiveCards.WarningLoggingContractResolver.CreateProperty(System.Reflection.MemberInfo,Newtonsoft.Json.MemberSerialization)')
 - [WarningStatusCode](#T-AdaptiveCards-AdaptiveWarning-WarningStatusCode 'AdaptiveCards.AdaptiveWarning.WarningStatusCode')
   - [EmptyLabelInRequiredInput](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-EmptyLabelInRequiredInput 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.EmptyLabelInRequiredInput')
   - [InvalidLanguage](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-InvalidLanguage 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.InvalidLanguage')
   - [MaxActionsExceeded](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-MaxActionsExceeded 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.MaxActionsExceeded')
+  - [NoErrorMessageForValidatedInput](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-NoErrorMessageForValidatedInput 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput')
   - [UnsupportedSchemaVersion](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-UnsupportedSchemaVersion 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.UnsupportedSchemaVersion')
+- [XamlRenderer](#T-Microsoft-MarkedNet-XamlRenderer 'Microsoft.MarkedNet.XamlRenderer')
+  - [BlockQuoteStyle](#P-Microsoft-MarkedNet-XamlRenderer-BlockQuoteStyle 'Microsoft.MarkedNet.XamlRenderer.BlockQuoteStyle')
+  - [CellHeaderStyle](#P-Microsoft-MarkedNet-XamlRenderer-CellHeaderStyle 'Microsoft.MarkedNet.XamlRenderer.CellHeaderStyle')
+  - [CellStyle](#P-Microsoft-MarkedNet-XamlRenderer-CellStyle 'Microsoft.MarkedNet.XamlRenderer.CellStyle')
+  - [CodeSpanStyle](#P-Microsoft-MarkedNet-XamlRenderer-CodeSpanStyle 'Microsoft.MarkedNet.XamlRenderer.CodeSpanStyle')
+  - [CodeStyle](#P-Microsoft-MarkedNet-XamlRenderer-CodeStyle 'Microsoft.MarkedNet.XamlRenderer.CodeStyle')
+  - [CodespanStyle](#P-Microsoft-MarkedNet-XamlRenderer-CodespanStyle 'Microsoft.MarkedNet.XamlRenderer.CodespanStyle')
+  - [HeadingStyles](#P-Microsoft-MarkedNet-XamlRenderer-HeadingStyles 'Microsoft.MarkedNet.XamlRenderer.HeadingStyles')
+  - [ImageStyle](#P-Microsoft-MarkedNet-XamlRenderer-ImageStyle 'Microsoft.MarkedNet.XamlRenderer.ImageStyle')
+  - [ImageTitleStyle](#P-Microsoft-MarkedNet-XamlRenderer-ImageTitleStyle 'Microsoft.MarkedNet.XamlRenderer.ImageTitleStyle')
+  - [ListItemStyle](#P-Microsoft-MarkedNet-XamlRenderer-ListItemStyle 'Microsoft.MarkedNet.XamlRenderer.ListItemStyle')
+  - [OrderedListStyle](#P-Microsoft-MarkedNet-XamlRenderer-OrderedListStyle 'Microsoft.MarkedNet.XamlRenderer.OrderedListStyle')
+  - [ParagraphStyle](#P-Microsoft-MarkedNet-XamlRenderer-ParagraphStyle 'Microsoft.MarkedNet.XamlRenderer.ParagraphStyle')
+  - [UnorderedListStyle](#P-Microsoft-MarkedNet-XamlRenderer-UnorderedListStyle 'Microsoft.MarkedNet.XamlRenderer.UnorderedListStyle')
 
 <a name='T-AdaptiveCards-Rendering-ActionsConfig'></a>
 ## ActionsConfig `type`
@@ -863,6 +949,101 @@ The actions contained within this ActionSet.
 ##### Summary
 
 The JSON property name that this class implements.
+
+<a name='T-AdaptiveCards-AdaptiveAssociatedInputs'></a>
+## AdaptiveAssociatedInputs `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Controls which inputs are associated with a given submit action
+
+<a name='F-AdaptiveCards-AdaptiveAssociatedInputs-Auto'></a>
+### Auto `constants`
+
+##### Summary
+
+Gathers and validates inputs from the current card and any parent cards
+
+<a name='F-AdaptiveCards-AdaptiveAssociatedInputs-None'></a>
+### None `constants`
+
+##### Summary
+
+Does not gather or validate any inputs on submit
+
+<a name='T-AdaptiveCards-AdaptiveAuthCardButton'></a>
+## AdaptiveAuthCardButton `type`
+
+##### Namespace
+
+AdaptiveCards
+
+<a name='P-AdaptiveCards-AdaptiveAuthCardButton-Image'></a>
+### Image `property`
+
+##### Summary
+
+A URL to an image to display alongside the button's caption.
+
+<a name='P-AdaptiveCards-AdaptiveAuthCardButton-Title'></a>
+### Title `property`
+
+##### Summary
+
+The caption of the button.
+
+<a name='P-AdaptiveCards-AdaptiveAuthCardButton-Type'></a>
+### Type `property`
+
+##### Summary
+
+The type of the button.
+
+<a name='P-AdaptiveCards-AdaptiveAuthCardButton-Value'></a>
+### Value `property`
+
+##### Summary
+
+The value associated with the button. The meaning of value depends on the button's type.
+
+<a name='T-AdaptiveCards-AdaptiveAuthentication'></a>
+## AdaptiveAuthentication `type`
+
+##### Namespace
+
+AdaptiveCards
+
+<a name='P-AdaptiveCards-AdaptiveAuthentication-Buttons'></a>
+### Buttons `property`
+
+##### Summary
+
+Buttons that should be displayed to the user when prompting for authentication. The array MUST contain one button of type \"signin\". Other button types are not currently supported.
+
+<a name='P-AdaptiveCards-AdaptiveAuthentication-ConnectionName'></a>
+### ConnectionName `property`
+
+##### Summary
+
+The identifier for registered OAuth connection setting information.
+
+<a name='P-AdaptiveCards-AdaptiveAuthentication-Text'></a>
+### Text `property`
+
+##### Summary
+
+Text that can be displayed to the end user when prompting them to authenticate.
+
+<a name='P-AdaptiveCards-AdaptiveAuthentication-TokenExchangeResource'></a>
+### TokenExchangeResource `property`
+
+##### Summary
+
+Provides information required to enable on-behalf-of single sign-on user authentication.
 
 <a name='T-AdaptiveCards-AdaptiveBackgroundImage'></a>
 ## AdaptiveBackgroundImage `type`
@@ -1171,6 +1352,13 @@ The AdaptiveCard element that this class implements.
 
 The Actions for this card.
 
+<a name='P-AdaptiveCards-AdaptiveCard-Authentication'></a>
+### Authentication `property`
+
+##### Summary
+
+Defines authentication information to enable on-behalf-of single sign on or just-in-time OAuth.
+
 <a name='P-AdaptiveCards-AdaptiveCard-BackgroundImage'></a>
 ### BackgroundImage `property`
 
@@ -1237,6 +1425,13 @@ AdaptiveCard.OnDeserializingMissingVersion = () => new AdaptiveSchemaVersion(0, 
 ##### Summary
 
 Explicit card minimum height in pixels.
+
+<a name='P-AdaptiveCards-AdaptiveCard-Refresh'></a>
+### Refresh `property`
+
+##### Summary
+
+Defines how the card can be refreshed by making a request to the target Bot.
 
 <a name='P-AdaptiveCards-AdaptiveCard-SelectAction'></a>
 ### SelectAction `property`
@@ -1644,6 +1839,13 @@ A collection of available choices.
 
 Determines whether multiple selections are allowed.
 
+<a name='P-AdaptiveCards-AdaptiveChoiceSetInput-Placeholder'></a>
+### Placeholder `property`
+
+##### Summary
+
+Text to display as a placeholder.
+
 <a name='P-AdaptiveCards-AdaptiveChoiceSetInput-Style'></a>
 ### Style `property`
 
@@ -1764,6 +1966,13 @@ Represents the Column element.
 ##### Summary
 
 *Inherit from parent.*
+
+<a name='P-AdaptiveCards-AdaptiveColumn-Rtl'></a>
+### Rtl `property`
+
+##### Summary
+
+Sets the text flow direction
 
 <a name='P-AdaptiveCards-AdaptiveColumn-Size'></a>
 ### Size `property`
@@ -1917,6 +2126,13 @@ Background image to use when displaying this container.
 ##### Summary
 
 Elements within this container.
+
+<a name='P-AdaptiveCards-AdaptiveContainer-Rtl'></a>
+### Rtl `property`
+
+##### Summary
+
+Sets the text flow direction
 
 <a name='P-AdaptiveCards-AdaptiveContainer-Type'></a>
 ### Type `property`
@@ -2242,6 +2458,61 @@ This constructor has no parameters.
 ##### Parameters
 
 This constructor has no parameters.
+
+<a name='T-AdaptiveCards-AdaptiveExecuteAction'></a>
+## AdaptiveExecuteAction `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Execute action gathers up input fields, merges with optional data field and generates event to client
+    asking for data to be submitted.
+
+<a name='F-AdaptiveCards-AdaptiveExecuteAction-TypeName'></a>
+### TypeName `constants`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='P-AdaptiveCards-AdaptiveExecuteAction-AssociatedInputs'></a>
+### AssociatedInputs `property`
+
+##### Summary
+
+Controls which inputs are associated with the execute action
+
+<a name='P-AdaptiveCards-AdaptiveExecuteAction-Data'></a>
+### Data `property`
+
+##### Summary
+
+initial data that input fields will be combined with. This is essentially 'hidden' properties, Example:
+    {"id":"123123123"}
+
+<a name='P-AdaptiveCards-AdaptiveExecuteAction-DataJson'></a>
+### DataJson `property`
+
+##### Summary
+
+Get or set the data as a JSON string.
+
+<a name='P-AdaptiveCards-AdaptiveExecuteAction-Type'></a>
+### Type `property`
+
+##### Summary
+
+*Inherit from parent.*
+
+<a name='P-AdaptiveCards-AdaptiveExecuteAction-Verb'></a>
+### Verb `property`
+
+##### Summary
+
+The card author-defined verb associated with this action.
 
 <a name='T-AdaptiveCards-AdaptiveFact'></a>
 ## AdaptiveFact `type`
@@ -2970,6 +3241,13 @@ Defines font families, sizes, and weights to use during rendering.
 ##### Summary
 
 Defines which font weights to use during rendering. (Obsolete)
+
+<a name='P-AdaptiveCards-Rendering-AdaptiveHostConfig-Headings'></a>
+### Headings `property`
+
+##### Summary
+
+Controls the rendering of heading text.
 
 <a name='P-AdaptiveCards-Rendering-AdaptiveHostConfig-ImageBaseUrl'></a>
 ### ImageBaseUrl `property`
@@ -3810,6 +4088,30 @@ Url to open using default operating system browser.
 
 This is necessary for XML serialization. You should use the [Url](#F-Url 'Url') property directly.
 
+<a name='T-AdaptiveCards-AdaptiveRefresh'></a>
+## AdaptiveRefresh `type`
+
+##### Namespace
+
+AdaptiveCards
+
+<a name='P-AdaptiveCards-AdaptiveRefresh-Action'></a>
+### Action `property`
+
+##### Summary
+
+The action to be executed to refresh the card.
+   Clients can run this refresh action automatically or can provide an affordance for users to trigger it manually.
+
+<a name='P-AdaptiveCards-AdaptiveRefresh-UserIds'></a>
+### UserIds `property`
+
+##### Summary
+
+A list of user Ids informing the client for which users should the refresh action should be run automatically.
+    Some clients will not run the refresh action automatically unless this property is specified.
+    Some clients may ignore this property and always run the refresh action automatically.
+
 <a name='T-AdaptiveCards-Rendering-AdaptiveRenderException'></a>
 ## AdaptiveRenderException `type`
 
@@ -4222,6 +4524,13 @@ Submit action gathers up input fields, merges with optional data field and gener
 
 *Inherit from parent.*
 
+<a name='P-AdaptiveCards-AdaptiveSubmitAction-AssociatedInputs'></a>
+### AssociatedInputs `property`
+
+##### Summary
+
+Controls which inputs are associated with the submit action
+
 <a name='P-AdaptiveCards-AdaptiveSubmitAction-Data'></a>
 ### Data `property`
 
@@ -4443,6 +4752,13 @@ The maximum width of the TextBlock.
 
 *Inherit from parent.*
 
+<a name='P-AdaptiveCards-AdaptiveTextBlock-Style'></a>
+### Style `property`
+
+##### Summary
+
+The style ([AdaptiveTextBlockStyle](#T-AdaptiveCards-AdaptiveTextBlockStyle 'AdaptiveCards.AdaptiveTextBlockStyle')) of text.
+
 <a name='P-AdaptiveCards-AdaptiveTextBlock-Text'></a>
 ### Text `property`
 
@@ -4470,6 +4786,31 @@ The maximum width of the TextBlock.
 ##### Summary
 
 Controls text wrapping behavior.
+
+<a name='T-AdaptiveCards-AdaptiveTextBlockStyle'></a>
+## AdaptiveTextBlockStyle `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Indicates TextBlock element's content type.
+
+<a name='F-AdaptiveCards-AdaptiveTextBlockStyle-Heading'></a>
+### Heading `constants`
+
+##### Summary
+
+The content is a heading.
+
+<a name='F-AdaptiveCards-AdaptiveTextBlockStyle-Paragraph'></a>
+### Paragraph `constants`
+
+##### Summary
+
+The content is a paragraph (default).
 
 <a name='T-AdaptiveCards-AdaptiveTextColor'></a>
 ## AdaptiveTextColor `type`
@@ -5041,6 +5382,35 @@ Ids of elements whose visibility this element should change.
 
 *Inherit from parent.*
 
+<a name='T-AdaptiveCards-AdaptiveTokenExchangeResource'></a>
+## AdaptiveTokenExchangeResource `type`
+
+##### Namespace
+
+AdaptiveCards
+
+<a name='P-AdaptiveCards-AdaptiveTokenExchangeResource-Id'></a>
+### Id `property`
+
+##### Summary
+
+The unique identifier of this token exchange instance.
+
+<a name='P-AdaptiveCards-AdaptiveTokenExchangeResource-ProviderId'></a>
+### ProviderId `property`
+
+##### Summary
+
+An identifier for the identity provider with which to attempt a token exchange.
+
+<a name='P-AdaptiveCards-AdaptiveTokenExchangeResource-Uri'></a>
+### Uri `property`
+
+##### Summary
+
+An application ID or resource identifier with which to exchange a token on behalf of.
+    This property is identity provider- and application-specific.
+
 <a name='T-AdaptiveCards-AdaptiveTypedBaseElementConverter'></a>
 ## AdaptiveTypedBaseElementConverter `type`
 
@@ -5398,6 +5768,28 @@ The [WarningStatusCode](#T-AdaptiveCards-AdaptiveWarning-WarningStatusCode 'Adap
 
 The warning message.
 
+<a name='T-Microsoft-MarkedNet-BlockRules'></a>
+## BlockRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Block-Level Grammar
+
+<a name='T-Microsoft-MarkedNet-BreaksInlineRules'></a>
+## BreaksInlineRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+GFM + Line Breaks Inline Grammar
+
 <a name='T-AdaptiveCards-ColorUtil'></a>
 ## ColorUtil `type`
 
@@ -5521,6 +5913,17 @@ Represents an Action (i.e. something that belongs in an ActionSet or in the acti
 
 Represents an Element (i.e. something that belongs in the body of a card).
 
+<a name='T-Microsoft-MarkedNet-EmojiMarkdownRenderer'></a>
+## EmojiMarkdownRenderer `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Renderer which renders emoji markdown to unicode
+
 <a name='T-AdaptiveCards-Rendering-ErrorMessageConfig'></a>
 ## ErrorMessageConfig `type`
 
@@ -5595,6 +5998,28 @@ AdaptiveCards.Rendering
 
 Color in #RRGGBB format
 
+<a name='T-Microsoft-MarkedNet-GfmBlockRules'></a>
+## GfmBlockRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+GFM Block Grammar
+
+<a name='T-Microsoft-MarkedNet-GfmInlineRules'></a>
+## GfmInlineRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+GFM Inline Grammar
+
 <a name='T-AdaptiveCards-HashColorConverter'></a>
 ## HashColorConverter `type`
 
@@ -5653,6 +6078,20 @@ This method has no parameters.
 
 This method has no parameters.
 
+<a name='T-AdaptiveCards-Rendering-HeadingsConfig'></a>
+## HeadingsConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+<a name='P-AdaptiveCards-Rendering-HeadingsConfig-Level'></a>
+### Level `property`
+
+##### Summary
+
+Level of heading text, used only if underlying platform requires it.
+
 <a name='T-AdaptiveCards-Rendering-HighlightColorConfig'></a>
 ## HighlightColorConfig `type`
 
@@ -5666,6 +6105,17 @@ AdaptiveCards.Rendering
 ##### Summary
 
 Color in #RRGGBB format
+
+<a name='T-Microsoft-MarkedNet-HtmlRenderer'></a>
+## HtmlRenderer `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Renderer which renders to HTML with Emoji Support
 
 <a name='T-AdaptiveCards-IAdaptiveTextElement'></a>
 ## IAdaptiveTextElement `type`
@@ -5878,6 +6328,68 @@ This method has no parameters.
 
 This method has no parameters.
 
+<a name='T-Microsoft-MarkedNet-InlineLexer'></a>
+## InlineLexer `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+<a name='M-Microsoft-MarkedNet-InlineLexer-Mangle-System-String-'></a>
+### Mangle() `method`
+
+##### Summary
+
+Mangle Links
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-InlineLexer-Output-System-String-'></a>
+### Output() `method`
+
+##### Summary
+
+Lexing/Compiling
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-InlineLexer-OutputLink-System-Collections-Generic-IList{System-String},Microsoft-MarkedNet-LinkObj-'></a>
+### OutputLink() `method`
+
+##### Summary
+
+Compile Link
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-InlineLexer-Smartypants-System-String-'></a>
+### Smartypants() `method`
+
+##### Summary
+
+Smartypants Transformations
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-Microsoft-MarkedNet-InlineRules'></a>
+## InlineRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Inline-Level Grammar
+
 <a name='T-AdaptiveCards-Rendering-InputLabelConfig'></a>
 ## InputLabelConfig `type`
 
@@ -5981,6 +6493,87 @@ Properties which control rendering of input labels
 
 Specifies the spacing between the label and the input
 
+<a name='T-Microsoft-MarkedNet-Lexer'></a>
+## Lexer `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+<a name='M-Microsoft-MarkedNet-Lexer-Lex-System-String,Microsoft-MarkedNet-Options-'></a>
+### Lex() `method`
+
+##### Summary
+
+Static Lex Method
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-Lexer-Lex-System-String-'></a>
+### Lex() `method`
+
+##### Summary
+
+Preprocessing
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-Lexer-Token-System-String,System-Boolean,Microsoft-MarkedNet-TokensResult-'></a>
+### Token() `method`
+
+##### Summary
+
+Lexing
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-Microsoft-MarkedNet-MarkdownRenderer'></a>
+## MarkdownRenderer `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+<a name='M-Microsoft-MarkedNet-MarkdownRenderer-Postprocess-System-String-'></a>
+### Postprocess(text) `method`
+
+##### Summary
+
+ppostprocess entire output before returning
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
+<a name='M-Microsoft-MarkedNet-MarkdownRenderer-Preprocess-System-String-'></a>
+### Preprocess(text) `method`
+
+##### Summary
+
+Preprocess entire input before parsing
+
+##### Returns
+
+
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
+
 <a name='T-AdaptiveCards-Rendering-MediaConfig'></a>
 ## MediaConfig `type`
 
@@ -6012,6 +6605,28 @@ Default poster URL to use for media thumbnail
 ##### Summary
 
 Play button URL to use for media thumbnail
+
+<a name='T-Microsoft-MarkedNet-NormalBlockRules'></a>
+## NormalBlockRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Normal Block Grammar
+
+<a name='T-Microsoft-MarkedNet-NormalInlineRules'></a>
+## NormalInlineRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Normal Inline Grammar
 
 <a name='T-AdaptiveCards-ParseContext'></a>
 ## ParseContext `type`
@@ -6077,6 +6692,90 @@ Pushes the supplied element state on to the context stack.
 ##### Remarks
 
 Used by element converters to determine how to perform element fallback.
+
+<a name='T-Microsoft-MarkedNet-Parser'></a>
+## Parser `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+<a name='M-Microsoft-MarkedNet-Parser-Next'></a>
+### Next() `method`
+
+##### Summary
+
+Next Token
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-Parser-Parse-Microsoft-MarkedNet-TokensResult,Microsoft-MarkedNet-Options-'></a>
+### Parse() `method`
+
+##### Summary
+
+Static Parse Method
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-Parser-Parse-Microsoft-MarkedNet-TokensResult-'></a>
+### Parse() `method`
+
+##### Summary
+
+Parse Loop
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-Parser-ParseText'></a>
+### ParseText() `method`
+
+##### Summary
+
+Parse Text Tokens
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-Parser-Peek'></a>
+### Peek() `method`
+
+##### Summary
+
+Preview Next Token
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-Microsoft-MarkedNet-Parser-Tok'></a>
+### Tok() `method`
+
+##### Summary
+
+Parse Current Token
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-Microsoft-MarkedNet-PedanticInlineRules'></a>
+## PedanticInlineRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Pedantic Inline Grammar
 
 <a name='T-AdaptiveCards-RemoteResourceInformation'></a>
 ## RemoteResourceInformation `type`
@@ -6304,6 +7003,17 @@ AdaptiveCards.Rendering
 
 Specifies how much spacing should be used for the various spacing options
 
+<a name='T-Microsoft-MarkedNet-TablesBlockRules'></a>
+## TablesBlockRules `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+GFM + Tables Block Grammar
+
 <a name='T-AdaptiveCards-Rendering-TextBlockConfig'></a>
 ## TextBlockConfig `type`
 
@@ -6352,6 +7062,17 @@ The weight of the text
 ##### Summary
 
 Is it allowed for the text to wrap
+
+<a name='T-Microsoft-MarkedNet-TextMarkdownRenderer'></a>
+## TextMarkdownRenderer `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Renderer which renders to pure text environments like SMS
 
 <a name='T-AdaptiveCards-WarningLoggingContractResolver'></a>
 ## WarningLoggingContractResolver `type`
@@ -6415,9 +7136,118 @@ The supplied language was not valid.
 
 The maximum number of [AdaptiveAction](#T-AdaptiveCards-AdaptiveAction 'AdaptiveCards.AdaptiveAction')s was exceeded.
 
+<a name='F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-NoErrorMessageForValidatedInput'></a>
+### NoErrorMessageForValidatedInput `constants`
+
+##### Summary
+
+An input has validation properties set, but no error message to display to users
+
 <a name='F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-UnsupportedSchemaVersion'></a>
 ### UnsupportedSchemaVersion `constants`
 
 ##### Summary
 
 The supplied schema version wasn't recognized.
+
+<a name='T-Microsoft-MarkedNet-XamlRenderer'></a>
+## XamlRenderer `type`
+
+##### Namespace
+
+Microsoft.MarkedNet
+
+##### Summary
+
+Renderer which renders to pure text environments like SMS
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-BlockQuoteStyle'></a>
+### BlockQuoteStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-CellHeaderStyle'></a>
+### CellHeaderStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-CellStyle'></a>
+### CellStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-CodeSpanStyle'></a>
+### CodeSpanStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-CodeStyle'></a>
+### CodeStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-CodespanStyle'></a>
+### CodespanStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-HeadingStyles'></a>
+### HeadingStyles `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-ImageStyle'></a>
+### ImageStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-ImageTitleStyle'></a>
+### ImageTitleStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-ListItemStyle'></a>
+### ListItemStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-OrderedListStyle'></a>
+### OrderedListStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-ParagraphStyle'></a>
+### ParagraphStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."
+
+<a name='P-Microsoft-MarkedNet-XamlRenderer-UnorderedListStyle'></a>
+### UnorderedListStyle `property`
+
+##### Summary
+
+set style as string -> Style=\"..."

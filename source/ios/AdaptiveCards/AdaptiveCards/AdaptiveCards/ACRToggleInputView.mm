@@ -6,6 +6,7 @@
 //
 
 #import "ACRToggleInputView.h"
+#import "ACOBundle.h"
 #import <Foundation/Foundation.h>
 
 @implementation ACRToggleInputView
@@ -31,9 +32,8 @@
 
 - (void)commonInit
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     // nib can have more than one view serialized
-    _contentview = [bundle loadNibNamed:@"ACRToggleInputView" owner:self options:nil][0];
+    _contentview = [[[ACOBundle getInstance] getBundle] loadNibNamed:@"ACRToggleInputView" owner:self options:nil][0];
 
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -46,7 +46,10 @@
     [_contentview.centerYAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerYAnchor].active = YES;
     [_contentview.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
     [_title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-     // we configure the margin to nil, and have users of SDK configure margins through xib interface's container view
+    self.toggle.tintColor = self.switchOffStateColor;
+    self.toggle.backgroundColor = self.switchOffStateColor;
+    self.toggle.layer.cornerRadius = 16.0f;
+    // we configure the margin to nil, and have users of SDK configure margins through xib interface's container view
     if (@available(iOS 11.0, *)) {
         NSDirectionalEdgeInsets insets = self.directionalLayoutMargins;
         insets.leading = 0.0f;

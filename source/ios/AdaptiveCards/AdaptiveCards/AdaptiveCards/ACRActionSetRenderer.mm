@@ -3,6 +3,7 @@
 //
 
 #import "ACRActionSetRenderer.h"
+#import "ACOActionOverflowPrivate.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
@@ -54,7 +55,7 @@
                      card:(ACOAdaptiveCard *)card
                hostConfig:(ACOHostConfig *)config
 {
-    std::vector<std::shared_ptr<BaseActionElement>> elems = [card card] -> GetActions();
+    std::vector<std::shared_ptr<BaseActionElement>> elems = [card card]->GetActions();
     return [self renderButtons:rootView
                         inputs:inputs
                      superview:superview
@@ -72,8 +73,11 @@
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
     UIStackView *childview = [[UIStackView alloc] init];
+
+    configRtl(childview, rootView.context);
+
     childview.distribution = UIStackViewDistributionFillProportionally;
-    AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig] -> GetActions();
+    AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig]->GetActions();
 
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         childview.axis = UILayoutConstraintAxisHorizontal;
@@ -96,31 +100,28 @@
         childview.alignment = alignment;
     }
 
-    ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     // set width
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
+
+    configRtl(containingView, rootView.context);
 
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing,
           maxWidth = 0, maxHeight = 0;
     childview.spacing = spacing;
+    containingView.spacing = spacing;
     childview.translatesAutoresizingMaskIntoConstraints = NO;
 
     if (elems.empty()) {
         return containingView;
     }
 
-    unsigned long uMaxActionsToRender = MIN(adaptiveActionConfig.maxActions, elems.size());
-
-    if (uMaxActionsToRender < elems.size()) {
-        [rootView addWarnings:ACRWarningStatusCode::ACRMaxActionsExceeded
-                       mesage:@"Some actions were not rendered due to exceeding the maximum number "
-                              @"of actions allowed"];
-    }
+    std::vector<std::shared_ptr<BaseActionElement>> primary, secondary;
+    partitionActions(elems, primary, secondary, adaptiveActionConfig.maxActions, rootView);
 
     NSUInteger stackIndex = [superview arrangedSubviewsCounts];
-
-    for (auto i = 0; i < uMaxActionsToRender; i++) {
-        const auto &elem = elems.at(i);
+    std::size_t renderedBtnNum = primary.size();
+    for (auto i = 0; i < primary.size(); i++) {
+        const auto &elem = primary.at(i);
         ACRBaseActionElementRenderer *actionRenderer =
             [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
@@ -129,43 +130,50 @@
             continue;
         }
 
-        [acoElem setElem:elem];
+        ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] initWithBaseActionElement:elem];
 
-        NSUInteger numElem = [[childview arrangedSubviews] count];
+        [self renderButtonForElem:acoElem
+                   actionRenderer:actionRenderer
+                        childview:childview
+                       featureReg:featureReg
+                         rootView:rootView
+                           inputs:inputs
+                        superview:superview
+                       hostConfig:config
+                 accumulatedWidth:accumulatedWidth
+                accumulatedHeight:accumulatedHeight
+                         maxWidth:maxWidth
+                        maxHeight:maxHeight];
+    }
 
-        UIButton *button = nil;
+    if (!secondary.empty()) {
+        ++renderedBtnNum;
 
-        @try {
-            if ([acoElem meetsRequirements:featureReg] == NO) {
-                @throw [ACOFallbackException fallbackException];
-            }
-            button = [actionRenderer renderButton:rootView
-                                           inputs:inputs
-                                        superview:superview
-                                baseActionElement:acoElem
-                                       hostConfig:config];
-            [childview addArrangedSubview:button];
-        } @catch (ACOFallbackException *exception) {
-            handleActionFallbackException(exception, superview, rootView, inputs, acoElem, config,
-                                          childview);
-            NSUInteger count = [childview.arrangedSubviews count];
-            if (count > numElem) {
-                UIView *view = [childview.arrangedSubviews lastObject];
-                if (view && [view isKindOfClass:[UIButton class]]) {
-                    button = (UIButton *)view;
-                }
-            }
-        }
+        ACRBaseActionElementRenderer *actionRenderer =
+            [reg getActionRenderer:[ACOBaseActionElement getKey:(ACRActionType::ACROverflow)]];
 
-        accumulatedWidth += [button intrinsicContentSize].width;
-        accumulatedHeight += [button intrinsicContentSize].height;
-        maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
-        maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
+        ACOBaseActionElement *overflow =
+            [[ACOActionOverflow alloc] initWithBaseActionElements:secondary
+                                                           atCard:rootView.card];
+
+        [self renderButtonForElem:overflow
+                   actionRenderer:actionRenderer
+                        childview:childview
+                       featureReg:featureReg
+                         rootView:rootView
+                           inputs:inputs
+                        superview:superview
+                       hostConfig:config
+                 accumulatedWidth:accumulatedWidth
+                accumulatedHeight:accumulatedHeight
+                         maxWidth:maxWidth
+                        maxHeight:maxHeight];
     }
 
     float contentWidth = accumulatedWidth;
+
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
-        contentWidth += (elems.size() - 1) * spacing;
+        contentWidth += (renderedBtnNum - 1) * spacing;
     } else {
         contentWidth = maxWidth;
     }
@@ -175,7 +183,10 @@
     containingView.contentview = childview;
     containingView.contentWidth = contentWidth;
 
-    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor multiplier:1.0].active = YES;
+    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor].active = YES;
+    if (ActionsOrientation::Vertical == adaptiveActionConfig.actionsOrientation) {
+        [containingView.widthAnchor constraintEqualToAnchor:childview.widthAnchor].active = YES;
+    }
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
 
     containingView.stretch = adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch;
@@ -186,4 +197,51 @@
     return containingView;
 }
 
+- (void)renderButtonForElem:(ACOBaseActionElement *)acoElem
+             actionRenderer:(ACRBaseActionElementRenderer *)actionRenderer
+                  childview:(UIStackView *)childview
+                 featureReg:(ACOFeatureRegistration *)featureReg
+                   rootView:(ACRView *)rootView
+                     inputs:(NSMutableArray *)inputs
+                  superview:(UIView<ACRIContentHoldingView> *)superview
+                 hostConfig:(ACOHostConfig *)config
+           accumulatedWidth:(float &)accumulatedWidth
+          accumulatedHeight:(float &)accumulatedHeight
+                   maxWidth:(float &)maxWidth
+                  maxHeight:(float &)maxHeight
+{
+    NSUInteger numElem = [[childview arrangedSubviews] count];
+
+    UIButton *button = nil;
+
+	@try {
+		if ([acoElem meetsRequirements:featureReg] == NO) {
+			@throw [ACOFallbackException fallbackException];
+		}
+		button = [actionRenderer renderButton:rootView
+										inputs:inputs
+									superview:superview
+							baseActionElement:acoElem
+									hostConfig:config];
+
+		configRtl(button, rootView.context);
+
+		[childview addArrangedSubview:button];
+	} @catch (ACOFallbackException *exception) {
+		handleActionFallbackException(exception, superview, rootView, inputs, acoElem, config,
+										childview);
+		NSUInteger count = [childview.arrangedSubviews count];
+		if (count > numElem) {
+			UIView *view = [childview.arrangedSubviews lastObject];
+			if (view && [view isKindOfClass:[UIButton class]]) {
+				button = (UIButton *)view;
+			}
+		}
+	}
+
+    accumulatedWidth += [button intrinsicContentSize].width;
+    accumulatedHeight += [button intrinsicContentSize].height;
+    maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
+    maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
+}
 @end

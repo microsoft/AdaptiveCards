@@ -9,16 +9,11 @@ import {
 	StyleSheet
 } from 'react-native';
 
-import { HostConfigManager } from '../../utils/host-config';
-import { StyleManager } from '../../styles/style-config';
 import ElementWrapper from '../elements/element-wrapper';
 import { Label } from './';
 import * as Constants from '../../utils/constants';
 
 export class TextBlock extends React.Component {
-
-	hostConfig = HostConfigManager.getHostConfig();
-	styleConfig = StyleManager.getManager().styles;
 
 	render() {
 		let payload = this.props.json;
@@ -26,11 +21,12 @@ export class TextBlock extends React.Component {
 		if (payload.isVisible === false) {
 			return null;
 		}
-
+		
 		return (
-			<ElementWrapper json={payload} style={styles.textContainer} isFirst={this.props.isFirst}>
+			<ElementWrapper configManager={this.props.configManager} json={payload} style={styles.textContainer} isFirst={this.props.isFirst}>
 				<Label
 					text={payload.text}
+					altText={payload.altText}
 					size={payload.size}
 					weight={payload.weight}
 					color={payload.color}
@@ -39,7 +35,8 @@ export class TextBlock extends React.Component {
 					wrap={payload.wrap}
 					align={payload.horizontalAlignment}
 					maxLines={payload.maxLines}
-					style={styles.text}
+					style={[styles.text, this.props.style]}
+					configManager={this.props.configManager}
 					containerStyle={this.props.containerStyle} />
 			</ElementWrapper>
 		);

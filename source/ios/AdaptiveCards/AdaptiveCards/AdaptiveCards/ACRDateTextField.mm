@@ -6,10 +6,11 @@
 //
 
 #import "ACRDateTextField.h"
+#import "ACOBundle.h"
+#import "ACRInputLabelView.h"
 #import "DateInput.h"
 #import "DateTimePreparser.h"
 #import "TimeInput.h"
-#import "ACRInputLabelView.h"
 
 using namespace AdaptiveCards;
 
@@ -28,7 +29,6 @@ using namespace AdaptiveCards;
 - (instancetype)initWithTimeDateInput:(std::shared_ptr<BaseInputElement> const &)elem
                             dateStyle:(NSDateFormatterStyle)dateStyle
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     self = [super init];
     if (self) {
         NSString *valueStr = nil;
@@ -41,7 +41,16 @@ using namespace AdaptiveCards;
         _encodeFormatter = [[NSDateFormatter alloc] init];
         [self configDateFormatter:_encodeFormatter formatterStyle:dateStyle];
 
-        UIDatePicker *picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
+        UIDatePicker *picker = nil;
+        if (@available(iOS 14.0, *)) {
+            picker = [[UIDatePicker alloc] init];
+            picker.preferredDatePickerStyle = UIDatePickerStyleWheels;
+        } else {
+            // Fallback on earlier versions
+            NSBundle *bundle = [[ACOBundle getInstance] getBundle];
+            picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
+        }
+
         picker.locale = [NSLocale currentLocale];
 
         self.id = [NSString stringWithCString:elem->GetId().c_str()
@@ -145,6 +154,7 @@ using namespace AdaptiveCards;
 {
     [self endEditing:YES];
     self.text = [_decodeFormatter stringFromDate:[self getCurrentDate]];
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
 }
 
 - (IBAction)update:(UIDatePicker *)picker
@@ -187,7 +197,13 @@ using namespace AdaptiveCards;
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    self.accessibilityLabel = view.accessibilityLabel;
+    if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
+        [view becomeFirstResponder];
+    } else {
+        [view resignFirstResponder];
+    }
 }
 
 - (NSDate *)getCurrentDate

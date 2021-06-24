@@ -5,6 +5,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#import "ACOBundle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRInputLabelViewPrivate.h"
@@ -28,8 +29,7 @@
 
 - (void)commonInit
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    UIView *contentView = [bundle loadNibNamed:@"ACRInputLabelView" owner:self options:nil][0];
+    UIView *contentView = [[[ACOBundle getInstance] getBundle] loadNibNamed:@"ACRInputLabelView" owner:self options:nil][0];
     [self addSubview:contentView];
     self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     [self.layoutMarginsGuide.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor].active = YES;
@@ -102,21 +102,24 @@
         self.errorMessage.hidden = YES;
 
         [self.stack insertArrangedSubview:inputView atIndex:1];
+        self.validationSuccessBorderColor = inputView.layer.borderColor;
+        self.validationSuccessBorderRadius = inputView.layer.cornerRadius;
+        self.validationSuccessBorderWidth = inputView.layer.borderWidth;
 
-        self.inputView = inputView;        
+        self.inputView = inputView;
         self.label.isAccessibilityElement = NO;
         self.isAccessibilityElement = NO;
         inputView.accessibilityLabel = self.label.text;
         self.inputAccessibilityItem = inputView;
-        
+
         if (inputView != accessibilityItem) {
             self.inputAccessibilityItem = accessibilityItem;
             self.inputAccessibilityItem.accessibilityLabel = inputView.accessibilityLabel;
         }
-        
+
         self.inputAccessibilityItem.isAccessibilityElement = YES;
         self.labelText = self.inputAccessibilityItem.accessibilityLabel;
-        
+
         self.shouldGroupAccessibilityChildren = NO;
 
         NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
@@ -130,7 +133,32 @@
             [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"There exist required input, but there is no associated label with it, consider adding label to the input"];
         }
     }
+    [self setRtl:rootView.context.rtl];
     return self;
+}
+
+- (void)setRtl:(ACRRtl)rtl
+{
+    if (rtl == ACRRtlNone) {
+        return;
+    }
+    UISemanticContentAttribute semanticAttribute = (rtl == ACRRtlRTL) ? UISemanticContentAttributeForceRightToLeft : UISemanticContentAttributeForceLeftToRight;
+
+    if (self.errorMessage) {
+        self.errorMessage.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.label) {
+        self.label.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.stack) {
+        self.stack.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.inputView) {
+        self.inputView.semanticContentAttribute = semanticAttribute;
+    }
 }
 
 - (BOOL)validate:(NSError **)error
@@ -147,12 +175,7 @@
                 self.hasVisibilityChanged = self.errorMessage.hidden == YES;
                 self.errorMessage.hidden = NO;
                 self.errorMessage.isAccessibilityElement = NO;
-                if(self.inputAccessibilityItem.accessibilityLabel) {
-                    self.labelText = self.inputAccessibilityItem.accessibilityLabel;
-                    self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.inputAccessibilityItem.accessibilityLabel, self.errorMessage.text];
-                } else {
-                    self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
-                }
+                self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
             }
         } else {
             if (self.hasErrorMessage) {
@@ -160,10 +183,15 @@
                 self.errorMessage.hidden = YES;
                 self.inputAccessibilityItem.accessibilityLabel = self.labelText;
             }
+
+            self.stack.arrangedSubviews[1].layer.borderColor = self.validationSuccessBorderColor;
+            self.stack.arrangedSubviews[1].layer.cornerRadius = self.validationSuccessBorderRadius;
             self.stack.arrangedSubviews[1].layer.borderWidth = self.validationSuccessBorderWidth;
+
             return YES;
         }
     }
+
     self.stack.arrangedSubviews[1].layer.borderWidth = self.validationFailBorderWidth;
     self.stack.arrangedSubviews[1].layer.cornerRadius = self.validationFailBorderRadius;
     self.stack.arrangedSubviews[1].layer.borderColor = self.validationFailBorderColor.CGColor;
@@ -199,8 +227,8 @@
     UIView *viewToFocus = [self getInputView];
     if (!inputHandler || !viewToFocus) {
         return;
-    }  
-   
+    }
+
     [inputHandler setFocus:shouldBecomeFirstResponder view:self.inputAccessibilityItem];
 }
 
@@ -232,6 +260,21 @@
         return [predicate evaluateWithObject:text];
     }
     return YES;
+}
+
+// returns intrinsic content size for inputs
+- (CGSize)intrinsicContentSize
+{
+    CGFloat width = 0.0f, height = 0.0f;
+    for (UIView *view in self.stack.arrangedSubviews) {
+        if (!view.hidden) {
+            CGSize size = [view intrinsicContentSize];
+            width = MAX(size.width, width);
+            height += size.height;
+        }
+    }
+
+    return CGSizeMake(width, height);
 }
 
 @synthesize hasValidationProperties;

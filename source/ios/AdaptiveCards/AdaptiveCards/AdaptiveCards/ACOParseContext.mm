@@ -29,7 +29,7 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> const)getActionParser:(NSString *)elementType
+- (std::shared_ptr<AdaptiveCards::ActionElementParser> const)getActionParser:(NSString *)elementType
 {
     return _parseContext->actionParserRegistration->GetParser(std::string([elementType UTF8String]));
 }

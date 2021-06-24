@@ -6,7 +6,7 @@
 #include <iostream>
 #include "MarkDownParser.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 MarkDownParser::MarkDownParser(const std::string& txt) : m_text(txt), m_hasHTMLTag(false), m_isEscaped(false)
 {
@@ -41,6 +41,11 @@ bool MarkDownParser::HasHtmlTags()
 bool MarkDownParser::IsEscaped() const
 {
     return m_isEscaped;
+}
+
+std::string MarkDownParser::GetRawText() const
+{
+    return m_text;
 }
 
 // MarkDown is consisted of Blocks, this methods parses blocks

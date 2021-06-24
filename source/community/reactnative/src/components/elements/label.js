@@ -6,7 +6,6 @@
 
 import React from 'react';
 
-import { HostConfigManager } from '../../utils/host-config';
 import MarkDownFormatter from '../../utils/markdown-formatter';
 import { TextFormatter } from '../../utils/text-formatters';
 import { InputContext } from '../../utils/context';
@@ -17,10 +16,10 @@ export class Label extends React.Component {
 
 	static contextType = InputContext;
 
-	hostConfig = HostConfigManager.getHostConfig();
-
 	render() {
-		let { text, wrap, maxLines, onDidLayout } = this.props;
+		this.hostConfig = this.props.configManager.hostConfig;
+
+		let { text, altText, wrap, maxLines, onDidLayout } = this.props;
 
 		// parse & format DATE/TIME values
 		let lang = this.context.lang;
@@ -40,17 +39,18 @@ export class Label extends React.Component {
 		}
 		return (
 			<MarkDownFormatter
-				defaultStyles={[receivedStyle, computedStyle]}
+				defaultStyles={[computedStyle, receivedStyle]}
 				numberOfLines={numberOfLines}
 				text={formattedText}
+				altText={altText}
 				onDidLayout={onDidLayout}
 				{...clickProps} />
 		)
 	}
 
-    /**
-     * @description Parse the host config specific props 
-     */
+	/**
+	 * @description Parse the host config specific props 
+	 */
 	getComputedStyle = () => {
 		const { size, weight, color, isSubtle, fontStyle, align } = this.props;
 		let { containerStyle } = this.props;

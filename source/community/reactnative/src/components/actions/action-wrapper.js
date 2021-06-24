@@ -14,16 +14,14 @@ import { InputContextConsumer } from '../../utils/context';
 import AdaptiveCard from '../../adaptive-card';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
-import { HostConfigManager } from '../../utils/host-config';
 
 const padding = 10;
 
 export class ActionWrapper extends React.Component {
 
-	hostConfig = HostConfigManager.getHostConfig();
-
 	constructor(props) {
 		super(props);
+		this.hostConfig = props.configManager.hostConfig;
 		this.state = {
 			isShowCard: false,
 			cardJson: null,
@@ -76,12 +74,14 @@ export class ActionWrapper extends React.Component {
 							<Element
 								json={element}
 								isFirst={isFirstElement}
+								maxWidth={100 / actions.length + "%"}
+								configManager={this.props.configManager}
 								onShowCardTapped={this.onShowAdaptiveCard}
 								key={`${element.type}-${index}`}
 							/>);
 					}
 					else {
-						renderedElement.push(<Element json={element} isFirst={isFirstElement} key={`${element.type}-${index}`} />);
+						renderedElement.push(<Element json={element} configManager={this.props.configManager} isFirst={isFirstElement} maxWidth={100 / actions.length + "%"} key={`${element.type}-${index}`} />);
 					}
 				}
 			} else {
@@ -99,16 +99,28 @@ export class ActionWrapper extends React.Component {
 		else return styles.actionAlignmentVertical
 	}
 
+	getActionAlignment() {
+		switch (this.hostConfig.actions.actionAlignment) {
+			case Enums.ActionAlignment.Center:
+				return styles.centerAlignment
+			case Enums.ActionAlignment.Right:
+				return styles.rightAlignment
+			default:
+				return styles.leftAlignment
+		}
+	}
+
 	render() {
 		return (<InputContextConsumer>
 			{({ onExecuteAction, onParseError }) =>
 				<View>
-					<View style={[styles.actionButtonContainer, this.getActionOrientation()]}>
+					<View style={[styles.actionButtonContainer, this.getActionOrientation(), this.getActionAlignment()]}>
 						{this.parseActionsArray(onParseError)}
 					</View>
 					{this.hasShowCard ? ((this.state.isShowCard) ?
 						<AdaptiveCard
 							payload={this.state.cardJson}
+							configManager={this.props.configManager}
 							onExecuteAction={onExecuteAction} isActionShowCard={true} /> : null) : null}
 				</View>
 			}
@@ -119,14 +131,22 @@ export class ActionWrapper extends React.Component {
 const styles = StyleSheet.create({
 	actionButtonContainer: {
 		paddingTop: padding,
-		flexWrap: Constants.FlexWrap,
-		justifyContent: Constants.CenterString
+		flexWrap: Constants.FlexWrap
 	},
 	actionAlignmentHorizontal: {
 		flexDirection: Constants.FlexRow,
 	},
 	actionAlignmentVertical: {
 		flexDirection: Constants.FlexColumn,
+	},
+	leftAlignment: {
+		justifyContent: Constants.FlexStart,
+	},
+	centerAlignment: {
+		justifyContent: Constants.CenterString,
+	},
+	rightAlignment: {
+		justifyContent: Constants.FlexEnd,
 	}
 });
 

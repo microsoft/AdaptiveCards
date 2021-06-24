@@ -24,7 +24,7 @@ using namespace AdaptiveCards;
 + (void)addLongPressGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> *)viewGroup
                                      rootView:(ACRView *)rootView
                                 recipientView:(UIView *)recipientView
-                                actionElement:(std::shared_ptr<BaseActionElement> const &)action
+                                actionElement:(ACOBaseActionElement *)action
                                    hostConfig:(ACOHostConfig *)config
 {
     if (action != nullptr) {
@@ -32,7 +32,7 @@ using namespace AdaptiveCards;
         if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target) && viewGroup) {
             UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
             [recipientView addGestureRecognizer:recognizer];
-            recipientView.userInteractionEnabled = YES;
+            setAccessibilityTrait(recipientView, action);
         }
     }
 }

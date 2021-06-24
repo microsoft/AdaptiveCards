@@ -4,50 +4,26 @@
 
 #include "pch.h"
 #include "json/json.h"
-#include "FeatureRegistration.h"
+#include "InternalId.h"
 #include "ParseContext.h"
 #include "ParseUtil.h"
 #include "SemanticVersion.h"
 #include "RemoteResourceInformation.h"
+#include "FeatureRegistration.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
-    // Used to uniquely identify a single BaseElement-derived object through the course of deserializing. For more
-    // details, refer to the giant comment on ID collision detection in ParseContext.cpp.
-    class InternalId
-    {
-    public:
-        InternalId();
-
-        static InternalId Next();
-        static InternalId Current();
-        static constexpr unsigned int Invalid = 0;
-
-        std::size_t Hash() const { return std::hash<unsigned int>()(m_internalId); }
-
-        bool operator==(const unsigned int other) const { return m_internalId == other; }
-        bool operator!=(const unsigned int other) const { return m_internalId != other; }
-        bool operator==(const InternalId& other) const { return m_internalId == other.m_internalId; }
-        bool operator!=(const InternalId& other) const { return m_internalId != other.m_internalId; }
-
-    private:
-        static unsigned int s_currentInternalId;
-        InternalId(const unsigned int id);
-        unsigned int m_internalId;
-    };
-
-    struct InternalIdKeyHash
-    {
-        std::size_t operator()(const InternalId& internalId) const { return internalId.Hash(); }
-    };
+#ifdef _MSC_VER
+    class ParseContext;
+#endif
+    class FeatureRegistration;
 
     class BaseElement
     {
     public:
         BaseElement() :
-            m_typeString{}, m_additionalProperties{},
-            m_requires{},
-            m_fallbackContent(nullptr), m_id{}, m_internalId{ InternalId::Current() }, m_fallbackType(FallbackType::None),
+            m_typeString{}, m_additionalProperties{}, m_requires{},
+            m_fallbackContent(nullptr), m_id{}, m_internalId{InternalId::Current()}, m_fallbackType(FallbackType::None),
             m_canFallbackToAncestor(false)
         {
             PopulateKnownPropertiesSet();
@@ -70,7 +46,7 @@ namespace AdaptiveSharedNamespace
 
         InternalId GetInternalId() const { return m_internalId; }
 
-        template<typename T> void DeserializeBase(ParseContext& context, const Json::Value& json);
+        template<typename T> void DeserializeBase(AdaptiveCards::ParseContext& context, const Json::Value& json);
 
         virtual std::string Serialize() const;
         virtual Json::Value SerializeToJsonValue() const;
@@ -85,10 +61,10 @@ namespace AdaptiveSharedNamespace
         void SetFallbackType(FallbackType type) { m_fallbackType = type; }
         void SetFallbackContent(std::shared_ptr<BaseElement> element) { m_fallbackContent = std::move(element); }
 
-        bool MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& hostProvides) const;
+        bool MeetsRequirements(const AdaptiveCards::FeatureRegistration& hostProvides) const;
 
-        std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& GetRequirements();
-        const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& GetRequirements() const;
+        std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& GetRequirements();
+        const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& GetRequirements() const;
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
@@ -107,7 +83,7 @@ namespace AdaptiveSharedNamespace
         void ParseRequires(ParseContext& context, const Json::Value& json);
         void PopulateKnownPropertiesSet();
 
-        std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion> m_requires;
+        std::unordered_map<std::string, AdaptiveCards::SemanticVersion> m_requires;
         std::shared_ptr<BaseElement> m_fallbackContent;
         std::string m_id;
         InternalId m_internalId;
@@ -142,7 +118,7 @@ namespace AdaptiveSharedNamespace
                     return;
                 }
                 throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                    "The only valid string value for the fallback property is 'drop'.");
+                                                 "The only valid string value for the fallback property is 'drop'.");
             }
             else if (fallbackValue.isObject())
             {

@@ -5,19 +5,12 @@
  */
 
 import React from 'react';
-import {
-	TimePickerAndroid,
-	Platform,
-} from 'react-native';
-
-import { HostConfigManager } from '../../utils/host-config';
-import { StyleManager } from '../../styles/style-config';
+import { Platform } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker'
 import * as Constants from '../../utils/constants';
 import { PickerInput } from '../inputs';
 
 export class TimeInput extends React.Component {
-
-	styleConfig = StyleManager.getManager().styles;
 
 	constructor(props) {
 		super(props);
@@ -35,6 +28,7 @@ export class TimeInput extends React.Component {
 			minTime: this.payload.min ? this.parseTimeString(this.payload.min) : undefined,
 			maxTime: this.payload.max ? this.parseTimeString(this.payload.max) : undefined,
 			modalVisible: false,
+			modalVisibleAndroid: false,
 			value: this.payload.value ? this.payload.value : Constants.EmptyString
 		}
 
@@ -56,21 +50,27 @@ export class TimeInput extends React.Component {
 	/**
 	 * @description Binds the selected time
 	 * @param {Date} newTime 
-     */
+	 */
 	setTime(newTime) {
-		const updatedTime = ("0" + newTime.getHours()).slice(-2) + ":"
-			+ ("0" + newTime.getMinutes()).slice(-2);
+		if (newTime !== undefined) {
+			const updatedTime = ("0" + newTime.getHours()).slice(-2) + ":"
+				+ ("0" + newTime.getMinutes()).slice(-2);
 
-		this.setState({
-			chosenTime: newTime,
-			value: updatedTime
-		});
+			this.setState({
+				chosenTime: newTime,
+				value: updatedTime,
+				modalVisibleAndroid: false
+			});
+		} else
+			this.setState({
+				modalVisibleAndroid: false
+			});
 	}
 
 	/**
-     * @description Toggles the TimePicker model visibility.
-     * @param {Boolean} visible 
-     */
+	 * @description Toggles the TimePicker model visibility.
+	 * @param {Boolean} visible 
+	 */
 	setModalVisible(visible) {
 		this.setState({ modalVisible: visible });
 	}
@@ -88,57 +88,47 @@ export class TimeInput extends React.Component {
 	handleTimeChange = time => this.setTime(time)
 
 	/**
-	 * @description Displays Android Time Picker
-	 */
-	async androidPicker() {
-		try {
-			const { action, hour, minute } = await TimePickerAndroid.open({
-				hour: this.state.chosenTime.getHours(),
-				minute: this.state.chosenTime.getMinutes()
-			});
-			if (action !== TimePickerAndroid.dismissedAction) {
-				// Selected hour (0-23), minute (0-59)
-				var date = new Date();
-				date.setHours(hour);
-				date.setMinutes(minute);
-				this.setTime(date)
-			}
-		} catch ({ code, message }) {
-			console.warn('Cannot open time picker', message);
-		}
-	}
-
-	/**
 	 * @description Displays Time Picker based on the platform.
 	 */
 	showTimePicker = () => {
 		if (Platform.OS === Constants.PlatformIOS) {
 			this.setState({ modalVisible: true });
 		} else {
-			this.androidPicker()
+			this.setState({ modalVisibleAndroid: true });
 		}
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.props.configManager.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
 		return (
-			<PickerInput
-				json={this.payload}
-				style={this.styleConfig.inputTime}
-				value={this.state.value}
-				format={"HH:mm"}
-				showPicker={this.showTimePicker}
-				modalVisible={this.state.modalVisible}
-				handleModalClose={this.handleModalClose}
-				chosenDate={this.state.chosenTime || new Date()}
-				minDate={this.state.minTime}
-				maxDate={this.state.maxTime}
-				handleDateChange={this.handleTimeChange}
-				mode='time'
-			/>
+			<>
+				<PickerInput
+					json={this.payload}
+					style={this.props.configManager.styleConfig.inputTime}
+					value={this.state.value}
+					format={"HH:mm"}
+					showPicker={this.showTimePicker}
+					modalVisible={this.state.modalVisible}
+					handleModalClose={this.handleModalClose}
+					chosenDate={this.state.chosenTime || new Date()}
+					minDate={this.state.minTime}
+					maxDate={this.state.maxTime}
+					handleDateChange={this.handleTimeChange}
+					mode='time'
+					configManager={this.props.configManager}
+				/>
+				{
+					this.state.modalVisibleAndroid &&
+					<DateTimePicker
+						mode="time"
+						value={this.state.chosenTime}
+						onChange={(event, date) => this.setTime(date)}
+					/>
+				}
+			</>
 		);
 	}
 }

@@ -18,6 +18,7 @@
 #include "AdaptiveNumberInputRenderer.h"
 #include "AdaptiveRenderContext.h"
 #include "AdaptiveRichTextBlockRenderer.h"
+#include "AdaptiveTableRenderer.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "AdaptiveTimeInputRenderer.h"
@@ -28,10 +29,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration() {}
 
@@ -108,7 +109,7 @@ namespace AdaptiveNamespace
         return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
     }
 
-    SharedModelElementParser::SharedModelElementParser(AdaptiveNamespace::AdaptiveElementParserRegistration* parserRegistration)
+    SharedModelElementParser::SharedModelElementParser(AdaptiveCards::Rendering::Uwp::AdaptiveElementParserRegistration* parserRegistration)
     {
         ComPtr<AdaptiveElementParserRegistration> localParserRegistration(parserRegistration);
         localParserRegistration.AsWeak(&m_parserRegistration);

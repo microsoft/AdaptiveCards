@@ -108,15 +108,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
             {
                 if(m_onlineImageLoader != null)
                 {
-                    HttpRequestResult<Bitmap> loadedOnlineImage = m_onlineImageLoader.loadOnlineImage(path, this);
-                    if(loadedOnlineImage.getResult() != null)
-                    {
-                        return new HttpRequestResult(styleBitmap(loadedOnlineImage.getResult()));
-                    }
-                    else
-                    {
-                        return loadedOnlineImage;
-                    }
+                    return m_onlineImageLoader.loadOnlineImage(path, this);
                 }
                 else
                 {
@@ -138,15 +130,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
 
                     if(m_onlineImageLoader != null)
                     {
-                        HttpRequestResult<Bitmap> loadedOnlineImage = m_onlineImageLoader.loadOnlineImage(url.toString(), this);
-                        if(loadedOnlineImage.getResult() != null)
-                        {
-                            return new HttpRequestResult(styleBitmap(loadedOnlineImage.getResult()));
-                        }
-                        else
-                        {
-                            return loadedOnlineImage;
-                        }
+                        return m_onlineImageLoader.loadOnlineImage(url.toString(), this);
                     }
                     else
                     {
@@ -175,7 +159,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         }
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        bitmap = styleBitmap(bitmap);
 
         if (bitmap == null)
         {
@@ -200,7 +183,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
 
         InputStream ins = resources.openRawResource(identifier);
         Bitmap bitmap = BitmapFactory.decodeStream(ins);
-        bitmap = styleBitmap(bitmap);
         if (bitmap == null)
         {
             throw new IOException("Failed to convert local content to bitmap: " + url);
@@ -215,7 +197,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     {
         Uri uri = Uri.parse(url);
         Bitmap bm = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
-        bm = styleBitmap(bm);
         if (bm == null)
         {
             throw  new IOException("Failed to convert local content image to bitmap: " + url);
@@ -231,7 +212,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
 
         byte[] decodedByteArray = Util.getBytes(decodedDataUri);
         Bitmap bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
-        bitmap = styleBitmap(bitmap);
         return new HttpRequestResult<>(bitmap);
     }
 
@@ -244,7 +224,13 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         m_onlineImageLoader = onlineImageLoader;
     }
 
-    // By default, this function keeps the bitmap as is
+    /**
+     * Override this method to transform the resolved image before it is rendered.
+     * The result of this method will be passed to {@link #onSuccessfulPostExecute}.
+     * Default implementation applies no transformations.
+     * @param bitmap the resolved image
+     * @return the transformed image
+     */
     public Bitmap styleBitmap(Bitmap bitmap)
     {
         return bitmap;
@@ -256,7 +242,10 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         if (result.isSuccessful())
         {
             Bitmap image = result.getResult();
-            image.setDensity(DisplayMetrics.DENSITY_DEFAULT);
+            if(image != null) {
+                image = styleBitmap(image);
+                image.setDensity(DisplayMetrics.DENSITY_DEFAULT);
+            }
             onSuccessfulPostExecute(image);
         }
         else

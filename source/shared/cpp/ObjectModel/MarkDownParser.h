@@ -8,7 +8,7 @@
 #include "MarkDownBlockParser.h"
 #include "MarkDownHtmlGenerator.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class MarkDownParser
     {
@@ -16,6 +16,8 @@ namespace AdaptiveSharedNamespace
         MarkDownParser(const std::string& txt);
 
         std::string TransformToHtml();
+
+        std::string GetRawText() const;
 
         bool HasHtmlTags();
 

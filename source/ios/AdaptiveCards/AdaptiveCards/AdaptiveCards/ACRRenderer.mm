@@ -14,7 +14,6 @@
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRImageRenderer.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
@@ -78,14 +77,24 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
 
+    std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+
+    if (!actions.empty()) {
+        [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config hash:iOSInternalIdHash(adaptiveCard->GetInternalId().Hash())];
+    }
+
+    // set context
+    ACOAdaptiveCard *wrapperCard = [[ACOAdaptiveCard alloc] init];
+    [wrapperCard setCard:adaptiveCard];
+
+    [rootView.context pushCardContext:wrapperCard];
+
+    verticalView.rtl = rootView.context.rtl;
+
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
     if (selectAction) {
-        // instantiate and add tap gesture recognizer
-        [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
-                                                                           rootView:rootView
-                                                                      recipientView:verticalView
-                                                                      actionElement:selectAction
-                                                                         hostConfig:config];
+        ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+        [verticalView configureForSelectAction:acoSelectAction rootView:rootView];
     }
 
     if (adaptiveCard->GetMinHeight() > 0) {
@@ -117,19 +126,11 @@ using namespace AdaptiveCards;
         [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:@"backgroundImage" observerAction:observerAction];
     }
 
-    ACRContainerStyle style = ([config getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
+    ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle) ? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
     style = (style == ACRNone) ? ACRDefault : style;
     [verticalView setStyle:style];
 
-    [rootView addTasksToConcurrentQueue:body];
-
-    std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
-
-    if (!actions.empty()) {
-        [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
-    }
-
-    [rootView waitForAsyncTasksToFinish];
+    [rootView addBaseCardElementListToConcurrentQueue:body registration:[ACRRegistration getInstance]];
 
     UIView *leadingBlankSpace = nil;
     if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
@@ -149,6 +150,11 @@ using namespace AdaptiveCards;
         [card setCard:adaptiveCard];
         [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
     }
+
+    // renders background image for AdaptiveCard and an inner AdaptiveCard in a ShowCard
+    renderBackgroundImage(backgroundImageProperties, verticalView, rootView);
+
+    [rootView.context popCardContext:wrapperCard];
 
     return verticalView;
 }
@@ -240,6 +246,8 @@ using namespace AdaptiveCards;
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
     }
+
+    [view toggleVisibilityOfFirstView];
 
     return view;
 }

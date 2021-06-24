@@ -1,12 +1,12 @@
-import {BaseModel} from './base-model'
+import { BaseModel } from './base-model'
 import { ElementType } from '../utils/enums'
 
 
 export class TextBlockModel extends BaseModel {
     type = ElementType.TextBlock;
 
-    constructor(payload, parent) {
-        super(payload, parent);
+    constructor(payload, parent, hostConfig) {
+        super(payload, parent, hostConfig);
         this.text = payload.text;
         this.color = payload.color;
         this.horizontalAlignment = payload.horizontalAlignment;
@@ -16,14 +16,15 @@ export class TextBlockModel extends BaseModel {
         this.weight = payload.weight;
         this.wrap = payload.wrap || false;
         this.fontStyle = payload.fontStyle;
+        this.altText = payload.altText;
     }
 }
 
 export class ImageModel extends BaseModel {
     type = ElementType.Image;
 
-    constructor(payload, parent) {
-        super(payload, parent);
+    constructor(payload, parent, hostConfig) {
+        super(payload, parent, hostConfig);
         this.url = payload.url;
         this.altText = payload.altText;
         this.horizontalAlignment = payload.horizontalAlignment;
@@ -40,8 +41,8 @@ export class MediaModel extends BaseModel {
     type = ElementType.Media;
     sources = [];
 
-    constructor(payload, parent) {
-        super(payload, parent);
+    constructor(payload, parent, hostConfig) {
+        super(payload, parent, hostConfig);
 
         if (payload.sources) {
             payload.sources.forEach((item) => {
@@ -58,8 +59,8 @@ export class MediaModel extends BaseModel {
 export class RichTextBlockModel extends BaseModel {
     type = ElementType.RichTextBlock;
 
-    constructor(payload, parent) {
-        super(payload, parent);
+    constructor(payload, parent, hostConfig) {
+        super(payload, parent, hostConfig);
         this.text = payload.text;
         this.color = payload.color;
         this.horizontalAlignment = payload.horizontalAlignment;

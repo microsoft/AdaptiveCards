@@ -18,6 +18,7 @@ using namespace AdaptiveCards;
 @implementation ACOHostConfig {
     std::shared_ptr<HostConfig> _config;
     NSMutableDictionary<NSString *, NSString *> *_fontFamilyNames;
+    NSMutableDictionary<NSNumber *, NSNumber *> *_iconPlacements;
 }
 
 - (instancetype)init
@@ -33,12 +34,12 @@ using namespace AdaptiveCards;
     if (self && config) {
         _config = config;
         _fontFamilyNames = [NSMutableDictionary dictionary];
+        _iconPlacements = [NSMutableDictionary dictionary];
 
         // check if requested font family name is supported by iOS, if so save it for future uses
         [self importFontFamily:AdaptiveCards::FontType::Default];
         [self importFontFamily:AdaptiveCards::FontType::Monospace];
 
-        _allActionsHaveIcons = YES;
         _buttonPadding = 5;
         if (!_config->GetImageBaseUrl().empty()) {
             NSString *tmpURLString = [NSString stringWithCString:_config->GetImageBaseUrl().c_str() encoding:NSUTF8StringEncoding];
@@ -51,9 +52,13 @@ using namespace AdaptiveCards;
 - (void)importFontFamily:(AdaptiveCards::FontType)type
 {
     NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(type).c_str() encoding:NSUTF8StringEncoding];
-    if ([UIFont.familyNames containsObject:requestedFontFamilyName]) {
-        NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
-        _fontFamilyNames[key] = requestedFontFamilyName;
+    NSSet<NSString *> *fontFamilySet = [NSSet setWithArray:UIFont.familyNames];
+    for (NSString *fontName in [requestedFontFamilyName componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@","]]) {
+        if ([fontFamilySet containsObject:fontName]) {
+            NSString *key = [NSString stringWithCString:FontTypeToString(type).c_str() encoding:NSUTF8StringEncoding];
+            _fontFamilyNames[key] = fontName;
+            break;
+        }
     }
 }
 
@@ -132,15 +137,15 @@ using namespace AdaptiveCards;
     return _config->GetFontSize(type, txtSz);
 }
 
-+ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment
++ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment context:(ACORenderContext *)context
 {
     switch (alignment) {
         case HorizontalAlignment::Center:
             return NSTextAlignmentCenter;
         case HorizontalAlignment::Left:
-            return NSTextAlignmentLeft;
+            return (context.rtl == ACRRtlRTL) ? NSTextAlignmentRight : NSTextAlignmentLeft;
         case HorizontalAlignment::Right:
-            return NSTextAlignmentRight;
+            return (context.rtl == ACRRtlRTL) ? NSTextAlignmentLeft : NSTextAlignmentRight;
         default:
             return NSTextAlignmentLeft;
     }
@@ -164,30 +169,48 @@ using namespace AdaptiveCards;
     return _config->GetFontWeight(type, weight);
 }
 
-- (CGSize)getImageSize:(ImageSize)imageSize
+- (CGSize)getImageSizeAsCGSize:(ACRImageSize)imageSize width:(CGFloat)width height:(CGFloat)height
 {
-    float sz;
+    float sz = 0.0f;
     switch (imageSize) {
-        case ImageSize::Large: {
+        case ACRImageSizeLarge:
             sz = _config->GetImageSizes().largeSize;
             break;
-        }
-        case ImageSize::Medium: {
+
+        case ACRImageSizeMedium:
             sz = _config->GetImageSizes().mediumSize;
             break;
-        }
 
-        case ImageSize::Small: {
+        case ACRImageSizeStretch:
+        case ACRImageSizeSmall:
             sz = _config->GetImageSizes().smallSize;
             break;
-        }
 
-        default: {
-            sz = _config->GetImageSizes().largeSize;
+        case ACRImageSizeExplicit: {
+            BOOL isAspectRatioNeeded = !(width && height);
+            CGSize imageSizeAsCGSize = CGSizeZero;
+            if (width) {
+                imageSizeAsCGSize.width = width;
+                if (isAspectRatioNeeded) {
+                    imageSizeAsCGSize.height = width;
+                }
+            }
+
+            if (height) {
+                imageSizeAsCGSize.height = height;
+                if (isAspectRatioNeeded) {
+                    imageSizeAsCGSize.width = height;
+                }
+            }
+            return imageSizeAsCGSize;
         }
+        case ACRImageSizeNone:
+        case ACRImageSizeAuto:
+        default:
+            return CGSizeZero;
     }
-    CGSize cgSize = CGSizeMake(sz, sz);
-    return cgSize;
+
+    return CGSizeMake(sz, sz);
 }
 
 + (NSArray *)getConstraintsForImageAlignment:(HorizontalAlignment)alignment
@@ -408,5 +431,15 @@ using namespace AdaptiveCards;
         return ACRAboveTitle;
     }
     return ACRLeftOfTitle;
+}
+
+- (NSNumber *)getIconPlacement:(NSNumber *)internalId
+{
+    return [_iconPlacements objectForKey:internalId];
+}
+
+- (void)setIconPlacement:(NSNumber *)internalId placement:(BOOL)placement
+{
+    [_iconPlacements setObject:[NSNumber numberWithBool:placement] forKey:internalId];
 }
 @end

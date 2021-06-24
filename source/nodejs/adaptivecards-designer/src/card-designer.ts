@@ -9,6 +9,7 @@ import * as DesignerPeers from "./designer-peers";
 import { OpenSampleDialog } from "./open-sample-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
+import { OpenImageDialog } from "./open-image-dialog";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
 import { IPoint, Utils, defaultHostConfig } from "./miscellaneous";
@@ -57,6 +58,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _startDragPayload: object;
     private _toolPaletteToolbox: Toolbox;
     private _propertySheetToolbox: Toolbox;
+    private _propertySheetCard: Adaptive.AdaptiveCard;
     private _treeViewToolbox: Toolbox;
     private _jsonEditorsPanel: SidePanel;
     private _cardEditorToolbox: Toolbox;
@@ -117,16 +119,16 @@ export class CardDesigner extends Designer.DesignContext {
 
     private buildPropertySheet(peer: DesignerPeers.DesignerPeer) {
         if (this._propertySheetToolbox.content) {
+            // if focus is already on _propertySheetCard, remember the focused object's id
+            const restoreFocusId = this._propertySheetCard?.findDOMNodeOwner(document.activeElement)?.id;
             this._propertySheetToolbox.content.innerHTML = "";
 
-            let card: Adaptive.AdaptiveCard;
-
             if (peer) {
-                card = peer.buildPropertySheetCard(this);
+                this._propertySheetCard = peer.buildPropertySheetCard(this);
             }
             else {
-                card = new Adaptive.AdaptiveCard();
-                card.parse(
+                this._propertySheetCard = new Adaptive.AdaptiveCard();
+                this._propertySheetCard.parse(
                     {
                         type: "AdaptiveCard",
                         version: "1.0",
@@ -145,17 +147,23 @@ export class CardDesigner extends Designer.DesignContext {
                     },
                     new Adaptive.SerializationContext(this.targetVersion)
                 );
-                card.padding = new Adaptive.PaddingDefinition(
+                this._propertySheetCard.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small
-                )
+                );
             }
 
-            card.hostConfig = defaultHostConfig;
+            this._propertySheetCard.hostConfig = defaultHostConfig;
 
-            this._propertySheetToolbox.content.appendChild(card.render());
+            this._propertySheetToolbox.content.appendChild(this._propertySheetCard.render());
+
+            if (restoreFocusId) {
+                // attempt to restore focus if new card has object with same id
+                const focusTarget = this._propertySheetCard.getElementById(restoreFocusId) ?? this._propertySheetCard.getActionById(restoreFocusId);
+                focusTarget?.renderedElement?.focus();
+            }
         }
     }
 
@@ -224,14 +232,19 @@ export class CardDesigner extends Designer.DesignContext {
         }
 
         for (let category in categorizedTypes) {
+
+            let categoryList = document.createElement('div');
+            categoryList.setAttribute("aria-label", category)
+
             let node = document.createElement('div');
+            categoryList.appendChild(node);
             node.innerText = category;
             node.className = "acd-palette-category";
 
-            this._toolPaletteToolbox.content.appendChild(node);
+            this._toolPaletteToolbox.content.appendChild(categoryList);
 
             for (var i = 0; i < categorizedTypes[category].length; i++) {
-                this.addPaletteItem(categorizedTypes[category][i], this._toolPaletteToolbox.content);
+                this.addPaletteItem(categorizedTypes[category][i], categoryList);
             }
         }
     }
@@ -239,7 +252,7 @@ export class CardDesigner extends Designer.DesignContext {
     private endDrag() {
         if (this._draggedPaletteItem) {
             this._draggedPaletteItem.endDrag();
-            this._draggedElement.remove();
+            this._draggedElement.parentNode.removeChild(this._draggedElement);
 
             this._draggedPaletteItem = null;
             this._draggedElement = null;
@@ -581,7 +594,7 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    private _targetVersion: Adaptive.Version = Adaptive.Versions.v1_3;
+    private _targetVersion: Adaptive.Version = Adaptive.Versions.latest;
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
@@ -601,10 +614,10 @@ export class CardDesigner extends Designer.DesignContext {
             this._versionChoicePicker.alignment = ToolbarElementAlignment.Right;
             this._versionChoicePicker.separator = true;
 
-            for (let i = 0; i < Shared.SupportedTargetVersions.length; i++) {
+            for (let i = 0; i < Shared.GlobalSettings.supportedTargetVersions.length; i++) {
                 this._versionChoicePicker.choices.push(
                     {
-                        name: Shared.SupportedTargetVersions[i].label,
+                        name: Shared.GlobalSettings.supportedTargetVersions[i].label,
                         value: i.toString()
                     });
             }
@@ -623,14 +636,15 @@ export class CardDesigner extends Designer.DesignContext {
                 dialog.width = "80%";
                 dialog.height = "80%";
                 dialog.onClose = (d) => {
-                    if (dialog.selectedSample) {
+                    if (dialog.selectedSample && dialog.selectedSample.cardId !== "PIC_2_CARD") {
+                        const newCardButton = this._newCardButton.renderedElement;
                         dialog.selectedSample.onDownloaded = () => {
                             try {
                                 let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
 
                                 this.setCardPayload(cardPayload, true);
                             } catch {
-                                alert("The sample could not be loaded.")
+                                alert("The sample could not be loaded.");
                             }
 
                             if (dialog.selectedSample.sampleData) {
@@ -639,19 +653,23 @@ export class CardDesigner extends Designer.DesignContext {
 
                                     this.setSampleDataPayload(sampleDataPayload);
                                     this.dataStructure = FieldDefinition.deriveFrom(sampleDataPayload);
-                                }
-                                catch {
+                                } catch {
                                     alert("The sample could not be loaded.")
                                 }
                             }
                         };
                         dialog.selectedSample.download();
-                    }
+                        if (newCardButton) {
+                            newCardButton.focus();
+                        }
+                    } else if (dialog.selectedSample && dialog.selectedSample.cardId === "PIC_2_CARD") {
+                        this.launchImagePopup();
+                    } else {
+                        const newCardButton = this._newCardButton.renderedElement;
 
-                    const newCardButton = this._newCardButton.renderedElement;
-
-                    if (newCardButton) {
-                        newCardButton.focus();
+                        if (newCardButton) {
+                            newCardButton.focus();
+                        }
                     }
                 };
                 dialog.open();
@@ -664,7 +682,6 @@ export class CardDesigner extends Designer.DesignContext {
             this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
             this._hostContainerChoicePicker.separator = true;
             this._hostContainerChoicePicker.label = "Select host app:"
-            this._hostContainerChoicePicker.width = 350;
 
             for (let i = 0; i < this._hostContainers.length; i++) {
                 this._hostContainerChoicePicker.choices.push(
@@ -676,7 +693,7 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
-                this.hostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
+                this.hostContainer = this._hostContainers[parseInt(this._hostContainerChoicePicker.value)];
 
                 this.activeHostContainerChanged();
             };
@@ -692,7 +709,6 @@ export class CardDesigner extends Designer.DesignContext {
         this._undoButton.separator = true;
         this._undoButton.toolTip = "Undo your last change";
         this._undoButton.isEnabled = false;
-        this._undoButton.displayCaption = false;
 
         this.toolbar.addElement(this._undoButton);
 
@@ -703,7 +719,6 @@ export class CardDesigner extends Designer.DesignContext {
             (sender: ToolbarButton) => { this.redo(); });
         this._redoButton.toolTip = "Redo your last changes";
         this._redoButton.isEnabled = false;
-        this._redoButton.displayCaption = false;
 
         this.toolbar.addElement(this._redoButton);
 
@@ -741,6 +756,46 @@ export class CardDesigner extends Designer.DesignContext {
 
             this.updateFullLayout();
         }
+    }
+
+    private launchImagePopup() {
+        let dialog = new OpenImageDialog();
+        dialog.title = "Pic2card Dialog for Image Upload";
+        dialog.closeButton.caption = "Cancel";
+        dialog.preventLightDismissal = true;
+        dialog.width = "80%";
+        dialog.height = "80%";
+        dialog.open();
+        dialog.onClose = (d) => {
+            const newCardButton = this._newCardButton.renderedElement;
+
+            if (dialog.predictedCardJSON) {
+                const { card, data } = dialog.predictedCardJSON;
+                const addToUndoStack = true;
+
+                this.setCardPayload(card, addToUndoStack);
+                this.setSampleDataPayload(data);
+
+                let loadNotification = document.createElement("span");
+                loadNotification.id = "pic2cardLoadNotification";
+                loadNotification.setAttribute("role", "status");
+                loadNotification.setAttribute("aria-label", "Pic2Card generated Adaptive Card loaded");
+
+                // It's a bit odd to jump up to the parent element here, but we need a place to park this empty element
+                // so that it's seen by accessibility tools. If we put it on the button itself, the status message gets
+                // read twice (once on DOM entry and again on focus).
+                newCardButton.parentElement.appendChild(loadNotification);
+
+                // element needs to enter the DOM, but shouldn't stay forever, lest it be read again...
+                setTimeout(() => {
+                    newCardButton.parentElement.removeChild(loadNotification);
+                }, 500);
+            }
+
+            if (newCardButton) {
+                newCardButton.focus();
+            }
+        };
     }
 
     private onResize() {
@@ -984,9 +1039,9 @@ export class CardDesigner extends Designer.DesignContext {
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
         if (this._versionChoicePicker) {
-            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(this.targetVersion);
+            this._versionChoicePicker.selectedIndex = Shared.GlobalSettings.supportedTargetVersions.indexOf(this.targetVersion);
             this._versionChoicePicker.onChanged = (sender: ToolbarChoicePicker) => {
-                this.targetVersion = Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
+                this.targetVersion = Shared.GlobalSettings.supportedTargetVersions[parseInt(this._versionChoicePicker.value)];
             }
         }
 
@@ -1184,7 +1239,7 @@ export class CardDesigner extends Designer.DesignContext {
                 this.targetVersionChanged();
 
                 if (this._versionChoicePicker) {
-                    this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(this._targetVersion);
+                    this._versionChoicePicker.selectedIndex = Shared.GlobalSettings.supportedTargetVersions.indexOf(this._targetVersion);
                 }
             }
             finally {

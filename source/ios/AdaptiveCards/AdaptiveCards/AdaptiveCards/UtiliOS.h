@@ -1,10 +1,12 @@
 //
 //  UtiliOS
 //
-//  Copyfight © 2019 Microsoft. All rights reserved.
+//  Copyfight © 2021 Microsoft. All rights reserved.
 //
 
+#import "ACORenderContext.h"
 #import "ACRErrors.h"
+#import "ACRIBaseCardElementRenderer.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
@@ -24,6 +26,10 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo);
 
+void configRtl(UIView *view, ACORenderContext *context);
+
+ACRRtl getiOSRtl(std::optional<bool> const rtl);
+
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig);
 
@@ -31,13 +37,15 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                  ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview);
 
 void renderBackgroundImage(const std::shared_ptr<BackgroundImage> backgroundImageProperties,
-                           UIView *containerView, ACRView *rootView);
+                           ACRContentStackView *containerView, ACRView *rootView);
 
-void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
+void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *img);
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
                                      UIImageView *imageView, UIImage *img);
+
+void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView);
 
 ObserverActionBlock generateBackgroundImageObserverAction(
     std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer,
@@ -58,13 +66,17 @@ void removeLastViewFromCollectionView(const CardElementType elemType,
                                       UIView<ACRIContentHoldingView> *view);
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
-                                        std::shared_ptr<BaseActionElement> const &action,
+                                        ACOBaseActionElement *action,
                                         UIButton *button, NSObject **target);
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
-                               std::shared_ptr<BaseActionElement> const &action, NSObject **target);
+                               ACOBaseActionElement *action, NSObject **target);
 
-void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, RichTextElementProperties &textProp);
+void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action);
+
+void TexStylesToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock,
+                                          const TextStyleConfig &textStyleConfig,
+                                          RichTextElementProperties &textProp);
 
 void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp);
 
@@ -87,3 +99,24 @@ void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
 
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
+
+CGSize getAspectRatio(CGSize size);
+
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
+
+void printSize(NSString *msg, CGSize size);
+
+NSData *JsonToNSData(const Json::Value &blob);
+
+void partitionActions(
+    const std::vector<std::shared_ptr<BaseActionElement>> &elems,
+    std::vector<std::shared_ptr<BaseActionElement>> &primary,
+    std::vector<std::shared_ptr<BaseActionElement>> &secondary,
+    unsigned int maxActions,
+    ACRView *rootView);
+
+UIImage *scaleImageToSize(UIImage *image, CGSize newSize);
+
+NSNumber *iOSInternalIdHash(const std::size_t internalIdHash);

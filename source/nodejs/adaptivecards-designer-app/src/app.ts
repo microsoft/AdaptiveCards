@@ -28,6 +28,16 @@ window.onload = function() {
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom title";
     */
 
+	// Uncomment to configure pic2card service
+	/*
+	ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>>";
+    */
+
+    // To Configure path for pic2card image usage policy
+    /*
+    ACDesigner.Pic2Card.privacyLink = "../myPath/privacy";
+    */
+
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
@@ -67,7 +77,7 @@ window.onload = function() {
                         type: "Image",
                         size: "Small",
                         style: "Person",
-                        url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                        url: "https://matthidinger.com/images/bio-photo.jpg"
                     }
                 ]
             },
@@ -101,7 +111,7 @@ window.onload = function() {
         description: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
         creator: {
             name: "Matt Hidinger",
-            profileImage: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+            profileImage: "https://matthidinger.com/images/bio-photo.jpg"
         },
         createdUtc: "2017-02-14T06:08:39Z",
         viewUrl: "https://adaptivecards.io",
@@ -143,7 +153,7 @@ window.onload = function() {
                         name: "profileImage",
                         displayName: "Profile image URL",
                         valueType: "String",
-                        sampleValue: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                        sampleValue: "https://matthidinger.com/images/bio-photo.jpg"
                     }
                 ]
             },

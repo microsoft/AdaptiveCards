@@ -11,7 +11,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -23,7 +23,7 @@ using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveNamespace::XamlHelpers
+namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 {
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
@@ -98,7 +98,7 @@ namespace AdaptiveNamespace::XamlHelpers
         RETURN_IF_FAILED(parentPanel->get_Children(&children));
 
         bool foundPreviousVisibleElement = false;
-        XamlHelpers::IterateOverVector<UIElement, IUIElement>(children.Get(), [&](IUIElement* child) {
+        IterateOverVector<UIElement, IUIElement>(children.Get(), [&](IUIElement* child) {
             ComPtr<IUIElement> localChild(child);
 
             ComPtr<IFrameworkElement> childAsFrameworkElement;
@@ -150,16 +150,16 @@ namespace AdaptiveNamespace::XamlHelpers
                                     _In_ IBorder* containerBorder,
                                     _In_ IAdaptiveRenderContext* renderContext,
                                     _In_ IAdaptiveRenderArgs* renderArgs,
-                                    _Out_ ABI::AdaptiveNamespace::ContainerStyle* containerStyle)
+                                    _Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* containerStyle)
     {
-        ABI::AdaptiveNamespace::ContainerStyle localContainerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle localContainerStyle;
         RETURN_IF_FAILED(adaptiveContainer->get_Style(&localContainerStyle));
 
-        ABI::AdaptiveNamespace::ContainerStyle parentContainerStyle;
+        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle parentContainerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
 
         bool hasExplicitContainerStyle{true};
-        if (localContainerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
+        if (localContainerStyle == ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
             localContainerStyle = parentContainerStyle;
@@ -175,6 +175,9 @@ namespace AdaptiveNamespace::XamlHelpers
         RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
         DOUBLE paddingAsDouble = static_cast<DOUBLE>(padding);
 
+        boolean addContainerPadding;
+        RETURN_IF_FAILED(renderArgs->get_AddContainerPadding(&addContainerPadding));
+
         // If container style was explicitly assigned, apply background color and padding
         if (hasExplicitContainerStyle)
         {
@@ -184,37 +187,43 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
 
             // If the container style doesn't match its parent apply padding.
-            if (localContainerStyle != parentContainerStyle)
-            {
-                Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
-                RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
-            }
+            addContainerPadding |= (localContainerStyle != parentContainerStyle);
+        }
+
+        if (addContainerPadding)
+        {
+            Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
+            RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
         }
 
         // Find out which direction(s) we bleed in, and apply a negative margin to cause the
         // container to bleed
-        ABI::AdaptiveNamespace::BleedDirection bleedDirection;
+        ABI::AdaptiveCards::Rendering::Uwp::BleedDirection bleedDirection;
         RETURN_IF_FAILED(adaptiveContainer->get_BleedDirection(&bleedDirection));
 
         Thickness marginThickness = {0};
-        if (bleedDirection != ABI::AdaptiveNamespace::BleedDirection::None)
+        if (bleedDirection != ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
         {
-            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Left) != ABI::AdaptiveNamespace::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::Left) !=
+                ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
             {
                 marginThickness.Left = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Right) != ABI::AdaptiveNamespace::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::Right) !=
+                ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
             {
                 marginThickness.Right = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Up) != ABI::AdaptiveNamespace::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::Up) !=
+                ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
             {
                 marginThickness.Top = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveNamespace::BleedDirection::Down) != ABI::AdaptiveNamespace::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::Down) !=
+                ABI::AdaptiveCards::Rendering::Uwp::BleedDirection::None)
             {
                 marginThickness.Bottom = -paddingAsDouble;
             }
@@ -237,6 +246,39 @@ namespace AdaptiveNamespace::XamlHelpers
         return Boolify(supportsInteractivity);
     }
 
+    GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
+    {
+        const boolean isValidWidth = isAuto || isStretch || pixelWidth || isUnsetWidth || (ratioWidth > 0);
+
+        GridLength columnWidth;
+        if (!isVisible || isAuto || !isValidWidth)
+        {
+            // If the column isn't visible, or is set to "auto" or an invalid value ("-1", "foo"), set it to Auto
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
+            columnWidth.Value = 0;
+        }
+        else if (pixelWidth)
+        {
+            // If it's visible and pixel width is specified, use pixel width
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
+            columnWidth.Value = pixelWidth;
+        }
+        else if (isStretch || isUnsetWidth)
+        {
+            // If it's visible and stretch is specified, or width is unset, use stretch with default of 1
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.Value = 1;
+        }
+        else
+        {
+            // If it's visible and the user specified a valid non-pixel width, use that as a star width
+            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.Value = ratioWidth;
+        }
+
+        return columnWidth;
+    }
+
     HRESULT HandleColumnWidth(_In_ IAdaptiveColumn* column, boolean isVisible, _In_ IColumnDefinition* columnDefinition)
     {
         HString adaptiveColumnWidth;
@@ -254,34 +296,37 @@ namespace AdaptiveNamespace::XamlHelpers
         UINT32 pixelWidth = 0;
         RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
 
-        // Valid widths are "auto", "stretch", a pixel width ("50px"), unset, or a value greater than 0 to use as a star value ("2")
-        const boolean isValidWidth = isAuto || isStretch || pixelWidth || !adaptiveColumnWidth.IsValid() || (widthAsDouble > 0);
+        GridLength columnWidth =
+            CalculateColumnWidth(isVisible, isAuto, isStretch, !adaptiveColumnWidth.IsValid(), pixelWidth, widthAsDouble);
 
-        GridLength columnWidth;
-        if (!isVisible || isAuto || !isValidWidth)
+        RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
+
+        return S_OK;
+    }
+
+    HRESULT HandleTableColumnWidth(_In_ IAdaptiveTableColumnDefinition* column, _In_ IColumnDefinition* columnDefinition)
+    {
+        ComPtr<IReference<UINT32>> width;
+        RETURN_IF_FAILED(column->get_Width(&width));
+
+        UINT32 widthValue = 0;
+        if (width != nullptr)
         {
-            // If the column isn't visible, or is set to "auto" or an invalid value ("-1", "foo"), set it to Auto
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
-            columnWidth.Value = 0;
+            RETURN_IF_FAILED(width->get_Value(&widthValue));
         }
-        else if (pixelWidth)
+
+        ComPtr<IReference<UINT32>> pixelWidth;
+        RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
+
+        UINT32 pixelWidthValue = 0;
+        if (pixelWidth != nullptr)
         {
-            // If it's visible and pixel width is specified, use pixel width
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
-            columnWidth.Value = pixelWidth;
+            RETURN_IF_FAILED(pixelWidth->get_Value(&pixelWidthValue));
         }
-        else if (isStretch || !adaptiveColumnWidth.IsValid())
-        {
-            // If it's visible and stretch is specified, or width is unset, use stretch with default of 1
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
-            columnWidth.Value = 1;
-        }
-        else
-        {
-            // If it's visible and the user specified a valid non-pixel width, use that as a star width
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
-            columnWidth.Value = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
-        }
+
+        bool isWidthUnset = (width == nullptr) && (pixelWidth == nullptr);
+
+        GridLength columnWidth = CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidthValue, widthValue);
 
         RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
 
@@ -323,7 +368,7 @@ namespace AdaptiveNamespace::XamlHelpers
         ComPtr<IImage> xamlImage;
         THROW_IF_FAILED(background.As(&xamlImage));
 
-        ABI::AdaptiveNamespace::BackgroundImageFillMode fillMode;
+        ABI::AdaptiveCards::Rendering::Uwp::BackgroundImageFillMode fillMode;
         THROW_IF_FAILED(backgroundImage->get_FillMode(&fillMode));
 
         // Creates the background image for all fill modes
@@ -376,7 +421,7 @@ namespace AdaptiveNamespace::XamlHelpers
         ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
         RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
 
-        ABI::AdaptiveNamespace::FallbackType elementFallback;
+        ABI::AdaptiveCards::Rendering::Uwp::FallbackType elementFallback;
         RETURN_IF_FAILED(currentElement->get_FallbackType(&elementFallback));
 
         HString elementType;
@@ -386,7 +431,7 @@ namespace AdaptiveNamespace::XamlHelpers
         ComPtr<IUIElement> fallbackControl;
         switch (elementFallback)
         {
-        case ABI::AdaptiveNamespace::FallbackType::Content:
+        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Content:
         {
             // We have content, get the type of the fallback element
             ComPtr<IAdaptiveCardElement> fallbackElement;
@@ -427,14 +472,14 @@ namespace AdaptiveNamespace::XamlHelpers
             fallbackHandled = true;
             break;
         }
-        case ABI::AdaptiveNamespace::FallbackType::Drop:
+        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Drop:
         {
             // If the fallback is drop, nothing to do but warn
             RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, elementType.Get()));
             fallbackHandled = true;
             break;
         }
-        case ABI::AdaptiveNamespace::FallbackType::None:
+        case ABI::AdaptiveCards::Rendering::Uwp::FallbackType::None:
         default:
         {
             break;
@@ -458,7 +503,7 @@ namespace AdaptiveNamespace::XamlHelpers
                 // standard unknown element handling
                 std::wstring errorString = L"No Renderer found for type: ";
                 errorString += elementType.GetRawBuffer(nullptr);
-                RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::NoRendererForType,
+                RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::NoRendererForType,
                                                            HStringReference(errorString.c_str()).Get()));
                 return S_OK;
             }
@@ -476,7 +521,7 @@ namespace AdaptiveNamespace::XamlHelpers
                                        _Out_ ABI::Windows::UI::Color* separatorColor,
                                        _Out_ bool* needsSeparator)
     {
-        ABI::AdaptiveNamespace::Spacing elementSpacing;
+        ABI::AdaptiveCards::Rendering::Uwp::Spacing elementSpacing;
         THROW_IF_FAILED(cardElement->get_Spacing(&elementSpacing));
 
         UINT localSpacing;
@@ -496,7 +541,7 @@ namespace AdaptiveNamespace::XamlHelpers
             THROW_IF_FAILED(separatorConfig->get_LineThickness(&localThickness));
         }
 
-        *needsSeparator = hasSeparator || (elementSpacing != ABI::AdaptiveNamespace::Spacing::None);
+        *needsSeparator = hasSeparator || (elementSpacing != ABI::AdaptiveCards::Rendering::Uwp::Spacing::None);
 
         *spacing = localSpacing;
         *separatorThickness = localThickness;
@@ -532,7 +577,7 @@ namespace AdaptiveNamespace::XamlHelpers
                 RETURN_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
             }
 
-            ABI::AdaptiveNamespace::HeightType heightType{};
+            ABI::AdaptiveCards::Rendering::Uwp::HeightType heightType{};
             RETURN_IF_FAILED(element->get_Height(&heightType));
 
             ComPtr<ElementTagContent> tagContent;
@@ -584,7 +629,7 @@ namespace AdaptiveNamespace::XamlHelpers
             if (parentWidth >= pixelWidth)
             {
                 // Make sure to keep the aspect ratio of the image
-                maxWidth = min(maxWidth, parentWidth);
+                maxWidth = std::min(maxWidth, parentWidth);
                 double aspectRatio = (double)pixelHeight / pixelWidth;
                 maxHeight = maxWidth * aspectRatio;
             }
@@ -598,12 +643,12 @@ namespace AdaptiveNamespace::XamlHelpers
             // don't need to set both width and height when image size is auto since
             // we want a circle as shape.
             // max value for width should be set since adaptive cards is constrained horizontally
-            RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+            RETURN_IF_FAILED(localElement->put_MaxWidth(std::min(maxWidth, static_cast<DOUBLE>(pixelWidth))));
         }
         else
         {
-            RETURN_IF_FAILED(localElement->put_MaxHeight(min(maxHeight, pixelHeight)));
-            RETURN_IF_FAILED(localElement->put_MaxWidth(min(maxWidth, pixelWidth)));
+            RETURN_IF_FAILED(localElement->put_MaxHeight(std::min(maxHeight, static_cast<DOUBLE>(pixelHeight))));
+            RETURN_IF_FAILED(localElement->put_MaxWidth(std::min(maxWidth, static_cast<DOUBLE>(pixelWidth))));
         }
 
         if (setVisible)
@@ -654,17 +699,17 @@ namespace AdaptiveNamespace::XamlHelpers
         return S_OK;
     }
 
-    HRESULT FormatLabelRunWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                                         _In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* inputLabelConfig,
+    HRESULT FormatLabelRunWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* inputLabelConfig,
                                          _In_ boolean isHint,
                                          ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
     {
-        ABI::AdaptiveNamespace::ForegroundColor textColor;
+        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor;
 
         // If we're formatting a hint then use attention color
         if (isHint)
         {
-            textColor = ABI::AdaptiveNamespace::ForegroundColor::Attention;
+            textColor = ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor::Attention;
         }
         else
         {
@@ -681,19 +726,19 @@ namespace AdaptiveNamespace::XamlHelpers
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(color).Get()));
 
-        ABI::AdaptiveNamespace::TextSize textSize;
+        ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize;
         RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
-        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize));
+        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveCards::Rendering::Uwp::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
 
         return S_OK;
     }
 
-    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                                  _In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* inputLabelConfig,
+    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+                                  _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* inputLabelConfig,
                                   IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
     {
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines(inlines);
@@ -725,9 +770,9 @@ namespace AdaptiveNamespace::XamlHelpers
         return S_OK;
     }
 
-    HRESULT RenderInputLabel(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
-                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* /*renderArgs*/,
+    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* /*renderArgs*/,
                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl)
     {
         HString inputLabel;
@@ -804,7 +849,7 @@ namespace AdaptiveNamespace::XamlHelpers
         {
             // if there was no label but the input is required file a warning for the card author
             RETURN_IF_FAILED(renderContext->AddWarning(
-                ABI::AdaptiveNamespace::WarningStatusCode::EmptyLabelInRequiredInput,
+                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::EmptyLabelInRequiredInput,
                 HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
         }
 
@@ -812,7 +857,8 @@ namespace AdaptiveNamespace::XamlHelpers
     }
 
     // Error messages are formatted for text size and weight
-    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext, ITextBlock* errorMessage)
+    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                             ITextBlock* errorMessage)
     {
         ComPtr<ITextBlock> xamlErrorMessage(errorMessage);
 
@@ -826,28 +872,30 @@ namespace AdaptiveNamespace::XamlHelpers
         RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
 
         // Set size defined in host config
-        ABI::AdaptiveNamespace::TextSize textSize;
+        ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize;
         RETURN_IF_FAILED(errorMessageConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
-        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize));
+        RETURN_IF_FAILED(
+            GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveCards::Rendering::Uwp::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(xamlErrorMessage->put_FontSize(resultSize));
 
         // Set weight defined in host config
-        ABI::AdaptiveNamespace::TextWeight textWeight;
+        ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight;
         RETURN_IF_FAILED(errorMessageConfig->get_Weight(&textWeight));
 
         ABI::Windows::UI::Text::FontWeight resultWeight;
-        RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textWeight, &resultWeight));
+        RETURN_IF_FAILED(
+            GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveCards::Rendering::Uwp::FontType_Default, textWeight, &resultWeight));
 
         RETURN_IF_FAILED(xamlErrorMessage->put_FontWeight(resultWeight));
 
         return S_OK;
     }
 
-    HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
-                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+    HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* adaptiveInputElement,
+                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                     _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** errorMessageControl)
     {
         // Add the error message if present
@@ -887,7 +935,7 @@ namespace AdaptiveNamespace::XamlHelpers
     }
 
     HRESULT CreateValidationBorder(_In_ ABI::Windows::UI::Xaml::IUIElement* childElement,
-                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                    _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -939,7 +987,7 @@ namespace AdaptiveNamespace::XamlHelpers
             ComPtr<IAdaptiveLabelConfig> labelConfig;
             RETURN_IF_FAILED(inputsConfig->get_Label(labelConfig.GetAddressOf()));
 
-            ABI::AdaptiveNamespace::Spacing labelSpacing;
+            ABI::AdaptiveCards::Rendering::Uwp::Spacing labelSpacing;
             RETURN_IF_FAILED(labelConfig->get_InputSpacing(&labelSpacing));
 
             UINT spacing{};
@@ -1011,7 +1059,7 @@ namespace AdaptiveNamespace::XamlHelpers
             ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
             RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
 
-            ABI::AdaptiveNamespace::Spacing errorSpacing;
+            ABI::AdaptiveCards::Rendering::Uwp::Spacing errorSpacing;
             RETURN_IF_FAILED(errorMessageConfig->get_Spacing(&errorSpacing));
 
             UINT spacing{};
@@ -1090,7 +1138,7 @@ namespace AdaptiveNamespace::XamlHelpers
             if (!errorMessage.IsValid())
             {
                 RETURN_IF_FAILED(
-                    renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::MissingValidationErrorMessage,
+                    renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::MissingValidationErrorMessage,
                                               HStringReference(L"Inputs with validation should include an errorMessage").Get()));
             }
         }

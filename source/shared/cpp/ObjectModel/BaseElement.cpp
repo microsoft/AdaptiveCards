@@ -6,7 +6,7 @@
 #include "ParseUtil.h"
 #include "SemanticVersion.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     unsigned int InternalId::s_currentInternalId = 1;
 
@@ -59,7 +59,7 @@ namespace AdaptiveSharedNamespace
     void BaseElement::SetAdditionalProperties(const Json::Value& value) { m_additionalProperties = value; }
 
     // Given a map of what our host provides, determine if this element's requirements are satisfied.
-    bool BaseElement::MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& featureRegistration) const
+    bool BaseElement::MeetsRequirements(const AdaptiveCards::FeatureRegistration& featureRegistration) const
     {
         for (const auto& requirement : m_requires)
         {
@@ -87,19 +87,20 @@ namespace AdaptiveSharedNamespace
         return true;
     }
 
-    std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& BaseElement::GetRequirements()
+    std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& BaseElement::GetRequirements()
     {
         return m_requires;
     }
 
-    const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& BaseElement::GetRequirements() const
+    const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& BaseElement::GetRequirements() const
     {
         return m_requires;
     }
 
     Json::Value BaseElement::SerializeToJsonValue() const
     {
-        Json::Value root = GetAdditionalProperties(); // Create a copy of the additional properties by assigning the return value to a value, rather than reference, type
+        Json::Value root = GetAdditionalProperties(); // Create a copy of the additional properties by assigning the
+                                                      // return value to a value, rather than reference, type
 
         // Important -- we're explicitly getting the type as a string here because that's where we store the type that
         // was specified by the card author.
@@ -167,7 +168,7 @@ namespace AdaptiveSharedNamespace
                         catch (const AdaptiveCardParseException&)
                         {
                             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                "Invalid version in requires value: '" + memberValue + "'");
+                                                             "Invalid version in requires value: '" + memberValue + "'");
                         }
                     }
                 }

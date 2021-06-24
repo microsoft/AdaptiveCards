@@ -20,6 +20,10 @@ import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
 import * as Constants from './constants';
+import { CustomActionRenderer } from './custom-action-renderer';
+import { CustomTextBlockRenderer } from './custom-text-block';
+import { CustomActionButtonRenderer } from './custom-action-button';
+import { CustomImageRenderer } from './custom-image';
 
 export default class Renderer extends React.Component {
 
@@ -37,11 +41,15 @@ export default class Renderer extends React.Component {
 
     customHostConfig = {
         hostCapabilities: {
-            adaptiveCards:'1.2',
-            acTest:'1.3'
+            adaptiveCards: '1.2',
+            acTest: '1.3'
         },
         fontFamily: "Helvetica",
         supportsInteractivity: true,
+        actions: {
+            actionsOrientation: "Horizontal",
+            actionAlignment: "Stretch"
+        },
         fontSizes: {
             small: 12,
             default: 14,
@@ -50,6 +58,7 @@ export default class Renderer extends React.Component {
             extraLarge: 26
         }
     }
+
     customThemeConfig = {
         button: {
             backgroundColor: '#66BB6A'
@@ -116,7 +125,20 @@ export default class Renderer extends React.Component {
     }
 
     render() {
+        //Register Custom Components
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
+
+        //Register Custom Text Block Components
+        // Registry.getManager().registerComponent('TextBlock', CustomTextBlockRenderer);
+
+        //Register Custom Action Button Components
+        Registry.getManager().registerComponent('CustomActionButton', CustomActionButtonRenderer);
+
+        //Register Custom Image Components
+        Registry.getManager().registerComponent('CustomImage', CustomImageRenderer);
+
+        //Register Custom Actions
+        Registry.getManager().registerComponent('Action.Custom', CustomActionRenderer);
         let { isJSONVisible } = this.state;
 
         //We will update the payload with method bindPayloadWithData, if isDataBinding is true.
@@ -142,6 +164,8 @@ export default class Renderer extends React.Component {
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
+                        // cardScrollEnabled={false} //we can also set the scrollEnabled for the adaptive card. Default value is true
+                        // contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }} //we can also set the contentContainer Style for the adaptive card
                         // containerStyle={{width:100, height: 100, flexGrow:1, backgroundColor: 'lightblue'}} //we can also set the style for the adaptive card
                         // contentHeight={500} //we can also set the height of the adaptive card
                         ref="adaptiveCardRef" />
@@ -160,7 +184,16 @@ export default class Renderer extends React.Component {
                 'Rendered Submit',
                 JSON.stringify(actionObject.data),
                 [
-                    { text: "Okay", onPress: () => console.log('OK Pressed') },
+                    { text: actionObject.title, onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false }
+            )
+        } else if (actionObject.type === "Action.Execute") {
+            Alert.alert(
+                'Rendered Univeral Action',
+                JSON.stringify(actionObject.data) + "\n Verb is " + actionObject.verb,
+                [
+                    { text: actionObject.title, onPress: () => console.log('OK Pressed') },
                 ],
                 { cancelable: false }
             )
@@ -188,7 +221,7 @@ export default class Renderer extends React.Component {
     alertAction = (actionObject) => {
         Alert.alert(
             'Action',
-            JSON.stringify(actionObject),
+            JSON.stringify(actionObject.data) + "\ntype: " + actionObject.type,
             [
                 { text: "Okay", onPress: () => console.log('OK Pressed') },
             ],
@@ -217,10 +250,14 @@ export default class Renderer extends React.Component {
 const styles = StyleSheet.create({
     container: {
         padding: 10,
+        flex: 1,
         ...Platform.select({
             ios: {
                 paddingTop: 50,
                 marginBottom: Constants.IosBottomMargin, //Adaptive card starts from 84 pixel so we gave margin bottom as 84. Its purely for our renderer app, it will not impact adaptive card.
+            },
+            android: {
+                marginBottom: Constants.AndroidBottomMargin
             }
         }),
     },

@@ -10,12 +10,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize() noexcept { return S_OK; }
 
@@ -94,32 +94,32 @@ namespace AdaptiveNamespace
         return renderResult->get_UserInputs(value);
     }
 
-    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode, _In_ HSTRING message)
     {
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveError*>> errors;
+        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveError*>> errors;
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
 
-    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveNamespace::WarningStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode, _In_ HSTRING message)
     {
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> warnings;
+        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>> warnings;
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }
 
-    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
-                                                     ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
+                                                     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveShowCardAction* showCardAction,
                                                      ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
-                                                     ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+                                                     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -129,7 +129,7 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderContext::AddInlineShowCard(_In_opt_ IAdaptiveActionSet* actionSet,
                                                      _In_ IAdaptiveShowCardAction* showCardAction,
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
-                                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+                                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -144,18 +144,17 @@ namespace AdaptiveNamespace
         return renderResult->AddInputValue(inputValue, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
-                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
+                                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
-        return renderResult->LinkSubmitActionToCard(submitAction, renderArgs);
+        return renderResult->LinkActionToCard(action, renderArgs);
     }
 
-
-    HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
-                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card,
+                                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -163,15 +162,50 @@ namespace AdaptiveNamespace
         return renderResult->LinkCardToParent(card, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
-                                                 _In_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue)
+    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* inputElement,
+                                                 _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
         return renderResult->GetInputValue(inputElement, inputValue);
     }
-  
+
+    HRESULT AdaptiveRenderContext::get_Rtl(_Out_ ABI::Windows::Foundation::IReference<bool>** rtl)
+    {
+        return m_rtl.CopyTo(rtl);
+    }
+
+    HRESULT AdaptiveRenderContext::put_Rtl(ABI::Windows::Foundation::IReference<bool>* rtl)
+    {
+        m_rtl = rtl;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderContext::get_TextStyle(
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** textStyle)
+    {
+        return m_textStyle.CopyTo(textStyle);
+    }
+
+    HRESULT AdaptiveRenderContext::put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* textStyle)
+    {
+        m_textStyle = textStyle;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderContext::get_HorizontalContentAlignment(
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment)
+    {
+        return m_horizontalAlignment.CopyTo(horizontalAlignment);
+    }
+
+    HRESULT AdaptiveRenderContext::put_HorizontalContentAlignment(
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment)
+    {
+        m_horizontalAlignment = horizontalAlignment;
+        return S_OK;
+    }
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {

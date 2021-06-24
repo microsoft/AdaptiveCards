@@ -16,13 +16,14 @@
 
 ### Properties
 
-* [defaultValue](serializableobjectproperty.md#optional-defaultvalue)
+* [defaultValue](serializableobjectproperty.md#optional-readonly-defaultvalue)
 * [isSerializationEnabled](serializableobjectproperty.md#isserializationenabled)
-* [name](serializableobjectproperty.md#name)
-* [objectType](serializableobjectproperty.md#objecttype)
-* [onGetInitialValue](serializableobjectproperty.md#optional-ongetinitialvalue)
-* [sequentialNumber](serializableobjectproperty.md#sequentialnumber)
-* [targetVersion](serializableobjectproperty.md#targetversion)
+* [name](serializableobjectproperty.md#readonly-name)
+* [nullable](serializableobjectproperty.md#nullable)
+* [objectType](serializableobjectproperty.md#readonly-objecttype)
+* [onGetInitialValue](serializableobjectproperty.md#optional-readonly-ongetinitialvalue)
+* [sequentialNumber](serializableobjectproperty.md#readonly-sequentialnumber)
+* [targetVersion](serializableobjectproperty.md#readonly-targetversion)
 
 ### Methods
 
@@ -34,28 +35,29 @@
 
 ###  constructor
 
-\+ **new SerializableObjectProperty**(`targetVersion`: [Version](version.md), `name`: string, `objectType`: [SerializableObjectType](../README.md#serializableobjecttype), `defaultValue?`: [SerializableObject](serializableobject.md)): *[SerializableObjectProperty](serializableobjectproperty.md)*
+\+ **new SerializableObjectProperty**(`targetVersion`: [Version](version.md), `name`: string, `objectType`: [SerializableObjectType](../README.md#serializableobjecttype), `nullable`: boolean, `defaultValue?`: [SerializableObject](serializableobject.md)): *[SerializableObjectProperty](serializableobjectproperty.md)*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[constructor](propertydefinition.md#constructor)*
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`targetVersion` | [Version](version.md) |
-`name` | string |
-`objectType` | [SerializableObjectType](../README.md#serializableobjecttype) |
-`defaultValue?` | [SerializableObject](serializableobject.md) |
+Name | Type | Default |
+------ | ------ | ------ |
+`targetVersion` | [Version](version.md) | - |
+`name` | string | - |
+`objectType` | [SerializableObjectType](../README.md#serializableobjecttype) | - |
+`nullable` | boolean | false |
+`defaultValue?` | [SerializableObject](serializableobject.md) | - |
 
 **Returns:** *[SerializableObjectProperty](serializableobjectproperty.md)*
 
 ## Properties
 
-### `Optional` defaultValue
+### `Optional` `Readonly` defaultValue
 
 • **defaultValue**? : *any*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
 
 ___
 
@@ -67,41 +69,47 @@ ___
 
 ___
 
-###  name
+### `Readonly` name
 
 • **name**: *string*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
+*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)*
 
 ___
 
-###  objectType
+###  nullable
+
+• **nullable**: *boolean*
+
+___
+
+### `Readonly` objectType
 
 • **objectType**: *[SerializableObjectType](../README.md#serializableobjecttype)*
 
 ___
 
-### `Optional` onGetInitialValue
+### `Optional` `Readonly` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
 
 ___
 
-###  sequentialNumber
+### `Readonly` sequentialNumber
 
 • **sequentialNumber**: *number*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
 
 ___
 
-###  targetVersion
+### `Readonly` targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
+*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)*
 
 ## Methods
 

@@ -7,7 +7,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.ToggleVisibility"` | Yes | Must be `"Action.ToggleVisibility"`. | 1.2 |
-| **targetElements** | `TargetElement[]` | No | The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information. | 1.2 |
+| **targetElements** | `TargetElement[]` | Yes | The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information. | 1.2 |
 
 **Inherited properties**
 
@@ -17,6 +17,7 @@
 | **iconUrl** | `uri` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |
 | **style** | `ActionStyle` | No | Controls the style of an Action, which influences how the action is displayed, spoken, etc. | 1.2 |
 | **fallback** | `Action`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
+| **tooltip** | `string` | No | Defines text that should be displayed to the end user as they hover the mouse over the action, and read when using narration software. | 1.5 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 
 
@@ -25,7 +26,7 @@
 The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information.
 
 * **Type**: `TargetElement[]`
-* **Required**: No
+* **Required**: Yes
 * **Allowed values**:
   * `TargetElement`
   * `string`
@@ -50,6 +51,7 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Type**: `Action`, `FallbackOption`
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.ShowCard`
   * `Action.Submit`

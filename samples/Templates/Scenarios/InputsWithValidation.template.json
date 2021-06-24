@@ -8,7 +8,9 @@
 			"size": "medium",
 			"weight": "bolder",
 			"text": " ${ParticipantInfoForm.title}",
-			"horizontalAlignment": "center"
+			"horizontalAlignment": "center",
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "Input.Text",
@@ -69,7 +71,9 @@
 			"size": "medium",
 			"weight": "bolder",
 			"text": "${Survey.title} ",
-			"horizontalAlignment": "center"
+			"horizontalAlignment": "center",
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "Input.ChoiceSet",
@@ -118,7 +122,9 @@
 			"size": "medium",
 			"weight": "bolder",
 			"text": "Input.Toggle",
-			"horizontalAlignment": "center"
+			"horizontalAlignment": "center",
+			"wrap": true,
+			"style": "heading"
 		},
 		{
 			"type": "Input.Toggle",

@@ -8,7 +8,7 @@
 #include "XamlHelpers.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
@@ -18,7 +18,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT TileControl::RuntimeClassInitialize() noexcept
     try
@@ -99,34 +99,34 @@ namespace AdaptiveNamespace
 
         EventRegistrationToken eventToken;
 
-        THROW_IF_FAILED(bitmapImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-            [&](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
-                ComPtr<IUIElement> uiElement;
-                THROW_IF_FAILED(get_ResolvedImage(&uiElement));
+        THROW_IF_FAILED(
+            bitmapImage->add_ImageOpened(Callback<IRoutedEventHandler>([&](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                                             ComPtr<IUIElement> uiElement;
+                                             THROW_IF_FAILED(get_ResolvedImage(&uiElement));
 
-                // Extract BitmapSource from Image
-                ComPtr<IImage> image;
-                THROW_IF_FAILED(uiElement.As(&image));
-                ComPtr<IImageSource> imageSource;
-                THROW_IF_FAILED(image->get_Source(&imageSource));
-                ComPtr<IBitmapSource> bitmapSource;
-                THROW_IF_FAILED(imageSource.As(&bitmapSource));
+                                             // Extract BitmapSource from Image
+                                             ComPtr<IImage> image;
+                                             THROW_IF_FAILED(uiElement.As(&image));
+                                             ComPtr<IImageSource> imageSource;
+                                             THROW_IF_FAILED(image->get_Source(&imageSource));
+                                             ComPtr<IBitmapSource> bitmapSource;
+                                             THROW_IF_FAILED(imageSource.As(&bitmapSource));
 
-                // Extract Size from Image
-                int height{}, width{};
-                THROW_IF_FAILED(bitmapSource->get_PixelHeight(&height));
-                THROW_IF_FAILED(bitmapSource->get_PixelWidth(&width));
+                                             // Extract Size from Image
+                                             int height{}, width{};
+                                             THROW_IF_FAILED(bitmapSource->get_PixelHeight(&height));
+                                             THROW_IF_FAILED(bitmapSource->get_PixelWidth(&width));
 
-                // Save size to member variable
-                Size imageSize{};
-                imageSize.Height = static_cast<float>(height);
-                imageSize.Width = static_cast<float>(width);
-                THROW_IF_FAILED(put_ImageSize(imageSize));
+                                             // Save size to member variable
+                                             Size imageSize{};
+                                             imageSize.Height = static_cast<float>(height);
+                                             imageSize.Width = static_cast<float>(width);
+                                             THROW_IF_FAILED(put_ImageSize(imageSize));
 
-                RefreshContainerTile();
-                return S_OK;
-            }).Get(),
-                &eventToken));
+                                             RefreshContainerTile();
+                                             return S_OK;
+                                         }).Get(),
+                                         &eventToken));
 
         THROW_IF_FAILED(m_brushXaml->put_ImageSource(imageSource.Get()));
 
@@ -167,7 +167,7 @@ namespace AdaptiveNamespace
         rect->Width = m_containerSize.Width;
         rect->Height = m_containerSize.Height;
 
-        ComPtr<IRectangleGeometry> clip = AdaptiveNamespace::XamlHelpers::CreateXamlClass<IRectangleGeometry>(
+        ComPtr<IRectangleGeometry> clip = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateXamlClass<IRectangleGeometry>(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry));
         RETURN_IF_FAILED(clip->put_Rect(*rect));
 
@@ -263,7 +263,7 @@ namespace AdaptiveNamespace
             // instanciate all elements not created yet
             for (int x{}; x < (numberSpriteToInstanciate - count); x++)
             {
-                ComPtr<IRectangle> rectangle = AdaptiveNamespace::XamlHelpers::CreateXamlClass<IRectangle>(
+                ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateXamlClass<IRectangle>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
 
                 ComPtr<IUIElement> rectangleAsUIElement;

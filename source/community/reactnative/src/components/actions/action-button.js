@@ -15,20 +15,17 @@ import {
 	TouchableNativeFeedback
 } from 'react-native';
 
-import { StyleManager } from '../../styles/style-config';
 import * as Utils from '../../utils/util';
 import {
 	InputContext,
 	InputContextConsumer
 } from '../../utils/context';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
 import * as Enums from '../../utils/enums';
 
 
 export class ActionButton extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
 	static contextType = InputContext;
 
 	constructor(props) {
@@ -36,6 +33,8 @@ export class ActionButton extends React.Component {
 
 		this.payload = props.json;
 		this.title = Constants.EmptyString;
+		this.verb = Constants.EmptyString;
+		this.altText = Constants.EmptyString;
 		this.type = Constants.EmptyString;
 		this.iconUrl = Constants.EmptyString;
 		this.inputArray = undefined;
@@ -46,6 +45,8 @@ export class ActionButton extends React.Component {
 		if (props.json.type === 'Action.ShowCard') {
 			this.showCardHandler = props.onShowCardTapped;
 		}
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 	}
 
 	componentDidMount() {
@@ -54,14 +55,25 @@ export class ActionButton extends React.Component {
 		}
 	}
 
+	getActionAlignment() {
+		let computedStyles = [];
+		if (this.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+			computedStyles.push({ flexGrow: 0 })
+		} else computedStyles.push({ flexGrow: 1 })
+		if (this.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+			computedStyles.push({ maxWidth: this.props.maxWidth })
+		}
+		return computedStyles;
+	}
+
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
-		this.parseHostConfig();
-
+		this.parsePayload();
+		let computedStyle = [this.getActionAlignment()];
+		computedStyle.push({ opacity: this.payload.isEnabled ? 1.0 : 0.4 })
 		const ButtonComponent = Platform.OS === Constants.PlatformAndroid ? TouchableNativeFeedback : TouchableOpacity;
-
 		return (<InputContextConsumer>
 			{({ onExecuteAction, inputArray, addResourceInformation, toggleVisibilityForElementWithID }) => {
 				this.inputArray = inputArray;
@@ -70,7 +82,11 @@ export class ActionButton extends React.Component {
 				this.toggleVisibilityForElementWithID = toggleVisibilityForElementWithID;
 
 				return <ButtonComponent
-					style={{ flexGrow: 1 }}
+					style={computedStyle}
+					disabled={!this.payload.isEnabled}
+					accessible={true}
+					accessibilityLabel={this.altText}
+					accessibilityRole={Constants.Button}
 					onPress={this.onActionButtonTapped}>
 					{this.buttonContent()}
 				</ButtonComponent>
@@ -79,12 +95,15 @@ export class ActionButton extends React.Component {
 	}
 
 	/**
-     * @description Invoked for the any action button selected
-     */
+	 * @description Invoked for the any action button selected
+	 */
 	onActionButtonTapped = () => {
 		switch (this.payload.type) {
 			case Constants.ActionSubmit:
-				this.onSubmitActionCalled();
+				this.onSubmitExecuteActionCalled();
+				break;
+			case Constants.ActionExecute:
+				this.onSubmitExecuteActionCalled();
 				break;
 			case Constants.ActionOpenUrl:
 				this.onOpenURLCalled();
@@ -96,14 +115,13 @@ export class ActionButton extends React.Component {
 				this.onToggleActionCalled();
 				break;
 			default:
+				//Invoked for the custom action type.
+				this.onExecuteAction(this.payload);
 				break;
 		}
 	}
 
-    /**
-     * @description Invoked for the action type Constants.ActionSubmit
-     */
-	onSubmitActionCalled() {
+	getMergeObject = () => {
 		let mergedObject = {};
 		for (const key in this.inputArray) {
 			mergedObject[key] = this.inputArray[key].value;
@@ -114,13 +132,24 @@ export class ActionButton extends React.Component {
 			else
 				mergedObject["actionData"] = this.data;
 		}
-		let actionObject = { "type": this.payload.type, "data": mergedObject };
-		this.onExecuteAction(actionObject, this.payload.ignoreInputValidation === true);
+		return mergedObject
 	}
 
 	/**
-     * @description Invoked for the action type Constants.ActionToggleVisibility
-     */
+	 * @description Invoked for the action type Constants.ActionSubmit and Constants.ActionExecute
+	 */
+	onSubmitExecuteActionCalled() {
+		const { type, verb = "", title = "", ignoreInputValidation } = this.payload;
+		var actionObject = { "type": type, "title": title, "data": this.getMergeObject() };
+		if (this.payload.type == Constants.ActionExecute) {
+			actionObject["verb"] = verb
+		}
+		this.onExecuteAction(actionObject, ignoreInputValidation);
+	}
+
+	/**
+	 * @description Invoked for the action type Constants.ActionToggleVisibility
+	 */
 	onToggleActionCalled() {
 		this.toggleVisibilityForElementWithID(this.payload.targetElements);
 	}
@@ -135,8 +164,9 @@ export class ActionButton extends React.Component {
 		this.showCardHandler(this.payload.children[0]);
 	}
 
-	parseHostConfig() {
+	parsePayload() {
 		this.title = this.payload.title;
+		this.altText = this.payload.altText || this.title;
 		this.type = this.payload.type;
 		let imageUrl = this.payload.iconUrl
 		this.iconUrl = Utils.getImageUrl(imageUrl)
@@ -149,18 +179,34 @@ export class ActionButton extends React.Component {
 		);
 	}
 
-    /**
-     * @description Return the button styles applicable
+	/**
+	 * @description Return the button styles applicable
 	 * @returns {Array} computedStyles - Styles based on the config
-     */
+	 */
 	getButtonStyles = () => {
 		let computedStyles = [this.styleConfig.button,
 		this.styleConfig.actionIconFlex, styles.button];
-		
+
 		if (this.sentiment == Enums.Sentiment.Positive) {
 			computedStyles.push(this.styleConfig.defaultPositiveButtonBackgroundColor);
+		} else if (this.sentiment == Enums.Sentiment.Destructive) {
+			computedStyles.push(this.styleConfig.defaultDestructiveButtonBackgroundColor);
 		}
 
+		if (this.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch && this.hostConfig.actions.actionsOrientation === Enums.Orientation.Vertical) {
+			switch (this.hostConfig.actions.actionAlignment) {
+				case Enums.ActionAlignment.Center:
+					computedStyles.push(styles.centerAlignment)
+					break
+				case Enums.ActionAlignment.Right:
+					computedStyles.push(styles.rightAlignment)
+					break
+				default:
+					computedStyles.push(styles.leftAlignment)
+			}
+		}
+
+		computedStyles.push(this.props.style)
 		return computedStyles;
 	}
 
@@ -170,10 +216,7 @@ export class ActionButton extends React.Component {
 	*/
 	getButtonTitleStyles = () => {
 		var computedStyles = [this.styleConfig.defaultFontConfig,
-		this.styleConfig.buttonTitle];
-		if (this.sentiment == Enums.Sentiment.Destructive) {
-			computedStyles.push(this.styleConfig.defaultDestructiveButtonForegroundColor);
-		}
+		this.styleConfig.buttonTitle, this.props.titleStyle];
 		return computedStyles;
 	}
 
@@ -188,7 +231,7 @@ export class ActionButton extends React.Component {
 							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
 						: null
 				}
-				<Text style={this.getButtonTitleStyles()}>
+				<Text numberOfLines={1} style={this.getButtonTitleStyles()}>
 					{this.title}
 				</Text>
 			</View>
@@ -208,6 +251,15 @@ const styles = StyleSheet.create({
 	buttonIcon: {
 		marginLeft: 5,
 		marginRight: 10,
+	},
+	leftAlignment: {
+		alignSelf: Constants.FlexStart,
+	},
+	centerAlignment: {
+		alignSelf: Constants.CenterString,
+	},
+	rightAlignment: {
+		alignSelf: Constants.FlexEnd,
 	}
 });
 

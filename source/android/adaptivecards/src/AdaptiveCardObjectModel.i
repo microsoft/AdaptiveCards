@@ -39,58 +39,44 @@ struct tm {
 };
 
 namespace std {
-  template<typename T> class optional {};
+    template<typename T> class optional {
+    public:
+        optional();
+        optional(T);
+        bool has_value() const;
+        T value();
+  };
 }
 
-// std::optional<int>
-%typemap(jni) std::optional<int> "jobject"
-%typemap(jtype) std::optional<int> "Integer"
-%typemap(jstype) std::optional<int> "Integer"
-%typemap(in, noblock=1) std::optional<int> {
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
-    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv)) return $null;
-    $1 = (int)val;
-  }
-}
-%typemap(out, noblock=1) std::optional<int> {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<int> "$javainput"
-%typemap(javaout) std::optional<int> {
-    return $jnicall;
-  }
-%template() std::optional<int>;
+#pragma region
+// Maps std::optional<T> to T
 
-%typemap(jni) std::optional<int>& "jobject"
-%typemap(jtype) std::optional<int>& "Integer"
-%typemap(jstype) std::optional<int>& "Integer"
-%typemap(in, noblock=1) std::optional<int>& {
-  std::optional<int> optVal = std::nullopt;
-  if ($input) {
-    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
-    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
-    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
-    if (JCALL0(ExceptionCheck, jenv)) return $null;
-    optVal = std::optional<int>(val);
+%define STD_OPTIONAL(T, IntermediateT)
+%template(IntermediateT) std::optional<T>;
+%typemap(javaclassmodifiers) IntermediateT "class"; //this should make the class package-access, but not currently working
+%typemap(jstype) std::optional<T>, std::optional<T>& "@androidx.annotation.Nullable $typemap(jboxtype, T)";
+
+%typemap(javain,
+         pre="    IntermediateT opt$javainput = ($javainput == null) ? new IntermediateT() : new IntermediateT($javainput);",
+         pgcppname="opt$javainput")
+         std::optional<T>, std::optional<T>& "$javaclassname.getCPtr(opt$javainput)";
+%typemap(javaout) std::optional<T>, std::optional<T>& {
+    IntermediateT optvalue = new IntermediateT($jnicall, $owner);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
-  $1 = &optVal;
-}
-%typemap(out, noblock=1) std::optional<int>& {
-  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
-  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
-  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
-  $result = obj;
-}
-%typemap(javain) std::optional<int>& "$javainput"
-%typemap(javaout) std::optional<int>& {
-    return $jnicall;
-  }
+%enddef
+#pragma endregion
+
+STD_OPTIONAL(bool, StdOptionalBool)
+STD_OPTIONAL(double, StdOptionalDouble)
+STD_OPTIONAL(unsigned int, StdOptionalLong)
+STD_OPTIONAL(AdaptiveCards::FontType, StdOptionalFontType)
+STD_OPTIONAL(AdaptiveCards::TextWeight, StdOptionalTextWeight)
+STD_OPTIONAL(AdaptiveCards::TextSize, StdOptionalTextSize)
+STD_OPTIONAL(AdaptiveCards::ForegroundColor, StdOptionalForegroundColor)
+STD_OPTIONAL(AdaptiveCards::TextStyle, StdOptionalTextStyle)
+STD_OPTIONAL(AdaptiveCards::HorizontalAlignment, StdOptionalHorizontalAlignment)
+STD_OPTIONAL(AdaptiveCards::VerticalContentAlignment, StdOptionalVerticalContentAlignment)
 
 %include <typemaps.i>
 %include <std_string.i>
@@ -121,6 +107,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 #include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#include "../../../shared/cpp/ObjectModel/InternalId.h"
 #include "../../../shared/cpp/ObjectModel/BaseElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -134,6 +121,7 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/Container.h"
 #include "../../../shared/cpp/ObjectModel/Image.h"
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
+#include "../../../shared/cpp/ObjectModel/InternalId.h"
 #include "../../../shared/cpp/ObjectModel/Column.h"
 #include "../../../shared/cpp/ObjectModel/ColumnSet.h"
 #include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
@@ -157,6 +145,10 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
+#include "../../../shared/cpp/ObjectModel/Table.h"
+#include "../../../shared/cpp/ObjectModel/TableCell.h"
+#include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
+#include "../../../shared/cpp/ObjectModel/TableRow.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/ActionSet.h"
 #include "../../../shared/cpp/ObjectModel/MediaSource.h"
@@ -170,6 +162,11 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 #include "../../../shared/cpp/ObjectModel/TextRun.h"
 #include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
+#include "../../../shared/cpp/ObjectModel/ExecuteAction.h"
+#include "../../../shared/cpp/ObjectModel/Refresh.h"
+#include "../../../shared/cpp/ObjectModel/Authentication.h"
+#include "../../../shared/cpp/ObjectModel/TokenExchangeResource.h"
+#include "../../../shared/cpp/ObjectModel/AuthCardButton.h"
 %}
 
 
@@ -204,6 +201,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextInput)
 %shared_ptr(AdaptiveCards::TimeInput)
 %shared_ptr(AdaptiveCards::ToggleInput)
+%shared_ptr(AdaptiveCards::ExecuteAction)
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
@@ -218,9 +216,13 @@ namespace std {
 %shared_ptr(AdaptiveCards::FactSetParser)
 %shared_ptr(AdaptiveCards::ChoiceSetInputParser)
 %shared_ptr(AdaptiveCards::NumberInputParser)
+%shared_ptr(AdaptiveCards::TableParser)
+%shared_ptr(AdaptiveCards::TableCellParser)
+%shared_ptr(AdaptiveCards::TableRowParser)
 %shared_ptr(AdaptiveCards::TextInputParser)
 %shared_ptr(AdaptiveCards::TimeInputParser)
 %shared_ptr(AdaptiveCards::ToggleInputParser)
+%shared_ptr(AdaptiveCards::ExecuteActionParser)
 %shared_ptr(AdaptiveCards::OpenUrlActionParser)
 %shared_ptr(AdaptiveCards::ShowCardActionParser)
 %shared_ptr(AdaptiveCards::SubmitActionParser)
@@ -245,6 +247,15 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextRun)
 %shared_ptr(AdaptiveCards::TextElementProperties)
 %shared_ptr(AdaptiveCards::RichTextElementProperties)
+%shared_ptr(AdaptiveCards::Refresh)
+%shared_ptr(AdaptiveCards::Authentication)
+%shared_ptr(AdaptiveCards::TokenExchangeResource)
+%shared_ptr(AdaptiveCards::AuthCardButton)
+%shared_ptr(AdaptiveCards::TableCell)
+%shared_ptr(AdaptiveCards::TableColumnDefinition)
+%shared_ptr(AdaptiveCards::TableRow)
+%shared_ptr(AdaptiveCards::Table)
+
 
 %apply unsigned int& INOUT { unsigned int& };
 
@@ -457,10 +468,14 @@ namespace Json {
 %template(MediaSourceVector) std::vector<std::shared_ptr<AdaptiveCards::MediaSource> >;
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
+%template(TableCellVector) std::vector<std::shared_ptr<AdaptiveCards::TableCell> >;
+%template(TableRowVector) std::vector<std::shared_ptr<AdaptiveCards::TableRow> >;
+%template(TableColumnDefinitionVector) std::vector<std::shared_ptr<AdaptiveCards::TableColumnDefinition> >;
 %template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
 %template(InlineVector) std::vector<std::shared_ptr<AdaptiveCards::Inline>>;
+%template(AuthCardButtonVector) std::vector<std::shared_ptr<AdaptiveCards::AuthCardButton>>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -599,6 +614,21 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::Table::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::Table {
+    static AdaptiveCards::Table *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::Table *>(baseCardElement);
+    }
+};
+
 %exception AdaptiveCards::FactSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
     if (!result) {
@@ -716,6 +746,21 @@ namespace Json {
 %extend AdaptiveCards::ToggleInput {
     static AdaptiveCards::ToggleInput *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
         return dynamic_cast<AdaptiveCards::ToggleInput *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::ExecuteAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ExecuteAction {
+    static AdaptiveCards::ExecuteAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::ExecuteAction *>(baseActionElement);
     }
 };
 
@@ -845,13 +890,12 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 
-
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ParseContext.h"
 
-
+%include "../../../shared/cpp/ObjectModel/InternalId.h"
 %include "../../../shared/cpp/ObjectModel/BaseElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -872,6 +916,11 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/TextInput.h"
 %include "../../../shared/cpp/ObjectModel/TimeInput.h"
 %include "../../../shared/cpp/ObjectModel/ToggleInput.h"
+%include "../../../shared/cpp/ObjectModel/ExecuteAction.h"
+%include "../../../shared/cpp/ObjectModel/TokenExchangeResource.h"
+%include "../../../shared/cpp/ObjectModel/AuthCardButton.h"
+%include "../../../shared/cpp/ObjectModel/Refresh.h"
+%include "../../../shared/cpp/ObjectModel/Authentication.h"
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
@@ -884,6 +933,10 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
 %include "../../../shared/cpp/ObjectModel/Fact.h"
 %include "../../../shared/cpp/ObjectModel/FactSet.h"
+%include "../../../shared/cpp/ObjectModel/TableCell.h"
+%include "../../../shared/cpp/ObjectModel/Table.h"
+%include "../../../shared/cpp/ObjectModel/TableColumnDefinition.h"
+%include "../../../shared/cpp/ObjectModel/TableRow.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/MediaSource.h"
 %include "../../../shared/cpp/ObjectModel/Media.h"

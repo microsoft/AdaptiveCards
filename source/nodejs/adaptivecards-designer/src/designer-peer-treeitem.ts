@@ -38,8 +38,8 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
 
     readonly owner: DesignerPeer;
 
-    constructor(owner: DesignerPeer) {
-        super();
+    constructor(owner: DesignerPeer, isExpanded: boolean = true) {
+        super(isExpanded);
 
         this.owner = owner;
         this.owner.onParentChanged = (sender: DesignerPeer) => {

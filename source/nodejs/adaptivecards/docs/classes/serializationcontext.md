@@ -19,6 +19,7 @@
 * [onParseAction](serializationcontext.md#optional-onparseaction)
 * [onParseElement](serializationcontext.md#optional-onparseelement)
 * [targetVersion](serializationcontext.md#targetversion)
+* [toJSONOriginalParam](serializationcontext.md#tojsonoriginalparam)
 
 ### Accessors
 
@@ -42,6 +43,7 @@
 * [serializeValue](serializationcontext.md#serializevalue)
 * [setActionRegistry](serializationcontext.md#setactionregistry)
 * [setElementRegistry](serializationcontext.md#setelementregistry)
+* [shouldSerialize](serializationcontext.md#shouldserialize)
 
 ## Constructors
 
@@ -78,6 +80,14 @@ ___
 • **targetVersion**: *[Version](version.md)*
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[targetVersion](baseserializationcontext.md#targetversion)*
+
+___
+
+###  toJSONOriginalParam
+
+• **toJSONOriginalParam**: *any*
+
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)*
 
 ## Accessors
 
@@ -232,14 +242,14 @@ Name | Type |
 
 ▪ **logParseEvent**: *function*
 
-▸ (`typeName`: string, `errorType`: TypeErrorType): *void*
+▸ (`typeName`: string, `errorType`: [TypeErrorType](../enums/typeerrortype.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `typeName` | string |
-`errorType` | TypeErrorType |
+`errorType` | [TypeErrorType](../enums/typeerrortype.md) |
 
 **Returns:** *T | undefined*
 
@@ -362,3 +372,19 @@ Name | Type |
 `value` | [CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)› &#124; undefined |
 
 **Returns:** *void*
+
+___
+
+###  shouldSerialize
+
+▸ **shouldSerialize**(`o`: [SerializableObject](serializableobject.md)): *boolean*
+
+*Overrides [BaseSerializationContext](baseserializationcontext.md).[shouldSerialize](baseserializationcontext.md#shouldserialize)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`o` | [SerializableObject](serializableobject.md) |
+
+**Returns:** *boolean*

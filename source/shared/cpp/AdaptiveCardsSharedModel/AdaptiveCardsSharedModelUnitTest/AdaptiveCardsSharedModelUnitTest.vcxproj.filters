@@ -92,5 +92,21 @@
     <ClCompile Include="TextParsingTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TableTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HostConfigTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EverythingBagel.json">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EverythingBagel.json">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

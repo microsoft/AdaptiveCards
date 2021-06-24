@@ -1,0 +1,32 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.3",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Validate that associatedInputs 'auto' and 'none' are handled case-insensitively",
+      "wrap": true,
+      "weight": "Bolder"
+    },
+    {
+      "type": "Input.Text",
+      "placeholder": "Placeholder text",
+      "label": "Text Box:",
+      "isRequired": true,
+      "id": "ID"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "NONE",
+      "associatedInputs": "none"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "AUTO",
+      "associatedInputs": "auto"
+    }
+  ]
+}

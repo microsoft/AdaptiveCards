@@ -5,15 +5,15 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
-    HRESULT AdaptiveActionElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    HRESULT AdaptiveActionElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetTitle(), m_title.GetAddressOf()));
@@ -23,13 +23,16 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetStyle(), m_style.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetTooltip(), m_tooltip.GetAddressOf()));
+
+        m_isEnabled = sharedModel->GetIsEnabled();
 
         m_internalId = sharedModel->GetInternalId();
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
-        if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        if (m_fallbackType == ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Content)
         {
             const auto fallbackObject =
-                std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedModel->GetFallbackContent());
+                std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent());
             if (fallbackObject)
             {
                 RETURN_IF_FAILED(GenerateActionProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
@@ -47,20 +50,20 @@ namespace AdaptiveNamespace
 
     IFACEMETHODIMP AdaptiveActionElementBase::put_Id(_In_ HSTRING id) { return m_id.Set(id); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
+    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::FallbackType* fallback)
     {
         *fallback = m_fallbackType;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** content)
+    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** content)
     {
         return m_fallbackContent.CopyTo(content);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackType(ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallback)
     {
-        if (fallback != ABI::AdaptiveNamespace::FallbackType::Content)
+        if (fallback != ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Content)
         {
             m_fallbackContent.Reset();
         }
@@ -68,7 +71,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* content)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackContent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* content)
     {
         m_fallbackContent = content;
         return S_OK;
@@ -81,6 +84,22 @@ namespace AdaptiveNamespace
     IFACEMETHODIMP AdaptiveActionElementBase::get_Style(_Outptr_ HSTRING* style) { return m_style.CopyTo(style); }
 
     IFACEMETHODIMP AdaptiveActionElementBase::put_Style(_In_ HSTRING style) { return m_style.Set(style); }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Tooltip(HSTRING* tooltip) { return m_tooltip.CopyTo(tooltip); }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Tooltip(HSTRING tooltip) { return m_tooltip.Set(tooltip); }
+
+    HRESULT AdaptiveActionElementBase::get_IsEnabled(boolean* isEnabled)
+    {
+        *isEnabled = m_isEnabled;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveActionElementBase::put_IsEnabled(boolean isEnabled)
+    {
+        m_isEnabled = isEnabled;
+        return S_OK;
+    }
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
@@ -100,24 +119,27 @@ namespace AdaptiveNamespace
 
     IFACEMETHODIMP AdaptiveActionElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedModel;
+        std::shared_ptr<AdaptiveCards::BaseActionElement> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
 
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
-    HRESULT AdaptiveActionElementBase::CopySharedElementProperties(AdaptiveSharedNamespace::BaseActionElement& sharedCardElement)
+    HRESULT AdaptiveActionElementBase::CopySharedElementProperties(AdaptiveCards::BaseActionElement& sharedCardElement)
     {
         sharedCardElement.SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement.SetTitle(HStringToUTF8(m_title.Get()));
         sharedCardElement.SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
         sharedCardElement.SetStyle(HStringToUTF8(m_style.Get()));
+        sharedCardElement.SetTooltip(HStringToUTF8(m_tooltip.Get()));
         sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
-        if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        sharedCardElement.SetIsEnabled(m_isEnabled);
+
+        if (m_fallbackType == ABI::AdaptiveCards::Rendering::Uwp::FallbackType::Content)
         {
-            std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> fallbackSharedModel;
+            std::shared_ptr<AdaptiveCards::BaseActionElement> fallbackSharedModel;
             RETURN_IF_FAILED(GenerateSharedAction(m_fallbackContent.Get(), fallbackSharedModel));
-            sharedCardElement.SetFallbackContent(std::static_pointer_cast<AdaptiveSharedNamespace::BaseElement>(fallbackSharedModel));
+            sharedCardElement.SetFallbackContent(std::static_pointer_cast<AdaptiveCards::BaseElement>(fallbackSharedModel));
         }
 
         if (m_additionalProperties != nullptr)

@@ -31,7 +31,7 @@
     <ClCompile Include="lib\AdaptiveFactSetConfig.cpp" />
     <ClCompile Include="lib\AdaptiveHostConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSetConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveTextConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveFactSetTextConfig.cpp" />
     <ClCompile Include="lib\AdaptiveActionsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveFontSizesConfig.cpp" />
     <ClCompile Include="lib\AdaptiveImageSizesConfig.cpp" />
@@ -119,6 +119,21 @@
     <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveLabelConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
+    <ClCompile Include="lib\AdaptiveExecuteActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveRefresh.cpp" />
+    <ClCompile Include="lib\AdaptiveAuthCardButton.cpp" />
+    <ClCompile Include="lib\AdaptiveTokenExchangeResource.cpp" />
+    <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
+    <ClCompile Include="lib\AdaptiveTextBlockConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveTextStylesConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
+    <ClCompile Include="lib\AdaptiveTableCell.cpp" />
+    <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveTableRow.cpp" />
+    <ClCompile Include="lib\AdaptiveTable.cpp" />
+    <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -158,7 +173,7 @@
     <ClInclude Include="lib\AdaptiveFactSetConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfig.h" />
     <ClInclude Include="lib\AdaptiveImageSetConfig.h" />
-    <ClInclude Include="lib\AdaptiveTextConfig.h" />
+    <ClInclude Include="lib\AdaptiveFactSetTextConfig.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
     <ClInclude Include="lib\AdaptiveFontSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveShowCardActionConfig.h" />
@@ -244,6 +259,22 @@
     <ClInclude Include="lib\AdaptiveErrorMessageConfig.h" />
     <ClInclude Include="lib\AdaptiveInputsConfig.h" />
     <ClInclude Include="lib\AdaptiveLabelConfig.h" />
+    <ClInclude Include="lib\AdaptiveExecuteAction.h" />
+    <ClInclude Include="lib\AdaptiveExecuteActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveRefresh.h" />
+    <ClInclude Include="lib\AdaptiveAuthCardButton.h" />
+    <ClInclude Include="lib\AdaptiveTokenExchangeResource.h" />
+    <ClInclude Include="lib\AdaptiveAuthentication.h" />
+    <ClInclude Include="lib\AdaptiveTextBlockConfig.h" />
+    <ClInclude Include="lib\AdaptiveTextStyleConfig.h" />
+    <ClInclude Include="lib\AdaptiveTextStylesConfig.h" />
+    <ClInclude Include="lib\AdaptiveTextStyleConfigBase.h" />
+    <ClInclude Include="lib\AdaptiveTableCell.h" />
+    <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
+    <ClInclude Include="lib\AdaptiveTableRow.h" />
+    <ClInclude Include="lib\AdaptiveTable.h" />
+    <ClInclude Include="lib\AdaptiveTableRenderer.h" />
+    <ClInclude Include="lib\AdaptiveTableConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

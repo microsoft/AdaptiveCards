@@ -1,0 +1,16 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+    "classType": "Enum",
+    "description": "Controls how a TextBlock behaves.",
+    "version": "1.5",
+    "values": [
+      {
+        "value": "default",
+        "description": "This is the default style which provide no special styling or behavior."
+      },
+      {
+        "value": "heading",
+        "description": "The TextBlock is a heading. This will apply the heading styling defaults and mark the text block as a heading for accessiblity."
+      }
+    ]
+  }

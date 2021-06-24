@@ -6,9 +6,11 @@
 //
 #import "ACOBaseActionElement.h"
 #import "ACOBaseCardElement.h"
+#import "ACREnums.h"
 #import "ACOHostConfig.h"
 #import "HostConfig.h"
 #import "TextBlock.h"
+#import "ACORenderContext.h"
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
@@ -37,9 +39,9 @@ using namespace AdaptiveCards;
                foregroundColor:(ForegroundColor)color
                   subtleOption:(bool)isSubtle;
 
-+ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;
++ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment context:(ACORenderContext *)context;
 
-- (CGSize)getImageSize:(ImageSize)imageSize;
+- (CGSize)getImageSizeAsCGSize:(ACRImageSize)imageSize width:(CGFloat)width height:(CGFloat)height;
 
 + (NSArray *)getConstraintsForImageAlignment:(HorizontalAlignment)alignment
                                withSuperview:(UIView *)superview
@@ -57,4 +59,8 @@ using namespace AdaptiveCards;
 + (ContainerStyle)getSharedContainerStyle:(ACRContainerStyle)style;
 
 - (ACRIconPlacement)getIconPlacement;
+
+- (void)setIconPlacement:(NSNumber *)internalId placement:(BOOL)placement;
+
 @end
+

@@ -4,7 +4,7 @@
 #include "Separator.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 Separator::Separator() : m_thickness(SeparatorThickness::Default), m_color(ForegroundColor::Default)
 {

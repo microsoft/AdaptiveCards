@@ -20,26 +20,37 @@ In previous releases of this SDK (`1.x`), the package version would match an off
 
 | SDK Version | Can parse from schema versions | Can serialize to schema versions |
 | --- | --- | --- |
-| `2.4` | `1.0` ... `1.3` | `1.0` ... `1.3` |
-| `2.0`...`2.3` | `1.0` ... `1.2` | `1.0` ... `1.2` |
+| `2.10` | `1.0` ... `1.5` | `1.0` ... `1.5` |
+| `2.9` | `1.0` ... `1.4` | `1.0` ... `1.4` |
+| `2.4` ... `2.8` | `1.0` ... `1.3` | `1.0` ... `1.3` |
+| `2.0` ... `2.3` | `1.0` ... `1.2` | `1.0` ... `1.2` |
 | `1.2` | `1.0` ... `1.2` | `1.2` |
 | `1.1` | `1.0` ... `1.1` | `1.1` | 
 | `1.0` | `1.0` | `1.0` |
 
+## Notable changes
 
-## Breaking changes
-
-Please be aware of the following **breaking changes** in particular versions.
+The following lists the most notable changes in each version of the SDK, including **breaking changes**. Please refer to this list when upgrading to a new version of the SDK.
 
 | In version | Change description |
 |---|---|
+| **2.10** | TextBlock has a new `style` property that maps to predefined `fontType`, `size`, `color`, `weight` and `isSubtle` values defined in the new `textStyles` section of HostConfig. When `style` isn't set, the "default" text style is used. |
+|| **BREAKING CHANGE**: The `fontType`, `size`, `weight`, `color` and `isSubtle` properties on TextBlock and TextRun can now be `undefined`. When one of those properties is set to `undefined`, its effective value is determined as per defaults set in HostConfig. When these properties are set to explicit values, they override the defaults.<br><br>To obtain the effective values applied at render time for those properties, application code can use the `effectiveFontType`, `effectiveSize`, `effectiveWeight`, `effectiveColor` and `effectiveIsSubtle` properties. |
+|| **BREAKING CHANGE**: The `horizontalAlignment` property on any card element can now be `undefined`. When it is undefined, its effective value is inherited from its parent element, up to the AdaptiveCard element (which doesn't have a parent). If none of the parents explicitly set `horizontalAlignment`, it defaults to `HorizontalAlignment.Left`.<br><br>To obtain the effective horizontal alignment value applied at render time, application code can use the `getEffectiveHorizontalAlignment` method. |
+|| **BREAKING CHANGE**: The `verticalContentAlignment` property on Container can now be `undefined`. When it is undefined, its effective value is inherited from its parent container, up to the AdaptiveCard element (which doesn't have a parent). If none of the parent containers explicitly set `verticalContentAlignment`, it defaults to `VerticalAlignment.Top`.<br><br>To obtain the effective vertical content alignment value applied at render time, application code can use the `getEffectiveVerticalContentAlignment` method. |
+|| `Action.updateActionButtonCssStyles(buttonElement: HTMLElement, buttonState: ActionButtonState)` has been **REMOVED**. A new `Action.updateCssClasses()` method has been introduced in its place. While this is technically a **breaking change**, it is extremely unlikely to affect any application. |
+|| `Action.addCssClasses(element: HTMLElement)` has been **REMOVED**. A new `Action.updateCssClasses()` method has been introduced in its place. While this is technically a **breaking change**, it is extremely unlikely to affect any application. |
+|| `Action.expanded?: boolean` has been **REMOVED**. A new `Action.state` property has been introduced in its place. While this is technically a **breaking change**, it is extremely unlikely to affect any application. |
+| **2.6** | A new `static SerializableObject.defaultMaxVersion` property is introduced to allow applications to constrain de-serialization to a specific Adaptive Card schema version globally. This new property complements the existing `SerializableObject.maxVersion` member property that does the same on a per-serializable object basis. |
+| **2.5** | The non-standard `ignoreInputValidation` property on `Action.Submit` has been **REMOVED**. Use the new `associatedInputs` property instead. |
+| **2.4** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |
 | **2.0** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |
 || The `isNullOrEmpty(value: string): boolean` function has been **REMOVED**. Use `if (!stringValue)` instead. |
 || The library is now compiled with the `noImplicitAny` flag. As a result, anything that can be undefined/not set now has the `undefined` value. All uses of `null` have been removed. |
 || The following global setting statics have been moved from the AdaptiveCard class to the new GlobalSettings class: `useAdvancedTextBlockTruncation`, `useAdvancedCardBottomTruncation`, `useMarkdownInRadioButtonAndCheckbox`, `allowMarkForTextHighlighting`, `alwaysBleedSeparators`, `enableFullJsonRoundTrip`, `useBuiltInInputValidation`, `displayInputValidationErrors` |
 || `CardElement.getForbiddenElementTypes()` has been **REMOVED** |
 || The signature of **CardElement.getForbiddenActionTypes()** has changed to `getForbiddenActionTypes(): CardObjectType<Action>[]` with **CardObjectType** defined as `type CardObjectType<T extends CardObject> = { new(): T }` |
-|| The `AdaptiveCard.onParseError` event has been **REMOVED**. Parse errors are now collected into the `SerializationContext.errors` property. ||
+|| The `AdaptiveCard.onParseError` event has been **REMOVED**. Parse errors can now be accessed via `SerializationContext.getEventCount()` and `SerializationContext.getEventAt()`. ||
 || The `AdaptiveCard.onParseElement` and `AdaptiveCard.onParseAction` events (both static and instance versions) have been **REMOVED**. Use `SerializationContext.onParseElement` and `SerializationContext.onParseAction` instead. |
 || The `createActionInstance` and `createElementInstance` global functions have been **REMOVED** and replaced with the `parseAction` and `parseElement` methods of the `SerializationContext` class. |
 || A new base class, `SerializableObject`, has been introduced. It implements core serialization and deserialization behaviors and pretty much all objects handled by the library (including `Action` and `CardElement` extend it. |
@@ -54,13 +65,12 @@ Please be aware of the following **breaking changes** in particular versions.
 || The global `getStringValue`, `getNumberValue`, `getBoolValue` and `getEnumValue` functions have been renamed into `parseString`, `parseNumber`, `parseBool` and `parseEnum`. |
 || The global `parseHostConfigEnum` function is no longer exported. |
 || The `ValidationError` enum has been renamed into `ValidationEvent`. |
-|| The `IValidationError` interface has been renamed into `IValidationLogEntry`. It has a new required `phase` field of type `ValidationPhase` and its `error` field has been renamed into `event`. |
+|| The `IValidationError` interface has been renamed into `IValidationEvent`. It has a new required `phase` field of type `ValidationPhase` and its `error` field has been renamed into `event`. |
 | **1.2** | The default `value` of an Input.Time **no longer accepts seconds**. 08:25:32 will now be treated as an invalid value and ignored; it should be replaced with 08:25. This behavior is consistent with other Adaptive Card renderers.|
 || The `ICardObject` interface has been **REMOVED**, replaced with the `CardObject` class that both `CardElement` and `Action` extend. This change should have little to no impact on any application.|
 || The `CardElement.validate()` and `Action.validate()` methods have been **REMOVED**, replaced with `CardObject.validateProperties()` and `CardObject.internalValidateProperties(context: ValidationContext)`. Custom elements and actions now must override `internalValidateProperties` and add validation failures as appropriate to the `context` object passed as a parameter using its `addFailure` method. Be sure to always call `super.internalValidateProperties(context)` in your override.|
 | **1.1** | Due to a security concern, the `processMarkdown` event handler has been **REMOVED**. Setting it will throw an exception that will halt your code. Please change your code to set the `onProcessMarkdown(text, result)` event handler instead (see example below.) |
 | **1.0** | The standalone `renderCard()` helper function was removed as it was redundant with the class methods. Please use `adaptiveCard.render()` as described below. |
-| **2.4.0** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |
 
 ## Install
 

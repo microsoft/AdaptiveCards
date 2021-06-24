@@ -5,15 +5,10 @@ package io.adaptivecards.renderer;
 import android.view.View;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
-import io.adaptivecards.objectmodel.BaseActionElement;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.InternalId;
-import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 

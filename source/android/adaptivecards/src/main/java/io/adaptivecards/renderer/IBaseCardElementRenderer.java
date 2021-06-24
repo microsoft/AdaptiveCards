@@ -3,27 +3,25 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
-
-import java.util.Vector;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public interface IBaseCardElementRenderer
 {
     View render(
-            RenderedAdaptiveCard renderedCard,
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            BaseCardElement baseCardElement,
+            @NonNull RenderedAdaptiveCard renderedCard,
+            @NonNull Context context,
+            @NonNull FragmentManager fragmentManager,
+            @NonNull ViewGroup viewGroup,
+            @NonNull BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            RenderArgs renderArgs) throws Exception;
+            @NonNull HostConfig hostConfig,
+            @NonNull RenderArgs renderArgs) throws Exception;
 }

@@ -1,0 +1,31 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Style set to heading",
+			"style": "heading",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style set to heading, color set to good",
+			"style": "heading",
+			"color": "good",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style set to default",
+			"style": "default",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Style unset",
+			"wrap": true
+		}
+	]
+}

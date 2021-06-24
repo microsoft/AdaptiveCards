@@ -33,6 +33,7 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRErrors.h"
+#import "ACROverflowTarget.h"
 #import "ACRRegistration.h"
 #import "ACRShowCardTarget.h"
 #import "ACRToggleVisibilityTarget.h"
@@ -151,6 +152,40 @@
 
 @end
 
+@implementation ACROverflowActionTargetBuilder
+
++ (ACROverflowActionTargetBuilder *)getInstance
+{
+    static ACROverflowActionTargetBuilder *singletonInstance = [[self alloc] init];
+    return singletonInstance;
+}
+
+- (NSObject *)build:(ACOBaseActionElement *)action
+           director:(ACRTargetBuilderDirector *)director
+{
+    return [self build:action director:director ForButton:nil];
+}
+
+- (NSObject *)build:(ACOBaseActionElement *)action
+           director:(ACRTargetBuilderDirector *)director
+          ForButton:(UIButton *)button
+{
+    if (director.rootView && [action isKindOfClass:[ACOActionOverflow class]]) {
+        NSObject *target = [[ACROverflowTarget alloc]
+            initWithActionElement:(ACOActionOverflow *)action
+                         rootView:director.rootView];
+        if (target) {
+            [button addTarget:target
+                          action:@selector(doSelectAction)
+                forControlEvents:UIControlEventTouchUpInside];
+        }
+        return target;
+    }
+    return nil;
+}
+
+@end
+
 @implementation ACRUnknownActionTargetBuilder
 
 + (ACRUnknownActionTargetBuilder *)getInstance
@@ -162,10 +197,8 @@
 - (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
 {
-    std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(action.element);
-    if (unknownAction) {
-        ACOBaseActionElement *customAction = deserializeUnknownActionToCustomAction(unknownAction);
-        return [[ACRAggregateTarget alloc] initWithActionElement:customAction rootView:director.rootView];
+    if (action) {
+        return [[ACRAggregateTarget alloc] initWithActionElement:action rootView:director.rootView];
     }
 
     return nil;
@@ -194,9 +227,8 @@
     return self;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)adaptiveAction
 {
-    ACOBaseActionElement *adaptiveAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
     ACRTargetBuilder *builder = [self getBuilder:adaptiveAction];
 
     if (builder) {
@@ -205,10 +237,9 @@
     return nil;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)adaptiveAction
           forButton:(UIButton *)button
 {
-    ACOBaseActionElement *adaptiveAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
     ACRTargetBuilder *builder = [self getBuilder:adaptiveAction];
     if (builder) {
         return [builder build:adaptiveAction director:self ForButton:button];

@@ -3,33 +3,35 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayout;
 
-import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.FeatureRegistration;
-import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.RenderArgs;
-import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.ColumnSet;
 import io.adaptivecards.objectmodel.ColumnVector;
+import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.FeatureRegistration;
+import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.IBaseCardElementRenderer;
+import io.adaptivecards.renderer.RenderArgs;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-import io.adaptivecards.renderer.IBaseCardElementRenderer;
 
 public class ColumnSetRenderer extends BaseCardElementRenderer
 {
@@ -73,17 +75,25 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
         columnSetLayout.setFlexDirection(FlexDirection.ROW);
 
-        setMinHeight(columnSet.GetMinHeight(), columnSetLayout, context);
+        // TODO: Consistent column-width across platforms, which may need normalized weights:
+        // normalizeWeights(columnVector);
 
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
-        ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
+        ContainerStyle styleForThis = ContainerRenderer.getLocalContainerStyle(columnSet, parentContainerStyle);
 
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
 
+            if(columnSet.GetMinHeight() > column.GetMinHeight())
+            {
+                column.SetMinHeight(columnSet.GetMinHeight());
+            }
+
             RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
             columnRenderArgs.setContainerStyle(styleForThis);
+            columnRenderArgs.setHorizontalAlignment(HorizontalAlignment.Left);
+            columnRenderArgs.setAncestorHasSelectAction(renderArgs.getAncestorHasSelectAction() || (columnSet.GetSelectAction() != null));
 
             FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
 
@@ -121,10 +131,35 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         columnSetLayout.setTag(tagContent);
 
-        ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, columnSetLayout, context, hostConfig);
-        ContainerRenderer.ApplyBleed(columnSet, columnSetLayout, context, hostConfig);
+        ContainerRenderer.applyPadding(styleForThis, parentContainerStyle, columnSetLayout, hostConfig);
+        ContainerRenderer.applyContainerStyle(styleForThis, columnSetLayout, hostConfig);
+        ContainerRenderer.applyBleed(columnSet, columnSetLayout, context, hostConfig);
 
         return columnSetLayout;
+    }
+
+    /**
+     * Normalize width of columns such that all relative weights, if any, sum to 1.
+     * @param columns Columns to normalize
+     */
+    private static void normalizeWeights(ColumnVector columns) {
+        float totalWeight = 0;
+        for(Column c : columns)
+        {
+            Float relativeWidth = ColumnRenderer.getRelativeWidth(c);
+            if(relativeWidth != null)
+            {
+                totalWeight += relativeWidth;
+            }
+        }
+        for(Column c : columns)
+        {
+            Float relativeWidth = ColumnRenderer.getRelativeWidth(c);
+            if(relativeWidth != null && totalWeight > 0)
+            {
+                c.SetWidth(String.valueOf(relativeWidth / totalWeight));
+            }
+        }
     }
 
     private static ColumnSetRenderer s_instance = null;

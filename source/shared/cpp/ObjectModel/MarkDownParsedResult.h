@@ -6,13 +6,13 @@
 #include "MarkDownHtmlGenerator.h"
 #include <list>
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     // Holds Parsing Result of MarkDown String
     class MarkDownParsedResult
     {
     public:
-        MarkDownParsedResult() : m_isHTMLTagsAdded(false), m_isCaptured(false) {};
+        MarkDownParsedResult() : m_isHTMLTagsAdded(false), m_isCaptured(false){};
 
         // Translate Intermediate Parsing Result to a form that can be written to html string
         void Translate();

@@ -8,7 +8,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Globalization::DateTimeFormatting;
@@ -17,7 +17,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Documents;
 using namespace ABI::Windows::UI::Xaml::Automation;
-using namespace AdaptiveNamespace;
+using namespace AdaptiveCards::Rendering::Uwp;
 
 HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
 {
@@ -256,10 +256,10 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
     boolean isValid;
     RETURN_IF_FAILED(InputValue::IsValueValid(&isValid));
 
-    ComPtr<ABI::Windows::Foundation::IReference<int32_t>> max;
+    ComPtr<ABI::Windows::Foundation::IReference<double>> max;
     RETURN_IF_FAILED(m_adaptiveNumberInput->get_Max(&max));
 
-    ComPtr<ABI::Windows::Foundation::IReference<int32_t>> min;
+    ComPtr<ABI::Windows::Foundation::IReference<double>> min;
     RETURN_IF_FAILED(m_adaptiveNumberInput->get_Min(&min));
 
     HString currentValue;
@@ -271,20 +271,20 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
         try
         {
             const std::string currentValueStdString = HStringToUTF8(currentValue.Get());
-            int currentInt = std::stoi(currentValueStdString);
+            double currentDouble = std::stod(currentValueStdString);
 
             if (max.Get())
             {
-                int maxInt;
-                RETURN_IF_FAILED(max->get_Value(&maxInt));
-                isValid &= (currentInt <= maxInt);
+                double maxDouble;
+                RETURN_IF_FAILED(max->get_Value(&maxDouble));
+                isValid &= (currentDouble <= maxDouble);
             }
 
             if (min.Get())
             {
-                int minInt;
-                RETURN_IF_FAILED(min->get_Value(&minInt));
-                isValid &= (currentInt >= minInt);
+                double minDouble;
+                RETURN_IF_FAILED(min->get_Value(&minDouble));
+                isValid &= (currentDouble >= minDouble);
             }
         }
         catch (...)
@@ -531,7 +531,7 @@ HRESULT ChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput
 HRESULT ChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 try
 {
-    ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
+    ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
     boolean isMultiSelect;
@@ -614,7 +614,7 @@ CATCH_RETURN;
 
 HRESULT ChoiceSetInputValue::SetFocus()
 {
-    ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
+    ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
     boolean isMultiSelect;

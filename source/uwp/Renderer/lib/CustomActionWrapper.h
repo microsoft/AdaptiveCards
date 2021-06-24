@@ -5,12 +5,12 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
-    class CustomActionWrapper : public AdaptiveSharedNamespace::BaseActionElement
+    class CustomActionWrapper : public AdaptiveCards::BaseActionElement
     {
     public:
-        CustomActionWrapper(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement);
+        CustomActionWrapper(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* actionElement);
 
         void SetId(std::string&& value) override;
         void SetId(const std::string& value) override;
@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
+        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** actionElement);
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
@@ -31,6 +31,6 @@ namespace AdaptiveNamespace
         std::string GetActionElementTitle() const;
         void SetActionElementTitle(const std::string& value);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_actionElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement> m_actionElement;
     };
 }
