@@ -46,6 +46,22 @@ namespace UWPUITestLibrary
             Assert.AreEqual("2021-07-16", TestHelpers.GetInputValue("dueDate"), "Values for input dueDate differ");
         }
 
+        [TestMethod]
+        public void InputTextValidationFailsForEmptyRequiredInputTest()
+        {
+            TestHelpers.GoToTestCase("Input.Text.ErrorMessage");
+
+            var showCardButton = TestHelpers.FindElementByName("Submit");
+            Assert.IsNotNull(showCardButton, "Could not find 'Submit' button");
+            showCardButton.Click();
+
+            var requiredInputTextBox = TestHelpers.FindByMultiple(
+                "Name", "Required Input.Text *\r\n",
+                "ClassName", "TextBox");
+
+            Assert.IsTrue(requiredInputTextBox.HasKeyboardFocus, "The first textblock did not get focus");
+        }
+
         [ClassCleanup]
         public static void TearDown()
         {

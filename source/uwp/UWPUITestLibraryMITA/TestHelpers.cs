@@ -51,6 +51,20 @@ namespace UWPUITestLibraryMITA
             return Application.Instance.CoreWindow.Parent.Descendants.Find(automationId);
         }
 
+        public static UIObject FindByMultiple(params object[] list)
+        {
+            var filteredList = Application.Instance.CoreWindow.Descendants;
+
+            for (int i = 0; (i + 1) < list.Length && filteredList.Count > 1; i += 2)
+            {
+                string propertyName = list[i] as string;
+                string value = list[i + 1] as string;
+                filteredList = filteredList.FindMultiple(UIProperty.Get(propertyName), value);
+            }
+
+            return filteredList.Count > 0 ? filteredList[0] : null;
+        }
+
         public static void GoToTestCase(string testCaseName)
         {
             var application = Application.Instance.CoreWindow;
