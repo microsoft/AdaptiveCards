@@ -6,13 +6,11 @@
   "license": "MIT",
   "main": "index.js",
   "files": [
-    "lib",
     "src"
   ],
   "scripts": {
     "clean": "rimraf lib dist",
-    "prebuild": "tsc",
-		"build": "webpack",
+		"build": "tsc",
     "lint": "eslint src/*.ts",
     "test": "jest ./lib/*",
     "build-and-test": "npm run build && npm run test"
