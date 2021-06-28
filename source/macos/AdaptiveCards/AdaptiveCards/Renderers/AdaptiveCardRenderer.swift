@@ -11,7 +11,9 @@ class AdaptiveCardRenderer {
         if let colorConfig = hostConfig.getAdaptiveCard() {
             style = (colorConfig.allowCustomStyle && card.getStyle() != .none) ? card.getStyle() : .default
         }
-        return renderAdaptiveCard(card, with: hostConfig, style: style, width: width, config: config)
+        let cardView = renderAdaptiveCard(card, with: hostConfig, style: style, width: width, config: config)
+        cardView.layoutSubtreeIfNeeded()
+        return cardView
     }
     
     func renderShowCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, parent: ACRView, config: RenderConfig) -> NSView {
@@ -73,7 +75,6 @@ class AdaptiveCardRenderer {
         
         rootView.appearance = NSAppearance.getAppearance(isDark: config.isDarkMode)
         rootView.dispatchResolveRequests()
-        rootView.layoutSubtreeIfNeeded()
         return rootView
     }
 }
@@ -90,7 +91,7 @@ extension AdaptiveCardRenderer: ACRViewDelegate {
     func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) {
         actionDelegate?.adaptiveCard(view, didShowCardWith: actionView, previousHeight: previousHeight, newHeight: newHeight)
     }
-
+    
     func acrView(_ view: ACRView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect) {
         actionDelegate?.adaptiveCard(view, didUpdateBoundsFrom: oldValue, to: newValue)
     }

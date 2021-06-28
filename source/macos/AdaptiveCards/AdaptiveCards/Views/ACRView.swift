@@ -59,7 +59,7 @@ class ACRView: ACRColumnView {
         }
         previousBounds = bounds
     }
-
+    
     override func setupViews() {
         super.setupViews()
         addSubview(showCardStackView)
@@ -147,7 +147,6 @@ extension ACRView: TargetHandlerDelegate {
         } else {
             currentShowCardItems?.showCard.isHidden = true
         }
-        layoutSubtreeIfNeeded()
         delegate?.acrView(self, didShowCardWith: button, previousHeight: currHeight, newHeight: bounds.height)
     }
     
@@ -159,6 +158,7 @@ extension ACRView: TargetHandlerDelegate {
         var dict = [String: Any]()
         
         // recursively fetch input handlers dictionary from the parent
+        var rootView = self
         var parentView: ACRView? = self
         repeat {
             if let handlers = parentView?.inputHandlers {
@@ -167,13 +167,16 @@ extension ACRView: TargetHandlerDelegate {
                     dict[handler.key] = handler.value
                 }
             }
+            if let curr = parentView, curr.parent == nil {
+                rootView = curr
+            }
             parentView = parentView?.parent
         } while parentView != nil
       
         if let data = dataJson?.data(using: String.Encoding.utf8), let dataJsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             dict.merge(dataJsonDict) { current, _ in current }
         }
-        delegate?.acrView(self, didSubmitUserResponses: dict, actionView: actionView)
+        delegate?.acrView(rootView, didSubmitUserResponses: dict, actionView: actionView)
     }
 }
 
@@ -183,9 +186,23 @@ extension ACRView: ImageResourceHandlerView {
             logError("No views registered for url '\(url)'")
             return
         }
-        // handling image resourve type
-        for imageView in imageViews {
-            imageView.setImage(image)
+        DispatchQueue.main.async {
+            for imageView in imageViews {
+                imageView.setImage(image)
+            }
+        }
+    }
+    
+    func setImage(_ image: NSImage, forURLsContaining matcher: @escaping (String) -> Bool) {
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else { return }
+            self.imageViewMap.keys
+                .filter { matcher($0) }
+                .forEach { self.setImage(image, for: $0) }
+            
+            self.showCardsMap.values
+                .compactMap { $0 as? ImageResourceHandlerView }
+                .forEach { $0.setImage(image, forURLsContaining: matcher) }
         }
     }
 }

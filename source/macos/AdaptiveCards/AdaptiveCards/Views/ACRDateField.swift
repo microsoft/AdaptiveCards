@@ -61,7 +61,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     private var popover = NSPopover()
     let isTimeMode: Bool
     let isDarkMode: Bool
-    
+
     var selectedDate: Date? {
         didSet {
             if let selectedDate = selectedDate {

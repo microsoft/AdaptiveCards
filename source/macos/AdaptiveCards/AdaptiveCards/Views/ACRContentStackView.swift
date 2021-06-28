@@ -88,7 +88,9 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     
     private func initialize() {
         wantsLayer = true
-        layer = NoClippingLayer()
+        if !(self is ACRView) { // RootView should support clipping
+            layer = NoClippingLayer()
+        }
         setupViews()
         setupConstraints()
         setupTrackingArea()

@@ -111,11 +111,11 @@ extension ACRMultilineInputTextView: InputHandlingViewProtocol {
 }
 
 extension ACRMultilineInputTextView: ACRTextViewResponderDelegate {
-    func textViewDidResignFirstResponder() {
-        scrollView.disableScroll = true
-    }
-    
     func textViewDidBecomeFirstResponder() {
         scrollView.disableScroll = false
+    }
+    
+    func textViewDidResignFirstResponder() {
+        scrollView.disableScroll = true
     }
 }

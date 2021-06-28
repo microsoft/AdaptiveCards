@@ -32,6 +32,7 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
             let markdownParserResult = BridgeTextUtils.processText(from: fact, hostConfig: hostConfig)
             let markdownString = TextUtils.getMarkdownString(for: rootView, with: markdownParserResult)
             let attributedContent = TextUtils.addFontProperties(attributedString: markdownString, textProperties: BridgeTextUtils.convertFact(toRichTextElementProperties: fact), hostConfig: hostConfig)
+                         
             let titleView = ACRFactTextField()
             let valueView = ACRFactTextField()
             titleView.plainTextValue = fact.getTitle()

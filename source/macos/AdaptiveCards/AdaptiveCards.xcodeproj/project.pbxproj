@@ -14,6 +14,8 @@
 		0801EDB925F78EC800D64C86 /* FakeColumn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0801EDB825F78EC800D64C86 /* FakeColumn.swift */; };
 		0801EDBE25F7913300D64C86 /* ColumnSetRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0801EDBD25F7913300D64C86 /* ColumnSetRendererTests.swift */; };
 		0801EDC325F7914200D64C86 /* ColumnRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0801EDC225F7914200D64C86 /* ColumnRendererTests.swift */; };
+		080DD9282689F4430058914A /* recents_20.png in Resources */ = {isa = PBXBuildFile; fileRef = 080DD9262689F4430058914A /* recents_20.png */; };
+		080DD9292689F4430058914A /* recents_20_w.png in Resources */ = {isa = PBXBuildFile; fileRef = 080DD9272689F4430058914A /* recents_20_w.png */; };
 		082864D625C977600080D767 /* AdaptiveCards_bridge-BridgingHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 082864D525C977600080D767 /* AdaptiveCards_bridge-BridgingHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082864FC25C99E300080D767 /* HostConfigUtils.swift */; };
 		08299E3925AF254000799C66 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08299E2F25AF254000799C66 /* AdaptiveCards.framework */; };
@@ -479,8 +481,6 @@
 		28D7A57C25F1E84800AEA09C /* ACRCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A57B25F1E84800AEA09C /* ACRCollectionView.swift */; };
 		28F4E2142681DA77000B5131 /* ACRTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F4E2132681DA76000B5131 /* ACRTextView.swift */; };
 		28F4E2192681DAE3000B5131 /* ACRScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F4E2182681DAE3000B5131 /* ACRScrollView.swift */; };
-		28F813D12677AACE0052AD0B /* recents_20.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F813D02677AAC60052AD0B /* recents_20.png */; };
-		28F813D62677AADA0052AD0B /* recents_20_w.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F813D52677AAD90052AD0B /* recents_20_w.png */; };
 		28F812D92670B47D0052AD0B /* clear_18.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F812D82670B47D0052AD0B /* clear_18.png */; };
 		28F812DE2670B4E80052AD0B /* clear_18_w.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F812DD2670B4E80052AD0B /* clear_18_w.png */; };
 		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
@@ -564,6 +564,8 @@
 		0801EDB825F78EC800D64C86 /* FakeColumn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeColumn.swift; sourceTree = "<group>"; };
 		0801EDBD25F7913300D64C86 /* ColumnSetRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnSetRendererTests.swift; sourceTree = "<group>"; };
 		0801EDC225F7914200D64C86 /* ColumnRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnRendererTests.swift; sourceTree = "<group>"; };
+		080DD9262689F4430058914A /* recents_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recents_20.png; sourceTree = "<group>"; };
+		080DD9272689F4430058914A /* recents_20_w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recents_20_w.png; sourceTree = "<group>"; };
 		082864D525C977600080D767 /* AdaptiveCards_bridge-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AdaptiveCards_bridge-BridgingHeader.h"; sourceTree = "<group>"; };
 		082864FC25C99E300080D767 /* HostConfigUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostConfigUtils.swift; sourceTree = "<group>"; };
 		08299E2F25AF254000799C66 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1036,8 +1038,6 @@
 		28D7A57B25F1E84800AEA09C /* ACRCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRCollectionView.swift; sourceTree = "<group>"; };
 		28F4E2132681DA76000B5131 /* ACRTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRTextView.swift; sourceTree = "<group>"; };
 		28F4E2182681DAE3000B5131 /* ACRScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRScrollView.swift; sourceTree = "<group>"; };
-		28F813D02677AAC60052AD0B /* recents_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = recents_20.png; path = ../../../../../../../Downloads/recents_20_png/recents_20.png; sourceTree = "<group>"; };
-		28F813D52677AAD90052AD0B /* recents_20_w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = recents_20_w.png; path = ../../../../../../../Downloads/recents_20_w_png/recents_20_w.png; sourceTree = "<group>"; };
 		28F812D82670B47D0052AD0B /* clear_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear_18.png; sourceTree = "<group>"; };
 		28F812DD2670B4E80052AD0B /* clear_18_w.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear_18_w.png; sourceTree = "<group>"; };
 		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
@@ -1812,12 +1812,12 @@
 		81A94A6E25FF80D60018213A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				080DD9272689F4430058914A /* recents_20_w.png */,
+				080DD9262689F4430058914A /* recents_20.png */,
 				13BE7602261C5F4600FC9636 /* calendar-month-light.png */,
 				13BE7606261C7EDA00FC9636 /* calendar-month-dark.png */,
 				28F812DD2670B4E80052AD0B /* clear_18_w.png */,
 				81C037282604B1F700B33324 /* cisco.jpg */,
-				28F813D52677AAD90052AD0B /* recents_20_w.png */,
-				28F813D02677AAC60052AD0B /* recents_20.png */,
 				28F812D82670B47D0052AD0B /* clear_18.png */,
 				81A94A7825FF86E70018213A /* arrowup.png */,
 				81A94A7725FF86E70018213A /* attachment.png */,
@@ -2212,15 +2212,15 @@
 				28F812DE2670B4E80052AD0B /* clear_18_w.png in Resources */,
 				13BE7603261C5F4600FC9636 /* calendar-month-light.png in Resources */,
 				13BE7607261C7EDA00FC9636 /* calendar-month-dark.png in Resources */,
-				28F813D12677AACE0052AD0B /* recents_20.png in Resources */,
 				81A94A7025FF80D60018213A /* arrowdown.png in Resources */,
-				28F813D62677AADA0052AD0B /* recents_20_w.png in Resources */,
 				81C037292604B1F700B33324 /* cisco.jpg in Resources */,
 				08299F9E25AF279E00799C66 /* AdaptiveCards.xcconfig in Resources */,
 				81A94A7A25FF86E70018213A /* arrowup.png in Resources */,
 				28F812D92670B47D0052AD0B /* clear_18.png in Resources */,
 				28CE1A7D25E7553700BFCFD9 /* ACRFactTextField.xib in Resources */,
 				81A94A7925FF86E70018213A /* attachment.png in Resources */,
+				080DD9282689F4430058914A /* recents_20.png in Resources */,
+				080DD9292689F4430058914A /* recents_20_w.png in Resources */,
 				2871B11D25DD225C0040AB27 /* ACRMultilineInputTextView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

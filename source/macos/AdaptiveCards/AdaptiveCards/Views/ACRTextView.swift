@@ -1,9 +1,8 @@
-import AdaptiveCards_bridge
 import AppKit
 
 class ACRTextView: NSTextView, SelectActionHandlingProtocol {
-    var placeholderAttrString: NSAttributedString?
     weak var responderDelegate: ACRTextViewResponderDelegate?
+    var placeholderAttrString: NSAttributedString?
     
     override var intrinsicContentSize: NSSize {
         guard let layoutManager = layoutManager, let textContainer = textContainer else {

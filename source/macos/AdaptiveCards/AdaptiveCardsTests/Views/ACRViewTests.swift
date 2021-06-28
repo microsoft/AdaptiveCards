@@ -31,6 +31,10 @@ class ACRViewTests: XCTestCase {
         let imageView2 = FakeImageHoldingView()
         let imageView3 = FakeImageHoldingView()
         
+        imageView1.expectation = XCTestExpectation(description: "setImage1")
+        imageView2.expectation = XCTestExpectation(description: "setImage2")
+        imageView3.expectation = XCTestExpectation(description: "setImage3")
+        
         view.registerImageHandlingView(imageView1, for: "test1")
         view.registerImageHandlingView(imageView2, for: "test2")
         view.registerImageHandlingView(imageView3, for: "test3")
@@ -38,6 +42,7 @@ class ACRViewTests: XCTestCase {
         view.dispatchResolveRequests()
         
         XCTAssertEqual(fakeResourceResolver.calledCount, 3)
+        wait(for: [imageView1.expectation!, imageView2.expectation!, imageView3.expectation!], timeout: 0.2)
         XCTAssertTrue(imageView1.imageDidSet)
         XCTAssertTrue(imageView2.imageDidSet)
         XCTAssertTrue(imageView3.imageDidSet)
@@ -64,6 +69,10 @@ class ACRViewTests: XCTestCase {
         let imageView2 = FakeImageHoldingView()
         let imageView3 = FakeImageHoldingView()
         
+        imageView1.expectation = XCTestExpectation(description: "setImage1")
+        imageView2.expectation = XCTestExpectation(description: "setImage2")
+        imageView3.expectation = XCTestExpectation(description: "setImage3")
+        
         view.registerImageHandlingView(imageView1, for: "test")
         view.registerImageHandlingView(imageView2, for: "test")
         view.registerImageHandlingView(imageView3, for: "test")
@@ -71,6 +80,7 @@ class ACRViewTests: XCTestCase {
         view.dispatchResolveRequests()
         
         XCTAssertEqual(fakeResourceResolver.calledCount, 1)
+        wait(for: [imageView1.expectation!, imageView2.expectation!, imageView3.expectation!], timeout: 0.2)
         XCTAssertTrue(imageView1.imageDidSet)
         XCTAssertTrue(imageView2.imageDidSet)
         XCTAssertTrue(imageView3.imageDidSet)
@@ -148,7 +158,9 @@ private class fakeInputHandlingView: NSView, InputHandlingViewProtocol {
 
 private class FakeImageHoldingView: NSView, ImageHoldingView {
     var imageDidSet = false
+    var expectation: XCTestExpectation?
     func setImage(_ image: NSImage) {
         imageDidSet = true
+        expectation?.fulfill()
     }
 }
