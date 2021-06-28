@@ -1012,6 +1012,8 @@ namespace RendererQml
 			auto index = std::find_if(choiceset.choices.begin(), choiceset.choices.end(), [target](const Checkbox& options) {
 				return options.value == target;
 			}) - choiceset.choices.begin();
+			//Assign index as 0 in case target does not exist
+			index = (index > (signed int)(choiceset.choices.size() - 1) ? 0 : index);
 			uiComboBox->Property("currentIndex", std::to_string(index));
 			uiComboBox->Property("displayText", "currentText");
 		}
@@ -1034,6 +1036,7 @@ namespace RendererQml
 		uiItemDelegate_Text->Property("text", "modelData.text");
 		uiItemDelegate_Text->Property("font.family", fontFamily, true);
 		uiItemDelegate_Text->Property("font.pixelSize", std::to_string(fontSize));
+		uiItemDelegate_Text->Property("textFormat", "Text.RichText");
 		uiItemDelegate_Text->Property("verticalAlignment", "Text.AlignVCenter");
 		uiItemDelegate_Text->Property("color", Formatter() << itemDelegateId << ".highlighted?" << "'white' : " << textColor);
 
@@ -1098,10 +1101,15 @@ namespace RendererQml
 	std::string AdaptiveCardQmlRenderer::GetModel(std::vector<Checkbox>& Choices)
 	{
 		std::ostringstream model;
+		std::string choice_Text;
+		std::string choice_Value;
+
 		model << "[";
 		for (const auto& choice : Choices)
 		{
-			model << "{ value: '" << choice.value << "', text: '" << choice.text << "'},\n";
+			choice_Text = choice.text;
+			choice_Value = choice.value;
+			model << "{ value: '" << Utils::HandleEscapeSequences(choice_Value) << "', text: '" << Utils::HandleEscapeSequences(choice_Text) << "'},\n";
 		}
 		model << "]";
 		return model.str();
