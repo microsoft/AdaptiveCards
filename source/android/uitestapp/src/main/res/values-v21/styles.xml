@@ -2,7 +2,6 @@
 
     <!-- Sample style definitions -->
     <style name="adaptiveShowCardAction" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:drawableEnd">@drawable/show_card_arrow</item>
     </style>
 
     <style name="adaptiveActionPositive" parent="@style/Widget.AppCompat.Button.Colored">
