@@ -31,6 +31,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
