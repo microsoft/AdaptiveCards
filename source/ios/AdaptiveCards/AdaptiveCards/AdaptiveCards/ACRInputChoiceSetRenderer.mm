@@ -122,6 +122,8 @@
         // for custom styling of the cell, please register a custom class here as shown below
         // and use the same reuse ID.
         [filteredListView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:@"filterred-cell"];
+
+        choiceSetView.spacingBottom = 10.0f;
     }
 }
 @end

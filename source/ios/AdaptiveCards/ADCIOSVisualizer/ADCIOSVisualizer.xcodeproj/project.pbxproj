@@ -63,6 +63,7 @@
 		6B182BBF25DF5FB700629A39 /* CircleBlue_flight.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BAC25DF5FB700629A39 /* CircleBlue_flight.png */; };
 		6B182BCF25E5AD3500629A39 /* image_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BCE25E5AD3500629A39 /* image_3.png */; };
 		6B182BD325E5D7D400629A39 /* bg_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BD225E5D7D400629A39 /* bg_image.png */; };
+		6B1D8B9E268AC2B7005DB234 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B1D8B9D268AC2B6005DB234 /* CoreGraphics.framework */; };
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
 		6B250FC9253FB0CE007FFCFB /* ACRCustomSubmitTargetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */; };
@@ -192,6 +193,7 @@
 		6B182BAC25DF5FB700629A39 /* CircleBlue_flight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CircleBlue_flight.png; sourceTree = "<group>"; };
 		6B182BCE25E5AD3500629A39 /* image_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image_3.png; sourceTree = "<group>"; };
 		6B182BD225E5D7D400629A39 /* bg_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_image.png; sourceTree = "<group>"; };
+		6B1D8B9D268AC2B6005DB234 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionNewType.h; sourceTree = "<group>"; };
 		6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionNewType.mm; sourceTree = "<group>"; };
 		6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerUITests.mm; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B1D8B9E268AC2B7005DB234 /* CoreGraphics.framework in Frameworks */,
 				6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */,
 				6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */,
 			);
@@ -369,6 +372,7 @@
 		6BF339E120A66A3F00DA5973 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B1D8B9D268AC2B6005DB234 /* CoreGraphics.framework */,
 				6B980935215AE8780024B79B /* AdaptiveCards.framework */,
 				6B980933215AE6EC0024B79B /* UIKit.framework */,
 				6B980930215AE4310024B79B /* CoreGraphics.framework */,

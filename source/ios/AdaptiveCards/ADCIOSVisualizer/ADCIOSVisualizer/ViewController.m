@@ -31,7 +31,6 @@ CGFloat kFileBrowserWidth = 0;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
     dispatch_queue_t _global_queue;
-    UIGestureRecognizer *_tapGesture;
 }
 
 @end
@@ -247,7 +246,6 @@ CGFloat kFileBrowserWidth = 0;
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
-    _tapGesture = [[UITapGestureRecognizer alloc] init];
 
     // the width of the AdaptiveCards does not need to be set.
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
@@ -269,11 +267,6 @@ CGFloat kFileBrowserWidth = 0;
 
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -486,12 +479,8 @@ CGFloat kFileBrowserWidth = 0;
     NSDictionary *info = [aNotification userInfo];
     CGRect kbFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGSize kbSize = kbFrame.size;
-
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    CGPoint currentPoint = [_tapGesture locationInView:self.chatWindow];
-    if (currentPoint.y < kbFrame.origin.y) {
-        self.chatWindow.contentInset = contentInsets;
-    }
+    self.chatWindow.contentInset = contentInsets;
 }
 
 // Called when the UIKeyboardWillHideNotification is sent

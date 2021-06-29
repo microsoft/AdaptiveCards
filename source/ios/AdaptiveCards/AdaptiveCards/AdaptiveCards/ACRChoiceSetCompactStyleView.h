@@ -15,6 +15,10 @@
 @property NSMutableDictionary *results;
 @property (weak) UIView *filteredListView;
 @property (weak) UIView *showFilteredListControl;
+/// top margin of filtered list view
+@property CGFloat spacingTop;
+/// bottom margin of filtered list view
+@property CGFloat spacingBottom;
 
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
                               rootView:(ACRView *)rootView
@@ -24,6 +28,9 @@
 @interface ACOFilteredDataSource : NSObject
 
 @property (readonly) NSUInteger count;
+@property (readonly) BOOL isEnabled;
+
+- (instancetype)init:(BOOL)filteringEnabled;
 
 - (void)addToSource:(NSString *)item;
 
@@ -41,11 +48,38 @@
 @property (readonly) BOOL isFilteredListVisible;
 @property (readonly) BOOL shouldUpdateFilteredList;
 
-- (void)filteredListControlSelected;
-- (void)filteredListControlDeselected;
-- (void)showFilteredListView;
-- (void)hideFilteredListView;
-- (void)toggleFilteredListView;
-- (void)toggleShowFilteredListControl;
+- (void)expanded;
+- (void)collapsed;
+- (void)toggleState;
+
+@end
+
+@interface ACOChoiceSetCompactStyleValidator : NSObject
+
+@property BOOL isRequired;
+@property NSString *placeHolder;
+@property (readonly, copy) NSString *userInitialChoice;
+
+- (instancetype)init:(ACOBaseCardElement *)acoElem  dataSource:(ACOFilteredDataSource *)dataSource;
+
+- (BOOL)isValid:(NSString *)input;
+
+- (NSString *)getValue:(NSString *)input;
+
+@end
+
+@interface ACOFilteredListLayout : NSObject
+
+@property CGFloat y;
+@property CGFloat height;
+@property CGFloat topMargin;
+@property CGFloat bottomMargin;
+@property CGRect keyboardFrame;
+
+- (instancetype)initWithTopMargin:(CGFloat)top bottomMargin:(CGFloat)bottom;
+
+- (BOOL)shouldDrawBelow:(CGFloat)windowHeight inputHeight:(CGFloat)inputHeight yPos:(CGFloat)yPos;
+
+- (void)refreshDimension:(CGFloat)windowHeight inputYPos:(CGFloat)inputYPos inputHeight:(CGFloat)inputHeight yPos:(CGFloat)yPos rootViewFrame:(CGRect)rootViewFrame;
 
 @end

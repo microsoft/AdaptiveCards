@@ -11,6 +11,7 @@
 #import "ACRActionDelegate.h"
 #import "ACRBaseCardElementRenderer.h"
 #import "ACRInputLabelView.h"
+#import "ACRView.h"
 #import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
 #import "HostConfig.h"
@@ -21,17 +22,14 @@ using namespace AdaptiveCards;
 @implementation ACRChoiceSetCompactStyleView {
     ACOFilteredDataSource *_filteredDataSource;
     ACOFilteredListStateManager *_stateManager;
-    NSString *_defaultString;
+    ACOChoiceSetCompactStyleValidator *_validator;
+    ACOFilteredListLayout *_filteredListLayout;
     NSString *_inputLabel;
     UITableView *_listView;
     UIView *_view;
     UIButton *_button;
-    BOOL _isValid;
-    BOOL _filteringEnabled;
-    NSMutableDictionary<NSString *, NSString *> *_titlesMap;
-    std::shared_ptr<ChoiceSetInput> _choiceSetInput;
-    __weak UIViewController *_viewController;
-    CGFloat _keyboardHeight;
+    __weak ACRView *_rootView;
+    NSInteger _wrapLines;
 }
 
 - (instancetype)initWithInputChoiceSet:(ACOBaseCardElement *)acoElem
@@ -42,21 +40,40 @@ using namespace AdaptiveCards;
     if (self) {
         std::shared_ptr<BaseCardElement> elem = [acoElem element];
         std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
-        self.id = [NSString stringWithCString:choiceSet->GetId().c_str()
-                                     encoding:NSUTF8StringEncoding];
+        _rootView = rootView;
+
+        // configure helper objects
         _stateManager = [[ACOFilteredListStateManager alloc] init];
-        self.isRequired = choiceSet->GetIsRequired();
-        self.allowsEditingTextAttributes = NO;
-        _filteringEnabled = choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered;
-        if (!_filteringEnabled) {
+        _filteredDataSource = [[ACOFilteredDataSource alloc] init:choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered];
+        if (!_filteredDataSource.isEnabled) {
             self.accessibilityTraits |= (UIAccessibilityTraitButton | UIAccessibilityTraitStaticText);
         }
+        _validator = [[ACOChoiceSetCompactStyleValidator alloc] init:acoElem dataSource:_filteredDataSource];
 
+        if (@available(iOS 11.0, *)) {
+            self.spacingTop = self.window.safeAreaInsets.top + 8.0f;
+        } else {
+            self.spacingTop = self.window.layoutMargins.top + 8.0f;
+        }
+        self.spacingBottom = 8.0f;
+
+        // configure UITextField
         self.delegate = self;
-        _choiceSetInput = choiceSet;
-        _defaultString = [NSString stringWithCString:choiceSet->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
-        self.placeholder = _defaultString;
+        self.placeholder = _validator.placeHolder;
+        self.allowsEditingTextAttributes = NO;
+        self.text = _validator.userInitialChoice;
 
+        // configure AdaptiveCards input handler
+        self.id = [NSString stringWithCString:choiceSet->GetId().c_str()
+                                     encoding:NSUTF8StringEncoding];
+        self.isRequired = _validator.isRequired;
+        self.hasValidationProperties = self.isRequired;
+        auto inputLabel = choiceSet->GetLabel();
+        if (!inputLabel.empty()) {
+            _inputLabel = [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding];
+        }
+
+        // configure UI
         _listView = [[UITableView alloc] init];
         _listView.dataSource = self;
         _listView.delegate = self;
@@ -67,9 +84,9 @@ using namespace AdaptiveCards;
 
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
         self.showFilteredListControl = _button;
-        [_button addTarget:self action:@selector(toggleListView:) forControlEvents:UIControlEventTouchUpInside];
+        [_button addTarget:self action:@selector(toggleStateListView:) forControlEvents:UIControlEventTouchUpInside];
         self.rightView = _button;
-        self.rightViewMode = _filteringEnabled ? UITextFieldViewModeUnlessEditing : UITextFieldViewModeAlways;
+        self.rightViewMode = _filteredDataSource.isEnabled ? UITextFieldViewModeUnlessEditing : UITextFieldViewModeAlways;
 
         ACRBaseCardElementRenderer *renderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)choiceSet->GetElementType()]];
         if (renderer && [renderer respondsToSelector:@selector(configure:rootView:baseCardElement:hostConfig:)]) {
@@ -77,36 +94,10 @@ using namespace AdaptiveCards;
             [renderer configure:self rootView:rootView baseCardElement:acoElem hostConfig:acoConfig];
         }
 
-        _viewController = traverseResponderChainForUIViewController(rootView);
-        _isValid = YES;
-        _titlesMap = [[NSMutableDictionary alloc] init];
-        NSInteger index = 0;
-        auto inputLabel = _choiceSetInput->GetLabel();
-        if (!inputLabel.empty()) {
-            _inputLabel = [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding];
-        }
+        _filteredListLayout = [[ACOFilteredListLayout alloc] initWithTopMargin:self.spacingTop bottomMargin:self.spacingBottom];
+        _wrapLines = choiceSet->GetWrap() ? 0 : 1;
 
-        NSString *defaultValue = [NSString stringWithCString:_choiceSetInput->GetValue().c_str()
-                                                    encoding:NSUTF8StringEncoding];
-        BOOL shouldFilterList = NO;
-        _filteredDataSource = [[ACOFilteredDataSource alloc] init];
-        for (auto choice : _choiceSetInput->GetChoices()) {
-            NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-            NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
-            _titlesMap[title] = value;
-            if ([value isEqualToString:defaultValue]) {
-                self.text = title;
-                shouldFilterList = YES;
-            }
-            [_filteredDataSource addToSource:title];
-            ++index;
-        }
-
-        if (shouldFilterList) {
-            [_filteredDataSource filter:self.text];
-        }
-
-        self.hasValidationProperties = self.isRequired;
+        [_filteredDataSource filter:self.text];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
@@ -129,6 +120,7 @@ using namespace AdaptiveCards;
         } else {
             [self hideListView];
         }
+        [_rootView.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:self.frame];
     }
 }
 
@@ -142,16 +134,15 @@ using namespace AdaptiveCards;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (!_filteringEnabled) {
-
+    if (!_filteredDataSource.isEnabled) {
         BOOL prevState = _stateManager.isFilteredListVisible;
         // don't show keyboard if filtering is not enabled
         [self endEditing:YES];
 
-        // if prevState was visible, endEditing will toggle the state,
-        // so skip the toggle
+        // if prevState was visible, endEditing will toggleState the state,
+        // so skip the toggleState
         if (!prevState) {
-            [_stateManager toggleFilteredListView];
+            [_stateManager toggleState];
             [self updateControls];
         }
 
@@ -167,7 +158,7 @@ using namespace AdaptiveCards;
 /// mainly used in checking the user input
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (!_filteringEnabled) {
+    if (!_filteredDataSource.isEnabled) {
         // we don't want to editing the title of choices
         return NO;
     }
@@ -179,13 +170,13 @@ using namespace AdaptiveCards;
     // filtered list when input field is empty
     if ([newString length]) {
         [self filterList:newString];
-        [_stateManager showFilteredListView];
+        [_stateManager expanded];
         if (!_stateManager.shouldUpdateFilteredList) {
             [_listView reloadData];
         }
     } else {
         [self resetFilteredList];
-        [_stateManager hideFilteredListView];
+        [_stateManager collapsed];
     }
 
     [self updateControls];
@@ -201,7 +192,7 @@ using namespace AdaptiveCards;
 /// handles `return` key
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [_stateManager filteredListControlDeselected];
+    [_stateManager collapsed];
     [self updateControls];
     // ask UIKit to dimiss the keyboard
     [self resignFirstResponder];
@@ -213,33 +204,29 @@ using namespace AdaptiveCards;
     [_filteredDataSource filter:text];
 }
 
-- (void)toggleListView:(UIButton *)button
+- (void)toggleStateListView:(UIButton *)button
 {
-    [_stateManager toggleShowFilteredListControl];
+    [_stateManager toggleState];
     [self updateControls];
-}
-
-- (void)showListView
-{
-    if (_filteringEnabled) {
-        // overlay keyboard
-        [self becomeFirstResponder];
-    }
-    [self.window addSubview:_view];
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-    [_listView reloadData];
-    if (!_filteringEnabled) {
-        // _litView is first responder if keyboard is not shown
-        [_listView becomeFirstResponder];
-    }
 }
 
 - (BOOL)resignFirstResponder
 {
-    [_stateManager hideFilteredListView];
+    [_stateManager collapsed];
     [self updateControls];
     return [super resignFirstResponder];
+}
+
+- (void)showListView
+{
+    [self.window addSubview:_view];
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+    [_listView reloadData];
+    if (!_filteredDataSource.isEnabled) {
+        // _litView is first responder if keyboard is not shown
+        [_listView becomeFirstResponder];
+    }
 }
 
 - (void)hideListView
@@ -257,49 +244,39 @@ using namespace AdaptiveCards;
 - (void)layoutFilterredView
 {
     CGPoint position = [self.superview convertPoint:self.frame.origin toView:nil];
-    CGSize windowSize;
-    CGFloat statusBarHeight = 0.0f;
-    if (self.window) {
-        windowSize = self.window.bounds.size;
-        if (@available(iOS 11.0, *)) {
-            statusBarHeight = self.window.safeAreaInsets.top;
-        } else {
-            statusBarHeight = self.window.layoutMargins.top;
-        }
-    } else {
-        windowSize = UIScreen.mainScreen.bounds.size;
-    }
-    CGRect frame = _viewController.view.frame;
+    CGSize windowSize = (self.window) ? self.window.bounds.size : UIScreen.mainScreen.bounds.size;
+
+    UIViewController *viewController = traverseResponderChainForUIViewController(_rootView);
+    CGRect frame = viewController.view.frame;
     if (frame.size.width == 0 || frame.size.height == 0) {
         frame = CGRectMake(0, 0, windowSize.width, windowSize.height);
     }
 
-    CGFloat x = 0;
-    if (_viewController.view.superview) {
-        x = [_viewController.view.superview convertPoint:frame.origin toView:nil].x;
-    }
+    CGFloat x = (viewController.view.superview) ? [viewController.view.superview convertPoint:self.frame.origin toView:nil].x : 0;
+    CGPoint inputPosition = [self convertPoint:self.frame.origin toView:_rootView];
+    CGRect rootViewFrame = [self.superview convertRect:_rootView.frame toView:nil];
 
-    CGFloat y = position.y + self.frame.size.height;
-    CGFloat height = windowSize.height - y - _keyboardHeight;
+    [_filteredListLayout refreshDimension:windowSize.height
+                                inputYPos:inputPosition.y
+                              inputHeight:self.frame.size.height
+                                     yPos:position.y
+                            rootViewFrame:rootViewFrame];
 
-    if (height > position.y - statusBarHeight) {
-        _view.frame = CGRectMake(x, y, frame.size.width, height);
-        _listView.frame = CGRectMake(_view.bounds.origin.x, _view.bounds.origin.y, frame.size.width, height);
-    } else {
-        _view.frame = CGRectMake(x, statusBarHeight, frame.size.width, position.y - statusBarHeight);
-        _listView.frame = CGRectMake(_view.bounds.origin.x, _view.bounds.origin.y, frame.size.width, _view.frame.size.height);
-    }
+    _view.frame = CGRectMake(x, _filteredListLayout.y, frame.size.width, _filteredListLayout.height);
+    _listView.frame = _view.bounds;
 }
 
 - (void)handleKeyboardWillShow:(NSNotification *)notification
 {
     NSValue *frameValue = [notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     if (frameValue) {
-        CGRect keyboardFrame = [frameValue CGRectValue];
+        _filteredListLayout.keyboardFrame = [frameValue CGRectValue];
+        if (_stateManager.isFilteredListVisible == NO) {
+            return;
+        }
         NSNumber *durationNumber = [notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
         if (durationNumber) {
             CGFloat keyboardAnimationDuration = [durationNumber doubleValue];
-            _keyboardHeight = keyboardFrame.size.height;
             [UIView animateWithDuration:keyboardAnimationDuration
                              animations:^void {
                                  [self layoutFilterredView];
@@ -310,7 +287,10 @@ using namespace AdaptiveCards;
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification
 {
-    _keyboardHeight = 0;
+    _filteredListLayout.keyboardFrame = CGRectZero;
+    if (_stateManager.isFilteredListVisible == NO) {
+        return;
+    }
     NSNumber *durationNumber = [notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     if (durationNumber) {
         CGFloat keyboardAnimationDuration = [durationNumber doubleValue];
@@ -325,7 +305,7 @@ using namespace AdaptiveCards;
 {
     self.accessibilityLabel = view.accessibilityLabel;
     if (shouldBecomeFirstResponder) {
-        [_stateManager showFilteredListView];
+        [_stateManager expanded];
         [self updateControls];
         [_listView becomeFirstResponder];
         UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, _listView);
@@ -336,21 +316,12 @@ using namespace AdaptiveCards;
 
 - (BOOL)validate:(NSError **)error
 {
-    // no need to validate
-    _isValid = YES;
-    if (self.isRequired) {
-        _isValid = !(!self.text || !self.text.length ||
-                     [self.text isEqualToString:_defaultString] ||
-                     ![_titlesMap objectForKey:self.text]);
-    } else if (self.text && self.text.length) {
-        _isValid = [_titlesMap objectForKey:self.text] != nil;
-    }
-    return _isValid;
+    return [_validator isValid:self.text];
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    dictionary[self.id] = (self.text && self.text.length) ? [_titlesMap objectForKey:self.text] : @"";
+    dictionary[self.id] = [_validator getValue:self.text];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -370,7 +341,7 @@ using namespace AdaptiveCards;
         cell = [[UITableViewCell alloc] init];
     }
     cell.textLabel.text = [_filteredDataSource getItemAt:indexPath.row];
-    cell.textLabel.numberOfLines = _choiceSetInput->GetWrap() ? 0 : 1;
+    cell.textLabel.numberOfLines = _wrapLines;
     cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, cell.textLabel.text];
     cell.accessibilityTraits = UIAccessibilityTraitButton;
     return cell;
@@ -380,11 +351,9 @@ using namespace AdaptiveCards;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     self.text = [_filteredDataSource getItemAt:indexPath.row];
-    if (_filteringEnabled) {
-        [self filterList:self.text];
-    }
+    [self filterList:self.text];
 
-    [_stateManager hideFilteredListView];
+    [_stateManager collapsed];
     [self updateControls];
 
     [self resignFirstResponder];
@@ -413,6 +382,16 @@ using namespace AdaptiveCards;
         _unfilteredList = [[NSMutableArray alloc] init];
         _filteredList = _unfilteredList;
         _filter = @"SELF CONTAINS[c] %@";
+        _isEnabled = YES;
+    }
+    return self;
+}
+
+- (instancetype)init:(BOOL)filteringEnabled
+{
+    self = [self init];
+    if (self) {
+        _isEnabled = filteringEnabled;
     }
     return self;
 }
@@ -436,6 +415,9 @@ using namespace AdaptiveCards;
 
 - (void)filter:(NSString *)key
 {
+    if (!self.isEnabled) {
+        return;
+    }
     NSPredicate *predicate = [NSPredicate predicateWithFormat:_filter, key.lowercaseString];
     _filteredList = [_unfilteredList filteredArrayUsingPredicate:predicate];
 }
@@ -476,25 +458,13 @@ using namespace AdaptiveCards;
     return _showFilstedListControlState;
 }
 
-- (void)filteredListControlSelected
+- (void)expanded
 {
     [self incrementFilteredListVisibility];
     _showFilstedListControlState = YES;
 }
 
-- (void)filteredListControlDeselected
-{
-    [self decrementFilteredListVisibility];
-    _showFilstedListControlState = NO;
-}
-
-- (void)showFilteredListView
-{
-    [self incrementFilteredListVisibility];
-    _showFilstedListControlState = YES;
-}
-
-- (void)hideFilteredListView
+- (void)collapsed
 {
     [self decrementFilteredListVisibility];
     _showFilstedListControlState = NO;
@@ -518,21 +488,102 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void)toggleFilteredListView
+- (void)toggleState
 {
     if (self.isFilteredListVisible) {
-        [self hideFilteredListView];
+        [self collapsed];
     } else {
-        [self showFilteredListView];
+        [self expanded];
     }
 }
 
-- (void)toggleShowFilteredListControl
+@end
+
+@implementation ACOChoiceSetCompactStyleValidator {
+    NSMutableDictionary<NSString *, NSString *> *_titlesMap;
+}
+
+- (instancetype)init:(ACOBaseCardElement *)acoElem dataSource:(ACOFilteredDataSource *)dataSource
 {
-    if (self.isShowFilteredListControlSelected) {
-        [self filteredListControlDeselected];
+    self = [super init];
+    if (self) {
+        std::shared_ptr<BaseCardElement> elem = [acoElem element];
+        std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
+        self.isRequired = choiceSet->GetIsRequired();
+        self.placeHolder = [NSString stringWithCString:choiceSet->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
+
+        _titlesMap = [[NSMutableDictionary alloc] init];
+        NSString *defaultValue = [NSString stringWithCString:choiceSet->GetValue().c_str()
+                                                    encoding:NSUTF8StringEncoding];
+        for (auto choice : choiceSet->GetChoices()) {
+            NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+            NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
+            _titlesMap[title] = value;
+            if ([value isEqualToString:defaultValue]) {
+                _userInitialChoice = title;
+            }
+            [dataSource addToSource:title];
+        }
+    }
+    return self;
+}
+
+- (BOOL)isValid:(NSString *)input
+{
+    BOOL isValid = YES;
+    if (self.isRequired) {
+        isValid = !(!input || !input.length ||
+                    ![_titlesMap objectForKey:input]);
+    } else if (input && input.length) {
+        isValid = [_titlesMap objectForKey:input] != nil;
+    }
+    return isValid;
+}
+
+- (NSString *)getValue:(NSString *)input
+{
+    if (input && input.length) {
+        NSString *value = [_titlesMap objectForKey:input];
+        return value ? value : @"";
+    }
+    return @"";
+}
+
+@end
+
+@implementation ACOFilteredListLayout
+
+- (instancetype)initWithTopMargin:(CGFloat)top bottomMargin:(CGFloat)bottom
+{
+    self = [super init];
+    if (self) {
+        self.topMargin = top;
+        self.bottomMargin = bottom;
+    }
+    return self;
+}
+
+- (BOOL)shouldDrawBelow:(CGFloat)windowHeight inputHeight:(CGFloat)inputHeight yPos:(CGFloat)yPos
+{
+    return windowHeight - (yPos + inputHeight) - self.keyboardFrame.size.height > yPos - (self.topMargin + self.bottomMargin);
+}
+
+- (BOOL)doesKeyboardOverlap:(CGRect)rootViewFrame
+{
+    return (self.keyboardFrame.size.height > 0 && CGRectIntersectsRect(rootViewFrame, self.keyboardFrame));
+}
+
+- (void)refreshDimension:(CGFloat)windowHeight inputYPos:(CGFloat)inputYPos inputHeight:(CGFloat)inputHeight yPos:(CGFloat)yPos rootViewFrame:(CGRect)rootViewFrame
+{
+    if ([self shouldDrawBelow:windowHeight inputHeight:inputHeight yPos:yPos]) {
+        self.y = yPos + inputHeight;
+        self.height = windowHeight - self.y - self.keyboardFrame.size.height;
     } else {
-        [self filteredListControlSelected];
+        self.y = self.topMargin;
+        self.height = yPos - (self.topMargin + self.bottomMargin);
+        if ([self doesKeyboardOverlap:rootViewFrame]) {
+            self.height = (self.keyboardFrame.origin.y - (self.topMargin + self.bottomMargin) - (rootViewFrame.size.height - inputYPos));
+        }
     }
 }
 
