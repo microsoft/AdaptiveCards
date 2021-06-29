@@ -655,13 +655,13 @@ HRESULT FilteredChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoice
                                                             _In_ IBorder* validationBorder)
 {
     m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
-    m_autoSuggetBox = autoSuggestBox;
+    m_autoSuggestBox = autoSuggestBox;
 
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
 
     Microsoft::WRL::ComPtr<IUIElement> autoSuggestBoxAsUIElement;
-    RETURN_IF_FAILED(m_autoSuggetBox.As(&autoSuggestBoxAsUIElement));
+    RETURN_IF_FAILED(m_autoSuggestBox.As(&autoSuggestBoxAsUIElement));
 
     RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), autoSuggestBoxAsUIElement.Get(), validationBorder));
     return S_OK;
@@ -690,7 +690,7 @@ HRESULT FilteredChoiceSetInputValue::IsValueValid(boolean* isInputValid)
 
     // Check if there's text in the autoSuggestBox
     HString textHString;
-    RETURN_IF_FAILED(m_autoSuggetBox->get_Text(textHString.GetAddressOf()));
+    RETURN_IF_FAILED(m_autoSuggestBox->get_Text(textHString.GetAddressOf()));
     if (!textHString.IsValid())
     {
         // Empty input is only valid if it's not required
@@ -714,7 +714,7 @@ HRESULT FilteredChoiceSetInputValue::IsValueValid(boolean* isInputValid)
 HRESULT FilteredChoiceSetInputValue::GetSelectedChoice(IAdaptiveChoiceInput** adaptiveChoiceInput)
 {
     HString textHString;
-    RETURN_IF_FAILED(m_autoSuggetBox->get_Text(textHString.GetAddressOf()));
+    RETURN_IF_FAILED(m_autoSuggestBox->get_Text(textHString.GetAddressOf()));
     std::string text = HStringToUTF8(textHString.Get());
 
     ComPtr<IVector<AdaptiveChoiceInput*>> choices;

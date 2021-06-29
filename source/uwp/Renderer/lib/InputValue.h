@@ -187,7 +187,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         HRESULT GetSelectedChoice(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput** adaptiveChoiceInput);
 
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IAutoSuggestBox> m_autoSuggetBox;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IAutoSuggestBox> m_autoSuggestBox;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
     };
 }
