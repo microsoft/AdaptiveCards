@@ -497,7 +497,7 @@ HRESULT ToggleInputValue::IsValueValid(_Out_ boolean* isInputValid)
     return S_OK;
 }
 
-std::string ChoiceSetInputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const
+std::string GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex)
 {
     if (selectedIndex != -1)
     {
@@ -515,20 +515,24 @@ std::string ChoiceSetInputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* ch
     return "";
 }
 
-HRESULT ChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                    _In_ IUIElement* uiChoiceSetElement,
-                                                    _In_ IBorder* validationBorder)
+HRESULT CompactChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                                           _In_ ISelector* choiceSetSelectorElement,
+                                                           _In_ IBorder* validationBorder)
 {
     m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
+    m_selectorElement = choiceSetSelectorElement;
 
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
 
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), uiChoiceSetElement, validationBorder));
+    Microsoft::WRL::ComPtr<IUIElement> selectorAsUIElement;
+    m_selectorElement.As(&selectorAsUIElement);
+
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), selectorAsUIElement.Get(), validationBorder));
     return S_OK;
 }
 
-HRESULT ChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+HRESULT CompactChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 try
 {
     ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
@@ -537,112 +541,201 @@ try
     boolean isMultiSelect;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
-    if (choiceSetStyle == ChoiceSetStyle_Compact && !isMultiSelect)
-    {
-        // Handle compact style
-        ComPtr<ISelector> selector;
-        RETURN_IF_FAILED(m_uiInputElement.As(&selector));
+    INT32 selectedIndex;
+    RETURN_IF_FAILED(m_selectorElement->get_SelectedIndex(&selectedIndex));
 
-        INT32 selectedIndex;
-        RETURN_IF_FAILED(selector->get_SelectedIndex(&selectedIndex));
+    std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), selectedIndex);
+    RETURN_IF_FAILED(UTF8ToHString(choiceValue, serializedUserInput));
 
-        std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), selectedIndex);
-        RETURN_IF_FAILED(UTF8ToHString(choiceValue, serializedUserInput));
-    }
-    else
-    {
-        // For expanded style, get the panel children
-        ComPtr<IPanel> panel;
-        RETURN_IF_FAILED(m_uiInputElement.As(&panel));
-
-        ComPtr<IVector<UIElement*>> panelChildren;
-        RETURN_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
-
-        UINT size;
-        RETURN_IF_FAILED(panelChildren->get_Size(&size));
-
-        if (isMultiSelect)
-        {
-            // For multiselect, gather all the inputs in a comma delimited list
-            std::string multiSelectValues;
-            for (UINT i = 0; i < size; i++)
-            {
-                ComPtr<IUIElement> currentElement;
-                RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
-
-                boolean checkedValue = false;
-                XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
-
-                if (checkedValue)
-                {
-                    std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), i);
-                    multiSelectValues += choiceValue + ",";
-                }
-            }
-
-            if (!multiSelectValues.empty())
-            {
-                multiSelectValues = multiSelectValues.substr(0, (multiSelectValues.size() - 1));
-            }
-            RETURN_IF_FAILED(UTF8ToHString(multiSelectValues, serializedUserInput));
-        }
-        else
-        {
-            // Look for the single selected choice
-            INT32 selectedIndex = -1;
-            for (UINT i = 0; i < size; i++)
-            {
-                ComPtr<IUIElement> currentElement;
-                RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
-
-                boolean checkedValue = false;
-                XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
-
-                if (checkedValue)
-                {
-                    selectedIndex = i;
-                    break;
-                }
-            }
-            std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), selectedIndex);
-            RETURN_IF_FAILED(UTF8ToHString(choiceValue, serializedUserInput));
-        }
-    }
     return S_OK;
 }
 CATCH_RETURN;
 
-HRESULT ChoiceSetInputValue::SetFocus()
+HRESULT ExpandedChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                                            _In_ IPanel* choiceSetPanelElement,
+                                                            _In_ IBorder* validationBorder)
 {
-    ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
-    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
+    m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
+    m_panelElement = choiceSetPanelElement;
+
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
+
+    Microsoft::WRL::ComPtr<IUIElement> panelAsUIElement;
+    m_panelElement.As(&panelAsUIElement);
+
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), panelAsUIElement.Get(), validationBorder));
+    return S_OK;
+}
+
+HRESULT ExpandedChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+try
+{
+    // Get the panel children
+    ComPtr<IVector<UIElement*>> panelChildren;
+    RETURN_IF_FAILED(m_panelElement->get_Children(panelChildren.ReleaseAndGetAddressOf()));
+
+    UINT size;
+    RETURN_IF_FAILED(panelChildren->get_Size(&size));
 
     boolean isMultiSelect;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
-    if (choiceSetStyle == ChoiceSetStyle_Compact && !isMultiSelect)
+    if (isMultiSelect)
     {
-        // Compact style can use the base class implementation
-        RETURN_IF_FAILED(InputValue::SetFocus());
+        // For multiselect, gather all the inputs in a comma delimited list
+        std::string multiSelectValues;
+        for (UINT i = 0; i < size; i++)
+        {
+            ComPtr<IUIElement> currentElement;
+            RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
+
+            boolean checkedValue = false;
+            XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
+
+            if (checkedValue)
+            {
+                std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), i);
+                multiSelectValues += choiceValue + ",";
+            }
+        }
+
+        if (!multiSelectValues.empty())
+        {
+            multiSelectValues = multiSelectValues.substr(0, (multiSelectValues.size() - 1));
+        }
+        RETURN_IF_FAILED(UTF8ToHString(multiSelectValues, serializedUserInput));
     }
     else
     {
-        // For expanded style, put focus on the first choice in the choice set
-        ComPtr<IPanel> panel;
-        RETURN_IF_FAILED(m_uiInputElement.As(&panel));
+        // Look for the single selected choice
+        INT32 selectedIndex = -1;
+        for (UINT i = 0; i < size; i++)
+        {
+            ComPtr<IUIElement> currentElement;
+            RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
 
-        ComPtr<IVector<UIElement*>> panelChildren;
-        RETURN_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
+            boolean checkedValue = false;
+            XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
 
-        ComPtr<IUIElement> firstChoice;
-        RETURN_IF_FAILED(panelChildren->GetAt(0, &firstChoice));
-
-        ComPtr<IControl> choiceAsControl;
-        RETURN_IF_FAILED(firstChoice.As(&choiceAsControl));
-
-        boolean isFocused;
-        RETURN_IF_FAILED(choiceAsControl->Focus(FocusState_Programmatic, &isFocused));
+            if (checkedValue)
+            {
+                selectedIndex = i;
+                break;
+            }
+        }
+        std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), selectedIndex);
+        RETURN_IF_FAILED(UTF8ToHString(choiceValue, serializedUserInput));
     }
+
+    return S_OK;
+}
+CATCH_RETURN;
+
+HRESULT ExpandedChoiceSetInputValue::SetFocus()
+{
+    // Put focus on the first choice in the choice set
+    ComPtr<IVector<UIElement*>> panelChildren;
+    RETURN_IF_FAILED(m_panelElement->get_Children(panelChildren.ReleaseAndGetAddressOf()));
+
+    ComPtr<IUIElement> firstChoice;
+    RETURN_IF_FAILED(panelChildren->GetAt(0, &firstChoice));
+
+    ComPtr<IControl> choiceAsControl;
+    RETURN_IF_FAILED(firstChoice.As(&choiceAsControl));
+
+    boolean isFocused;
+    RETURN_IF_FAILED(choiceAsControl->Focus(FocusState_Programmatic, &isFocused));
+
+    return S_OK;
+}
+
+HRESULT FilteredChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                                            _In_ IAutoSuggestBox* autoSuggestBox,
+                                                            _In_ IBorder* validationBorder)
+{
+    m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
+    m_autoSuggestBox = autoSuggestBox;
+
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
+
+    Microsoft::WRL::ComPtr<IUIElement> autoSuggestBoxAsUIElement;
+    RETURN_IF_FAILED(m_autoSuggestBox.As(&autoSuggestBoxAsUIElement));
+
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), autoSuggestBoxAsUIElement.Get(), validationBorder));
+    return S_OK;
+}
+
+HRESULT FilteredChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+try
+{
+    ComPtr<IVector<AdaptiveChoiceInput*>> choices;
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_Choices(&choices));
+
+    ComPtr<IAdaptiveChoiceInput> selectedChoice;
+    RETURN_IF_FAILED(GetSelectedChoice(&selectedChoice));
+    if (selectedChoice != nullptr)
+    {
+        RETURN_IF_FAILED(selectedChoice->get_Value(serializedUserInput));
+    }
+
+    return S_OK;
+}
+CATCH_RETURN;
+
+HRESULT FilteredChoiceSetInputValue::IsValueValid(boolean* isInputValid)
+{
+    boolean isValid;
+
+    // Check if there's text in the autoSuggestBox
+    HString textHString;
+    RETURN_IF_FAILED(m_autoSuggestBox->get_Text(textHString.GetAddressOf()));
+    if (!textHString.IsValid())
+    {
+        // Empty input is only valid if it's not required
+        boolean isRequired;
+        RETURN_IF_FAILED(m_adaptiveInputElement->get_IsRequired(&isRequired));
+        isValid = !isRequired;
+    }
+    else
+    {
+        // Non-empty input must match one of the exisiting choices
+        ComPtr<IAdaptiveChoiceInput> selectedChoice;
+        RETURN_IF_FAILED(GetSelectedChoice(&selectedChoice));
+        isValid = (selectedChoice != nullptr);
+    }
+
+    *isInputValid = isValid;
+
+    return S_OK;
+}
+
+HRESULT FilteredChoiceSetInputValue::GetSelectedChoice(IAdaptiveChoiceInput** adaptiveChoiceInput)
+{
+    HString textHString;
+    RETURN_IF_FAILED(m_autoSuggestBox->get_Text(textHString.GetAddressOf()));
+    std::string text = HStringToUTF8(textHString.Get());
+
+    ComPtr<IVector<AdaptiveChoiceInput*>> choices;
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_Choices(&choices));
+
+    ComPtr<IAdaptiveChoiceInput> selectedChoice;
+    IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(choices.Get(), [&selectedChoice, text](IAdaptiveChoiceInput* choice) {
+        HString titleHString;
+        RETURN_IF_FAILED(choice->get_Title(titleHString.GetAddressOf()));
+
+        std::string title = HStringToUTF8(titleHString.Get());
+
+        if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
+        {
+            selectedChoice = choice;
+        }
+
+        return S_OK;
+    });
+
+    RETURN_IF_FAILED(selectedChoice.CopyTo(adaptiveChoiceInput));
 
     return S_OK;
 }

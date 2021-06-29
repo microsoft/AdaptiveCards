@@ -42,6 +42,11 @@ namespace AdaptiveCards::Rendering::Uwp
                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+
+        HRESULT BuildFilteredChoiceSetInput(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                                            _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
     };
 
     ActivatableClass(AdaptiveChoiceSetInputRenderer);
