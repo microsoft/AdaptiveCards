@@ -28,7 +28,7 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.9.0"
+		"adaptivecards": "^2.10.0-beta.1"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
