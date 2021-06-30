@@ -70,7 +70,7 @@ namespace UWPUITestLibraryMITA
             string baseDirectory = Directory.GetParent(assemblyDir).Parent.Parent.FullName;
 
             // Replace the TestLibrary folder for the TestApp folder
-            string appBaseDirectory = baseDirectory.Replace("UWPUITestLibraryMITA", "UWPUITestApp");
+            string appBaseDirectory = baseDirectory.Replace("UWPUITests", "UWPUITestApp");
 
             _baseAppxDir = appBaseDirectory;
 
