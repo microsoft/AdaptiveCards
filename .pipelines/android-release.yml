@@ -18,7 +18,7 @@ variables:
 - name: AC_FULL_VERSION_SPECIFIED
   value: true
 - name: AC_VERSION_STRING
-  value: ${{ parameters.is_prerelease }}
+  value: ${{ parameters.version_string }}
 - name: AC_APPEND_BUILD_NUMBER
   value: false
 
