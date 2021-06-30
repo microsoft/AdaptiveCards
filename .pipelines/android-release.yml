@@ -166,11 +166,11 @@ stages:
   #       AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
 
     - bash: |
-      sed --in-place=.bkp 's/acVersion=.*/acVersion=${{ parameters.version_string }}/' gradle.properties
-      git remote -v
-      git add gradle.properties
-      git checkout -b golddove/test-pr-branch
-      git push --set-upstream origin golddove/test-pr-branch
+       sed --in-place=.bkp 's/acVersion=.*/acVersion=${{ parameters.version_string }}/' gradle.properties
+       git remote -v
+       git add gradle.properties
+       git checkout -b golddove/test-pr-branch
+       git push --set-upstream origin golddove/test-pr-branch
 
       workingDirectory: source/android/adaptivecards
       displayName: 'Update version file'
