@@ -36,10 +36,13 @@ const CGFloat padding = 2.0f;
             iconImage = [UIImage imageNamed:@"checked.png" inBundle:bundle compatibleWithTraitCollection:nil];
         } else if ([reuseIdentifier isEqualToString:@"unchecked-checkbox"]) {
             iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:bundle compatibleWithTraitCollection:nil];
-        } else {
+        } else if ([reuseIdentifier isEqualToString:@"unchecked-radiobutton"]) {
             iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:bundle compatibleWithTraitCollection:nil];
         }
-        self.imageView.image = iconImage;
+
+        if (iconImage) {
+            self.imageView.image = iconImage;
+        }
         self.textLabel.numberOfLines = 0;
         self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.textLabel.adjustsFontSizeToFitWidth = NO;
@@ -52,9 +55,11 @@ const CGFloat padding = 2.0f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.imageView.frame = CGRectMake(0, 0, _imageSize.width, _imageSize.height);
-    self.imageView.center = CGPointMake(_imageSize.width / 2, self.bounds.size.height / 2);
-    self.textLabel.frame = CGRectMake(_imageSize.width + padding, 0, self.bounds.size.width - _imageSize.width + padding, self.bounds.size.height);
+    if (self.imageView.image) {
+        self.imageView.frame = CGRectMake(0, 0, _imageSize.width, _imageSize.height);
+        self.imageView.center = CGPointMake(_imageSize.width / 2, self.bounds.size.height / 2);
+        self.textLabel.frame = CGRectMake(_imageSize.width + padding, 0, self.bounds.size.width - _imageSize.width + padding, self.bounds.size.height);
+    }
 }
 
 @end

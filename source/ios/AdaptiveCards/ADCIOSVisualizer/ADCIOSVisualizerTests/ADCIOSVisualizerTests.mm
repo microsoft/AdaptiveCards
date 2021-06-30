@@ -356,6 +356,7 @@
         @"myColor" : @"1",
         @"myColor3" : @"1,3",
         @"myColor2" : @"1",
+        @"myColor1" : @"1",
         @"myColor4" : @"1"
     };
     NSData *expectedData = [NSJSONSerialization dataWithJSONObject:expectedValue options:NSJSONWritingPrettyPrinted error:nil];
