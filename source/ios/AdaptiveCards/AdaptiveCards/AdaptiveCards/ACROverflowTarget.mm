@@ -191,22 +191,10 @@
 
     if (shouldDisplay) {
         // find first UIViewController responds to rootView as default controller
-        UIViewController *controller = [self traverseResponderChainForUIViewController:_rootView];
+        UIViewController *controller = traverseResponderChainForUIViewController(_rootView);
         if (controller) {
             [controller presentViewController:_alert animated:TRUE completion:nil];
         }
-    }
-}
-
-- (id)traverseResponderChainForUIViewController:(UIView *)view
-{
-    id nextResponder = [view nextResponder];
-    if ([nextResponder isKindOfClass:[UIViewController class]]) {
-        return nextResponder;
-    } else if ([nextResponder isKindOfClass:[UIView class]]) {
-        return [self traverseResponderChainForUIViewController:nextResponder];
-    } else {
-        return nil;
     }
 }
 
