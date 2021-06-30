@@ -4,10 +4,8 @@
 """
 from typing import List, Dict, Union
 
-from mystique import config
 
-
-def find_iou(coord1, coord2, inter_object=False, columns_group=False) -> List:
+def find_iou(coord1, coord2, threshold=0.5) -> List:
     """
     Finds the intersecting bounding boxes by finding
        the highest x and y ranges of the 2 coordinates
@@ -18,12 +16,7 @@ def find_iou(coord1, coord2, inter_object=False, columns_group=False) -> List:
 
     @param coord1: list of coordinates of 1st object
     @param coord2: list of coordinates of 2nd object
-    @param inter_object: check for cleaning between different overlapping
-                         objects.
-
-    @param columns_group: If the intersection finding is needed in columns
-                          grouping use case
-
+    @param threshold: IOU cut-off threshold
     @return: [True/False, point1 area, point2 area]
     """
     iou_xmin = max(coord1[0], coord2[0])
@@ -40,24 +33,15 @@ def find_iou(coord1, coord2, inter_object=False, columns_group=False) -> List:
     point2_area = (coord2[2] - coord2[0]) * (coord2[3] - coord2[1])
     iou = intersection_area / (point1_area + point2_area - intersection_area)
 
-    # find if given 2 objects intersects or not
-    if columns_group:
-        if (point1_area + point2_area - intersection_area == 0) or iou > 0:
-            return [True, abs(iou_xmax - iou_xmin), abs(iou_ymax - iou_ymin)]
-        return [True, abs(iou_xmax - iou_xmin), abs(iou_ymax - iou_ymin)]
-
-    # -if iou check is for inter object overlap removal check only for
-    # intersection.
-    # -if not for inter objects overlap check for iou >= threshold
+    #  check for iou >= threshold
     # -if the intersection area covers more than 50% of the smaller object
 
     # pylint: disable=too-many-boolean-expressions
     if (
         (point1_area + point2_area - intersection_area == 0)
-        or (inter_object and iou > 0)
-        or (iou >= config.IOU_THRESHOLD)
+        or (iou >= threshold)
         or (
-            iou <= config.IOU_THRESHOLD
+            iou <= threshold
             and (intersection_area / min(point1_area, point2_area)) >= 0.50
         )
     ):  # pylint: disable=too-many-boolean-expressions
@@ -99,7 +83,7 @@ def remove_actionset_textbox_overlapping(
         contains = (box2[0] <= box1[0] <= box2[2]) and (
             box2[1] <= box1[1] <= box2[3]
         )
-        intersection = find_iou(box1, box2, inter_object=True)
+        intersection = find_iou(box1, box2, threshold=0.0)
         if contains or intersection[0]:
             if design_object1.get("object") == "textbox":
                 return position1
@@ -115,7 +99,7 @@ def remove_noise_objects(predicted_objects: Dict):
     """
     points = []
     for deisgn_object in predicted_objects["objects"]:
-        points.append(deisgn_object.get("coords"))
+        points.append(deisgn_object.get("coordinates"))
     positions_to_delete = []
     for ctr, point in enumerate(points):
         box1 = point
@@ -151,5 +135,5 @@ def remove_noise_objects(predicted_objects: Dict):
     predicted_objects["objects"] = [
         deisgn_object
         for deisgn_object in predicted_objects["objects"]
-        if deisgn_object.get("coords") in points
+        if deisgn_object.get("coordinates") in points
     ]

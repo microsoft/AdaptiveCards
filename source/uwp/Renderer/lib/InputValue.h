@@ -134,14 +134,31 @@ namespace AdaptiveCards::Rendering::Uwp
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICheckBox> m_checkBoxElement;
     };
 
-    // Input value for Input.ChoiceSet
-    class ChoiceSetInputValue : public InputValue
+    // Input value for Input.ChoiceSet with compact style
+    class CompactChoiceSetInputValue : public InputValue
     {
     public:
-        ChoiceSetInputValue() {}
+        CompactChoiceSetInputValue() {}
 
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* uiChoiceSetElement,
+                                       _In_ ABI::Windows::UI::Xaml::Controls::Primitives::ISelector* choiceSetSelector,
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
+
+        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+
+    private:
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::Primitives::ISelector> m_selectorElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
+    };
+
+    // Input value for Input.ChoiceSet with expanded style
+    class ExpandedChoiceSetInputValue : public InputValue
+    {
+    public:
+        ExpandedChoiceSetInputValue() {}
+
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IPanel* uiChoiceSetElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
@@ -149,9 +166,28 @@ namespace AdaptiveCards::Rendering::Uwp
     private:
         IFACEMETHODIMP SetFocus() override;
 
-        std::string GetChoiceValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* choiceInput,
-                                   INT32 selectedIndex) const;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> m_panelElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
+    };
 
+    // Input value for Input.ChoiceSet with filtered style
+    class FilteredChoiceSetInputValue : public InputValue
+    {
+    public:
+        FilteredChoiceSetInputValue() {}
+
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IAutoSuggestBox* uiChoiceSetElement,
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
+
+        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+
+    private:
+        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
+
+        HRESULT GetSelectedChoice(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput** adaptiveChoiceInput);
+
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IAutoSuggestBox> m_autoSuggestBox;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
     };
 }

@@ -56,6 +56,8 @@ namespace AdaptiveCards::Rendering::Uwp
         GenerateTableRowsProjection(sharedTable->GetRows(), m_rows.Get());
         GenerateTableColumnDefinitionsProjection(sharedTable->GetColumns(), m_columnDefinitions.Get());
 
+        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTable));
+
         return S_OK;
     }
     CATCH_RETURN;
@@ -143,6 +145,8 @@ namespace AdaptiveCards::Rendering::Uwp
     try
     {
         std::shared_ptr<AdaptiveCards::Table> table = std::make_shared<AdaptiveCards::Table>();
+
+        RETURN_IF_FAILED(CopySharedElementProperties(*table));
 
         table->SetShowGridLines(m_showGridLines);
         table->SetFirstRowAsHeaders(m_firstRowAsHeaders);

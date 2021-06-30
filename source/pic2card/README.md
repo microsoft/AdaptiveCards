@@ -1,5 +1,6 @@
 # Pic2Card
 ![pic2card-build](https://github.com/Imaginea/pic2card/workflows/pic2card-build/badge.svg?branch=master)
+![coverage](https://img.shields.io/badge/coverage-78%25-green)
 ## Description
 Pic2Card is a solution for converting adaptive cards GUI design image into adaptive card payload Json.
 
@@ -139,4 +140,13 @@ black --line-length 80 .
 
 # Run pylint on all python files.
 find . -type f -name "*.py" | xargs pylint
+```
+
+We are using [coverage](https://coverage.readthedocs.io/en/coverage-5.5/) for measuring the code coverage
+```
+# To measure the code coverage
+coverage run --source app,mystique --omit app/main.py,mystique/obj_detect/* -m unittest tests/*.py
+
+# To generate the overall coverage report
+coverage report -m | grep TOTAL | awk {' print $4 '}
 ```

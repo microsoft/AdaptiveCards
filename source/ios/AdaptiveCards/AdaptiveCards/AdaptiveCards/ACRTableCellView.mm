@@ -22,15 +22,18 @@
 {
     self = [super init];
     if (self) {
-
         [[ACRTableCellRenderer getInstance] render:self rootView:rootView inputs:inputs baseCardElement:baseCardElement hostConfig:acoConfig];
-        _definition = definition;
-        if ([self.subviews count]) {
-            _contentView = self.subviews[0];
+        if (definition) {
+            _definition = definition;
+        } else {
+            _definition = [[ACRTableCellDefinition alloc] init];
         }
-        [self addSubview:_contentView];
+
         [self setAutoLayout];
         [self configureForStyle:acoConfig];
+        if (rootView.context.isFirstRowAsHeaders) {
+            self.accessibilityTraits |= UIAccessibilityTraitHeader;
+        }
     }
     return self;
 }
@@ -38,31 +41,55 @@
 - (void)setAutoLayout
 {
     if (_contentView) {
-        NSLayoutConstraint *contentViewWidthAnchor0 = [_contentView.widthAnchor constraintLessThanOrEqualToAnchor:self.widthAnchor];
-        NSLayoutConstraint *contentViewHeightAnchor0 = [_contentView.heightAnchor constraintLessThanOrEqualToAnchor:self.heightAnchor];
-        NSLayoutConstraint *contentViewWidthAnchor1 = [_contentView.widthAnchor constraintEqualToAnchor:self.widthAnchor];
-        NSLayoutConstraint *contentViewHeightAnchor1 = [_contentView.heightAnchor constraintEqualToAnchor:self.heightAnchor];
-        contentViewWidthAnchor0.priority = UILayoutPriorityRequired;
-        contentViewWidthAnchor1.priority = UILayoutPriorityFittingSizeLevel;
-        contentViewHeightAnchor0.priority = UILayoutPriorityRequired;
-        contentViewHeightAnchor1.priority = UILayoutPriorityFittingSizeLevel;
-        contentViewWidthAnchor0.active = YES;
-        contentViewWidthAnchor1.active = YES;
-        contentViewHeightAnchor0.active = YES;
-        contentViewHeightAnchor1.active = YES;
-
-        [_contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
-        [_contentView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
         self.translatesAutoresizingMaskIntoConstraints = NO;
         _contentView.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *contentViewWidthAnchor0 = [_contentView.widthAnchor constraintEqualToAnchor:self.widthAnchor];
+        NSLayoutConstraint *contentViewHeightAnchor0 = [_contentView.heightAnchor constraintLessThanOrEqualToAnchor:self.heightAnchor];
+        contentViewWidthAnchor0.priority = UILayoutPriorityRequired;
+        contentViewHeightAnchor0.priority = UILayoutPriorityRequired;
+        contentViewWidthAnchor0.active = YES;
+        contentViewHeightAnchor0.active = YES;
+
+        [self setHorizontalAlignment];
+        [self setVerticalAlignment];
+    }
+}
+
+- (void)setHorizontalAlignment
+{
+    switch (_definition.horizontalAlignment) {
+        case ACRLeft:
+            [_contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
+            break;
+        case ACRCenter:
+            [_contentView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
+            break;
+        case ACRRight:
+            [_contentView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
+            break;
+    }
+}
+
+- (void)setVerticalAlignment
+{
+    switch (_definition.verticalAlignment) {
+        case ACRVerticalTop:
+            [_contentView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
+            break;
+        case ACRVerticalCenter:
+            [_contentView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
+            break;
+        case ACRVerticalBottom:
+            [_contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
+            break;
     }
 }
 
 - (void)configureForStyle:(ACOHostConfig *)acoConfig
 {
     if (_definition) {
-        _spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
-        self.layoutMargins = UIEdgeInsetsMake(_spacing, _spacing, _spacing, _spacing);
+        CGFloat spacing = [acoConfig getHostConfig]->GetTable().cellSpacing;
+        self.layoutMargins = UIEdgeInsetsMake(spacing, spacing, spacing, spacing);
         _contentView.preservesSuperviewLayoutMargins = NO;
         self.preservesSuperviewLayoutMargins = NO;
         self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_definition.style];
@@ -76,6 +103,12 @@
         size = [_contentView intrinsicContentSize];
     }
     return size;
+}
+
+- (void)addArrangedSubview:(UIView *)view
+{
+    [self addSubview:view];
+    _contentView = view;
 }
 
 @end

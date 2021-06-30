@@ -179,8 +179,8 @@
       <Link>LinkedTestCards\ActivityUpdate.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="LinkedTestCards\Input.Text.ErrorMessage.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="..\..\..\samples\v1.3\Elements\Input.Text.ErrorMessage.json">
+      <Link>LinkedTestCards\Input.Text.ErrorMessage.json</Link>
     </None>
     <None Include="UWPUITestApp_TemporaryKey.pfx" />
   </ItemGroup>
