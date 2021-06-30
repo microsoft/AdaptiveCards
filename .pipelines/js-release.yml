@@ -1,0 +1,82 @@
+name: $(date:yyMM).$(date:dd)$(rev:rrr)
+
+pr: none
+trigger: none
+
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-20.04
+  demands:
+  - npm
+
+parameters:
+- name: target_packages
+  displayName: "Which packages to publish? Provide YAML sequence of package details (name, increment-level, prerelease-identifier). See https://docs.npmjs.com/cli/v7/commands/npm-version for how to configure version increment."
+  type: object
+  default:
+  - name: adaptivecards
+    increment: prerelease
+    prerelease-identifier: beta
+  - name: adaptivecards-controls
+    increment: prerelease
+    prerelease-identifier: beta
+  - name: adaptivecards-designer
+    increment: prerelease
+    prerelease-identifier: beta
+  - name: adaptivecards-templating
+    increment: prerelease
+    prerelease-identifier: beta
+- name: dry_run
+  displayName: "Dry run without pushing to npmjs"
+  type: object
+  default: true
+
+steps:
+- task: NodeTool@0
+  name: NodeTool1
+  displayName: Use Node 12.x
+  inputs:
+    versionSpec: 12.x
+
+- bash: |
+   npm ci 
+   npx lerna bootstrap --ci
+   npx lerna run release
+  workingDirectory: source/nodejs
+  displayName: 'Bash - lerna bootstrap'
+
+- bash: |
+   npm run audit-all -- --no-fix
+  workingDirectory: source/nodejs
+  displayName: 'Bash - lerna-audit --no-fix'
+
+- ${{ each target_package in parameters.target_packages }}:
+  - task: Npm@1
+    displayName: '[${{ target_package.name }}] npm version'
+    inputs:
+      command: custom
+      customCommand: 'version ${{ target_package.increment }} --preid ${{ target_package.prerelease_identifier }} --no-git-tag-version --no-push --yes'
+      workingDir: 'source/nodejs/${{ target_package.name }}'
+
+- bash: |
+   git diff
+  workingDirectory: source/nodejs
+  displayName: 'Bash - git diff'
+
+- ${{ each target_package in parameters.target_packages }}:
+  - ${{ if eq(parameters.dry_run, true) }}:
+    - task: Npm@1
+      displayName: '[${{ target_package.name }}] npm publish --dry-run'
+      inputs:
+        command: custom
+        customCommand: publish --dry-run
+        workingDir: source/nodejs/${{ target_package.name }}
+
+  - ${{ if eq(parameters.dry_run, false) }}:
+    - task: Npm@1
+      displayName: '[${{ target_package.name }}] npm publish'
+      inputs:
+        command: publish
+        workingDir: source/nodejs/${{ target_package.name }}
+        publishEndpoint: npmjs.com
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
