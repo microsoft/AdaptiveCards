@@ -1,6 +1,3 @@
-#!/usr/bin/python
-
-# pip install lxml
 """Convert Pascal VOC annotation to COCO format."""
 
 import os
@@ -22,8 +19,8 @@ PRE_DEFINE_CATEGORIES = {
     "radiobutton": 2,
     "checkbox": 3,
     "actionset": 4,
-    "image": 5,
-    "rating": 6,
+    "image": 5
+    #    "rating": 6,
 }
 
 
@@ -92,18 +89,17 @@ def convert(xml__files, json_file):  # pylint: disable=too-many-locals
     else:
         categories = get_categories(xml__files)
     bnd_id = START_BOUNDING_BOX_ID
+    _image_fnames = dict()
     for xml_file in xml__files:
         tree = ET.parse(xml_file)
         root = tree.getroot()
-        path = get(root, "path")
-        if len(path) == 1:
-            filename = os.path.basename(path[0].text)
-        elif len(path) == 0:
-            filename = get_and_check(root, "filename", 1).text
-        else:
-            raise ValueError("%d paths found in %s" % (len(path), xml_file))
+        # Only take the file name as absolute name -- no full path.
+        filename = get_and_check(root, "filename", 1).text
+
         # The filename must be a number
         image_id = get_filename_as_int(filename)
+        if image_id in _image_fnames:
+            raise Exception(f"The image: {image_id} being used more than once")
         size = get_and_check(root, "size", 1)
         width = int(get_and_check(size, "width", 1).text)
         height = int(get_and_check(size, "height", 1).text)
@@ -113,47 +109,50 @@ def convert(xml__files, json_file):  # pylint: disable=too-many-locals
             "width": width,
             "id": image_id,
         }
+        _image_fnames[image_id] = xml_file
         json_dict["images"].append(image)
         # Currently we do not support segmentation.
         #  segmented = get_and_check(root, 'segmented', 1).text
         #  assert segmented == '0'
         for obj in get(root, "object"):
             category = get_and_check(obj, "name", 1).text
-            if category not in categories:
-                new_id = len(categories)
-                categories[category] = new_id
-            category_id = categories[category]
-            bndbox = get_and_check(obj, "bndbox", 1)
-            xmin = int(get_and_check(bndbox, "xmin", 1).text) - 1
-            ymin = int(get_and_check(bndbox, "ymin", 1).text) - 1
-            xmax = int(get_and_check(bndbox, "xmax", 1).text)
-            ymax = int(get_and_check(bndbox, "ymax", 1).text)
-            assert xmax > xmin
-            assert ymax > ymin
-            o_width = abs(xmax - xmin)
-            o_height = abs(ymax - ymin)
-            ann = {
-                "area": o_width * o_height,
-                "iscrowd": 0,
-                "image_id": image_id,
-                "bbox": [xmin, ymin, o_width, o_height],
-                "category_id": category_id,
-                "id": bnd_id,
-                "ignore": 0,
-                "segmentation": [],
-            }
-            json_dict["annotations"].append(ann)
-            bnd_id = bnd_id + 1
+            # if category not in categories:
+            #     # Skip categories other than
+            #     new_id = len(categories)
+            #     categories[category] = new_id
+
+            if category in categories:
+                category_id = categories[category]
+                bndbox = get_and_check(obj, "bndbox", 1)
+                xmin = int(get_and_check(bndbox, "xmin", 1).text) - 1
+                ymin = int(get_and_check(bndbox, "ymin", 1).text) - 1
+                xmax = int(get_and_check(bndbox, "xmax", 1).text)
+                ymax = int(get_and_check(bndbox, "ymax", 1).text)
+                assert xmax > xmin
+                assert ymax > ymin
+                o_width = abs(xmax - xmin)
+                o_height = abs(ymax - ymin)
+                ann = {
+                    "area": o_width * o_height,
+                    "iscrowd": 0,
+                    "image_id": image_id,
+                    "bbox": [xmin, ymin, o_width, o_height],
+                    "category_id": category_id,
+                    "id": bnd_id,
+                    "ignore": 0,
+                    "segmentation": [],
+                }
+                json_dict["annotations"].append(ann)
+                bnd_id = bnd_id + 1
 
     for cate, cid in categories.items():
         cat = {"supercategory": "none", "id": cid, "name": cate}
         json_dict["categories"].append(cat)
 
     os.makedirs(os.path.dirname(json_file) or ".", exist_ok=True)
-    json_fp = open(json_file, "w")  # pylint: disable=consider-using-with
-    json_str = json.dumps(json_dict)
-    json_fp.write(json_str)
-    json_fp.close()
+    with open(json_file, "w") as json_fp:
+        json_str = json.dumps(json_dict)
+        json_fp.write(json_str)
 
 
 if __name__ == "__main__":

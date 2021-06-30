@@ -184,7 +184,6 @@ class PredictCard:
         @param card_format: format specification for template data binding
         """
         # TODO: Remove the reduendant usage of image and image_np
-
         # Collect the objects along with its design properites
 
         predicted_objects, detected_coords = self.collect_objects(

@@ -13,6 +13,15 @@ ENABLE_TF_SERVING = os.environ.get("ENABLE_TF_SERVING", False)
 TF_FROZEN_MODEL_PATH = os.path.join(
     os.path.dirname(__file__), "../model/frozen_inference_graph.pb"
 )
+TF2_FROZEN_MODEL_PATH = os.path.join(
+    os.path.dirname(__file__), "../model/frozen_inference_graph_v2.pb"
+)
+
+# Efficientdet-d1 model
+TF2_EFFDET_FROZEN_MODEL_PATH = os.path.join(
+    os.path.dirname(__file__), "../model/efficientdet-d1_frozen.pb"
+)
+
 TF_LABEL_PATH = os.path.join(
     os.path.dirname(__file__), "training/object-detection.pbtxt"
 )
@@ -82,10 +91,11 @@ TEXTBOX_PADDING = 5
 
 MODEL_REGISTRY = {
     "tf_faster_rcnn": "mystique.detect_objects.ObjectDetection",
-    "tfs_faster_rcnn": "mystique.detect_objects.TfsObjectDetection",
-    # "pth_faster_rcnn": "mystique.obj_detect.PtObjectDetection",
+    # "tfs_faster_rcnn": "mystique.detect_objects.TfsObjectDetection",
+    "tf2_faster_rcnn": "mystique.obj_detect.tf2_frcnn.Tf2ObjectDetection",
     "pth_detr": "mystique.obj_detect.DetrOD",
     "pth_detr_cpp": "mystique.obj_detect.DetrCppOD",
+    "tf2_effdet_d1": "mystique.obj_detect.effdet_d1.Tf2EfficientDetD1Model",
 }
 
 ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf_faster_rcnn")

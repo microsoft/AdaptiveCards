@@ -34,4 +34,4 @@ class AbstractObjectDetection(
         """
         Deprecated method, soon be removed, added for backward compatibility
         """
-        pass  # pylint: disable=unnecessary-pass
+        raise NotImplementedError("get_bboxes method isn't defined")

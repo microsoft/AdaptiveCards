@@ -3,7 +3,6 @@ Doing Detr inference using c++ binding, quick checks shows >3x improvements
 with the inference time.
 """
 from typing import Dict, Tuple
-import detr
 import numpy as np
 from PIL import Image
 from mystique import config
@@ -44,6 +43,10 @@ class DetrCppOD(AbstractObjectDetection):
     def __init__(
         self, pt_path="./detr_trace.pt", threshold=0.8
     ):  # pylint: disable=unused-argument
+
+        # pylint: disable=import-outside-toplevel, import-error
+        import detr
+
         self.model = detr.Detr(self.model_path)  # pylint: disable=no-member
         self.threshold = threshold
 

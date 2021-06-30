@@ -5,7 +5,7 @@ import re
 import json
 import http.client
 import urllib
-from typing import Optional, Dict
+from typing import Optional, Dict, Tuple
 import glob
 import xml.etree.ElementTree as Et
 from contextlib import contextmanager
@@ -230,3 +230,14 @@ def send_json_payload(
     conn.request(method, path, json.dumps(body), headers)
     response = json.loads(conn.getresponse().read())
     return response
+
+
+def load_image(image_path: str) -> Tuple[Image.Image, np.array]:
+    """
+    Image preprocessing and convert to tensor.
+    """
+    image = Image.open(image_path)
+    # width, height = image.size
+    image = image.convert("RGB")
+    image_np = np.asarray(image)
+    return image, image_np

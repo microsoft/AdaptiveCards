@@ -1,5 +1,4 @@
 # pylint: disable=invalid-all-object, missing-module-docstring
-# from .detect_objects_pth import PtObjectDetection
 from .detr_objects import DetrOD
 from .detr_cpp_objects import DetrCppOD
 
