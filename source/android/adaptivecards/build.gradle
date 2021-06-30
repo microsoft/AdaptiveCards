@@ -96,7 +96,7 @@ def releasePublication = {
         if(Boolean.valueOf(System.getenv('AC_APPEND_BUILD_NUMBER')) && System.getenv('BUILD_BUILDNUMBER')) {
             version += ".${System.getenv('BUILD_BUILDNUMBER')}"
         }
-    }
+    }ac
 
     pom projectInfo
 }

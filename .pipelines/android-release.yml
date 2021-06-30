@@ -161,4 +161,4 @@ stages:
   #       publishJUnitResults: false
   #     env:
   #       AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
-  - 
+
