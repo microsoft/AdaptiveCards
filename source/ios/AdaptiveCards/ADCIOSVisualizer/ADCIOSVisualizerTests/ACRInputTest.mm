@@ -142,15 +142,6 @@
     XCTAssertFalse(stateManager.isShowFilteredListControlSelected);
 }
 
-- (void)testShowFilterListViewControlState
-{
-    ACOFilteredListStateManager *stateManager = [[ACOFilteredListStateManager alloc] init];
-    [stateManager expanded];
-    XCTAssertTrue(stateManager.isShowFilteredListControlSelected);
-    [stateManager collapsed];
-    XCTAssertFalse(stateManager.isShowFilteredListControlSelected);
-}
-
 - (void)testShowFilterListViewControlState1
 {
     ACOFilteredListStateManager *stateManager = [[ACOFilteredListStateManager alloc] init];
