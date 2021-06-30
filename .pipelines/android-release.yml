@@ -9,21 +9,16 @@ pool:
   demands: java
 
 parameters:
-- name: is_prerelease
-  displayName: Is prerelease version? (Indicates non-stable version, with suffix specified below)
-  type: boolean
-  default: false
-- name: prerelease_tag
-  displayName: Prerelease suffix (e.g. 1.0.0-beta01), used only if prerelease indicated above
+- name: version_string
+  displayName: Please enter the desired version (e.g. 1.2.3, or 1.2.3-beta.1)
   type: string
-  default: 'beta01'
 
 variables:
 - group: AdaptiveCards-KVLink
-- name: AC_IS_PRERELEASE
+- name: AC_FULL_VERSION_SPECIFIED
+  value: true
+- name: AC_VERSION_STRING
   value: ${{ parameters.is_prerelease }}
-- name: AC_PRERELEASE_TAG
-  value: ${{ parameters.prerelease_tag }}
 - name: AC_APPEND_BUILD_NUMBER
   value: false
 
@@ -153,15 +148,17 @@ stages:
       inputs:
         instructions: 'Please verify artifact integrity at http://oss.sonatype.org/'
   
-  - job: ReleaseValidatedArtifact
-    dependsOn: ManualApproval
-    steps:
-    - task: Gradle@2
-      displayName: 'Release Validated Artifact to Maven Central'
-      inputs:
-        gradleWrapperFile: source/android/gradlew.bat
-        workingDirectory: source/android
-        tasks: 'adaptivecards:releaseRepository'
-        publishJUnitResults: false
-      env:
-        AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
+  # commented out for testing
+  # - job: ReleaseValidatedArtifact
+  #   dependsOn: ManualApproval
+  #   steps:
+  #   - task: Gradle@2
+  #     displayName: 'Release Validated Artifact to Maven Central'
+  #     inputs:
+  #       gradleWrapperFile: source/android/gradlew.bat
+  #       workingDirectory: source/android
+  #       tasks: 'adaptivecards:releaseRepository'
+  #       publishJUnitResults: false
+  #     env:
+  #       AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
+  - 
