@@ -33,6 +33,7 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRBaseCardElementRenderer.h"
 #import "ACRButton.h"
+#import "ACRChoiceSetCompactStyleView.h"
 #import "ACRColumnRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRContainerRenderer.h"
@@ -70,4 +71,3 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import "ACRTextView.h"
 #import "ACRToggleInputView.h"
 #import "ACRView.h"
-
