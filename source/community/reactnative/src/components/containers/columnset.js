@@ -12,6 +12,8 @@ import {
 import { SelectAction } from '../actions';
 import ElementWrapper from '../elements/element-wrapper';
 import { Column } from "./column";
+import * as Utils from '../../utils/util';
+import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { ContainerWrapper } from './';
 
@@ -50,9 +52,17 @@ export class ColumnSet extends React.PureComponent {
 
 	internalRenderer() {
 		const payload = this.payload;
+		const { hostConfig } = this.props.configManager;
+
+		// padding
+        const spacingEnumValue = Utils.parseHostConfigEnum(
+			Enums.Spacing,
+			this.payload.spacing,
+			Enums.Spacing.Default);
+        const padding = hostConfig.getEffectiveSpacing(spacingEnumValue);
 
 		var columnSetContent = (
-			<ContainerWrapper configManager={this.props.configManager} style={{ flex: this.payload.columns.length }} json={payload} containerStyle={this.props.containerStyle}>
+			<ContainerWrapper configManager={this.props.configManager} style={{ flex: this.payload.columns.length, marginTop: padding }} json={payload} containerStyle={this.props.containerStyle}>
 				<ElementWrapper configManager={this.props.configManager} json={payload} style={styles.defaultBGStyle} isFirst={this.props.isFirst}>
 					{this.parsePayload()}
 				</ElementWrapper>

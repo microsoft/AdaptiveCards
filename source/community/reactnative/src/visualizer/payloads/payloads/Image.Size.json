@@ -35,6 +35,18 @@
 			"type": "Image",
 			"url": "https://adaptivecards.io/content/cats/1.png",
 			"size": "large"
+		},
+		{
+			"type": "TextBlock",
+			"text": "size:custom",
+			"weight": "bolder",
+			"size": "large"
+		},
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/cats/1.png",
+			"width": "16px",
+			"height": "16px"
 		}
 	]
 }

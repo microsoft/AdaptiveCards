@@ -1,0 +1,169 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "12.5 Days",
+            "wrap": true,
+            "size": "ExtraLarge",
+            "weight": "Bolder"
+        },
+        {
+            "type": "TextBlock",
+            "text": "or 80 hours of company provided paid time off available to you as of now",
+            "wrap": true,
+            "spacing": "None"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Time off purpose",
+                    "wrap": true
+                }
+            ],
+            "spacing": "Medium"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Start Date",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "Input.Date",
+                                    "id": "DateVal5",
+                                    "value": "2017-09-20",
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": 50
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Start time",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "Input.Time",
+                                    "id": "TimeVal5",
+                                    "value": "16:59",
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": 50
+                        }
+                    ],
+                    "spacing": "None"
+                }
+            ],
+            "spacing": "Medium"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+					"separator": true,
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "End Date",
+                                    "wrap": true,
+                                    "spacing": "None"
+                                },
+                                {
+                                    "type": "Input.Date",
+                                    "id": "DateVal",
+                                    "value": "2017-09-20",
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": 50,
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "End time",
+                                    "wrap": true,
+                                    "spacing": "None"
+                                },
+                                {
+                                    "type": "Input.Time",
+                                    "id": "TimeVal",
+                                    "value": "16:59",
+                                    "spacing": "None"
+                                }
+                            ],
+                            "width": 50,
+                            "spacing": "None"
+                        }
+                    ],
+                    "spacing": "None"
+                }
+            ],
+            "spacing": "Medium"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "All Day Event",
+            "id": "AllDayToggle",
+            "value": "false",
+            "spacing": "Medium"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ActionSet",
+                    "actions": [
+                        {
+                            "type": "Action.Submit",
+                            "title": "Approve",
+                            "style": "positive",
+                            "data": {
+                                "id": "_qkQW8dJlUeLVi7ZMEzYVw",
+                                "action": "approve"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "[Confused? Check out FAQs](https://www.bing.com)",
+                    "wrap": true,
+                    "size": "Medium"
+                }
+            ],
+            "selectAction": {
+                "type": "Action.OpenUrl",
+                "url": "https://www.bing.com"
+            }
+        }
+    ]
+}

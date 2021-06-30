@@ -54,7 +54,7 @@ export class Column extends React.Component {
 		}
 		return children.map((ChildElement, index) => React.cloneElement(ChildElement, {
 			containerStyle: this.column.style,
-			isFirst: index === 0, columnWidth: this.column.width, 
+			isFirst: index === 0, columnWidth: this.column.width,
 			configManager: this.props.configManager
 		}));
 	}
@@ -163,6 +163,10 @@ export class Column extends React.Component {
 
 		if (separator) {
 			separatorStyles = [containerViewStyle, styles.separatorStyle];
+		}
+
+		if (!this.props.isFirst) {
+			containerViewStyle.push({ marginLeft: Constants.containerPadding });
 		}
 
 		return <ContainerWrapper configManager={this.props.configManager} json={this.column} hasBackgroundImage={this.props.hasBackgroundImage} isFirst={isFirst} isLast={isLast} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
