@@ -144,26 +144,26 @@ stages:
   - job: ManualApproval
     pool: server
     steps:
-    - checkout: self
-      persistCredentials: true
-
     - task: ManualValidation@0
       inputs:
         instructions: 'Please verify artifact integrity at http://oss.sonatype.org/'
   
-  # commented out for testing
-  # - job: ReleaseValidatedArtifact
-  #   dependsOn: ManualApproval
-  #   steps:
-  #   - task: Gradle@2
-  #     displayName: 'Release Validated Artifact to Maven Central'
-  #     inputs:
-  #       gradleWrapperFile: source/android/gradlew.bat
-  #       workingDirectory: source/android
-  #       tasks: 'adaptivecards:releaseRepository'
-  #       publishJUnitResults: false
-  #     env:
-  #       AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
+  - job: ReleaseValidatedArtifact
+    dependsOn: ManualApproval
+    steps:
+    - checkout: self
+      persistCredentials: true
+
+    # commented out for testing
+    # - task: Gradle@2
+    #   displayName: 'Release Validated Artifact to Maven Central'
+    #   inputs:
+    #     gradleWrapperFile: source/android/gradlew.bat
+    #     workingDirectory: source/android
+    #     tasks: 'adaptivecards:releaseRepository'
+    #     publishJUnitResults: false
+    #   env:
+    #     AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
 
     - bash: |
        sed --in-place=.bkp 's/acVersion=.*/acVersion=${{ parameters.version_string }}/' gradle.properties
