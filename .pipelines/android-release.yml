@@ -174,8 +174,11 @@ stages:
        git checkout -b adaptivecards/post-release
        git commit -m "test ADO Github access"
        git push --set-upstream origin adaptivecards/post-release
-       curl -i -u $ghuser:$ghpat -d '{ "title": "Test PR, ignore", "head": "adaptivecards/post-release", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
+       curl -i -u $AC_GHUSER:$AC_GHPAT -d '{ "title": "Test PR, ignore", "head": "adaptivecards/post-release", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
 
       workingDirectory: source/android/adaptivecards
       displayName: 'Update version file'
+      env:
+        AC_GHUSER: $(ghuser)
+        AC_GHPAT: $(ghpat)
 
