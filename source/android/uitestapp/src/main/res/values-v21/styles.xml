@@ -2,7 +2,6 @@
 
     <!-- Sample style definitions -->
     <style name="adaptiveShowCardAction" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:drawableEnd">@drawable/show_card_arrow</item>
     </style>
 
     <style name="adaptiveActionPositive" parent="@style/Widget.AppCompat.Button.Colored">
@@ -30,25 +29,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
-        <!--<item name="colorControlHighlight">@color/colorAccent</item>-->
-
-        <!-- Add custom input backgrounds -->
-        <!--
-        <item name="adaptiveUsingCustomTextInputs">true</item>
-        <item name="adaptiveUsingCustomChoiceSetInputs">true</item>
-        <item name="android:editTextBackground">@drawable/layered_edit_text_styles</item>
-        -->
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
-
-        <!-- Add your custom styles (samples defined above) for use by the AdaptiveCards SDK
-
-        <item name="adaptiveActionDestructive">@style/adaptiveActionDestructive</item>
-        <item name="adaptiveActionPositive">@style/adaptiveActionPositive</item>
-        <item name="adaptiveInlineAction">@style/adaptiveInlineAction</item>
-        <item name="adaptiveInlineActionImage">@style/adaptiveInlineActionImage</item>
-        <item name="adaptiveShowCardAction">@style/adaptiveShowCardAction</item>
-
-        -->
 
     </style>
 
@@ -57,7 +38,5 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-
-        <item name="editTextBackground">@drawable/layered_edit_text</item>
     </style>
 </resources>
