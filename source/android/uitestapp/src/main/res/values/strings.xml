@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AdaptiveCards UITestApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="load_card">Adaptive Card</string>
+    <string name="load_config">Host Config</string>
+    <string name="default_config">Default Config</string>
+    <string name="no_card">No Card</string>
+    <string name="title_activity_render_card_ui_test_app">MainActivity</string>
+    <string name="title_test_cases">Test cases</string>
+    <string name="title_rendered_card">Rendered card</string>
+    <string name="title_inputs">Inputs</string>
+</resources>
