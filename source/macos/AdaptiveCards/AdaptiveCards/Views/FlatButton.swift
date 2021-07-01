@@ -5,6 +5,7 @@
 import AppKit
 import Cocoa
 import QuartzCore
+import Carbon.HIToolbox
 
 extension CALayer {
     internal func animate(color: CGColor, keyPath: String, duration: Double) {
@@ -476,6 +477,20 @@ open class FlatButton: NSButton, CALayerDelegate {
             }
             updateAppearance()
             _ = target?.perform(action, with: self)
+        }
+    }
+    
+    override open func keyDown(with event: NSEvent) {
+        super.keyDown(with: event)
+        if event.keyCode == UInt16(kVK_Space) && momentary {
+            updateAppearance()
+        }
+    }
+    
+    override open func keyUp(with event: NSEvent) {
+        super.keyUp(with: event)
+        if event.keyCode == UInt16(kVK_Space) && momentary {
+            toggleState()
         }
     }
     

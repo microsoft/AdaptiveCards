@@ -57,7 +57,7 @@ class AdaptiveCardRenderer {
             if let verticalSpacing = hostConfig.getActions()?.spacing {
                 let spacing = HostConfigUtils.getSpacing(verticalSpacing, with: hostConfig)
                 // add vertical spacing b/w action button view and last BaseCard Element
-                if let lastView = rootView.arrangedSubviews.last {
+                if let lastView = rootView.arrangedSubviews.last(where: { !$0.isHidden }) {
                     rootView.setCustomSpacing(spacing: CGFloat(truncating: spacing), after: lastView)
                 }
             }

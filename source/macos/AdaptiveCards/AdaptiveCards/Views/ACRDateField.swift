@@ -58,7 +58,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
        
     private let datePickerCalendar = NSDatePicker()
     private let datePickerTextfield = NSDatePicker()
-    private var popover = NSPopover()
+    private var popover: NSPopover?
     let isTimeMode: Bool
     let isDarkMode: Bool
 
@@ -169,7 +169,6 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseExit()
     }
     override func mouseDown(with event: NSEvent) {
-        popover.close()
         let frame = isTimeMode ? NSRect(x: 0, y: 0, width: 122, height: 122) : NSRect(x: 0, y: 0, width: 138, height: 147)
         if let dateValue = selectedDate {
             datePickerCalendar.dateValue = dateValue
@@ -192,16 +191,20 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         datePickerTextfield.datePickerElements = isTimeMode ? .hourMinute : .yearMonthDay
         datePickerTextfield.target = self
         datePickerTextfield.action = #selector(handleDateAction(_:))
-        stackview.addArrangedSubview(datePickerTextfield)
-        stackview.addArrangedSubview(datePickerCalendar)
-        if isTimeMode {
-            stackview.spacing = 3
-            stackview.edgeInsets.bottom = 3
+        if popover == nil {
+            stackview.addArrangedSubview(datePickerTextfield)
+            stackview.addArrangedSubview(datePickerCalendar)
+            if isTimeMode {
+                stackview.spacing = 3
+                stackview.edgeInsets.bottom = 3
+            }
+            let popoverView = NSViewController()
+            popoverView.view = stackview
+            popoverView.view.frame = frame
+            popover = NSPopover(contentViewController: popoverView, sender: iconButton, bounds: frame, preferredEdge: .maxY, behavior: .transient, animates: true, delegate: nil)
+        } else {
+            popover?.show(relativeTo: iconButton.bounds, of: iconButton, preferredEdge: .maxY)
         }
-        let popoverView = NSViewController()
-        popoverView.view = stackview
-        popoverView.view.frame = frame
-        popover = NSPopover(contentViewController: popoverView, sender: iconButton, bounds: frame, preferredEdge: .maxY, behavior: .transient, animates: true, delegate: nil)
     }
     
     override func viewDidMoveToSuperview() {

@@ -29,6 +29,7 @@ class ACRView: ACRColumnView {
     private (set) var showCardsMap: [NSNumber: NSView] = [:]
     private (set) var currentShowCardItems: ShowCardItems?
 	private (set) var imageViewMap: [String: [ImageHoldingView]] = [:]
+    private var currentFocusedActionElement: NSCell?
     
     private (set) lazy var showCardStackView: NSStackView = {
         let view = NSStackView()
@@ -56,6 +57,7 @@ class ACRView: ACRColumnView {
         if let pBounds = previousBounds, bounds.height != pBounds.height {
             logInfo("AdaptiveCards: layout change called from \(pBounds.height) to \(bounds.height) for id: \(identifier?.rawValue ?? "nil")")
             delegate?.acrView(self, didUpdateBoundsFrom: pBounds, to: bounds)
+            resetKeyboardFocus()
         }
         previousBounds = bounds
     }
@@ -111,6 +113,11 @@ class ACRView: ACRColumnView {
             resolverDelegate?.resolve(self, requestImageFor: url)
         }
     }
+    
+    private func resetKeyboardFocus {
+        currentFocusedActionElement?.setAccessibilityFocused(true)
+        currentFocusedActionElement = nil
+    }
 }
 
 extension ACRView: TargetHandlerDelegate {
@@ -118,6 +125,10 @@ extension ACRView: TargetHandlerDelegate {
         guard let cardId = showCard.getInternalId()?.hash() else {
             logError("Card InternalID is nil")
             return
+        }
+        
+        if let buttonCell = button.cell, buttonCell.isAccessibilityFocused() {
+            currentFocusedActionElement = buttonCell
         }
         
         func manageShowCard(with id: NSNumber) {

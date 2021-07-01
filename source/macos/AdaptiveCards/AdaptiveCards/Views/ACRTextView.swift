@@ -76,6 +76,10 @@ class ACRTextView: NSTextView, SelectActionHandlingProtocol {
             setSelectedRange(NSRange(location: 0, length: 0))
         }
     }
+    
+    override var canBecomeKeyView: Bool {
+        return isEditable
+    }
 }
 
 protocol ACRTextViewResponderDelegate: AnyObject {
