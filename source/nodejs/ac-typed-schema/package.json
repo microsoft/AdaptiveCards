@@ -23,10 +23,10 @@
 		"generate-adaptive-schema": "node ./lib/command-line.js ../../../schemas/src AdaptiveCard > ../../../schemas/adaptive-card.json"
 	},
 	"devDependencies": {
+		"@types/i18n": "^0.13.0",
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/eslint-plugin-tslint": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
-		"@types/i18n": "^0.13.0",
 		"eslint": "^7.3.1",
 		"glob": "^7.1.6",
 		"i18n": "^0.13.2",
