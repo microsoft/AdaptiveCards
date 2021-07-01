@@ -28,6 +28,28 @@
 				}
 			]
 		},
+        {
+            "type": "Input.ChoiceSet",
+            "id": "myColor1",
+            "style": "compact",
+            "isMultiSelect": false,
+            "placeholder": "Please choose",
+            "value": "1",
+            "choices": [
+                {
+                    "title": "Red",
+                    "value": "1"
+                },
+                {
+                    "title": "Green",
+                    "value": "2"
+                },
+                {
+                    "title": "Blue",
+                    "value": "3"
+                }
+            ]
+        },
 		{
 			"type": "TextBlock",
 			"text": "What color do you want? *(isMultiSelect:false, style:expanded)*"

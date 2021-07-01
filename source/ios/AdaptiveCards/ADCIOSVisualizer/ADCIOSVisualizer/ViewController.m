@@ -31,7 +31,6 @@ CGFloat kFileBrowserWidth = 0;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
     dispatch_queue_t _global_queue;
-    UIGestureRecognizer *_tapGesture;
 }
 
 @end
@@ -52,6 +51,8 @@ CGFloat kFileBrowserWidth = 0;
 
 - (IBAction)editText:(id)sender
 {
+    [self.view endEditing:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     if (!self.editableStr) {
         return;
     }
@@ -119,6 +120,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (IBAction)toggleCustomRenderer:(id)sender
 {
+    [self.view endEditing:YES];
     _enableCustomRenderer = !_enableCustomRenderer;
     ACRRegistration *registration = [ACRRegistration getInstance];
 
@@ -157,6 +159,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (IBAction)applyText:(id)sender
 {
+    [self.view endEditing:YES];
     if (_editView.text != NULL && ![_editView.text isEqualToString:@""]) {
         [self update:self.editView.text];
     }
@@ -243,7 +246,6 @@ CGFloat kFileBrowserWidth = 0;
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
-    _tapGesture = [[UITapGestureRecognizer alloc] init];
 
     // the width of the AdaptiveCards does not need to be set.
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
@@ -265,11 +267,6 @@ CGFloat kFileBrowserWidth = 0;
 
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -314,6 +311,8 @@ CGFloat kFileBrowserWidth = 0;
             if (action.verb && action.verb.length) {
                 [fetchedInputList addObject:[NSString stringWithFormat:@"\"verb\" : %@", action.verb]];
             }
+        } else {
+            [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
         }
         NSString *str = [NSString stringWithFormat:@"{\n%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
         [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
@@ -480,12 +479,8 @@ CGFloat kFileBrowserWidth = 0;
     NSDictionary *info = [aNotification userInfo];
     CGRect kbFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGSize kbSize = kbFrame.size;
-
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    CGPoint currentPoint = [_tapGesture locationInView:self.chatWindow];
-    if (currentPoint.y < kbFrame.origin.y) {
-        self.chatWindow.contentInset = contentInsets;
-    }
+    self.chatWindow.contentInset = contentInsets;
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
@@ -560,6 +555,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (void)update:(NSString *)jsonStr
 {
+    [self.view endEditing:YES];
     NSInteger prevCount = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
     // resources such as images may not be ready when AdaptiveCard is added to its super view
     // AdaptiveCard can notify when its resources are all loaded via - (void)didLoadElements delegate

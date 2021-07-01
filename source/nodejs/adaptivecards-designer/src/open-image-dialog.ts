@@ -384,7 +384,7 @@ export class ImageItem {
             imagePlaceholder.setAttribute("alt", sampleImageName);
         }
         imagePlaceholder.onkeydown = (event) => {
-            if (event.keyCode === 13) {
+            if (event.code === "Enter") {
                 this.onClick((event.target as HTMLImageElement).src, sampleImageName);
                 imagePlaceholder.setAttribute("alt", `${sampleImageName} selected`);
             }

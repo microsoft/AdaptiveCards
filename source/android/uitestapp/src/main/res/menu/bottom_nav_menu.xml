@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_test_cases"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_test_cases" />
+
+    <item
+        android:id="@+id/navigation_rendered_card"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_rendered_card" />
+
+    <item
+        android:id="@+id/navigation_inputs"
+        android:icon="@android:drawable/ic_input_get"
+        android:title="@string/title_inputs" />
+
+</menu>
