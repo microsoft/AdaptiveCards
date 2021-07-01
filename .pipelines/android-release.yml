@@ -167,6 +167,8 @@ stages:
 
     - bash: |
        sed --in-place=.bkp 's/acVersion=.*/acVersion=${{ parameters.version_string }}/' gradle.properties
+       git config --global user.email "adaptivecardscore@microsoft.com"
+       git config --global user.name "adaptivecards"
        git remote -v
        git add gradle.properties
        git checkout -b golddove/test-pr-branch
