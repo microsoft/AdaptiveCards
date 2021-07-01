@@ -149,7 +149,7 @@ stages:
   #       instructions: 'Please verify artifact integrity at http://oss.sonatype.org/'
   
   - job: ReleaseValidatedArtifact
-    dependsOn: ManualApproval
+    # dependsOn: ManualApproval
     steps:
     - checkout: self
       persistCredentials: true
