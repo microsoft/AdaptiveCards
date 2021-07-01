@@ -171,9 +171,10 @@ stages:
        git config --global user.name "adaptivecards"
        git remote -v
        git add gradle.properties
-       git checkout -b golddove/test-pr-branch
+       git checkout -b adaptivecards/post-release
        git commit -m "test ADO Github access"
-       git push --set-upstream origin golddove/test-pr-branch
+       git push --set-upstream origin adaptivecards/post-release
+       curl -i -u $ghuser:$ghpat -d '{ "title": "Test PR, ignore", "head": "adaptivecards/post-release", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
 
       workingDirectory: source/android/adaptivecards
       displayName: 'Update version file'
