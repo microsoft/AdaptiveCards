@@ -39,3 +39,15 @@ We use lerna to manage package linking and building.
 ## Adding a new package
 
 1. `npx lerna add <new-package> --scope=<install-target>`
+
+## Testing
+
+The JS Renderer currently supports the following type of testing:
+
+| Type | Project | Location |
+| --- | --- | --- |
+| Unit tests | unit-tests | [Location](./tests/unit-tests) |
+
+To run the tests:
+1. `cd tests/unit-tests`
+2. `npm run build-and-test`
