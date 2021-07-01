@@ -5,8 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "AdaptiveCards/TextBlock.h"
-#import "AdaptiveCards/Enums.h"
+#import "TextBlock.h"
+#import "Enums.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 

@@ -6,8 +6,7 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "AdaptiveCards/ShowCardAction.h"
-#import "AdaptiveCards/TextBlock.h"
+#import "TextBlock.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
