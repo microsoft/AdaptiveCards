@@ -26,6 +26,9 @@ namespace UWPUITestLibraryMITA
 {
     using Window = Microsoft.Windows.Apps.Test.Foundation.Controls.Window;
 
+    // Most of this code is part of the MUX Testing Infrastructure,
+    // investigation on the added packages must be made to verify if there's any API that can do the same
+    // TODO: Verify if the MUXTestInfra package can be used, instead of duplicating their code (Issue #6052)
     public class Application
     {
         private readonly string _simplePackageName;
@@ -119,12 +122,6 @@ namespace UWPUITestLibraryMITA
                 }
                 else // _appFrameWindowCondition
                 {
-                    if (!topWindowObj.Matches(_appFrameWindowCondition))
-                    {
-                        // This should never happen
-                        // Assert.Fail($"Expected topWindowObj ({UIObjectToLoggableString(topWindowObj)}) to match _appFrameWindowCondition ({_appFrameWindowCondition})");
-                    }
-
                     // Maxmize window to ensure we can find UIA elements
                     var appFrameWindow = new Window(topWindowObj);
                     if (appFrameWindow.CanMaximize)
@@ -200,10 +197,6 @@ namespace UWPUITestLibraryMITA
                 Logger.LogMessage("Invoker not found. Sleeping for 500 ms before trying again...");
                 Thread.Sleep(500);
             }
-
-            // var unhandledExceptionReportingTextBox = new Edit(coreWindow.Descendants.Find(UICondition.Create("@AutomationId='__UnhandledExceptionReportingTextBox'")));
-            // var valueChangedSource = new PropertyChangedEventSource(unhandledExceptionReportingTextBox, Scope.Element, UIProperty.Get("Value.Value"));
-            // valueChangedSource.Start(new TestAppCrashDetector());
 
             Logger.LogMessage("15056441 tracing, device family:" + Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily);
 
