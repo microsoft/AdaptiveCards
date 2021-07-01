@@ -2,11 +2,9 @@
 //  AdaptiveCardsTextBlockTests.m
 //  AdaptiveCardsTests
 //
-//  Created by almedina on 6/22/21.
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "AdaptiveCards/ShowCardAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/Enums.h"
 #import <UIKit/UIKit.h>
@@ -39,15 +37,15 @@
 }
 
 - (void)verifyTextColorIsSet : (AdaptiveCards::ForegroundColor) color
-                 onTextBlock : (std::shared_ptr<AdaptiveCards::TextBlock>) textblock{
+                 onTextBlock : (std::shared_ptr<AdaptiveCards::TextBlock> &) textblock{
     textblock->SetTextColor(color);
     XCTAssert(textblock->GetTextColor() == color);
 }
 
 - (void)testTextBlockColorProperty {
     std::shared_ptr<AdaptiveCards::TextBlock> textblock = std::make_shared<AdaptiveCards::TextBlock>();
-    XCTAssert(textblock->GetTextColor() == AdaptiveCards::ForegroundColor::Default);
-    
+    [self verifyTextColorIsSet : AdaptiveCards::ForegroundColor::Default
+                   onTextBlock : textblock];
     [self verifyTextColorIsSet : AdaptiveCards::ForegroundColor::Dark
                    onTextBlock : textblock];
     [self verifyTextColorIsSet : AdaptiveCards::ForegroundColor::Light
@@ -63,8 +61,8 @@
 }
 
 - (void)verifyTextColorIsSerialized : (AdaptiveCards::ForegroundColor) color
-                                 as : (std::string) serializedString
-                        onTextBlock : (std::shared_ptr<AdaptiveCards::TextBlock>) textblock {
+                                 as : (const std::string &) serializedString
+                        onTextBlock : (std::shared_ptr<AdaptiveCards::TextBlock> &) textblock {
     textblock->SetTextColor(color);
     std::string serializedTextBlock = textblock->Serialize();
     XCTAssert(serializedTextBlock == "{\"color\":\"" + serializedString + "\",\"text\":\"\",\"type\":\"TextBlock\"}\n");
