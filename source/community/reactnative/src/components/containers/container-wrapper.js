@@ -99,18 +99,18 @@ export class ContainerWrapper extends React.PureComponent {
         const borderThickness = styleDefinition.borderThickness || 0;
         const borderColor = styleDefinition.borderColor;
         computedStyles.push({ borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor) });
-
-        // padding
-        const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
-        computedStyles.push({ padding: padding });
+        
+        if(this.props.containerStyle) {
+            computedStyles.push({ padding: Constants.containerPadding });
+        }
 
         // bleed
         if (this.payload.bleed && this.props.containerStyle) {
             const { isFirst, isLast } = this.props;
-            const marginLeft = isFirst ? -padding : 0;
-            const marginRight = isLast ? -padding : 0;
+            const marginLeft = isFirst ? -Constants.containerPadding : 0;
+            const marginRight = isLast ? -Constants.containerPadding : 0;
 
-            computedStyles.push({ marginVertical: -padding, marginLeft, marginRight });
+            computedStyles.push({ marginVertical: -containerPadding, marginLeft, marginRight });
         }
 
         // height 

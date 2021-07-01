@@ -63,6 +63,7 @@ export const TypeColumnSet = "ColumnSet";
 export const TypeAdaptiveCard = "AdaptiveCard";
 export const TypeTextBlock = "TextBlock";
 export const TypeRichTextBlock = "RichTextBlock";
+export const TypeColumn = "Column";
 
 export const TypeString = "string";
 export const TypeObject = "object"
@@ -72,3 +73,5 @@ export const Button = "button";
 
 export const BehaviourPadding = "padding";
 export const BehaviourHeight = "height";
+
+export const containerPadding = 8;
