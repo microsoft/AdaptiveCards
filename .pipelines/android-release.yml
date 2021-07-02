@@ -181,7 +181,7 @@ stages:
        git config --global user.name "adaptivecards"
        git tag -a "android/adaptivecards-android@$AC_VERSION_STRING" -m "Released adaptivecards-android v$AC_VERSION_STRING"
        git checkout main
-       sed --in-place 's/acVersion=.*/acVersion=${{ parameters.base_version }}/' gradle.properties
+       sed --in-place 's/acVersionMajor=.*/acVersion=${{ parameters.base_version }}/' gradle.properties
        git checkout -b "adaptivecards/post-release-$AC_VERSION_STRING"
        git add gradle.properties
        git commit -m "test ADO Github access"
