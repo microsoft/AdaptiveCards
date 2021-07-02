@@ -9,16 +9,27 @@ pool:
   demands: java
 
 parameters:
-- name: version_string
-  displayName: Please enter the desired version (e.g. 1.2.3, or 1.2.3-beta.1)
+- name: base_version
+  displayName: Please enter the base version (i.e. MAJOR.MINOR.PATCH).
   type: string
+- name: is_prerelease
+  displayName: Is this a pre-release?
+  type: boolean
+  default: true
+- name: prerelease_suffix
+  displayName: "Please enter pre-release suffix (this is appended to the base version with a hyphen, only if pre-release indicated above)"
+  type: string
+  default: beta.1
 
 variables:
 - group: AdaptiveCards-KVLink
 - name: AC_FULL_VERSION_SPECIFIED
   value: true
 - name: AC_VERSION_STRING
-  value: ${{ parameters.version_string }}
+  ${{ if parameters.is_prerelease }}:
+    value: ${{ format('{0}-{1}', parameters.base_version, parameters.prerelease_suffix) }}
+  ${{ if not(parameters.is_prerelease) }}:
+    value: ${{ parameters.base_version }}
 - name: AC_APPEND_BUILD_NUMBER
   value: false
 
@@ -168,14 +179,14 @@ stages:
     - bash: |
        git config --global user.email "adaptivecardscore@microsoft.com"
        git config --global user.name "adaptivecards"
-       git tag -a "android/adaptivecards-android@${{ parameters.version_string }}" -m "Released adaptivecards-android v${{ parameters.version_string }}"
+       git tag -a "android/adaptivecards-android@$[ variables.AC_VERSION_STRING ]" -m "Released adaptivecards-android v$[ variables.AC_VERSION_STRING ]"
        git checkout main
-       sed --in-place=.bkp 's/acVersion=.*/acVersion=${{ parameters.version_string }}/' gradle.properties
-       git checkout -b adaptivecards/post-release
+       sed --in-place=.bkp 's/acVersion=.*/acVersion=${{ parameters.base_version }}/' gradle.properties
+       git checkout -b adaptivecards/post-release-$[ variables.AC_VERSION_STRING ]
        git add gradle.properties
        git commit -m "test ADO Github access"
-       git push --tags --set-upstream origin adaptivecards/post-release
-       curl -i -u $AC_GHUSER:$AC_GHPAT -d '{ "title": "[Android] Update version", "head": "adaptivecards/post-release", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
+       git push --tags --set-upstream origin adaptivecards/post-release-$[ variables.AC_VERSION_STRING ]
+       curl -i -u $AC_GHUSER:$AC_GHPAT -d '{ "title": "[Android] Bump to v${{ parameters.base_version }}", "head": "adaptivecards/post-release-$[ variables.AC_VERSION_STRING ]", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
 
       workingDirectory: source/android/adaptivecards
       displayName: 'Update version file'
