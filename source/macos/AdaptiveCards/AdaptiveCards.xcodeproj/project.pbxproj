@@ -444,6 +444,7 @@
 		08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */ = {isa = PBXBuildFile; fileRef = 08299E3225AF254000799C66 /* AdaptiveCards.h */; };
 		08E4047025B46BDB00C2092A /* AdaptiveCards_bridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E4046225B46BDA00C2092A /* AdaptiveCards_bridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08E4052125B46C3B00C2092A /* SwiftInterfaceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E402EB25B463D200C2092A /* SwiftInterfaceHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		08E9A59D268DA48F009D7151 /* ImageSetImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E9A59C268DA48F009D7151 /* ImageSetImageViewTests.swift */; };
 		08FFAC2D2608DB6B00296D62 /* ActionOpenURLRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFAC2C2608DB6B00296D62 /* ActionOpenURLRendererTests.swift */; };
 		08FFAC322608DBCA00296D62 /* FakeOpenURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */; };
 		13B13E4C25E750CB005D9380 /* FakeInputDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B13E4B25E750CB005D9380 /* FakeInputDate.swift */; };
@@ -1001,6 +1002,7 @@
 		08E4046225B46BDA00C2092A /* AdaptiveCards_bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdaptiveCards_bridge.h; sourceTree = "<group>"; };
 		08E4046325B46BDA00C2092A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08E4054D25B4764400C2092A /* AdaptiveCards-bridge.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AdaptiveCards-bridge.xcconfig"; sourceTree = "<group>"; };
+		08E9A59C268DA48F009D7151 /* ImageSetImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSetImageViewTests.swift; sourceTree = "<group>"; };
 		08FFAC2C2608DB6B00296D62 /* ActionOpenURLRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionOpenURLRendererTests.swift; sourceTree = "<group>"; };
 		08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeOpenURLAction.swift; sourceTree = "<group>"; };
 		13B13E4B25E750CB005D9380 /* FakeInputDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputDate.swift; sourceTree = "<group>"; };
@@ -1832,6 +1834,7 @@
 				81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */,
 				08C86F47260E0843005252B0 /* ACRViewTests.swift */,
 				81AFEA7526281B9400DD47E0 /* ACRNumericTextFieldTests.swift */,
+				08E9A59C268DA48F009D7151 /* ImageSetImageViewTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2364,6 +2367,7 @@
 				2806E8F62608886F00CF7A40 /* ActionSubmitRendererTests.swift in Sources */,
 				29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */,
 				2910CF162600D610000910C8 /* FakeSubmitAction.swift in Sources */,
+				08E9A59D268DA48F009D7151 /* ImageSetImageViewTests.swift in Sources */,
 				2982B3FF26289F1700E7561C /* FakeBackgroundImage.swift in Sources */,
 				13C41B0925F257C3008A1F2E /* FakeInputTime.swift in Sources */,
 				2871B13F25DD41D80040AB27 /* InputNumberRendererTest.swift in Sources */,

@@ -25,7 +25,6 @@ class ACRView: ACRColumnView {
 
     private (set) var targets: [TargetHandler] = []
     private (set) var inputHandlers: [InputHandlingViewProtocol] = []
-    private (set) var imageSetDatasources: [ACRCollectionViewDatasource] = []
     private (set) var showCardsMap: [NSNumber: NSView] = [:]
     private (set) var currentShowCardItems: ShowCardItems?
 	private (set) var imageViewMap: [String: [ImageHoldingView]] = [:]
@@ -81,10 +80,6 @@ class ACRView: ACRColumnView {
     
     func addInputHandler(_ handler: InputHandlingViewProtocol) {
         inputHandlers.append(handler)
-    }
-    
-    func addImageSetDatasource(_ datasource: ACRCollectionViewDatasource) {
-        imageSetDatasources.append(datasource)
     }
     
     func addShowCard(_ cardView: ACRView) {

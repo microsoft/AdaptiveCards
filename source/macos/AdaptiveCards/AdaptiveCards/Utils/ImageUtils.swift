@@ -4,6 +4,10 @@ import CoreGraphics
 import Foundation
 
 class ImageUtils {
+    static func getImageSizeAsCGSize(imageSize: ACSImageSize, with config: ACSHostConfig) -> CGSize {
+        return getImageSizeAsCGSize(imageSize: imageSize, width: 0, height: 0, with: config, explicitDimensions: false)
+    }
+    
     static func getImageSizeAsCGSize(imageSize: ACSImageSize, width: CGFloat, height: CGFloat, with config: ACSHostConfig, explicitDimensions: Bool) -> CGSize {
         if explicitDimensions {
             var isAspectRatioNeeded = false
