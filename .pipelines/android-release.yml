@@ -10,14 +10,14 @@ pool:
 
 parameters:
 - name: base_version
-  displayName: Please enter the base version (i.e. MAJOR.MINOR.PATCH).
+  displayName: Please enter the base version (i.e. MAJOR.MINOR.PATCH)
   type: string
 - name: is_prerelease
   displayName: Is this a pre-release?
   type: boolean
   default: true
 - name: prerelease_suffix
-  displayName: "Please enter pre-release suffix (this is appended to the base version with a hyphen, only if pre-release indicated above)"
+  displayName: "Please enter pre-release suffix (this is appended to the base version with a hyphen, only if pre-release checkbox selected above)"
   type: string
   default: beta.1
 
@@ -181,7 +181,7 @@ stages:
        git config --global user.name "adaptivecards"
        git tag -a "android/adaptivecards-android@$[ variables.AC_VERSION_STRING ]" -m "Released adaptivecards-android v$[ variables.AC_VERSION_STRING ]"
        git checkout main
-       sed --in-place=.bkp 's/acVersion=.*/acVersion=${{ parameters.base_version }}/' gradle.properties
+       sed --in-place 's/acVersion=.*/acVersion=${{ parameters.base_version }}/' gradle.properties
        git checkout -b adaptivecards/post-release-$[ variables.AC_VERSION_STRING ]
        git add gradle.properties
        git commit -m "test ADO Github access"
