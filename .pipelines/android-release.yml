@@ -179,14 +179,14 @@ stages:
     - bash: |
        git config --global user.email "adaptivecardscore@microsoft.com"
        git config --global user.name "adaptivecards"
-       git tag -a "android/adaptivecards-android@$[ variables.AC_VERSION_STRING ]" -m "Released adaptivecards-android v$[ variables.AC_VERSION_STRING ]"
+       git tag -a "android/adaptivecards-android@$AC_VERSION_STRING" -m "Released adaptivecards-android v$AC_VERSION_STRING"
        git checkout main
        sed --in-place 's/acVersion=.*/acVersion=${{ parameters.base_version }}/' gradle.properties
-       git checkout -b adaptivecards/post-release-$[ variables.AC_VERSION_STRING ]
+       git checkout -b "adaptivecards/post-release-$AC_VERSION_STRING"
        git add gradle.properties
        git commit -m "test ADO Github access"
-       git push --tags --set-upstream origin adaptivecards/post-release-$[ variables.AC_VERSION_STRING ]
-       curl -i -u $AC_GHUSER:$AC_GHPAT -d '{ "title": "[Android] Bump to v${{ parameters.base_version }}", "head": "adaptivecards/post-release-$[ variables.AC_VERSION_STRING ]", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
+       git push --tags --set-upstream origin "adaptivecards/post-release-$AC_VERSION_STRING"
+       curl -i -u $AC_GHUSER:$AC_GHPAT -d '{ "title": "[Android] Bump to v${{ parameters.base_version }}", "head": "adaptivecards/post-release-$AC_VERSION_STRING", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
 
       workingDirectory: source/android/adaptivecards
       displayName: 'Update version file'
