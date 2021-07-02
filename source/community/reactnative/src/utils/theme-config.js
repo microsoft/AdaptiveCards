@@ -14,10 +14,13 @@ export class ThemeConfig {
         this.checkBoxText = new Config(ThemeElement.CheckBoxText, obj);
         this.dropdown = new Config(ThemeElement.Dropdown, obj);
         this.dropdownText = new Config(ThemeElement.DropdownText, obj);
+        this.picker = new Config(ThemeElement.Picker, obj);
+        this.dateTimePicker = new Config(ThemeElement.DateTimePicker, obj)
     }
 }
 
 // Each instance of this class holds config of specific element type 
+// this class holds config of specific element type 
 class Config {
     constructor(type, customConfig = {}) {
         this.type = type;
@@ -125,6 +128,20 @@ export const defaultThemeConfig = {
         marginTop: 10,
         marginLeft: 8,
         height: 30,
-    }
+    },
+    picker: {
+        borderWidth: 1,
+        backgroundColor: Constants.LightGreyColor,
+        borderColor: Constants.LightGreyColor,
+        color: Constants.BlackColor,
+        borderRadius: 5,
+        marginHorizontal: 2
+    },
+    dateTimePicker: {
+        backgroundColor: Constants.WhiteColor,
+        height: 260,
+        width: Constants.FullWidth,
+        textColor: Constants.BlackColor
+    },
 
 }

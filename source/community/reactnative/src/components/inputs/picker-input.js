@@ -84,7 +84,7 @@ export class PickerInput extends React.Component {
 					<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
 						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}
-						accessibilityRole='button'>
+							accessibilityRole='button'>
 							{/* added extra view to fix touch event in ios . */}
 							<View
 								accessible={true}
@@ -109,7 +109,7 @@ export class PickerInput extends React.Component {
 							visible={this.props.modalVisible}
 							onRequestClose={this.props.handleModalClose}>
 							<View style={[styles.overlay, modalOverlayStyle]}>
-								<View style={[styles.modal, modalStyle]}>
+								<View style={[this.styleConfig.dateTimePicker, modalStyle]}>
 									<View style={[styles.modalBtnContainer, modalBtnContainer]}>
 										<Button
 											style={[modalButtonStyle]}
@@ -124,6 +124,7 @@ export class PickerInput extends React.Component {
 										value={this.props.chosenDate || new Date()}
 										minimumDate={this.props.minDate}
 										maximumDate={this.props.maxDate}
+										textColor={this.styleConfig.dateTimePicker.textColor}
 										onChange={(event, date) => this.props.handleDateChange(date)} />
 								</View>
 							</View>
@@ -161,11 +162,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(0,0,0,.3)',
 		alignItems: Constants.CenterString,
 		justifyContent: Constants.FlexEnd
-	},
-	modal: {
-		backgroundColor: Constants.WhiteColor,
-		height: 260,
-		width: Constants.FullWidth
 	},
 	modalBtnContainer: {
 		width: Constants.FullWidth,

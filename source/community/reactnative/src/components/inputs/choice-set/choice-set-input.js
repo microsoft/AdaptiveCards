@@ -165,8 +165,8 @@ export class ChoiceSetInput extends React.Component {
 					onPress={onPress}
 					accessible={true}
 					accessibilityRole={'button'}
-					accessibilityState={{expanded: this.state.isPickerSelected}}
-					>
+					accessibilityState={{ expanded: this.state.isPickerSelected }}
+				>
 					<View style={this.styleConfig.dropdown}>
 						<Text
 							style={[this.styleConfig.dropdownText, this.styleConfig.defaultFontConfig]}
@@ -182,26 +182,25 @@ export class ChoiceSetInput extends React.Component {
 					</View>
 				</TouchableOpacity>}
 				{((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
-					<View style={styles.pickerContainer}>
-						<Picker
-							mode={'dropdown'}
-							selectedValue={this.getPickerInitialValue(addInputItem)}
-							onValueChange={
-								(itemValue) => {
-									this.setState({
-										selectedPickerValue: itemValue,
-										isError: false
-									})
-									addInputItem(this.id, { value: itemValue, errorState: false });
-								}}>
-							{this.choices.map((item, key) => (
-								<Picker.Item
-									label={item.title}
-									value={item.value} key={key}
-								/>)
-							)}
-						</Picker>
-					</View>
+					<Picker
+						mode={'dropdown'}
+						itemStyle={this.styleConfig.picker}
+						selectedValue={this.getPickerInitialValue(addInputItem)}
+						onValueChange={
+							(itemValue) => {
+								this.setState({
+									selectedPickerValue: itemValue,
+									isError: false
+								})
+								addInputItem(this.id, { value: itemValue, errorState: false });
+							}}>
+						{this.choices.map((item, key) => (
+							<Picker.Item
+								label={item.title}
+								value={item.value} key={key}
+							/>)
+						)}
+					</Picker>
 				}
 			</View>
 		)
@@ -325,13 +324,6 @@ const styles = StyleSheet.create({
 	},
 	choiceSetView: {
 		marginTop: 3
-	},
-	pickerContainer: {
-		borderWidth: 1,
-		backgroundColor: Constants.LightGreyColor,
-		borderColor: Constants.LightGreyColor,
-		borderRadius: 5,
-		marginHorizontal: 2
 	},
 	button: {
 		height: 30,
