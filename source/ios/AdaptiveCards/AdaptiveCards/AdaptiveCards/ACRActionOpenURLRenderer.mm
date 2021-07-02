@@ -40,8 +40,9 @@
     if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getActionsTargetBuilderDirector], acoElem, button, &target)) {
         [superview addTarget:target];
     }
-    
+
     button.accessibilityTraits |= UIAccessibilityTraitLink;
+    button.accessibilityTraits &= ~UIAccessibilityTraitButton;
 
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 

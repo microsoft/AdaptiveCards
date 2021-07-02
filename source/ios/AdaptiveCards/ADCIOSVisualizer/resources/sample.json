@@ -50,23 +50,23 @@
 					"subtle": "#6f6f6f"
 				},
 				"accent": {
-					"default": "#0063B1",
+					"default": "#1C2CB2",
 					"subtle": "#007AB0"
 				},
-				"attention": {
-					"default": "#EC130E",
-					"subtle": "#DDEC130E"
-				},
 				"good": {
-					"default": "#0B7814",
+					"default": "#173F1A",
 					"subtle": "#DD028A02"
 				},
+				"attention": {
+					"default": "#890507",
+					"subtle": "#DDEC130E"
+				},
 				"light": {
-					"default": "#646464",
+					"default": "#3F4041",
 					"subtle": "#767676"
 				},
 				"warning": {
-					"default": "#B75C00",
+					"default": "#58220D",
 					"subtle": "#DDB75C00"
 				}
 			}
@@ -79,23 +79,23 @@
 					"subtle": "#6f6f6f"
 				},
 				"accent": {
-					"default": "#4A54F0",
+					"default": "#181AA0",
 					"subtle": "#881F6BF1"
 				},
-				"attention": {
-					"default": "#C42C07",
-					"subtle": "#DDE31B13"
-				},
 				"good": {
-					"default": "#0B7814",
+					"default": "#0F330F",
 					"subtle": "#DD0D860A"
 				},
 				"warning": {
-					"default": "#935A10",
+					"default": "#673224",
 					"subtle": "#DDBD5400"
 				},
+				"attention": {
+					"default": "#890000",
+					"subtle": "#DDE31B13"
+				},
 				"light": {
-					"default": "#575757",
+					"default": "#3B3D40",
 					"subtle": "#DD737373"
 				}
 			}
