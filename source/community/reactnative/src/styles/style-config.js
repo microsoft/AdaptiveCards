@@ -81,6 +81,12 @@ export class StyleConfig {
 			},
 			dropdownText: {
 				...this.themeConfig.dropdownText[Platform.OS]
+			},
+			picker: {
+				...this.themeConfig.picker[Platform.OS]
+			},
+			dateTimePicker: {
+				...this.themeConfig.dateTimePicker[Platform.OS]
 			}
 		};
 		return styles;
