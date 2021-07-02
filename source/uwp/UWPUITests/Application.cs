@@ -22,7 +22,7 @@ using Microsoft.Windows.Apps.Test.Foundation.Controls;
 using Microsoft.Windows.Apps.Test.Foundation.Waiters;
 using Microsoft.Windows.Apps.Test.Automation;
 
-namespace UWPUITestLibraryMITA
+namespace UWPUITests
 {
     using Window = Microsoft.Windows.Apps.Test.Foundation.Controls.Window;
 
@@ -122,6 +122,10 @@ namespace UWPUITestLibraryMITA
                 }
                 else // _appFrameWindowCondition
                 {
+                    if (!topWindowObj.Matches(_appFrameWindowCondition))
+                    {
+                    }
+
                     // Maxmize window to ensure we can find UIA elements
                     var appFrameWindow = new Window(topWindowObj);
                     if (appFrameWindow.CanMaximize)

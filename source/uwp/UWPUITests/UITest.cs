@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using Windows.UI.Xaml.Tests.MUXControls.InteractionTests.Common;
 
-namespace UWPUITestLibraryMITA
+namespace UWPUITests
 {
     [TestClass]
     public class UITest
@@ -29,19 +29,8 @@ namespace UWPUITestLibraryMITA
             Assert.IsNotNull(showCardButton, "Could not find 'Set due date' button");
             showCardButton.Click();
 
-            // Retrieve the date input and click on it
-            // TODO: Fix UWP implementation to assign name/id to the CalendarDatePicker control
-            var dateInput = TestHelpers.FindElementByClassName("CalendarDatePicker");
-            dateInput.Click();
-
-            // Retrieve the popup which contains the calendar view
-            var calendarView = TestHelpers.FindFlyoutByAutomationId("CalendarView");
-            // Click on the "Next" button inside the popup
-            TestHelpers.FindElementByAutomationId("NextButton", calendarView).Click();
-            // Wait for the scrolling animation to end
-            Thread.Sleep(1000);
-            // Click on the day "16" button which in turn closes the popup
-            TestHelpers.FindElementByName("16", calendarView).Click();
+            // Set the date on the Date control
+            TestHelpers.SetDateToUIElement(2021, 07, 16);
 
             // Retrieve the "Add a comment" Input.Text and fill it with information
             var commentTextBox = TestHelpers.CastTo<Edit>(TestHelpers.FindElementByName("Add a comment"));

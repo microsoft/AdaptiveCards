@@ -181,6 +181,11 @@
     </None>
     <None Include="..\..\..\samples\v1.3\Elements\Input.Text.ErrorMessage.json">
       <Link>LinkedTestCards\Input.Text.ErrorMessage.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\samples\v1.5\Scenarios\InputFormWithLabels.json">
+      <Link>LinkedTestCards\InputFormWithLabels.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="UWPUITestApp_TemporaryKey.pfx" />
   </ItemGroup>

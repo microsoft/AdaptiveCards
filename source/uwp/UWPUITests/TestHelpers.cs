@@ -2,11 +2,13 @@ using Microsoft.Windows.Apps.Test.Foundation;
 using Microsoft.Windows.Apps.Test.Foundation.Controls;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace UWPUITestLibraryMITA
+namespace UWPUITests
 {
     public class TestHelpers
     {
@@ -94,6 +96,59 @@ namespace UWPUITestLibraryMITA
         {
             var inputTextBlock = CastTo<TextBlock>(FindElementByName(inputId + "_retrievedValue"));
             return inputTextBlock?.DocumentText;
+        }
+
+        public static void SetDateToUIElement(int year, int month, int day)
+        {
+            // Retrieve the date input and click on it
+            // TODO: Fix UWP implementation to assign name/id to the CalendarDatePicker control
+            var dateInput = FindElementByClassName("CalendarDatePicker");
+            dateInput.Click();
+
+            // Retrieve the popup which contains the calendar view
+            var calendarView = FindFlyoutByAutomationId("CalendarView");
+
+            UIObject headerButton = CastTo<Button>(FindElementByAutomationId("HeaderButton", calendarView));
+            string[] monthAndYear = headerButton.Name.Split(" ");
+
+            // The CalendarDatePicker control adds a character 8206 to each end of the month name,
+            // so we have to remove them before looking up for the month number
+            int currentMonth = MonthNameToInt(monthAndYear[0]);
+            MoveToMonth(currentMonth, month, calendarView);
+            
+            // Click on the day "16" button which in turn closes the popup
+            FindElementByName("16", calendarView).Click();
+        }
+
+        private static void MoveToMonth(int currentMonth, int expectedMonth, UIObject calendarView)
+        {
+            if (currentMonth < expectedMonth)
+            {
+                UIObject nextButton = FindElementByAutomationId("NextButton", calendarView);
+                while (currentMonth != expectedMonth)
+                {
+                    nextButton.Click();
+                    currentMonth++;
+                }
+            }
+            if (currentMonth > expectedMonth)
+            {
+                UIObject previousButton = FindElementByAutomationId("PreviousButton", calendarView);
+                while (currentMonth != expectedMonth)
+                {
+                    previousButton.Click();
+                    currentMonth--;
+                }
+            }
+
+            // Wait for the scrolling animation to end
+            Thread.Sleep(1000);
+        }
+
+        static int MonthNameToInt(string monthName)
+        {
+            monthName = monthName.Substring(1, monthName.Length - 2);
+            return DateTime.ParseExact(monthName, "MMMM", CultureInfo.CurrentCulture).Month;
         }
 
         public static T CastTo<T>(UIObject uiObject)
