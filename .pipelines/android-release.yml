@@ -9,21 +9,27 @@ pool:
   demands: java
 
 parameters:
-- name: is_prerelease
-  displayName: Is prerelease version? (Indicates non-stable version, with suffix specified below)
-  type: boolean
-  default: false
-- name: prerelease_tag
-  displayName: Prerelease suffix (e.g. 1.0.0-beta01), used only if prerelease indicated above
+- name: base_version
+  displayName: Please enter the base version (i.e. MAJOR.MINOR.PATCH)
   type: string
-  default: 'beta01'
+- name: is_prerelease
+  displayName: Is this a pre-release?
+  type: boolean
+  default: true
+- name: prerelease_suffix
+  displayName: "Please enter pre-release suffix (this is appended to the base version with a hyphen, only if pre-release checkbox selected above)"
+  type: string
+  default: beta.1
 
 variables:
 - group: AdaptiveCards-KVLink
-- name: AC_IS_PRERELEASE
-  value: ${{ parameters.is_prerelease }}
-- name: AC_PRERELEASE_TAG
-  value: ${{ parameters.prerelease_tag }}
+- name: AC_FULL_VERSION_SPECIFIED
+  value: true
+- name: AC_VERSION_STRING
+  ${{ if parameters.is_prerelease }}:
+    value: ${{ format('{0}-{1}', parameters.base_version, parameters.prerelease_suffix) }}
+  ${{ if not(parameters.is_prerelease) }}:
+    value: ${{ parameters.base_version }}
 - name: AC_APPEND_BUILD_NUMBER
   value: false
 
@@ -156,6 +162,9 @@ stages:
   - job: ReleaseValidatedArtifact
     dependsOn: ManualApproval
     steps:
+    - checkout: self
+      persistCredentials: true
+
     - task: Gradle@2
       displayName: 'Release Validated Artifact to Maven Central'
       inputs:
@@ -165,3 +174,22 @@ stages:
         publishJUnitResults: false
       env:
         AC_SONATYPE_CREDENTIAL: $(SonatypeNexusOSSRH)
+
+    - bash: |
+       git config --global user.email "adaptivecardscore@microsoft.com"
+       git config --global user.name "adaptivecards"
+       git tag -a "android/adaptivecards-android@$AC_VERSION_STRING" -m "Released adaptivecards-android v$AC_VERSION_STRING"
+       git checkout main
+       sed --in-place 's/acVersion=.*/acVersion=${{ parameters.base_version }}/' gradle.properties
+       git checkout -b "adaptivecards/post-release-$AC_VERSION_STRING"
+       git add gradle.properties
+       git commit -m "[Android] Bump to v${{ parameters.base_version }}"
+       git push --tags --set-upstream origin "adaptivecards/post-release-$AC_VERSION_STRING"
+       curl -i -u $AC_GHUSER:$AC_GHPAT -d '{ "title": "[Android] Bump to v${{ parameters.base_version }}", "head": "adaptivecards/post-release-$AC_VERSION_STRING", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
+
+      workingDirectory: source/android/adaptivecards
+      displayName: 'Update version file'
+      env:
+        AC_GHUSER: $(ghuser)
+        AC_GHPAT: $(ghpat)
+
