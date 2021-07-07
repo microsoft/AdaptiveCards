@@ -61,6 +61,8 @@ namespace UWPUITestApp
 
         private MainPage MainPage = null;
 
+        private RenderedAdaptiveCard RenderedCard = null;
+
         private CardPresenter()
         {
             this.InitializeComponent();
@@ -78,12 +80,12 @@ namespace UWPUITestApp
             string adaptiveCardContents = await ReadTestCaseContentsAsync(TestCase);
             var renderer = new AdaptiveCardRenderer();
             AdaptiveCard card = AdaptiveCard.FromJsonString(adaptiveCardContents).AdaptiveCard;
-            RenderedAdaptiveCard renderedCard = renderer.RenderAdaptiveCard(card);
+            RenderedCard = renderer.RenderAdaptiveCard(card);
 
-            renderedCard.Action += RenderedCard_Action;
+            RenderedCard.Action += RenderedCard_Action;
 
             GridContainer.Children.Clear();
-            GridContainer.Children.Add(renderedCard.FrameworkElement);
+            GridContainer.Children.Add(RenderedCard.FrameworkElement);
         }
 
         private void RenderedCard_Action(RenderedAdaptiveCard sender, AdaptiveActionEventArgs args)
