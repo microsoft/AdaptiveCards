@@ -145,6 +145,7 @@ namespace AdaptiveCards
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum ChoiceSetStyle {
                 Compact = 0,
                 Expanded,
+                Filtered
             } ChoiceSetStyle;
 
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum TextInputStyle {
