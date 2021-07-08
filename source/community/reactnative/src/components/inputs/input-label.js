@@ -45,7 +45,7 @@ export default class InputLabel extends React.Component {
 		}
 		if (inputLabel) {
 			return (
-				<View style={styles.container}>
+				<View style={styles.container} accessible={typeof label == Constants.TypeString ? true: undefined}>
 					<View>{inputLabel}</View>
 					{this.isRequired && this.getRedAsterisk()}
 				</View>
