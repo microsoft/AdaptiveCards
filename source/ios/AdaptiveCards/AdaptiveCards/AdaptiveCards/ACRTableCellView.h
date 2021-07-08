@@ -22,8 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ACRTableCellView : ACRContentStackView
 
-@property CGFloat spacing;
-
 - (instancetype)init:(ACOBaseCardElement *)baseCardElement
       cellDefinition:(ACRTableCellDefinition *)definition   
             rootView:(ACRView *)rootView

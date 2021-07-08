@@ -139,6 +139,7 @@
     <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
     <ClCompile Include="lib\AdaptiveTextBlockConfig.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputLabelConfig.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="lib\AdaptiveTable.cpp" />
     <ClCompile Include="lib\AdaptiveTableCell.cpp" />
     <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveTableRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
     <ClCompile Include="lib\AdaptiveTextStyleConfigBase.cpp" />
     <ClCompile Include="lib\AdaptiveTextStylesConfig.cpp" />
@@ -182,6 +184,7 @@
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
     <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveTableConfig.h" />
     <ClInclude Include="lib\AdaptiveTextBlockConfig.h" />
     <ClInclude Include="lib\AdaptiveHighlightColorConfig.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
@@ -224,6 +227,7 @@
     <ClInclude Include="lib\AdaptiveTable.h" />
     <ClInclude Include="lib\AdaptiveTableCell.h" />
     <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
+    <ClInclude Include="lib\AdaptiveTableRenderer.h" />
     <ClInclude Include="lib\AdaptiveTableRow.h" />
     <ClInclude Include="lib\AdaptiveTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveTextElement.h" />

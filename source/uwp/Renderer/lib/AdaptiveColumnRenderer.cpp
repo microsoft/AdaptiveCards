@@ -108,8 +108,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel.Get(), verticalContentAlignment);
 
-        // Assign vertical alignment to the top so that on fixed height cards, the content
-        // still renders at the top even if the content is shorter than the full card
+        // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
         RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         RETURN_IF_FAILED(
