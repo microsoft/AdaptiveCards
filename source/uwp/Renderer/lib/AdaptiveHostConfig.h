@@ -4,9 +4,10 @@
 
 namespace AdaptiveCards::Rendering::Uwp
 {
-    class AdaptiveHostConfig
+    class DECLSPEC_UUID("6A0EFDB7-AC1B-4C76-981E-2188297095AD") AdaptiveHostConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig>
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig,
+                                              Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveHostConfig);
 
@@ -75,6 +76,19 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_Table(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig** tableConfig) override;
         IFACEMETHODIMP put_Table(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig* tableConfig) override;
 
+        // Additional host properties that can be set by the host via AdaptiveCardRenderer APIs but are not part of the host config API/Schema.
+        HRESULT get_OverflowMaxActions(_Out_ boolean* overflowMaxActions);
+        HRESULT put_OverflowMaxActions(boolean overflowMaxActions);
+
+        HRESULT get_OverflowButtonText(_Outptr_ HSTRING* overflowButtonText);
+        HRESULT put_OverflowButtonText(_In_ HSTRING overflowButtonText);
+
+        HRESULT get_OverflowButtonAccessibilityText(_Outptr_ HSTRING* overflowButtonAccessibilityText);
+        HRESULT put_OverflowButtonAccessibilityText(_In_ HSTRING overflowButtonAccessibilityText);
+
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+
     private:
         Microsoft::WRL::Wrappers::HString m_fontFamily;
         boolean m_supportsInteractivity;
@@ -97,6 +111,10 @@ namespace AdaptiveCards::Rendering::Uwp
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlockConfig> m_textBlock;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStylesConfig> m_textStyles;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig> m_table;
+
+        bool m_overflowMaxActions;
+        HString m_overflowButtonText;
+        HString m_overflowButtonAccessibilityText;
     };
 
     class AdaptiveHostConfigStaticsImpl WrlFinal

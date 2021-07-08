@@ -7,6 +7,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     HRESULT BuildAction(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* adaptiveActionElement,
                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+                        bool overflowAction,
                         _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionControl);
 
     HRESULT GetButtonMargin(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionsConfig* actionsConfig,
@@ -25,6 +26,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     HRESULT HandleActionStyling(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* adaptiveActionElement,
                                 _In_ ABI::Windows::UI::Xaml::IFrameworkElement* buttonFrameworkElement,
+                                bool isOverflowButton,
                                 _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext);
 
     bool WarnForInlineShowCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,

@@ -16,7 +16,6 @@ namespace AdaptiveCards
         {
             runtimeclass AdaptiveHostConfigParseResult;
 
-
             [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum ActionsOrientation {
                 Vertical = 0,
                 Horizontal,
@@ -47,6 +46,10 @@ namespace AdaptiveCards
                 AdaptiveHostConfig HostConfig;
                 Windows.UI.Xaml.ResourceDictionary OverrideStyles;
                 AdaptiveFeatureRegistration FeatureRegistration;
+
+                Boolean OverflowMaxActions;
+                String OverflowButtonText;
+                String OverflowButtonAccessibilityText;
 
                 void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
                 void ResetFixedDimensions();
@@ -503,11 +506,6 @@ namespace AdaptiveCards
                 void LinkCardToParent(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard card, AdaptiveRenderArgs renderArgs);
                 IAdaptiveInputValue GetInputValue(AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement inputElement);
 
-                void AddInlineShowCard(AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSet actionSet,
-                                       AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardAction showCardAction,
-                                       Windows.UI.Xaml.UIElement showCardUIElement,
-                                       AdaptiveRenderArgs renderArgs);
-
                 void AddError(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode statusCode, String message);
                 void AddWarning(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode statusCode, String message);
             };
@@ -635,8 +633,6 @@ namespace AdaptiveCards
             {
                 AdaptiveToggleVisibilityActionRenderer();
             };
-
-
 
             [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
             {

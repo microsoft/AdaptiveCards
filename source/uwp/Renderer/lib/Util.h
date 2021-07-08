@@ -218,6 +218,15 @@ typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler
                                                                                  ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaEventArgs*>>
     MediaEventSource;
 
+struct ShowCardInfo
+{
+    UINT32 actionSetId;
+    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> buttonUIElement;
+    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> overflowUIElement;
+    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> cardUIElement;
+    UINT primaryButtonIndex;
+};
+
 // Peek interface to help get implementation types from winrt interfaces
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
 {
@@ -242,7 +251,6 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
 void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                       _In_ HSTRING urlString,
                       _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url);
-
 
 ABI::Windows::UI::Color GenerateLHoverColor(const ABI::Windows::UI::Color& originalColor);
 
