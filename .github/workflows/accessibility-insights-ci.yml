@@ -1,0 +1,20 @@
+name: accessibility-insights-ci
+on: pull_request
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Scan for accessibility issues
+              uses: microsoft/accessibility-insights-action@v2
+              with:
+                  url: http://adaptivecards-ci.azurewebsites.net/
+
+            - name: Upload report artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: accessibility-reports
+                  path: ${{ github.workspace }}/_accessibility-reports
