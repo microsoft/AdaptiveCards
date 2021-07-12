@@ -95,7 +95,7 @@ export class FactSet extends React.Component {
 		let valueConfig = this.hostConfig.factSet.value;
 		factSetJson.facts.map((element, index) => {
 			renderedElement.push(
-				<View style={[styles.textContainer]} key={`FACT-${element.title}-${index}`}>
+				<View style={[styles.textContainer]} key={`FACT-${element.title}-${index}`} accessible={true}>
 					<Label
 						text={element.title}
 						size={titleConfig.size}
