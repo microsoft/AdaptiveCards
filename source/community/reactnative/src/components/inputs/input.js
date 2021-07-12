@@ -240,7 +240,12 @@ export class Input extends React.Component {
 						<TouchableOpacity
 							disabled={inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled} //isEnabled defaults to true
 							opacity={inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.5}
-							onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}>
+							onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}
+							accessible={true}
+							accessibilityLabel={inlineAction.title}
+							accessibilityState={{disabled: inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled}}
+							accessibilityRole={'button'}
+							>
 							{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
 								<Text style={[styles.inlineActionText, opacityStyle]}>{inlineAction.title}</Text> :
 								<Image
