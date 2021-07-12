@@ -37,7 +37,7 @@ Once the new package has been tested locally and is ready to be merged:
 3. Open Visual Studio and start a Package Manager Console (Tools -> NuGet Package Manager -> Package Manager Console)
 4. Manually push any nuget packages you added by typing the following into the Package manager console:
 
-``` nuget.exe push -Source AdaptiveCards-public -ApiKey az <PackagePath\PackageName.nupkg> -SkipDuplicate```
+``` nuget.exe push -Source "AdaptiveCards-Public" -ApiKey az <PackagePath\PackageName.nupkg> -SkipDuplicate```
 
 > * You may be prompted to login before pushing any NuGet packages into the public feed
 >
