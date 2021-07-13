@@ -5,103 +5,43 @@
 
 - [AdaptiveCardTemplate](#T-AdaptiveCards-Templating-AdaptiveCardTemplate 'AdaptiveCards.Templating.AdaptiveCardTemplate')
   - [#ctor(jsonTemplate)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-#ctor-System-Object- 'AdaptiveCards.Templating.AdaptiveCardTemplate.#ctor(System.Object)')
+  - [Template](#P-AdaptiveCards-Templating-AdaptiveCardTemplate-Template 'AdaptiveCards.Templating.AdaptiveCardTemplate.Template')
   - [Expand(context,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-AdaptiveCards-Templating-EvaluationContext,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(AdaptiveCards.Templating.EvaluationContext,System.Func{System.String,System.Object})')
   - [Expand(rootData,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-System-Object,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(System.Object,System.Func{System.String,System.Object})')
-- [AdaptiveCardsTemplateParserBaseVisitor\`1](#T-AdaptiveCardsTemplateParserBaseVisitor`1 'AdaptiveCardsTemplateParserBaseVisitor`1')
-  - [VisitArray(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitArray(AdaptiveCardsTemplateParser.ArrayContext)')
-  - [VisitJson(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitJson(AdaptiveCardsTemplateParser.JsonContext)')
-  - [VisitJsonPair(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJsonPair-AdaptiveCardsTemplateParser-JsonPairContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitJsonPair(AdaptiveCardsTemplateParser.JsonPairContext)')
-  - [VisitObj(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitObj-AdaptiveCardsTemplateParser-ObjContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitObj(AdaptiveCardsTemplateParser.ObjContext)')
-  - [VisitTemplateData(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateData(AdaptiveCardsTemplateParser.TemplateDataContext)')
-  - [VisitTemplateRootData(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateRootData(AdaptiveCardsTemplateParser.TemplateRootDataContext)')
-  - [VisitTemplateStringWithRoot(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateStringWithRoot(AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
-  - [VisitTemplateWhen(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateWhen(AdaptiveCardsTemplateParser.TemplateWhenContext)')
-  - [VisitTemplatedString(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplatedString-AdaptiveCardsTemplateParser-TemplatedStringContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplatedString(AdaptiveCardsTemplateParser.TemplatedStringContext)')
-  - [VisitValueArray(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueArray-AdaptiveCardsTemplateParser-ValueArrayContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueArray(AdaptiveCardsTemplateParser.ValueArrayContext)')
-  - [VisitValueFalse(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueFalse-AdaptiveCardsTemplateParser-ValueFalseContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueFalse(AdaptiveCardsTemplateParser.ValueFalseContext)')
-  - [VisitValueNull(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNull-AdaptiveCardsTemplateParser-ValueNullContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueNull(AdaptiveCardsTemplateParser.ValueNullContext)')
-  - [VisitValueNumber(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNumber-AdaptiveCardsTemplateParser-ValueNumberContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueNumber(AdaptiveCardsTemplateParser.ValueNumberContext)')
-  - [VisitValueObject(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueObject(AdaptiveCardsTemplateParser.ValueObjectContext)')
-  - [VisitValueString(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueString-AdaptiveCardsTemplateParser-ValueStringContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueString(AdaptiveCardsTemplateParser.ValueStringContext)')
-  - [VisitValueTemplateExpression(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateExpression(AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
-  - [VisitValueTemplateString(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateString(AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
-  - [VisitValueTemplateStringWithRoot(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateStringWithRoot(AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)')
-  - [VisitValueTrue(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTrue-AdaptiveCardsTemplateParser-ValueTrueContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTrue(AdaptiveCardsTemplateParser.ValueTrueContext)')
-- [AdaptiveCardsTemplateResult](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult')
-  - [#ctor()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-#ctor 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.#ctor')
-  - [#ctor(capturedString)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-#ctor-System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.#ctor(System.String)')
-  - [#ctor(capturedString,predicate)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-#ctor-System-String,System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.#ctor(System.String,System.String)')
-  - [HasItBeenDropped](#P-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-HasItBeenDropped 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.HasItBeenDropped')
-  - [IsWhen](#P-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-IsWhen 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.IsWhen')
-  - [Predicate](#P-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-Predicate 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.Predicate')
-  - [WhenEvaluationResult](#P-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-WhenEvaluationResult 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.WhenEvaluationResult')
-  - [Append(capturedString)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-Append-System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.Append(System.String)')
-  - [Append(result)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-Append-AdaptiveCards-Templating-AdaptiveCardsTemplateResult- 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.Append(AdaptiveCards.Templating.AdaptiveCardsTemplateResult)')
-  - [ToString()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-ToString 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.ToString')
-- [AdaptiveCardsTemplateSimpleObjectMemory](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory')
-  - [#ctor(memory)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-#ctor-System-Object- 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory.#ctor(System.Object)')
-  - [SetValue(path,value)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-SetValue-System-String,System-Object- 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory.SetValue(System.String,System.Object)')
-  - [TryGetValue(path,value)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-TryGetValue-System-String,System-Object@- 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory.TryGetValue(System.String,System.Object@)')
-  - [Version()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-Version 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory.Version')
-- [AdaptiveCardsTemplateVisitor](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor')
-  - [#ctor(nullSubstitutionOption,data)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-#ctor-System-Func{System-String,System-Object},System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.#ctor(System.Func{System.String,System.Object},System.String)')
-  - [Expand(unboundString,data,isTemplatedString,options)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-Expand-System-String,AdaptiveExpressions-Memory-IMemory,System-Boolean,AdaptiveExpressions-Options- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.Expand(System.String,AdaptiveExpressions.Memory.IMemory,System.Boolean,AdaptiveExpressions.Options)')
-  - [ExpandTemplatedString(node,isExpanded)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-ExpandTemplatedString-Antlr4-Runtime-Tree-ITerminalNode,System-Boolean- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.ExpandTemplatedString(Antlr4.Runtime.Tree.ITerminalNode,System.Boolean)')
-  - [GetCurrentDataContext()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-GetCurrentDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.GetCurrentDataContext')
-  - [HasDataContext()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-HasDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.HasDataContext')
-  - [IsTrue(predicate,data)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-IsTrue-System-String,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.IsTrue(System.String,Newtonsoft.Json.Linq.JToken)')
-  - [PopDataContext()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PopDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PopDataContext')
-  - [PushDataContext(stringToParse,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-System-String,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushDataContext(System.String,Newtonsoft.Json.Linq.JToken)')
-  - [PushDataContext(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushDataContext(AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext)')
-  - [PushTemplatedDataContext(jpath)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushTemplatedDataContext-System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushTemplatedDataContext(System.String)')
-  - [VisitArray(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitArray-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitArray(AdaptiveCardsTemplateParser.ArrayContext)')
-  - [VisitChildren(node)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-  - [VisitObj(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitObj-AdaptiveCardsTemplateParser-ObjContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitObj(AdaptiveCardsTemplateParser.ObjContext)')
-  - [VisitTemplateData(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateData(AdaptiveCardsTemplateParser.TemplateDataContext)')
-  - [VisitTemplateRootData(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateRootData(AdaptiveCardsTemplateParser.TemplateRootDataContext)')
-  - [VisitTemplateStringWithRoot(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateStringWithRoot(AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
-  - [VisitTemplateWhen(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateWhen(AdaptiveCardsTemplateParser.TemplateWhenContext)')
-  - [VisitTerminal(node)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTerminal-Antlr4-Runtime-Tree-ITerminalNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode)')
-  - [VisitValueObject(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueObject(AdaptiveCardsTemplateParser.ValueObjectContext)')
-  - [VisitValueTemplateExpression(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateExpression(AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
-  - [VisitValueTemplateString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateString(AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
 - [AdaptiveTemplateException](#T-AdaptiveCards-Templating-AdaptiveTemplateException 'AdaptiveCards.Templating.AdaptiveTemplateException')
   - [#ctor()](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor')
   - [#ctor(message)](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String- 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor(System.String)')
   - [#ctor(message,innerException)](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String,System-Exception- 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor(System.String,System.Exception)')
-- [DataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext')
-  - [#ctor(jtoken,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken)')
-  - [#ctor(text,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-System-String,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(System.String,Newtonsoft.Json.Linq.JToken)')
-  - [GetDataContextAtIndex(index)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-GetDataContextAtIndex-System-Int32- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.GetDataContextAtIndex(System.Int32)')
-  - [Init(jtoken,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-Init-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.Init(Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken)')
 - [EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext')
   - [#ctor()](#M-AdaptiveCards-Templating-EvaluationContext-#ctor 'AdaptiveCards.Templating.EvaluationContext.#ctor')
   - [#ctor(rootData)](#M-AdaptiveCards-Templating-EvaluationContext-#ctor-System-Object- 'AdaptiveCards.Templating.EvaluationContext.#ctor(System.Object)')
+  - [Data](#P-AdaptiveCards-Templating-EvaluationContext-Data 'AdaptiveCards.Templating.EvaluationContext.Data')
+  - [Index](#P-AdaptiveCards-Templating-EvaluationContext-Index 'AdaptiveCards.Templating.EvaluationContext.Index')
+  - [NullSubstitution](#P-AdaptiveCards-Templating-EvaluationContext-NullSubstitution 'AdaptiveCards.Templating.EvaluationContext.NullSubstitution')
   - [Root](#P-AdaptiveCards-Templating-EvaluationContext-Root 'AdaptiveCards.Templating.EvaluationContext.Root')
-- [EvaluationResult](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult')
-  - [EvaluatedToFalse](#F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-EvaluatedToFalse 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse')
-  - [EvaluatedToTrue](#F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-EvaluatedToTrue 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToTrue')
-  - [NotEvaluated](#F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-NotEvaluated 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult.NotEvaluated')
-- [IAdaptiveCardsTemplateParserVisitor\`1](#T-IAdaptiveCardsTemplateParserVisitor`1 'IAdaptiveCardsTemplateParserVisitor`1')
-  - [VisitArray(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitArray(AdaptiveCardsTemplateParser.ArrayContext)')
-  - [VisitJson(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitJson(AdaptiveCardsTemplateParser.JsonContext)')
-  - [VisitJsonPair(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitJsonPair-AdaptiveCardsTemplateParser-JsonPairContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitJsonPair(AdaptiveCardsTemplateParser.JsonPairContext)')
-  - [VisitObj(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitObj-AdaptiveCardsTemplateParser-ObjContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitObj(AdaptiveCardsTemplateParser.ObjContext)')
-  - [VisitTemplateData(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateData(AdaptiveCardsTemplateParser.TemplateDataContext)')
-  - [VisitTemplateRootData(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateRootData(AdaptiveCardsTemplateParser.TemplateRootDataContext)')
-  - [VisitTemplateStringWithRoot(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateStringWithRoot(AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
-  - [VisitTemplateWhen(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateWhen(AdaptiveCardsTemplateParser.TemplateWhenContext)')
-  - [VisitTemplatedString(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplatedString-AdaptiveCardsTemplateParser-TemplatedStringContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplatedString(AdaptiveCardsTemplateParser.TemplatedStringContext)')
-  - [VisitValueArray(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueArray-AdaptiveCardsTemplateParser-ValueArrayContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueArray(AdaptiveCardsTemplateParser.ValueArrayContext)')
-  - [VisitValueFalse(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueFalse-AdaptiveCardsTemplateParser-ValueFalseContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueFalse(AdaptiveCardsTemplateParser.ValueFalseContext)')
-  - [VisitValueNull(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNull-AdaptiveCardsTemplateParser-ValueNullContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueNull(AdaptiveCardsTemplateParser.ValueNullContext)')
-  - [VisitValueNumber(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNumber-AdaptiveCardsTemplateParser-ValueNumberContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueNumber(AdaptiveCardsTemplateParser.ValueNumberContext)')
-  - [VisitValueObject(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueObject(AdaptiveCardsTemplateParser.ValueObjectContext)')
-  - [VisitValueString(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueString-AdaptiveCardsTemplateParser-ValueStringContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueString(AdaptiveCardsTemplateParser.ValueStringContext)')
-  - [VisitValueTemplateExpression(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateExpression(AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
-  - [VisitValueTemplateString(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateString(AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
-  - [VisitValueTemplateStringWithRoot(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateStringWithRoot(AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)')
-  - [VisitValueTrue(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTrue-AdaptiveCardsTemplateParser-ValueTrueContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueTrue(AdaptiveCardsTemplateParser.ValueTrueContext)')
+  - [SetValue()](#M-AdaptiveCards-Templating-EvaluationContext-SetValue-System-String,System-Object- 'AdaptiveCards.Templating.EvaluationContext.SetValue(System.String,System.Object)')
+  - [SmartAssign(value)](#M-AdaptiveCards-Templating-EvaluationContext-SmartAssign-Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.EvaluationContext.SmartAssign(Newtonsoft.Json.Linq.JToken)')
+  - [TryGetValue()](#M-AdaptiveCards-Templating-EvaluationContext-TryGetValue-System-String,System-Object@- 'AdaptiveCards.Templating.EvaluationContext.TryGetValue(System.String,System.Object@)')
+  - [Version()](#M-AdaptiveCards-Templating-EvaluationContext-Version 'AdaptiveCards.Templating.EvaluationContext.Version')
+- [ObjectPath](#T-AdaptiveCards-Templating-ObjectPath 'AdaptiveCards.Templating.ObjectPath')
+  - [Assign(startObject,overlayObject,type)](#M-AdaptiveCards-Templating-ObjectPath-Assign-System-Object,System-Object,System-Type- 'AdaptiveCards.Templating.ObjectPath.Assign(System.Object,System.Object,System.Type)')
+  - [Assign\`\`1(startObject,overlayObject)](#M-AdaptiveCards-Templating-ObjectPath-Assign``1-System-Object,System-Object- 'AdaptiveCards.Templating.ObjectPath.Assign``1(System.Object,System.Object)')
+  - [Clone\`\`1(obj)](#M-AdaptiveCards-Templating-ObjectPath-Clone``1-``0- 'AdaptiveCards.Templating.ObjectPath.Clone``1(``0)')
+  - [ContainsProperty(obj,name)](#M-AdaptiveCards-Templating-ObjectPath-ContainsProperty-System-Object,System-String- 'AdaptiveCards.Templating.ObjectPath.ContainsProperty(System.Object,System.String)')
+  - [ForEachProperty(obj,action)](#M-AdaptiveCards-Templating-ObjectPath-ForEachProperty-System-Object,System-Action{System-String,System-Object}- 'AdaptiveCards.Templating.ObjectPath.ForEachProperty(System.Object,System.Action{System.String,System.Object})')
+  - [GetNormalizedValue(value,json)](#M-AdaptiveCards-Templating-ObjectPath-GetNormalizedValue-System-Object,System-Boolean- 'AdaptiveCards.Templating.ObjectPath.GetNormalizedValue(System.Object,System.Boolean)')
+  - [GetObjectProperty(obj,property)](#M-AdaptiveCards-Templating-ObjectPath-GetObjectProperty-System-Object,System-String- 'AdaptiveCards.Templating.ObjectPath.GetObjectProperty(System.Object,System.String)')
+  - [GetPathValue\`\`1(obj,path)](#M-AdaptiveCards-Templating-ObjectPath-GetPathValue``1-System-Object,System-String- 'AdaptiveCards.Templating.ObjectPath.GetPathValue``1(System.Object,System.String)')
+  - [GetPathValue\`\`1(obj,path,defaultValue)](#M-AdaptiveCards-Templating-ObjectPath-GetPathValue``1-System-Object,System-String,``0- 'AdaptiveCards.Templating.ObjectPath.GetPathValue``1(System.Object,System.String,``0)')
+  - [GetProperties(obj)](#M-AdaptiveCards-Templating-ObjectPath-GetProperties-System-Object- 'AdaptiveCards.Templating.ObjectPath.GetProperties(System.Object)')
+  - [HasValue(obj,path)](#M-AdaptiveCards-Templating-ObjectPath-HasValue-System-Object,System-String- 'AdaptiveCards.Templating.ObjectPath.HasValue(System.Object,System.String)')
+  - [MapValueTo\`\`1(val)](#M-AdaptiveCards-Templating-ObjectPath-MapValueTo``1-System-Object- 'AdaptiveCards.Templating.ObjectPath.MapValueTo``1(System.Object)')
+  - [Merge\`\`1(startObject,overlayObject)](#M-AdaptiveCards-Templating-ObjectPath-Merge``1-``0,``0- 'AdaptiveCards.Templating.ObjectPath.Merge``1(``0,``0)')
+  - [RemovePathValue(obj,path)](#M-AdaptiveCards-Templating-ObjectPath-RemovePathValue-System-Object,System-String- 'AdaptiveCards.Templating.ObjectPath.RemovePathValue(System.Object,System.String)')
+  - [SetObjectSegment(obj,segment,value,json)](#M-AdaptiveCards-Templating-ObjectPath-SetObjectSegment-System-Object,System-Object,System-Object,System-Boolean- 'AdaptiveCards.Templating.ObjectPath.SetObjectSegment(System.Object,System.Object,System.Object,System.Boolean)')
+  - [SetPathValue(obj,path,value,json)](#M-AdaptiveCards-Templating-ObjectPath-SetPathValue-System-Object,System-String,System-Object,System-Boolean- 'AdaptiveCards.Templating.ObjectPath.SetPathValue(System.Object,System.String,System.Object,System.Boolean)')
+  - [TryGetPathValue\`\`1(obj,path,value)](#M-AdaptiveCards-Templating-ObjectPath-TryGetPathValue``1-System-Object,System-String,``0@- 'AdaptiveCards.Templating.ObjectPath.TryGetPathValue``1(System.Object,System.String,``0@)')
+  - [TryResolvePath(obj,propertyPath,segments,eval)](#M-AdaptiveCards-Templating-ObjectPath-TryResolvePath-System-Object,System-String,System-Collections-Generic-List{System-Object}@,System-Boolean- 'AdaptiveCards.Templating.ObjectPath.TryResolvePath(System.Object,System.String,System.Collections.Generic.List{System.Object}@,System.Boolean)')
 
 <a name='T-AdaptiveCards-Templating-AdaptiveCardTemplate'></a>
 ## AdaptiveCardTemplate `type`
@@ -126,7 +66,7 @@ Creates an instance of AdaptiveCardTemplate
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| jsonTemplate | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | string in json or seriazable object |
+| jsonTemplate | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | json string or seriazable object |
 
 ##### Example
 
@@ -155,6 +95,13 @@ Data is bound by calling `Expand` on the object
 The intance can be rebound with different data by calling `Expand`
 
 [Expand](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-AdaptiveCards-Templating-EvaluationContext,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(AdaptiveCards.Templating.EvaluationContext,System.Func{System.String,System.Object})')
+
+<a name='P-AdaptiveCards-Templating-AdaptiveCardTemplate-Template'></a>
+### Template `property`
+
+##### Summary
+
+Gets the Parsed Template.
 
 <a name='M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-AdaptiveCards-Templating-EvaluationContext,System-Func{System-String,System-Object}-'></a>
 ### Expand(context,nullSubstitutionOption) `method`
@@ -239,898 +186,6 @@ Default behavior is leaving templated string unchanged
 
 - [AdaptiveCards.Templating.EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext')
 
-<a name='T-AdaptiveCardsTemplateParserBaseVisitor`1'></a>
-## AdaptiveCardsTemplateParserBaseVisitor\`1 `type`
-
-##### Namespace
-
-
-
-##### Summary
-
-This class provides an empty implementation of [IAdaptiveCardsTemplateParserVisitor\`1](#T-IAdaptiveCardsTemplateParserVisitor`1 'IAdaptiveCardsTemplateParserVisitor`1'),
-which can be extended to create a visitor which only needs to handle a subset
-of the available methods.
-
-##### Generic Types
-
-| Name | Description |
-| ---- | ----------- |
-| Result | The return type of the visit operation. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext-'></a>
-### VisitArray(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [array](#M-AdaptiveCardsTemplateParser-array 'AdaptiveCardsTemplateParser.array').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCardsTemplateParser.ArrayContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext-'></a>
-### VisitJson(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [json](#M-AdaptiveCardsTemplateParser-json 'AdaptiveCardsTemplateParser.json').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.JsonContext](#T-AdaptiveCardsTemplateParser-JsonContext 'AdaptiveCardsTemplateParser.JsonContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJsonPair-AdaptiveCardsTemplateParser-JsonPairContext-'></a>
-### VisitJsonPair(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `jsonPair`
-labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.JsonPairContext](#T-AdaptiveCardsTemplateParser-JsonPairContext 'AdaptiveCardsTemplateParser.JsonPairContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitObj-AdaptiveCardsTemplateParser-ObjContext-'></a>
-### VisitObj(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [obj](#M-AdaptiveCardsTemplateParser-obj 'AdaptiveCardsTemplateParser.obj').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCardsTemplateParser.ObjContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
-### VisitTemplateData(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `templateData`
-labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCardsTemplateParser.TemplateDataContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
-### VisitTemplateRootData(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `templateRootData`
-labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCardsTemplateParser.TemplateRootDataContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
-### VisitTemplateStringWithRoot(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `templateStringWithRoot`
-labeled alternative in [templateRoot](#M-AdaptiveCardsTemplateParser-templateRoot 'AdaptiveCardsTemplateParser.templateRoot').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCardsTemplateParser.TemplateStringWithRootContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
-### VisitTemplateWhen(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `templateWhen`
-labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCardsTemplateParser.TemplateWhenContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplatedString-AdaptiveCardsTemplateParser-TemplatedStringContext-'></a>
-### VisitTemplatedString(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `templatedString`
-labeled alternative in [templateString](#M-AdaptiveCardsTemplateParser-templateString 'AdaptiveCardsTemplateParser.templateString').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplatedStringContext](#T-AdaptiveCardsTemplateParser-TemplatedStringContext 'AdaptiveCardsTemplateParser.TemplatedStringContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueArray-AdaptiveCardsTemplateParser-ValueArrayContext-'></a>
-### VisitValueArray(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueArray`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueArrayContext](#T-AdaptiveCardsTemplateParser-ValueArrayContext 'AdaptiveCardsTemplateParser.ValueArrayContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueFalse-AdaptiveCardsTemplateParser-ValueFalseContext-'></a>
-### VisitValueFalse(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueFalse`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueFalseContext](#T-AdaptiveCardsTemplateParser-ValueFalseContext 'AdaptiveCardsTemplateParser.ValueFalseContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNull-AdaptiveCardsTemplateParser-ValueNullContext-'></a>
-### VisitValueNull(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueNull`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueNullContext](#T-AdaptiveCardsTemplateParser-ValueNullContext 'AdaptiveCardsTemplateParser.ValueNullContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNumber-AdaptiveCardsTemplateParser-ValueNumberContext-'></a>
-### VisitValueNumber(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueNumber`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueNumberContext](#T-AdaptiveCardsTemplateParser-ValueNumberContext 'AdaptiveCardsTemplateParser.ValueNumberContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
-### VisitValueObject(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueObject`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCardsTemplateParser.ValueObjectContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueString-AdaptiveCardsTemplateParser-ValueStringContext-'></a>
-### VisitValueString(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueString`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueStringContext](#T-AdaptiveCardsTemplateParser-ValueStringContext 'AdaptiveCardsTemplateParser.ValueStringContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
-### VisitValueTemplateExpression(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueTemplateExpression`
-labeled alternative in [templateExpression](#M-AdaptiveCardsTemplateParser-templateExpression 'AdaptiveCardsTemplateParser.templateExpression').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
-### VisitValueTemplateString(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueTemplateString`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCardsTemplateParser.ValueTemplateStringContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext-'></a>
-### VisitValueTemplateStringWithRoot(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueTemplateStringWithRoot`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext 'AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext') | The parse tree. |
-
-<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTrue-AdaptiveCardsTemplateParser-ValueTrueContext-'></a>
-### VisitValueTrue(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueTrue`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTrueContext](#T-AdaptiveCardsTemplateParser-ValueTrueContext 'AdaptiveCardsTemplateParser.ValueTrueContext') | The parse tree. |
-
-<a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult'></a>
-## AdaptiveCardsTemplateResult `type`
-
-##### Namespace
-
-AdaptiveCards.Templating
-
-##### Summary
-
-Used by AdaptiveCardsTemplateVisitorClass to return result from its visitor methods
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-#ctor'></a>
-### #ctor() `constructor`
-
-##### Summary
-
-constructor for `AdaptiveCardsTemplateResult` class
-
-##### Parameters
-
-This constructor has no parameters.
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-#ctor-System-String-'></a>
-### #ctor(capturedString) `constructor`
-
-##### Summary
-
-constructs a result instance with `capturedString`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| capturedString | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-#ctor-System-String,System-String-'></a>
-### #ctor(capturedString,predicate) `constructor`
-
-##### Summary
-
-construct a result instance for $when expression
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| capturedString | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | result string after parsing $when expression |
-| predicate | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | predicate of $when |
-
-<a name='P-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-HasItBeenDropped'></a>
-### HasItBeenDropped `property`
-
-##### Summary
-
-Indicates that parsing Context has been dropped
-
-<a name='P-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-IsWhen'></a>
-### IsWhen `property`
-
-##### Summary
-
-Indicates that this instance captures the result of $when
-
-<a name='P-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-Predicate'></a>
-### Predicate `property`
-
-##### Summary
-
-Predicate of $when expression
-
-<a name='P-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-WhenEvaluationResult'></a>
-### WhenEvaluationResult `property`
-
-##### Summary
-
-Indicates the result of evaluation result of $when expression
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-Append-System-String-'></a>
-### Append(capturedString) `method`
-
-##### Summary
-
-Appends `capturedString` to its result
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| capturedString | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-Append-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-'></a>
-### Append(result) `method`
-
-##### Summary
-
-Appends another `result` instance to its result
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| result | [AdaptiveCards.Templating.AdaptiveCardsTemplateResult](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-ToString'></a>
-### ToString() `method`
-
-##### Summary
-
-returns string representation
-
-##### Returns
-
-`string`
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory'></a>
-## AdaptiveCardsTemplateSimpleObjectMemory `type`
-
-##### Namespace
-
-AdaptiveCards.Templating
-
-##### Summary
-
-Implements AEL's IMemory interface
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-#ctor-System-Object-'></a>
-### #ctor(memory) `constructor`
-
-##### Summary
-
-Simple implementation of AEL.Memory.IMemory
-It serves as an entry points to additional customazation and optimazation
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| memory | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-SetValue-System-String,System-Object-'></a>
-### SetValue(path,value) `method`
-
-##### Summary
-
-Set value to a given path
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Memory path |
-| value | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Value to set |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-TryGetValue-System-String,System-Object@-'></a>
-### TryGetValue(path,value) `method`
-
-##### Summary
-
-Try get value from a given path.
-Expansion of the template is done in the context of serialized json payload,
-However, the memory that bounds to the template is in deserialized form.
-This is normally not an issue for types other than string
-This override serializes the value if it's string
-
-##### Returns
-
-True if the memory contains an element with the specified key; otherwise, false
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Given path |
-| value | [System.Object@](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object@ 'System.Object@') | Resolved value |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-Version'></a>
-### Version() `method`
-
-##### Summary
-
-
-
-##### Returns
-
-
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor'></a>
-## AdaptiveCardsTemplateVisitor `type`
-
-##### Namespace
-
-AdaptiveCards.Templating
-
-##### Summary
-
-an intance of this class is used in visiting a parse tree that's been generated by antlr4 parser
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-#ctor-System-Func{System-String,System-Object},System-String-'></a>
-### #ctor(nullSubstitutionOption,data) `constructor`
-
-##### Summary
-
-a constructor for AdaptiveCardsTemplateVisitor
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| nullSubstitutionOption | [System.Func{System.String,System.Object}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{System.String,System.Object}') | it will called upon when AEL finds no suitable functions registered in given AEL expression during evaluation the expression |
-| data | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | json data in string which will be set as a root data context |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-Expand-System-String,AdaptiveExpressions-Memory-IMemory,System-Boolean,AdaptiveExpressions-Options-'></a>
-### Expand(unboundString,data,isTemplatedString,options) `method`
-
-##### Summary
-
-Expands template expression using Adaptive Expression Library (AEL)
-
-##### Returns
-
-`string`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| unboundString | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| data | [AdaptiveExpressions.Memory.IMemory](#T-AdaptiveExpressions-Memory-IMemory 'AdaptiveExpressions.Memory.IMemory') |  |
-| isTemplatedString | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') |  |
-| options | [AdaptiveExpressions.Options](#T-AdaptiveExpressions-Options 'AdaptiveExpressions.Options') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-ExpandTemplatedString-Antlr4-Runtime-Tree-ITerminalNode,System-Boolean-'></a>
-### ExpandTemplatedString(node,isExpanded) `method`
-
-##### Summary
-
-Visitor method for `templatdString` label in `AdaptiveCardsTemplateParser.g4`
-
-##### Returns
-
-`AdaptiveCardsTemplateResult`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| node | [Antlr4.Runtime.Tree.ITerminalNode](#T-Antlr4-Runtime-Tree-ITerminalNode 'Antlr4.Runtime.Tree.ITerminalNode') |  |
-| isExpanded | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-GetCurrentDataContext'></a>
-### GetCurrentDataContext() `method`
-
-##### Summary
-
-returns current data context
-
-##### Returns
-
-[DataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext')
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-HasDataContext'></a>
-### HasDataContext() `method`
-
-##### Summary
-
-Checks if there is a data context
-
-##### Returns
-
-
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-IsTrue-System-String,Newtonsoft-Json-Linq-JToken-'></a>
-### IsTrue(predicate,data) `method`
-
-##### Summary
-
-Evaluates a predicate
-
-##### Returns
-
-`true` if predicate is evaluated to `true`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| predicate | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| data | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PopDataContext'></a>
-### PopDataContext() `method`
-
-##### Summary
-
-Pops a data context
-
-##### Parameters
-
-This method has no parameters.
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-System-String,Newtonsoft-Json-Linq-JToken-'></a>
-### PushDataContext(stringToParse,rootDataContext) `method`
-
-##### Summary
-
-creates [JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') object based on stringToParse, and pushes the object onto a stack
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| stringToParse | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') |  |
-| rootDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | current root data context |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-'></a>
-### PushDataContext(context) `method`
-
-##### Summary
-
-push a `DataContext` onto a stack
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext') | `context` to push |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushTemplatedDataContext-System-String-'></a>
-### PushTemplatedDataContext(jpath) `method`
-
-##### Summary
-
-Given a `jpath`, create a new [DataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext') based on a current [DataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext')
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| jpath | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | a json selection path |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitArray-AdaptiveCardsTemplateParser-ArrayContext-'></a>
-### VisitArray(context) `method`
-
-##### Summary
-
-Visit method for `array` grammar in `AdaptiveCardsTemplateParser.g4`
-
-##### Returns
-
-AdaptiveCardsTemplateResult
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCardsTemplateParser.ArrayContext') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitChildren-Antlr4-Runtime-Tree-IRuleNode-'></a>
-### VisitChildren(node) `method`
-
-##### Summary
-
-Visits each children in IRuleNode
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| node | [Antlr4.Runtime.Tree.IRuleNode](#T-Antlr4-Runtime-Tree-IRuleNode 'Antlr4.Runtime.Tree.IRuleNode') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitObj-AdaptiveCardsTemplateParser-ObjContext-'></a>
-### VisitObj(context) `method`
-
-##### Summary
-
-Visitor method for `obj` grammar rule `AdaptiveCardsTemplateParser.g4`
-
-##### Returns
-
-`AdaptiveCardsTemplateResult`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCardsTemplateParser.ObjContext') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
-### VisitTemplateData(context) `method`
-
-##### Summary
-
-antlr runtime wil call this method when parse tree's context is [TemplateDataContext](#T-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCardsTemplateParser.TemplateDataContext')
-
-It is used in parsing a pair that has $data as key
-
-It creates new data context, and set it as current memory scope
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCardsTemplateParser.TemplateDataContext') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
-### VisitTemplateRootData(context) `method`
-
-##### Summary
-
-Visitor method for `templateRootData` grammar rule in `AdaptiveCardsTemplateParser.g4`
-
-##### Returns
-
-[AdaptiveCardsTemplateResult](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult')
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCardsTemplateParser.TemplateRootDataContext') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
-### VisitTemplateStringWithRoot(context) `method`
-
-##### Summary
-
-Visitor method for `templateRoot` grammar in `AdaptiveCardsTemplateParser.g4`
-
-##### Returns
-
-[AdaptiveCardsTemplateResult](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult')
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCardsTemplateParser.TemplateStringWithRootContext') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
-### VisitTemplateWhen(context) `method`
-
-##### Summary
-
-return the parsed result of $when from pair context
-
-##### Returns
-
-
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCardsTemplateParser.TemplateWhenContext') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTerminal-Antlr4-Runtime-Tree-ITerminalNode-'></a>
-### VisitTerminal(node) `method`
-
-##### Summary
-
-Visitor method for `ITernminalNode`
-
-collects token as string and expand template if needed
-
-##### Returns
-
-`AdaptiveCardsTemplateResult`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| node | [Antlr4.Runtime.Tree.ITerminalNode](#T-Antlr4-Runtime-Tree-ITerminalNode 'Antlr4.Runtime.Tree.ITerminalNode') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
-### VisitValueObject(context) `method`
-
-##### Summary
-
-Visitor method for `valueObject` grammar rule `AdaptiveCardsTemplateParser.g4`
-
-##### Returns
-
-`AdaptiveCardsTemplateResult`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCardsTemplateParser.ValueObjectContext') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
-### VisitValueTemplateExpression(context) `method`
-
-##### Summary
-
-Visitor method for `valueTemplateExpresssion` grammar rule `AdaptiveCardsTemplateParser.g4`
-
-##### Returns
-
-AdaptiveCardsTemplateResult
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') |  |
-
-##### Remarks
-
-parsed string has a form of "$when" : ${}
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
-### VisitValueTemplateString(context) `method`
-
-##### Summary
-
-Visitor method for `valueTemplateString` grammar rule `AdaptiveCardsTemplateParser.g4`
-
-##### Returns
-
-`AdaptiveCardsTemplateResult`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCardsTemplateParser.ValueTemplateStringContext') |  |
-
 <a name='T-AdaptiveCards-Templating-AdaptiveTemplateException'></a>
 ## AdaptiveTemplateException `type`
 
@@ -1180,82 +235,6 @@ Constructor that takes message and inner exception to pass
 | message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The error message that explains the reason for the exception |
 | innerException | [System.Exception](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Exception 'System.Exception') | The exception that is the cause of the current exception |
 
-<a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext'></a>
-## DataContext `type`
-
-##### Namespace
-
-AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor
-
-##### Summary
-
-maintains data context
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken-'></a>
-### #ctor(jtoken,rootDataContext) `constructor`
-
-##### Summary
-
-constructs a data context of which current data is jtoken
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| jtoken | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | new data to kept as data context |
-| rootDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | root data context |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-System-String,Newtonsoft-Json-Linq-JToken-'></a>
-### #ctor(text,rootDataContext) `constructor`
-
-##### Summary
-
-overload contructor that takes `text` which is `string`
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| text | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | json in string |
-| rootDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | a root data context |
-
-##### Exceptions
-
-| Name | Description |
-| ---- | ----------- |
-| [Newtonsoft.Json.JsonException](#T-Newtonsoft-Json-JsonException 'Newtonsoft.Json.JsonException') | `JToken.Parse(text)` can throw JsonException if `text` is invalid json |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-GetDataContextAtIndex-System-Int32-'></a>
-### GetDataContextAtIndex(index) `method`
-
-##### Summary
-
-retrieve a [JObject](#T-Newtonsoft-Json-Linq-JObject 'Newtonsoft.Json.Linq.JObject') from this DataContext instance if [JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') is a [JArray](#T-Newtonsoft-Json-Linq-JArray 'Newtonsoft.Json.Linq.JArray') at `index`
-
-##### Returns
-
-[JObject](#T-Newtonsoft-Json-Linq-JObject 'Newtonsoft.Json.Linq.JObject') at`index` of a [JArray](#T-Newtonsoft-Json-Linq-JArray 'Newtonsoft.Json.Linq.JArray')
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| index | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') |  |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-Init-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken-'></a>
-### Init(jtoken,rootDataContext) `method`
-
-##### Summary
-
-Initializer method that takes jtoken and root data context to initialize a data context object
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| jtoken | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | current data context |
-| rootDataContext | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | root data context |
-
 <a name='T-AdaptiveCards-Templating-EvaluationContext'></a>
 ## EvaluationContext `type`
 
@@ -1291,6 +270,43 @@ constructor for `EvaluationContext` that takes one argument that will be used fo
 | ---- | ---- | ----------- |
 | rootData | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') |  |
 
+<a name='P-AdaptiveCards-Templating-EvaluationContext-Data'></a>
+### Data `property`
+
+##### Summary
+
+Provides Data Context
+
+##### Example
+
+```
+ 
+ string jsonData = @"{
+     ""person"": {
+         ""firstName"": ""Hello"",
+         ""lastName"": ""World""
+ }";
+ var context = new EvaluationContext()
+ {
+     Data = jsonData
+ };
+ 
+```
+
+<a name='P-AdaptiveCards-Templating-EvaluationContext-Index'></a>
+### Index `property`
+
+##### Summary
+
+gets or sets current iteration index.
+
+<a name='P-AdaptiveCards-Templating-EvaluationContext-NullSubstitution'></a>
+### NullSubstitution `property`
+
+##### Summary
+
+Null substitution
+
 <a name='P-AdaptiveCards-Templating-EvaluationContext-Root'></a>
 ### Root `property`
 
@@ -1314,315 +330,424 @@ Provides Root Data Context
  
 ```
 
-<a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult'></a>
-## EvaluationResult `type`
+<a name='M-AdaptiveCards-Templating-EvaluationContext-SetValue-System-String,System-Object-'></a>
+### SetValue() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-Templating-EvaluationContext-SmartAssign-Newtonsoft-Json-Linq-JToken-'></a>
+### SmartAssign(value) `method`
+
+##### Summary
+
+SmartAssign text values
+
+##### Returns
+
+jtoken.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| value | [Newtonsoft.Json.Linq.JToken](#T-Newtonsoft-Json-Linq-JToken 'Newtonsoft.Json.Linq.JToken') | jtoken to evaluate. |
+
+##### Remarks
+
+If a value is a string this will attempt to deserialize as JSON, other wise it will call back to text
+
+<a name='M-AdaptiveCards-Templating-EvaluationContext-TryGetValue-System-String,System-Object@-'></a>
+### TryGetValue() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='M-AdaptiveCards-Templating-EvaluationContext-Version'></a>
+### Version() `method`
+
+##### Summary
+
+*Inherit from parent.*
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-AdaptiveCards-Templating-ObjectPath'></a>
+## ObjectPath `type`
 
 ##### Namespace
 
-AdaptiveCards.Templating.AdaptiveCardsTemplateResult
+AdaptiveCards.Templating
 
 ##### Summary
 
-Indicates evaluation result of $when expression
+Helper methods for working with dynamic json objects.
 
-<a name='F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-EvaluatedToFalse'></a>
-### EvaluatedToFalse `constants`
-
-##### Summary
-
-Expression evaluated false
-
-<a name='F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-EvaluatedToTrue'></a>
-### EvaluatedToTrue `constants`
+<a name='M-AdaptiveCards-Templating-ObjectPath-Assign-System-Object,System-Object,System-Type-'></a>
+### Assign(startObject,overlayObject,type) `method`
 
 ##### Summary
 
-Expression evaluated true
+Equivalent to javascripts ObjectPath.Assign, creates a new object from startObject overlaying any non-null values from the overlay object.
 
-<a name='F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-NotEvaluated'></a>
-### NotEvaluated `constants`
+##### Returns
+
+merged object.
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| startObject | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | intial object of any type. |
+| overlayObject | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | overlay object of any type. |
+| type | [System.Type](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Type 'System.Type') | type to output. |
+
+<a name='M-AdaptiveCards-Templating-ObjectPath-Assign``1-System-Object,System-Object-'></a>
+### Assign\`\`1(startObject,overlayObject) `method`
 
 ##### Summary
 
-Expression has not been evaluated
+Equivalent to javascripts ObjectPath.Assign, creates a new object from startObject overlaying any non-null values from the overlay object.
 
-<a name='T-IAdaptiveCardsTemplateParserVisitor`1'></a>
-## IAdaptiveCardsTemplateParserVisitor\`1 `type`
+##### Returns
 
-##### Namespace
+merged object.
 
+##### Parameters
 
-
-##### Summary
-
-This interface defines a complete generic visitor for a parse tree produced
-by [AdaptiveCardsTemplateParser](#T-AdaptiveCardsTemplateParser 'AdaptiveCardsTemplateParser').
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| startObject | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | intial object of any type. |
+| overlayObject | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | overlay object of any type. |
 
 ##### Generic Types
 
 | Name | Description |
 | ---- | ----------- |
-| Result | The return type of the visit operation. |
+| T | The target type. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext-'></a>
-### VisitArray(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-Clone``1-``0-'></a>
+### Clone\`\`1(obj) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [array](#M-AdaptiveCardsTemplateParser-array 'AdaptiveCardsTemplateParser.array').
+Clone an object.
+
+##### Returns
+
+The object as Json.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCardsTemplateParser.ArrayContext') | The parse tree. |
+| obj | [\`\`0](#T-``0 '``0') | The object. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext-'></a>
-### VisitJson(context) `method`
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | Type to clone. |
+
+<a name='M-AdaptiveCards-Templating-ObjectPath-ContainsProperty-System-Object,System-String-'></a>
+### ContainsProperty(obj,name) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [json](#M-AdaptiveCardsTemplateParser-json 'AdaptiveCardsTemplateParser.json').
+Detects if property exists on object.
+
+##### Returns
+
+true if found.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.JsonContext](#T-AdaptiveCardsTemplateParser-JsonContext 'AdaptiveCardsTemplateParser.JsonContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | object. |
+| name | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | name of the property. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitJsonPair-AdaptiveCardsTemplateParser-JsonPairContext-'></a>
-### VisitJsonPair(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-ForEachProperty-System-Object,System-Action{System-String,System-Object}-'></a>
+### ForEachProperty(obj,action) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `jsonPair`
-labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
+Apply an action to all properties in an object.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.JsonPairContext](#T-AdaptiveCardsTemplateParser-JsonPairContext 'AdaptiveCardsTemplateParser.JsonPairContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to map against. |
+| action | [System.Action{System.String,System.Object}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Action 'System.Action{System.String,System.Object}') | Action to take. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitObj-AdaptiveCardsTemplateParser-ObjContext-'></a>
-### VisitObj(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-GetNormalizedValue-System-Object,System-Boolean-'></a>
+### GetNormalizedValue(value,json) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [obj](#M-AdaptiveCardsTemplateParser-obj 'AdaptiveCardsTemplateParser.obj').
+Normalize value as json objects.
+
+##### Returns
+
+normalized value.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCardsTemplateParser.ObjContext') | The parse tree. |
+| value | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | value to normalize. |
+| json | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | normalize as json objects. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
-### VisitTemplateData(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-GetObjectProperty-System-Object,System-String-'></a>
+### GetObjectProperty(obj,property) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `templateData`
-labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
+Get a property or array element from an object.
+
+##### Returns
+
+the value or null if not found.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCardsTemplateParser.TemplateDataContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | object. |
+| property | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | property or array segment to get relative to the object. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
-### VisitTemplateRootData(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-GetPathValue``1-System-Object,System-String-'></a>
+### GetPathValue\`\`1(obj,path) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `templateRootData`
-labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
+Get the value for a path relative to an object.
+
+##### Returns
+
+value or default(T).
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCardsTemplateParser.TemplateRootDataContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | object to start with. |
+| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | path to evaluate. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
-### VisitTemplateStringWithRoot(context) `method`
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | type to return. |
+
+<a name='M-AdaptiveCards-Templating-ObjectPath-GetPathValue``1-System-Object,System-String,``0-'></a>
+### GetPathValue\`\`1(obj,path,defaultValue) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `templateStringWithRoot`
-labeled alternative in [templateRoot](#M-AdaptiveCardsTemplateParser-templateRoot 'AdaptiveCardsTemplateParser.templateRoot').
+Get the value for a path relative to an object.
+
+##### Returns
+
+value or default(T).
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCardsTemplateParser.TemplateStringWithRootContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | object to start with. |
+| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | path to evaluate. |
+| defaultValue | [\`\`0](#T-``0 '``0') | default value to use if any part of the path is missing. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
-### VisitTemplateWhen(context) `method`
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | type to return. |
+
+<a name='M-AdaptiveCards-Templating-ObjectPath-GetProperties-System-Object-'></a>
+### GetProperties(obj) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `templateWhen`
-labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
+Get all properties in an object.
+
+##### Returns
+
+enumeration of property names on the object if it is not a value type.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCardsTemplateParser.TemplateWhenContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to enumerate property names. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplatedString-AdaptiveCardsTemplateParser-TemplatedStringContext-'></a>
-### VisitTemplatedString(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-HasValue-System-Object,System-String-'></a>
+### HasValue(obj,path) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `templatedString`
-labeled alternative in [templateString](#M-AdaptiveCardsTemplateParser-templateString 'AdaptiveCardsTemplateParser.templateString').
+Does an object have a subpath.
+
+##### Returns
+
+true if the path is there.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.TemplatedStringContext](#T-AdaptiveCardsTemplateParser-TemplatedStringContext 'AdaptiveCardsTemplateParser.TemplatedStringContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | object. |
+| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | path to evaluate. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueArray-AdaptiveCardsTemplateParser-ValueArrayContext-'></a>
-### VisitValueArray(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-MapValueTo``1-System-Object-'></a>
+### MapValueTo\`\`1(val) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `valueArray`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
+Convert a generic object to a typed object.
+
+##### Returns
+
+converted value.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueArrayContext](#T-AdaptiveCardsTemplateParser-ValueArrayContext 'AdaptiveCardsTemplateParser.ValueArrayContext') | The parse tree. |
+| val | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | value to convert. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueFalse-AdaptiveCardsTemplateParser-ValueFalseContext-'></a>
-### VisitValueFalse(context) `method`
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | type to convert to. |
+
+<a name='M-AdaptiveCards-Templating-ObjectPath-Merge``1-``0,``0-'></a>
+### Merge\`\`1(startObject,overlayObject) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `valueFalse`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
+Equivalent to javascripts ObjectPath.Assign, creates a new object from startObject overlaying any non-null values from the overlay object.
+
+##### Returns
+
+merged object.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueFalseContext](#T-AdaptiveCardsTemplateParser-ValueFalseContext 'AdaptiveCardsTemplateParser.ValueFalseContext') | The parse tree. |
+| startObject | [\`\`0](#T-``0 '``0') | Intial object. |
+| overlayObject | [\`\`0](#T-``0 '``0') | Overlay object. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNull-AdaptiveCardsTemplateParser-ValueNullContext-'></a>
-### VisitValueNull(context) `method`
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | The object type. |
+
+<a name='M-AdaptiveCards-Templating-ObjectPath-RemovePathValue-System-Object,System-String-'></a>
+### RemovePathValue(obj,path) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `valueNull`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
+Remove path from object.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueNullContext](#T-AdaptiveCardsTemplateParser-ValueNullContext 'AdaptiveCardsTemplateParser.ValueNullContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Object to change. |
+| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Path to remove. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNumber-AdaptiveCardsTemplateParser-ValueNumberContext-'></a>
-### VisitValueNumber(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-SetObjectSegment-System-Object,System-Object,System-Object,System-Boolean-'></a>
+### SetObjectSegment(obj,segment,value,json) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `valueNumber`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
+Given an object, set a property or array element on it with a value.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueNumberContext](#T-AdaptiveCardsTemplateParser-ValueNumberContext 'AdaptiveCardsTemplateParser.ValueNumberContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | object to modify. |
+| segment | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | property or array segment to put the value in. |
+| value | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | value to store. |
+| json | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | if true, value will be normalized to JSON primitive objects. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
-### VisitValueObject(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-SetPathValue-System-Object,System-String,System-Object,System-Boolean-'></a>
+### SetPathValue(obj,path,value,json) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `valueObject`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
+Given an object evaluate a path to set the value.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCardsTemplateParser.ValueObjectContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | object to start with. |
+| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | path to evaluate. |
+| value | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | value to store. |
+| json | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | if true, sets the value as primitive JSON objects. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueString-AdaptiveCardsTemplateParser-ValueStringContext-'></a>
-### VisitValueString(context) `method`
+<a name='M-AdaptiveCards-Templating-ObjectPath-TryGetPathValue``1-System-Object,System-String,``0@-'></a>
+### TryGetPathValue\`\`1(obj,path,value) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `valueString`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
+Get the value for a path relative to an object.
+
+##### Returns
+
+true if successful.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueStringContext](#T-AdaptiveCardsTemplateParser-ValueStringContext 'AdaptiveCardsTemplateParser.ValueStringContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | object to start with. |
+| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | path to evaluate. |
+| value | [\`\`0@](#T-``0@ '``0@') | value for the path. |
 
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
-### VisitValueTemplateExpression(context) `method`
+##### Generic Types
+
+| Name | Description |
+| ---- | ----------- |
+| T | type to return. |
+
+<a name='M-AdaptiveCards-Templating-ObjectPath-TryResolvePath-System-Object,System-String,System-Collections-Generic-List{System-Object}@,System-Boolean-'></a>
+### TryResolvePath(obj,propertyPath,segments,eval) `method`
 
 ##### Summary
 
-Visit a parse tree produced by the `valueTemplateExpression`
-labeled alternative in [templateExpression](#M-AdaptiveCardsTemplateParser-templateExpression 'AdaptiveCardsTemplateParser.templateExpression').
+Given an root object and property path, resolve to a constant if eval = true or a constant path otherwise.  
+conversation[user.name][user.age] => ['conversation', 'joe', 32].
+
+##### Returns
+
+True if it was able to resolve all nested references.
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') | The parse tree. |
-
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
-### VisitValueTemplateString(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueTemplateString`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCardsTemplateParser.ValueTemplateStringContext') | The parse tree. |
-
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext-'></a>
-### VisitValueTemplateStringWithRoot(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueTemplateStringWithRoot`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext 'AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext') | The parse tree. |
-
-<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTrue-AdaptiveCardsTemplateParser-ValueTrueContext-'></a>
-### VisitValueTrue(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by the `valueTrue`
-labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCardsTemplateParser.ValueTrueContext](#T-AdaptiveCardsTemplateParser-ValueTrueContext 'AdaptiveCardsTemplateParser.ValueTrueContext') | The parse tree. |
+| obj | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | root object. |
+| propertyPath | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | property path to resolve. |
+| segments | [System.Collections.Generic.List{System.Object}@](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Collections.Generic.List 'System.Collections.Generic.List{System.Object}@') | Path segments. |
+| eval | [System.Boolean](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Boolean 'System.Boolean') | True to evaluate resulting segments. |

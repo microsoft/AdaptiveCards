@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
+using AdaptiveExpressions.Properties;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Linq;
 
 namespace AdaptiveCards.Templating
 {
@@ -19,9 +20,6 @@ namespace AdaptiveCards.Templating
     /// </summary>
     public sealed class AdaptiveCardTemplate
     {
-        private IParseTree parseTree;
-        private string jsonTemplateString;
-
         /// <summary>
         /// <para>Creates an instance of AdaptiveCardTemplate</para>
         /// </summary>
@@ -47,24 +45,23 @@ namespace AdaptiveCards.Templating
         /// var template = new AdaptiveCardTemplate(jsonTemplate);
         /// </code>
         /// </example>
-        /// <param name="jsonTemplate">string in json or seriazable object</param>
+        /// <param name="jsonTemplate">json string or seriazable object</param>
         public AdaptiveCardTemplate(object jsonTemplate)
         {
-            if (jsonTemplate != null)
+            if (jsonTemplate is string str)
             {
-                jsonTemplateString = (jsonTemplate is string) ? jsonTemplate as string : JsonConvert.SerializeObject(jsonTemplate);
-
-                AntlrInputStream stream = new AntlrInputStream(jsonTemplateString);
-                ITokenSource lexer = new AdaptiveCardsTemplateLexer(stream);
-                ITokenStream tokens = new CommonTokenStream(lexer);
-                AdaptiveCardsTemplateParser parser = new AdaptiveCardsTemplateParser(tokens)
-                {
-                    BuildParseTree = true
-                };
-
-                parseTree = parser.json();
+                Template = (JObject)JsonConvert.DeserializeObject(str);
+            }
+            else
+            {
+                Template = JObject.FromObject(jsonTemplate);
             }
         }
+
+        /// <summary>
+        /// Gets the Parsed Template.
+        /// </summary>
+        public JObject Template { get; private set; }
 
         /// <summary>
         /// Bind data in <paramref name="context"/> to the instance of AdaptiveCardTemplate
@@ -89,27 +86,15 @@ namespace AdaptiveCards.Templating
         /// <returns>json as string</returns>
         public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
         {
-            if (parseTree == null)
+            var result = (JObject)this.Template.DeepClone();
+            context = context ?? new EvaluationContext();
+            if (nullSubstitutionOption != null)
             {
-                return jsonTemplateString;
+                context.NullSubstitution = nullSubstitutionOption;
             }
-
-            string jsonData = "";
-
-            if (context != null && context.Root != null)
-            {
-                if (context.Root is string)
-                {
-                    jsonData = context.Root as string;
-                }
-                else
-                {
-                    jsonData = JsonConvert.SerializeObject(context.Root);
-                }
-            }
-
-            AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, jsonData);
-            return eval.Visit(parseTree).ToString();
+            context.Data = context.Root;
+            BindToken(result, context);
+            return result.ToString();
         }
 
         /// <summary>
@@ -134,9 +119,125 @@ namespace AdaptiveCards.Templating
         /// <returns>json as string</returns>
         public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
         {
-            var context = new EvaluationContext(rootData);
+            var context = new EvaluationContext(rootData)
+            {
+                NullSubstitution = nullSubstitutionOption
+            };
 
-            return Expand(context, nullSubstitutionOption);
+            var result = (JObject)this.Template.DeepClone();
+            BindToken(result, context);
+            return result.ToString();
+        }
+
+        private void BindToken(JToken token, EvaluationContext context)
+        {
+            switch (token)
+            {
+                case JObject job:
+                    BindObject(job, context);
+                    break;
+
+                case JArray arr:
+                    BindArray(arr, context);
+                    break;
+
+                case JProperty property:
+                    BindProperty(property, context);
+                    break;
+
+                case JValue value:
+                    if (token.Type == JTokenType.String)
+                    {
+                        // if it is a run through expression parser and treat as a value
+                        var (result, error) = new ValueExpression(token).TryGetValue(context);
+                        token.Replace(JToken.FromObject(result));
+                    }
+                    break;
+            }
+        }
+
+        private static string FixBoolean(string arg)
+        {
+            if (arg.StartsWith("${", StringComparison.Ordinal) && arg.EndsWith("}", StringComparison.Ordinal))
+            {
+                return arg.Substring(2, arg.Length - 3);
+            }
+            return arg;
+        }
+
+        private void BindObject(JObject job, EvaluationContext context)
+        {
+            var dataProperty = job.Property("$data");
+            if (dataProperty != null)
+            {
+                var dataExpression = new ValueExpression(dataProperty.Value);
+                var newData = dataExpression.GetValue(context);
+                context = context.Clone(newData);
+                job.Remove("$data");
+            }
+
+            JArray dataArray = context.Data as JArray;
+            bool objIsTemplate = dataProperty != null && dataArray != null;
+            if (objIsTemplate)
+            {
+                for (context.Index = 0; context.Index < dataArray.Count; context.Index++)
+                {
+                    context.Data = dataArray[context.Index];
+                    var template = (JObject)job.DeepClone();
+                    template.Remove("$data");
+
+                    var whenProperty = template.Property("$when");
+                    if (whenProperty != null)
+                    {
+                        var whenExpression = new BoolExpression(FixBoolean((String)whenProperty.Value));
+                        var (value, error) = whenExpression.TryGetValue(context);
+                        if (value == false)
+                        {
+                            //skip item
+                            continue;
+                        }
+                        whenProperty.Remove();
+                    }
+
+                    BindObject(template, context);
+                    job.AddBeforeSelf(template);
+                }
+                job.Remove();
+            }
+            else
+            {
+                var whenProperty = job.Property("$when");
+                if (whenProperty != null)
+                {
+                    var whenExpression = new BoolExpression(FixBoolean((String)whenProperty.Value));
+                    var (value, error) = whenExpression.TryGetValue(context);
+                    if (value == false)
+                    {
+                        job.Remove();
+                        return;
+                    }
+                    whenProperty.Remove();
+                }
+
+                foreach (var child in job.Properties())
+                {
+                    BindToken(child.Value, context);
+                }
+            }
+        }
+
+        private void BindArray(JArray arr, EvaluationContext context)
+        {
+
+            foreach (var item in arr.ToList())
+            {
+                BindToken(item, context);
+            }
+        }
+
+        private void BindProperty(JProperty prop, EvaluationContext context)
+        {
+            BindToken(prop.Value, context);
         }
     }
 }

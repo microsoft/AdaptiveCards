@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System;
 using AdaptiveExpressions.Memory;
 using System.Collections.Generic;
+using System.Data;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -11073,7 +11074,7 @@ namespace AdaptiveCards.Templating.Test
                 string cardJson = transformer.Expand(context);
             }
             catch
-            { 
+            {
                 // AEL is broken and will throw. Once AEL is fixed, this test case will be fixed
             }
         }
@@ -11091,6 +11092,10 @@ namespace AdaptiveCards.Templating.Test
                 {
                     ""type"": ""TextBlock"",
                     ""text"": ""${rfc3389}""
+                },
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""=rfc3389""
                 }
             ]
             }";
@@ -11102,6 +11107,10 @@ namespace AdaptiveCards.Templating.Test
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
     ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""2/14/2017 6:08:00 AM""
+        },
         {
             ""type"": ""TextBlock"",
             ""text"": ""2017-02-14T06:08:00Z""
@@ -11231,7 +11240,7 @@ namespace AdaptiveCards.Templating.Test
                     ""placeholder"": ""Enter Estimated Mileage"",
                     ""min"": 1,
                     ""max"": 10,
-                    ""value"": ""${car_type_1.average_mileage}"" 
+                    ""value"": ""=car_type_1.average_mileage"" 
                 }
         ],
         ""actions"": [
@@ -11331,7 +11340,7 @@ namespace AdaptiveCards.Templating.Test
                   {
                     ""$data"": ""${LineItems}"",
                     ""type"": ""TextBlock"",
-                    ""$when"": ""${Milage > 0}"",
+                    ""$when"": ""Milage > 0"",
                     ""text"": ""${Milage}""
                   }
                 ]
@@ -11365,7 +11374,7 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": 10
+                    ""text"": ""10""
                 }
             ]
         }
@@ -11413,7 +11422,7 @@ namespace AdaptiveCards.Templating.Test
                 Assert.Fail("No exception should be thrown");
             }
         }
-        
+
         [TestMethod]
         public void TestNullArgumentExceptionHandling()
         {
@@ -11442,17 +11451,11 @@ namespace AdaptiveCards.Templating.Test
                 string cardJson = transformer.Expand(null);
                 Assert.Fail("There should be an exception");
             }
-            catch (ArgumentNullException e)
-            {
-                Assert.AreEqual("Check if parent data context is set, or please enter a non-null value for '${LineItems}' at line, '8'", e.ParamName);
-            }
             catch
             {
-                Assert.Fail();
-                throw;
             }
         }
-        
+
         public static void AssertJsonEqual(string jsonExpected, string jsonActual)
         {
             var expected = JObject.Parse(jsonExpected);
@@ -11521,79 +11524,6 @@ namespace AdaptiveCards.Templating.Test
 
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
-        }
-
-        [TestMethod]
-        public void TestDataContextCommaRemoal()
-        {
-            var testString =
-                @"{
-                    ""type"": ""AdaptiveCard"",
-                    ""body"": [
-                      {
-                          ""type"": ""Container"",
-                          ""items"": [
-                              {
-                                  ""type"": ""TextBlock"",
-                                  ""text"": ""${name}""
-                              }
-                          ],
-                          ""$data"": ""${$root.LineItems}"" 
-                          ]
-                      }
-                    ]
-                }";
-            var expectedString =
-                @"{
-                    ""type"": ""AdaptiveCard"",
-                    ""body"": [
-                    {
-                        ""type"": ""Container"",
-                        ""items"": [ 
-                            {
-                                ""type"": ""TextBlock"",
-                                ""text"": ""Matt""
-                            } ]
-                    },
-                    {
-                        ""type"": ""Container"",
-                        ""items"": [ 
-                            {
-                                ""type"": ""TextBlock"",
-                                ""text"": ""David""
-                            }
-                        ]
-                    },
-                    {
-                        ""type"": ""Container"",
-                        ""items"": [ 
-                            {
-                                ""type"": ""TextBlock"",
-                                ""text"": ""Thomas""
-                            }
-                        ]
-                    }
-                ]
-            }";
-
-            string jsonData = @"{
-              ""LineItems"": [
-                  { ""name"": ""Matt"" }, 
-                  { ""name"": ""David"" }, 
-                  { ""name"": ""Thomas"" }
-                ]
-            }";
-
-            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(testString);
-            AdaptiveCardTemplate transformer2 = new AdaptiveCardTemplate(expectedString);
-            var context = new EvaluationContext()
-            {
-                Root = jsonData
-            };
-
-            string cardJson = transformer.Expand(context);
-            string expectedcardJson = transformer2.Expand(context);
-            Assert.AreEqual(expectedcardJson, cardJson);
         }
 
         [TestMethod]
@@ -11792,8 +11722,8 @@ namespace AdaptiveCards.Templating.Test
                         { ""name"": ""Object-4"", ""lastPrice"": 28324, ""changePriceRatio"": 0.35 },
                         { ""name"": ""Object-5"", ""lastPrice"": 9338.87, ""changePriceRatio"": -1.04 }
                     ]";
-                var testString =
-                    @"{
+            var testString =
+                @"{
         ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
         ""type"": ""AdaptiveCard"",
         ""version"": ""1.0"",
@@ -11855,8 +11785,8 @@ namespace AdaptiveCards.Templating.Test
         }
     ]
 }";
-        var expectedString =
-        @"{ ""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""type"":""AdaptiveCard"",""version"":""1.0"",""body"":[{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-1""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1.10762 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.17%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-2""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1578.205 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.68%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-3""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""51.475 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.23%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▲"",""color"":""good""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-4""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""28324 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""0.35%"",""color"":""good""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-5""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""9338.87 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-1.04%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]}]}"; 
+            var expectedString =
+            @"{ ""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""type"":""AdaptiveCard"",""version"":""1.0"",""body"":[{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-1""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1.10762 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.17%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-2""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1578.205 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.68%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-3""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""51.475 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.23%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▲"",""color"":""good""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-4""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""28324 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""0.35%"",""color"":""good""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-5""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""9338.87 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-1.04%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]}]}";
             AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(testString);
             var context = new EvaluationContext
             {
@@ -11902,8 +11832,8 @@ namespace AdaptiveCards.Templating.Test
         }
     ]
 }";
-                var testString =
-                @"{
+            var testString =
+            @"{
     ""type"": ""AdaptiveCard"",
     ""speak"": ""${speak}"",
     ""body"": [
@@ -12498,25 +12428,23 @@ namespace AdaptiveCards.Templating.Test
     ""body"": [
         {
             ""type"": ""TextBlock"",
-            ""text"": ""${firstName} ${if(unknownFunction(lastName), 'yes', 'no'}""
+            ""text"": ""${firstName} ${if(unknownFunction(lastName), 'yes', 'no')}""
         }
     ]
 }";
 
-            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
-            var context = new EvaluationContext();
-            string cardJson = transformer.Expand(context);
+            try
+            {
 
-            AssertJsonEqual(@"{
-    ""type"": ""AdaptiveCard"",
-    ""version"": ""1.0"",
-    ""body"": [
-        {
-            ""type"": ""TextBlock"",
-            ""text"": ""David ${if(unknownFunction(lastName), 'yes', 'no'}""
-        }
-    ]
-}", cardJson);
+                AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+                var context = new EvaluationContext();
+                string cardJson = transformer.Expand(context);
+                Assert.Fail("Should throw syntax error");
+            }
+            catch (SyntaxErrorException err)
+            {
+                Assert.IsTrue(err.Message.Contains("unknownFunction does not have an evaluator"));
+            }
         }
 
         [TestMethod]
@@ -12533,7 +12461,7 @@ namespace AdaptiveCards.Templating.Test
      },
     ""body"": [
         {
-            ""$when"": ""${(machines.uptime >= 3000)}"",
+            ""$when"": ""machines.uptime >= 3000"",
             ""type"": ""TextBlock"",
             ""text"": ""${machines.id}""
         }
@@ -12567,7 +12495,7 @@ namespace AdaptiveCards.Templating.Test
                   {
                     ""$data"": ""${LineItems}"",
                     ""type"": ""TextBlock"",
-                    ""$when"": ""${Milage > 0}"",
+                    ""$when"": ""Milage > 0"",
                     ""text"": ""${Milage}""
                   }
                 ]
@@ -12598,11 +12526,11 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": 1
+                    ""text"": ""1""
                 },
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": 10
+                    ""text"": ""10""
                 }
             ]
         }
@@ -12622,7 +12550,7 @@ namespace AdaptiveCards.Templating.Test
                   {
                     ""$data"": ""${LineItems}"",
                     ""type"": ""TextBlock"",
-                    ""$when"": ""${Milage > 0}"",
+                    ""$when"": ""=Milage > 0"",
                     ""text"": ""${Milage}""
                   }
                 ]
@@ -12674,7 +12602,7 @@ namespace AdaptiveCards.Templating.Test
                              ""facts"": [
                                  {
                                      ""$data"": ""${people}"",
-                                     ""$when"": ""${age > 12}"",
+                                     ""$when"": ""age > 12"",
                                      ""title"": ""${firstName} ${lastName}"",
                                      ""value"": ""${string(age)}""
                                  }
@@ -12708,7 +12636,7 @@ namespace AdaptiveCards.Templating.Test
                         {
                             ""firstName"": ""Matt"",
                             ""lastName"": ""Hidinger"",
-                            ""age"": ""28""
+                            ""age"": 28
                         }
                     ]
             }";
@@ -12798,7 +12726,7 @@ namespace AdaptiveCards.Templating.Test
             string cardJson = transformer.Expand(context);
 
             var expectedString = @"{""type"":""AdaptiveCard"",""body"":[{""type"":""Container"",""items"":[{""text"":""Container 0"",""type"":""TextBlock""},{""text"":""a"",""type"":""TextBlock""},{""text"":""b"",""type"":""TextBlock""},{""text"":""c"",""type"":""TextBlock""}]},{""type"":""Container"",""items"":[{""text"":""Container 1"",""type"":""TextBlock""},{""text"":""d"",""type"":""TextBlock""},{""text"":""e"",""type"":""TextBlock""},{""text"":""f"",""type"":""TextBlock""}]},{""type"":""Container"",""items"":[{""text"":""Container 2"",""type"":""TextBlock""},{""text"":""g"",""type"":""TextBlock""},{""text"":""h"",""type"":""TextBlock""},{""text"":""i"",""type"":""TextBlock""}]}],""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""version"":""1.2""} ";
-            AssertJsonEqual(cardJson, expectedString);
+            AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
@@ -12887,12 +12815,12 @@ namespace AdaptiveCards.Templating.Test
                 {
                     ""type"": ""TextBlock"",
                     ""id"": ""ReceiptRequired0"",
-                    ""text"": 1
+                    ""text"": ""1""
                 },
                 {
                     ""type"": ""TextBlock"",
                     ""id"": ""ReceiptRequired1"",
-                    ""text"": 10
+                    ""text"": ""10""
                 }
             ]
         }
@@ -12935,7 +12863,7 @@ namespace AdaptiveCards.Templating.Test
             ]
         }
     ]
-}"; 
+}";
 
             AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(testString);
             var context = new EvaluationContext();
@@ -12977,7 +12905,7 @@ namespace AdaptiveCards.Templating.Test
             ]
         }
     ]
-}"; 
+}";
 
             AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(testString);
             var context = new EvaluationContext();
@@ -13021,16 +12949,16 @@ namespace AdaptiveCards.Templating.Test
             ]
         }
     ]
-}"; 
+}";
 
             AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(testString);
             var context = new EvaluationContext();
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
         }
-        
+
         class Data
-        { 
+        {
             public string title { get; set; }
             public int IntTemplateProperty { get; internal set; }
         };
@@ -13184,11 +13112,11 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": 1
+                    ""text"": ""1""
                 },
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": 10
+                    ""text"": ""10""
                 }
             ]
         }
@@ -13395,11 +13323,11 @@ namespace AdaptiveCards.Templating.Test
                 ""items"": [
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": 1
+                    ""text"": ""1""
                 },
                 {
                     ""type"": ""TextBlock"",
-                    ""text"": 10
+                    ""text"": ""10""
                 }
             ]
         }
@@ -13463,52 +13391,6 @@ namespace AdaptiveCards.Templating.Test
     }
 
     [TestClass]
-    public sealed class TestPartialResult
-    {
-        [TestMethod]
-        public void TestCreation()
-        {
-            AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
-            result.Append("hello world");
-            Assert.AreEqual(result.ToString(), "hello world");
-        }
-
-        [TestMethod]
-        public void TestMerging()
-        {
-            AdaptiveCardsTemplateResult result1 = new AdaptiveCardsTemplateResult();
-            result1.Append("hello");
-
-            AdaptiveCardsTemplateResult result2 = new AdaptiveCardsTemplateResult();
-            result2.Append(" world");
-
-
-            AdaptiveCardsTemplateResult result3 = new AdaptiveCardsTemplateResult();
-            result3.Append("!");
-
-            result1.Append(result2);
-            result1.Append(result3);
-
-            Assert.AreEqual(result1.ToString(), "hello world!");
-        }
-
-        [TestMethod]
-        public void TestCreationOfPartialResult()
-        {
-            AdaptiveCardsTemplateResult result1 = new AdaptiveCardsTemplateResult();
-            result1.Append("hello");
-
-            AdaptiveCardsTemplateResult result2 = new AdaptiveCardsTemplateResult();
-            result2.Append("!");
-
-            result1.Append(result2);
-
-            Assert.AreEqual(result1.ToString(), "hello!");
-        }
-
-    }
-
-    [TestClass]
     public sealed class TestAEL
     {
         [TestMethod]
@@ -13546,7 +13428,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             JToken token = JToken.Parse(jsonData);
-            
+
             var (value, error) = new ValueExpression("${if(isMatch(numberPropertyValue, '[-+]?[0-9]*\\.?[0-9]+'), formatNumber(float(numberPropertyValue), 2), numberPropertyValue)}").TryGetValue(token as JObject);
             Assert.AreEqual("20.12", value);
         }
@@ -13587,7 +13469,7 @@ namespace AdaptiveCards.Templating.Test
 
             JToken token = JToken.Parse(jsonData);
             var expr = Expression.Parse("attachment == true");
-            var result =  expr.TryEvaluate(token); 
+            var result = expr.TryEvaluate(token);
             Assert.IsNull(result.error);
             Assert.AreEqual(false, result.value);
         }
@@ -13705,10 +13587,10 @@ namespace AdaptiveCards.Templating.Test
             {
                 string formattedString = "";
 
-                if (args[0] != null && args[1] != null && args[2] != null) 
+                if (args[0] != null && args[1] != null && args[2] != null)
                 {
                     string format = args[0];
-                    string[] stringArguments = {args[1], args[2] };
+                    string[] stringArguments = { args[1], args[2] };
                     formattedString = string.Format(format, stringArguments);
                 }
                 return formattedString;
@@ -13722,6 +13604,6 @@ namespace AdaptiveCards.Templating.Test
                     ""text"": ""My name is Andrew Leader""
                 }]
             }", cardJson);
-        }        
+        }
     }
 }
