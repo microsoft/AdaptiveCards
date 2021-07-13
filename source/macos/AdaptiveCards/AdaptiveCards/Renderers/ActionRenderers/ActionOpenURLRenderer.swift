@@ -4,7 +4,7 @@ import AppKit
 class ActionOpenURLRenderer: BaseActionElementRendererProtocol {
     static let shared = ActionOpenURLRenderer()
     
-    func render(action: ACSBaseActionElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
+    func render(action: ACSBaseActionElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, targetHandlerDelegate: TargetHandlerDelegate, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let openURLAction = action as? ACSOpenUrlAction else {
             logError("Element is not of type ACSOpenUrlAction")
             return NSView()
@@ -20,7 +20,7 @@ class ActionOpenURLRenderer: BaseActionElementRendererProtocol {
         }
         button.title = openURLAction.getTitle() ?? ""
         
-        let target = ActionOpenURLTarget(element: openURLAction, delegate: rootView)
+        let target = ActionOpenURLTarget(element: openURLAction, delegate: targetHandlerDelegate)
         target.configureAction(for: button)
         rootView.addTarget(target)
         

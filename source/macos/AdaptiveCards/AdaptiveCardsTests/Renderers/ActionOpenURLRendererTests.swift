@@ -6,14 +6,16 @@ class ActionOpenURLRendererTests: XCTestCase {
     private var hostConfig: FakeHostConfig!
     private var actionOpenURL: FakeOpenURLAction!
     private var acrView: ACRView!
-    private var delegate: FakeACRViewOpenURLDelegate!
+    private var delegate: FakeAdaptiveCardActionDelegate!
+    private var targetHandlerDelegate: FakeTargetHandlerDelegate!
     private var actionOpenURLRenderer: ActionOpenURLRenderer!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         hostConfig = .make()
         actionOpenURL = .make()
-        delegate = FakeACRViewOpenURLDelegate()
+        delegate = FakeAdaptiveCardActionDelegate()
+        targetHandlerDelegate = FakeTargetHandlerDelegate()
         acrView = ACRView(style: .default, hostConfig: hostConfig, renderConfig: .default)
         actionOpenURLRenderer = ActionOpenURLRenderer()
     }
@@ -39,26 +41,30 @@ class ActionOpenURLRendererTests: XCTestCase {
     
     func testViewCallsDelegateAction() {
         acrView.delegate = delegate
-        acrView.handleOpenURLAction(actionView: NSButton(), urlString: "www.google.com")
+        actionOpenURL = .make(url: "www.google.com")
+        
+        let button = renderButton()
+        button.performClick()
+        
+        XCTAssertEqual(targetHandlerDelegate.calledURL, "www.google.com")
+        XCTAssertEqual(targetHandlerDelegate.calledView, button)
+    }
+    
+    func testViewCallsDelegateAction_forRootView() {
+        acrView.delegate = delegate
+        actionOpenURL = .make(url: "www.google.com")
+        
+        let button = renderButton(targetHandler: acrView)
+        button.performClick()
+        
         XCTAssertEqual(delegate.calledURL, "www.google.com")
     }
     
-    private func renderButton() -> ACRButton {
-        let view = actionOpenURLRenderer.render(action: actionOpenURL, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), inputs: [], config: .default)
+    private func renderButton(targetHandler: TargetHandlerDelegate? = nil) -> ACRButton {
+        let view = actionOpenURLRenderer.render(action: actionOpenURL, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), targetHandlerDelegate: targetHandler ?? targetHandlerDelegate, inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRButton)
         guard let button = view as? ACRButton else { fatalError() }
         return button
     }
-}
-
-private class FakeACRViewOpenURLDelegate: ACRViewDelegate {
-    var calledURL: String?
-    func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView) {
-        calledURL = url
-    }
-    
-    func acrView(_ view: ACRView, didSubmitUserResponses dict: [String : Any], actionView: NSView) { }
-    func acrView(_ view: ACRView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect) { }
-    func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) { }
 }

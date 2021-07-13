@@ -61,6 +61,10 @@ class FakeAdaptiveCard: ACSAdaptiveCard {
     override func getActions() -> [ACSBaseActionElement] {
         return actions
     }
+    
+    override func getInternalId() -> ACSInternalId? {
+        return FakeInternalId(hash: hashValue as NSNumber)
+    }
 }
 
 extension FakeAdaptiveCard {

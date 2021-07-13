@@ -97,12 +97,3 @@ class InputDateRendererTest: XCTestCase {
         return inputDate
     }
 }
-
-private extension NSButton {
-    func performClick() {
-        guard !isHidden else { return }
-        if let target = target, let action = action {
-            sendAction(action, to: target)
-        }
-    }
-}

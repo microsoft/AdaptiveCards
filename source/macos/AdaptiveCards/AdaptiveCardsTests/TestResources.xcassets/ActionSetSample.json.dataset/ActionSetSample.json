@@ -1,0 +1,75 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "TextBlock",
+            "wrap": true,
+            "text": "Cards can have action sets in the middle of their body."
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "OpenUrl",
+                    "url": "https://adaptivecards.io",
+                    "style": "positive"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "OpenUrl",
+                    "url": "https://adaptivecards.io",
+                    "style": "destructive"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "OpenUrl",
+                    "url": "https://adaptivecards.io"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "OpenUrl",
+                    "url": "https://adaptivecards.io"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "OpenUrl",
+                    "url": "https://adaptivecards.io"
+                },
+                {
+                    "type": "Action.OpenUrl",
+                    "title": "OpenUrl",
+                    "url": "https://adaptivecards.io"
+                }
+            ],
+            "horizontalAlignment": "Center"
+        },
+        {
+            "type": "TextBlock",
+            "wrap": true,
+            "text": "There are also still \"actions\" at the bottom of the card"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.ShowCard",
+            "title": "ShowCard",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "This is a show card"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "OpenUrl",
+            "url": "https://adaptivecards.io"
+        }
+    ]
+}

@@ -41,28 +41,28 @@ class ActionSetRendererTests: XCTestCase {
     
     func testRendererCheckAlignment() {
         // check for left alignment
-        var hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .vertical, actionAlignment: .left, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 1))
+        var hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .horizontal, actionAlignment: .left, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 1))
         hostConfig = .make(actions: hostConfigActions)
-        actionSet = .make(actions: [FakeSubmitAction.make()])
+        actionSet = .make(actions: [FakeSubmitAction.make()], aligned: .left)
         
         var actionSetView = renderActionSetView()
         XCTAssertEqual(actionSetView.alignment, .leading)
         
         // check for right alignment
-        hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .vertical, actionAlignment: .right, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 0))
+        hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .horizontal, actionAlignment: .left, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 0))
         hostConfig = .make(actions: hostConfigActions)
-        actionSet = .make(actions: [FakeSubmitAction.make()])
+        actionSet = .make(actions: [FakeSubmitAction.make()], aligned: .right)
         
         actionSetView = renderActionSetView()
         XCTAssertEqual(actionSetView.alignment, .trailing)
         
         // check for center alignment
-        hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .vertical, actionAlignment: .center, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 0))
+        hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .horizontal, actionAlignment: .left, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 0))
         hostConfig = .make(actions: hostConfigActions)
-        actionSet = .make(actions: [FakeSubmitAction.make()])
+        actionSet = .make(actions: [FakeSubmitAction.make()], aligned: .center)
         
         actionSetView = renderActionSetView()
-        XCTAssertEqual(actionSetView.alignment, .centerX)
+        XCTAssertEqual(actionSetView.alignment, .centerY)
     }
     
     private func renderActionSetView() -> ACRActionSetView {

@@ -37,6 +37,10 @@ class FakeShowCardAction: ACSShowCardAction {
     override func setStyle(_ value: String) {
         style = value
     }
+    
+    override func getType() -> ACSActionType {
+        return .showCard
+    }
 }
 
 extension FakeShowCardAction {

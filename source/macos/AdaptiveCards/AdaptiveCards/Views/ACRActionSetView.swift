@@ -1,55 +1,75 @@
 import AdaptiveCards_bridge
 import AppKit
 
-class ACRActionSetView: NSView {
-    private lazy var stackview: NSStackView = {
+protocol ACRActionSetViewDelegate: AnyObject {
+    func actionSetView(_ view: ACRActionSetView, didOpenURLWith actionView: NSView, urlString: String)
+    func actionSetView(_ view: ACRActionSetView, didSubmitInputsWith actionView: NSView, dataJson: String?)
+    func actionSetView(_ view: ACRActionSetView, willShowCardWith button: NSButton)
+    func actionSetView(_ view: ACRActionSetView, didShowCardWith button: NSButton)
+    func actionSetView(_ view: ACRActionSetView, renderShowCardFor cardData: ACSAdaptiveCard) -> NSView
+}
+
+class ACRActionSetView: NSView, ShowCardHandlingView {
+    weak var delegate: ACRActionSetViewDelegate?
+    
+    let orientation: NSUserInterfaceLayoutOrientation
+    let alignment: NSLayoutConstraint.Attribute
+    let buttonSpacing: CGFloat
+    let exteriorPadding: CGFloat
+    private (set) var actions: [NSView] = []
+    
+    private (set) var showCardsMap: [NSNumber: NSView] = [:]
+    private (set) var currentShowCardItems: ShowCardItems?
+    
+    private (set) lazy var stackView: NSStackView = {
         let view = NSStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.orientation = orientation
+        view.spacing = buttonSpacing
+        view.alignment = alignment
         return view
     }()
     
-    private var frameWidth: CGFloat = 0
-    private var maxFrameWidth: CGFloat = 0
-    private var renderAction = true
+    private (set) lazy var showCardStackView: NSStackView = {
+        let view = NSStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.orientation = .vertical
+        view.alignment = .leading
+        view.spacing = 0
+        return view
+    }()
     
-    public var totalWidth: CGFloat = 0
-    public var actions: [NSView] = []
-    public var elementSpacing: CGFloat = 0
+    init(orientation: NSUserInterfaceLayoutOrientation, alignment: NSLayoutConstraint.Attribute, buttonSpacing: CGFloat, exteriorPadding: CGFloat) {
+        self.orientation = orientation
+        self.alignment = alignment
+        self.buttonSpacing = buttonSpacing
+        self.exteriorPadding = exteriorPadding
+        super.init(frame: .zero)
+        initialize()
+    }
     
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-        addSubview(stackview)
+    required init?(coder: NSCoder) {
+        self.actions = []
+        self.orientation = .vertical
+        self.alignment = .leading
+        self.buttonSpacing = 8
+        self.exteriorPadding = 0
+        super.init(coder: coder)
+        initialize()
+    }
+    
+    private func initialize() {
+        wantsLayer = true
+        layer = NoClippingLayer()
+        addSubview(stackView)
+        addSubview(showCardStackView)
         setupConstraints()
     }
     
-    public required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layout() {
-        super.layout()
-        frameWidth = frame.width
-        if orientation == .horizontal, totalWidth > frameWidth, totalWidth > maxFrameWidth, frameWidth != 0 {
-            maxFrameWidth = frameWidth
-            customLayout()
-        }
-        if orientation == .horizontal, frameWidth != 0, renderAction {
-            renderAction = false
-            customLayout()
-        }
-    }
-    
-    private func setupConstraints() {
-        stackview.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        stackview.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        stackview.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        stackview.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-    }
-    
-    private func removeElements() {
-        for view in stackview.arrangedSubviews {
-            view.removeFromSuperview()
-        }
+    override func resizeSubviews(withOldSize oldSize: NSSize) {
+        super.resizeSubviews(withOldSize: oldSize)
+        guard bounds.width > 0, orientation == .horizontal, !actions.isEmpty, abs(bounds.width - oldSize.width) > 10 else { return }
+        arrangeElementsIfNeeded()
     }
     
     override func viewDidMoveToSuperview() {
@@ -58,8 +78,59 @@ class ACRActionSetView: NSView {
         widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
     
-    private func customLayout() {
-        print("@running custom layout")
+    func setActions(_ actions: [NSView]) {
+        self.actions = actions
+        arrangeElementsIfNeeded()
+    }
+    
+    private func setupConstraints() {
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: topAnchor, constant: 6).isActive = true
+        
+        showCardStackView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: exteriorPadding).isActive = true
+        showCardStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -exteriorPadding).isActive = true
+        showCardStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: exteriorPadding).isActive = true
+        showCardStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: exteriorPadding).isActive = true
+    }
+    
+    private func removeElements() {
+        for view in stackView.arrangedSubviews {
+            view.removeFromSuperview()
+        }
+    }
+    
+    private func arrangeElementsIfNeeded() {
+        switch orientation {
+        case .horizontal:
+            layoutHorizontally()
+        case .vertical:
+            layoutVertically()
+        @unknown default:
+            layoutVertically()
+        }
+    }
+    
+    private func renderAndAddShowCard(_ card: ACSAdaptiveCard) -> NSView {
+        guard let rDelegate = delegate else {
+            logError("Rendering show card failed. Delegate is nil")
+            return NSView()
+        }
+        let cardView = rDelegate.actionSetView(self, renderShowCardFor: card)
+        showCardStackView.addArrangedSubview(cardView)
+        cardView.widthAnchor.constraint(equalTo: showCardStackView.widthAnchor).isActive = true
+        return cardView
+    }
+    
+    private func layoutVertically() {
+        removeElements()
+        actions.forEach {
+            stackView.addArrangedSubview($0)
+            $0.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        }
+    }
+    
+    private func layoutHorizontally() {
         // first empty the stackview and remove all the views
         removeElements()
         var accumulatedWidth: CGFloat = 0
@@ -67,17 +138,15 @@ class ACRActionSetView: NSView {
         // new child stackview for horizontal orientation
         var curview = NSStackView()
         curview.translatesAutoresizingMaskIntoConstraints = false
-        curview.spacing = elementSpacing
+        curview.spacing = buttonSpacing
         
         // adding new child stackview to parent stackview and the parent stackview will align child stackview vertically
-        stackview.addArrangedSubview(curview)
-        stackview.orientation = .vertical
-        let gravityArea: NSStackView.Gravity = stackview.alignment == .centerY ? .center: (stackview.alignment == .trailing ? .trailing: .leading)
-        totalWidth = 0
+        stackView.addArrangedSubview(curview)
+        stackView.orientation = .vertical
+        let gravityArea: NSStackView.Gravity = stackView.alignment == .centerY ? .center: (stackView.alignment == .trailing ? .trailing: .leading)
         for view in actions {
             accumulatedWidth += view.intrinsicContentSize.width
-            totalWidth = max(totalWidth, accumulatedWidth)
-            if accumulatedWidth > frameWidth {
+            if accumulatedWidth > bounds.width {
                 let newStackView: NSStackView = {
                     let view = NSStackView()
                     view.translatesAutoresizingMaskIntoConstraints = false
@@ -86,40 +155,61 @@ class ACRActionSetView: NSView {
                 curview = newStackView
                 curview.orientation = .horizontal
                 curview.addView(view, in: gravityArea)
-                curview.spacing = elementSpacing
+                curview.spacing = buttonSpacing
                 accumulatedWidth = 0
                 accumulatedWidth += view.intrinsicContentSize.width
-                accumulatedWidth += elementSpacing
-                stackview.addArrangedSubview(curview)
+                accumulatedWidth += buttonSpacing
+                stackView.addArrangedSubview(curview)
             } else {
                 curview.addView(view, in: gravityArea)
-                accumulatedWidth += elementSpacing
+                accumulatedWidth += buttonSpacing
             }
         }
     }
-    
-    var orientation: NSUserInterfaceLayoutOrientation {
-        get { stackview.orientation }
-        set {
-            stackview.orientation = newValue
+}
+
+extension ACRActionSetView: ShowCardTargetHandlerDelegate {
+    func handleShowCardAction(button: NSButton, showCard: ACSAdaptiveCard) {
+        guard let cardId = showCard.getInternalId()?.hash() else {
+            logError("Card InternalID is nil")
+            return
         }
+        
+        func manageShowCard(with id: NSNumber) {
+            let cardView = showCardsMap[id] ?? renderAndAddShowCard(showCard)
+            showCardsMap[cardId] = cardView
+            currentShowCardItems = (cardId, button, cardView)
+            cardView.isHidden = false
+            return
+        }
+        
+        delegate?.actionSetView(self, willShowCardWith: button)
+        if button.state == .on {
+            if let currentCardItems = currentShowCardItems {
+                // Has a current open or closed showCard
+                if currentCardItems.id == cardId {
+                    // current card needs to be shown
+                    currentCardItems.showCard.isHidden = false
+                } else {
+                    // different card needs to shown
+                    currentCardItems.showCard.isHidden = true
+                    currentCardItems.button.state = .off
+                    manageShowCard(with: cardId)
+                }
+            } else {
+                manageShowCard(with: cardId)
+            }
+        } else {
+            currentShowCardItems?.showCard.isHidden = true
+        }
+        delegate?.actionSetView(self, didShowCardWith: button)
     }
     
-    var alignment: NSLayoutConstraint.Attribute {
-        get { stackview.alignment }
-        set {
-            stackview.alignment = newValue
-        }
+    func handleOpenURLAction(actionView: NSView, urlString: String) {
+        delegate?.actionSetView(self, didOpenURLWith: actionView, urlString: urlString)
     }
     
-     var spacing: CGFloat {
-        get { stackview.spacing }
-        set {
-            stackview.spacing = newValue
-        }
-    }
-    
-    func addArrangedSubView(_ view: NSView) {
-        stackview.addArrangedSubview(view)
+    func handleSubmitAction(actionView: NSView, dataJson: String?) {
+        delegate?.actionSetView(self, didSubmitInputsWith: actionView, dataJson: dataJson)
     }
 }

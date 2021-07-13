@@ -19,70 +19,51 @@ class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
     }
     
     private func renderView(actions: [ACSBaseActionElement], aligned alignment: ACSHorizontalAlignment, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
-        let actionSetView = ACRActionSetView()
-        actionSetView.translatesAutoresizingMaskIntoConstraints = false
-        let adaptiveActionHostConfig = hostConfig.getActions()
+        let actionsConfig = hostConfig.getActions()
+        let actionsOrientation = actionsConfig?.actionsOrientation ?? .vertical
+        let actionsButtonSpacing = actionsConfig?.buttonSpacing ?? 8
+        let exteriorPadding = hostConfig.getSpacing()?.paddingSpacing ?? 0
+        let maxAllowedActions = Int(truncating: actionsConfig?.maxActions ?? 10)
         
-        if let orientation = adaptiveActionHostConfig?.actionsOrientation, orientation == .horizontal {
-            actionSetView.alignment = alignment == .center ? .centerY: (alignment == .right ? .trailing: .leading)
-            actionSetView.orientation = .horizontal
-        } else {
-            actionSetView.orientation = .vertical
-            let alignment = actionSetView.alignment
-            if let actionAlignment = adaptiveActionHostConfig?.actionAlignment {
-                switch actionAlignment {
-                case .center:
-                    actionSetView.alignment = .centerX
-                case .left:
-                    actionSetView.alignment = .leading
-                case .right:
-                    actionSetView.alignment = .trailing
-                default:
-                    actionSetView.alignment = alignment
-                }
-            }
+        if actions.count > maxAllowedActions {
+            logError("WARNING: Some actions were not rendered due to exceeding the maximum number \(maxAllowedActions) actions are allowed")
         }
         
-        var accumulatedWidth: CGFloat = 0, maxWidth: CGFloat = 0
-        guard !actions.isEmpty else {
-            logInfo("Actions in ActionSet is empty")
-            return actionSetView
+        let orientation: NSUserInterfaceLayoutOrientation
+        switch actionsOrientation {
+        case .horizontal: orientation = .horizontal
+        case .vertical: orientation = .vertical
+        @unknown default: orientation = .vertical
         }
         
-        var actionsToRender: Int = 0
-        if let maxActionsToRender = adaptiveActionHostConfig?.maxActions, let uMaxActionsToRender = maxActionsToRender as? Int {
-            actionsToRender = min(uMaxActionsToRender, actions.count)
-            if actions.count > uMaxActionsToRender {
-                logError("WARNING: Some actions were not rendered due to exceeding the maximum number \(uMaxActionsToRender) actions are allowed")
-            }
+        let resolvedAlignment: NSLayoutConstraint.Attribute
+        switch alignment {
+        case .center: resolvedAlignment = orientation == .horizontal ? .centerY : .centerX
+        case .left: resolvedAlignment = .leading
+        case .right: resolvedAlignment = .trailing
+        @unknown default: resolvedAlignment = .leading
         }
         
-        for index in 0..<actionsToRender {
-            let action = actions[index]
-            let renderer = RendererManager.shared.actionRenderer(for: action.getType())
-            
-            let view = renderer.render(action: action, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [], config: config)
-            
-            actionSetView.addArrangedSubView(view)
-            if actionSetView.orientation == .vertical {
-                view.widthAnchor.constraint(equalTo: actionSetView.widthAnchor).isActive = true
-            }
-            accumulatedWidth += view.intrinsicContentSize.width
-            maxWidth = max(maxWidth, view.intrinsicContentSize.width)
-            actionSetView.actions.append(view)
+        let actionSetView = ACRActionSetView(
+            orientation: orientation,
+            alignment: resolvedAlignment,
+            buttonSpacing: CGFloat(exactly: actionsButtonSpacing) ?? 8,
+            exteriorPadding: CGFloat(exactly: exteriorPadding) ?? 0)
+        
+        let resolvedCount = min(actions.count, maxAllowedActions)
+        let filteredActions = actions[0 ..< resolvedCount]
+        let actionViews: [NSView] = filteredActions.map {
+            let renderer = RendererManager.shared.actionRenderer(for: $0.getType())
+            return renderer.render(action: $0, with: hostConfig, style: style, rootView: rootView, parentView: rootView, targetHandlerDelegate: actionSetView, inputs: [], config: config)
         }
         
-        var contentWidth = accumulatedWidth
-        if let spacing = adaptiveActionHostConfig?.buttonSpacing {
-            actionSetView.spacing = CGFloat(truncating: spacing)
-            actionSetView.elementSpacing = CGFloat(truncating: spacing)
-            if actionSetView.orientation == .horizontal {
-                contentWidth += CGFloat(truncating: spacing) * CGFloat(actionsToRender - 1)
-            } else {
-                contentWidth = maxWidth
-            }
+        guard !filteredActions.isEmpty else {
+            logError("Actions is empty")
+            return NSView()
         }
-        actionSetView.totalWidth = CGFloat(contentWidth)
+        
+        actionSetView.setActions(actionViews)
+        actionSetView.delegate = rootView
         return actionSetView
     }
 }

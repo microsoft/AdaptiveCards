@@ -37,6 +37,10 @@ class FakeOpenURLAction: ACSOpenUrlAction {
     override func setStyle(_ value: String) {
         style = value
     }
+    
+    override func getType() -> ACSActionType {
+        return .openUrl
+    }
 }
 
 extension FakeOpenURLAction {

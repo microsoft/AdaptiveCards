@@ -5,14 +5,16 @@ import XCTest
 class ACRViewTests: XCTestCase {
     private var view: ACRView!
     private var fakeResourceResolver: FakeResourceResolver!
-    private var fakeACRViewDelegate: FakeACRViewDelegate!
+    private var actionDelegate: FakeAdaptiveCardActionDelegate!
     
     override func setUp() {
         super.setUp()
         view = ACRView(style: .default, hostConfig: FakeHostConfig.make(), renderConfig: .default)
         fakeResourceResolver = FakeResourceResolver()
+        actionDelegate = FakeAdaptiveCardActionDelegate()
+        
         view.resolverDelegate = fakeResourceResolver
-        fakeACRViewDelegate = FakeACRViewDelegate()
+        view.delegate = actionDelegate
     }
     
     func testRegisterImageHandlingView() {
@@ -86,15 +88,28 @@ class ACRViewTests: XCTestCase {
         XCTAssertTrue(imageView3.imageDidSet)
     }
     
+    // Test Submit Action is clicked
+    func testSubmitActionCount() {
+        view.addInputHandler(FakeInputHandlingView())
+        view.handleSubmitAction(actionView: NSView(), dataJson: "")
+        
+        XCTAssertEqual(actionDelegate.submitActionCount, 1)
+        XCTAssertEqual(actionDelegate.dictValues, 1)
+    }
+    
     // Test when ShowCard's Submit Action is Clicked
     func testSubmitActionCountWithAShowCard() {
         let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
-        fakeShowCard.delegate = fakeACRViewDelegate
+        fakeShowCard.delegate = actionDelegate
         
-        view.addShowCard(fakeShowCard)
+        view.addInputHandler(FakeInputHandlingView())
+        fakeShowCard.addInputHandler(FakeInputHandlingView())
+        
+        fakeShowCard.parent = view
         fakeShowCard.handleSubmitAction(actionView: NSView(), dataJson: "")
         
-        XCTAssertEqual(fakeACRViewDelegate.submitActionCount, 1)
+        XCTAssertEqual(actionDelegate.submitActionCount, 1)
+        XCTAssertEqual(actionDelegate.dictValues, 2)
     }
     
     // Test when ShowCard's Submit Action is clicked in nested setup
@@ -102,19 +117,20 @@ class ACRViewTests: XCTestCase {
         let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
         let fakeShowCard2 = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
         
-        fakeShowCard.addInputHandler(fakeInputHandlingView())
-        fakeShowCard.addInputHandler(fakeInputHandlingView())
-        fakeShowCard2.addInputHandler(fakeInputHandlingView())
+        view.addInputHandler(FakeInputHandlingView())
+        fakeShowCard.addInputHandler(FakeInputHandlingView())
+        fakeShowCard.addInputHandler(FakeInputHandlingView())
+        fakeShowCard2.addInputHandler(FakeInputHandlingView())
         
-        fakeShowCard2.delegate = fakeACRViewDelegate
+        fakeShowCard2.delegate = actionDelegate
         
         // Nested show cards
-        view.addShowCard(fakeShowCard)
-        fakeShowCard.addShowCard(fakeShowCard2)
+        fakeShowCard.parent = view
+        fakeShowCard2.parent = fakeShowCard
         
         fakeShowCard2.handleSubmitAction(actionView: NSView(), dataJson: "")
         
-        XCTAssertEqual(fakeACRViewDelegate.dictValues, 3)
+        XCTAssertEqual(actionDelegate.dictValues, 4)
     }
     
     // Test when ShowCard's Submit Action is clicked with sibling showcard
@@ -122,35 +138,79 @@ class ACRViewTests: XCTestCase {
         let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
         let fakeShowCard2 = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
         
-        fakeShowCard.addInputHandler(fakeInputHandlingView())
-        fakeShowCard2.addInputHandler(fakeInputHandlingView())
+        fakeShowCard.addInputHandler(FakeInputHandlingView())
+        fakeShowCard2.addInputHandler(FakeInputHandlingView())
         
-        fakeShowCard2.delegate = fakeACRViewDelegate
+        fakeShowCard2.delegate = actionDelegate
         
         // sibling show cards
-        view.addShowCard(fakeShowCard)
-        view.addShowCard(fakeShowCard2)
+        fakeShowCard.parent = view
+        fakeShowCard2.parent = view
         
         fakeShowCard2.handleSubmitAction(actionView: NSView(), dataJson: "")
         
-        XCTAssertEqual(fakeACRViewDelegate.dictValues, 1)
+        XCTAssertEqual(actionDelegate.dictValues, 1)
     }
-}
-
-private class FakeACRViewDelegate: NSView, ACRViewDelegate {
-    var submitActionCount = 0
-    var dictValues = 0
-    func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView) {}
-    func acrView(_ view: ACRView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect) {}
-    func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat) {}
     
-    func acrView(_ view: ACRView, didSubmitUserResponses dict: [String : Any], actionView: NSView) {
-        submitActionCount += 1
-        dictValues += dict.count
+    func testBasicInputHandler() {
+        let testinputHandler = FakeInputHandlingView()
+        testinputHandler.value = "Value"
+        testinputHandler.key = "Key"
+        testinputHandler.isValid = true
+        
+        view.addInputHandler(testinputHandler)
+        view.handleSubmitAction(actionView: NSButton(), dataJson: nil)
+        
+        XCTAssertEqual("Value", actionDelegate.dict["Key"] as? String)
+    }
+    
+    func testInputHandlerWhenisValidFalse() {
+        let testinputHandler = FakeInputHandlingView()
+        testinputHandler.value = "Value"
+        testinputHandler.key = "Key"
+        testinputHandler.isValid = false
+        
+        view.addInputHandler(testinputHandler)
+        view.handleSubmitAction(actionView: NSButton(), dataJson: nil)
+        
+        XCTAssertEqual(0, actionDelegate.dict.count)
+    }
+    
+    func testInputHandlerWithMultipleValues() {
+        let testinputHandler1 = FakeInputHandlingView()
+        testinputHandler1.value = "Value1"
+        testinputHandler1.key = "Key1"
+        testinputHandler1.isValid = true
+        view.addInputHandler(testinputHandler1)
+        
+        let testinputHandler2 = FakeInputHandlingView()
+        testinputHandler2.value = "Value2"
+        testinputHandler2.key = "Key2"
+        testinputHandler2.isValid = true
+        view.addInputHandler(testinputHandler2)
+        
+        view.handleSubmitAction(actionView: NSButton(), dataJson: nil)
+        
+        XCTAssertEqual(2, actionDelegate.dict.count)
+        XCTAssertEqual("Value1", actionDelegate.dict["Key1"] as? String)
+        XCTAssertEqual("Value2", actionDelegate.dict["Key2"] as? String)
+    }
+    
+    func testInputHandlerWithDataJson() {
+        let testinputHandler = FakeInputHandlingView()
+        testinputHandler.value = "Value"
+        testinputHandler.key = "Key"
+        testinputHandler.isValid = true
+        view.addInputHandler(testinputHandler)
+        view.handleSubmitAction(actionView: NSButton(), dataJson: "{\"id\":\"1234567890\"}\n")
+        
+        XCTAssertEqual(2, actionDelegate.dict.count)
+        XCTAssertEqual("Value", actionDelegate.dict["Key"] as? String)
+        XCTAssertEqual("1234567890", actionDelegate.dict["id"] as? String)
     }
 }
 
-private class fakeInputHandlingView: NSView, InputHandlingViewProtocol {
+private class FakeInputHandlingView: NSView, InputHandlingViewProtocol {
     var value: String = NSUUID().uuidString
     var key: String = NSUUID().uuidString
     var isValid: Bool = true

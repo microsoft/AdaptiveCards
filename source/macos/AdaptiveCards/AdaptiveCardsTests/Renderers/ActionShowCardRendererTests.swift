@@ -7,6 +7,7 @@ class ActionShowCardRendererTests: XCTestCase {
     private var actionShowCard: FakeShowCardAction!
     private var acrView: ACRView!
     private var actionShowCardRenderer: ActionShowCardRenderer!
+    private var targetHandlerDelegate: FakeTargetHandlerDelegate!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -14,6 +15,7 @@ class ActionShowCardRendererTests: XCTestCase {
         actionShowCard = .make()
         acrView = ACRView(style: .default, hostConfig: hostConfig, renderConfig: .default)
         actionShowCardRenderer = ActionShowCardRenderer()
+        targetHandlerDelegate = FakeTargetHandlerDelegate()
     }
     
     func testRendersChevronButton() {
@@ -35,8 +37,16 @@ class ActionShowCardRendererTests: XCTestCase {
         XCTAssertEqual(button.target as! ActionShowCardTarget, target)
     }
     
+    func testShowCardActionCalled() {
+        actionShowCard = .make(card: FakeAdaptiveCard.make())
+        let button = renderButton()
+        button.performClick()
+        XCTAssertEqual(targetHandlerDelegate.calledView, button)
+        XCTAssertTrue(targetHandlerDelegate.isShowCardActionCalled)
+    }
+    
     private func renderButton() -> ACRButton {
-        let view = actionShowCardRenderer.render(action: actionShowCard, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), inputs: [], config: .default)
+        let view = actionShowCardRenderer.render(action: actionShowCard, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), targetHandlerDelegate: targetHandlerDelegate, inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRButton)
         guard let button = view as? ACRButton else { fatalError() }

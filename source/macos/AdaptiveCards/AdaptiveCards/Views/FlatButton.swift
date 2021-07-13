@@ -490,7 +490,7 @@ open class FlatButton: NSButton, CALayerDelegate {
     override open func keyUp(with event: NSEvent) {
         super.keyUp(with: event)
         if event.keyCode == UInt16(kVK_Space) && momentary {
-            toggleState()
+            state = .off
         }
     }
     

@@ -30,6 +30,10 @@
 		082E59B32604EE1F00741958 /* ActionShowCardRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082E59B22604EE1F00741958 /* ActionShowCardRendererTests.swift */; };
 		0830D54825F8EBF300BBC245 /* ActionOpenURLRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0830D54725F8EBF300BBC245 /* ActionOpenURLRenderer.swift */; };
 		0830D55125F90D4C00BBC245 /* Targets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0830D55025F90D4C00BBC245 /* Targets.swift */; };
+		08352EA22695C09100B544C3 /* ACRActionSetViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08352EA12695C09100B544C3 /* ACRActionSetViewTests.swift */; };
+		08352EA52695CFB300B544C3 /* FakeInternalId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08352EA42695CFB300B544C3 /* FakeInternalId.swift */; };
+		08352EAA2695DE9200B544C3 /* TestResources.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08352EA92695DE9200B544C3 /* TestResources.xcassets */; };
+		08352EAD2695E8C600B544C3 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08352EAC2695E8C600B544C3 /* TestHelpers.swift */; };
 		083E513725C2F87B007247A9 /* ACSHostConfigParseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 083E513625C2F87B007247A9 /* ACSHostConfigParseResult.m */; };
 		083E513E25C2F8C1007247A9 /* ACSHostConfigParseResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 083E513525C2F868007247A9 /* ACSHostConfigParseResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		083EA8E725C19E1000DE2BF7 /* ACSDelimiterTypeConvertor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 083EA7A825C19E0F00DE2BF7 /* ACSDelimiterTypeConvertor.mm */; };
@@ -705,6 +709,10 @@
 		082E59B22604EE1F00741958 /* ActionShowCardRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionShowCardRendererTests.swift; sourceTree = "<group>"; };
 		0830D54725F8EBF300BBC245 /* ActionOpenURLRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionOpenURLRenderer.swift; sourceTree = "<group>"; };
 		0830D55025F90D4C00BBC245 /* Targets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Targets.swift; sourceTree = "<group>"; };
+		08352EA12695C09100B544C3 /* ACRActionSetViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRActionSetViewTests.swift; sourceTree = "<group>"; };
+		08352EA42695CFB300B544C3 /* FakeInternalId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInternalId.swift; sourceTree = "<group>"; };
+		08352EA92695DE9200B544C3 /* TestResources.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TestResources.xcassets; sourceTree = "<group>"; };
+		08352EAC2695E8C600B544C3 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		083E513525C2F868007247A9 /* ACSHostConfigParseResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACSHostConfigParseResult.h; sourceTree = "<group>"; };
 		083E513625C2F87B007247A9 /* ACSHostConfigParseResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACSHostConfigParseResult.m; sourceTree = "<group>"; };
 		083EA7A825C19E0F00DE2BF7 /* ACSDelimiterTypeConvertor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACSDelimiterTypeConvertor.mm; sourceTree = "<group>"; };
@@ -1179,6 +1187,8 @@
 				082D913225D67440000226C4 /* Renderers */,
 				082D912925D66FEE000226C4 /* Fakes */,
 				08299E3D25AF254000799C66 /* AdaptiveCardsTests.swift */,
+				08352EAC2695E8C600B544C3 /* TestHelpers.swift */,
+				08352EA92695DE9200B544C3 /* TestResources.xcassets */,
 				08299E3F25AF254000799C66 /* Info.plist */,
 			);
 			path = AdaptiveCardsTests;
@@ -1347,6 +1357,7 @@
 				082E59AD2604E96E00741958 /* FakeAdaptiveCard.swift */,
 				08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */,
 				2982B3FE26289F1700E7561C /* FakeBackgroundImage.swift */,
+				08352EA42695CFB300B544C3 /* FakeInternalId.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -1834,6 +1845,7 @@
 				81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */,
 				08C86F47260E0843005252B0 /* ACRViewTests.swift */,
 				81AFEA7526281B9400DD47E0 /* ACRNumericTextFieldTests.swift */,
+				08352EA12695C09100B544C3 /* ACRActionSetViewTests.swift */,
 				08E9A59C268DA48F009D7151 /* ImageSetImageViewTests.swift */,
 			);
 			path = Views;
@@ -2232,6 +2244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08352EAA2695DE9200B544C3 /* TestResources.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2339,11 +2352,13 @@
 				29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */,
 				A04EA82925F00F3400C4C7DB /* FakeImage.swift in Sources */,
 				0801EDC325F7914200D64C86 /* ColumnRendererTests.swift in Sources */,
+				08352EAD2695E8C600B544C3 /* TestHelpers.swift in Sources */,
 				81C037242604AB9D00B33324 /* BackgroundImageViewTests.swift in Sources */,
 				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
 				08FFAC322608DBCA00296D62 /* FakeOpenURLAction.swift in Sources */,
 				082E59A92604E76E00741958 /* FakeShowCardAction.swift in Sources */,
 				28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */,
+				08352EA52695CFB300B544C3 /* FakeInternalId.swift in Sources */,
 				082E59AE2604E96E00741958 /* FakeAdaptiveCard.swift in Sources */,
 				81AFEA7626281B9400DD47E0 /* ACRNumericTextFieldTests.swift in Sources */,
 				0801EDB425F78EB800D64C86 /* FakeColumnSet.swift in Sources */,
@@ -2376,6 +2391,7 @@
 				13B13E4E25E75239005D9380 /* InputDateRendererTests.swift in Sources */,
 				13C41B0B25F25836008A1F2E /* InputTimeRendererTests.swift in Sources */,
 				2910CF112600D2CC000910C8 /* ActionSetRendererTests.swift in Sources */,
+				08352EA22695C09100B544C3 /* ACRActionSetViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

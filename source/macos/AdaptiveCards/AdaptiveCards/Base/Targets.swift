@@ -2,7 +2,7 @@ import AdaptiveCards_bridge
 import AppKit
 
 class ActionOpenURLTarget: NSObject, TargetHandler {
-    weak var delegate: TargetHandlerDelegate?
+    private (set) weak var delegate: TargetHandlerDelegate?
     let url: String
     
     init(element: ACSOpenUrlAction, delegate: TargetHandlerDelegate) {
@@ -25,7 +25,7 @@ class ActionOpenURLTarget: NSObject, TargetHandler {
 }
     
 class ActionSubmitTarget: NSObject, TargetHandler {
-    weak var delegate: TargetHandlerDelegate?
+    private (set) weak var delegate: TargetHandlerDelegate?
     let dataJson: String?
     
     init(element: ACSSubmitAction, delegate: TargetHandlerDelegate) {
@@ -48,12 +48,13 @@ class ActionSubmitTarget: NSObject, TargetHandler {
 }
 
 class ActionShowCardTarget: NSObject, TargetHandler {
-    weak var delegate: TargetHandlerDelegate?
+    private (set) weak var delegate: TargetHandlerDelegate?
     let showCard: ACSAdaptiveCard
 
     init(element: ACSAdaptiveCard, delegate: TargetHandlerDelegate) {
         self.showCard = element
         self.delegate = delegate
+        assert(delegate is ShowCardTargetHandlerDelegate)
     }
     
     func configureAction(for button: NSButton) {
@@ -64,6 +65,10 @@ class ActionShowCardTarget: NSObject, TargetHandler {
     func handleSelectionAction(for actionView: NSView) { }
     
     @objc private func handleButtonAction(_ sender: NSButton) {
-        delegate?.handleShowCardAction(button: sender, showCard: showCard)
+        guard let showCardHandler = delegate as? ShowCardTargetHandlerDelegate else {
+            logError("delegate should be of type 'ShowCardHandlerDelegate'")
+            return
+        }
+        showCardHandler.handleShowCardAction(button: sender, showCard: showCard)
     }
 }

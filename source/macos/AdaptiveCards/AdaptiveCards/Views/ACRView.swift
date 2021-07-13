@@ -1,43 +1,19 @@
 import AdaptiveCards_bridge
 import AppKit
 
-protocol ACRViewDelegate: AnyObject {
-    func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView)
-    func acrView(_ view: ACRView, didSubmitUserResponses dict: [String: Any], actionView: NSView)
-    func acrView(_ view: ACRView, didShowCardWith actionView: NSView, previousHeight: CGFloat, newHeight: CGFloat)
-    func acrView(_ view: ACRView, didUpdateBoundsFrom oldValue: NSRect, to newValue: NSRect)
-}
-
-protocol ACRViewResourceResolverDelegate: AnyObject {
-    func resolve(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize?
-    func resolve(_ adaptiveCard: ImageResourceHandlerView, requestImageFor url: String)
-    func resolve(_ adaptiveCard: NSView, attributedStringFor htmlString: String) -> NSAttributedString?
-}
-
 class ACRView: ACRColumnView {
-    typealias ShowCardItems = (id: NSNumber, button: NSButton, showCard: NSView)
-    
-    weak var delegate: ACRViewDelegate?
-    weak var resolverDelegate: ACRViewResourceResolverDelegate?
+    weak var delegate: AdaptiveCardActionDelegate?
+    weak var resolverDelegate: AdaptiveCardResourceResolver?
     weak var parent: ACRView?
     
     let renderConfig: RenderConfig
 
     private (set) var targets: [TargetHandler] = []
     private (set) var inputHandlers: [InputHandlingViewProtocol] = []
-    private (set) var showCardsMap: [NSNumber: NSView] = [:]
-    private (set) var currentShowCardItems: ShowCardItems?
-	private (set) var imageViewMap: [String: [ImageHoldingView]] = [:]
+    private (set) var imageViewMap: [String: [ImageHoldingView]] = [:]
+    private (set) var renderedShowCards: [NSView] = []
+    private (set) var initialLayoutDone = false
     private var currentFocusedActionElement: NSCell?
-    
-    private (set) lazy var showCardStackView: NSStackView = {
-        let view = NSStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.orientation = .vertical
-        view.alignment = .leading
-        view.spacing = 0
-        return view
-    }()
     
     init(style: ACSContainerStyle, hostConfig: ACSHostConfig, renderConfig: RenderConfig) {
         self.renderConfig = renderConfig
@@ -50,28 +26,17 @@ class ACRView: ACRColumnView {
     }
     
     private var previousBounds: NSRect?
+    private var boundsBeforeShowCard: NSRect?
     override func layout() {
         super.layout()
         guard window != nil else { return }
         if let pBounds = previousBounds, bounds.height != pBounds.height {
-            logInfo("AdaptiveCards: layout change called from \(pBounds.height) to \(bounds.height) for id: \(identifier?.rawValue ?? "nil")")
-            delegate?.acrView(self, didUpdateBoundsFrom: pBounds, to: bounds)
+            delegate?.adaptiveCard(self, didUpdateBoundsFrom: pBounds, to: bounds)
+            initialLayoutDone = true
+            parent?.resetKeyboardFocus()
             resetKeyboardFocus()
         }
         previousBounds = bounds
-    }
-    
-    override func setupViews() {
-        super.setupViews()
-        addSubview(showCardStackView)
-    }
-    
-    override func setupConstraints() {
-        super.setupConstraints()
-        anchorBottomConstraint(with: showCardStackView.topAnchor)
-        showCardStackView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        showCardStackView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        showCardStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
     
     func addTarget(_ target: TargetHandler) {
@@ -82,14 +47,8 @@ class ACRView: ACRColumnView {
         inputHandlers.append(handler)
     }
     
-    func addShowCard(_ cardView: ACRView) {
-        cardView.parent = self
-        showCardStackView.addArrangedSubview(cardView)
-        cardView.widthAnchor.constraint(equalTo: showCardStackView.widthAnchor).isActive = true
-    }
-    
     func resolveAttributedString(for htmlString: String) -> NSAttributedString? {
-        return resolverDelegate?.resolve(self, attributedStringFor: htmlString)
+        return resolverDelegate?.adaptiveCard(self, attributedStringFor: htmlString)
     }
     
     func registerImageHandlingView(_ view: ImageHoldingView, for url: String) {
@@ -100,67 +59,29 @@ class ACRView: ACRColumnView {
     }
     
     func getImageDimensions(for url: String) -> NSSize? {
-        return resolverDelegate?.resolve(self, dimensionsForImageWith: url)
+        return resolverDelegate?.adaptiveCard(self, dimensionsForImageWith: url)
     }
     
     func dispatchResolveRequests() {
         for url in imageViewMap.keys {
-            resolverDelegate?.resolve(self, requestImageFor: url)
+            resolverDelegate?.adaptiveCard(self, requestImageFor: url)
         }
     }
     
-    private func resetKeyboardFocus {
-        currentFocusedActionElement?.setAccessibilityFocused(true)
+    func resetKeyboardFocus() {
+        guard isInitialLayoutComplete, let lastFocusedElement = currentFocusedActionElement else { return }
+        lastFocusedElement.setAccessibilityFocused(true)
         currentFocusedActionElement = nil
     }
-}
-
-extension ACRView: TargetHandlerDelegate {
-    func handleShowCardAction(button: NSButton, showCard: ACSAdaptiveCard) {
-        guard let cardId = showCard.getInternalId()?.hash() else {
-            logError("Card InternalID is nil")
-            return
+    
+    private var isInitialLayoutComplete: Bool {
+        guard let firstOpenChildCard = renderedShowCards.first(where: { !$0.isHidden }) as? ACRView else {
+            return initialLayoutDone
         }
-        
-        if let buttonCell = button.cell, buttonCell.isAccessibilityFocused() {
-            currentFocusedActionElement = buttonCell
-        }
-        
-        func manageShowCard(with id: NSNumber) {
-            let cardView = showCardsMap[id] ?? AdaptiveCardRenderer.shared.renderShowCard(showCard, with: hostConfig, parent: self, config: renderConfig)
-            showCardsMap[cardId] = cardView
-            currentShowCardItems = (cardId, button, cardView)
-            cardView.isHidden = false
-            return
-        }
-        
-        let currHeight = bounds.height
-        if button.state == .on {
-            if let currentCardItems = currentShowCardItems {
-                // Has a current open or closed showCard
-                if currentCardItems.id == cardId {
-                    // current card needs to be shown
-                    currentCardItems.showCard.isHidden = false
-                } else {
-                    // different card needs to shown
-                    currentCardItems.showCard.isHidden = true
-                    currentCardItems.button.state = .off
-                    manageShowCard(with: cardId)
-                }
-            } else {
-                manageShowCard(with: cardId)
-            }
-        } else {
-            currentShowCardItems?.showCard.isHidden = true
-        }
-        delegate?.acrView(self, didShowCardWith: button, previousHeight: currHeight, newHeight: bounds.height)
+        return firstOpenChildCard.initialLayoutDone && initialLayoutDone
     }
     
-    func handleOpenURLAction(actionView: NSView, urlString: String) {
-        delegate?.acrView(self, didSelectOpenURL: urlString, actionView: actionView)
-    }
-    
-    func handleSubmitAction(actionView: NSView, dataJson: String?) {
+    private func submitCardInputs(actionView: NSView, dataJSON: String?) {
         var dict = [String: Any]()
         
         // recursively fetch input handlers dictionary from the parent
@@ -179,10 +100,47 @@ extension ACRView: TargetHandlerDelegate {
             parentView = parentView?.parent
         } while parentView != nil
       
-        if let data = dataJson?.data(using: String.Encoding.utf8), let dataJsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+        if let data = dataJSON?.data(using: String.Encoding.utf8), let dataJsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             dict.merge(dataJsonDict) { current, _ in current }
         }
-        delegate?.acrView(rootView, didSubmitUserResponses: dict, actionView: actionView)
+        delegate?.adaptiveCard(rootView, didSubmitUserResponses: dict, actionView: actionView)
+    }
+}
+
+extension ACRView: ACRActionSetViewDelegate {
+    func actionSetView(_ view: ACRActionSetView, didOpenURLWith actionView: NSView, urlString: String) {
+        delegate?.adaptiveCard(self, didSelectOpenURL: urlString, actionView: actionView)
+    }
+    
+    func actionSetView(_ view: ACRActionSetView, didSubmitInputsWith actionView: NSView, dataJson: String?) {
+        submitCardInputs(actionView: actionView, dataJSON: dataJson)
+    }
+    
+    func actionSetView(_ view: ACRActionSetView, willShowCardWith button: NSButton) {
+        boundsBeforeShowCard = bounds
+        if let buttonCell = button.cell, buttonCell.isAccessibilityFocused() {
+            currentFocusedActionElement = buttonCell
+        }
+    }
+    
+    func actionSetView(_ view: ACRActionSetView, didShowCardWith button: NSButton) {
+        delegate?.adaptiveCard(self, didShowCardWith: button, previousHeight: boundsBeforeShowCard?.height ?? -1, newHeight: bounds.height)
+    }
+    
+    func actionSetView(_ view: ACRActionSetView, renderShowCardFor cardData: ACSAdaptiveCard) -> NSView {
+        let cardView = AdaptiveCardRenderer.shared.renderShowCard(cardData, with: hostConfig, parent: self, config: renderConfig)
+        renderedShowCards.append(cardView)
+        return cardView
+    }
+}
+
+extension ACRView: TargetHandlerDelegate {
+    func handleOpenURLAction(actionView: NSView, urlString: String) {
+        delegate?.adaptiveCard(self, didSelectOpenURL: urlString, actionView: actionView)
+    }
+    
+    func handleSubmitAction(actionView: NSView, dataJson: String?) {
+        submitCardInputs(actionView: actionView, dataJSON: dataJson)
     }
 }
 
@@ -206,7 +164,7 @@ extension ACRView: ImageResourceHandlerView {
                 .filter { matcher($0) }
                 .forEach { self.setImage(image, for: $0) }
             
-            self.showCardsMap.values
+            self.renderedShowCards
                 .compactMap { $0 as? ImageResourceHandlerView }
                 .forEach { $0.setImage(image, forURLsContaining: matcher) }
         }
