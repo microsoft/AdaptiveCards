@@ -12,6 +12,7 @@ jobs:
               uses: microsoft/accessibility-insights-action@v2
               with:
                   url: http://adaptivecards-ci.azurewebsites.net/
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Upload report artifact
               uses: actions/upload-artifact@v2
