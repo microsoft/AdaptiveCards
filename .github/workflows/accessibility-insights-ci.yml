@@ -13,9 +13,9 @@ jobs:
             - name: Scan for accessibility issues
               uses: microsoft/accessibility-insights-action@v2
               with:
-                  url: http://adaptivecards-ci.azurewebsites.net/explorer/
+                  url: http://adaptivecards-ci.azurewebsites.net/samples/
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
-                  discovery-patterns: ".*explorer/.*"
+                  discovery-patterns: http://adaptivecards-ci.azurewebsites.net/samples[.*]
 
             - name: Upload report artifact
               uses: actions/upload-artifact@v2
