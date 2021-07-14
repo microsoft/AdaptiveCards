@@ -106,11 +106,7 @@ export class ContainerWrapper extends React.PureComponent {
 
         // bleed
         if (this.payload.bleed && this.props.containerStyle) {
-            const { isFirst, isLast } = this.props;
-            const marginLeft = isFirst ? -Constants.containerPadding : 0;
-            const marginRight = isLast ? -Constants.containerPadding : 0;
-
-            computedStyles.push({ marginVertical: -containerPadding, marginLeft, marginRight });
+            computedStyles.push({ padding: -Constants.containerPadding });
         }
 
         // height 
