@@ -6,13 +6,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
+            # - name: Wait for JS pipeline
+            # - uses: lewagon/wait-on-check-action@v0.2
+            # - with:
 
             - name: Scan for accessibility issues
               uses: microsoft/accessibility-insights-action@v2
               with:
-                  url: http://adaptivecards-ci.azurewebsites.net/
+                  url: http://adaptivecards-ci.azurewebsites.net/explorer/
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
+                  discovery-patterns: ".*explorer/.*"
 
             - name: Upload report artifact
               uses: actions/upload-artifact@v2
