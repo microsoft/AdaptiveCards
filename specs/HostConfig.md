@@ -112,7 +112,7 @@
 
 ## ShowCardConfig|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
-|**actionMode**|`string`| No, default: `"inline"`|Controls how the card is displayed|1.0
+|**actionMode**|`string`| No, default: `"inline"`|Controls how the card is displayed. Note: Popup show cards are not recommended for cards with input validation, and may be deprecated in the future.|1.0
 |**style**|`object`| No, default: `emphasis`|Controls styling of a container|1.0
 |**inlineTopMargin**|`integer`| No, default: `16`|Amount of margin to use when displaying the card|1.0
 

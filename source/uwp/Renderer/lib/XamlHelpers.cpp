@@ -764,7 +764,7 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(labelRun.As(&labelRunAsInline));
 
             RETURN_IF_FAILED(xamlInlines->Append(labelRunAsInline.Get()));
-           
+
             // Get the label config depending if the input is required
             ComPtr<IAdaptiveHostConfig> hostConfig;
             RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -800,9 +800,9 @@ namespace AdaptiveNamespace::XamlHelpers
         else if (isRequired)
         {
             // if there was no label but the input is required file a warning for the card author
-            RETURN_IF_FAILED(
-                renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::EmptyLabelInRequiredInput,
-                                          HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
+            RETURN_IF_FAILED(renderContext->AddWarning(
+                ABI::AdaptiveNamespace::WarningStatusCode::EmptyLabelInRequiredInput,
+                HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
         }
 
         return S_OK;
@@ -1073,6 +1073,22 @@ namespace AdaptiveNamespace::XamlHelpers
         RETURN_IF_FAILED(adaptiveInput->get_IsRequired(&isRequired));
 
         boolean hasValidation = (hasTypeSpecificValidation || isRequired);
+
+        if (hasValidation)
+        {
+            // If we have validation, we should have an error message to display if it fails. If we don't, return a
+            // warning to encourage the card author to add one.
+
+            HString errorMessage;
+            RETURN_IF_FAILED(adaptiveInput->get_ErrorMessage(errorMessage.GetAddressOf()));
+
+            if (!errorMessage.IsValid())
+            {
+                RETURN_IF_FAILED(
+                    renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::MissingValidationErrorMessage,
+                                              HStringReference(L"Inputs with validation should include an errorMessage").Get()));
+            }
+        }
 
         ComPtr<IBorder> validationBorder;
         if (validationBorderOut && hasValidation)

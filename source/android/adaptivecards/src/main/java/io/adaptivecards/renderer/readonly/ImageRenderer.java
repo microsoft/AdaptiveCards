@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.os.AsyncTask;
 import android.widget.RelativeLayout;
 
 import io.adaptivecards.objectmodel.CardElementType;
@@ -192,7 +192,19 @@ public class ImageRenderer extends BaseCardElementRenderer
             // TODO: Instead of failing, proceed to render w/ default size "auto"
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(viewWidth, viewHeight));
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+        if (params == null)
+        {
+            params = new LinearLayout.LayoutParams(viewWidth, viewHeight);
+        }
+        else
+        {
+            params.width = viewWidth;
+            params.height = viewHeight;
+        }
+        
+        imageView.setLayoutParams(params);
     }
 
     private int getBackgroundColorFromHexCode(String hexColorCode)
@@ -296,15 +308,15 @@ public class ImageRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs) throws Exception
+            RenderArgs renderArgs)
     {
         Image image = Util.castTo(baseCardElement, Image.class);
 
-        View separator = null;
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
+        View separator = null;
         if (isInImageSet)
         {
-            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, false /* horizontal line */, isInImageSet);
+            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
         }
 
         ImageView imageView = new ImageView(context);

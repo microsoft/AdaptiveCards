@@ -1,6 +1,7 @@
 package io.adaptivecards.objectmodel;
 
 import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
 
 import org.w3c.dom.Text;
 
@@ -28,11 +29,15 @@ public class TestUtil
 
             T cardElement = command.getMockObject();
             command.set(testCases[i], cardElement);
-            Assert.assertEquals(inputJson, cardElement.Serialize());
+            String outputJson = cardElement.Serialize();
+            Assert.assertEquals(inputJson, outputJson);
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputJson), "1.0");
+            String fullCard = TestUtil.encloseElementJsonInCard(inputJson);
+            ParseResult result = AdaptiveCard.DeserializeFromString(fullCard, "1.0");
             T parsedInput = command.castTo(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(testCases[i], command.get(parsedInput));
+            String serializedPostParse = parsedInput.Serialize();
+            E getResult = command.get(parsedInput);
+            Assert.assertEquals(testCases[i], getResult);
         }
     }
 

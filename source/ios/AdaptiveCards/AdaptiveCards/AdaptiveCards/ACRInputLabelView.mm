@@ -201,7 +201,7 @@
             *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
         }
         return NO;
-    } else if (predicate) {
+    } else if (hasText && predicate) {
         return [predicate evaluateWithObject:text];
     }
     return YES;

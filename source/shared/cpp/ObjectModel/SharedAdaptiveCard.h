@@ -94,6 +94,7 @@ namespace AdaptiveSharedNamespace
 
         CardElementType GetElementType() const;
 #ifdef __ANDROID__
+#pragma GCC diagnostic ignored "-Wdynamic-exception-spec"
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 std::string rendererVersion,
                                                                 ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);

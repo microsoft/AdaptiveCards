@@ -44,7 +44,7 @@
         },
         "card": {
           "$ref": "#/definitions/AdaptiveCard",
-          "description": "The Adaptive Card to show."
+          "description": "The Adaptive Card to show. Inputs in ShowCards will not be submitted if the submit button is located on a parent card. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more details."
         },
         "title": {},
         "iconUrl": {},
@@ -61,7 +61,7 @@
       ]
     },
     "Action.Submit": {
-      "description": "Gathers input fields, merges with optional data field, and sends an event to the client. It is up to the client to determine how this data is processed. For example: With BotFramework bots, the client would send an activity through the messaging medium to the bot.",
+      "description": "Gathers input fields, merges with optional data field, and sends an event to the client. It is up to the client to determine how this data is processed. For example: With BotFramework bots, the client would send an activity through the messaging medium to the bot. The inputs that are gathered are those on the current card, and in the case of a show card those on any parent cards. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more details.",
       "properties": {
         "type": {
           "enum": [
@@ -109,7 +109,7 @@
           "items": {
             "$ref": "#/definitions/TargetElement"
           },
-          "description": "The array of TargetElements"
+          "description": "The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information."
         },
         "title": {},
         "iconUrl": {},

@@ -206,9 +206,6 @@
     <ClInclude Include="..\..\ObjectModel\ActionSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\AdaptiveBase64Util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -281,28 +278,13 @@
     <ClInclude Include="..\..\ObjectModel\MarkDownParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\Media.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\MediaSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\ObjectModel\NumberInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\OpenUrlAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\ParseContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\ObjectModel\ParseUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\SemanticVersion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\pch.h">
@@ -332,12 +314,6 @@
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityTarget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\ObjectModel\UnknownElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -360,9 +336,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\ParseContext.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\BackgroundImage.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\ToggleVisibilityAction.h">
@@ -393,6 +366,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\RichTextElementProperties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\Media.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\BackgroundImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\AdaptiveBase64Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\MediaSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\SemanticVersion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ParseContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

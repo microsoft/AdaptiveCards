@@ -354,7 +354,7 @@
 			"properties": {
 				"actionMode": {
 					"type": "string",
-					"description": "Controls how the card is displayed",
+					"description": "Controls how the card is displayed. Note: Popup show cards are not recommended for cards with input validation, and may be deprecated in the future.",
 					"enum": [
 						"inline",
 						"popup"

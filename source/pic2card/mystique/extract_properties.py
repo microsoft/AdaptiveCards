@@ -1,16 +1,16 @@
 """Module for extracting design element's properties"""
 
-import math
-from io import BytesIO
 import base64
+import math
+import operator
+from io import BytesIO
 from typing import Tuple, Dict
 
-from pytesseract import pytesseract
-from PIL import Image
 import cv2
 import numpy as np
-
+from PIL import Image
 from mystique import default_host_configs
+from pytesseract import pytesseract
 
 
 class ExtractProperties:
@@ -40,19 +40,19 @@ class ExtractProperties:
         # extract the background color
         background_color = quantized.getpalette()[:3]
         colors = {
-            "destructive": [
-                (255, 0, 0),
-                (180, 8, 0),
-                (220, 54, 45),
-                (194, 25, 18),
-                (143, 7, 0)
-            ],
-            "positive": [
-                (0, 0, 255),
-                (7, 47, 95),
-                (18, 97, 160),
-                (56, 149, 211)
-            ]
+                "destructive": [
+                        (255, 0, 0),
+                        (180, 8, 0),
+                        (220, 54, 45),
+                        (194, 25, 18),
+                        (143, 7, 0)
+                ],
+                "positive": [
+                        (0, 0, 255),
+                        (7, 47, 95),
+                        (18, 97, 160),
+                        (56, 149, 211)
+                ]
         }
         style = "default"
         found_colors = []
@@ -61,9 +61,10 @@ class ExtractProperties:
         for key, values in colors.items():
             for value in values:
                 distance = np.sqrt(
-                    np.sum(
-                        (np.asarray(value) - np.asarray(background_color)) ** 2
-                    )
+                        np.sum(
+                                (np.asarray(value) - np.asarray(
+                                        background_color)) ** 2
+                        )
                 )
                 if distance <= 150:
                     found_colors.append(key)
@@ -87,11 +88,11 @@ class ExtractProperties:
         cropped_image = image.crop(coords)
         cropped_image = cropped_image.convert("LA")
         w, h = cropped_image.size
-        cropped_image = cropped_image.resize((w*10, h*10),
+        cropped_image = cropped_image.resize((w * 10, h * 10),
                                              Image.ANTIALIAS)
 
         return pytesseract.image_to_string(
-            cropped_image, lang="eng", config="--psm 6")
+                cropped_image, lang="eng", config="--psm 6")
 
     def get_size_and_weight(self, image=None, coords=None):
         """
@@ -114,7 +115,7 @@ class ExtractProperties:
         edged = cv2.Canny(img, 30, 200)
         # contours bulding
         _, contours, _ = cv2.findContours(
-            edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+                edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         box_width = []
         box_height = []
         # calculate the average width and height of the contour
@@ -154,17 +155,30 @@ class ExtractProperties:
     def get_alignment(self, image=None, xmin=None, xmax=None):
         """
         Get the horizontal alignment of the elements by defining a
-        thresold based on the xmin and xmax of each object.
+        ratio based on the xmin and xmax center of each object.
+
+        if a element's xmin and xmax avg lies within:
+        0 - 45 % [ left range ] of the image width
+        45 - 55% [ center rance ] of the image width
+        > 55% [ right range ] of the image width
 
         @param image: input PIL image
         @param xmin: xmin of the object detected
         @param xmax: xmax of the object detected
 
-        @return: position string[ Left/Right/Center]
+        @return: position string[Left/Right/Center]
         """
 
         avg = math.ceil((xmin + xmax) / 2)
         w, h = image.size
+        #  if an object lies within the 15% of the start of the image then the
+        #  object is considered as left by default [to avoid any lengthy
+        # textbox coming into center when considering the xmin and xmax center]
+        left_range = (w * 15) / 100
+        if math.floor(xmin) <= math.ceil(left_range) or abs(
+                xmin - left_range) < 10:
+            return "Left"
+
         if 0 <= (avg / w) * 100 < 45:
             return "Left"
         elif 45 <= (avg / w) * 100 < 55:
@@ -191,46 +205,46 @@ class ExtractProperties:
         dominant_color = q.getpalette()[3:6]
 
         colors = {
-            "Attention": [
-                (255, 0, 0),
-                (180, 8, 0),
-                (220, 54, 45),
-                (194, 25, 18),
-                (143, 7, 0)
-            ],
-            "Accent": [
-                (0, 0, 255),
-                (7, 47, 95),
-                (18, 97, 160),
-                (56, 149, 211)
-            ],
-            "Good": [
-                (0, 128, 0),
-                (145, 255, 0),
-                (30, 86, 49),
-                (164, 222, 2),
-                (118, 186, 27),
-                (76, 154, 42),
-                (104, 187, 89)
-            ],
-            "Dark": [
-                (0, 0, 0),
-                (76, 76, 76),
-                (51, 51, 51),
-                (102, 102, 102),
-                (153, 153, 153)
-            ],
-            "Light": [
-                (255, 255, 255)
-            ],
-            "Warning": [
-                (255, 255, 0),
-                (255, 170, 0),
-                (184, 134, 11),
-                (218, 165, 32),
-                (234, 186, 61),
-                (234, 162, 33)
-            ]
+                "Attention": [
+                        (255, 0, 0),
+                        (180, 8, 0),
+                        (220, 54, 45),
+                        (194, 25, 18),
+                        (143, 7, 0)
+                ],
+                "Accent": [
+                        (0, 0, 255),
+                        (7, 47, 95),
+                        (18, 97, 160),
+                        (56, 149, 211)
+                ],
+                "Good": [
+                        (0, 128, 0),
+                        (145, 255, 0),
+                        (30, 86, 49),
+                        (164, 222, 2),
+                        (118, 186, 27),
+                        (76, 154, 42),
+                        (104, 187, 89)
+                ],
+                "Dark": [
+                        (0, 0, 0),
+                        (76, 76, 76),
+                        (51, 51, 51),
+                        (102, 102, 102),
+                        (153, 153, 153)
+                ],
+                "Light": [
+                        (255, 255, 255)
+                ],
+                "Warning": [
+                        (255, 255, 0),
+                        (255, 170, 0),
+                        (184, 134, 11),
+                        (218, 165, 32),
+                        (234, 186, 61),
+                        (234, 162, 33)
+                ]
         }
         color = "Default"
         found_colors = []
@@ -239,7 +253,7 @@ class ExtractProperties:
         for key, values in colors.items():
             for value in values:
                 distance = np.sqrt(np.sum(
-                    (np.asarray(value) - np.asarray(dominant_color)) ** 2))
+                        (np.asarray(value) - np.asarray(dominant_color)) ** 2))
                 if distance <= 150:
                     found_colors.append(key)
                     distances.append(distance)
@@ -252,9 +266,9 @@ class ExtractProperties:
                 background = q.getpalette()[:3]
                 foreground = q.getpalette()[3:6]
                 distance = np.sqrt(
-                    np.sum(
-                        (np.asarray(background) -
-                         np.asarray(foreground)) ** 2))
+                        np.sum(
+                                (np.asarray(background) -
+                                 np.asarray(foreground)) ** 2))
                 if distance < 150:
                     color = "Default"
         return color
@@ -264,8 +278,34 @@ class CollectProperties(ExtractProperties):
     """
     Helps to collect the properties for respective design object.
     """
-    def __init__(self, image):
+
+    def __init__(self, image=None):
         self.pil_imgae = image
+
+    def column(self, columns: Dict):
+        """
+        Updates the horizontal alignment property for the columns,
+        based on the horizontal alignment of each items inside the column
+
+        @param columns: List of columns  [ for a columnset ]
+        """
+        for column in columns:
+            alignment = list(map(operator.itemgetter('horizontalAlignment'),
+                             column["items"]))
+            alignment = max(alignment, key=alignment.count)
+            column.update({"horizontalAlignment": alignment})
+
+    def columnset(self, columnset: Dict):
+        """
+        Updates the horizontal alignment property for the columnset,
+        based on the horizontal alignment of each column inside the columnset.
+
+        @param columnset: Columnset dict
+        """
+        alignment = list(map(operator.itemgetter('horizontalAlignment'),
+                             columnset["columns"]))
+        alignment = max(alignment, key=alignment.count)
+        columnset.update({"horizontalAlignment": alignment})
 
     def actionset(self, coords: Tuple) -> Dict:
         """
@@ -274,14 +314,14 @@ class CollectProperties(ExtractProperties):
         """
         return {
                 "horizontal_alignment": self.get_alignment(
-                    image=self.pil_imgae,
-                    xmin=coords[0],
-                    xmax=coords[2]
+                        image=self.pil_imgae,
+                        xmin=coords[0],
+                        xmax=coords[2]
                 ),
                 "data": self.get_text(image=self.pil_imgae, coords=coords),
                 "style": self.get_actionset_type(
-                    image=self.pil_imgae,
-                    coords=coords
+                        image=self.pil_imgae,
+                        coords=coords
                 )
         }
 
@@ -294,9 +334,9 @@ class CollectProperties(ExtractProperties):
                                                 coords=coords)
         return {
                 "horizontal_alignment": self.get_alignment(
-                    image=self.pil_imgae,
-                    xmin=coords[0],
-                    xmax=coords[2]
+                        image=self.pil_imgae,
+                        xmin=coords[0],
+                        xmax=coords[2]
                 ),
                 "data": self.get_text(image=self.pil_imgae, coords=coords),
                 "size": size,
@@ -312,9 +352,9 @@ class CollectProperties(ExtractProperties):
         """
         return {
                 "horizontal_alignment": self.get_alignment(
-                    image=self.pil_imgae,
-                    xmin=coords[0],
-                    xmax=coords[2]
+                        image=self.pil_imgae,
+                        xmin=coords[0],
+                        xmax=coords[2]
                 ),
                 "data": self.get_text(image=self.pil_imgae, coords=coords),
         }
@@ -326,9 +366,9 @@ class CollectProperties(ExtractProperties):
         """
         return {
                 "horizontal_alignment": self.get_alignment(
-                    image=self.pil_imgae,
-                    xmin=coords[0],
-                    xmax=coords[2]
+                        image=self.pil_imgae,
+                        xmin=coords[0],
+                        xmax=coords[2]
                 ),
                 "data": self.get_text(image=self.pil_imgae, coords=coords),
         }
@@ -357,9 +397,9 @@ class CollectProperties(ExtractProperties):
         size = size
         return {
                 "horizontal_alignment": self.get_alignment(
-                    image=self.pil_imgae,
-                    xmin=coords[0],
-                    xmax=coords[2]
+                        image=self.pil_imgae,
+                        xmin=coords[0],
+                        xmax=coords[2]
                 ),
                 "data": data,
                 "size": size

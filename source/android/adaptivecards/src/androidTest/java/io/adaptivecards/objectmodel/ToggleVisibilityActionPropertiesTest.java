@@ -124,7 +124,6 @@ public class ToggleVisibilityActionPropertiesTest
             Assert.assertEquals("id3", target.GetElementId());
             Assert.assertEquals(IsVisible.IsVisibleFalse, target.GetIsVisible());
         }
-
     }
 
     public static final String s_defaultToggleVisibilityActionJson = "{\"targetElements\":[],\"type\":\"Action.ToggleVisibility\"}\n";
