@@ -1,26 +1,24 @@
 name: accessibility-insights-ci
-on: pull_request
+on:
+  check_run:
+    types: [completed]
 
 jobs:
     accessibility-scan:
+        if: ${{ github.event.check_run['name'] == 'AdaptiveCards-NodeJS-Daily' }}
         runs-on: ubuntu-latest
-
         steps:
-            - name: Wait for JS pipeline
+            - name: Get PR number
               # Github recommends pinning third-party actions by full SHA
-              uses: lewagon/wait-on-check-action@3ac63078fe8644f15c807e6419c8a8a1ec7913f1
-              with:
-                  ref: ${{ github.ref }}
-                  check-name: 'AdaptiveCards-NodeJS-Daily'
-                  repo-token: ${{ secrets.GITHUB_TOKEN }}
-                  allowed-conclusions: success
+              uses: jwalton/gh-find-current-pr@6025da8f655f241d580c1b3a07f2f0a781349ed8
+              id: findPr
 
             - name: Scan for accessibility issues
               uses: microsoft/accessibility-insights-action@v2
               with:
-                  url: https://adaptivecardsci.z5.web.core.windows.net/pr/${{ github.event.pull_request.number }}/samples
+                  url: https://adaptivecardsci.z5.web.core.windows.net/pr/${{ steps.findPr.outputs.number }}/samples
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
-                  discovery-patterns: https://adaptivecardsci.z5.web.core.windows.net/pr/${{ github.event.pull_request.number }}/samples[.*]
+                  discovery-patterns: https://adaptivecardsci.z5.web.core.windows.net/pr/${{ steps.findPr.outputs.number }}/samples[.*]
 
             - name: Upload report artifact
               uses: actions/upload-artifact@v2
