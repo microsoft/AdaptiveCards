@@ -2,20 +2,24 @@ name: accessibility-insights-ci
 on: pull_request
 
 jobs:
-    build:
+    accessibility-scan:
         runs-on: ubuntu-latest
 
         steps:
-            # - name: Wait for JS pipeline
-            # - uses: lewagon/wait-on-check-action@v0.2
-            # - with:
+            - name: Wait for JS pipeline
+            - uses: lewagon/wait-on-check-action@v0.2
+            - with:
+                  ref: ${{ github.ref }}
+                  check-name: 'AdaptiveCards-NodeJS-Daily'
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
+                  allowed-conclusions: success
 
             - name: Scan for accessibility issues
               uses: microsoft/accessibility-insights-action@v2
               with:
-                  url: http://adaptivecards-ci.azurewebsites.net/samples/
+                  url: https://adaptivecardsci.z5.web.core.windows.net/pr/${{ github.event.pull_request.number }}/samples
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
-                  discovery-patterns: http://adaptivecards-ci.azurewebsites.net/samples[.*]
+                  discovery-patterns: https://adaptivecardsci.z5.web.core.windows.net/pr/${{ github.event.pull_request.number }}/samples[.*]
 
             - name: Upload report artifact
               uses: actions/upload-artifact@v2
