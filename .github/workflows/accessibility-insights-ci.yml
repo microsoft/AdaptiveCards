@@ -7,8 +7,8 @@ jobs:
 
         steps:
             - name: Wait for JS pipeline
-            - uses: lewagon/wait-on-check-action@v0.2
-            - with:
+              uses: lewagon/wait-on-check-action@v0.2
+              with:
                   ref: ${{ github.ref }}
                   check-name: 'AdaptiveCards-NodeJS-Daily'
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
