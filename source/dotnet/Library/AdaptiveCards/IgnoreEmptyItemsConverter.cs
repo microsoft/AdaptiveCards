@@ -24,11 +24,23 @@ namespace AdaptiveCards
         /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var array = JArray.Load(reader);
+            JToken jToken = JToken.Load(reader);
 
+            if (jToken is JObject jObject && jObject.HasValues)
+            {
+                jToken = jObject.GetValue("$values");
+            }
+
+            JArray jArray = new JArray();
+
+            if (jToken is JArray)
+            {
+                jArray = jToken as JArray;
+            }
+            
             ParseContext.Type = (objectType == typeof(List<AdaptiveElement>)) ? ParseContext.ContextType.Element : ParseContext.ContextType.Action;
 
-            return array.Children<JObject>()
+            return jArray.Children<JObject>()
                 .Where(obj => obj.HasValues)
                 .Select(obj => serializer.Deserialize(obj.CreateReader(), typeof(T)))
                 .Where(value => value != null)

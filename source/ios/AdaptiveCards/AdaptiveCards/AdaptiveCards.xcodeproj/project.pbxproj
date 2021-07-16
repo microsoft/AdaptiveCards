@@ -30,6 +30,8 @@
 		0D45F5A7261731E400EF03C5 /* ACRActionOverflowRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D45F5A6261731E400EF03C5 /* ACRActionOverflowRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		300ECB63219A12D100371DC5 /* AdaptiveBase64Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */; };
 		300ECB64219A12D100371DC5 /* AdaptiveBase64Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */; };
+		30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */; };
 		6B096D4E225431D0006CC034 /* ACRRichTextBlockRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B096D4F225431D0006CC034 /* ACRRichTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */; };
 		6B096D7E22694776006CC034 /* ACRRegistrationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D7D22694775006CC034 /* ACRRegistrationPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -331,7 +333,6 @@
 		F49683531F6CA24600DF0D3A /* ACRRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F496834F1F6CA24600DF0D3A /* ACRRenderer.mm */; };
 		F49683541F6CA24600DF0D3A /* ACRRenderResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F49683501F6CA24600DF0D3A /* ACRRenderResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F49683551F6CA24600DF0D3A /* ACRRenderResult.mm in Sources */ = {isa = PBXBuildFile; fileRef = F49683511F6CA24600DF0D3A /* ACRRenderResult.mm */; };
-		F4A5CABA1F623F4500242D62 /* AdaptiveCardsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */; };
 		F4C1F5D61F2187900018CB78 /* ACRInputDateRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */; };
 		F4C1F5DA1F218ABC0018CB78 /* ACRInputTimeRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */; };
 		F4C1F5DD1F218F920018CB78 /* ACRInputNumberRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F4C1F5DB1F218F920018CB78 /* ACRInputNumberRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -445,6 +446,8 @@
 		0D45F5A6261731E400EF03C5 /* ACRActionOverflowRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRActionOverflowRenderer.h; sourceTree = "<group>"; };
 		300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveBase64Util.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp; sourceTree = "<group>"; };
 		300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveBase64Util.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h; sourceTree = "<group>"; };
+		30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsTests.mm; sourceTree = "<group>"; };
+		30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsTextBlockTests.mm; sourceTree = "<group>"; };
 		6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRichTextBlockRenderer.h; sourceTree = "<group>"; };
 		6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRichTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6B096D7D22694775006CC034 /* ACRRegistrationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRegistrationPrivate.h; sourceTree = "<group>"; };
@@ -757,7 +760,6 @@
 		F496834F1F6CA24600DF0D3A /* ACRRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRenderer.mm; sourceTree = "<group>"; };
 		F49683501F6CA24600DF0D3A /* ACRRenderResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRenderResult.h; sourceTree = "<group>"; };
 		F49683511F6CA24600DF0D3A /* ACRRenderResult.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRenderResult.mm; sourceTree = "<group>"; };
-		F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdaptiveCardsTests.m; sourceTree = "<group>"; };
 		F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputDateRenderer.h; sourceTree = "<group>"; };
 		F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputDateRenderer.mm; sourceTree = "<group>"; };
 		F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputTimeRenderer.h; sourceTree = "<group>"; };
@@ -1080,7 +1082,8 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
-				F4A5CAB91F623F4500242D62 /* AdaptiveCardsTests.m */,
+				30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */,
+				30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */,
 			);
 			path = AdaptiveCardsTests;
 			sourceTree = "<group>";
@@ -1623,7 +1626,6 @@
 				F423C0BA1EE1FBAA00905679 /* Sources */,
 				F423C0BB1EE1FBAA00905679 /* Frameworks */,
 				F423C0BC1EE1FBAA00905679 /* Resources */,
-				F47ACEDA1F6248C00010BEF0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1726,19 +1728,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		F47ACEDA1F6248C00010BEF0 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "######################\n# Options\n######################\nNULL=\n\nREVEAL_ARCHIVE_IN_FINDER=false\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\n\n######################\n# Build Frameworks\n######################\nif [ -d ${PROJECT_NAME}.xcworkspace ]; then\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nelse\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nfi\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n# For Swift framework, Swiftmodule needs to be copied in the universal framework\nif [ -d \"${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" ]; then\ncp -f ${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule\\/${NULL}* \"${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" | echo\nfi\n\nif [ -d \"${DEVICE_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" ]; then\ncp -f ${DEVICE_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule\\/${NULL}* \"${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" | echo\nfi\n\n######################\n# On Release, copy the result to release directory\n######################\nOUTPUT_DIR=\"${PROJECT_DIR}/Output\"\nTARGET_DIR=\"${OUTPUT_DIR}/${FRAMEWORK_NAME}-${CONFIGURATION}-iphoneuniversal/\"\n\nrm -rf \"$TARGET_DIR\"\nmkdir -p \"$TARGET_DIR\"\n\ncp -rf \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\ncp -r \"${FRAMEWORK}\" \"$TARGET_DIR\"\n\nif [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\nopen \"${OUTPUT_DIR}/\"\nfi";
-		};
 		F47ACEE41F6249610010BEF0 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1927,7 +1916,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F4A5CABA1F623F4500242D62 /* AdaptiveCardsTests.m in Sources */,
+				30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */,
+				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1993,7 +1983,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../../shared/cpp/ObjectModel";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2050,7 +2040,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../../shared/cpp/ObjectModel";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
