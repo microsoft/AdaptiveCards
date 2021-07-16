@@ -44,6 +44,8 @@
     self.delegate = self;
     self.id = [NSString stringWithCString:inputBlck->GetId().c_str()
                                  encoding:NSUTF8StringEncoding];
+    self.accessibilityIdentifier = self.id;
+    self.accessibilityLabel = self.id;
     [self registerForKeyboardNotifications];
 
     self.frame = [self computeBoundingRect];
