@@ -241,11 +241,14 @@ CGFloat kFileBrowserWidth = 0;
     ACVTabView.hidden = YES;
 
     NSArray<UIStackView *> *buttons = [self buildButtonsLayout:fileBrowserView.centerXAnchor];
-    UIStackView *buttonLayout0 = buttons[0], *buttonLayout1 = buttons[1];
+    UIStackView *buttonLayout0 = buttons[0], *buttonLayout1 = buttons[1], *retrievedInputsLayout;
 
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    
+    // set a identifier to ease development of UI tests
+    self.chatWindow.accessibilityIdentifier = @"ChatWindow";
 
     // the width of the AdaptiveCards does not need to be set.
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
@@ -256,12 +259,26 @@ CGFloat kFileBrowserWidth = 0;
     [self.view addSubview:self.chatWindow];
 
     UITableView *chatWindow = self.chatWindow;
-    NSDictionary *viewMap =
-        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, chatWindow);
-
-    NSArray<NSString *> *formats = [NSArray
-        arrayWithObjects:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]-[chatWindow]-40@100-|",
+    NSDictionary *viewMap;
+    NSArray<NSString *> *formats;
+    
+    // if the app is being tested we render an extra layout that contains the
+    // retrieved input values json
+    if ([self appIsBeingTested])
+    {
+        retrievedInputsLayout = buttons[2];
+        viewMap =
+        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, retrievedInputsLayout, chatWindow);
+        formats = [NSArray arrayWithObjects:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]-[retrievedInputsLayout]-[chatWindow]-40@100-|",
                          @"H:|-[chatWindow]-|", nil];
+    }
+    else
+    {
+        viewMap =
+        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, chatWindow);
+        formats = [NSArray arrayWithObjects:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]-[chatWindow]-40@100-|",
+                         @"H:|-[chatWindow]-|", nil];
+    }
 
     [ViewController applyConstraints:formats variables:viewMap];
 
@@ -315,7 +332,19 @@ CGFloat kFileBrowserWidth = 0;
             [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
         }
         NSString *str = [NSString stringWithFormat:@"{\n%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
-        [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
+        
+        // if the app is being tested we set the result in the uilabel, otherwise
+        // we show the label in a popup
+        if ([self appIsBeingTested])
+        {
+            NSString *str2 = [NSString stringWithFormat:@"{\n\"inputs\":%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
+            [self.retrievedInputsTextView setText:str2];
+        }
+        else
+        {
+            [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
+        }
+        
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
@@ -494,7 +523,9 @@ CGFloat kFileBrowserWidth = 0;
 {
     NSArray<UIStackView *> *layout = @[ [self configureButtons:centerXAnchor distribution:UIStackViewDistributionFillEqually],
                                         [self configureButtons:centerXAnchor
-                                                  distribution:UIStackViewDistributionFill] ];
+                                                  distribution:UIStackViewDistributionFill],
+    [self configureButtons:centerXAnchor
+              distribution:UIStackViewDistributionFill] ];
 
     // try button
     self.tryButton = [self buildButton:@"Edit" selector:@selector(editText:)];
@@ -512,6 +543,18 @@ CGFloat kFileBrowserWidth = 0;
     self.enableCustomRendererButton = [self buildButton:@"Enable Custom Renderer" selector:@selector(toggleCustomRenderer:)];
     [layout[1] addArrangedSubview:self.enableCustomRendererButton];
 
+    if ([self appIsBeingTested])
+    {
+        // Set a background red color to signalize the app is in test mode
+        self.view.backgroundColor = [UIColor colorWithRed:1.0 green:0.80 blue:0.80 alpha:1];
+        
+        // Initialize the input results label
+        self.retrievedInputsTextView = [self buildLabel:@"" withIdentifier:@"SubmitActionRetrievedResults"];
+        
+        // Add the label to the container
+        [layout[2] addArrangedSubview:self.retrievedInputsTextView];
+    }
+    
     return layout;
 }
 
@@ -535,6 +578,19 @@ CGFloat kFileBrowserWidth = 0;
     button.contentEdgeInsets = UIEdgeInsetsMake(5, 8, 5, 8);
     button.layer.cornerRadius = 10;
     return button;
+}
+
+- (UILabel *)buildLabel:(NSString*)text withIdentifier:(NSString*)identifier
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    [label setText:text];
+    [label setTextColor:[UIColor blackColor]];
+    [label setBaselineAdjustment:UIBaselineAdjustmentAlignBaselines];
+    [label setLineBreakMode:NSLineBreakByCharWrapping];
+    [label setNumberOfLines:4];
+    
+    [label setAccessibilityIdentifier:identifier];
+    return label;
 }
 
 - (UIStackView *)configureButtons:(NSLayoutAnchor *)centerXAnchor distribution:(UIStackViewDistribution)distribution
@@ -569,6 +625,7 @@ CGFloat kFileBrowserWidth = 0;
         // tell the table view UI to add N rows.
         // The delta change might be > 1 since [_dataSource insertView] might have been called to
         // insert additional non-card views (such as overflow button)
+
         NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
         NSInteger postCount = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
         NSInteger rowsToAdd = postCount - prevCount;
@@ -610,6 +667,26 @@ CGFloat kFileBrowserWidth = 0;
                    ^{
                        [self.chatWindow beginUpdates];
                        [self.chatWindow endUpdates];
-                   });
+
+                       // This lines are required for updating the element tree after a
+                       // show card action has taken place, otherwise no previously hidden
+                       // element can be retrieved
+                       if ([self appIsBeingTested])
+                       {
+                           NSIndexPath* index = [NSIndexPath indexPathForRow:0 inSection:0];
+                           NSArray* indexPath = [NSArray arrayWithObjects:index, nil];
+                           [self.chatWindow reloadRowsAtIndexPaths:indexPath withRowAnimation:UITableViewRowAnimationNone];
+                       }
+        
+    });
 }
+
+- (BOOL)appIsBeingTested
+{
+    // Uncomment this line for test recording
+    // return YES;
+    NSArray *arguments = [[NSProcessInfo processInfo] arguments];
+    return [arguments containsObject:@"ui-testing"];
+}
+
 @end
