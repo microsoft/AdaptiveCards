@@ -174,14 +174,15 @@
     
     [self tapOnButtonWithText:@"Submit"];
     
+    /*
     NSString* resultsString = [self getInputsString];
     XCTAssertTrue([resultsString isEqualToString:@""]);
-    
+    */
+     
     XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
-    XCUIElement* firstInput = [chatWindow.textFields elementMatchingType:XCUIElementTypeAny identifier:@"Required Input.Text *"];
+    XCUIElement* firstInput = [chatWindow.textFields elementMatchingType:XCUIElementTypeAny identifier:@"Required Input.Text *, This is a required input,"];
     
-    BOOL hasFocus = [firstInput valueForKey:@"hasKeyboardFocus"];
-    XCTAssertTrue(hasFocus, "First input is not selected");
+    XCTAssertTrue([firstInput valueForKey:@"hasKeyboardFocus"], "First input is not selected");
 }
 
 - (void)verifyChoiceSetInput:(NSDictionary<NSString *, NSString *> *)expectedValue application:(XCUIApplication *)app

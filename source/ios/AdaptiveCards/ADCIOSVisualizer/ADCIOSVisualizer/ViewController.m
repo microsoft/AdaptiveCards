@@ -377,7 +377,7 @@ CGFloat kFileBrowserWidth = 0;
         UIView *focusedView = properties[ACRAggregateTargetFirstResponder];
         if (focusedView && [focusedView isKindOfClass:[UIView class]]) {
             [self.chatWindow setContentOffset:focusedView.frame.origin animated:YES];
-            [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForVisibleRows];
+            [self reloadRowsAtChatWindowsWithIndexPathsAfterValidation:self.chatWindow.indexPathsForVisibleRows];
         }
     } else {
         [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForVisibleRows];
@@ -659,6 +659,15 @@ CGFloat kFileBrowserWidth = 0;
 - (void)reloadRowsAtChatWindows:(NSIndexPath *)indexPath
 {
     [self reloadRowsAtChatWindowsWithIndexPaths:@[ indexPath ]];
+}
+
+- (void)reloadRowsAtChatWindowsWithIndexPathsAfterValidation:(NSArray<NSIndexPath *> *)indexPaths
+{
+    dispatch_async(_global_queue,
+                   ^{
+                       [self.chatWindow beginUpdates];
+                       [self.chatWindow endUpdates];
+    });
 }
 
 - (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
