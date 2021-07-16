@@ -125,10 +125,9 @@ namespace AdaptiveCards.Templating
             value = null;
             if (path != null)
             {
-                path = path.TrimStart('$');
-                if (ObjectPath.TryGetPathValue(this, path, out value))
+                if (path.StartsWith($"{dollar}", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return true;
+                    return ObjectPath.TryGetPathValue(this, path.TrimStart('$'), out value);
                 }
 
                 if (ObjectPath.TryGetPathValue(this.Data, $"{path}", out value))
