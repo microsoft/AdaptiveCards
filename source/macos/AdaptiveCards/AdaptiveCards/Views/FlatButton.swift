@@ -31,9 +31,6 @@ open class FlatButton: NSButton, CALayerDelegate {
     internal var mouseDown: Bool = false
     internal var chevronSetupFlag: Bool = true
     private var isHover: Bool = false
-    public var iconImageName: String = "attachment"
-    public var iconFileType: String = "png"
-    public var iconPositioned: NSControl.ImagePosition = .imageLeft
     public var momentary: Bool = true {
         didSet {
             updateAppearance()

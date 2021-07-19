@@ -48,6 +48,22 @@ class ActionSubmitRendererTests: XCTestCase {
         XCTAssertEqual(targetHandlerDelegate.lastDataJSON, "helloworld")
     }
     
+    func testIconPosition() {
+        hostConfig = .make(actions: FakeActionsConfig.make(iconPlacement: .aboveTitle))
+        actionSubmit = .make()
+        XCTAssertEqual(renderButton().imagePosition, .noImage) // No Icon case
+        
+        actionSubmit = .make(iconUrl: "test.url")
+        XCTAssertEqual(renderButton().imagePosition, .imageAbove)
+        
+        hostConfig = .make(actions: FakeActionsConfig.make(iconPlacement: .leftOfTitle))
+        actionSubmit = .make()
+        XCTAssertEqual(renderButton().imagePosition, .noImage) // No Icon case
+        
+        actionSubmit = .make(iconUrl: "test.url")
+        XCTAssertEqual(renderButton().imagePosition, .imageLeft)
+    }
+
     private func renderButton() -> ACRButton {
         let view = actionSubmitRenderer.render(action: actionSubmit, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), targetHandlerDelegate: targetHandlerDelegate, inputs: [], config: .default)
         

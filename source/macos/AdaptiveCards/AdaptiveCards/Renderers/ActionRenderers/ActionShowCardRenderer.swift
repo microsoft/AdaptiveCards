@@ -10,15 +10,10 @@ class ActionShowCardRenderer: BaseActionElementRendererProtocol {
             return NSView()
         }
         
-        let button: ACRButton
-        let buttonStyle = ActionStyle(rawValue: showCardAction.getStyle() ?? "") ?? .default
+        let button = ACRButton(actionElement: showCardAction, iconPlacement: hostConfig.getActions()?.iconPlacement, buttonConfig: config.buttonConfig)
         if let iconUrl = showCardAction.getIconUrl(), !iconUrl.isEmpty {
-            button = ACRButton(wantsChevron: true, wantsIcon: true, style: buttonStyle, buttonConfig: config.buttonConfig)
             rootView.registerImageHandlingView(button, for: iconUrl)
-        } else {
-            button = ACRButton(wantsChevron: true, wantsIcon: false, style: buttonStyle, buttonConfig: config.buttonConfig)
         }
-        button.title = showCardAction.getTitle() ?? ""
 
         guard let showCard = showCardAction.getCard() else {
             logError("ShowCard object is nil")

@@ -10,15 +10,10 @@ class ActionSubmitRenderer: BaseActionElementRendererProtocol {
             return NSView()
         }
         
-        let button: ACRButton
-        let buttonStyle = ActionStyle(rawValue: submitAction.getStyle() ?? "") ?? .default
+        let button = ACRButton(actionElement: submitAction, iconPlacement: hostConfig.getActions()?.iconPlacement, buttonConfig: config.buttonConfig)
         if let iconUrl = submitAction.getIconUrl(), !iconUrl.isEmpty {
-            button = ACRButton(wantsIcon: true, style: buttonStyle, buttonConfig: config.buttonConfig)
             rootView.registerImageHandlingView(button, for: iconUrl)
-        } else {
-            button = ACRButton(wantsIcon: false, style: buttonStyle, buttonConfig: config.buttonConfig)
         }
-        button.title = submitAction.getTitle() ?? ""
         
         let target = ActionSubmitTarget(element: submitAction, delegate: targetHandlerDelegate)
         target.configureAction(for: button)

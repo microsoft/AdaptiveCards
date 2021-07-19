@@ -306,12 +306,14 @@
 		083EAA2125C19E1000DE2BF7 /* ACSImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 083EA8E425C19E1000DE2BF7 /* ACSImage.mm */; };
 		083EAA2225C19E1000DE2BF7 /* ACSCollectionTypeElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = 083EA8E525C19E1000DE2BF7 /* ACSCollectionTypeElement.mm */; };
 		083EAA2325C19E1000DE2BF7 /* ACSToggleVisibilityTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 083EA8E625C19E1000DE2BF7 /* ACSToggleVisibilityTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0846FDA6269D774800090F1A /* FakeActionsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0846FDA5269D774800090F1A /* FakeActionsConfig.swift */; };
 		0872608825E6AD420036061C /* ACRColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0872608725E6AD420036061C /* ACRColumnView.swift */; };
 		0872609025E6AF530036061C /* ColumnSetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0872608F25E6AF530036061C /* ColumnSetRenderer.swift */; };
 		0872609525E6AF5F0036061C /* ColumnRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0872609425E6AF5F0036061C /* ColumnRenderer.swift */; };
 		088C673C2615C2B00070186C /* ACRContentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088C673B2615C2B00070186C /* ACRContentStackView.swift */; };
 		089DC88025B6C8AE00626E8F /* libAdaptiveCards-shared.a in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 08E403B125B46A2600C2092A /* libAdaptiveCards-shared.a */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		089DC8D725B856FA00626E8F /* BridgeConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 089DC8D625B856FA00626E8F /* BridgeConverter.mm */; };
+		08A12EE326987B5C00490977 /* ACSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A12EE226987B5C00490977 /* ACSExtensions.swift */; };
 		08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5F91025C924F400A7D37A /* TextBlockRenderer.swift */; };
 		08B5F91925C9272500A7D37A /* AdaptiveCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5F91825C9272500A7D37A /* AdaptiveCardRenderer.swift */; };
 		08B5F94F25C9762500A7D37A /* BridgeTextUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 08B5F91F25C9501E00A7D37A /* BridgeTextUtils.mm */; };
@@ -985,12 +987,14 @@
 		083EA8E425C19E1000DE2BF7 /* ACSImage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACSImage.mm; sourceTree = "<group>"; };
 		083EA8E525C19E1000DE2BF7 /* ACSCollectionTypeElement.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACSCollectionTypeElement.mm; sourceTree = "<group>"; };
 		083EA8E625C19E1000DE2BF7 /* ACSToggleVisibilityTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSToggleVisibilityTarget.h; sourceTree = "<group>"; };
+		0846FDA5269D774800090F1A /* FakeActionsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeActionsConfig.swift; sourceTree = "<group>"; };
 		0872608725E6AD420036061C /* ACRColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRColumnView.swift; sourceTree = "<group>"; };
 		0872608F25E6AF530036061C /* ColumnSetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnSetRenderer.swift; sourceTree = "<group>"; };
 		0872609425E6AF5F0036061C /* ColumnRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnRenderer.swift; sourceTree = "<group>"; };
 		088C673B2615C2B00070186C /* ACRContentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRContentStackView.swift; sourceTree = "<group>"; };
 		089DC8D525B856DA00626E8F /* BridgeConverter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgeConverter.h; sourceTree = "<group>"; };
 		089DC8D625B856FA00626E8F /* BridgeConverter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BridgeConverter.mm; sourceTree = "<group>"; };
+		08A12EE226987B5C00490977 /* ACSExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACSExtensions.swift; sourceTree = "<group>"; };
 		08B5F91025C924F400A7D37A /* TextBlockRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBlockRenderer.swift; sourceTree = "<group>"; };
 		08B5F91825C9272500A7D37A /* AdaptiveCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdaptiveCardRenderer.swift; sourceTree = "<group>"; };
 		08B5F91E25C9500800A7D37A /* BridgeTextUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgeTextUtils.h; sourceTree = "<group>"; };
@@ -1136,6 +1140,7 @@
 				A032272425E93C7400E7172E /* ImageUtils.swift */,
 				29C3AD37260C7C6A00467069 /* BleedUtils.swift */,
 				81A3000A260C7961003848DD /* BundleUtils.swift */,
+				08A12EE226987B5C00490977 /* ACSExtensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1358,6 +1363,7 @@
 				08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */,
 				2982B3FE26289F1700E7561C /* FakeBackgroundImage.swift */,
 				08352EA42695CFB300B544C3 /* FakeInternalId.swift */,
+				0846FDA5269D774800090F1A /* FakeActionsConfig.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -2300,6 +2306,7 @@
 				A0D65D0A25E6B4FD00A50EC1 /* ImageRenderer.swift in Sources */,
 				28D7A52425EFAD8000AEA09C /* ImageSetRenderer.swift in Sources */,
 				08B5F91925C9272500A7D37A /* AdaptiveCardRenderer.swift in Sources */,
+				08A12EE326987B5C00490977 /* ACSExtensions.swift in Sources */,
 				08D7767A25CC339D0095C1B3 /* RendererManager.swift in Sources */,
 				28D7A51425E9300300AEA09C /* BaseCardElementRenderer.swift in Sources */,
 				A032271B25E9176D00E7172E /* ACRContentHoldingView.swift in Sources */,
@@ -2389,6 +2396,7 @@
 				0801EDB925F78EC800D64C86 /* FakeColumn.swift in Sources */,
 				A0805F5825E40CB400B3F8EA /* RichTextBlockRendererTest.swift in Sources */,
 				13B13E4E25E75239005D9380 /* InputDateRendererTests.swift in Sources */,
+				0846FDA6269D774800090F1A /* FakeActionsConfig.swift in Sources */,
 				13C41B0B25F25836008A1F2E /* InputTimeRendererTests.swift in Sources */,
 				2910CF112600D2CC000910C8 /* ActionSetRendererTests.swift in Sources */,
 				08352EA22695C09100B544C3 /* ACRActionSetViewTests.swift in Sources */,

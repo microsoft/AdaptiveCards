@@ -14,7 +14,7 @@ class ActionsRendererTests: XCTestCase {
     }
     
     func testRendererGetActions() {
-        let hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .vertical, actionAlignment: .center, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 1))
+        let hostConfigActions = FakeActionsConfig.make(actionsOrientation: .vertical, maxActions: 5)
         hostConfig = .make(actions: hostConfigActions)
         actions.append(FakeSubmitAction.make())
         
@@ -23,14 +23,14 @@ class ActionsRendererTests: XCTestCase {
     }
     
     func testRendererCheckOrientation() {
-        var hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .horizontal, actionAlignment: .center, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 1))
+        var hostConfigActions = FakeActionsConfig.make(actionsOrientation: .horizontal, maxActions: 5)
         hostConfig = .make(actions: hostConfigActions)
         actions.append(FakeSubmitAction.make())
         
         var actionSetView = renderActionsView()
         XCTAssertEqual(actionSetView.orientation, .horizontal)
         
-        hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .vertical, actionAlignment: .center, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 1))
+        hostConfigActions = FakeActionsConfig.make(actionsOrientation: .vertical, maxActions: 5)
         hostConfig = .make(actions: hostConfigActions)
         
         actionSetView = renderActionsView()

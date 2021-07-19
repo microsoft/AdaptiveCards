@@ -245,7 +245,8 @@
         "style": "emphasis",
         "preExpandSingleShowCardAction": false,
         "actionsOrientation": "Vertical",
-        "actionAlignment": "stretch"
+        "actionAlignment": "stretch",
+        "iconPlacement": "leftOfTitle"
     },
     "adaptiveCard": {
         "allowCustomStyle": false

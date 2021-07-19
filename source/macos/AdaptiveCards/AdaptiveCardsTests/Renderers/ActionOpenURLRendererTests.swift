@@ -60,6 +60,22 @@ class ActionOpenURLRendererTests: XCTestCase {
         XCTAssertEqual(delegate.calledURL, "www.google.com")
     }
     
+    func testIconPosition() {
+        hostConfig = .make(actions: FakeActionsConfig.make(iconPlacement: .aboveTitle))
+        actionOpenURL = .make()
+        XCTAssertEqual(renderButton().imagePosition, .noImage) // No Icon case
+        
+        actionOpenURL = .make(iconUrl: "test.url")
+        XCTAssertEqual(renderButton().imagePosition, .imageAbove)
+        
+        hostConfig = .make(actions: FakeActionsConfig.make(iconPlacement: .leftOfTitle))
+        actionOpenURL = .make()
+        XCTAssertEqual(renderButton().imagePosition, .noImage) // No Icon case
+        
+        actionOpenURL = .make(iconUrl: "test.url")
+        XCTAssertEqual(renderButton().imagePosition, .imageLeft)
+    }
+    
     private func renderButton(targetHandler: TargetHandlerDelegate? = nil) -> ACRButton {
         let view = actionOpenURLRenderer.render(action: actionOpenURL, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), targetHandlerDelegate: targetHandler ?? targetHandlerDelegate, inputs: [], config: .default)
         

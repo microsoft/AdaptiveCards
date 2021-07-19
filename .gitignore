@@ -297,3 +297,7 @@ twp.json
 
 # Image folder
 source/qml/Samples/QmlVisualizer/Images
+
+# VS Code files
+.vscode/*
+.vscode/tasks.json

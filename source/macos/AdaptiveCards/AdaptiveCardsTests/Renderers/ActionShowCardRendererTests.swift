@@ -45,6 +45,30 @@ class ActionShowCardRendererTests: XCTestCase {
         XCTAssertTrue(targetHandlerDelegate.isShowCardActionCalled)
     }
     
+    func testIconPosition() {
+        hostConfig = .make(actions: FakeActionsConfig.make(iconPlacement: .aboveTitle))
+        actionShowCard = .make()
+        var button = renderButton()
+        XCTAssertEqual(button.imagePosition, .noImage) // No Icon case
+        XCTAssertTrue(button.showsChevron)
+        
+        actionShowCard = .make(iconUrl: "test.url")
+        button = renderButton()
+        XCTAssertEqual(button.imagePosition, .imageAbove) // No Icon case
+        XCTAssertTrue(button.showsChevron)
+        
+        hostConfig = .make(actions: FakeActionsConfig.make(iconPlacement: .leftOfTitle))
+        actionShowCard = .make()
+        button = renderButton()
+        XCTAssertEqual(button.imagePosition, .noImage) // No Icon case
+        XCTAssertTrue(button.showsChevron)
+        
+        actionShowCard = .make(iconUrl: "test.url")
+        button = renderButton()
+        XCTAssertEqual(button.imagePosition, .imageLeft) // No Icon case
+        XCTAssertTrue(button.showsChevron)
+    }
+    
     private func renderButton() -> ACRButton {
         let view = actionShowCardRenderer.render(action: actionShowCard, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), targetHandlerDelegate: targetHandlerDelegate, inputs: [], config: .default)
         

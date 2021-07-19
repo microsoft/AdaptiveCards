@@ -92,15 +92,12 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
     }
     
     private func addInlineButton(parentview: NSStackView, view: NSView, element: ACSTextInput, style: ACSContainerStyle, with hostConfig: ACSHostConfig, rootview: ACRView, config: RenderConfig) {
-        let action = element.getInlineAction()
-        let button: ACRButton
-        if let iconUrl = action?.getIconUrl(), !iconUrl.isEmpty {
-            button = ACRButton(wantsIcon: true, style: .inline, buttonConfig: config.buttonConfig)
-            button.title = "" // no button title when iconUrl available
+        guard let action = element.getInlineAction() else {
+            return logError("InlineAction is nil")
+        }
+        let button = ACRButton(actionElement: action, iconPlacement: hostConfig.getActions()?.iconPlacement, buttonConfig: config.buttonConfig, style: .inline)
+        if let iconUrl = action.getIconUrl(), !iconUrl.isEmpty {
             rootview.registerImageHandlingView(button, for: iconUrl)
-        } else {
-            button = ACRButton(wantsIcon: false, style: .inline, buttonConfig: config.buttonConfig)
-            button.title = action?.getTitle() ?? ""
         }
         
         button.cornerRadius = 0
@@ -122,7 +119,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         button.attributedTitle = attributedString
         
         // adding target to the Buttons
-        switch action?.getType() {
+        switch action.getType() {
         case .openUrl:
             guard let openURLAction = action as? ACSOpenUrlAction else {
                 logError("Element is not of type ACSOpenUrlAction")
