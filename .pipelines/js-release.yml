@@ -55,7 +55,7 @@ steps:
     displayName: '[${{ target_package.name }}] npm version'
     inputs:
       command: custom
-      customCommand: 'version ${{ target_package.increment }} --preid ${{ target_package.prerelease_identifier }} --no-git-tag-version --no-push --yes'
+      customCommand: 'version ${{ target_package.increment }} --preid ${{ target_package.prerelease_identifier }} --no-push --yes'
       workingDir: 'source/nodejs/${{ target_package.name }}'
 
 - bash: |
@@ -80,3 +80,22 @@ steps:
         workingDir: source/nodejs/${{ target_package.name }}
         publishEndpoint: npmjs.com
       condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
+    - bash: |
+       git config --global user.email "adaptivecardscore@microsoft.com"
+       git config --global user.name "adaptivecards"
+       git stash
+       git checkout main
+       git checkout -b "adaptivecards/nodejs/post-release"
+       git stash pop
+       git add -u
+       git commit -m "[JS] Bump versions post-release"
+       git push --tags --set-upstream origin "adaptivecards/nodejs/post-release"
+       curl -i -u $AC_GHUSER:$AC_GHPAT -d '{ "title": "[JS] Bump versions post-release", "head": "adaptivecards/nodejs/post-release", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
+
+      workingDirectory: source/android/adaptivecards
+      displayName: 'Update version file'
+      env:
+        AC_GHUSER: $(ghuser)
+        AC_GHPAT: $(ghpat)
+
+
