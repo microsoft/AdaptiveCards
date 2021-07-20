@@ -37,6 +37,8 @@ extension ACSHostConfig {
 }
 
 class FontUtils {
+    private static var notFoundFontFamilies: Set<String> = []
+    
     static func getFont(for hostConfig: ACSHostConfig, with textProperties: ACSRichTextElementProperties) -> NSFont {
         var fontWeight = hostConfig.getFontWeight(textProperties.getFontType(), weight: textProperties.getTextWeight())?.intValue ?? 400
 
@@ -54,7 +56,7 @@ class FontUtils {
             resolvedFontFamily = textProperties.getFontType() == .monospace ? "Courier New" : nil
         }
         
-        guard let fontFamily = resolvedFontFamily, !fontFamily.isEmpty else {
+        guard let fontFamily = resolvedFontFamily, !fontFamily.isEmpty, !notFoundFontFamilies.contains(fontFamily) else {
             // Custom Font family not needed
             return getSystemFont(for: hostConfig, with: textProperties, fontWeight: fontWeight)
         }
@@ -65,6 +67,7 @@ class FontUtils {
         let size = hostConfig.getFontSize(textProperties.getFontType(), size: textProperties.getTextSize())?.intValue ?? 14
         guard let font = NSFont(descriptor: descriptor, size: CGFloat(size)) else {
             logError("Font with fontFamily '\(fontFamily)' not found. Returning system font.")
+            notFoundFontFamilies.insert(fontFamily)
             return getSystemFont(for: hostConfig, with: textProperties, fontWeight: fontWeight)
         }
         return font

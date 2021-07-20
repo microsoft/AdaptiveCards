@@ -43,11 +43,11 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         
         // Setting up content holder view
-        let wrappingView = ACRImageWrappingView(imageProperties: imageProperties, imageView: imageView, viewgroup: rootView)
+        let wrappingView = ACRImageWrappingView(imageProperties: imageProperties, imageView: imageView)
         wrappingView.translatesAutoresizingMaskIntoConstraints = false
     
         // Background color attribute
-        if let backgroundColor = imageElement.getBackgroundColor() {
+        if let backgroundColor = imageElement.getBackgroundColor(), !backgroundColor.isEmpty {
             imageView.wantsLayer = true
             if let color = ColorUtils.color(from: backgroundColor) {
                 imageView.layer?.backgroundColor = color.cgColor
@@ -97,8 +97,8 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
     
     func configUpdateForImage(image: NSImage?, imageView: NSImageView) {
         guard let superView = imageView.superview as? ACRImageWrappingView, let imageSize = image?.absoluteSize else {
-                logError("superView or image is nil")
-                return
+            logError("superView or image is nil")
+            return
         }
         
         guard let imageProperties = superView.imageProperties else {

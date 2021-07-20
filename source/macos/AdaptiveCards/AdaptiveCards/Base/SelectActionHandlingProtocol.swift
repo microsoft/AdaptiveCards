@@ -2,7 +2,7 @@ import AdaptiveCards_bridge
 import AppKit
 
 protocol SelectActionHandlingProtocol: AnyObject {
-    var target: TargetHandler? { get set }
+    var target: TargetHandler? { get }
     func getTargetHandler(for selectAction: ACSBaseActionElement?, rootView: ACRView) -> TargetHandler?
     func setupSelectAction(_ selectAction: ACSBaseActionElement?, rootView: ACRView)
 }

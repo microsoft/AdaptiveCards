@@ -2,42 +2,32 @@ import AdaptiveCards_bridge
 import AppKit
 
 class ACRImageWrappingView: NSView, SelectActionHandlingProtocol {
-    private weak var _viewgroup: ACRContentStackView?
-    private weak var _imageViewHeightConstraint: NSLayoutConstraint?
-    private weak var _heightConstraint: NSLayoutConstraint?
-    weak var imageView: NSImageView?
-    var imageProperties: ACRImageProperties?
-    var target: TargetHandler?
+    private (set) var imageProperties: ACRImageProperties?
+    private (set) var target: TargetHandler?
     
     var isImageSet = false
     var isPersonStyle = false
 
-    override public init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-    }
-
-    public required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    required init(imageProperties: ACRImageProperties, imageView: NSImageView, viewgroup: ACRContentStackView) {
+    init(imageProperties: ACRImageProperties, imageView: NSImageView) {
         let frame = CGRect(x: 0, y: 0, width: imageProperties.contentSize.width, height: imageProperties.contentSize.height)
         super.init(frame: frame)
         needsLayout = true
         self.imageProperties = imageProperties
-        self.imageView = imageView
-        _viewgroup = viewgroup
         self.addSubview(imageView)
         setupTrackingArea()
     }
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func layout() {
         super.layout()
-        if isPersonStyle {
-            let subview = self.subviews[0]
-            let radius = subview.bounds.size.width / 2
+        if isPersonStyle, let subview = subviews.first {
+            let maskLayer = CAShapeLayer()
+            maskLayer.path = CGPath(ellipseIn: subview.bounds, transform: nil)
             subview.wantsLayer = true
-            subview.layer?.cornerRadius = radius
+            subview.layer?.mask = maskLayer
             subview.layer?.masksToBounds = true
         }
     }

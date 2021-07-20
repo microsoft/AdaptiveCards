@@ -64,6 +64,7 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
             if let bgColor = hostConfig.getBackgroundColor(for: style) {
                 layer?.backgroundColor = bgColor.cgColor
             }
+        /* Experimental Feature
             // set border color
             if let borderColorHex = hostConfig.getBorderColor(style), let borderColor = ColorUtils.color(from: borderColorHex) {
                 layer?.borderColor = borderColor.cgColor
@@ -72,6 +73,7 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
             if let borderWidth = hostConfig.getBorderThickness(style) {
                 layer?.borderWidth = CGFloat(truncating: borderWidth)
             }
+        */
             // add padding
             if let paddingSpace = hostConfig.getSpacing()?.paddingSpacing, let padding = CGFloat(exactly: paddingSpace) {
                 applyPadding(padding)

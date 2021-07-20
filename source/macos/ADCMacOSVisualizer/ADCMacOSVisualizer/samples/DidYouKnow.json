@@ -1,0 +1,96 @@
+{
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "Image",
+              "style": "Person",
+              "url": "https://media.istockphoto.com/vectors/origamisign2blue-vector-id1159533161?k=6&m=1159533161&s=612x612&w=0&h=YpKhQtcoi-Z4JYrnqihgwcxdsTzjRP8UWJchAUyyMgI=",
+              "size": "Medium",
+              "height": "50px"
+            }
+          ],
+          "width": "auto"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Cisco IoT",
+              "weight": "Lighter",
+              "color": "Accent"
+            },
+            {
+              "type": "TextBlock",
+              "weight": "Bolder",
+              "text": "Did You Know...",
+              "wrap": true,
+              "color": "Light",
+              "size": "Large",
+              "spacing": "Small"
+            }
+          ],
+          "width": "stretch"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Did You Know... 93% of IOS XE code of IE switches is shared with other Catalyst platforms",
+      "wrap": true
+    },
+    {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.Submit",
+          "title": "Like",
+          "data": {
+            "like": true
+          },
+          "iconUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/thumbs-up_1f44d.png"
+        },
+        {
+          "type": "Action.Submit",
+          "title": "Dislike",
+          "data": {
+            "dislike": false
+          },
+          "iconUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/thumbs-down_1f44e.png"
+        },
+        {
+          "type": "Action.OpenUrl",
+          "title": "Contact Us",
+          "iconUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/envelope_2709-fe0f.png",
+          "url": "mailto:srizkall@cisco.com"
+        }
+      ],
+      "spacing": "None"
+    },
+    {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.OpenUrl",
+          "title": "Click Here For More",
+          "url": "https://www.cisco.com/",
+          "iconUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/information_2139-fe0f.png"
+        },
+        {
+          "type": "Action.OpenUrl",
+          "title": "Share A Fact",
+          "iconUrl": "https://icons-for-free.com/iconfiles/png/512/link+network+share+sharing+icon-1320168265076787468.png",
+          "url": "https://app.smartsheet.com/b/form/da7705f88c1a4640b76bbe0dfba88462"
+        }
+      ]
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.2"
+}

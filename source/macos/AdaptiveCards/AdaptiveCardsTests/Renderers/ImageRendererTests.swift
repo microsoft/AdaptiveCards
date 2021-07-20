@@ -4,7 +4,7 @@ import XCTest
 
 class ImageRendererTests: XCTestCase {
     private var hostConfig: FakeHostConfig!
-    private var fakeImageView: FakeImage!
+    private var image: FakeImage!
     private var imageRenderer: ImageRenderer!
     private var fakeACRView: ACRView!
     let sampleURL = "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
@@ -12,39 +12,40 @@ class ImageRendererTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         hostConfig = .make(imageSizes: ACSImageSizesConfig(smallSize: 30, mediumSize: 60, largeSize: 120))
-        fakeImageView = .make()
+        image = .make()
         imageRenderer = ImageRenderer()
         fakeACRView = ACRView(style: .default, hostConfig: hostConfig, renderConfig: .default)
     }
     
     func testRendererSetsImage() {
-        fakeImageView = .make(url: sampleURL)
+        image = .make(url: sampleURL)
         
         let contentView = renderImageView()
-        XCTAssertTrue(contentView.imageView != nil)
+        XCTAssertTrue(contentView.subviews.first is NSImageView)
     }
     
     func testRendererSetsBackgroundColor() {
         let color = "#FFAACC"
-        fakeImageView = .make(url: sampleURL, backgroundColor: color)
+        image = .make(url: sampleURL, backgroundColor: color)
         
         let contentView = renderImageView()
-        let imageView = contentView.imageView
+        guard let imageView = contentView.subviews.first as? NSImageView else { return XCTFail() }
         let colorHex = ColorUtils.color(from: color) ?? NSColor.black
-        XCTAssertEqual(imageView?.layer?.backgroundColor, colorHex.cgColor)
+        XCTAssertEqual(imageView.layer?.backgroundColor, colorHex.cgColor)
     }
     
     func testRendererSetsImageStyle() {
-        fakeImageView = .make(imageStyle: .person)
+        image = .make(imageStyle: .person)
         
         let contentView = renderImageView()
-        let imageView = contentView.imageView
-        let radius = imageView?.image?.size.width ?? 0
-        XCTAssertEqual(imageView?.layer?.cornerRadius, radius/2)
+        contentView.layout()
+        guard let imageView = contentView.subviews.first as? NSImageView else { return XCTFail() }
+        XCTAssertNotNil(imageView.layer?.mask)
+        XCTAssertEqual(imageView.layer?.mask?.bounds, imageView.bounds)
     }
     
     func testRendererSetsSmallSize() {
-        fakeImageView = .make(imageSize: .small)
+        image = .make(imageSize: .small)
         
         let sz = CGSize(width: hostConfig.imageSizes?.smallSize.intValue ?? 0, height: hostConfig.imageSizes?.smallSize.intValue ?? 0)
         
@@ -53,7 +54,7 @@ class ImageRendererTests: XCTestCase {
     }
     
     func testRendererSetsMediumSize() {
-        fakeImageView = .make(imageSize: .medium)
+        image = .make(imageSize: .medium)
         
         let sz = CGSize(width: hostConfig.imageSizes?.mediumSize.intValue ?? 0, height: hostConfig.imageSizes?.mediumSize.intValue ?? 0)
         
@@ -62,7 +63,7 @@ class ImageRendererTests: XCTestCase {
     }
     
     func testRendererSetsLargeMediumSize() {
-        fakeImageView = .make(imageSize: .large)
+        image = .make(imageSize: .large)
         
         let sz = CGSize(width: hostConfig.imageSizes?.largeSize.intValue ?? 0, height: hostConfig.imageSizes?.largeSize.intValue ?? 0)
         
@@ -72,7 +73,7 @@ class ImageRendererTests: XCTestCase {
     
     func testRendererSetsPixelWidth() {
         let width : NSNumber = 50
-        fakeImageView = .make(pixelWidth: width)
+        image = .make(pixelWidth: width)
         
         let contentView = renderImageView()
         XCTAssertEqual(contentView.imageProperties?.contentSize.width, CGFloat(truncating: width))
@@ -80,7 +81,7 @@ class ImageRendererTests: XCTestCase {
     
     func testRendererSetsPixelHeight() {
         let height : NSNumber = 50
-        fakeImageView = .make(pixelHeight: height)
+        image = .make(pixelHeight: height)
         
         let contentView = renderImageView()
         XCTAssertEqual(contentView.imageProperties?.contentSize.height, CGFloat(truncating: height))
@@ -88,7 +89,7 @@ class ImageRendererTests: XCTestCase {
     
     func testRendererSetsExplicitWidthWhenImageSizeIsAlsoGiven() {
         let width : NSNumber = 50
-        fakeImageView = .make(imageSize: .large, pixelWidth: width)
+        image = .make(imageSize: .large, pixelWidth: width)
         
         let contentView = renderImageView()
         XCTAssertEqual(contentView.imageProperties?.contentSize.width, CGFloat(truncating: width))
@@ -96,7 +97,7 @@ class ImageRendererTests: XCTestCase {
     
     func testRendererSetsExplicitHeightWhenImageSizeIsAlsoGiven() {
         let height : NSNumber = 50
-        fakeImageView = .make(imageSize: .large, pixelHeight: height)
+        image = .make(imageSize: .large, pixelHeight: height)
         
         let contentView = renderImageView()
         XCTAssertEqual(contentView.imageProperties?.contentSize.height, CGFloat(truncating: height))
@@ -105,7 +106,7 @@ class ImageRendererTests: XCTestCase {
     func testRendererSetsExplicitDimensionWhenImageSizeIsAlsoGiven() {
         let width : NSNumber = 50
         let height : NSNumber = 50
-        fakeImageView = .make(imageSize: .large, pixelWidth: width, pixelHeight: height)
+        image = .make(imageSize: .large, pixelWidth: width, pixelHeight: height)
         
         let contentView = renderImageView()
         XCTAssertEqual(contentView.imageProperties?.contentSize.width, CGFloat(truncating: width))
@@ -114,14 +115,14 @@ class ImageRendererTests: XCTestCase {
     
     func testRendererSetsExplicitDimensions() {
         let height : NSNumber = 100
-        fakeImageView = .make(pixelHeight: height)
+        image = .make(pixelHeight: height)
         
         let contentView = renderImageView()
         XCTAssertEqual(contentView.imageProperties?.hasExplicitDimensions, true)
     }
     
     private func renderImageView() -> ACRImageWrappingView {
-        let view = imageRenderer.render(element: fakeImageView, with: hostConfig, style: .default, rootView: fakeACRView, parentView: fakeACRView, inputs: [], config: .default)
+        let view = imageRenderer.render(element: image, with: hostConfig, style: .default, rootView: fakeACRView, parentView: fakeACRView, inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRImageWrappingView)
         guard let contentView = view as? ACRImageWrappingView else { fatalError() }
