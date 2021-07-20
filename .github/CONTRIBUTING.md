@@ -40,9 +40,24 @@ A bug must have an issue tracking it in the issue tracker that has been approved
 
 ## Contributing features
 
-We're happy to discuss schema proposals as long as they align with our [Core Design Principles](http://adaptivecards.io/documentation/#about-overview). 
+Thank you for wanting to contribute to Adaptive Cards. If you are planning to make changes to the Core SDK, please make sure these changes align with our [Core Design Principles](https://docs.microsoft.com/en-us/adaptive-cards/#core-design-principles). Prior to writing any code that affects rendering, please make sure you follow the following steps:
+1.	Open a "Feature Request" issue to start the discussion on the feature you wish to see in the product. Please make sure you search our planned work to see if your feature is already planned. Please make sure you search our [planned work](https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/6-planned) to see if your feature is already planned.
+2.	Open a PR with a .MD file to the [following directory](https://github.com/microsoft/AdaptiveCards/tree/main/specs/elements) with a spec that clearly outlines the feature you are implementing. **Include as much detail on the feature as possible**.
+    1.	At a bare minimum you must answer the following questions:
+        1.	Why do you need this feature and what will the feature do?
+        2.	What will the API surface look like?
+        3.	What will the schema look like?
+        4.	What is the down-level impact of this feature?
+    2.  Please make sure your PR follows a similar format as our [Spec](https://github.com/microsoft/AdaptiveCards/blob/main/specs/SpecTemplate.md) template including a summary, rationale, scope, and examples.
+3.	Once you open the PR with the spec, the team will review it and schedule a call with the community to walk through the feature. This is where the discussion will happen.
+4.	If the spec is approved, you may begin writing the implementation for your feature and submit a PR.
+    1.	Note: In order for your feature to release with Adaptive Cards it must be implemented on all platforms (.NET, iOS, Android, JavaScript) as per our Core Design Principles. You may choose to implement on any number on these platforms as a starting point for our team, but please keep in mind we wont be able to merge anything until all platforms are implemented.
+    2.	Your PR must also include sample cards in the following directory 
+    3.	For all schema changes make sure to include them in the schemas directory and validate them in the schema explorer. Once you submit a PR you will get a build of the website   that includes your changes in the schema explorer. This PR specific build will follow the following format: ``https://adaptivecardsci.z5.web.core.windows.net/pr/<PR-NUMBER>/explorer``
+5.	The team will once again review the PR and make sure all the requirements are met.
+    1.	Please keep in mind that Adaptive Cards works in a production environment and thus requires production-ready code with appropriate tests and at least two approvals from the team before it is merged.
 
-Please open an issue with your schema proposal to get a discussion started.
+
 
 ## Legal
 
