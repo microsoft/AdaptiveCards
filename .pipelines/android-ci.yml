@@ -26,11 +26,6 @@ steps:
     wrapperScript: source/android/gradlew
     cwd: source/android
     publishJUnitResults: false
-  branches:
-    include:
-    - main
-    - feature/*
-    - release/*
 
 - task: Bash@3
   displayName: Get NDK (won't be needed w/ Android Gradle Plugin 4.1+)
