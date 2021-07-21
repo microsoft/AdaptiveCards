@@ -22,8 +22,11 @@
         <Grid x:Name="GridContainer" Grid.Column="0"/>
 
         <Grid Grid.Column="1" Background="Gray">
-            
-                <ItemsControl ItemsSource="{x:Bind Inputs}" x:Name="InputsItemsControl">
+
+            <TextBlock Text="" AutomationProperties.Name="RetrievedInputs_TextBlock" x:Name="RetrievedInputs_TextBlock" />
+
+<!--
+            <ItemsControl ItemsSource="{x:Bind Inputs}" x:Name="InputsItemsControl">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsWrapGrid Orientation="Vertical"/>
@@ -46,6 +49,7 @@
                     </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+            -->
            
         </Grid>
 

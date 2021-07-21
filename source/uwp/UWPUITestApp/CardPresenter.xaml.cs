@@ -75,7 +75,8 @@ namespace UWPUITestApp
 
         internal async Task RenderAdaptiveCardAsync()
         {
-            Inputs.Clear();
+            CleanRetrievedInputs();
+            
 
             string adaptiveCardContents = await ReadTestCaseContentsAsync(TestCase);
             var renderer = new AdaptiveCardRenderer();
@@ -90,16 +91,25 @@ namespace UWPUITestApp
 
         private void RenderedCard_Action(RenderedAdaptiveCard sender, AdaptiveActionEventArgs args)
         {
-            Inputs.Clear();
+            CleanRetrievedInputs();
 
             if (args.Action.ActionType == ActionType.Submit)
             {
+                RetrievedInputs_TextBlock.Text = sender.UserInputs.AsJson().ToString();
+
+                /*
                 foreach (var input in sender.UserInputs.AsValueSet())
                 {
                     Inputs.Add(new Tuple<string,string>(input.Key, input.Value?.ToString()));
                 }
+                */
             }
 
+        }
+
+        private void CleanRetrievedInputs()
+        {
+            RetrievedInputs_TextBlock.Text = "";
         }
 
         private async Task<string> ReadTestCaseContentsAsync(string testCase)

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace UWPUITests
 {
@@ -94,8 +96,16 @@ namespace UWPUITests
 
         public static string GetInputValue(string inputId)
         {
-            var inputTextBlock = CastTo<TextBlock>(FindElementByName(inputId + "_retrievedValue"));
-            return inputTextBlock?.DocumentText;
+            var inputTextBlock = CastTo<TextBlock>(FindElementByName("RetrievedInputs_TextBlock"));
+            Assert.IsNotNull(inputTextBlock, "Failed to retrieve retrieved inputs text block");
+
+            string retrivedInputsJsonString = inputTextBlock.DocumentText;
+            var retrievedInputs = JsonConvert.DeserializeObject<Dictionary<string, string>>(retrivedInputsJsonString);
+
+            return retrievedInputs[inputId];
+
+            // var inputTextBlock = CastTo<TextBlock>(FindElementByName(inputId + "_retrievedValue"));
+            // return inputTextBlock?.DocumentText;
         }
 
         public static void SetDateToUIElement(int year, int month, int day)
