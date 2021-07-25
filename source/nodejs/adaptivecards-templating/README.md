@@ -98,7 +98,65 @@ This example is implemented in the **example.html** file.
 For a list of and documentation on built-in functions, please refer to the [AdaptiveExpressions documentation](https://aka.ms/adaptive-expressions).
 
 #### Custom functions
+Custom functions can be added to Adaptive Expression Library in addition to the prebuilt functions.
+Below is an example creating a simple "greet" function that forms a greeting from a user's name.
 
 ```typescript
-// Coming soon...
+const ACData = require("adaptivecards-templating")
+const AdaptiveExpressions = require("adaptive-expressions")
+
+// Register a custom function:
+AdaptiveExpressions.Expression.functions.add("greet", (args) => {
+    // args is packed in sequential order as defined in the template
+    // For example, "${sayHello(person.firstName, person.lastName)}"
+    // args will have following entries
+    // args[0]: person.firstName
+    // args[1]: person.lastName
+    return `Hello, ${args[0]} ${args[1]}`
+})
+
+// While the above example uses an arrow function, you can also subclass ExpressionEvaluator from adaptive-expressions to define functions.
+
+// Define a template payload using the custom function
+// Here 'greet' will form a greeting from the users first and last name.
+let templatePayload = {
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "${greet(person.firstName, person.lastName)}"
+        }
+    ]
+};
+
+let template = new ACData.Template(templatePayload);
+
+// Expand the template with your `$root` data object.
+// This binds it to the data and produces the final Adaptive Card payload
+let card = template.expand({
+    $root: {
+        person: {
+            firstName: "Andrew",
+            lastName: "Leader"
+        }
+    }
+});
+
+//Log the card
+console.log(card)
+/*
+Results in the following:
+
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Hello, Andrew Leader"
+        }
+    ]
+}
+*/
 ```

@@ -215,10 +215,10 @@ export class Template {
      */
     public static parseInterpolatedString(interpolatedString: string): AEL.Expression | string {
         let lookup: AEL.EvaluatorLookup = (type: string) => {
-            let standardFunction = AEL.ExpressionFunctions.standardFunctions.get(type);
+            let matchedFunction = AEL.Expression.functions.get(type);
 
-            if (standardFunction) {
-                return standardFunction;
+            if (matchedFunction) {
+                return matchedFunction;
             }
             else {
                 return new AEL.ExpressionEvaluator(
