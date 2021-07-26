@@ -32,6 +32,7 @@ class RendererManager: RendererManagerProtocol {
         case .openUrl: return ActionOpenURLRenderer.shared
         case .submit: return ActionSubmitRenderer.shared
         case .showCard: return ActionShowCardRenderer.shared
+        case .toggleVisibility: return ActionToggleVisibilityRenderer.shared
         default: return UnknownElementRenderer.shared
         }
     }

@@ -44,6 +44,12 @@ class BaseCardElementRendererrTests: XCTestCase {
         XCTAssertEqual(updatedView.backgroundImageView.fillMode, .repeat)
     }
     
+    func testRendererSetsId() {
+        container = .make(id: "helloworld")
+        let viewWithInheritedProperties = renderBaseCardElementView()
+        XCTAssertEqual(viewWithInheritedProperties.identifier?.rawValue, "helloworld")
+    }
+    
     
     private func renderBaseCardElementView() -> ACRContentStackView {
         let view = containerRenderer.render(element: container, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)

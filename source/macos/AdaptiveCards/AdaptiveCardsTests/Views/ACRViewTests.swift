@@ -208,6 +208,79 @@ class ACRViewTests: XCTestCase {
         XCTAssertEqual("Value", actionDelegate.dict["Key"] as? String)
         XCTAssertEqual("1234567890", actionDelegate.dict["id"] as? String)
     }
+    
+    func testToggleVisibilityAction_toggleMode() {
+        let tView1 = NSView.create(with: "id1")
+        let tView2 = NSView.create(with: "id2")
+        let target1 = FakeToggleVisibilityTarget.make(elementId: "id1", isVisible: .isVisibleToggle)
+        let target2 = FakeToggleVisibilityTarget.make(elementId: "id2", isVisible: .isVisibleToggle)
+        
+        tView1.isHidden = true
+        tView2.isHidden = false
+        view.addArrangedSubview(tView1)
+        view.addArrangedSubview(tView2)
+        
+        view.handleToggleVisibilityAction(actionView: NSButton(), toggleTargets: [target1, target2])
+        
+        XCTAssertFalse(tView1.isHidden)
+        XCTAssertTrue(tView2.isHidden)
+    }
+    
+    func testToggleVisibilityAction_showMode() {
+        let tView1 = NSView.create(with: "id1")
+        let tView2 = NSView.create(with: "id2")
+        let target1 = FakeToggleVisibilityTarget.make(elementId: "id1", isVisible: .isVisibleTrue)
+        let target2 = FakeToggleVisibilityTarget.make(elementId: "id2", isVisible: .isVisibleTrue)
+        
+        tView1.isHidden = true
+        tView2.isHidden = false
+        view.addArrangedSubview(tView1)
+        view.addArrangedSubview(tView2)
+        
+        view.handleToggleVisibilityAction(actionView: NSButton(), toggleTargets: [target1, target2])
+        
+        XCTAssertFalse(tView1.isHidden)
+        XCTAssertFalse(tView2.isHidden)
+    }
+    
+    func testToggleVisibilityAction_hideMode() {
+        let tView1 = NSView.create(with: "id1")
+        let tView2 = NSView.create(with: "id2")
+        let target1 = FakeToggleVisibilityTarget.make(elementId: "id1", isVisible: .isVisibleFalse)
+        let target2 = FakeToggleVisibilityTarget.make(elementId: "id2", isVisible: .isVisibleFalse)
+        
+        tView1.isHidden = true
+        tView2.isHidden = false
+        view.addArrangedSubview(tView1)
+        view.addArrangedSubview(tView2)
+        
+        view.handleToggleVisibilityAction(actionView: NSButton(), toggleTargets: [target1, target2])
+        
+        XCTAssertTrue(tView1.isHidden)
+        XCTAssertTrue(tView2.isHidden)
+    }
+    
+    func testToggleVisibilityAction_mixed() {
+        let tView1 = NSView.create(with: "id1")
+        let tView2 = NSView.create(with: "id2")
+        let tView3 = NSView.create(with: "id3")
+        let target1 = FakeToggleVisibilityTarget.make(elementId: "id1", isVisible: .isVisibleToggle)
+        let target2 = FakeToggleVisibilityTarget.make(elementId: "id2", isVisible: .isVisibleTrue)
+        let target3 = FakeToggleVisibilityTarget.make(elementId: "id3", isVisible: .isVisibleFalse)
+        
+        tView1.isHidden = true
+        tView2.isHidden = true
+        tView3.isHidden = false
+        view.addArrangedSubview(tView1)
+        view.addArrangedSubview(tView2)
+        view.addArrangedSubview(tView3)
+        
+        view.handleToggleVisibilityAction(actionView: NSButton(), toggleTargets: [target1, target2, target3])
+        
+        XCTAssertFalse(tView1.isHidden)
+        XCTAssertFalse(tView2.isHidden)
+        XCTAssertTrue(tView3.isHidden)
+    }
 }
 
 private class FakeInputHandlingView: NSView, InputHandlingViewProtocol {
@@ -222,5 +295,13 @@ private class FakeImageHoldingView: NSView, ImageHoldingView {
     func setImage(_ image: NSImage) {
         imageDidSet = true
         expectation?.fulfill()
+    }
+}
+
+private extension NSView {
+    static func create(with id: String) -> NSView {
+        let view = NSView()
+        view.identifier = NSUserInterfaceItemIdentifier(id)
+        return view
     }
 }

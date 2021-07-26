@@ -70,4 +70,10 @@ class FakeTargetHandlerDelegate: ShowCardTargetHandlerDelegate {
         calledView = actionView
         lastDataJSON = dataJson
     }
+    
+    var lastToggleTargets: [ACSToggleVisibilityTarget]?
+    func handleToggleVisibilityAction(actionView: NSView, toggleTargets: [ACSToggleVisibilityTarget]) {
+        calledView = actionView
+        lastToggleTargets = toggleTargets
+    }
 }

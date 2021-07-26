@@ -47,6 +47,29 @@ class ActionSubmitTarget: NSObject, TargetHandler {
     }
 }
 
+class ActionToggleVisibilityTarget: NSObject, TargetHandler {
+    private (set) weak var delegate: TargetHandlerDelegate?
+    let toggleTargets: [ACSToggleVisibilityTarget]
+
+    init(toggleTargets: [ACSToggleVisibilityTarget], delegate: TargetHandlerDelegate) {
+        self.toggleTargets = toggleTargets
+        self.delegate = delegate
+    }
+    
+    func configureAction(for button: NSButton) {
+        button.target = self
+        button.action = #selector(handleButtonAction(_:))
+    }
+    
+    func handleSelectionAction(for actionView: NSView) {
+        delegate?.handleToggleVisibilityAction(actionView: actionView, toggleTargets: toggleTargets)
+    }
+    
+    @objc private func handleButtonAction(_ sender: NSButton) {
+        delegate?.handleToggleVisibilityAction(actionView: sender, toggleTargets: toggleTargets)
+    }
+}
+
 class ActionShowCardTarget: NSObject, TargetHandler {
     private (set) weak var delegate: TargetHandlerDelegate?
     let showCard: ACSAdaptiveCard

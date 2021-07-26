@@ -81,6 +81,24 @@ class ACRView: ACRColumnView {
         return firstOpenChildCard.initialLayoutDone && initialLayoutDone
     }
     
+    private func findSubview(with identifier: String) -> NSView? {
+        func subview(with id: String, in view: NSView) -> NSView? {
+            if view.subviews.isEmpty {
+                return nil
+            }
+            for sView in view.subviews {
+                if sView.identifier?.rawValue == identifier {
+                    return sView
+                }
+                if let inSubview = subview(with: id, in: sView) {
+                    return inSubview
+                }
+            }
+            return nil
+        }
+        return subview(with: identifier, in: self)
+    }
+    
     private func submitCardInputs(actionView: NSView, dataJSON: String?) {
         var dict = [String: Any]()
         
@@ -105,6 +123,35 @@ class ACRView: ACRColumnView {
         }
         delegate?.adaptiveCard(rootView, didSubmitUserResponses: dict, actionView: actionView)
     }
+    
+    private func toggleVisibity(of targets: [ACSToggleVisibilityTarget]) {
+        var toggledContentStackViews: [(ACRContentStackView, Bool)] = []
+        for target in targets {
+            guard let id = target.getElementId(), let toggleView = findSubview(with: id) else {
+                logError("Target with ID '\(target.getElementId() ?? "nil")' not found for toggleVisibility.")
+                continue
+            }
+            let oldHiddenValue = toggleView.isHidden
+            switch target.getIsVisible() {
+            case .isVisibleToggle:
+                toggleView.isHidden.toggle()
+            case .isVisibleTrue:
+                toggleView.isHidden = false
+            case .isVisibleFalse:
+                toggleView.isHidden = true
+            @unknown default:
+                logError("Unknown ToggleIsVisible value \(target.getIsVisible())")
+            }
+            if let contentStackView = toggleView as? ACRContentStackView {
+                toggledContentStackViews.append((contentStackView, oldHiddenValue))
+            }
+        }
+        
+        // Must be refreshed only after all elements hidden states are updated.
+        for (contentStackView, oldHiddenValue) in toggledContentStackViews {
+            contentStackView.refreshOnVisibilityChange(from: oldHiddenValue)
+        }
+    }
 }
 
 extension ACRView: ACRActionSetViewDelegate {
@@ -114,6 +161,10 @@ extension ACRView: ACRActionSetViewDelegate {
     
     func actionSetView(_ view: ACRActionSetView, didSubmitInputsWith actionView: NSView, dataJson: String?) {
         submitCardInputs(actionView: actionView, dataJSON: dataJson)
+    }
+    
+    func actionSetView(_ view: ACRActionSetView, didToggleVisibilityActionWith actionView: NSView, toggleTargets: [ACSToggleVisibilityTarget]) {
+        toggleVisibity(of: toggleTargets)
     }
     
     func actionSetView(_ view: ACRActionSetView, willShowCardWith button: NSButton) {
@@ -135,6 +186,10 @@ extension ACRView: ACRActionSetViewDelegate {
 }
 
 extension ACRView: TargetHandlerDelegate {
+    func handleToggleVisibilityAction(actionView: NSView, toggleTargets: [ACSToggleVisibilityTarget]) {
+        toggleVisibity(of: toggleTargets)
+    }
+    
     func handleOpenURLAction(actionView: NSView, urlString: String) {
         delegate?.adaptiveCard(self, didSelectOpenURL: urlString, actionView: actionView)
     }

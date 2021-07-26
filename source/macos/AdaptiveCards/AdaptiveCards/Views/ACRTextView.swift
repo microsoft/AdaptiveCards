@@ -3,6 +3,7 @@ import AppKit
 class ACRTextView: NSTextView, SelectActionHandlingProtocol {
     weak var responderDelegate: ACRTextViewResponderDelegate?
     var placeholderAttrString: NSAttributedString?
+    var target: TargetHandler?
     
     override var intrinsicContentSize: NSSize {
         guard let layoutManager = layoutManager, let textContainer = textContainer else {
@@ -47,23 +48,31 @@ class ACRTextView: NSTextView, SelectActionHandlingProtocol {
     
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
+        guard target != nil else { return }
+        
+        // SelectAction exists
         let location = convert(event.locationInWindow, from: nil)
         var fraction: CGFloat = 0.0
         if let textContainer = self.textContainer, let textStorage = self.textStorage, let layoutManager = self.layoutManager {
             let characterIndex = layoutManager.characterIndex(for: location, in: textContainer, fractionOfDistanceBetweenInsertionPoints: &fraction)
-            if characterIndex < textStorage.length, let action = textStorage.attribute(.submitAction, at: characterIndex, effectiveRange: nil) as? TargetHandler {
+            if characterIndex < textStorage.length, let action = textStorage.attribute(.selectAction, at: characterIndex, effectiveRange: nil) as? TargetHandler {
                 action.handleSelectionAction(for: self)
             }
         }
     }
     
     override func hitTest(_ point: NSPoint) -> NSView? {
+        guard target != nil else {
+            return super.hitTest(point)
+        }
+        
+        // SelectAction exists
         var location = convert(point, from: self)
         location.y = self.bounds.height - location.y
         var fraction: CGFloat = 0.0
         if let textContainer = self.textContainer, let textStorage = self.textStorage, let layoutManager = self.layoutManager {
             let characterIndex = layoutManager.characterIndex(for: location, in: textContainer, fractionOfDistanceBetweenInsertionPoints: &fraction)
-            if characterIndex < textStorage.length, textStorage.attribute(.submitAction, at: characterIndex, effectiveRange: nil) != nil {
+            if characterIndex < textStorage.length, textStorage.attribute(.selectAction, at: characterIndex, effectiveRange: nil) != nil {
                 return self
             }
         }

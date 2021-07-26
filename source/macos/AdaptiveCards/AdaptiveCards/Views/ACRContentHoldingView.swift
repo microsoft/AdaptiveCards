@@ -3,8 +3,8 @@ import AppKit
 
 class ACRImageWrappingView: NSView, SelectActionHandlingProtocol {
     private (set) var imageProperties: ACRImageProperties?
-    private (set) var target: TargetHandler?
     
+    var target: TargetHandler?
     var isImageSet = false
     var isPersonStyle = false
 

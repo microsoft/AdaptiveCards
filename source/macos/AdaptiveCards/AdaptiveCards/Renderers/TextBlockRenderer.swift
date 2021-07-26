@@ -53,5 +53,5 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
 }
 
 extension NSAttributedString.Key {
-    static let submitAction = NSAttributedString.Key("submitAction")
+    static let selectAction = NSAttributedString.Key("selectAction")
 }

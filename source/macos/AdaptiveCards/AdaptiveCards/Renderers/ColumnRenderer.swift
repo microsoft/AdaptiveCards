@@ -15,9 +15,9 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
         columnView.setWidth(ColumnWidth(columnWidth: column.getWidth(), pixelWidth: column.getPixelWidth()))
         columnView.bleed = column.getBleed()
         
-        var topSpacingView: NSView?
+        var topSpacingView: SpacingView?
         if column.getVerticalContentAlignment() == .center || column.getVerticalContentAlignment() == .bottom {
-            let view = NSView()
+            let view = SpacingView()
             columnView.addArrangedSubview(view)
             topSpacingView = view
         }
@@ -32,9 +32,7 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
         }
         
         if column.getVerticalContentAlignment() == .center, let topView = topSpacingView {
-            let view = NSView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            topView.translatesAutoresizingMaskIntoConstraints = false
+            let view = SpacingView()
             columnView.addArrangedSubview(view)
             view.heightAnchor.constraint(equalTo: topView.heightAnchor).isActive = true
         }

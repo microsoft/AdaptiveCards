@@ -1,0 +1,57 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "verticalContentAlignment": "Center",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Hi,"
+        },
+        {
+            "type": "TextBlock",
+            "text": "MasterHip",
+            "isSubtle": true
+        },
+        {
+            "type": "ColumnSet",
+            "height": "stretch",
+            "columns": [
+                {
+                    "type": "Column",
+                    "verticalContentAlignment": "Bottom",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "verticalContentAlignment": "Center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "verticalContentAlignment": "Top",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1"
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ]
+        }
+    ],
+    "minHeight": "200px"
+}

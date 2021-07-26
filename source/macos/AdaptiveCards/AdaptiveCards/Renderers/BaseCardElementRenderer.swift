@@ -33,7 +33,7 @@ class BaseCardElementRenderer {
             updatedView.addSeperator(true)
         }
         
-        view.identifier = .init(element.getId() ?? "")
+        updatedView.identifier = NSUserInterfaceItemIdentifier(element.getId() ?? "")
         updatedView.isHidden = !element.getIsVisible()
         
         // Input label handling

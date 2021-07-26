@@ -121,6 +121,34 @@ class ImageRendererTests: XCTestCase {
         XCTAssertEqual(contentView.imageProperties?.hasExplicitDimensions, true)
     }
     
+    func testSelectActionTargetIsSet() {
+        var imageView: ACRImageWrappingView!
+        
+        image = .make(selectAction: FakeSubmitAction.make())
+        imageView = renderImageView()
+        
+        XCTAssertNotNil(imageView.target)
+        XCTAssertTrue(imageView.target is ActionSubmitTarget)
+        
+        image = .make(selectAction: FakeOpenURLAction.make())
+        imageView = renderImageView()
+        
+        XCTAssertNotNil(imageView.target)
+        XCTAssertTrue(imageView.target is ActionOpenURLTarget)
+        
+        image = .make(selectAction: FakeToggleVisibilityAction.make())
+        imageView = renderImageView()
+        
+        XCTAssertNotNil(imageView.target)
+        XCTAssertTrue(imageView.target is ActionToggleVisibilityTarget)
+        
+        // ShowCard Action is not available as a SelectAction
+        image = .make(selectAction: FakeShowCardAction.make())
+        imageView = renderImageView()
+    
+        XCTAssertNil(imageView.target)
+    }
+    
     private func renderImageView() -> ACRImageWrappingView {
         let view = imageRenderer.render(element: image, with: hostConfig, style: .default, rootView: fakeACRView, parentView: fakeACRView, inputs: [], config: .default)
         

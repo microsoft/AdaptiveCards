@@ -43,6 +43,34 @@ class ColumnSetRendererTests: XCTestCase {
         XCTAssertEqual(columnStackView.orientation, .horizontal)
     }
     
+    func testSelectActionTargetIsSet() {
+        var columnSetView: ACRContentStackView!
+        
+        columnSet = .make(selectAction: FakeSubmitAction.make())
+        columnSetView = renderColumnSetView()
+        
+        XCTAssertNotNil(columnSetView.target)
+        XCTAssertTrue(columnSetView.target is ActionSubmitTarget)
+        
+        columnSet = .make(selectAction: FakeOpenURLAction.make())
+        columnSetView = renderColumnSetView()
+        
+        XCTAssertNotNil(columnSetView.target)
+        XCTAssertTrue(columnSetView.target is ActionOpenURLTarget)
+        
+        columnSet = .make(selectAction: FakeToggleVisibilityAction.make())
+        columnSetView = renderColumnSetView()
+        
+        XCTAssertNotNil(columnSetView.target)
+        XCTAssertTrue(columnSetView.target is ActionToggleVisibilityTarget)
+        
+        // ShowCard Action is not available as a SelectAction
+        columnSet = .make(selectAction: FakeShowCardAction.make())
+        columnSetView = renderColumnSetView()
+    
+        XCTAssertNil(columnSetView.target)
+    }
+    
     private func renderColumnSetView() -> ACRContentStackView {
         let view = columnSetRenderer.render(element: columnSet, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
         

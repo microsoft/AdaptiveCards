@@ -4,6 +4,7 @@ import AppKit
 protocol ACRActionSetViewDelegate: AnyObject {
     func actionSetView(_ view: ACRActionSetView, didOpenURLWith actionView: NSView, urlString: String)
     func actionSetView(_ view: ACRActionSetView, didSubmitInputsWith actionView: NSView, dataJson: String?)
+    func actionSetView(_ view: ACRActionSetView, didToggleVisibilityActionWith actionView: NSView, toggleTargets: [ACSToggleVisibilityTarget])
     func actionSetView(_ view: ACRActionSetView, willShowCardWith button: NSButton)
     func actionSetView(_ view: ACRActionSetView, didShowCardWith button: NSButton)
     func actionSetView(_ view: ACRActionSetView, renderShowCardFor cardData: ACSAdaptiveCard) -> NSView
@@ -211,5 +212,9 @@ extension ACRActionSetView: ShowCardTargetHandlerDelegate {
     
     func handleSubmitAction(actionView: NSView, dataJson: String?) {
         delegate?.actionSetView(self, didSubmitInputsWith: actionView, dataJson: dataJson)
+    }
+    
+    func handleToggleVisibilityAction(actionView: NSView, toggleTargets: [ACSToggleVisibilityTarget]) {
+        delegate?.actionSetView(self, didToggleVisibilityActionWith: actionView, toggleTargets: toggleTargets)
     }
 }

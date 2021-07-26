@@ -12,6 +12,9 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     private var stackViewTopConstraint: NSLayoutConstraint?
     private var stackViewBottomConstraint: NSLayoutConstraint?
     
+    private var currentSpacingView: SpacingView?
+    private var currentSeparatorView: SpacingView?
+    
     let style: ACSContainerStyle
     let hostConfig: ACSHostConfig
     var target: TargetHandler?
@@ -146,22 +149,21 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     }
     
     private func addSeperator(thickness: NSNumber, color: String) {
-        let seperatorView = NSView()
-        seperatorView.translatesAutoresizingMaskIntoConstraints = false
-        seperatorView.wantsLayer = true
-        let anchor = orientation == .horizontal ? seperatorView.widthAnchor : seperatorView.heightAnchor
-        anchor.constraint(equalToConstant: CGFloat(truncating: thickness)).isActive = true
-        seperatorView.layer?.backgroundColor = ColorUtils.color(from: color)?.cgColor ?? .black
+        let seperatorView = SpacingView(asSeparatorViewWithThickness: CGFloat(truncating: thickness), color: color, orientation: orientation)
         stackView.addArrangedSubview(seperatorView)
         stackView.setCustomSpacing(5, after: seperatorView)
+        currentSeparatorView = seperatorView
     }
     
     private func addSpacing(spacing: CGFloat) {
-        let spacingView = NSView()
-        spacingView.translatesAutoresizingMaskIntoConstraints = false
-        let anchor = orientation == .horizontal ? spacingView.widthAnchor : spacingView.heightAnchor
-        anchor.constraint(equalToConstant: spacing).isActive = true
+        let spacingView = SpacingView(orientation: orientation, spacing: spacing)
         stackView.addArrangedSubview(spacingView)
+        currentSpacingView = spacingView
+    }
+    
+    private func setupTrackingArea() {
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
+        addTrackingArea(trackingArea)
     }
     
     /// This method can be overridden, but not to be called from anywhere
@@ -187,6 +189,40 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
         stackViewBottomConstraint?.isActive = true
     }
     
+    func setVerticalHuggingPriority(_ rawValue: Float) {
+        stackView.setHuggingPriority(NSLayoutConstraint.Priority(rawValue), for: .vertical)
+    }
+    
+    func setMinimumHeight(_ height: NSNumber?) {
+        guard let height = height, let heightPt = CGFloat(exactly: height), heightPt > 0 else { return }
+        heightAnchor.constraint(greaterThanOrEqualToConstant: heightPt).isActive = true
+    }
+    
+    func refreshOnVisibilityChange(from isHiddenOld: Bool) {
+        // Ignore refresh if view is isHidden or state is not changed
+        // Ignore refresh if view is not inside a stackView
+        guard !isHidden, isHidden != isHiddenOld, let stackView = superview as? NSStackView else { return }
+        
+        // Spacer and Separator to be hidden only if this view is the first element of the parent stack
+        // Ignore all Spacing to chack firstElement, as they're added for `verticalContentAlignment`. Refer ContainerRenderer / ColumnRenderer.
+        let isFirstElement = stackView.arrangedSubviews.first { !$0.isHidden && !($0 is SpacingView) } == self
+        currentSpacingView?.isHidden = isFirstElement
+        currentSeparatorView?.isHidden = isFirstElement
+    }
+    
+    // MARK: Mouse Events and SelectAction logics
+    private var previousBackgroundColor: CGColor?
+    override func mouseEntered(with event: NSEvent) {
+        guard target != nil else { return }
+        previousBackgroundColor = layer?.backgroundColor
+        layer?.backgroundColor = ColorUtils.hoverColorOnMouseEnter().cgColor
+    }
+    
+    override func mouseExited(with event: NSEvent) {
+        guard target != nil else { return }
+        layer?.backgroundColor = previousBackgroundColor ?? .clear
+    }
+    
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         guard let target = target else { return }
@@ -196,32 +232,6 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     override func hitTest(_ point: NSPoint) -> NSView? {
         guard target != nil, frame.contains(point) else { return super.hitTest(point) }
         return self
-    }
-    
-    private func setupTrackingArea() {
-        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
-        addTrackingArea(trackingArea)
-    }
-    
-    private var previousBackgroundColor: CGColor?
-    override func mouseEntered(with event: NSEvent) {
-        guard let columnView = event.trackingArea?.owner as? ACRContentStackView, target != nil else { return }
-        previousBackgroundColor = columnView.layer?.backgroundColor
-        columnView.layer?.backgroundColor = ColorUtils.hoverColorOnMouseEnter().cgColor
-    }
-    
-    override func mouseExited(with event: NSEvent) {
-        guard let columnView = event.trackingArea?.owner as? ACRContentStackView, target != nil else { return }
-        columnView.layer?.backgroundColor = previousBackgroundColor ?? .clear
-    }
-    
-    func setVerticalHuggingPriority(_ rawValue: Float) {
-        stackView.setHuggingPriority(NSLayoutConstraint.Priority(rawValue), for: .vertical)
-    }
-    
-    func setMinimumHeight(_ height: NSNumber?) {
-        guard let height = height, let heightPt = CGFloat(exactly: height), heightPt > 0 else { return }
-        heightAnchor.constraint(greaterThanOrEqualToConstant: heightPt).isActive = true
     }
 }
 

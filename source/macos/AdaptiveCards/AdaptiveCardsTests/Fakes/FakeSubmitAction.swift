@@ -52,6 +52,7 @@ class FakeSubmitAction: ACSSubmitAction {
         style = value
     }
 }
+
 extension FakeSubmitAction {
     static func make(dataJson: String = "", associatedInputs: ACSAssociatedInputs = .none, title: String? = "", iconUrl: String? = "", style: String? = "", inputText: ACSTextInput? = nil) -> FakeSubmitAction {
         let fakeSubmitAction = FakeSubmitAction()

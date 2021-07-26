@@ -76,14 +76,50 @@ class RichTextBlockRendererTests: XCTestCase {
         XCTAssert(isStringAttributePresent(attrString: textView.attributedString(), attr: .strikethroughStyle))
     }
     
+    func testSelectActionTargetIsSet() {
+        var textRun: FakeTextRun!
+        var textView: ACRTextView!
+        
+        textRun = .make(text: sampleText, selectAction: FakeSubmitAction.make())
+        richTextBlock = .make(textRun: textRun)
+        textView = renderTextView()
+        
+        XCTAssertNotNil(attributeValue(for: .selectAction, in: textView.attributedString()))
+        XCTAssertTrue(attributeValue(for: .selectAction, in: textView.attributedString()) is ActionSubmitTarget)
+        XCTAssertTrue(textView.target is ActionSubmitTarget)
+        
+        textRun = .make(text: sampleText, selectAction: FakeOpenURLAction.make())
+        richTextBlock = .make(textRun: textRun)
+        textView = renderTextView()
+        
+        XCTAssertNotNil(attributeValue(for: .selectAction, in: textView.attributedString()))
+        XCTAssertTrue(attributeValue(for: .selectAction, in: textView.attributedString()) is ActionOpenURLTarget)
+        XCTAssertTrue(textView.target is ActionOpenURLTarget)
+        
+        textRun = .make(text: sampleText, selectAction: FakeToggleVisibilityAction.make())
+        richTextBlock = .make(textRun: textRun)
+        textView = renderTextView()
+        
+        XCTAssertNotNil(attributeValue(for: .selectAction, in: textView.attributedString()))
+        XCTAssertTrue(attributeValue(for: .selectAction, in: textView.attributedString()) is ActionToggleVisibilityTarget)
+        XCTAssertTrue(textView.target is ActionToggleVisibilityTarget)
+        
+        // ShowCard Action is not available as a SelectAction
+        textRun = .make(text: sampleText, selectAction: FakeShowCardAction.make())
+        richTextBlock = .make(textRun: textRun)
+        textView = renderTextView()
+        
+        XCTAssertNil(attributeValue(for: .selectAction, in: textView.attributedString()))
+        XCTAssertNil(textView.target)
+    }
+    
     private func isStringAttributePresent(attrString: NSAttributedString, attr: NSAttributedString.Key) -> Bool {
-        var isUnderlined: Bool = false
-        attrString.enumerateAttributes(in: NSRange(location: 0, length: attrString.length), options: []) { (dict, range, value) in
-            if dict.keys.contains(attr) {
-                isUnderlined = true
-            }
-        }
-        return isUnderlined
+        return attributeValue(for: attr, in: attrString) != nil
+    }
+    
+    private func attributeValue(for key: NSAttributedString.Key, in attrString: NSAttributedString) -> Any? {
+        let range = NSRange(location: 0, length: attrString.length)
+        return attrString.attribute(key, at: 0, longestEffectiveRange: nil, in: range)
     }
     
 

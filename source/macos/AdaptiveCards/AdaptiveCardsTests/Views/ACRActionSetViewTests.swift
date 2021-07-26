@@ -43,6 +43,17 @@ class ACRActionSetViewTests: XCTestCase {
         XCTAssertEqual(delegate.lastDataJSON, "hello")
     }
     
+    func testToggleVisibilityActionCall() {
+        let target = FakeToggleVisibilityTarget.make()
+        actions = [FakeToggleVisibilityAction.make(targetElements: [target])]
+        renderActionSetView()
+        actionButtons[0].performClick()
+        
+        XCTAssertTrue(delegate.toggleVisibilityCalled)
+        XCTAssertEqual(delegate.lastToggleTargets?.count, 1)
+        XCTAssertTrue(delegate.lastToggleTargets?[0] === target)
+    }
+    
     func testShowCardAction() {
         actions = [FakeShowCardAction.make(card: FakeAdaptiveCard())]
         let fakeShowCard = NSView()
@@ -119,6 +130,13 @@ private class FakeActionSetViewDelegate: ACRActionSetViewDelegate {
     func actionSetView(_ view: ACRActionSetView, didSubmitInputsWith actionView: NSView, dataJson: String?) {
         submitInputsCalled = true
         lastDataJSON = dataJson
+    }
+    
+    var toggleVisibilityCalled = false
+    var lastToggleTargets: [ACSToggleVisibilityTarget]?
+    func actionSetView(_ view: ACRActionSetView, didToggleVisibilityActionWith actionView: NSView, toggleTargets: [ACSToggleVisibilityTarget]) {
+        toggleVisibilityCalled = true
+        lastToggleTargets = toggleTargets
     }
     
     var willShowCardCalled = false

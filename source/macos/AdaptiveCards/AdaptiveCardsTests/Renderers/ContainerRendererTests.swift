@@ -34,6 +34,34 @@ class ContainerRendererTests: XCTestCase {
         XCTAssertEqual(containerView.stackView.arrangedSubviews.capacity, 2)
     }
     
+    func testSelectActionTargetIsSet() {
+        var containerView: ACRContentStackView!
+        
+        container = .make(selectAction: FakeSubmitAction.make())
+        containerView = renderContainerView()
+        
+        XCTAssertNotNil(containerView.target)
+        XCTAssertTrue(containerView.target is ActionSubmitTarget)
+        
+        container = .make(selectAction: FakeOpenURLAction.make())
+        containerView = renderContainerView()
+        
+        XCTAssertNotNil(containerView.target)
+        XCTAssertTrue(containerView.target is ActionOpenURLTarget)
+        
+        container = .make(selectAction: FakeToggleVisibilityAction.make())
+        containerView = renderContainerView()
+        
+        XCTAssertNotNil(containerView.target)
+        XCTAssertTrue(containerView.target is ActionToggleVisibilityTarget)
+        
+        // ShowCard Action is not available as a SelectAction
+        container = .make(selectAction: FakeShowCardAction.make())
+        containerView = renderContainerView()
+    
+        XCTAssertNil(containerView.target)
+    }
+    
     func testRendersItems() {
         container = .make(items: [FakeInputToggle.make()])
         let containerView = renderContainerView()

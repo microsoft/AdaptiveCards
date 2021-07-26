@@ -6,12 +6,24 @@ class ActionSetRendererTests: XCTestCase {
     private var hostConfig: FakeHostConfig!
     private var actionSet: FakeActionSet!
     private var actionSetRenderer: ActionSetRenderer!
+    private var rootView: FakeRootView!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         hostConfig = .make()
         actionSet = .make()
         actionSetRenderer = ActionSetRenderer()
+        rootView = FakeRootView()
+    }
+    
+    func testRendererSetsDelegate() {
+        let hostConfigActions = ACSActionsConfig(showCard: .init(actionMode: .inline, style: .accent, inlineTopMargin: 0), actionsOrientation: .vertical, actionAlignment: .center, buttonSpacing: 2, maxActions: 1, spacing: .default, iconPlacement: .aboveTitle, iconSize: .init(value: 1))
+        hostConfig = .make(actions: hostConfigActions)
+        actionSet = .make(actions: [FakeSubmitAction.make()])
+        
+        let actionSetView = renderActionSetView()
+        XCTAssertNotNil(actionSetView.delegate)
+        XCTAssertTrue(actionSetView.delegate === rootView)
     }
     
     func testRendererGetActions() {
@@ -66,7 +78,7 @@ class ActionSetRendererTests: XCTestCase {
     }
     
     private func renderActionSetView() -> ACRActionSetView {
-        let view = actionSetRenderer.render(element: actionSet, with: hostConfig, style: .default, rootView: ACRView(style: .default, hostConfig: hostConfig, renderConfig: .default), parentView: NSView(), inputs: [], config: .default)
+        let view = actionSetRenderer.render(element: actionSet, with: hostConfig, style: .default, rootView: rootView, parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRActionSetView)
         guard let actionSetView = view as? ACRActionSetView else { fatalError() }

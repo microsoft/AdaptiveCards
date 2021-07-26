@@ -18,9 +18,9 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
         // add selectAction
         containerView.setupSelectAction(container.getSelectAction(), rootView: rootView)
         
-        var leadingBlankSpace: NSView?
+        var leadingBlankSpace: SpacingView?
         if container.getVerticalContentAlignment() == .center || container.getVerticalContentAlignment() == .bottom {
-            let view = NSView()
+            let view = SpacingView()
             containerView.addArrangedSubview(view)
             leadingBlankSpace = view
         }
@@ -34,12 +34,9 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
             BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: containerView, with: hostConfig, element: item, parentElement: container)
         }
         
-        let verticalAlignment = container.getVerticalContentAlignment()
         // Dont add the trailing space if the vertical content alignment is top/default
-        if verticalAlignment == .center, let topView = leadingBlankSpace {
-            let view = NSView()
-            view.translatesAutoresizingMaskIntoConstraints = false
-            topView.translatesAutoresizingMaskIntoConstraints = false
+        if container.getVerticalContentAlignment() == .center, let topView = leadingBlankSpace {
+            let view = SpacingView()
             containerView.addArrangedSubview(view)
             view.heightAnchor.constraint(equalTo: topView.heightAnchor).isActive = true
         }

@@ -70,8 +70,16 @@ class ACRColumnView: ACRContentStackView {
         // Activate min Width constraint only if column has a non-image subview
         // Because - column can be empty                        -> should have zero content size
         //         - image can have dimensions less than 30 pts -> should match image content size
-        let contentStackView = subview as? ACRContentStackView
-        if !(contentStackView?.arrangedSubviews.first is ACRImageWrappingView || subview is ACRImageWrappingView) {
+        //         - spacingView should be ignored
+        //              ^ They're invalid without any other view in the stack
+        func isIntrinsicView(_ view: NSView) -> Bool {
+            if let contentStackView = view as? ACRContentStackView {
+                return contentStackView.arrangedSubviews.allSatisfy { isIntrinsicView($0) }
+            }
+            return view is ACRImageWrappingView || view is SpacingView
+        }
+        
+        if !isIntrinsicView(subview) {
             minWidthConstraint.isActive = true
         }
         
