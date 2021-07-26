@@ -55,6 +55,21 @@
 		},
 		{
 			"type": "Action.ToggleVisibility",
+			"title": "Also Toggle!",
+			"targetElements": [
+				{
+					"elementId": "textToToggle"
+				},
+				{
+					"elementId": "imageToToggle"
+				},
+				{
+					"elementId": "imageToToggle2"
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
 			"title": "Show!",
 			"targetElements": [
 				{
@@ -86,6 +101,42 @@
 				{
 					"elementId": "imageToToggle2",
 					"isVisible": false
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Grain!",
+			"targetElements": [
+				{
+					"elementId": "textToToggle",
+					"isVisible": true
+				},
+				{
+					"elementId": "imageToToggle",
+					"isVisible": true
+				},
+				{
+					"elementId": "imageToToggle2",
+					"isVisible": false
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Water!",
+			"targetElements": [
+				{
+					"elementId": "textToToggle",
+					"isVisible": true
+				},
+				{
+					"elementId": "imageToToggle",
+					"isVisible": false
+				},
+				{
+					"elementId": "imageToToggle2",
+					"isVisible": true
 				}
 			]
 		}
