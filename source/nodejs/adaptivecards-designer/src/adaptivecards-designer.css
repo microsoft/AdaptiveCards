@@ -198,14 +198,14 @@
 .acd-dialog-button {
 }
 
-.acd-open-card-item-container {
+.acd-open-sample-item-container {
     display: flex;
     flex-flow: row wrap;
     align-items: flex-end;
     justify-content: space-evenly;
 }
 
-.acd-open-card-item {
+.acd-open-sample-item {
     width: 350px;
     height: 100%;
     padding: 10px;
@@ -217,7 +217,7 @@
     cursor: pointer;
 }
 
-.acd-open-card-item-thumbnail {
+.acd-open-sample-item-thumbnail {
     overflow: hidden;
     height: 100%;
     min-height: 150px;
@@ -229,16 +229,16 @@
     justify-content: center;
 }
 
-.acd-open-card-item-title {
+.acd-open-sample-item-title {
     margin-top: 10px;
 }
 
-.acd-open-card-item:hover > .acd-open-card-item-thumbnail {
+.acd-open-sample-item:hover > .acd-open-sample-item-thumbnail {
     box-shadow: 0 0 20px -5px #CCCCCC;
     border: 1.5px solid #CCCCCC;
 }
 
-.acd-open-card-item:hover > .acd-open-card-item-title {
+.acd-open-sample-item:hover > .acd-open-sample-item-title {
     font-weight: bold;
 }
 
@@ -1348,7 +1348,7 @@ a.default-ac-anchor:visited:active {
     border: 1.5px dashed #cccccc;
 }
 
-.acd-image-container:hover > .acd-open-card-item-title {
+.acd-image-container:hover > .acd-open-sample-item-title {
     font-weight: bold;
 }
 
