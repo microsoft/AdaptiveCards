@@ -37,6 +37,7 @@ export abstract class Dialog {
     onClose: (sender: Dialog) => void = null;
 
     readonly closeButton: DialogButton;
+    buttons?: DialogButton[];
 
     title: string;
     width: string;
@@ -138,6 +139,12 @@ export abstract class Dialog {
             buttonBarElement.className = "acd-dialog-buttonBar";
             buttonBarElement.style.flex = "0 0 auto";
             buttonBarElement.appendChild(this.closeButton.render());
+
+            if (this.buttons?.length > 0) {
+                for (const button of this.buttons) {
+                    buttonBarElement.appendChild(button.render());
+                }
+            }
 
             dialogFrameElement.appendChild(titleBarElement);
             dialogFrameElement.appendChild(contentElement);
