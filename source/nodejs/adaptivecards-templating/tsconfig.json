@@ -1,8 +1,7 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"outDir": "./lib",
-		"resolveJsonModule": true
+		"outDir": "./lib"
 	},
 	"files": ["./src/adaptivecards-templating.ts"]
 }

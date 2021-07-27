@@ -35,10 +35,6 @@
 		"release": "npm run build && webpack --mode=production && npm run dts",
 		"docs": "npx typedoc"
 	},
-	"dependencies": {
-		"@json-schema-tools/meta-schema": "^1.6.19",
-		"ajv": "^8.6.2"
-	},
 	"devDependencies": {
 		"@types/json-schema": "^7.0.8",
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
