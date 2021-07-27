@@ -15,31 +15,31 @@ export interface CardData {
 type CardDataCallback = (output: CardData) => any;
 type CardDataProvider = (callback?: CardDataCallback) => CardData | void;
 
-interface OpenCardItemProps {
+interface OpenSampleItemProps {
     label: string,
     onClick?: (ev: MouseEvent) => any
     cardData?: CardData | CardDataProvider,
 }
 
-class OpenCardItem {
+class OpenSampleItem {
     onComplete: CardDataCallback
 
-    constructor(readonly props: OpenCardItemProps) { }
+    constructor(readonly props: OpenSampleItemProps) { }
 
     private static _id = 0;
     private static getNewItemId(prefix: string): string {
-        const newId = prefix + "-" + OpenCardItem._id;
+        const newId = prefix + "-" + OpenSampleItem._id;
 
-        OpenCardItem._id++;
+        OpenSampleItem._id++;
 
         return newId;
     }
 
     render(): HTMLElement {
-        const newItemId = OpenCardItem.getNewItemId("acd-open-card-item-title");
+        const newItemId = OpenSampleItem.getNewItemId("acd-open-sample-item-title");
 
         const element = document.createElement("div");
-        element.className = "acd-open-card-item";
+        element.className = "acd-open-sample-item";
         element.tabIndex = 0;
         element.setAttribute("aria-labelledBy", newItemId);
         element.setAttribute("role", "listitem");
@@ -58,7 +58,7 @@ class OpenCardItem {
             })
 
         const thumbnailHost = document.createElement("div");
-        thumbnailHost.className = "acd-open-card-item-thumbnail";
+        thumbnailHost.className = "acd-open-sample-item-thumbnail";
 
         if (this.props.cardData instanceof Function) {
             const spinner = document.createElement("div");
@@ -94,7 +94,7 @@ class OpenCardItem {
         }
 
         const displayNameElement = document.createElement("div");
-        displayNameElement.className = "acd-open-card-item-title";
+        displayNameElement.className = "acd-open-sample-item-title";
         displayNameElement.id = newItemId;
         displayNameElement.innerText = this.props.label;
 
@@ -106,14 +106,14 @@ class OpenCardItem {
 }
 
 
-export interface OpenCardDialogProps {
-    handlers?: (OpenCardItemProps | null)[],
+export interface OpenSampleDialogProps {
+    handlers?: (OpenSampleItemProps | null)[],
     catalogue?: SampleCatalogue,
 }
 
-export class OpenCardDialog extends Dialog {
+export class OpenSampleDialog extends Dialog {
     private _output: CardData;
-    private static _builtinItems: OpenCardItemProps[] = [
+    private static _builtinItems: OpenSampleItemProps[] = [
         {
             label: "Blank Card",
             cardData: {
@@ -130,11 +130,11 @@ export class OpenCardDialog extends Dialog {
         },
     ];
 
-    constructor(readonly props: OpenCardDialogProps) {
+    constructor(readonly props: OpenSampleDialogProps) {
         super();
     }
 
-    private renderSection(title: string | null, items: (OpenCardItemProps | null)[]): HTMLElement {
+    private renderSection(title: string | null, items: (OpenSampleItemProps | null)[]): HTMLElement {
         const renderedElement = document.createElement("div");
 
         if (title) {
@@ -147,12 +147,12 @@ export class OpenCardDialog extends Dialog {
         }
 
         const listElement = document.createElement("div");
-        listElement.className = "acd-open-card-item-container";
+        listElement.className = "acd-open-sample-item-container";
         listElement.setAttribute("role", "list");
 
         for (const item of items) {
             if (!item) continue;
-            const itemElement = new OpenCardItem(item);
+            const itemElement = new OpenSampleItem(item);
             itemElement.onComplete = (output: CardData) => {
                 this._output = output;
                 this.close();
@@ -170,7 +170,7 @@ export class OpenCardDialog extends Dialog {
         const renderedElement = document.createElement("div");
         renderedElement.style.overflow = "auto";
 
-        const featuredSection = this.renderSection(null, OpenCardDialog._builtinItems.concat(this.props.handlers))
+        const featuredSection = this.renderSection(null, OpenSampleDialog._builtinItems.concat(this.props.handlers))
         renderedElement.appendChild(featuredSection);
 
         if (this.props.catalogue) {

@@ -7,7 +7,7 @@ import * as Constants from "./constants";
 import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
 import { Pic2Card } from "./pic2card";
-import { OpenCardDialog } from "./open-card-dialog";
+import { OpenSampleDialog } from "./open-sample-dialog";
 import { OpenJsonSchemaDialog } from "./open-json-schema-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
@@ -632,7 +632,7 @@ export class CardDesigner extends Designer.DesignContext {
             "New card",
             "acd-icon-newCard",
             (sender: ToolbarButton) => {
-                let dialog = new OpenCardDialog({
+                let dialog = new OpenSampleDialog({
                     catalogue: this._sampleCatalogue,
                     handlers: [
                         {

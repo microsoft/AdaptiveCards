@@ -4,7 +4,7 @@
 import * as Adaptive from "adaptivecards";
 import * as monaco from "monaco-editor";
 import { Dialog, DialogButton } from "./dialog";
-import { CardData } from "./open-card-dialog";
+import { CardData } from "./open-sample-dialog";
 import { JSONSchemaCard } from "adaptivecards-templating";
 
 export class OpenJsonSchemaDialog extends Dialog {
