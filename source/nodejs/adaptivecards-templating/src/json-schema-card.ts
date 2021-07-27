@@ -1,24 +1,21 @@
-import Ajv from 'ajv';
-import JSONSchema from '@json-schema-tools/meta-schema/schema.json';
 import { IAdaptiveCard, ICardElement, IChoiceSetInput, IContainer, INumberInput, ITextInput, ITimeInput, IToggleInput } from 'adaptivecards/src/schema';
 import { JSONSchema7, JSONSchema7Definition, JSONSchema7Type } from 'json-schema';
-
-const ajv = new Ajv();
-const JSONSchemaValidator = ajv.compile(JSONSchema);
 
 
 // JSON Schema Card
 // generates an Adaptive Card given a JSON schema
 export function JSONSchemaCard(schema: JSONSchema7): IAdaptiveCard | undefined {
-    const valid = JSONSchemaValidator(schema);
-    if (!valid) return undefined;
-
-    return {
-        type: "AdaptiveCard",
-        body: [
-            JSONSchemaCardObject(schema, '', 0),
-        ],
-    }
+	try {
+		return {
+			type: "AdaptiveCard",
+			body: [
+				JSONSchemaCardObject(schema, '', 0),
+			],
+		}
+	} catch (e) {
+		console.error(e);
+		return undefined;
+	}
 }
 
 
