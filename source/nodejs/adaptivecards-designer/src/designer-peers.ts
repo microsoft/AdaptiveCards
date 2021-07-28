@@ -2691,7 +2691,7 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
         [
             { targetVersion: Adaptive.Versions.v1_0, name: "Compact", value: "compact" },
             { targetVersion: Adaptive.Versions.v1_0, name: "Expanded", value: "expanded" },
-            { targetVersion: Adaptive.Versions.v1_0, name: "Filtered", value: "filtered" }
+            { targetVersion: Adaptive.Versions.v1_5, name: "Filtered", value: "filtered" }
         ],
         true);
     static readonly wrapProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_2, "wrap", "Wrap");

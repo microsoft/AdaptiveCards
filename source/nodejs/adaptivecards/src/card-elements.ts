@@ -3131,7 +3131,7 @@ export class ChoiceSetInput extends Input {
         [
             { value: "compact" },
             { value: "expanded" },
-            { value: "filtered" }
+            { value: "filtered", targetVersion: Versions.v1_5 }
         ],
         "compact");
     static readonly isMultiSelectProperty = new BoolProperty(Versions.v1_0, "isMultiSelect", false);
