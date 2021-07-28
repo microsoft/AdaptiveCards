@@ -1,0 +1,89 @@
+# Variable 'ADCVERSION' was defined in the Variables tab
+# Variable 'COCOAPODTRUNKTOKEN' was defined in the Variables tab
+# Variable 'Configuration' was defined in the Variables tab
+# Variable 'P12password' was defined in the Variables tab
+# Variable 'SDK' was defined in the Variables tab
+# Variable 'TestConfiguration' was defined in the Variables tab
+# Variable 'TestSDK' was defined in the Variables tab
+# Agent Queue 'Azure Pipelines' was used with unrecognized Agent Specification, vmImage property must be specified to determine image - https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software
+variables:
+- name: BuildParameters.xcWorkspacePath
+  value: source/ios/AdaptiveCards/AdaptiveCards.xcworkspace
+- name: BuildParameters.scheme
+  value: AdaptiveCards-Universal
+- name: BuildParameters.xcodeDeveloperDir
+  value: ''
+name: $(date:yyyyMMdd)$(rev:.r)
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: release/21.04
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    name: Azure Pipelines
+  steps:
+  - checkout: self
+  - task: Xcode@5
+    displayName: Xcode build
+    inputs:
+      xcWorkspacePath: $(BuildParameters.xcWorkspacePath)
+      scheme: $(BuildParameters.scheme)
+      xcodeDeveloperDir: $(BuildParameters.xcodeDeveloperDir)
+      destinationSimulators: iPhone 7
+  - task: Bash@3
+    displayName: Update Bundle Version
+    inputs:
+      targetType: inline
+      script: >-
+        # Write your commands here
+
+
+        # Write your commands here
+
+        # update the version
+
+
+        echo "Adaptive Version ${ADCVERSION}"
+
+        cd source/ios/AdaptiveCards/AdaptiveCards
+
+        xcrun agvtool new-version -all ${ADCVERSION}
+  - task: DownloadSecureFile@1
+    name: ConnectString
+    displayName: Download secure file
+    inputs:
+      secureFile: 8bf566e4-a21c-48b4-90e5-368f3adaef68
+      retryCount: 5
+  - task: Bash@3
+    displayName: Bash Script
+    inputs:
+      targetType: inline
+      script: >-
+        # Use the environment variables input below to pass secret variables to this script
+
+        cp -f $(ConnectString.secureFilePath)  ./source/ios/tools/IOSFeed
+  - task: DotNetCoreCLI@2
+    displayName: dotnet custom
+    inputs:
+      command: custom
+      projects: source/ios/tools/IOSFeed/IOSFeed.csproj
+      custom: add
+      arguments: package Microsoft.Azure.Storage.Blob
+  - task: DotNetCoreCLI@2
+    displayName: dotnet build
+    inputs:
+      projects: source/ios/tools/IOSFeed/IOSFeed.csproj
+  - task: DotNetCoreCLI@2
+    displayName: Push To Azure
+    inputs:
+      command: run
+      projects: source/ios/tools/IOSFeed/IOSFeed.csproj
+  - task: Bash@3
+    displayName: Push To cocoapods
+    inputs:
+      targetType: inline
+      script: "# Write your commands here\ncat  ./source/ios/AdaptiveCards.podspec\n\nif type brew >/dev/null 2>&1;\nthen \n   brew upgrade cocoapods >/dev/null 2>&1; \n   brew install cocoapods >/dev/null 2>&1; \nfi\n\npod trunk push  ./source/ios/AdaptiveCards.podspec\n"
+...

@@ -143,11 +143,6 @@ namespace AdaptiveCards.Tools.IOSFeed
                             {
                                 stringBuilderForEditedString.Append(splits[0]).Append("= { :http => " + "'" + uri + "' }");
                             }
-                            else if (splits[0].Contains("spec.version", StringComparison.OrdinalIgnoreCase))
-                            {
-                                var adaptiveVersion = Environment.GetEnvironmentVariable("ADCVERSION");
-                                stringBuilderForEditedString.Append(splits[0]).Append("= '" + adaptiveVersion + "'");
-                            }
                             else
                             {
                                 stringBuilderForEditedString.Append(s);
