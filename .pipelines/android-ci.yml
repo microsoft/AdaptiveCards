@@ -38,40 +38,38 @@ steps:
     cwd: source/android
     publishJUnitResults: false
 
-- task: Bash@3
+- bash: |
+   #!/usr/bin/env bash
+
+   # Install AVD files
+   echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install 'system-images;android-27;google_apis;x86'
+
+   # Create emulator
+   echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd -n android_emulator -k 'system-images;android-27;google_apis;x86' --force
+   echo $ANDROID_HOME/emulator/emulator -list-avds
+   echo "Starting emulator"
+
+   # Start emulator in background
+   nohup $ANDROID_HOME/emulator/emulator -avd android_emulator -no-snapshot -skin 600x800 > /dev/null 2>&1 &
+   $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+   $ANDROID_HOME/platform-tools/adb devices
+
+   # Disable emulator animations
+   echo "$ANDROID_HOME/platform-tools/adb shell settings put global window_animation_scale 0.0"
+   $ANDROID_HOME/platform-tools/adb shell settings put global window_animation_scale 0.0
+
+   echo "$ANDROID_HOME/platform-tools/adb shell settings put global transition_animation_scale 0.0"
+   $ANDROID_HOME/platform-tools/adb shell settings put global transition_animation_scale 0.0
+
+   echo "$ANDROID_HOME/platform-tools/adb shell settings put global animator_duration_scale 0.0"
+    $ANDROID_HOME/platform-tools/adb shell settings put global animator_duration_scale 0.0
+
+   echo "$ANDROID_HOME/platform-tools/adb shell settings put secure show_ime_with_hard_keyboard 0"
+   $ANDROID_HOME/platform-tools/adb shell settings put secure show_ime_with_hard_keyboard 0
+
+   echo "Emulator started"
+   
   displayName: Creation of emulator for testing
-  inputs:
-    targetType: inline
-    script: >-
-      #!/usr/bin/env bash
-
-      # Install AVD files
-      echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install 'system-images;android-27;google_apis;x86'
-
-      # Create emulator
-      echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd -n android_emulator -k 'system-images;android-27;google_apis;x86' --force
-      echo $ANDROID_HOME/emulator/emulator -list-avds
-      echo "Starting emulator"
-
-      # Start emulator in background
-      nohup $ANDROID_HOME/emulator/emulator -avd android_emulator -no-snapshot -skin 600x800 > /dev/null 2>&1 &
-      $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
-      $ANDROID_HOME/platform-tools/adb devices
-
-      # Disable emulator animations
-      echo "$ANDROID_HOME/platform-tools/adb shell settings put global window_animation_scale 0.0"
-      $ANDROID_HOME/platform-tools/adb shell settings put global window_animation_scale 0.0
-
-      echo "$ANDROID_HOME/platform-tools/adb shell settings put global transition_animation_scale 0.0"
-      $ANDROID_HOME/platform-tools/adb shell settings put global transition_animation_scale 0.0
-
-      echo "$ANDROID_HOME/platform-tools/adb shell settings put global animator_duration_scale 0.0"
-      $ANDROID_HOME/platform-tools/adb shell settings put global animator_duration_scale 0.0
-
-      echo "$ANDROID_HOME/platform-tools/adb shell settings put secure show_ime_with_hard_keyboard 0"
-      $ANDROID_HOME/platform-tools/adb shell settings put secure show_ime_with_hard_keyboard 0
-
-      echo "Emulator started"
 
 - task: Gradle@2
   displayName: gradlew test
