@@ -7,7 +7,6 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveBase64Util.h"
-#include <robuffer.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
