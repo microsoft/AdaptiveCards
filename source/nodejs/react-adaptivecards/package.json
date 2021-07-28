@@ -35,6 +35,10 @@
 		"release": "npm run build && webpack --mode=production && npm run dts",
 		"docs": "npx typedoc"
 	},
+	"peerDependencies": {
+		"adaptivecards": "^2.9.0",
+		"react": "^17.0.2"
+	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
@@ -47,8 +51,5 @@
 		"webpack-cli": "^3.3.12",
 		"webpack-concat-plugin": "^3.0.0",
 		"webpack-dev-server": "^3.11.0"
-	},
-	"dependencies": {
-		"react": "^17.0.2"
 	}
 }

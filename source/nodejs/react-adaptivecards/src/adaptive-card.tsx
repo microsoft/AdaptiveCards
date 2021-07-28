@@ -74,7 +74,7 @@ export const AdaptiveCard = ({
           if (onActionOpenUrl) {
             onActionOpenUrl(a);
           } else {
-            defaultOpenUrlHandler(a);
+            defaultOpenUrlHandler(a as AdaptiveCards.OpenUrlAction);
           }
 
           break;
