@@ -125,16 +125,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lib\AdaptiveAuthCardButton.cpp" />
-    <ClCompile Include="lib\AdaptiveAuthentication.cpp">
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessToFile>
-    </ClCompile>
+    <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionParser.cpp" />
     <ClCompile Include="lib\AdaptiveRefresh.cpp" />
