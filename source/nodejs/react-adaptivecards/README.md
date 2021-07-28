@@ -15,3 +15,22 @@ import * as AdaptiveCard from "react-adaptivecards";
 // OR require it:
 var AdaptiveCard = require("react-adaptivecards");
 ```
+
+### Usage
+
+Basic usage:
+
+```js
+<AdaptiveCard
+    payload={card}
+/>
+```
+
+Non-interactible:
+
+```js
+<AdaptiveCardView
+    payload={card}
+    style={{ pointerEvents: 'none' }}
+/>
+```
