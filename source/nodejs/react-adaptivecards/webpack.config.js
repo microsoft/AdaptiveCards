@@ -23,18 +23,14 @@ module.exports = (env, argv) => {
 			contentBase: './dist'
 		},
 		externals: {
-			"react": {
-				commonjs2: "react",
-				commonjs: "react",
-				root: "react"
-			}
+			"react": "React",
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js", ".json"]
 		},
 		module: {
 			rules: [{
-					test: /\.ts$/,
+					test: /\.tsx?$/,
 					loader: "ts-loader",
 					exclude: /(node_modules|__tests__)/
 				}

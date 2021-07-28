@@ -5,7 +5,7 @@
 ### Node
 
 ```console
-npm install react adaptivecards react-adaptivecards --save
+npm install react react-adaptivecards --save
 ```
 
 ```js
