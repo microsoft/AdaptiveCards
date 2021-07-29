@@ -3327,15 +3327,35 @@ export class ChoiceSetInput extends Input {
                 inputContainer.style.width = "100%";
 
                 this._textInput = document.createElement("input");
-                this._textInput.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput", "ac-choiceSetInput-compact");
+                this._textInput.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput", "ac-choiceSetInput-filtered");
                 this._textInput.type = "text";
                 this._textInput.style.width = "100%";
-                this._textInput.oninput = () => { this.valueChanged(); }
+                this._textInput.oninput = () => {
+                    this.valueChanged();
+
+                    if (this._textInput) {
+                        // Remove aria-label when value is not empty so narration software doesn't
+                        // read the placeholder
+                        if (this.value) {
+                            this._textInput.removeAttribute("placeholder");
+                            this._textInput.removeAttribute("aria-label");
+                        }
+                        else if (this.placeholder) {
+                            this._textInput.placeholder = this.placeholder;
+                            this._textInput.setAttribute("aria-label", this.placeholder);
+                        }
+                    }
+                }
 
                 if (this.defaultValue) {
                     this._textInput.value = this.defaultValue;
                 }
 
+                if (this.placeholder && !this._textInput.value) {
+                    this._textInput.placeholder = this.placeholder;
+                    this._textInput.setAttribute("aria-label", this.placeholder);
+                }
+        
                 let dataList = document.createElement("datalist");
                 dataList.id = Utils.generateUniqueId();
 
