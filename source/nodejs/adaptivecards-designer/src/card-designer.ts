@@ -655,7 +655,7 @@ export class CardDesigner extends Designer.DesignContext {
                                 },
                             },
                         },
-                        Pic2Card.pic2cardService || process.env.PIC_TO_CARD_PREDICTION_API ?
+                        Pic2Card.pic2cardService ?
                             {
                                 label: "Pic2Card",
                                 onClick: () => {
