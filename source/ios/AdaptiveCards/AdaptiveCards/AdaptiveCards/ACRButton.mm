@@ -94,7 +94,8 @@
         CGFloat offset = -(self.contentEdgeInsets.left + self.contentEdgeInsets.right);
         [self.titleLabel.widthAnchor constraintLessThanOrEqualToAnchor:self.widthAnchor constant:offset].active = YES;
         [self.titleLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:(widthOffset / 2)].active = YES;
-        [self.heightAnchor constraintGreaterThanOrEqualToAnchor:self.titleLabel.heightAnchor constant:self.contentEdgeInsets.top + self.contentEdgeInsets.bottom].active = YES;
+        self.heightConstraint = [self.heightAnchor constraintGreaterThanOrEqualToAnchor:self.titleLabel.heightAnchor constant:self.contentEdgeInsets.top + self.contentEdgeInsets.bottom];
+        self.heightConstraint.active = YES;
     }
 }
 
@@ -122,9 +123,9 @@
 
     std::shared_ptr<AdaptiveCards::BaseActionElement> action = [acoAction element];
     NSDictionary *imageViewMap = [rootView getImageMap];
-    NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
-    UIImage *img = imageViewMap[key];
-    button.iconPlacement = [ACRButton getIconPlacmentAtCurrentContext:rootView url:key];
+    button.key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+    UIImage *img = imageViewMap[button.key];
+    button.iconPlacement = [ACRButton getIconPlacmentAtCurrentContext:rootView url:button.key];
 
     if (img) {
         UIImageView *iconView = [[ACRUIImageView alloc] init];
@@ -133,24 +134,25 @@
         button.iconView = iconView;
         [button setImageView:img withConfig:config];
 
-    } else if (key.length) {
+    } else if (button.key.length) {
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)action.get()];
-        NSString *key = [number stringValue];
-        UIImageView *view = [rootView getImageView:key];
+        button.key = [number stringValue];
+        UIImageView *view = [rootView getImageView:button.key];
         if (view) {
             if (view.image) {
                 button.iconView = view;
                 [button addSubview:view];
-                [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
+                [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:button.key];
                 [button setImageView:view.image withConfig:config];
             } else {
                 button.iconView = view;
                 [button addSubview:view];
-                [rootView setImageView:key view:button];
+                [rootView setImageView:button.key view:button];
             }
         }
     } else {
-        [button.heightAnchor constraintGreaterThanOrEqualToAnchor:button.titleLabel.heightAnchor constant:button.contentEdgeInsets.top + button.contentEdgeInsets.bottom].active = YES;
+        button.heightConstraint = [button.heightAnchor constraintGreaterThanOrEqualToAnchor:button.titleLabel.heightAnchor constant:button.contentEdgeInsets.top + button.contentEdgeInsets.bottom];
+        button.heightConstraint.active = YES;
     }
 
     return button;
