@@ -3,7 +3,6 @@
 #include "pch.h"
 #include "AdaptiveCardRendererComponent.h"
 
-#include "AdaptiveCard.h"
 #include "AdaptiveCardResourceResolvers.h"
 #include "AdaptiveActionRendererRegistration.h"
 #include "AdaptiveActionSetRenderer.h"
@@ -40,6 +39,7 @@ using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -167,7 +167,7 @@ namespace AdaptiveCards::Rendering::Uwp
             catch (...)
             {
                 RETURN_IF_FAILED(renderContext->AddError(
-                    ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode::RenderFailed,
+                    ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode::RenderFailed,
                     HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
                 renderedCard->SetFrameworkElement(nullptr);
             }
@@ -183,7 +183,13 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&renderedCard));
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
-        RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
+        ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardStatics> adaptiveCardStatics;
+        RETURN_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard).Get(),
+                                 &adaptiveCardStatics));
+
+        RETURN_IF_FAILED(adaptiveCardStatics->FromJsonString(adaptiveJson, &adaptiveCardParseResult));
+
         ComPtr<IAdaptiveCard> parsedCard;
         RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&parsedCard));
         if (parsedCard == nullptr)
@@ -213,14 +219,6 @@ namespace AdaptiveCards::Rendering::Uwp
         HString adaptiveJsonAsHstring;
         RETURN_IF_FAILED(JsonObjectToHString(adaptiveJson, adaptiveJsonAsHstring.GetAddressOf()));
         return RenderAdaptiveCardFromJsonString(adaptiveJsonAsHstring.Get(), result);
-    }
-
-    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                                   _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult)
-    {
-        ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
-        return adaptiveCardStatics->FromJsonString(adaptiveJson, parseResult);
     }
 
     IAdaptiveHostConfig* AdaptiveCardRenderer::GetHostConfig() { return m_hostConfig.Get(); }
@@ -307,16 +305,16 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         ABI::Windows::UI::Color accentColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
-                                                  ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor_Accent,
-                                                  ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle_Default,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor_Accent,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle_Default,
                                                   false, // isSubtle
                                                   false, // highlight
                                                   &accentColor));
 
         ABI::Windows::UI::Color attentionColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
-                                                  ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor_Attention,
-                                                  ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle_Default,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor_Attention,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle_Default,
                                                   false, // isSubtle
                                                   false, // highlight
                                                   &attentionColor));

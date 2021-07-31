@@ -11,46 +11,46 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveTextStyleConfigBase::InitializeTextStyleConfig(TextStyleConfig textStyleConfig)
     {
-        m_textWeight = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextWeight>(textStyleConfig.weight);
-        m_textSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::TextSize>(textStyleConfig.size);
-        m_textColor = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor>(textStyleConfig.color);
+        m_textWeight = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>(textStyleConfig.weight);
+        m_textSize = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>(textStyleConfig.size);
+        m_textColor = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>(textStyleConfig.color);
         m_isSubtle = textStyleConfig.isSubtle;
-        m_fontType = static_cast<ABI::AdaptiveCards::Rendering::Uwp::FontType>(textStyleConfig.fontType);
+        m_fontType = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>(textStyleConfig.fontType);
 
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStyleConfigBase::get_Size(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextSize* textSize)
+    HRESULT AdaptiveTextStyleConfigBase::get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStyleConfigBase::put_Size(ABI::AdaptiveCards::Rendering::Uwp::TextSize textSize)
+    HRESULT AdaptiveTextStyleConfigBase::put_Size(ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStyleConfigBase::get_Weight(_Out_ ABI::AdaptiveCards::Rendering::Uwp::TextWeight* textWeight)
+    HRESULT AdaptiveTextStyleConfigBase::get_Weight(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStyleConfigBase::put_Weight(ABI::AdaptiveCards::Rendering::Uwp::TextWeight textWeight)
+    HRESULT AdaptiveTextStyleConfigBase::put_Weight(ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStyleConfigBase::get_Color(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* textColor)
+    HRESULT AdaptiveTextStyleConfigBase::get_Color(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor* textColor)
     {
         *textColor = m_textColor;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStyleConfigBase::put_Color(ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor textColor)
+    HRESULT AdaptiveTextStyleConfigBase::put_Color(ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor textColor)
     {
         m_textColor = textColor;
         return S_OK;
@@ -68,13 +68,13 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStyleConfigBase::get_FontType(ABI::AdaptiveCards::Rendering::Uwp::FontType* fontType)
+    HRESULT AdaptiveTextStyleConfigBase::get_FontType(ABI::AdaptiveCards::ObjectModel::Uwp::FontType* fontType)
     {
         *fontType = m_fontType;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStyleConfigBase::put_FontType(ABI::AdaptiveCards::Rendering::Uwp::FontType fontType)
+    HRESULT AdaptiveTextStyleConfigBase::put_FontType(ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType)
     {
         m_fontType = fontType;
         return S_OK;

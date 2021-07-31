@@ -43,7 +43,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         void AddElementToStretchablesList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
         bool IsUIElementInStretchableList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
-        void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment);
+        void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
@@ -57,7 +57,7 @@ namespace AdaptiveCards::Rendering::Uwp
         unsigned int m_stretchableItemCount{};
         float m_calculatedSize{};
         bool m_allElementsRendered{};
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment m_verticalContentAlignment{};
+        ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.
         // Some rules such as images vertical stretching only apply for this panel

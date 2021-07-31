@@ -134,6 +134,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Inline.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InternalId.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
