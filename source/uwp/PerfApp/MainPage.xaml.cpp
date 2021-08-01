@@ -29,6 +29,7 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace AdaptiveCards::Rendering::Uwp;
+using namespace AdaptiveCards::ObjectModel::Uwp;
 using namespace Windows::Storage;
 using namespace Windows::Storage::Pickers;
 using namespace Windows::Storage::Search;

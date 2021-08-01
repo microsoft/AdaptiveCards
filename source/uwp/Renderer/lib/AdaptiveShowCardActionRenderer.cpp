@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveShowCardAction.h"
 #include "AdaptiveShowCardActionRenderer.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "ActionHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -32,19 +31,6 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveShowCardActionRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveShowCardAction, AdaptiveCards::ShowCardAction, AdaptiveCards::ShowCardActionParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-    }
-    CATCH_RETURN;
-
     HRESULT AdaptiveShowCardActionRenderer::BuildShowCard(_In_ IAdaptiveCard* showCard,
                                                           _In_ IAdaptiveRenderContext* renderContext,
                                                           _In_ IAdaptiveRenderArgs* renderArgs,
@@ -61,7 +47,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle showCardConfigStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle showCardConfigStyle;
         RETURN_IF_FAILED(showCardActionConfig->get_Style(&showCardConfigStyle));
 
         boolean wasInShowCard;

@@ -19,18 +19,18 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize(ImageSetConfig sharedImageSetConfig) noexcept
     {
-        m_imageSize = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ImageSize>(sharedImageSetConfig.imageSize);
+        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize>(sharedImageSetConfig.imageSize);
         m_maxImageHeight = sharedImageSetConfig.maxImageHeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSetConfig::get_ImageSize(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImageSetConfig::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;

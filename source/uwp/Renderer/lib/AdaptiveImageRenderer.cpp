@@ -5,8 +5,6 @@
 #include "AdaptiveImageRenderer.h"
 
 #include "ActionHelpers.h"
-#include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveImage.h"
 #include "AdaptiveBase64Util.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
 #include <robuffer.h>
@@ -14,6 +12,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -59,19 +58,6 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveImageRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveImage, AdaptiveCards::Image, AdaptiveCards::ImageParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-    }
-    CATCH_RETURN;
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // IMPORTANT! Methods below here are actually XamlBuilder methods. They're defined here because they're only used
@@ -100,7 +86,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         if (imageUrl == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::AssetLoadFailed,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::AssetLoadFailed,
                                       HStringReference(L"Image not found").Get());
             *imageControl = nullptr;
             return S_OK;
@@ -113,20 +99,20 @@ namespace AdaptiveCards::Rendering::Uwp
         bool isAspectRatioNeeded = (pixelWidth && pixelHeight);
 
         // Get the image's size and style
-        ABI::AdaptiveCards::Rendering::Uwp::ImageSize size = ABI::AdaptiveCards::Rendering::Uwp::ImageSize::None;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize size = ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None;
         if (!hasExplicitMeasurements)
         {
             RETURN_IF_FAILED(adaptiveImage->get_Size(&size));
         }
 
-        if (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::None && !hasExplicitMeasurements)
+        if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None && !hasExplicitMeasurements)
         {
             ComPtr<IAdaptiveImageConfig> imageConfig;
             RETURN_IF_FAILED(hostConfig->get_Image(&imageConfig));
             RETURN_IF_FAILED(imageConfig->get_ImageSize(&size));
         }
 
-        ABI::AdaptiveCards::Rendering::Uwp::ImageStyle imageStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle imageStyle;
         RETURN_IF_FAILED(adaptiveImage->get_Style(&imageStyle));
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         RETURN_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
@@ -141,9 +127,9 @@ namespace AdaptiveCards::Rendering::Uwp
         if (imageStyle == ImageStyle_Person)
         {
             ComPtr<IEllipse> ellipse =
-                XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
+                XamlHelpers::CreateABIClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
             ComPtr<IEllipse> backgroundEllipse =
-                XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
+                XamlHelpers::CreateABIClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch imageStretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
             bool mustHideElement{true};
@@ -157,7 +143,7 @@ namespace AdaptiveCards::Rendering::Uwp
             SetImageOnUIElement(imageUrl.Get(),
                                 ellipse.Get(),
                                 resourceResolvers.Get(),
-                                (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
+                                (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize_Auto),
                                 parentElement.Get(),
                                 ellipseAsShape.Get(),
                                 isVisible,
@@ -167,9 +153,9 @@ namespace AdaptiveCards::Rendering::Uwp
             ComPtr<IShape> backgroundEllipseAsShape;
             RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
 
-            if (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::None ||
-                size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Stretch ||
-                size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Auto || hasExplicitMeasurements)
+            if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None ||
+                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Stretch ||
+                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Auto || hasExplicitMeasurements)
             {
                 RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
                 RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
@@ -193,7 +179,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
                 // Create a grid to contain the background color ellipse and the image ellipse
                 ComPtr<IGrid> imageGrid =
-                    XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+                    XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
                 ComPtr<IPanel> panel;
                 RETURN_IF_FAILED(imageGrid.As(&panel));
@@ -211,13 +197,13 @@ namespace AdaptiveCards::Rendering::Uwp
         else
         {
             ComPtr<IImage> xamlImage =
-                XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
+                XamlHelpers::CreateABIClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
 
             if (backgroundColor != nullptr)
             {
                 // Create a surrounding border with solid color background to contain the image
                 ComPtr<IBorder> border =
-                    XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+                    XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
                 ABI::Windows::UI::Color color;
                 RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor.Get()), &color));
@@ -247,7 +233,7 @@ namespace AdaptiveCards::Rendering::Uwp
             SetImageOnUIElement(imageUrl.Get(),
                                 xamlImage.Get(),
                                 resourceResolvers.Get(),
-                                (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
+                                (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize_Auto),
                                 parentElement.Get(),
                                 frameworkElement.Get(),
                                 isVisible,
@@ -285,26 +271,26 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         else
         {
-            if (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Small ||
-                size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Medium ||
-                size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Large)
+            if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Small ||
+                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Medium ||
+                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Large)
             {
                 UINT32 imageSize;
                 switch (size)
                 {
-                case ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Small:
+                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Small:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
                     break;
                 }
 
-                case ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Medium:
+                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Medium:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
                     break;
                 }
 
-                case ABI::AdaptiveCards::Rendering::Uwp::ImageSize::Large:
+                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Large:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
 
@@ -336,22 +322,21 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
         }
 
-        HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left;
+        HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Left;
         if (adaptiveHorizontalAlignmentReference != nullptr)
         {
-            RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
             RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment));
         }
 
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Left:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Left:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
             break;
-        case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Right:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Right:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
             break;
-        case ABI::AdaptiveCards::Rendering::Uwp::HAlignment::Center:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Center:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
             break;
         }
@@ -416,7 +401,7 @@ namespace AdaptiveCards::Rendering::Uwp
             {
                 // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
                 // the tracker to subscribe to the ImageLoaded/Failed events
-                ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+                ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
 
                 if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
@@ -522,14 +507,14 @@ namespace AdaptiveCards::Rendering::Uwp
 
             THROW_IF_FAILED(buffer->put_Length(static_cast<UINT32>(decodedData.size())));
 
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
             m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
             THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_IgnoreImageCache));
             ComPtr<IBitmapSource> bitmapSource;
             THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
 
-            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
+            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateABIClass<IRandomAccessStream>(
                 HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
 
             ComPtr<IOutputStream> outputStream;
@@ -584,7 +569,7 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             // If we've been explicitly told to let Xaml handle the image loading, or there are
             // no listeners waiting on the image load callbacks, use Xaml to load the images
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
             THROW_IF_FAILED(bitmapImage->put_UriSource(imageUrl));
 
@@ -608,7 +593,7 @@ namespace AdaptiveCards::Rendering::Uwp
     void XamlBuilder::PopulateImageFromUrlAsync(_In_ IUriRuntimeClass* imageUrl, _In_ T* imageControl)
     {
         // Create the HttpClient to load the image stream
-        ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter = XamlHelpers::CreateXamlClass<IHttpBaseProtocolFilter>(
+        ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter = XamlHelpers::CreateABIClass<IHttpBaseProtocolFilter>(
             HStringReference(RuntimeClass_Windows_Web_Http_Filters_HttpBaseProtocolFilter));
         THROW_IF_FAILED(httpBaseProtocolFilter->put_AllowUI(false));
         ComPtr<IHttpFilter> httpFilter;
@@ -622,7 +607,7 @@ namespace AdaptiveCards::Rendering::Uwp
         // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
         // the tracker to subscribe to the ImageLoaded/Failed events
         ComPtr<IBitmapImage> bitmapImage =
-            XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            XamlHelpers::CreateABIClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
         m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
         THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
         ComPtr<IBitmapSource> bitmapSource;
@@ -642,7 +627,7 @@ namespace AdaptiveCards::Rendering::Uwp
                         // SetSource needs
                         ComPtr<IInputStream> imageStream;
                         RETURN_IF_FAILED(operation->GetResults(&imageStream));
-                        ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
+                        ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateABIClass<IRandomAccessStream>(
                             HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
                         ComPtr<IOutputStream> outputStream;
                         RETURN_IF_FAILED(randomAccessStream.As(&outputStream));
@@ -690,7 +675,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                ABI::Windows::UI::Xaml::Media::Stretch stretch)
     {
         ComPtr<IImageBrush> imageBrush =
-            XamlHelpers::CreateXamlClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
+            XamlHelpers::CreateABIClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
         THROW_IF_FAILED(imageBrush->put_ImageSource(imageSource));
 
         ComPtr<ITileBrush> tileBrush;
