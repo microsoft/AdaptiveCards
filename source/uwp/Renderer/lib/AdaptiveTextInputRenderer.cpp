@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveTextInput.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "ActionHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -107,7 +106,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
             return S_OK;
         }
@@ -117,7 +116,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(cardElement.As(&adaptiveTextInput));
 
         ComPtr<ITextBox> textBox =
-            XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
+            XamlHelpers::CreateABIClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
 
         boolean isMultiLine;
         RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiLine));
@@ -142,28 +141,28 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
         RETURN_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
-        ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle textInputStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle textInputStyle;
         RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
 
         ComPtr<IInputScopeName> inputScopeName =
-            XamlHelpers::CreateXamlClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
+            XamlHelpers::CreateABIClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
         switch (textInputStyle)
         {
-        case ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle::Email:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle::Email:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_EmailSmtpAddress));
             break;
 
-        case ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle::Tel:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle::Tel:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_TelephoneNumber));
             break;
 
-        case ABI::AdaptiveCards::Rendering::Uwp::TextInputStyle::Url:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle::Url:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Url));
             break;
         }
 
         ComPtr<IInputScope> inputScope =
-            XamlHelpers::CreateXamlClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
+            XamlHelpers::CreateABIClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
         ComPtr<IVector<InputScopeName*>> names;
         RETURN_IF_FAILED(inputScope->get_Names(names.GetAddressOf()));
         RETURN_IF_FAILED(names->Append(inputScopeName.Get()));
@@ -178,19 +177,6 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(HandleLayoutAndValidation(adaptiveTextInput.Get(), textBox.Get(), renderContext, renderArgs, textInputControl));
 
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveTextInputRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveTextInput, AdaptiveCards::TextInput, AdaptiveCards::TextInputParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

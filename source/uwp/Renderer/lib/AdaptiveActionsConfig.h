@@ -29,8 +29,8 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_MaxActions(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxActions(UINT32 value);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* value);
-        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing value);
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* value);
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::ObjectModel::Uwp::Spacing value);
 
         IFACEMETHODIMP get_IconPlacement(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IconPlacement* value);
         IFACEMETHODIMP put_IconPlacement(ABI::AdaptiveCards::Rendering::Uwp::IconPlacement value);
@@ -43,7 +43,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation m_actionsOrientation;
         UINT m_buttonSpacing;
         UINT m_maxActions;
-        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_spacing;
+        ABI::AdaptiveCards::ObjectModel::Uwp::Spacing m_spacing;
         ABI::AdaptiveCards::Rendering::Uwp::IconPlacement m_iconPlacement;
         UINT m_iconSize;
 

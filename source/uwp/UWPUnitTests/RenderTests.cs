@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using AdaptiveCards.ObjectModel.Uwp;
+using AdaptiveCards.Rendering.Uwp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
-using System.Threading.Tasks;
-using UWPTestLibrary;
-using AdaptiveCards.Rendering.Uwp;
 
 namespace UWPUnitTests
 {

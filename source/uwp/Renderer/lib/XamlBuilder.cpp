@@ -12,6 +12,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -48,7 +49,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                        _Outptr_ IFrameworkElement** xamlTreeRoot,
                                                        _In_ IAdaptiveRenderContext* renderContext,
                                                        ComPtr<XamlBuilder> xamlBuilder,
-                                                       ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle defaultContainerStyle) noexcept
+                                                       ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle defaultContainerStyle) noexcept
     try
     {
         *xamlTreeRoot = nullptr;
@@ -62,13 +63,13 @@ namespace AdaptiveCards::Rendering::Uwp
             boolean allowCustomStyle;
             RETURN_IF_FAILED(adaptiveCardConfig->get_AllowCustomStyle(&allowCustomStyle));
 
-            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle = defaultContainerStyle;
+            ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle = defaultContainerStyle;
             if (allowCustomStyle)
             {
-                ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle cardStyle;
+                ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle cardStyle;
                 RETURN_IF_FAILED(adaptiveCard->get_Style(&cardStyle));
 
-                if (cardStyle != ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle::None)
+                if (cardStyle != ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::None)
                 {
                     containerStyle = cardStyle;
                 }
@@ -113,7 +114,7 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(
                 BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
 
-            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment;
+            ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment;
             RETURN_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
             XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer.Get(), verticalContentAlignment);
 
@@ -137,7 +138,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 else
                 {
                     renderContext->AddWarning(
-                        ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                        ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                         HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
                 }
             }
@@ -236,7 +237,7 @@ namespace AdaptiveCards::Rendering::Uwp
         // Shape (optional) - Provides the background image overlay, if one is set
         // StackPanel - The container for all the card's body elements
         ComPtr<IGrid> rootElement =
-            XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+            XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         ComPtr<IAdaptiveCardConfig> adaptiveCardConfig;
@@ -244,7 +245,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         ComPtr<IPanel> rootAsPanel;
         RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         ABI::Windows::UI::Color backgroundColor;
@@ -283,7 +284,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         RETURN_IF_FAILED(XamlHelpers::ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get()));
 
-        ABI::AdaptiveCards::Rendering::Uwp::HeightType adaptiveCardHeightType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType adaptiveCardHeightType;
         RETURN_IF_FAILED(adaptiveCard->get_Height(&adaptiveCardHeightType));
 
         XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
@@ -298,7 +299,7 @@ namespace AdaptiveCards::Rendering::Uwp
             rootAsFrameworkElement->put_MaxHeight(xamlBuilder->m_fixedHeight);
         }
 
-        if (adaptiveCardHeightType == ABI::AdaptiveCards::Rendering::Uwp::HeightType::Stretch)
+        if (adaptiveCardHeightType == ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Stretch)
         {
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
@@ -348,7 +349,7 @@ namespace AdaptiveCards::Rendering::Uwp
             HRESULT hr = S_OK;
 
             // Get fallback state
-            ABI::AdaptiveCards::Rendering::Uwp::FallbackType elementFallback;
+            ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType elementFallback;
             RETURN_IF_FAILED(element->get_FallbackType(&elementFallback));
             const bool elementHasFallback = (elementFallback != FallbackType_None);
             RETURN_IF_FAILED(renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback));
