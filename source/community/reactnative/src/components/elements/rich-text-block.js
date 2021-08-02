@@ -125,6 +125,10 @@ export class RichTextBlock extends React.Component {
     }
 
     render() {
+        if (!this.payload.paragraphs) {
+            this.payload.paragraphs = [{"inlines": this.payload.inlines}];
+        }
+
         return (<InputContextConsumer>
             {({ onExecuteAction }) => {
                 this.onExecuteAction = onExecuteAction;
