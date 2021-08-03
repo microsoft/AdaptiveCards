@@ -34,19 +34,35 @@ export class OpenJsonSchemaDialog extends Dialog {
         const renderedElement = document.createElement("div");
         renderedElement.className = "acd-open-code-dialog-preview";
 
+        const card = new Adaptive.AdaptiveCard();
+
         if (this.output?.cardPayload) {
             try {
                 const cardData = JSON.parse(this.output.cardPayload);
-                const card = new Adaptive.AdaptiveCard();
                 card.parse(cardData);
-                card.render();
-                card.renderedElement.style.width = "100%";
-
-                renderedElement.appendChild(card.renderedElement);
             } catch (e) {
                 console.error(e);
             }
+        } else {
+            card.parse({
+                "type": "AdaptiveCard",
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "version": "1.0",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Input JSON Schema to create a card!",
+                        "wrap": true,
+                        "size": "Large"
+                    }
+                ]
+            })
         }
+
+        card.render();
+        card.renderedElement.style.width = "100%";
+
+        renderedElement.appendChild(card.renderedElement);
 
         return renderedElement
     }
