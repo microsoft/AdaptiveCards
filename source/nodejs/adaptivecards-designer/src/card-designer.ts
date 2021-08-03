@@ -802,7 +802,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     private launchJsonSchemaPopup() {
         let dialog = new OpenJsonSchemaDialog();
-        dialog.title = "Create from JSON Schema:";
+        dialog.title = "Create from JSON Schema";
         dialog.closeButton.caption = "Cancel";
         dialog.preventLightDismissal = true;
         dialog.width = "80%";
