@@ -240,7 +240,7 @@
 		"large": 160
 	},
 	"actions": {
-		"maxActions": 5,
+		"maxActions": 10,
 		"spacing": "Default",
 		"buttonSpacing": 15,
 		"showCard": {
