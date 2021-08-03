@@ -92,8 +92,12 @@
 
         [NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
         CGFloat offset = -(self.contentEdgeInsets.left + self.contentEdgeInsets.right);
-        [self.titleLabel.widthAnchor constraintLessThanOrEqualToAnchor:self.widthAnchor constant:offset].active = YES;
+
+        self.titleWidthConstraint = [self.titleLabel.widthAnchor constraintLessThanOrEqualToAnchor:self.widthAnchor constant:offset];
+        self.titleWidthConstraint.active = YES;
+
         [self.titleLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:(widthOffset / 2)].active = YES;
+
         self.heightConstraint = [self.heightAnchor constraintGreaterThanOrEqualToAnchor:self.titleLabel.heightAnchor constant:self.contentEdgeInsets.top + self.contentEdgeInsets.bottom];
         self.heightConstraint.active = YES;
     }
@@ -123,9 +127,9 @@
 
     std::shared_ptr<AdaptiveCards::BaseActionElement> action = [acoAction element];
     NSDictionary *imageViewMap = [rootView getImageMap];
-    button.key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
-    UIImage *img = imageViewMap[button.key];
-    button.iconPlacement = [ACRButton getIconPlacmentAtCurrentContext:rootView url:button.key];
+    NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+    UIImage *img = imageViewMap[key];
+    button.iconPlacement = [ACRButton getIconPlacmentAtCurrentContext:rootView url:key];
 
     if (img) {
         UIImageView *iconView = [[ACRUIImageView alloc] init];
@@ -134,20 +138,20 @@
         button.iconView = iconView;
         [button setImageView:img withConfig:config];
 
-    } else if (button.key.length) {
+    } else if (key.length) {
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)action.get()];
-        button.key = [number stringValue];
-        UIImageView *view = [rootView getImageView:button.key];
+        NSString *key = [number stringValue];
+        UIImageView *view = [rootView getImageView:key];
         if (view) {
             if (view.image) {
                 button.iconView = view;
                 [button addSubview:view];
-                [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:button.key];
+                [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
                 [button setImageView:view.image withConfig:config];
             } else {
                 button.iconView = view;
                 [button addSubview:view];
-                [rootView setImageView:button.key view:button];
+                [rootView setImageView:key view:button];
             }
         }
     } else {

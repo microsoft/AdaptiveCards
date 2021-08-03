@@ -2,7 +2,6 @@
 //  MockACRView.m
 //  AdaptiveCardsTests
 //
-//  Created by Inyoung Woo on 8/2/21.
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 

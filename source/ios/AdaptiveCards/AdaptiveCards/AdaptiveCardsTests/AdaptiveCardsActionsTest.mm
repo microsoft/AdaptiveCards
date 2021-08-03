@@ -10,9 +10,9 @@
 #import "ACRButton.h"
 #import "ACRViewPrivate.h"
 #import "BaseActionElement.h"
-#import "OpenUrlAction.h"
 #import "Mocks/MockACRView.h"
 #import "Mocks/MockContext.h"
+#import "OpenUrlAction.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
@@ -56,7 +56,8 @@ using namespace AdaptiveCards;
 {
     ACRButton *button = [self buildAButton:[self buildSimpleAction]];
     XCTAssertNotNil(button);
-    XCTAssertNotNil(button.heightConstraint);    
+    XCTAssertNotNil(button.heightConstraint);
+    XCTAssertNil(button.titleWidthConstraint);
 }
 
 - (void)testACRButtonPublicConstraintsWithImageView
@@ -70,6 +71,7 @@ using namespace AdaptiveCards;
     [_rootView getImageMap][key] = image;
     ACRButton *button = [self buildAButton:action];
     XCTAssertNotNil(button.heightConstraint);
+    XCTAssertNotNil(button.titleWidthConstraint);
 }
 
 - (void)testACRButtonPublicConstraintsWithImageViewWithKey
@@ -86,6 +88,7 @@ using namespace AdaptiveCards;
     [_rootView setImageView:key view:imageView];
     ACRButton *button = [self buildAButton:acoAction];
     XCTAssertNotNil(button.heightConstraint);
+    XCTAssertNotNil(button.titleWidthConstraint);
 }
 
 - (void)testACRButtonPublicConstraintsWithIconPlacements
@@ -104,6 +107,7 @@ using namespace AdaptiveCards;
     [_rootView.mockContext setMockValueForAllHasActionIcons:YES];
     ACRButton *button = [self buildAButton:acoAction];
     XCTAssertNil(button.heightConstraint);
+    XCTAssertNil(button.titleWidthConstraint);
 }
 
 @end

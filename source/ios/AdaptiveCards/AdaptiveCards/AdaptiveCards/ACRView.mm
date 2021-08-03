@@ -874,8 +874,9 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (void)setContext:(ACORenderContext *)context
 {
-    if(context) {
-    _context = context;
+    if (context) {
+        _context = context;
     }
 }
+
 @end

@@ -9,6 +9,6 @@
 
 @interface MockContext : ACORenderContext
 
-- (void) setMockValueForAllHasActionIcons:(BOOL)value;
+- (void)setMockValueForAllHasActionIcons:(BOOL)value;
 
 @end
