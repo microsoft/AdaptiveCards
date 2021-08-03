@@ -681,7 +681,7 @@ export class CardDesigner extends Designer.DesignContext {
                             } : null,
                     ]
                 });
-                dialog.title = "Create:";
+                dialog.title = "Create";
                 dialog.closeButton.caption = "Cancel";
                 dialog.width = "80%";
                 dialog.height = "80%";

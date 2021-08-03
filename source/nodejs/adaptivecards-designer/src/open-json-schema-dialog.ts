@@ -107,7 +107,7 @@ export class OpenJsonSchemaDialog extends Dialog {
         renderedElement.appendChild(editorContainer);
 
         const editorLabel = document.createElement("h3");
-        editorLabel.innerText = "JSON Schema:"
+        editorLabel.innerText = "JSON Schema"
         editorContainer.appendChild(editorLabel);
 
         const editorElement = this.renderEditor();

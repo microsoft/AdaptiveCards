@@ -179,7 +179,7 @@ export class OpenSampleDialog extends Dialog {
 
             this.props.catalogue.onDownloaded = (sender: SampleCatalogue) => {
                 if (sender.isDownloaded) {
-                    const catalogueSection = this.renderSection("Explore:",
+                    const catalogueSection = this.renderSection("Explore",
                         this.props.catalogue.entries.map((entry: CatalogueEntry) => {
                             return {
                                 label: entry.displayName,
