@@ -8,7 +8,6 @@ import { initializeIcons } from "@fluentui/react";
 initializeIcons();
 
 describe("InputTextExtended", () => {
-	// TODO reconsider toMatchSnapshot()
     it("should be rendered successfully", () => {
         let input = new InputTextFabric();
 
@@ -26,7 +25,7 @@ describe("InputTextExtended", () => {
             "value": "This value was pre-filled",
         });
 
-        // expect(input).toMatchSnapshot();
+        expect(input).toMatchSnapshot();
     });
 
     it("renders int text single line correctly", () => {
@@ -39,7 +38,7 @@ describe("InputTextExtended", () => {
             "value": "This value was pre-filled",
         });
 
-        // expect(input).toMatchSnapshot();
+        expect(input).toMatchSnapshot();
     });
 
     it("can serialize inline action", () => {
@@ -70,7 +69,7 @@ describe("InputTextExtended", () => {
             "value": "This value was pre-filled",
         });
 
-        // expect(input).toMatchSnapshot();
+        expect(input).toMatchSnapshot();
     });
 
     it("can set initial value", () => {

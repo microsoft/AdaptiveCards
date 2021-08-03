@@ -95,13 +95,6 @@ export class OpenJsonSchemaDialog extends Dialog {
         const renderedElement = document.createElement("div");
         renderedElement.className = "acd-open-code-dialog-container";
 
-        this._previewContainer = document.createElement("div");
-        this._previewContainer.className = "acd-open-code-dialog-preview-container";
-        renderedElement.appendChild(this._previewContainer);
-
-        this._previewElement = this.renderPreview()
-        this._previewContainer.appendChild(this._previewElement)
-
         const editorContainer = document.createElement("div");
         editorContainer.className = "acd-open-code-dialog-editor-container";
         renderedElement.appendChild(editorContainer);
@@ -112,6 +105,14 @@ export class OpenJsonSchemaDialog extends Dialog {
 
         const editorElement = this.renderEditor();
         editorContainer.appendChild(editorElement);
+
+        this._previewContainer = document.createElement("div");
+        this._previewContainer.className = "acd-open-code-dialog-preview-container";
+        renderedElement.appendChild(this._previewContainer);
+
+        this._previewElement = this.renderPreview()
+        this._previewContainer.appendChild(this._previewElement)
+
 
         return renderedElement;
     }

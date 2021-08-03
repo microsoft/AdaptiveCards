@@ -16,11 +16,10 @@ const toggleProps = {
 };
 
 describe("InputToggleExtended", () => {
-	// TODO reconsider toMatchSnapshot()
     it("should be rendered correctly", () => {
         let el = renderFabricComponent(InputToggleFabric, toggleProps);
 
-        // expect(el).toMatchSnapshot();
+        expect(el).toMatchSnapshot();
     });
 
     it("can set initial value", () => {
