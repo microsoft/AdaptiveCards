@@ -244,7 +244,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                 _In_ IAdaptiveRenderContext* renderContext)
     {
         HString actionSentiment;
-        if (!isOverflowAction)
+        if (adaptiveActionElement != nullptr)
         {
             RETURN_IF_FAILED(adaptiveActionElement->get_Style(actionSentiment.GetAddressOf()));
         }
@@ -347,7 +347,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     HRESULT BuildAction(_In_ IAdaptiveActionElement* adaptiveActionElement,
                         _In_ IAdaptiveRenderContext* renderContext,
                         _In_ IAdaptiveRenderArgs* renderArgs,
-                        bool overflowAction,
+                        bool isOverflowActionButton,
                         _Outptr_ IUIElement** actionControl)
     {
         // determine what type of action we're building
@@ -414,7 +414,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         HString iconUrl;
         HString tooltip;
         HString accessibilityText;
-        if (overflowAction)
+        if (isOverflowActionButton)
         {
             ComPtr<AdaptiveHostConfig> hostConfigImpl = PeekInnards<AdaptiveHostConfig>(hostConfig);
             HString overflowButtonText;
@@ -444,7 +444,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
-        if (!overflowAction)
+        if (adaptiveActionElement != nullptr)
         {
             // Add click handler which calls IAdaptiveActionInvoker::SendActionEvent
             ComPtr<IButtonBase> buttonBase;
@@ -468,7 +468,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(isEnabled));
         }
 
-        RETURN_IF_FAILED(HandleActionStyling(adaptiveActionElement, buttonFrameworkElement.Get(), overflowAction, renderContext));
+        RETURN_IF_FAILED(HandleActionStyling(adaptiveActionElement, buttonFrameworkElement.Get(), isOverflowActionButton, renderContext));
 
         ComPtr<IUIElement> buttonAsUIElement;
         RETURN_IF_FAILED(button.As(&buttonAsUIElement));
@@ -1389,7 +1389,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             }
 
             // Create non-visible primary buttons for all overflow show card actions so they can be moved to the action bar when invoked
-            for (auto overflowShowCard : showCardOverflowButtons)
+            for (auto& overflowShowCard : showCardOverflowButtons)
             {
                 ComPtr<IUIElement> createdButton;
                 RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
