@@ -1,18 +1,11 @@
 # Getting started
 
-In a terminal, `cd` to this directory (which the readme is in)
-
-For the first time (or whenever modifying package.json), run `npm install`
+In a terminal, move to this directory `cd source/nodejs/tests/ui-tests`
 
 ## Building
 
-1. Make sure you've run `npm install` for the first time and whenever you modify package.json or change branches
-1. `npm run build`
+1. Execute the `build` task `npm run build`
 
+## Executing the tests
 
-## Testing
-
-1. Make sure you've built first
-1. Make sure you've also generated the Adaptive schema first, see `ac-typed-schema` for instructions
-1. `npm run test`
-1. Alternatively, you can run `npm run build-and-test`
+1. Execute the `test` task `npm run test`. This step rebuilds the test so you should not have to rebuild manually everytime you make a test change.
