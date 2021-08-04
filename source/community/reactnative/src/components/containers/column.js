@@ -166,7 +166,7 @@ export class Column extends React.Component {
 		}
 
 		if (!this.props.isFirst) {
-			containerViewStyle.push({ marginLeft: Constants.containerPadding });
+			containerViewStyle.push({ marginLeft: this.spacing });
 		}
 
 		return <ContainerWrapper configManager={this.props.configManager} json={this.column} hasBackgroundImage={this.props.hasBackgroundImage} isFirst={isFirst} isLast={isLast} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>

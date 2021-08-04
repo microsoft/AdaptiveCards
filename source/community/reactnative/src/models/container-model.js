@@ -11,7 +11,7 @@ class BaseContainerModel extends BaseModel {
         }
         this.verticalContentAlignment = payload.verticalContentAlignment;
         this.style = payload.style;
-        this.bleed = payload.bleed;
+        this.bleed = payload.bleed || false;
         this.minHeight = payload.minHeight;
         this.altText = payload.altText;
     }
