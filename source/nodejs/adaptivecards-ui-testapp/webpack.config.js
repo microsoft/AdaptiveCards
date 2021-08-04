@@ -80,7 +80,6 @@ module.exports = (env, argv) => {
 			})
 		],
 		externals: {
-			///^monaco-editor/ // <-- NOT WORKING for some reason
 			"adaptive-expressions": {
 				commonjs2: "adaptive-expressions",
 				commonjs: "adaptive-expressions",
