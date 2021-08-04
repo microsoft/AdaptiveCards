@@ -12,8 +12,7 @@
     "clean": "rimraf lib dist",
     "build": "tsc",
     "lint": "eslint src/*.ts",
-    "test": "jest ./lib/*",
-    "build-and-test": "npm run build && npm run test"
+    "test": "npm run build && jest ./lib/*"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
