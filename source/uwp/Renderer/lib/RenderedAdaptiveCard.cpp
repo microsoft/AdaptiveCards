@@ -524,9 +524,9 @@ namespace AdaptiveCards::Rendering::Uwp
                                                     ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
-                                                    ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
+                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
                                                     UINT32 primaryButtonIndex,
-                                                    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+                                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     try
     {
         UINT32 actionSetId;

@@ -240,7 +240,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     HRESULT HandleActionStyling(_In_ IAdaptiveActionElement* adaptiveActionElement,
                                 _In_ IFrameworkElement* buttonFrameworkElement,
-                                bool isOverflowAction,
+                                bool isOverflowActionButton,
                                 _In_ IAdaptiveRenderContext* renderContext)
     {
         HString actionSentiment;
@@ -259,7 +259,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
 
         // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
-        if (isOverflowAction)
+        if (isOverflowActionButton)
         {
             if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
                                                                                       L"Adaptive.Action.Overflow",
@@ -907,7 +907,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         return S_OK;
     }
 
-    HRESULT CreateFlyoutButton(_In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs, _Out_ IButton** overflowButton)
+    HRESULT CreateFlyoutButton(_In_ IAdaptiveRenderContext* renderContext,
+                               _In_ IAdaptiveRenderArgs* renderArgs,
+                               _COM_Outptr_ IButton** overflowButton)
     {
         // Create an action button
         ComPtr<IUIElement> overflowButtonAsUIElement;
@@ -938,7 +940,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     HRESULT AddOverflowFlyoutItem(_In_ IAdaptiveActionElement* action,
                                   _In_ IButton* overflowButton,
                                   _In_ IAdaptiveRenderContext* renderContext,
-                                  _Outptr_ IUIElement** flyoutUIItem)
+                                  _COM_Outptr_ IUIElement** flyoutUIItem)
     {
         // Get the flyout items vector
         ComPtr<IButton> button(overflowButton);
@@ -1038,14 +1040,16 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
                 PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
 
-            RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
-                (adaptiveActionSet) ? adaptiveActionSet : adaptiveCard, 
-                actionAsShowCardAction.Get(),
-                actionButton,
-                actionOverflowItem,
-                uiShowCard.Get(),
-                buttonIndex,
-                renderArgs));
+            if (adaptiveActionSet)
+            {
+                RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
+                    adaptiveActionSet, actionAsShowCardAction.Get(), actionButton, actionOverflowItem, uiShowCard.Get(), buttonIndex, renderArgs));
+            }
+            else
+            {
+                RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
+                    adaptiveCard, actionAsShowCardAction.Get(), actionButton, actionOverflowItem, uiShowCard.Get(), buttonIndex, renderArgs));
+            }
         }
 
         return S_OK;
@@ -1062,7 +1066,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                                           _In_opt_ IUIElement* overflowItem,
                                           _In_ IAdaptiveRenderContext* renderContext,
                                           _In_ IAdaptiveRenderArgs* renderArgs,
-                                          IUIElement** returnedActionControl)
+                                          _COM_Outptr_ IUIElement** returnedActionControl)
     {
         ComPtr<IAdaptiveActionElement> action(actionToCreate);
 
@@ -1451,8 +1455,14 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
                 PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
 
-            RETURN_IF_FAILED(contextImpl->AddOverflowButton((adaptiveActionSet) ? adaptiveActionSet : adaptiveCard,
-                                                            overflowButtonAsUIElement.Get()));
+            if (adaptiveActionSet != nullptr)
+            {
+                RETURN_IF_FAILED(contextImpl->AddOverflowButton(adaptiveActionSet, overflowButtonAsUIElement.Get()));
+            }
+            else
+            {
+                RETURN_IF_FAILED(contextImpl->AddOverflowButton(adaptiveCard, overflowButtonAsUIElement.Get()));
+            }
         }
 
         // Reset icon placement value
