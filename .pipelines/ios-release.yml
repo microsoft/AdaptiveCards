@@ -33,25 +33,7 @@ jobs:
       scheme: AdaptiveCards-Universal
       sdk: iphoneos
       xcWorkspacePath: source/ios/AdaptiveCards/AdaptiveCards.xcworkspace
-      
-  - task: Bash@3
-    displayName: Update Bundle Version
-    inputs:
-      targetType: inline
-      script: >-
-        # Write your commands here
 
-
-        # Write your commands here
-
-        # update the version
-
-
-        echo "Adaptive Version ${ADCVERSION}"
-
-        cd source/ios/AdaptiveCards/AdaptiveCards
-
-        xcrun agvtool new-version -all ${ADCVERSION}
   - task: DownloadSecureFile@1
     name: ConnectString
     displayName: Download secure file
