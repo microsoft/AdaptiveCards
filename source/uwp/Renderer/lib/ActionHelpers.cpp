@@ -1451,14 +1451,8 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
                 PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
 
-            if (adaptiveActionSet != nullptr)
-            {
-                RETURN_IF_FAILED(contextImpl->AddOverflowButton(adaptiveActionSet, overflowButtonAsUIElement.Get()));
-            }
-            else
-            {
-                RETURN_IF_FAILED(contextImpl->AddOverflowButton(adaptiveCard, overflowButtonAsUIElement.Get()));
-            }
+            RETURN_IF_FAILED(contextImpl->AddOverflowButton((adaptiveActionSet) ? adaptiveActionSet : adaptiveCard,
+                                                            overflowButtonAsUIElement.Get()));
         }
 
         // Reset icon placement value
