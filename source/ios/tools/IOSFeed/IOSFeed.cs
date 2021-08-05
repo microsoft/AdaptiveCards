@@ -31,7 +31,6 @@ namespace AdaptiveCards.Tools.IOSFeed
         {
             try
             {
-                Console.WriteLine("Test");
                 // Run the examples asynchronously, wait for the results before proceeding
                 ProcessAsync().GetAwaiter().GetResult();
             }
@@ -55,8 +54,6 @@ namespace AdaptiveCards.Tools.IOSFeed
             {
                 storageConnectionString = sr.ReadToEnd();
             }
-
-            Console.WriteLine("Finished file read");
 
             // Check whether the connection string can be parsed.
             if (!CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
