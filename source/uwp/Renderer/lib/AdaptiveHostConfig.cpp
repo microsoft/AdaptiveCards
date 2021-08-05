@@ -313,7 +313,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return m_overflowButtonText.CopyTo(overflowButtonText);
     }
 
-    HRESULT AdaptiveHostConfig::put_OverflowButtonText(_Out_ HSTRING overflowButtonText)
+    HRESULT AdaptiveHostConfig::put_OverflowButtonText(_In_ HSTRING overflowButtonText)
     {
         return m_overflowButtonText.Set(overflowButtonText);
     }
@@ -323,7 +323,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return m_overflowButtonAccessibilityText.CopyTo(overflowButtonAccessibilityText);
     }
 
-    HRESULT AdaptiveHostConfig::put_OverflowButtonAccessibilityText(_Out_ HSTRING overflowButtonAccessibilityText)
+    HRESULT AdaptiveHostConfig::put_OverflowButtonAccessibilityText(_In_ HSTRING overflowButtonAccessibilityText)
     {
         return m_overflowButtonAccessibilityText.Set(overflowButtonAccessibilityText);
     }
