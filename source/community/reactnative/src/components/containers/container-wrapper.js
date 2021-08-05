@@ -66,22 +66,27 @@ export class ContainerWrapper extends React.PureComponent {
 
         const { hostConfig } = this.props.configManager;
 
-        // vertical content alignment
-        let verticalContentAlignment = Utils.parseHostConfigEnum(
-            Enums.VerticalAlignment,
-            this.payload["verticalContentAlignment"],
-            Enums.VerticalAlignment.Top
-        );
-        switch (verticalContentAlignment) {
-            case Enums.VerticalAlignment.Center:
-                computedStyles.push({ justifyContent: Constants.CenterString });
-                break;
-            case Enums.VerticalAlignment.Bottom:
-                computedStyles.push({ justifyContent: Constants.FlexEnd });
-                break;
-            default:
-                computedStyles.push({ justifyContent: Constants.FlexStart });
-                break;
+        if (this.payload.parent && this.payload.parent["verticalContentAlignment"]) {
+            // vertical content alignment
+            let verticalContentAlignment = Utils.parseHostConfigEnum(
+                Enums.VerticalAlignment,
+                this.payload.parent["verticalContentAlignment"],
+                Enums.VerticalAlignment.Top
+            );
+            switch (verticalContentAlignment) {
+                case Enums.VerticalAlignment.Center:
+                    computedStyles.push({ justifyContent: Constants.CenterString });
+                    break;
+                case Enums.VerticalAlignment.Bottom:
+                    computedStyles.push({ justifyContent: Constants.FlexEnd });
+                    break;
+                default:
+                    computedStyles.push({ justifyContent: Constants.FlexStart });
+                    break;
+            } 
+        } else {
+            // vertical content alignment - Default is top
+            computedStyles.push({ justifyContent: Constants.FlexStart });
         }
         computedStyles.push({ backgroundColor: Constants.TransparentString });
 
@@ -99,8 +104,8 @@ export class ContainerWrapper extends React.PureComponent {
         const borderThickness = styleDefinition.borderThickness || 0;
         const borderColor = styleDefinition.borderColor;
         computedStyles.push({ borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor) });
-        
-        if(this.props.containerStyle) {
+
+        if (this.props.containerStyle) {
             computedStyles.push({ padding: Constants.containerPadding });
         }
 
