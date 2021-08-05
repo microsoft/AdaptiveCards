@@ -1038,16 +1038,14 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
                 PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
 
-            if (adaptiveActionSet)
-            {
-                RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
-                    adaptiveActionSet, actionAsShowCardAction.Get(), actionButton, actionOverflowItem, uiShowCard.Get(), buttonIndex, renderArgs));
-            }
-            else
-            {
-                RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
-                    adaptiveCard, actionAsShowCardAction.Get(), actionButton, actionOverflowItem, uiShowCard.Get(), buttonIndex, renderArgs));
-            }
+            RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
+                (adaptiveActionSet) ? adaptiveActionSet : adaptiveCard, 
+                actionAsShowCardAction.Get(),
+                actionButton,
+                actionOverflowItem,
+                uiShowCard.Get(),
+                buttonIndex,
+                renderArgs));
         }
 
         return S_OK;
