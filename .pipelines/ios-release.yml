@@ -19,11 +19,14 @@ resources:
   - repository: self
     type: git
     ref: release/21.04
+
+pool:
+  name: Azure Pipelines
+  vmImage: internal-macos-10.15
+
 jobs:
 - job: Job_1
   displayName: Agent job 1
-  pool:
-    name: Azure Pipelines
   steps:
   - checkout: self
   - task: Xcode@5
