@@ -6,13 +6,10 @@
 # Variable 'TestConfiguration' was defined in the Variables tab
 # Variable 'TestSDK' was defined in the Variables tab
 # Agent Queue 'Azure Pipelines' was used with unrecognized Agent Specification, vmImage property must be specified to determine image - https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software
-variables:
-- name: BuildParameters.xcWorkspacePath
-  value: source/ios/AdaptiveCards/AdaptiveCards.xcworkspace
-- name: BuildParameters.scheme
-  value: AdaptiveCards-Universal
-- name: BuildParameters.xcodeDeveloperDir
-  value: ''
+
+pr: none
+trigger: none
+
 name: $(date:yyyyMMdd)$(rev:.r)
 resources:
   repositories:
@@ -32,10 +29,11 @@ jobs:
   - task: Xcode@5
     displayName: Xcode build
     inputs:
-      xcWorkspacePath: $(BuildParameters.xcWorkspacePath)
-      scheme: $(BuildParameters.scheme)
-      xcodeDeveloperDir: $(BuildParameters.xcodeDeveloperDir)
-      destinationSimulators: iPhone 7
+      configuration: Release
+      scheme: AdaptiveCards-Universal
+      sdk: iphoneos
+      xcWorkspacePath: source/ios/AdaptiveCards/AdaptiveCards.xcworkspace
+      
   - task: Bash@3
     displayName: Update Bundle Version
     inputs:
