@@ -81,9 +81,11 @@ jobs:
     inputs:
       command: run
       projects: source/ios/tools/IOSFeed/IOSFeed.csproj
-  - task: Bash@3
-    displayName: Push To cocoapods
-    inputs:
-      targetType: inline
-      script: "# Write your commands here\ncat  ./source/ios/AdaptiveCards.podspec\n\nif type brew >/dev/null 2>&1;\nthen \n   brew upgrade cocoapods >/dev/null 2>&1; \n   brew install cocoapods >/dev/null 2>&1; \nfi\n\npod trunk push  ./source/ios/AdaptiveCards.podspec\n"
-...
+  - bash: |
+     cat  ./source/ios/AdaptiveCards.podspec
+  # - task: Bash@3
+  #   displayName: Push To cocoapods
+  #   inputs:
+  #     targetType: inline
+  #     script: "# Write your commands here\n\n\nif type brew >/dev/null 2>&1;\nthen \n   brew upgrade cocoapods >/dev/null 2>&1; \n   brew install cocoapods >/dev/null 2>&1; \nfi\n\npod trunk push  ./source/ios/AdaptiveCards.podspec\n"
+
