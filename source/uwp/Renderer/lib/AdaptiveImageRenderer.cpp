@@ -5,15 +5,14 @@
 #include "AdaptiveImageRenderer.h"
 
 #include "ActionHelpers.h"
-#include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveImage.h"
 #include "AdaptiveBase64Util.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
 #include <robuffer.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -35,7 +34,7 @@ using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace ABI::Windows::Web::Http;
 using namespace ABI::Windows::Web::Http::Filters;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     AdaptiveImageRenderer::AdaptiveImageRenderer() {}
 
@@ -56,19 +55,6 @@ namespace AdaptiveNamespace
     try
     {
         return m_xamlBuilder->BuildImage(cardElement, renderContext, renderArgs, result);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveImageRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveImage, AdaptiveSharedNamespace::Image, AdaptiveSharedNamespace::ImageParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 
@@ -100,7 +86,7 @@ namespace AdaptiveNamespace
 
         if (imageUrl == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::AssetLoadFailed,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::AssetLoadFailed,
                                       HStringReference(L"Image not found").Get());
             *imageControl = nullptr;
             return S_OK;
@@ -113,20 +99,20 @@ namespace AdaptiveNamespace
         bool isAspectRatioNeeded = (pixelWidth && pixelHeight);
 
         // Get the image's size and style
-        ABI::AdaptiveNamespace::ImageSize size = ABI::AdaptiveNamespace::ImageSize::None;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize size = ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None;
         if (!hasExplicitMeasurements)
         {
             RETURN_IF_FAILED(adaptiveImage->get_Size(&size));
         }
 
-        if (size == ABI::AdaptiveNamespace::ImageSize::None && !hasExplicitMeasurements)
+        if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None && !hasExplicitMeasurements)
         {
             ComPtr<IAdaptiveImageConfig> imageConfig;
             RETURN_IF_FAILED(hostConfig->get_Image(&imageConfig));
             RETURN_IF_FAILED(imageConfig->get_ImageSize(&size));
         }
 
-        ABI::AdaptiveNamespace::ImageStyle imageStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle imageStyle;
         RETURN_IF_FAILED(adaptiveImage->get_Style(&imageStyle));
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         RETURN_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
@@ -141,9 +127,9 @@ namespace AdaptiveNamespace
         if (imageStyle == ImageStyle_Person)
         {
             ComPtr<IEllipse> ellipse =
-                XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
+                XamlHelpers::CreateABIClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
             ComPtr<IEllipse> backgroundEllipse =
-                XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
+                XamlHelpers::CreateABIClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch imageStretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
             bool mustHideElement{true};
@@ -157,7 +143,7 @@ namespace AdaptiveNamespace
             SetImageOnUIElement(imageUrl.Get(),
                                 ellipse.Get(),
                                 resourceResolvers.Get(),
-                                (size == ABI::AdaptiveNamespace::ImageSize_Auto),
+                                (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize_Auto),
                                 parentElement.Get(),
                                 ellipseAsShape.Get(),
                                 isVisible,
@@ -167,8 +153,9 @@ namespace AdaptiveNamespace
             ComPtr<IShape> backgroundEllipseAsShape;
             RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
 
-            if (size == ABI::AdaptiveNamespace::ImageSize::None || size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
-                size == ABI::AdaptiveNamespace::ImageSize::Auto || hasExplicitMeasurements)
+            if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None ||
+                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Stretch ||
+                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Auto || hasExplicitMeasurements)
             {
                 RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
                 RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
@@ -192,7 +179,7 @@ namespace AdaptiveNamespace
 
                 // Create a grid to contain the background color ellipse and the image ellipse
                 ComPtr<IGrid> imageGrid =
-                    XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+                    XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
                 ComPtr<IPanel> panel;
                 RETURN_IF_FAILED(imageGrid.As(&panel));
@@ -210,13 +197,13 @@ namespace AdaptiveNamespace
         else
         {
             ComPtr<IImage> xamlImage =
-                XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
+                XamlHelpers::CreateABIClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
 
             if (backgroundColor != nullptr)
             {
                 // Create a surrounding border with solid color background to contain the image
                 ComPtr<IBorder> border =
-                    XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+                    XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
                 ABI::Windows::UI::Color color;
                 RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor.Get()), &color));
@@ -246,7 +233,7 @@ namespace AdaptiveNamespace
             SetImageOnUIElement(imageUrl.Get(),
                                 xamlImage.Get(),
                                 resourceResolvers.Get(),
-                                (size == ABI::AdaptiveNamespace::ImageSize_Auto),
+                                (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize_Auto),
                                 parentElement.Get(),
                                 frameworkElement.Get(),
                                 isVisible,
@@ -284,25 +271,26 @@ namespace AdaptiveNamespace
         }
         else
         {
-            if (size == ABI::AdaptiveNamespace::ImageSize::Small || size == ABI::AdaptiveNamespace::ImageSize::Medium ||
-                size == ABI::AdaptiveNamespace::ImageSize::Large)
+            if (size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Small ||
+                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Medium ||
+                size == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Large)
             {
                 UINT32 imageSize;
                 switch (size)
                 {
-                case ABI::AdaptiveNamespace::ImageSize::Small:
+                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Small:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
                     break;
                 }
 
-                case ABI::AdaptiveNamespace::ImageSize::Medium:
+                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Medium:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
                     break;
                 }
 
-                case ABI::AdaptiveNamespace::ImageSize::Large:
+                case ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::Large:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
 
@@ -325,18 +313,30 @@ namespace AdaptiveNamespace
             }
         }
 
-        ABI::AdaptiveNamespace::HAlignment adaptiveHorizontalAlignment;
-        RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
+        ComPtr<IReference<HAlignment>> adaptiveHorizontalAlignmentReference;
+        RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));
+
+        // If the image doesn't have horizontal alignment set, check the render context for a parent value
+        if (adaptiveHorizontalAlignmentReference == nullptr)
+        {
+            RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
+        }
+
+        HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Left;
+        if (adaptiveHorizontalAlignmentReference != nullptr)
+        {
+            RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment));
+        }
 
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveNamespace::HAlignment::Left:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Left:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
             break;
-        case ABI::AdaptiveNamespace::HAlignment::Right:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Right:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
             break;
-        case ABI::AdaptiveNamespace::HAlignment::Center:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment::Center:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
             break;
         }
@@ -401,7 +401,7 @@ namespace AdaptiveNamespace
             {
                 // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
                 // the tracker to subscribe to the ImageLoaded/Failed events
-                ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+                ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
 
                 if (!m_enableXamlImageHandling && (m_listeners.size() != 0))
@@ -425,8 +425,8 @@ namespace AdaptiveNamespace
                 ComPtr<XamlBuilder> strongThis(this);
                 THROW_IF_FAILED(getResourceStreamOperation->put_Completed(
                     Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>(
-                        [strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible]
-                            (IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
+                        [strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
+                            IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
                             if (status == AsyncStatus::Completed)
                             {
                                 // Get the random access stream
@@ -449,8 +449,8 @@ namespace AdaptiveNamespace
                                 RETURN_IF_FAILED(bitmapSource->SetSourceAsync(randomAccessStream.Get(), &setSourceAction));
 
                                 auto callbackSource = Callback<IAsyncActionCompletedHandler>(
-                                    [strongThis, this, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible]
-                                        (IAsyncAction* /*action*/, AsyncStatus status) -> HRESULT {
+                                    [strongThis, this, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible](
+                                        IAsyncAction* /*action*/, AsyncStatus status) -> HRESULT {
                                         if (status == AsyncStatus::Completed)
                                         {
                                             // Here should be the auto resizing, at this time we already have the image and everything set
@@ -507,14 +507,14 @@ namespace AdaptiveNamespace
 
             THROW_IF_FAILED(buffer->put_Length(static_cast<UINT32>(decodedData.size())));
 
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
             m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
             THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_IgnoreImageCache));
             ComPtr<IBitmapSource> bitmapSource;
             THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
 
-            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
+            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateABIClass<IRandomAccessStream>(
                 HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
 
             ComPtr<IOutputStream> outputStream;
@@ -527,8 +527,8 @@ namespace AdaptiveNamespace
             ComPtr<XamlBuilder> strongThis(this);
             THROW_IF_FAILED(bufferWriteOperation->put_Completed(
                 Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
-                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible]
-                        (IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/) -> HRESULT {
+                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible](
+                        IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/) -> HRESULT {
                         randomAccessStream->Seek(0);
 
                         ComPtr<IImageSource> imageSource;
@@ -540,8 +540,8 @@ namespace AdaptiveNamespace
                         RETURN_IF_FAILED(bitmapSource->SetSourceAsync(randomAccessStream.Get(), &setSourceAction));
 
                         auto callbackSource = Callback<IAsyncActionCompletedHandler>(
-                            [strongThis, this, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible]
-                                (IAsyncAction* /*action*/, AsyncStatus status) -> HRESULT {
+                            [strongThis, this, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible](
+                                IAsyncAction* /*action*/, AsyncStatus status) -> HRESULT {
                                 if (status == AsyncStatus::Completed)
                                 {
                                     if (isAutoSize)
@@ -569,7 +569,7 @@ namespace AdaptiveNamespace
         {
             // If we've been explicitly told to let Xaml handle the image loading, or there are
             // no listeners waiting on the image load callbacks, use Xaml to load the images
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateABIClass<IBitmapImage>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
             THROW_IF_FAILED(bitmapImage->put_UriSource(imageUrl));
 
@@ -593,7 +593,7 @@ namespace AdaptiveNamespace
     void XamlBuilder::PopulateImageFromUrlAsync(_In_ IUriRuntimeClass* imageUrl, _In_ T* imageControl)
     {
         // Create the HttpClient to load the image stream
-        ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter = XamlHelpers::CreateXamlClass<IHttpBaseProtocolFilter>(
+        ComPtr<IHttpBaseProtocolFilter> httpBaseProtocolFilter = XamlHelpers::CreateABIClass<IHttpBaseProtocolFilter>(
             HStringReference(RuntimeClass_Windows_Web_Http_Filters_HttpBaseProtocolFilter));
         THROW_IF_FAILED(httpBaseProtocolFilter->put_AllowUI(false));
         ComPtr<IHttpFilter> httpFilter;
@@ -607,7 +607,7 @@ namespace AdaptiveNamespace
         // Create a BitmapImage to hold the image data.  We use BitmapImage in order to allow
         // the tracker to subscribe to the ImageLoaded/Failed events
         ComPtr<IBitmapImage> bitmapImage =
-            XamlHelpers::CreateXamlClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            XamlHelpers::CreateABIClass<IBitmapImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
         m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
         THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
         ComPtr<IBitmapSource> bitmapSource;
@@ -627,7 +627,7 @@ namespace AdaptiveNamespace
                         // SetSource needs
                         ComPtr<IInputStream> imageStream;
                         RETURN_IF_FAILED(operation->GetResults(&imageStream));
-                        ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
+                        ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateABIClass<IRandomAccessStream>(
                             HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
                         ComPtr<IOutputStream> outputStream;
                         RETURN_IF_FAILED(randomAccessStream.As(&outputStream));
@@ -675,7 +675,7 @@ namespace AdaptiveNamespace
                                                ABI::Windows::UI::Xaml::Media::Stretch stretch)
     {
         ComPtr<IImageBrush> imageBrush =
-            XamlHelpers::CreateXamlClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
+            XamlHelpers::CreateABIClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
         THROW_IF_FAILED(imageBrush->put_ImageSource(imageSource));
 
         ComPtr<ITileBrush> tileBrush;
@@ -735,7 +735,7 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
 
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs *
+                    Callback<IRoutedEventHandler>([ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs*
                                                                                                      /*args*/) -> HRESULT {
                         if (isVisible)
                         {
@@ -802,7 +802,7 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([weakImage, weakParent, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
+                    Callback<IRoutedEventHandler>([weakImage, weakParent, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                           /*args*/) -> HRESULT {
                         ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
                         RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));

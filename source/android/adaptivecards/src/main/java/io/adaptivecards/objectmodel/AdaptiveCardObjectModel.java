@@ -49,6 +49,18 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return InlineElementType.swigToEnum(AdaptiveCardObjectModelJNI.InlineElementTypeFromString(t));
   }
 
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextStyle_t getTextStyleEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextStyle_t(AdaptiveCardObjectModelJNI.getTextStyleEnum(), false);
+  }
+
+  public static String TextStyleToString(TextStyle t) {
+    return AdaptiveCardObjectModelJNI.TextStyleToString(t.swigValue());
+  }
+
+  public static TextStyle TextStyleFromString(String t) {
+    return TextStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextStyleFromString(t));
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextSize_t getTextSizeEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextSize_t(AdaptiveCardObjectModelJNI.getTextSizeEnum(), false);
   }
@@ -277,6 +289,18 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ContainerStyleFromString(t));
   }
 
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__Mode_t getModeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__Mode_t(AdaptiveCardObjectModelJNI.getModeEnum(), false);
+  }
+
+  public static String ModeToString(Mode t) {
+    return AdaptiveCardObjectModelJNI.ModeToString(t.swigValue());
+  }
+
+  public static Mode ModeFromString(String t) {
+    return Mode.swigToEnum(AdaptiveCardObjectModelJNI.ModeFromString(t));
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__IconPlacement_t getIconPlacementEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__IconPlacement_t(AdaptiveCardObjectModelJNI.getIconPlacementEnum(), false);
   }
@@ -319,6 +343,10 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
 
   public static String getC_adaptiveCardsFeature() {
     return AdaptiveCardObjectModelJNI.c_adaptiveCardsFeature_get();
+  }
+
+  public static String ToLowercase(String value) {
+    return AdaptiveCardObjectModelJNI.ToLowercase(value);
   }
 
 }

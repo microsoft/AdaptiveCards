@@ -2,16 +2,14 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveMedia.h"
-
-#include "ActionHelpers.h"
 #include "AdaptiveMediaRenderer.h"
-#include "AdaptiveElementParserRegistration.h"
+#include "ActionHelpers.h"
 #include "MediaHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -19,7 +17,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveMediaRenderer::RuntimeClassInitialize() noexcept
     try
@@ -48,7 +46,7 @@ namespace AdaptiveNamespace
         // If the host doesn't support interactivity we're done here, just return the poster image
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
-            renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                                       HStringReference(L"Media was present in card, but interactivity is not supported").Get());
 
             if (posterImage != nullptr)
@@ -68,11 +66,11 @@ namespace AdaptiveNamespace
 
         ComPtr<IUIElement> touchTargetUIElement;
         ActionHelpers::WrapInTouchTarget(
-            adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, L"Adaptive.SelectAction", altText.Get(), &touchTargetUIElement);
+            adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, L"Adaptive.SelectAction", altText.Get(), false, &touchTargetUIElement);
 
         // Create a panel to hold the poster and the media element
         ComPtr<IStackPanel> mediaStackPanel =
-            XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+            XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IPanel> mediaPanel;
         RETURN_IF_FAILED(mediaStackPanel.As(&mediaPanel));
 
@@ -95,13 +93,13 @@ namespace AdaptiveNamespace
         {
             // Create a media element and set it's source
             mediaElement =
-                XamlHelpers::CreateXamlClass<IMediaElement>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
+                XamlHelpers::CreateABIClass<IMediaElement>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
 
             GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf(), mimeType.GetAddressOf());
 
             if (mediaSourceUrl == nullptr)
             {
-                renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedMediaType,
+                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::UnsupportedMediaType,
                                           HStringReference(L"Unsupported media element dropped").Get());
                 return S_OK;
             }
@@ -151,7 +149,7 @@ namespace AdaptiveNamespace
         EventRegistrationToken clickToken;
         RETURN_IF_FAILED(touchTargetAsButtonBase->add_Click(
             Callback<IRoutedEventHandler>([touchTargetUIElement, lambdaRenderContext, adaptiveMedia, mediaElement, mediaSourceUrl, lambdaMimeType, mediaInvoker](
-                                              IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                                              IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
                 // Take ownership of the passed in HSTRING
                 HString localMimeType;
                 localMimeType.Attach(lambdaMimeType);
@@ -174,19 +172,6 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(mediaPanelAsUIElement.CopyTo(mediaControl));
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveMediaRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveMedia, AdaptiveSharedNamespace::Media, AdaptiveSharedNamespace::MediaParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

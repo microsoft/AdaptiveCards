@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_test_cases">
+
+    <fragment
+        android:id="@+id/navigation_test_cases"
+        android:name="io.adaptivecards.uitestapp.ui.test_cases.TestCasesFragment"
+        android:label="@string/title_test_cases"
+        tools:layout="@layout/fragment_test_cases" />
+
+    <fragment
+        android:id="@+id/navigation_rendered_card"
+        android:name="io.adaptivecards.uitestapp.ui.rendered_card.RenderedCardFragment"
+        android:label="@string/title_rendered_card"
+        tools:layout="@layout/fragment_rendered_card" />
+
+    <fragment
+        android:id="@+id/navigation_inputs"
+        android:name="io.adaptivecards.uitestapp.ui.inputs.InputsFragment"
+        android:label="@string/title_inputs"
+        tools:layout="@layout/fragment_inputs" />
+</navigation>

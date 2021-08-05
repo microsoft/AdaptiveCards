@@ -2,20 +2,19 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveDateInput.h"
 #include "AdaptiveDateInputRenderer.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "XamlHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveDateInputRenderer::RuntimeClassInitialize() noexcept
     try
@@ -35,7 +34,7 @@ namespace AdaptiveNamespace
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Date input was stripped from card because interactivity is not supported").Get());
             return S_OK;
         }
@@ -44,7 +43,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveDateInput> adaptiveDateInput;
         RETURN_IF_FAILED(cardElement.As(&adaptiveDateInput));
 
-        ComPtr<ICalendarDatePicker> datePicker = XamlHelpers::CreateXamlClass<ICalendarDatePicker>(
+        ComPtr<ICalendarDatePicker> datePicker = XamlHelpers::CreateABIClass<ICalendarDatePicker>(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CalendarDatePicker));
 
         HString placeHolderText;
@@ -98,7 +97,7 @@ namespace AdaptiveNamespace
                 }
                 else
                 {
-                    renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::InvalidValue,
+                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InvalidValue,
                                               HStringReference(L"Min value must be less than max in Input.Date").Get());
                 }
             }
@@ -120,35 +119,18 @@ namespace AdaptiveNamespace
 
         ComPtr<IUIElement> inputLayout;
         ComPtr<IBorder> validationBorder;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(adapitveDateInputAsAdaptiveInput.Get(),
-                                                    datePickerAsUIElement.Get(),
-                                                    false,
-                                                    renderContext,
-                                                    &inputLayout,
-                                                    &validationBorder));
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
+            adapitveDateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), false, renderContext, &inputLayout, &validationBorder));
 
         // Create the InputValue and add it to the context
         ComPtr<DateInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<DateInputValue>(
-            &input, adaptiveDateInput.Get(), datePicker.Get(), validationBorder.Get()));
+        RETURN_IF_FAILED(
+            MakeAndInitialize<DateInputValue>(&input, adaptiveDateInput.Get(), datePicker.Get(), validationBorder.Get()));
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         RETURN_IF_FAILED(inputLayout.CopyTo(dateInputControl));
 
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveDateInputRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveDateInput, AdaptiveSharedNamespace::DateInput, AdaptiveSharedNamespace::DateInputParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

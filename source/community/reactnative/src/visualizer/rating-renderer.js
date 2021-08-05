@@ -24,7 +24,7 @@ export class RatingRenderer extends React.Component {
 		}
 
 		return (
-			<ElementWrapper json={payload} style={styles.textContainer} isFirst={this.props.isFirst}>
+			<ElementWrapper configManager={this.props.configManager} json={payload} style={styles.textContainer} isFirst={this.props.isFirst}>
                     <Text>{payload.rating}</Text>
 			</ElementWrapper>
 		);

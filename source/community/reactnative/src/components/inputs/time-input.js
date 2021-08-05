@@ -7,14 +7,10 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { HostConfigManager } from '../../utils/host-config';
-import { StyleManager } from '../../styles/style-config';
 import * as Constants from '../../utils/constants';
 import { PickerInput } from '../inputs';
 
 export class TimeInput extends React.Component {
-
-	styleConfig = StyleManager.getManager().styles;
 
 	constructor(props) {
 		super(props);
@@ -62,12 +58,13 @@ export class TimeInput extends React.Component {
 
 			this.setState({
 				chosenTime: newTime,
-				value: updatedTime
+				value: updatedTime,
+				modalVisibleAndroid: false
 			});
-		}
-		this.setState({
-			modalVisibleAndroid: false
-		});
+		} else
+			this.setState({
+				modalVisibleAndroid: false
+			});
 	}
 
 	/**
@@ -102,7 +99,7 @@ export class TimeInput extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.props.configManager.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -110,7 +107,7 @@ export class TimeInput extends React.Component {
 			<>
 				<PickerInput
 					json={this.payload}
-					style={this.styleConfig.inputTime}
+					style={this.props.configManager.styleConfig.inputTime}
 					value={this.state.value}
 					format={"HH:mm"}
 					showPicker={this.showTimePicker}
@@ -121,6 +118,7 @@ export class TimeInput extends React.Component {
 					maxDate={this.state.maxTime}
 					handleDateChange={this.handleTimeChange}
 					mode='time'
+					configManager={this.props.configManager}
 				/>
 				{
 					this.state.modalVisibleAndroid &&

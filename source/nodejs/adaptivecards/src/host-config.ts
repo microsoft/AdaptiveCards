@@ -101,6 +101,22 @@ export class MediaConfig {
     }
 }
 
+export class TableConfig {
+    cellSpacing: number = 8;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.cellSpacing = obj.cellSpacing && typeof obj.cellSpacing === "number" ? obj.cellSpacing : this.cellSpacing;
+        }
+    }
+
+    toJSON() {
+        return {
+            cellSpacing: this.cellSpacing
+        }
+    }
+}
+
 export class BaseTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
     color: Enums.TextColor = Enums.TextColor.Default;;
@@ -108,15 +124,19 @@ export class BaseTextDefinition {
     weight: Enums.TextWeight = Enums.TextWeight.Default;
 
     constructor(obj?: any) {
+        this.parse(obj);
+    }
+
+    parse(obj: any) {
         if (obj) {
             this.size = parseHostConfigEnum(Enums.TextSize, obj["size"], this.size);
             this.color = parseHostConfigEnum(Enums.TextColor, obj["color"], this.color);
-            this.isSubtle = obj["isSubtle"] || this.isSubtle;
+            this.isSubtle = obj.isSubtle !== undefined && typeof obj.isSubtle === "boolean" ? obj.isSubtle : this.isSubtle;
             this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
         }
     }
 
-    getDefaultWeight() {
+    getDefaultWeight(): Enums.TextWeight {
         return Enums.TextWeight.Default;
     }
 
@@ -130,12 +150,65 @@ export class BaseTextDefinition {
     }
 }
 
+export class TextStyleDefinition extends BaseTextDefinition {
+    fontType: Enums.FontType = Enums.FontType.Default;
+
+    parse(obj: any) {
+        super.parse(obj);
+
+        if (obj) {
+            this.fontType = parseHostConfigEnum(Enums.FontType, obj.fontType, this.fontType);
+        }
+    }
+}
+
+export class TextStyleSet {
+    readonly default: TextStyleDefinition = new TextStyleDefinition();
+    readonly heading: TextStyleDefinition = new TextStyleDefinition(
+        {
+            size: "Large",
+            weight: "Bolder"
+        });
+    readonly columnHeader: TextStyleDefinition = new TextStyleDefinition(
+        {
+            weight: "Bolder"
+        });
+    
+    constructor(obj?: any) {
+        if (obj) {
+            this.heading.parse(obj.heading);
+            this.columnHeader.parse(obj.columnHeader);
+        }
+    }
+
+    getStyleByName(name: string): TextStyleDefinition {
+        switch (name.toLowerCase()) {
+            case "heading":
+                return this.heading;
+            case "columnHeader":
+                return this.columnHeader;
+            default:
+                return this.default;
+        }
+    }
+}
+
+export class TextBlockConfig {
+    headingLevel?: number;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.headingLevel = Utils.parseNumber(obj.headingLevel);
+        }
+    }
+}
+
 export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
     suffix?: string = " *";
     suffixColor: Enums.TextColor = Enums.TextColor.Attention;
 
-    constructor(obj?: any) {
-        super(obj);
+    parse(obj?: any) {
+        super.parse(obj);
 
         if (obj) {
             this.suffix = obj["suffix"] || this.suffix;
@@ -181,8 +254,8 @@ export class InputConfig {
 export class FactTextDefinition extends BaseTextDefinition {
     wrap: boolean = true;
 
-    constructor(obj?: any) {
-        super(obj);
+    parse(obj?: any) {
+        super.parse(obj);
 
         if (obj) {
             this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
@@ -350,6 +423,7 @@ export class ContainerStyleDefinition {
 
     highlightBackgroundColor?: string;
     highlightForegroundColor?: string;
+    borderColor?: string;
 
     parse(obj: any) {
         if (obj) {
@@ -359,6 +433,8 @@ export class ContainerStyleDefinition {
 
             this.highlightBackgroundColor = obj["highlightBackgroundColor"];
             this.highlightForegroundColor = obj["highlightForegroundColor"];
+
+            this.borderColor = obj["borderColor"];
         }
     }
 
@@ -586,6 +662,9 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
+    readonly table: TableConfig = new TableConfig();
+    readonly textStyles: TextStyleSet = new TextStyleSet();
+    readonly textBlock: TextBlockConfig = new TextBlockConfig();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;
@@ -641,7 +720,9 @@ export class HostConfig {
             this.actions = new ActionsConfig(obj.actions || this.actions);
             this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
-            this.factSet = new FactSetConfig(obj["factSet"])
+            this.factSet = new FactSetConfig(obj["factSet"]);
+            this.textStyles = new TextStyleSet(obj["textStyles"]);
+            this.textBlock = new TextBlockConfig(obj["textBlock"]);
         }
     }
 

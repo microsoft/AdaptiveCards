@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveErrorMessageConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveErrorMessageConfig>
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveErrorMessageConfig>
     {
         AdaptiveRuntime(AdaptiveErrorMessageConfig);
 
@@ -13,20 +14,19 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ErrorMessageConfig errorMessageConfig) noexcept;
 
-        IFACEMETHODIMP get_Size(_Outptr_ ABI::AdaptiveNamespace::TextSize* size);
-        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveNamespace::TextSize size);
+        IFACEMETHODIMP get_Size(_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::TextSize* size);
+        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::TextSize size);
 
-        IFACEMETHODIMP get_Spacing(_Outptr_ ABI::AdaptiveNamespace::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
+        IFACEMETHODIMP get_Spacing(_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* spacing);
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing);
 
-        IFACEMETHODIMP get_Weight(_Outptr_ ABI::AdaptiveNamespace::TextWeight* weight);
-        IFACEMETHODIMP put_Weight(_In_ ABI::AdaptiveNamespace::TextWeight weight);
+        IFACEMETHODIMP get_Weight(_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight* weight);
+        IFACEMETHODIMP put_Weight(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight weight);
 
     private:
-        ABI::AdaptiveNamespace::TextSize m_size;
-        ABI::AdaptiveNamespace::Spacing m_spacing;
-        ABI::AdaptiveNamespace::TextWeight m_weight;
-
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextSize m_size;
+        ABI::AdaptiveCards::ObjectModel::Uwp::Spacing m_spacing;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight m_weight;
     };
     ActivatableClass(AdaptiveErrorMessageConfig);
 }

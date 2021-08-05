@@ -155,6 +155,18 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetMinHeight(swigCPtr, this, value);
   }
 
+  public @androidx.annotation.Nullable Boolean GetRtl() {
+    StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.AdaptiveCard_GetRtl(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
+
+  public void SetRtl(@androidx.annotation.Nullable Boolean value) {
+    StdOptionalBool optvalue = (value == null) ? new StdOptionalBool() : new StdOptionalBool(value);
+    {
+      AdaptiveCardObjectModelJNI.AdaptiveCard_SetRtl(swigCPtr, this, StdOptionalBool.getCPtr(optvalue), optvalue);
+    }
+  }
+
   public BaseActionElement GetSelectAction() {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetSelectAction(swigCPtr, this);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);

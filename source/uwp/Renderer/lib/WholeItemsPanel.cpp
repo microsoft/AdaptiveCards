@@ -12,7 +12,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -21,7 +21,7 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Media;
 
 static const float OutsidePanelY = -1000.0f;
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT WholeItemsPanel::RuntimeClassInitialize()
     {
@@ -258,11 +258,11 @@ namespace AdaptiveNamespace
         }
         else
         {
-            if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Center)
+            if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Center)
             {
                 currentHeight = (finalSize.Height - m_calculatedSize) / 2;
             }
-            else if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Bottom)
+            else if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Bottom)
             {
                 currentHeight = finalSize.Height - m_calculatedSize;
             }
@@ -319,10 +319,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
 
-        float x0 = static_cast<float>(-max(margin.Left, s_bleedMargin));
-        float y0 = static_cast<float>(-max(margin.Top, s_bleedMargin));
-        float x1 = static_cast<float>(max(margin.Left, s_bleedMargin) + finalSize.Width + max(margin.Right, s_bleedMargin));
-        float y1 = static_cast<float>(max(margin.Top, s_bleedMargin) + finalSize.Height + max(margin.Bottom, s_bleedMargin));
+        const DOUBLE bleedMargin = static_cast<DOUBLE>(s_bleedMargin);
+        float x0 = static_cast<float>(-max(margin.Left, bleedMargin));
+        float y0 = static_cast<float>(-max(margin.Top, bleedMargin));
+        float x1 = static_cast<float>(max(margin.Left, bleedMargin) + finalSize.Width + max(margin.Right, bleedMargin));
+        float y1 = static_cast<float>(max(margin.Top, bleedMargin) + finalSize.Height + max(margin.Bottom, bleedMargin));
         RETURN_IF_FAILED(spClip->put_Rect({x0, y0, x1, y1}));
 
         *returnValue = {finalSize.Width, finalSize.Height};
@@ -437,7 +438,7 @@ namespace AdaptiveNamespace
         boolean isStretchable = false;
         if (tagAsInspectable != nullptr)
         {
-            ComPtr<AdaptiveNamespace::IElementTagContent> tagContent;
+            ComPtr<AdaptiveCards::Rendering::Uwp::IElementTagContent> tagContent;
             THROW_IF_FAILED(tagAsInspectable.As(&tagContent));
             THROW_IF_FAILED(tagContent->get_IsStretchable(&isStretchable));
         }
@@ -445,7 +446,7 @@ namespace AdaptiveNamespace
         return isStretchable;
     }
 
-    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment)
+    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment)
     {
         m_verticalContentAlignment = verticalContentAlignment;
     }

@@ -5,19 +5,19 @@
 #include "AdaptiveColumnRenderer.h"
 
 #include "ActionHelpers.h"
-#include "AdaptiveColumn.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveColumnRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
@@ -32,7 +32,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(cardElement.As(&adaptiveColumn));
 
         ComPtr<IBorder> columnBorder =
-            XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+            XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
         ComPtr<WholeItemsPanel> columnPanel;
         RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&columnPanel));
@@ -42,10 +42,37 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(columnBorder->put_Child(columnPanelAsUIElement.Get()));
 
+        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
+        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
+
+        ComPtr<IReference<bool>> previousContextRtl;
+        RETURN_IF_FAILED(renderContext->get_Rtl(&previousContextRtl));
+        ComPtr<IReference<bool>> currentRtl = previousContextRtl;
+
+        ComPtr<IReference<bool>> containerRtl;
+        RETURN_IF_FAILED(adaptiveColumn->get_Rtl(&containerRtl));
+
+        bool updatedRtl = false;
+        if (containerRtl != nullptr)
+        {
+            currentRtl = containerRtl;
+            RETURN_IF_FAILED(renderContext->put_Rtl(currentRtl.Get()));
+            updatedRtl = true;
+        }
+
+        if (currentRtl)
+        {
+            boolean rtlValue;
+            RETURN_IF_FAILED(currentRtl->get_Value(&rtlValue));
+
+            RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft :
+                                                                                         FlowDirection_LeftToRight));
+        }
+
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumn.As(&columnAsContainerBase));
 
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(
             XamlHelpers::HandleStylingAndPadding(columnAsContainerBase.Get(), columnBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -62,15 +89,25 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
             childItems.Get(), columnAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
 
-        ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
-        RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
+        // If we changed the context's rtl setting, set it back after rendering the children
+        if (updatedRtl)
+        {
+            RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
+        }
+
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
+        RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignmentReference));
+
+        ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Top;
+        if (verticalContentAlignmentReference != nullptr)
+        {
+            verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
+        }
 
         XamlHelpers::SetVerticalContentAlignmentToChildren(columnPanel.Get(), verticalContentAlignment);
 
-        // Assign vertical alignment to the top so that on fixed height cards, the content
-        // still renders at the top even if the content is shorter than the full card
-        ComPtr<IFrameworkElement> columnPanelAsFrameworkElement;
-        RETURN_IF_FAILED(columnPanel.As(&columnPanelAsFrameworkElement));
+        // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
         RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         RETURN_IF_FAILED(
@@ -95,14 +132,14 @@ namespace AdaptiveNamespace
         if (backgroundImageIsValid)
         {
             ComPtr<IGrid> rootElement =
-                XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+                XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
             ComPtr<IPanel> rootAsPanel;
             RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
 
             XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
 
             // get HeightType for column
-            ABI::AdaptiveNamespace::HeightType columnHeightType{};
+            ABI::AdaptiveCards::ObjectModel::Uwp::HeightType columnHeightType{};
             RETURN_IF_FAILED(cardElement->get_Height(&columnHeightType));
 
             // Add columnBorder to rootElement
@@ -128,19 +165,6 @@ namespace AdaptiveNamespace
                                           false,
                                           ColumnControl);
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveColumnRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumn, AdaptiveSharedNamespace::Column, AdaptiveSharedNamespace::ColumnParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

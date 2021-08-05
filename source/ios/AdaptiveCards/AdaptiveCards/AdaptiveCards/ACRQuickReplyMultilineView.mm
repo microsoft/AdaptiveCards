@@ -6,7 +6,7 @@
 //
 
 #import "ACRQuickReplyMultilineView.h"
-
+#import "ACOBundle.h"
 
 @implementation ACRQuickReplyMultilineView
 
@@ -27,8 +27,7 @@
 
 - (void)commonInit
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    [bundle loadNibNamed:@"ACRQuickActionMultilineView" owner:self options:nil];
+    [[[ACOBundle getInstance] getBundle] loadNibNamed:@"ACRQuickActionMultilineView" owner:self options:nil];
     [self addSubview:self.contentView];
     self.contentView.frame = self.bounds;
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

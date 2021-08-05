@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Build;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -263,8 +263,8 @@ public class MediaRenderer extends BaseCardElementRenderer
         mediaView.setContentDescription(media.GetAltText());
 
         RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
         videoViewLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         mediaView.setLayoutParams(videoViewLayoutParams);
 

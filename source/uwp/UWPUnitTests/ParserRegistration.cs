@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCards.ObjectModel.Uwp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -199,6 +199,8 @@ namespace UWPUnitTests
             public string IconUrl { get; set; }
             public string Style { get; set; }
             public string Title { get; set; }
+            public string Tooltip { get; set; }
+            public bool IsEnabled { get; set; }
             IAdaptiveActionElement IAdaptiveActionElement.FallbackContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             FallbackType IAdaptiveActionElement.FallbackType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         };

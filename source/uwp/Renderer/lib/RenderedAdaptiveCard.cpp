@@ -3,12 +3,8 @@
 #include "pch.h"
 
 #include "AdaptiveActionEventArgs.h"
-#include "AdaptiveActionSet.h"
-#include "AdaptiveCard.h"
-#include "AdaptiveError.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveMediaEventArgs.h"
-#include "AdaptiveShowCardAction.h"
 #include "RenderedAdaptiveCard.h"
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
@@ -17,7 +13,8 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -25,25 +22,25 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     RenderedAdaptiveCard::RenderedAdaptiveCard() {}
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize()
     {
-        RETURN_IF_FAILED(
-            RenderedAdaptiveCard::RuntimeClassInitialize(Make<Vector<ABI::AdaptiveNamespace::AdaptiveError*>>().Get(),
-                                                         Make<Vector<ABI::AdaptiveNamespace::AdaptiveWarning*>>().Get()));
+        RETURN_IF_FAILED(RenderedAdaptiveCard::RuntimeClassInitialize(
+            Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>>().Get(),
+            Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>>().Get()));
         return S_OK;
     }
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize(
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveError*>* errors,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* warnings)
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>* errors,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* warnings)
     {
         m_errors = errors;
         m_warnings = warnings;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveInputs>(&m_inputs));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
         m_actionEvents = std::make_shared<ActionEventSource>();
         m_mediaClickedEvents = std::make_shared<MediaEventSource>();
         return S_OK;
@@ -64,13 +61,14 @@ namespace AdaptiveNamespace
         return m_frameworkElement.CopyTo(value);
     }
 
-    HRESULT RenderedAdaptiveCard::get_UserInputs(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputs** value)
+    HRESULT RenderedAdaptiveCard::get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value)
     {
         return m_inputs.CopyTo(value);
     }
 
     HRESULT RenderedAdaptiveCard::add_Action(
-        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
+        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
+                                                          ABI::AdaptiveCards::Rendering::Uwp::AdaptiveActionEventArgs*>* handler,
         _Out_ EventRegistrationToken* token)
     {
         return m_actionEvents->Add(handler, token);
@@ -79,7 +77,8 @@ namespace AdaptiveNamespace
     HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token) { return m_actionEvents->Remove(token); }
 
     HRESULT RenderedAdaptiveCard::add_MediaClicked(
-        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
+        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
+                                                          ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaEventArgs*>* handler,
         _Out_ EventRegistrationToken* token)
     {
         return m_mediaClickedEvents->Add(handler, token);
@@ -91,13 +90,13 @@ namespace AdaptiveNamespace
     }
 
     HRESULT RenderedAdaptiveCard::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveError*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     HRESULT RenderedAdaptiveCard::get_Warnings(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
@@ -108,18 +107,15 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveShowCardAction> showCardAction;
         RETURN_IF_FAILED(localActionElement.As(&showCardAction));
 
-        ComPtr<AdaptiveNamespace::AdaptiveShowCardAction> showCardImpl =
-            PeekInnards<AdaptiveNamespace::AdaptiveShowCardAction>(showCardAction);
-
-        // Find the show card that needs to be toggled
-        InternalId showCardToToggle = showCardImpl->GetInternalId();
+        UINT32 showCardToToggle;
+        RETURN_IF_FAILED(showCardAction->get_InternalId(&showCardToToggle));
         auto found = m_showCards.find(showCardToToggle);
 
         if (found != m_showCards.end())
         {
             // The key (showCardEntry.first) is the show card id and the value (showCardEntry.second) is a pair
             // made up of the actionSetId and the UIElement for the card
-            InternalId actionSetToToggle = found->second.first;
+            UINT32 actionSetToToggle = found->second.first;
             ComPtr<IUIElement> showCardUIElement = found->second.second;
 
             // Determine if the card is currently being shown
@@ -138,8 +134,8 @@ namespace AdaptiveNamespace
 
                 for (auto& showCardEntry : m_showCards)
                 {
-                    const InternalId showCardId = showCardEntry.first;
-                    const InternalId actionSetId = showCardEntry.second.first;
+                    const UINT32 showCardId = showCardEntry.first;
+                    const UINT32 actionSetId = showCardEntry.second.first;
                     if ((actionSetToToggle == actionSetId) && (showCardToToggle != showCardId))
                     {
                         ComPtr<IUIElement> showCardUIElementCurrent = showCardEntry.second.second;
@@ -177,7 +173,7 @@ namespace AdaptiveNamespace
             HString toggleId;
             RETURN_IF_FAILED(currentTarget->get_ElementId(toggleId.GetAddressOf()));
 
-            ABI::AdaptiveNamespace::IsVisible toggle;
+            ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible toggle;
             RETURN_IF_FAILED(currentTarget->get_IsVisible(&toggle));
 
             ComPtr<IInspectable> toggleElement;
@@ -198,15 +194,15 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(tag.As(&elementTagContent));
 
                 Visibility visibilityToSet = Visibility_Visible;
-                if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleTrue)
+                if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleTrue)
                 {
                     visibilityToSet = Visibility_Visible;
                 }
-                else if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleFalse)
+                else if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleFalse)
                 {
                     visibilityToSet = Visibility_Collapsed;
                 }
-                else if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleToggle)
+                else if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleToggle)
                 {
                     boolean currentVisibility{};
                     RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));
@@ -251,17 +247,17 @@ namespace AdaptiveNamespace
 
     HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
-        ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
         RETURN_IF_FAILED(actionElement->get_ActionType(&actionType));
 
         switch (actionType)
         {
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_ToggleVisibility:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_ToggleVisibility:
         {
             return HandleToggleVisibilityClick(m_frameworkElement.Get(), actionElement);
         }
 
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_ShowCard:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_ShowCard:
         {
             ComPtr<IAdaptiveActionsConfig> actionConfig;
             RETURN_IF_FAILED(m_originatingHostConfig->get_Actions(&actionConfig));
@@ -284,13 +280,13 @@ namespace AdaptiveNamespace
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit:
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Execute:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Submit:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Execute:
         {
             ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
-            ABI::AdaptiveNamespace::AssociatedInputs associatedInputs;
+            ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs associatedInputs;
 
-            if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit)
+            if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Submit)
             {
                 ComPtr<IAdaptiveSubmitAction> submitAction;
                 RETURN_IF_FAILED(localActionElement.As(&submitAction));
@@ -305,7 +301,7 @@ namespace AdaptiveNamespace
 
             ComPtr<IAdaptiveInputs> gatheredInputs;
             boolean inputsAreValid;
-            if (associatedInputs == ABI::AdaptiveNamespace::AssociatedInputs::None)
+            if (associatedInputs == ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs::None)
             {
                 // Create an empty inputs object
                 RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&gatheredInputs));
@@ -329,8 +325,8 @@ namespace AdaptiveNamespace
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_OpenUrl:
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Custom:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_OpenUrl:
+        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Custom:
         default:
         {
             ComPtr<IAdaptiveActionEventArgs> eventArgs;
@@ -358,12 +354,12 @@ namespace AdaptiveNamespace
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* value)
+    void RenderedAdaptiveCard::SetOriginatingCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* value)
     {
         m_originatingCard = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* value)
+    void RenderedAdaptiveCard::SetOriginatingHostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* value)
     {
         m_originatingHostConfig = value;
     }
@@ -371,12 +367,11 @@ namespace AdaptiveNamespace
     HRESULT RenderedAdaptiveCard::AddInlineShowCard(_In_ IAdaptiveActionSet* actionSet,
                                                     _In_ IAdaptiveShowCardAction* showCardAction,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
-                                                    ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+                                                    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     try
     {
-        InternalId actionSetId;
-        ComPtr<AdaptiveNamespace::AdaptiveActionSet> actionSetImpl = PeekInnards<AdaptiveNamespace::AdaptiveActionSet>(actionSet);
-        actionSetId = actionSetImpl->GetInternalId();
+        UINT32 actionSetId;
+        RETURN_IF_FAILED(actionSet->get_InternalId(&actionSetId));
 
         RETURN_IF_FAILED(AddInlineShowCardHelper(actionSetId, showCardAction, showCardFrameworkElement, renderArgs));
 
@@ -384,15 +379,14 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
-                                                    ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+    HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
+                                                    ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
                                                     ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
-                                                    ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+                                                    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     try
     {
-        InternalId actionSetId;
-        ComPtr<AdaptiveNamespace::AdaptiveCard> adaptiveCardImpl = PeekInnards<AdaptiveNamespace::AdaptiveCard>(adaptiveCard);
-        actionSetId = adaptiveCardImpl->GetInternalId();
+        UINT32 actionSetId;
+        RETURN_IF_FAILED(adaptiveCard->get_InternalId(&actionSetId));
 
         RETURN_IF_FAILED(AddInlineShowCardHelper(actionSetId, showCardAction, showCardFrameworkElement, renderArgs));
 
@@ -400,15 +394,14 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCardHelper(AdaptiveCards::InternalId& actionSetId,
-                                                          ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
+    HRESULT RenderedAdaptiveCard::AddInlineShowCardHelper(UINT32 actionSetId,
+                                                          ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
                                                           ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
-                                                          ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+                                                          ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     try
     {
-        ComPtr<AdaptiveNamespace::AdaptiveShowCardAction> showCardImpl =
-            PeekInnards<AdaptiveNamespace::AdaptiveShowCardAction>(showCardAction);
-        InternalId showCardActionId = showCardImpl->GetInternalId();
+        UINT32 showCardActionId;
+        RETURN_IF_FAILED(showCardAction->get_InternalId(&showCardActionId));
 
         m_showCards.emplace(std::make_pair(showCardActionId, std::make_pair(actionSetId, showCardFrameworkElement)));
 
@@ -428,27 +421,22 @@ namespace AdaptiveNamespace
         return m_inputs->AddInputValue(inputItem, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    HRESULT RenderedAdaptiveCard::LinkActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
+                                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         return m_inputs->LinkSubmitActionToCard(action, renderArgs);
     }
 
-    InternalId GetInternalIdFromCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card)
-    {
-        ComPtr<AdaptiveCard> cardImpl = PeekInnards<AdaptiveNamespace::AdaptiveCard>(card);
-        return cardImpl->GetInternalId();
-    }
-
-    HRESULT RenderedAdaptiveCard::LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
-                                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    HRESULT RenderedAdaptiveCard::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card,
+                                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         // We get the card internal id from the showcard action
-        InternalId cardId = GetInternalIdFromCard(card);
+        UINT32 cardId;
+        RETURN_IF_FAILED(card->get_InternalId(&cardId));
 
         // Then we get the parent card internal id from the renderArgs
         ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
-        InternalId parentCardId = InternalId();
+        UINT32 parentCardId = InternalId().Hash();
         if (renderArgs)
         {
             ComPtr<IAdaptiveCard> parentCard;
@@ -456,15 +444,15 @@ namespace AdaptiveNamespace
 
             if (parentCard)
             {
-                parentCardId = GetInternalIdFromCard(parentCard.Get());
+                parentCard->get_InternalId(&parentCardId);
             }
         }
 
         return m_inputs->LinkCardToParent(cardId, parentCardId);
     }
 
-    HRESULT RenderedAdaptiveCard::GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
-                                                _In_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue)
+    HRESULT RenderedAdaptiveCard::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
+                                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue)
     {
         return m_inputs->GetInputValue(inputElement, inputValue);
     }

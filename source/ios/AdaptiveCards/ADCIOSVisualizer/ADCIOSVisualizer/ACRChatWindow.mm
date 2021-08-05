@@ -29,7 +29,7 @@
 {
     self = [super init];
     if (self) {
-        adaptiveCardsWidth = width;
+        adaptiveCardsWidth = 0;
         adaptiveCardsPayloads = [[NSMutableArray alloc] init];
         adaptiveCardsViews = [[NSMutableArray alloc] init];
         NSBundle *main = [NSBundle mainBundle];
@@ -61,6 +61,12 @@
     [adaptiveCardsPayloads addObject:card];
     [self renderCards:card];
     numberOfCards += 1;
+}
+
+- (void)insertView:(UIView *)view
+{
+    [adaptiveCardsPayloads addObject:@""];
+    [adaptiveCardsViews addObject:view];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

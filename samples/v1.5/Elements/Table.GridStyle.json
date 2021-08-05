@@ -1,0 +1,309 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "GridStyle sets the color of the gridlines to the corresponding border color defined in host config",
+			"wrap": true,
+			"weight": "Bolder"
+		},
+		{
+			"type": "Table",
+			"verticalCellContentAlignment": "Center",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "gridStyle Value",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Sample table",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Good",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"gridStyle": "good"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Warning",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"gridStyle": "warning"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Attention",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "Data",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"gridStyle": "attention"
+								}
+							]
+						}
+					]
+				}
+			],
+			"showGridLines": false,
+			"firstRowAsHeaders": true
+		}
+	]
+}

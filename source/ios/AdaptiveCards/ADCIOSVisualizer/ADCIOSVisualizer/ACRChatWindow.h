@@ -16,6 +16,7 @@ extern NSString *identifier;
 
 - (instancetype)init:(CGFloat)width;
 - (void)insertCard:(NSString *)card;
+- (void)insertView:(UIView *)view;
 - (void)deleteAllRows:(UITableView *)tableView;
 
 @end

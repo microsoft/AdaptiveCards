@@ -12,7 +12,6 @@ import {
 } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
-import { HostConfigManager } from '../../utils/host-config';
 
 export class SelectAction extends React.Component {
 
@@ -30,10 +29,13 @@ export class SelectAction extends React.Component {
 	 * @description Invoked on tapping the button component
 	 */
 	onClickHandle() {
-		switch (this.payload.type) {
+		const { type, verb = "", title = "", data } = this.payload;
+		switch (type) {
 			case Constants.ActionSubmit:
-				const { type, title = "", data } = this.payload;
-				this.onExecuteAction({type, title, data});
+				this.onExecuteAction({ type, title, data });
+				break;
+			case Constants.ActionExecute:
+				this.onExecuteAction({ type, verb, title, data });
 				break;
 			case Constants.ActionOpenUrl:
 				if (!Utils.isNullOrEmpty(this.props.selectActionData.url)) {
@@ -55,7 +57,7 @@ export class SelectAction extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.props.configManager.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -67,6 +69,7 @@ export class SelectAction extends React.Component {
 
 				return <ButtonComponent
 					onPress={() => { this.onClickHandle() }}
+					disabled={this.payload.isEnabled == undefined ? false : !this.payload.isEnabled} //isEnabled defaults to true
 					accessible={true}
 					accessibilityLabel={this.payload.altText}
 					accessibilityRole={Constants.Button}

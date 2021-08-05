@@ -7,10 +7,10 @@
 #import "ACOBaseActionElement.h"
 #import "ACRRegistrationPrivate.h"
 #import "BaseActionElement.h"
+#import "ExecuteAction.h"
 #import "OpenUrlAction.h"
 #import "SubmitAction.h"
 #import "UnknownAction.h"
-#import "ExecuteAction.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -120,12 +120,12 @@ using namespace AdaptiveCards;
             std::shared_ptr<SubmitAction> submitAction = std::dynamic_pointer_cast<SubmitAction>(_elem);
             data = submitAction->GetDataJson();
         }
-        
+
         if (_type == ACRExecute) {
             std::shared_ptr<ExecuteAction> executeAction = std::dynamic_pointer_cast<ExecuteAction>(_elem);
             data = executeAction->GetDataJson();
         }
-    
+
         if (!data.empty()) {
             return [NSString stringWithCString:data.c_str() encoding:NSUTF8StringEncoding];
         }
@@ -140,6 +140,14 @@ using namespace AdaptiveCards;
         return [NSString stringWithCString:executeAction->GetVerb().c_str() encoding:NSUTF8StringEncoding];
     }
     return nil;
+}
+
+- (BOOL)isEnabled
+{
+    if (_elem) {
+        return _elem->GetIsEnabled();
+    }
+    return YES;
 }
 
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg
@@ -169,6 +177,9 @@ using namespace AdaptiveCards;
             break;
         case ACRExecute:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::Execute)];
+            break;
+        case ACROverflow:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::Overflow)];
             break;
         case ACRUnknownAction:
         default:

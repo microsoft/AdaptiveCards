@@ -4,32 +4,25 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveShowCardActionRenderer
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveActionRenderer,
-                                              ABI::AdaptiveNamespace::IAdaptiveActionParser>
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionRenderer>
     {
         AdaptiveRuntime(AdaptiveShowCardActionRenderer);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                              _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
+                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                               _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
 
-        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-                                _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-                                _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-                                _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                                _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept override;
-
-        static HRESULT BuildShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* showCard,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+        static HRESULT BuildShowCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* showCard,
+                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                                      bool isBottomActionBar,
                                      _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard) noexcept;
     };

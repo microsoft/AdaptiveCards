@@ -67,6 +67,10 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ExecuteAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Refresh.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TokenExchangeResource.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Table.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TableCell.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TableRow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -140,6 +144,11 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ExecuteAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Refresh.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TokenExchangeResource.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Table.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TableCell.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TableRow.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InternalId.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

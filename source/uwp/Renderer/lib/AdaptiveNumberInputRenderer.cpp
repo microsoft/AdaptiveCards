@@ -2,21 +2,20 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveNumberInput.h"
 #include "AdaptiveNumberInputRenderer.h"
 #include <limits>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Input;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveNumberInputRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
@@ -31,7 +30,7 @@ namespace AdaptiveNamespace
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             RETURN_IF_FAILED(renderContext->AddWarning(
-                ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Number input was stripped from card because interactivity is not supported").Get()));
             return S_OK;
         }
@@ -41,14 +40,14 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(cardElement.As(&adaptiveNumberInput));
 
         ComPtr<ITextBox> textBox =
-            XamlHelpers::CreateXamlClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
+            XamlHelpers::CreateABIClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
 
         ComPtr<IInputScopeName> inputScopeName =
-            XamlHelpers::CreateXamlClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
+            XamlHelpers::CreateABIClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
         RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Number));
 
         ComPtr<IInputScope> inputScope =
-            XamlHelpers::CreateXamlClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
+            XamlHelpers::CreateABIClass<IInputScope>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScope));
         ComPtr<IVector<InputScopeName*>> names;
         RETURN_IF_FAILED(inputScope->get_Names(names.GetAddressOf()));
         RETURN_IF_FAILED(names->Append(inputScopeName.Get()));
@@ -67,7 +66,7 @@ namespace AdaptiveNamespace
                 ss.precision(std::numeric_limits<double>::digits10);
                 ss << boxValue;
                 std::wstring stringValue = ss.str();
-                
+
                 RETURN_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
             }
         }
@@ -111,19 +110,6 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(inputLayout.CopyTo(numberInputControl));
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveNumberInputRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveNumberInput, AdaptiveSharedNamespace::NumberInput, AdaptiveSharedNamespace::NumberInputParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

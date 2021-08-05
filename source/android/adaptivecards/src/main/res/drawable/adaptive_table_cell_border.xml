@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:id="@+id/cellBorderStroke"
+        android:color="#000000"
+        android:width="1px" />
+    <solid
+        android:id="@+id/cellBorderSolid" />
+
+</shape>

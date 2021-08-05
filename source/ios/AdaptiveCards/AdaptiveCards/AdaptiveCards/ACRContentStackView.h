@@ -22,6 +22,8 @@
 @property BOOL isActionSet;
 // tells if a background image is set
 @property BOOL isBackgroundImageSet;
+// if true, RTL's set
+@property ACRRtl rtl;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 
@@ -44,6 +46,8 @@
                  location:(ACRBleedDirection)location;
 
 - (UIView *_Nullable)getLastArrangedSubview;
+
+- (NSArray<UIView *> *_Nonnull)getArrangedSubviews;
 
 // return the largest width from the given subviews Excluding the view
 - (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *_Nonnull)view;

@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveTextRun.h"
 #include "DateTimeParser.h"
 #include "MarkDownParser.h"
 #include "TextHelpers.h"
@@ -11,20 +10,21 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
-using namespace AdaptiveNamespace;
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards::Rendering::Uwp;
+using namespace AdaptiveCards;
 using namespace msl::utilities;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml;
 using namespace std::string_literals;
 
-HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextBlock* adaptiveTextBlock,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextBlock* adaptiveTextBlock,
+                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                                      _In_ ITextBlock* xamlTextBlock)
 {
     boolean wrap;
@@ -41,7 +41,7 @@ HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextB
         RETURN_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
     }
 
-    RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveTextBlock, xamlTextBlock));
+    RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveTextBlock, renderContext, xamlTextBlock));
 
     ComPtr<IAdaptiveTextBlock> localAdaptiveTextBlock(adaptiveTextBlock);
     ComPtr<IAdaptiveTextElement> adaptiveTextElement;
@@ -95,48 +95,181 @@ HRESULT SetStrikethroughAndUnderline(const TextRunStyleParameters& styleProperti
     return S_OK;
 }
 
-HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
-                                     _In_ IAdaptiveRenderArgs* renderArgs,
-                                     _In_ IAdaptiveTextConfig* textConfig,
-                                     _In_ HSTRING language,
-                                     _In_ HSTRING text,
-                                     _In_ ITextBlock* textBlock)
+HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveTextElement* textElement,
+                                          _In_ IAdaptiveRenderContext* renderContext,
+                                          _In_ IAdaptiveRenderArgs* renderArgs,
+                                          _In_ IAdaptiveTextStyleConfig* textStyleConfig,
+                                          _In_ ITextBlock* textBlock)
+{
+    HString language;
+    RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
+
+    HString text;
+    RETURN_IF_FAILED(textElement->get_Text(text.GetAddressOf()));
+
+    RETURN_IF_FAILED(
+        SetXamlInlinesWithTextStyleConfig(renderContext, renderArgs, textStyleConfig, textElement, language.Get(), text.Get(), textBlock));
+
+    return S_OK;
+}
+
+HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderContext,
+                                          _In_ IAdaptiveRenderArgs* renderArgs,
+                                          _In_ IAdaptiveTextStyleConfig* textStyle,
+                                          _In_opt_ IAdaptiveTextElement* textElement,
+                                          _In_ HSTRING language,
+                                          _In_ HSTRING text,
+                                          _In_ ITextBlock* textBlock)
 {
     // Create an AdaptiveTextRun with the language, text, and configuration to pass to SetXamlInlines
-    ComPtr<AdaptiveNamespace::AdaptiveTextRun> textRun;
-    RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveTextRun>(&textRun));
+    ComPtr<IAdaptiveTextRun> textRun = XamlHelpers::CreateABIClass<IAdaptiveTextRun>(
+        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun));
 
-    RETURN_IF_FAILED(textRun->put_Text(text));
-    RETURN_IF_FAILED(textRun->put_Language(language));
+    ComPtr<IAdaptiveTextElement> textRunAsTextElement;
+    RETURN_IF_FAILED(textRun.As(&textRunAsTextElement));
 
-    ABI::AdaptiveNamespace::TextWeight weight;
-    RETURN_IF_FAILED(textConfig->get_Weight(&weight));
-    RETURN_IF_FAILED(textRun->put_Weight(weight));
+    RETURN_IF_FAILED(textRunAsTextElement->put_Text(text));
+    RETURN_IF_FAILED(textRunAsTextElement->put_Language(language));
 
-    ABI::AdaptiveNamespace::ForegroundColor color;
-    RETURN_IF_FAILED(textConfig->get_Color(&color));
-    RETURN_IF_FAILED(textRun->put_Color(color));
+    // For weight, color, size, fontType, and isSubtle, use the value from the text element if there is one, otherwise use the value from the text style
 
-    ABI::AdaptiveNamespace::TextSize size;
-    RETURN_IF_FAILED(textConfig->get_Size(&size));
-    RETURN_IF_FAILED(textRun->put_Size(size));
+    // TextWeight
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>> weightToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>> elementWeight;
+        RETURN_IF_FAILED(textElement->get_Weight(&elementWeight));
+        if (elementWeight != nullptr)
+        {
+            weightToSet = elementWeight;
+        }
+    }
+    if (weightToSet == nullptr)
+    {
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight weight;
+        RETURN_IF_FAILED(textStyle->get_Weight(&weight));
 
-    boolean isSubtle;
-    RETURN_IF_FAILED(textConfig->get_IsSubtle(&isSubtle));
-    RETURN_IF_FAILED(textRun->put_IsSubtle(isSubtle));
+        weightToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::TextWeight>(weight))
+                          .as<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>>()
+                          .get();
+    }
+    RETURN_IF_FAILED(textRunAsTextElement->put_Weight(weightToSet.Get()));
+
+    // ForegroundColor
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>> colorToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>> elementColor;
+        RETURN_IF_FAILED(textElement->get_Color(&elementColor));
+        if (elementColor != nullptr)
+        {
+            colorToSet = elementColor;
+        }
+    }
+    if (colorToSet == nullptr)
+    {
+        ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor color;
+        RETURN_IF_FAILED(textStyle->get_Color(&color));
+
+        colorToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>(color))
+                         .as<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>>()
+                         .get();
+    }
+    RETURN_IF_FAILED(textRunAsTextElement->put_Color(colorToSet.Get()));
+
+    // TextSize
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>> sizeToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>> elementSize;
+        RETURN_IF_FAILED(textElement->get_Size(&elementSize));
+        if (elementSize != nullptr)
+        {
+            sizeToSet = elementSize;
+        }
+    }
+    if (sizeToSet == nullptr)
+    {
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextSize size;
+        RETURN_IF_FAILED(textStyle->get_Size(&size));
+
+        sizeToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::TextSize>(size))
+                        .as<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>>()
+                        .get();
+    }
+    RETURN_IF_FAILED(textRunAsTextElement->put_Size(sizeToSet.Get()));
+
+    // FontType
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>> fontTypeToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>> elementFontType;
+        RETURN_IF_FAILED(textElement->get_FontType(&elementFontType));
+        if (elementFontType != nullptr)
+        {
+            fontTypeToSet = elementFontType;
+        }
+    }
+    if (fontTypeToSet == nullptr)
+    {
+        ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType;
+        RETURN_IF_FAILED(textStyle->get_FontType(&fontType));
+
+        fontTypeToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::FontType>(fontType))
+                            .as<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>>()
+                            .get();
+    }
+    RETURN_IF_FAILED(textRunAsTextElement->put_FontType(fontTypeToSet.Get()));
+
+    // IsSubtle
+    ComPtr<IReference<bool>> isSubtleToSet;
+    if (textElement != nullptr)
+    {
+        ComPtr<IReference<bool>> elementIsSubtle;
+        RETURN_IF_FAILED(textElement->get_IsSubtle(&elementIsSubtle));
+        if (elementIsSubtle != nullptr)
+        {
+            isSubtleToSet = elementIsSubtle;
+        }
+    }
+    if (isSubtleToSet == nullptr)
+    {
+        boolean isSubtle;
+        RETURN_IF_FAILED(textStyle->get_IsSubtle(&isSubtle));
+
+        isSubtleToSet = winrt::box_value(static_cast<bool>(isSubtle)).as<IReference<bool>>().get();
+    }
+    RETURN_IF_FAILED(textRunAsTextElement->put_IsSubtle(isSubtleToSet.Get()));
 
     ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
     RETURN_IF_FAILED(textBlock->get_Inlines(&inlines));
 
     // Style the text block with the properties from the TextRun
-    RETURN_IF_FAILED(StyleTextElement(textRun.Get(), renderContext, renderArgs, TextRunStyleParameters(), textBlock));
+    RETURN_IF_FAILED(StyleTextElement(textRunAsTextElement.Get(), renderContext, renderArgs, TextRunStyleParameters(), textBlock));
 
     // Set the inlines
-    RETURN_IF_FAILED(SetXamlInlines(textRun.Get(), renderContext, renderArgs, false, inlines.Get()));
+    RETURN_IF_FAILED(SetXamlInlines(textRunAsTextElement.Get(), renderContext, renderArgs, false, inlines.Get()));
+
+    return S_OK;
+}
+
+HRESULT SetXamlInlinesWithFactSetTextConfig(_In_ IAdaptiveRenderContext* renderContext,
+                                            _In_ IAdaptiveRenderArgs* renderArgs,
+                                            _In_ IAdaptiveFactSetTextConfig* factSetTextConfig,
+                                            _In_ HSTRING language,
+                                            _In_ HSTRING text,
+                                            _In_ ITextBlock* textBlock)
+{
+    ComPtr<IAdaptiveFactSetTextConfig> factSetTextConfigLocal(factSetTextConfig);
+    ComPtr<IAdaptiveTextStyleConfig> factSetTextConfigAsTextStyleConfig;
+    RETURN_IF_FAILED(factSetTextConfigLocal.As(&factSetTextConfigAsTextStyleConfig));
+
+    RETURN_IF_FAILED(SetXamlInlinesWithTextStyleConfig(
+        renderContext, renderArgs, factSetTextConfigAsTextStyleConfig.Get(), nullptr, language, text, textBlock));
 
     // Set wrap and maxwidth
     boolean wrap;
-    RETURN_IF_FAILED(textConfig->get_Wrap(&wrap));
+    RETURN_IF_FAILED(factSetTextConfig->get_Wrap(&wrap));
     RETURN_IF_FAILED(SetWrapProperties(textBlock, wrap));
 
     ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
@@ -144,7 +277,7 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     RETURN_IF_FAILED(localTextBlock.As(&textBlockAsFrameworkElement));
 
     UINT32 maxWidth;
-    RETURN_IF_FAILED(textConfig->get_MaxWidth(&maxWidth));
+    RETURN_IF_FAILED(factSetTextConfig->get_MaxWidth(&maxWidth));
     textBlockAsFrameworkElement->put_MaxWidth(maxWidth);
 
     return S_OK;
@@ -158,9 +291,9 @@ HRESULT SetWrapProperties(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xam
     return S_OK;
 }
 
-HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT SetXamlInlines(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        bool isInHyperlink,
                        _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_opt_ UINT* characterLength)
@@ -183,7 +316,7 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
         UTF8ToHString("<root>"s + htmlString + "</root>"s, htmlHString.GetAddressOf());
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocument> xmlDocument =
-            XamlHelpers::CreateXamlClass<ABI::Windows::Data::Xml::Dom::IXmlDocument>(
+            XamlHelpers::CreateABIClass<ABI::Windows::Data::Xml::Dom::IXmlDocument>(
                 HStringReference(RuntimeClass_Windows_Data_Xml_Dom_XmlDocument));
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlDocumentIO> xmlDocumentIO;
@@ -229,9 +362,9 @@ static HRESULT GetTextFromXmlNode(_In_ ABI::Windows::Data::Xml::Dom::IXmlNode* n
     return S_OK;
 }
 
-HRESULT AddListInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddListInlines(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        bool isListOrdered,
                        bool isInHyperlink,
@@ -300,7 +433,7 @@ HRESULT AddListInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
         totalCharacterLength += WindowsGetStringLen(listElementHString.Get());
 
         ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run =
-            XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
+            XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::IRun>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
         RETURN_IF_FAILED(run->put_Text(listElementHString.Get()));
 
@@ -341,9 +474,9 @@ HRESULT AddListInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
     return S_OK;
 }
 
-HRESULT AddLinkInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddLinkInline(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                      _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                      _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                       _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                       bool isStrikethrough,
                       bool isItalic,
@@ -372,7 +505,7 @@ HRESULT AddLinkInline(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiv
     RETURN_IF_FAILED(uriActivationFactory->CreateUri(href.Get(), uri.GetAddressOf()));
 
     ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
-        XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
+        XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
     RETURN_IF_FAILED(hyperlink->put_NavigateUri(uri.Get()));
 
@@ -405,7 +538,7 @@ HRESULT AddSingleTextInline(_In_ IAdaptiveTextElement* adaptiveTextElement,
                             _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                             _Out_ UINT* characterLength)
 {
-    ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
+    ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::IRun>(
         HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
 
     HString language;
@@ -492,7 +625,10 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
 
                 if (isBoldResult == 0)
                 {
-                    RETURN_IF_FAILED(textElementToUse->put_Weight(ABI::AdaptiveNamespace::TextWeight::Bolder));
+                    RETURN_IF_FAILED(
+                        textElementToUse->put_Weight(winrt::box_value(winrt::AdaptiveCards::ObjectModel::Uwp::TextWeight::Bolder)
+                                                         .as<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>>()
+                                                         .get()));
                 }
             }
 
@@ -519,9 +655,9 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
     return S_OK;
 }
 
-HRESULT AddHtmlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddHtmlInlines(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        bool isInHyperlink,
                        _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
@@ -581,7 +717,7 @@ HRESULT AddHtmlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
             {
                 // there's more content... need a linebreak.
                 ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> lineBreak =
-                    XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IInline>(
+                    XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::IInline>(
                         HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_LineBreak));
                 if (lineBreak)
                 {

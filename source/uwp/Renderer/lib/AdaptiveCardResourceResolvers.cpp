@@ -4,10 +4,10 @@
 #include "AdaptiveCardResourceResolvers.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveCardResourceResolvers::RuntimeClassInitialize() noexcept
     try

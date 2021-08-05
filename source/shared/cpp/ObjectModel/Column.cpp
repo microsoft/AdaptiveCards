@@ -6,7 +6,7 @@
 #include "ParseUtil.h"
 #include "Util.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 Column::Column() : CollectionTypeElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0)
 {
@@ -23,11 +23,10 @@ void Column::SetWidth(const std::string& value)
     SetWidth(value, nullptr);
 }
 
-void Column::SetWidth(const std::string& value,
-                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings)
+void Column::SetWidth(const std::string& value, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>* warnings)
 {
     m_width = ParseUtil::ToLowercase(value);
-    m_pixelWidth = ParseSizeForPixelSize(m_width, warnings);
+    m_pixelWidth = ParseSizeForPixelSize(m_width, warnings).value_or(0);
 }
 
 // explicit width takes precedence over relative width
@@ -54,6 +53,17 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
     return m_items;
 }
 
+// value is present if and only if "rtl" property is explicitly set
+std::optional<bool> Column::GetRtl() const
+{
+    return m_rtl;
+}
+
+void Column::SetRtl(const std::optional<bool>& value)
+{
+    m_rtl = value;
+}
+
 std::string Column::Serialize() const
 {
     return ParseUtil::JsonToString(SerializeToJsonValue());
@@ -75,12 +85,18 @@ Json::Value Column::SerializeToJsonValue() const
         root[propertyName].append(cardElement->SerializeToJsonValue());
     }
 
+    if (m_rtl.has_value())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl)] = m_rtl.value_or("");
+    }
+
     return root;
 }
 
 void Column::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
@@ -112,7 +128,17 @@ std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context
     const auto& fallbackElement = column->GetFallbackContent();
     if (fallbackElement)
     {
-        if (CardElementTypeFromString(fallbackElement->GetElementTypeString()) != CardElementType::Column)
+        bool isFallbackColumn;
+        try
+        {
+            isFallbackColumn = CardElementTypeFromString(fallbackElement->GetElementTypeString()) == CardElementType::Column;
+        }
+        catch (const std::out_of_range&)
+        {
+            isFallbackColumn = false;
+        }
+
+        if (!isFallbackColumn)
         {
             context.warnings.emplace_back(
                 std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::UnknownElementType,
@@ -131,6 +157,8 @@ std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context
     }
 
     column->SetWidth(ParseUtil::ToLowercase(columnWidth), &context.warnings);
+
+    column->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
 
     return column;
 }

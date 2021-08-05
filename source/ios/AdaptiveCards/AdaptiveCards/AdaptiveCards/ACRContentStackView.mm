@@ -22,6 +22,7 @@ static int kToggleVisibilityContext;
     UIStackView *_stackView;
     NSHashTable<UIView *> *_hiddenSubviews;
     NSMutableDictionary<NSString *, NSValue *> *_subviewIntrinsicContentSizeCollection;
+    ACRRtl _rtl;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -29,13 +30,12 @@ static int kToggleVisibilityContext;
                    hostConfig:(ACOHostConfig *)acoConfig
                     superview:(UIView *)superview
 {
-    self = [self initWithFrame:superview.frame];
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    self = [self initWithFrame:superview.frame attributes:nil];
     if (self) {
-
         _style = style;
         if (style != ACRNone &&
             style != parentStyle) {
-            std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
             self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_style];
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
@@ -118,6 +118,21 @@ static int kToggleVisibilityContext;
     _stackView.axis = axis;
 }
 
+- (void)setRtl:(ACRRtl)rtl
+{
+    _rtl = rtl;
+    if (!_stackView || rtl == ACRRtlNone) {
+        return;
+    }
+
+    _stackView.semanticContentAttribute = (rtl == ACRRtlRTL) ? UISemanticContentAttributeForceRightToLeft : UISemanticContentAttributeForceLeftToRight;
+}
+
+- (ACRRtl)rtl
+{
+    return _rtl;
+}
+
 + (UIColor *)colorFromString:(const std::string &)colorString
 {
     long num = std::stoul(colorString.substr(1), nullptr, 16);
@@ -186,6 +201,11 @@ static int kToggleVisibilityContext;
             _stackView.spacing = [spacingAttrib floatValue];
         }
 
+        NSNumber *paddingSpacing = attributes[@"padding-spacing"];
+        if ([paddingSpacing boolValue]) {
+            top = left = bottom = right = [paddingSpacing floatValue];
+        }
+
         NSNumber *topPaddingAttrib = attributes[@"padding-top"];
         if ([topPaddingAttrib boolValue]) {
             top = [topPaddingAttrib floatValue];
@@ -212,6 +232,11 @@ static int kToggleVisibilityContext;
 - (void)updateIntrinsicContentSize:(void (^)(UIView *view, NSUInteger idx, BOOL *stop))block
 {
     [_stackView.arrangedSubviews enumerateObjectsUsingBlock:block];
+}
+
+- (NSArray<UIView *> *)getArrangedSubviews
+{
+    return _stackView.arrangedSubviews;
 }
 
 - (void)addArrangedSubview:(UIView *)view
@@ -559,6 +584,14 @@ static int kToggleVisibilityContext;
 {
     for (UIView *view in _stackView.arrangedSubviews) {
         [view removeObserver:self forKeyPath:@"hidden"];
+    }
+}
+
+- (void)toggleVisibilityOfFirstView
+{
+    if ([_stackView.subviews count] and _stackView.subviews[0].hidden) {
+        _stackView.subviews[0].hidden = NO;
+        _stackView.subviews[0].hidden = YES;
     }
 }
 

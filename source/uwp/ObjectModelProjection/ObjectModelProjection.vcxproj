@@ -79,6 +79,10 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SemanticVersion.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Table.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TableCell.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TableRow.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextElementProperties.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.cpp" />
@@ -130,6 +134,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Inline.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InternalId.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
@@ -146,6 +151,10 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Table.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TableCell.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TableRow.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextElementProperties.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.h" />

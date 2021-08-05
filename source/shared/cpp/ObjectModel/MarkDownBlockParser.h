@@ -6,7 +6,7 @@
 #include "BaseCardElement.h"
 #include "MarkDownParsedResult.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     class MarkDownBlockParser
     {
@@ -96,6 +96,8 @@ namespace AdaptiveSharedNamespace
 
         // Callback function that handles the Emphasis State
         static EmphasisState MatchEmphasis(EmphasisParser&, std::stringstream&, std::string&);
+
+        static bool IsEmphasisToken(int token);
 
     protected:
         bool m_checkLookAhead = false;

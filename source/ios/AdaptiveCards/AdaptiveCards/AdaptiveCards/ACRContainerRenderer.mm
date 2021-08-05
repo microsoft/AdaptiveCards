@@ -37,13 +37,29 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
 
+    [rootView.context pushBaseCardElementContext:acoElem];
+
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style]
                                                          hostConfig:acoConfig
                                                           superview:viewGroup];
+    container.rtl = rootView.context.rtl;
+
     [viewGroup addArrangedSubview:container];
 
-    configBleed(rootView, elem, container, acoConfig);
+    if (acoElem.type == ACRTableCell) {
+        CGFloat top, left, bottom, right;
+        top = left = bottom = right = [acoConfig getHostConfig]->GetSpacing().paddingSpacing;
+        [container removeConstraints:container.constraints];
+        [container applyPaddingToTop:top
+                                left:left
+                              bottom:bottom
+                               right:right
+                            priority:1000
+                            location:ACRBleedToAll];
+    } else {
+        configBleed(rootView, elem, container, acoConfig);
+    }
 
     renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
 
@@ -60,7 +76,7 @@
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
 
-    const VerticalContentAlignment adaptiveVAlignment = containerElem->GetVerticalContentAlignment();
+    const VerticalContentAlignment adaptiveVAlignment = containerElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top);
     // Dont add the trailing space if the vertical content alignment is top/default
     if (adaptiveVAlignment == VerticalContentAlignment::Center || (adaptiveVAlignment == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
         trailingBlankSpace = [container addPaddingSpace];
@@ -93,10 +109,11 @@
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     [container configureForSelectAction:acoSelectAction rootView:rootView];
-
     configVisibility(container, elem);
 
     [container hideIfSubviewsAreAllHidden];
+
+    [rootView.context popBaseCardElementContext:acoElem];
 
     return viewGroup;
 }

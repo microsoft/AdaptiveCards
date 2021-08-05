@@ -5,9 +5,14 @@
 #include "pch.h"
 #include "ParseUtil.h"
 
-namespace AdaptiveSharedNamespace
+namespace AdaptiveCards
 {
     constexpr const char* const c_adaptiveCardsFeature = "adaptiveCards";
+
+    namespace ParseUtil
+    {
+        std::string ToLowercase(const std::string& value);
+    }
 
     struct CaseInsensitiveKeyHash
     {

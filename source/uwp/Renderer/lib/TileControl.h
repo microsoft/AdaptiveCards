@@ -6,7 +6,8 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 using namespace ABI::Windows::Foundation;
@@ -15,10 +16,10 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class DECLSPEC_UUID("0F485063-EF2A-400E-A946-73E00EDFAC83") TileControl
-        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveNamespace::ITileControl,
+        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::Uwp::ITileControl,
                                               ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IContentControlFactory>>
@@ -57,9 +58,9 @@ namespace AdaptiveNamespace
 
     private:
         void RefreshContainerTile();
-        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveNamespace::BackgroundImageFillMode* fillMode,
-                                           _Out_ ABI::AdaptiveNamespace::HAlignment* hAlignment,
-                                           _Out_ ABI::AdaptiveNamespace::VAlignment* vAlignment);
+        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode* fillMode,
+                                           _Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment* hAlignment,
+                                           _Out_ ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment* vAlignment);
 
         // Fields
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_rootElement;
@@ -67,7 +68,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICanvas> m_containerElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IImageBrush> m_brushXaml;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_adaptiveBackgroundImage;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage> m_adaptiveBackgroundImage;
         ABI::Windows::Foundation::Size m_imageSize{};
         ABI::Windows::Foundation::Size m_containerSize{};
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Shapes::IRectangle>> m_xamlChildren;

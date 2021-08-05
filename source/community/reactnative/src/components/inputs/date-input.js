@@ -8,13 +8,9 @@ import React from 'react';
 import { Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
-import { StyleManager } from '../../styles/style-config';
 import { PickerInput } from '../inputs';
 
 export class DateInput extends React.Component {
-
-	styleConfig = StyleManager.getManager().styles;
 
 	constructor(props) {
 		super(props);
@@ -45,14 +41,15 @@ export class DateInput extends React.Component {
 	 */
 	setDate(newDate) {
 		if (newDate !== undefined) {
-			this.setState({ chosenDate: newDate })
 			this.setState({
+				chosenDate: newDate,
 				value: newDate.getFullYear() + "-" +
 					`${newDate.getMonth() + 1}`.padStart(2, '0') + "-" +
-					`${newDate.getDate()}`.padStart(2, '0')
-			})
-		}
-		this.setState({ modalVisibleAndroid: false })
+					`${newDate.getDate()}`.padStart(2, '0'),
+				modalVisibleAndroid: false,
+			});
+		} else
+			this.setState({ modalVisibleAndroid: false })
 	}
 
 	/**
@@ -92,12 +89,13 @@ export class DateInput extends React.Component {
 	 */
 	parseDateString(dateString) {
 		elements = dateString.split('-');
-		return new Date(elements[0], elements[1], elements[2])
+		//month ranges from 0 to 11, so subtract 1
+		return new Date(elements[0], elements[1] - 1, elements[2])
 	}
 
 	render() {
 
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.props.configManager.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -105,7 +103,7 @@ export class DateInput extends React.Component {
 			<>
 				<PickerInput
 					json={this.payload}
-					style={this.styleConfig.inputDate}
+					style={this.props.configManager.styleConfig.inputDate}
 					value={this.state.value}
 					showPicker={this.showDatePicker}
 					modalVisible={this.state.modalVisible}
@@ -115,6 +113,7 @@ export class DateInput extends React.Component {
 					maxDate={this.state.maxDate}
 					handleDateChange={this.handleDateChange}
 					mode='date'
+					configManager={this.props.configManager}
 				/>
 				{
 					this.state.modalVisibleAndroid &&

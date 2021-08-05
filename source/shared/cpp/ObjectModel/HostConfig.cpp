@@ -4,7 +4,7 @@
 #include "HostConfig.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 HostConfig HostConfig::DeserializeFromString(const std::string& jsonString)
 {
@@ -14,13 +14,13 @@ HostConfig HostConfig::DeserializeFromString(const std::string& jsonString)
 HostConfig HostConfig::Deserialize(const Json::Value& json)
 {
     HostConfig result;
-    std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
+    std::string fontFamily = ParseUtil::TryGetString(json, AdaptiveCardSchemaKey::FontFamily);
     result._fontFamily = fontFamily != "" ? fontFamily : result._fontFamily;
 
     result._supportsInteractivity =
-        ParseUtil::GetBool(json, AdaptiveCardSchemaKey::SupportsInteractivity, result._supportsInteractivity);
+        ParseUtil::GetOptionalBool(json, AdaptiveCardSchemaKey::SupportsInteractivity).value_or(result._supportsInteractivity);
 
-    result._imageBaseUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
+    result._imageBaseUrl = ParseUtil::TryGetString(json, AdaptiveCardSchemaKey::ImageBaseUrl);
 
     result._factSet = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetConfig>(json,
                                                                                     AdaptiveCardSchemaKey::FactSet,
@@ -79,6 +79,19 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
                                                                                   AdaptiveCardSchemaKey::Inputs,
                                                                                   result._inputs,
                                                                                   InputsConfig::Deserialize);
+
+    result._textBlock = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextBlockConfig>(json,
+                                                                                        AdaptiveCardSchemaKey::TextBlock,
+                                                                                        result._textBlock,
+                                                                                        TextBlockConfig::Deserialize);
+
+    result._textStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStylesConfig>(json,
+                                                                                          AdaptiveCardSchemaKey::TextStyles,
+                                                                                          result._textStyles,
+                                                                                          TextStylesConfig::Deserialize);
+
+    result._table =
+        ParseUtil::ExtractJsonValueAndMergeWithDefault<TableConfig>(json, AdaptiveCardSchemaKey::Table, result._table, TableConfig::Deserialize);
 
     return result;
 }
@@ -193,22 +206,45 @@ ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConf
     return result;
 }
 
-TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& defaultValue)
+void TextStyleConfigDeserializeHelper(TextStyleConfig& result, const Json::Value& json, const TextStyleConfig& defaultValue)
 {
-    TextConfig result;
-    result.weight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
-
-    result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
-
-    result.fontType = ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
-
     result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
-
+    result.fontType =
+        ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
     result.isSubtle = ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, defaultValue.isSubtle);
+    result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
+    result.weight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
+}
 
+TextStyleConfig TextStyleConfig::Deserialize(const Json::Value& json, const TextStyleConfig& defaultValue)
+{
+    TextStyleConfig result;
+    TextStyleConfigDeserializeHelper(result, json, defaultValue);
+    return result;
+}
+
+FactSetTextConfig FactSetTextConfig::Deserialize(const Json::Value& json, const FactSetTextConfig& defaultValue)
+{
+    FactSetTextConfig result;
+    TextStyleConfigDeserializeHelper(result, json, defaultValue);
     result.wrap = ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, defaultValue.wrap);
-
     result.maxWidth = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxWidth, defaultValue.maxWidth);
+
+    return result;
+}
+
+TextStylesConfig TextStylesConfig::Deserialize(const Json::Value& json, const TextStylesConfig& defaultValue)
+{
+    TextStylesConfig result;
+    result.heading = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStyleConfig>(json,
+                                                                                     AdaptiveCardSchemaKey::Heading,
+                                                                                     defaultValue.heading,
+                                                                                     TextStyleConfig::Deserialize);
+
+    result.columnHeader = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextStyleConfig>(json,
+                                                                                          AdaptiveCardSchemaKey::ColumnHeader,
+                                                                                          defaultValue.columnHeader,
+                                                                                          TextStyleConfig::Deserialize);
 
     return result;
 }
@@ -247,15 +283,15 @@ FactSetConfig FactSetConfig::Deserialize(const Json::Value& json, const FactSetC
     FactSetConfig result;
 
     result.spacing = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing);
-    result.title = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextConfig>(json,
-                                                                              AdaptiveCardSchemaKey::Title,
-                                                                              defaultValue.title,
-                                                                              TextConfig::Deserialize);
+    result.title = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetTextConfig>(json,
+                                                                                     AdaptiveCardSchemaKey::Title,
+                                                                                     defaultValue.title,
+                                                                                     FactSetTextConfig::Deserialize);
 
-    result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<TextConfig>(json,
-                                                                              AdaptiveCardSchemaKey::Value,
-                                                                              defaultValue.value,
-                                                                              TextConfig::Deserialize);
+    result.value = ParseUtil::ExtractJsonValueAndMergeWithDefault<FactSetTextConfig>(json,
+                                                                                     AdaptiveCardSchemaKey::Value,
+                                                                                     defaultValue.value,
+                                                                                     FactSetTextConfig::Deserialize);
 
     // Value doesn't support maxWidth, so reset to the default value.
     result.value.maxWidth = defaultValue.value.maxWidth;
@@ -314,7 +350,7 @@ InputLabelConfig InputLabelConfig::Deserialize(const Json::Value& json, const In
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
     result.suffix = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Suffix, defaultValue.suffix);
-    
+
     result.weight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
 
     return result;
@@ -324,17 +360,14 @@ LabelConfig LabelConfig::Deserialize(const Json::Value& json, const LabelConfig&
 {
     LabelConfig result;
 
-    result.inputSpacing = ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::InputSpacing, defaultValue.inputSpacing, SpacingFromString);
+    result.inputSpacing =
+        ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::InputSpacing, defaultValue.inputSpacing, SpacingFromString);
 
-    result.requiredInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(json,
-                                                                                             AdaptiveCardSchemaKey::RequiredInputs,
-                                                                                             defaultValue.requiredInputs,
-                                                                                             InputLabelConfig::Deserialize);
+    result.requiredInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(
+        json, AdaptiveCardSchemaKey::RequiredInputs, defaultValue.requiredInputs, InputLabelConfig::Deserialize);
 
-    result.optionalInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(json,
-                                                                                             AdaptiveCardSchemaKey::OptionalInputs,
-                                                                                             defaultValue.optionalInputs,
-                                                                                             InputLabelConfig::Deserialize);
+    result.optionalInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(
+        json, AdaptiveCardSchemaKey::OptionalInputs, defaultValue.optionalInputs, InputLabelConfig::Deserialize);
 
     return result;
 }
@@ -356,10 +389,8 @@ InputsConfig InputsConfig::Deserialize(const Json::Value& json, const InputsConf
 {
     InputsConfig result;
 
-    result.errorMessage = ParseUtil::ExtractJsonValueAndMergeWithDefault<ErrorMessageConfig>(json,
-                                                                                             AdaptiveCardSchemaKey::ErrorMessage,
-                                                                                             defaultValue.errorMessage,
-                                                                                             ErrorMessageConfig::Deserialize);
+    result.errorMessage = ParseUtil::ExtractJsonValueAndMergeWithDefault<ErrorMessageConfig>(
+        json, AdaptiveCardSchemaKey::ErrorMessage, defaultValue.errorMessage, ErrorMessageConfig::Deserialize);
 
     result.label = ParseUtil::ExtractJsonValueAndMergeWithDefault<LabelConfig>(json,
                                                                                AdaptiveCardSchemaKey::Label,
@@ -368,7 +399,6 @@ InputsConfig InputsConfig::Deserialize(const Json::Value& json, const InputsConf
 
     return result;
 }
-
 
 SpacingConfig SpacingConfig::Deserialize(const Json::Value& json, const SpacingConfig& defaultValue)
 {
@@ -479,6 +509,24 @@ MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig&
 
     result.allowInlinePlayback =
         ParseUtil::GetBool(json, AdaptiveCardSchemaKey::AllowInlinePlayback, defaultValue.allowInlinePlayback);
+
+    return result;
+}
+
+TextBlockConfig TextBlockConfig::Deserialize(const Json::Value& json, const TextBlockConfig& defaultValue)
+{
+    TextBlockConfig result;
+
+    result.headingLevel = ParseUtil::GetInt(json, AdaptiveCardSchemaKey::HeadingLevel, defaultValue.headingLevel);
+
+    return result;
+}
+
+TableConfig TableConfig::Deserialize(const Json::Value& json, const TableConfig& defaultValue)
+{
+    TableConfig result;
+
+    result.cellSpacing = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::CellSpacing, defaultValue.cellSpacing);
 
     return result;
 }
@@ -622,16 +670,16 @@ unsigned int HostConfig::GetFontSize(FontType fontType, TextSize size) const
     // desired font size
     auto result = GetFontType(fontType).fontSizes.GetFontSize(size);
 
-    // UINT_MAX used to check if value was defined
-    if (result == UINT_MAX)
+    // std::numeric_limits<unsigned int>::max() used to check if value was defined
+    if (result == std::numeric_limits<unsigned int>::max())
     {
         // default font size
         result = _fontTypes.defaultFontType.fontSizes.GetFontSize(size);
-        if (result == UINT_MAX)
+        if (result == std::numeric_limits<unsigned int>::max())
         {
             // deprecated font size
             result = _fontSizes.GetFontSize(size);
-            if (result == UINT_MAX)
+            if (result == std::numeric_limits<unsigned int>::max())
             {
                 // constant default font size
                 result = FontSizesConfig::GetDefaultFontSize(size);
@@ -646,16 +694,16 @@ unsigned int HostConfig::GetFontWeight(FontType fontType, TextWeight weight) con
     // desired font weight
     auto result = GetFontType(fontType).fontWeights.GetFontWeight(weight);
 
-    // UINT_MAX used to check if value was defined
-    if (result == UINT_MAX)
+    // std::numeric_limits<unsigned int>::max() used to check if value was defined
+    if (result == std::numeric_limits<unsigned int>::max())
     {
         // default font weight
         result = _fontTypes.defaultFontType.fontWeights.GetFontWeight(weight);
-        if (result == UINT_MAX)
+        if (result == std::numeric_limits<unsigned int>::max())
         {
             // deprecated font weight
             result = _fontWeights.GetFontWeight(weight);
-            if (result == UINT_MAX)
+            if (result == std::numeric_limits<unsigned int>::max())
             {
                 // constant default font weight
                 result = FontWeightsConfig::GetDefaultFontWeight(weight);
@@ -907,4 +955,34 @@ InputsConfig HostConfig::GetInputs() const
 void HostConfig::SetInputs(const InputsConfig value)
 {
     _inputs = value;
+}
+
+TextBlockConfig HostConfig::GetTextBlock() const
+{
+    return _textBlock;
+}
+
+void HostConfig::SetTextBlock(const TextBlockConfig value)
+{
+    _textBlock = value;
+}
+
+TextStylesConfig HostConfig::GetTextStyles() const
+{
+    return _textStyles;
+}
+
+void HostConfig::SetTextStyles(const TextStylesConfig value)
+{
+    _textStyles = value;
+}
+
+TableConfig HostConfig::GetTable() const
+{
+    return _table;
+}
+
+void HostConfig::SetTable(const TableConfig value)
+{
+    _table = value;
 }

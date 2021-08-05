@@ -17,19 +17,16 @@ import {
 import { InputContextConsumer } from '../../utils/context';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
-import * as Enums from '../../utils/enums';
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { StyleManager } from '../../styles/style-config';
-import { HostConfigManager } from '../../utils/host-config';
 import InputLabel from "./input-label";
 
 export class PickerInput extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
-
 	constructor(props) {
 		super(props);
 
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.placeHolder = Constants.EmptyString;
@@ -60,7 +57,7 @@ export class PickerInput extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -84,8 +81,8 @@ export class PickerInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
-					<ElementWrapper style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
-						<InputLabel isRequired={this.isRequired} label={label} />
+					<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
+						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
 							<View
@@ -120,7 +117,7 @@ export class PickerInput extends React.Component {
 										/>
 									</View>
 									<DateTimePicker
-										display={Platform.OS === Constants.PlatformIOS ? 'spinner' : 'default' }
+										display={Platform.OS === Constants.PlatformIOS ? 'spinner' : 'default'}
 										mode={this.props.mode}
 										format={this.props.format}
 										value={this.props.chosenDate || new Date()}

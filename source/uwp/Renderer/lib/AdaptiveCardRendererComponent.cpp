@@ -3,7 +3,6 @@
 #include "pch.h"
 #include "AdaptiveCardRendererComponent.h"
 
-#include "AdaptiveCard.h"
 #include "AdaptiveCardResourceResolvers.h"
 #include "AdaptiveActionRendererRegistration.h"
 #include "AdaptiveActionSetRenderer.h"
@@ -26,12 +25,12 @@
 #include "AdaptiveShowCardActionRenderer.h"
 #include "AdaptiveSubmitActionRenderer.h"
 #include "AdaptiveRichTextBlockRenderer.h"
+#include "AdaptiveTableRenderer.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "AdaptiveTimeInputRenderer.h"
 #include "AdaptiveToggleVisibilityActionRenderer.h"
 #include "AdaptiveToggleInputRenderer.h"
-#include "AsyncOperations.h"
 #include "DefaultResourceDictionary.h"
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
@@ -39,7 +38,8 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -52,7 +52,7 @@ using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize() noexcept
     try
@@ -93,13 +93,13 @@ namespace AdaptiveNamespace
         return m_hostConfig.CopyTo(hostConfig);
     }
 
-    HRESULT AdaptiveCardRenderer::put_FeatureRegistration(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration)
+    HRESULT AdaptiveCardRenderer::put_FeatureRegistration(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration)
     {
         m_featureRegistration = featureRegistration;
         return S_OK;
     }
 
-    HRESULT AdaptiveCardRenderer::get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration** featureRegistration)
+    HRESULT AdaptiveCardRenderer::get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration** featureRegistration)
     {
         if (!m_featureRegistration)
         {
@@ -126,8 +126,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveCardRenderer::RenderAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard, _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveNamespace::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&renderedCard));
         renderedCard->SetOriginatingCard(adaptiveCard);
         renderedCard->SetOriginatingHostConfig(m_hostConfig.Get());
 
@@ -158,13 +158,16 @@ namespace AdaptiveNamespace
             try
             {
                 RETURN_IF_FAILED(renderContext->LinkCardToParent(adaptiveCard, nullptr));
-                AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, renderContext.Get(), m_xamlBuilder);
+                AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
+                                                                                          &xamlTreeRoot,
+                                                                                          renderContext.Get(),
+                                                                                          m_xamlBuilder);
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }
             catch (...)
             {
                 RETURN_IF_FAILED(renderContext->AddError(
-                    ABI::AdaptiveNamespace::ErrorStatusCode::RenderFailed,
+                    ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode::RenderFailed,
                     HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
                 renderedCard->SetFrameworkElement(nullptr);
             }
@@ -173,21 +176,20 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveCardRenderer::RenderCardAsXamlAsync(_In_ IAdaptiveCard* adaptiveCard,
-                                                        _COM_Outptr_ IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result)
-    {
-        *result = Make<RenderCardAsXamlAsyncOperation>(adaptiveCard, this).Detach();
-        return S_OK;
-    }
-
     HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
                                                                    _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveNamespace::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard>(&renderedCard));
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
-        RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
+        ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardStatics> adaptiveCardStatics;
+        RETURN_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard).Get(),
+                                 &adaptiveCardStatics));
+
+        RETURN_IF_FAILED(adaptiveCardStatics->FromJsonString(adaptiveJson, &adaptiveCardParseResult));
+
         ComPtr<IAdaptiveCard> parsedCard;
         RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&parsedCard));
         if (parsedCard == nullptr)
@@ -196,7 +198,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(renderedCard->get_Errors(&renderResultErrors));
             ComPtr<IVector<AdaptiveError*>> parseErrors;
             RETURN_IF_FAILED(adaptiveCardParseResult->get_Errors(&parseErrors));
-            XamlHelpers::IterateOverVector<AdaptiveError, IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error) {
+            IterateOverVector<AdaptiveError, IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error) {
                 ComPtr<IAdaptiveError> localError(error);
                 return renderResultErrors->Append(localError.Get());
             });
@@ -217,25 +219,6 @@ namespace AdaptiveNamespace
         HString adaptiveJsonAsHstring;
         RETURN_IF_FAILED(JsonObjectToHString(adaptiveJson, adaptiveJsonAsHstring.GetAddressOf()));
         return RenderAdaptiveCardFromJsonString(adaptiveJsonAsHstring.Get(), result);
-    }
-
-    HRESULT AdaptiveCardRenderer::RenderAdaptiveJsonAsXamlAsync(_In_ HSTRING adaptiveJson,
-                                                                _COM_Outptr_ IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result)
-    {
-        ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
-        RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
-
-        ComPtr<IAdaptiveCard> adaptiveCard;
-        RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&adaptiveCard));
-        return RenderCardAsXamlAsync(adaptiveCard.Get(), result);
-    }
-
-    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                                   _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult)
-    {
-        ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
-        return adaptiveCardStatics->FromJsonString(adaptiveJson, parseResult);
     }
 
     IAdaptiveHostConfig* AdaptiveCardRenderer::GetHostConfig() { return m_hostConfig.Get(); }
@@ -322,16 +305,16 @@ namespace AdaptiveNamespace
     {
         ABI::Windows::UI::Color accentColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
-                                                  ABI::AdaptiveNamespace::ForegroundColor_Accent,
-                                                  ABI::AdaptiveNamespace::ContainerStyle_Default,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor_Accent,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle_Default,
                                                   false, // isSubtle
                                                   false, // highlight
                                                   &accentColor));
 
         ABI::Windows::UI::Color attentionColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
-                                                  ABI::AdaptiveNamespace::ForegroundColor_Attention,
-                                                  ABI::AdaptiveNamespace::ContainerStyle_Default,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor_Attention,
+                                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle_Default,
                                                   false, // isSubtle
                                                   false, // highlight
                                                   &attentionColor));

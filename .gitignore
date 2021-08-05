@@ -71,6 +71,7 @@ artifacts/
 *.pidb
 *.svclog
 *.scc
+*.a
 
 # Chutzpah Test files
 _Chutzpah*
@@ -260,7 +261,7 @@ paket-files/
 # Generated javascript
 **/dist/*.js
 **/dist/*.js.map
-**/dist/*.d.ts 
+**/dist/*.d.ts
 
 # SourceDepot Integration
 dirs*
@@ -273,9 +274,12 @@ product.pbxproj
 
 # Mac
 **/.DS_Store
+.build/
+xcuserdata/
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.Rendering.Uwp.h
+**/UWP/AdaptiveCardsObjectModel/AdaptiveCards.ObjectModel.Uwp.h
 *.binlog
 source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
 source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
@@ -292,5 +296,22 @@ cscope.po.out
 # Teamwork.com VS extension
 twp.json
 
-# Android 
+# Android
 **/.cxx/*
+
+### CMake ###
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+### CMake Patch ###
+# External projects
+*-prefix/

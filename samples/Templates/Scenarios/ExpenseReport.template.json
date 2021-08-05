@@ -16,7 +16,8 @@
 									"size": "Large",
 									"weight": "Bolder",
 									"text": "**EXPENSE APPROVAL**",
-									"wrap": true
+									"wrap": true,
+									"style": "heading"
 								}
 							],
 							"width": "stretch"
@@ -51,7 +52,8 @@
 									"type": "TextBlock",
 									"size": "ExtraLarge",
 									"text": "${purpose}",
-									"wrap": true
+									"wrap": true,
+									"style": "heading"
 								}
 							],
 							"width": "stretch"
@@ -79,7 +81,6 @@
 					"spacing": "Small",
 					"size": "Small",
 					"weight": "Bolder",
-					"color": "Accent",
 					"text": "[${code}](https://adaptivecards.io)",
 					"wrap": true
 				},

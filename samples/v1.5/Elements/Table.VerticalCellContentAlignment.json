@@ -1,0 +1,284 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "You can configure the vertical alignment of table content with VerticalCellContentAlignement",
+			"wrap": true,
+			"weight": "Bolder"
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Top",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A little bit of text.",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. ",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A little bit of text.",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. ",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"verticalCellContentAlignment": "Top"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Center",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A little bit of text.",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. ",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A little bit of text.",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. ",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"verticalCellContentAlignment": "Center"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Bottom",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "Table",
+									"columns": [
+										{
+											"width": 1
+										},
+										{
+											"width": 1
+										}
+									],
+									"rows": [
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A little bit of text.",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. ",
+															"wrap": true
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "TableRow",
+											"cells": [
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A little bit of text.",
+															"wrap": true
+														}
+													]
+												},
+												{
+													"type": "TableCell",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. A lot of text. ",
+															"wrap": true
+														}
+													]
+												}
+											]
+										}
+									],
+									"firstRowAsHeaders": false,
+									"verticalCellContentAlignment": "Bottom"
+								}
+							]
+						}
+					]
+				}
+			],
+			"showGridLines": false,
+			"firstRowAsHeaders": false,
+			"verticalCellContentAlignment": "Center"
+		}
+	]
+}

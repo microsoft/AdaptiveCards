@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards",
-	"version": "2.9.0",
+	"version": "2.10.0-beta.1",
 	"description": "Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -54,6 +54,9 @@
 		"rootDir": "src",
 		"transform": {
 			"^.+\\.tsx?$": "ts-jest"
+		},
+		"moduleNameMapper": {
+			"\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/css_stub.ts"
 		},
 		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
 		"moduleFileExtensions": [

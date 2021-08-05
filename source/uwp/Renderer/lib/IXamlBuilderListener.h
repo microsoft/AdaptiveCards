@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     MIDL_INTERFACE("BF58F7BB-A330-4C75-AF7F-6E5FD8C0C070")
     IXamlBuilderListener : public IInspectable

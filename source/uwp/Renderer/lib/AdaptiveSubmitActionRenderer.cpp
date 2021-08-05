@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveSubmitAction.h"
 #include "AdaptiveSubmitActionRenderer.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "ActionHelpers.h"
 
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace Microsoft::WRL;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveSubmitActionRenderer::RuntimeClassInitialize() noexcept
     try
@@ -27,19 +26,6 @@ namespace AdaptiveNamespace
     {
         RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(action, renderArgs));
         return ActionHelpers::BuildAction(action, renderContext, renderArgs, result);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveSubmitActionRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept
-    try
-    {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveSubmitAction, AdaptiveSharedNamespace::SubmitAction, AdaptiveSharedNamespace::SubmitActionParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

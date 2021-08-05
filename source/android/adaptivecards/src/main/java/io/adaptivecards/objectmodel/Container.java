@@ -47,8 +47,12 @@ public class Container extends CollectionTypeElement {
     this(AdaptiveCardObjectModelJNI.new_Container__SWIG_0(), true);
   }
 
+  public Container(CardElementType derivedType) {
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(derivedType.swigValue()), true);
+  }
+
   public Container(Container arg0) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(Container.getCPtr(arg0), arg0), true);
+    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_2(Container.getCPtr(arg0), arg0), true);
   }
 
   public JsonValue SerializeToJsonValue() {
@@ -61,6 +65,18 @@ public class Container extends CollectionTypeElement {
 
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
+  }
+
+  public @androidx.annotation.Nullable Boolean GetRtl() {
+    StdOptionalBool optvalue = new StdOptionalBool(AdaptiveCardObjectModelJNI.Container_GetRtl(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
+  }
+
+  public void SetRtl(@androidx.annotation.Nullable Boolean value) {
+    StdOptionalBool optvalue = (value == null) ? new StdOptionalBool() : new StdOptionalBool(value);
+    {
+      AdaptiveCardObjectModelJNI.Container_SetRtl(swigCPtr, this, StdOptionalBool.getCPtr(optvalue), optvalue);
+    }
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {

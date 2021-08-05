@@ -5,11 +5,12 @@
 #include "BaseElement.h"
 #include "ParseUtil.h"
 
-using namespace AdaptiveSharedNamespace;
+using namespace AdaptiveCards;
 
 constexpr const char* const BaseActionElement::defaultStyle;
 
-BaseActionElement::BaseActionElement(ActionType type) : m_style(BaseActionElement::defaultStyle), m_type(type)
+BaseActionElement::BaseActionElement(ActionType type) :
+    m_style(BaseActionElement::defaultStyle), m_type(type), m_mode(Mode::Primary), m_isEnabled(true)
 {
     SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -60,9 +61,44 @@ void BaseActionElement::SetStyle(const std::string& value)
     m_style = value;
 }
 
+const std::string& BaseActionElement::GetTooltip() const
+{
+    return m_tooltip;
+}
+
+void BaseActionElement::SetTooltip(std::string&& value)
+{
+    m_tooltip = std::move(value);
+}
+
+void BaseActionElement::SetTooltip(const std::string& value)
+{
+    m_tooltip = value;
+}
+
+void BaseActionElement::SetMode(const Mode value)
+{
+    m_mode = value;
+}
+
+bool BaseActionElement::GetIsEnabled() const
+{
+    return m_isEnabled;
+}
+
+void AdaptiveCards::BaseActionElement::SetIsEnabled(const bool isEnabled)
+{
+    m_isEnabled = isEnabled;
+}
+
 ActionType BaseActionElement::GetElementType() const
 {
     return m_type;
+}
+
+Mode BaseActionElement::GetMode() const
+{
+    return m_mode;
 }
 
 Json::Value BaseActionElement::SerializeToJsonValue() const
@@ -83,6 +119,20 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = m_style;
     }
+    if (m_mode != Mode::Primary)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode)] = ModeToString(m_mode);
+    }
+
+    if (!m_tooltip.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip)] = m_tooltip;
+    }
+
+    if (!m_isEnabled)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled)] = m_isEnabled;
+    }
 
     return root;
 }
@@ -91,7 +141,10 @@ void BaseActionElement::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsEnabled)});
 }
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -105,14 +158,13 @@ void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInforma
     }
 }
 
-void BaseActionElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
-                                        const Json::Value& json,
-                                        std::shared_ptr<BaseElement>& baseElement)
+void BaseActionElement::ParseJsonObject(AdaptiveCards::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
 {
     baseElement = ParseUtil::GetActionFromJsonValue(context, json);
 }
 
-std::shared_ptr<BaseActionElement> BaseActionElement::DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseActionElement> BaseActionElement::DeserializeBasePropertiesFromString(ParseContext& context,
+                                                                                          const std::string& jsonString)
 {
     return BaseActionElement::DeserializeBaseProperties(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
@@ -132,4 +184,7 @@ void BaseActionElement::DeserializeBaseProperties(ParseContext& context, const J
     element->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
     element->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
     element->SetStyle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Style, defaultStyle, false));
+    element->SetMode(ParseUtil::GetEnumValue<Mode>(json, AdaptiveCardSchemaKey::Mode, Mode::Primary, ModeFromString));
+    element->SetTooltip(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Tooltip));
+    element->SetIsEnabled(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsEnabled, true));
 }

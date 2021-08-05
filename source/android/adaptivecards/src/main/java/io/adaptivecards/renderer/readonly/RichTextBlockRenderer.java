@@ -4,8 +4,6 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -21,20 +19,24 @@ import android.text.style.TypefaceSpan;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Inline;
 import io.adaptivecards.objectmodel.InlineElementType;
 import io.adaptivecards.objectmodel.InlineVector;
 import io.adaptivecards.objectmodel.RichTextBlock;
-import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextRun;
+import io.adaptivecards.objectmodel.TextSize;
+import io.adaptivecards.objectmodel.TextStyle;
+import io.adaptivecards.objectmodel.TextWeight;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -124,21 +126,26 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                     throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
                 }
 
-                DateTimeParser parser = new DateTimeParser(textRun.GetLanguage());
-                String textWithFormattedDates = parser.GenerateString(textRun.GetTextForDateParsing());
-                CharSequence text = RendererUtil.handleSpecialText(textWithFormattedDates);
+                TextSize textSize = TextRendererUtil.computeTextSize(hostConfig, TextStyle.Default, textRun.GetTextSize(), renderArgs);
+                ForegroundColor textColor = TextRendererUtil.computeTextColor(hostConfig, TextStyle.Default, textRun.GetTextColor(), renderArgs);
+                TextWeight textWeight = TextRendererUtil.computeTextWeight(hostConfig, TextStyle.Default, textRun.GetTextWeight(), renderArgs);
+                boolean isSubtle = TextRendererUtil.computeIsSubtle(hostConfig, TextStyle.Default, textRun.GetIsSubtle(), renderArgs);
+                FontType fontType = TextRendererUtil.computeFontType(hostConfig, TextStyle.Default, textRun.GetFontType(), renderArgs);
 
-                paragraph.append(text);
+                DateTimeParser parser = new DateTimeParser(textRun.GetLanguage());
+                String formattedText = parser.GenerateString(textRun.GetTextForDateParsing());
+
+                paragraph.append(formattedText);
 
                 int spanStart = lastStringLength;
-                int spanEnd = lastStringLength + text.length();
+                int spanEnd = lastStringLength + formattedText.length();
 
-                int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
+                int color = getColor(TextRendererUtil.getTextColor(textColor, hostConfig, isSubtle, renderArgs.getContainerStyle()));
                 paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 if (textRun.GetHighlight())
                 {
-                    int highlightColor = getColor(TextRendererUtil.getHighlightColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
+                    int highlightColor = getColor(TextRendererUtil.getHighlightColor(textColor, hostConfig, isSubtle, renderArgs.getContainerStyle()));
                     paragraph.setSpan(new BackgroundColorSpan(highlightColor), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
@@ -153,26 +160,26 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 }
 
                 // This line sets the bold or lighter weight
-                paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textRun.GetTextWeight())), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textWeight)), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 if (textRun.GetItalic())
                 {
                     paragraph.setSpan(new StyleSpan(Typeface.ITALIC), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
 
-                long textSize = TextRendererUtil.getTextSize(textRun.GetFontType(), textRun.GetTextSize(), hostConfig);
-                paragraph.setSpan(new AbsoluteSizeSpan((int)textSize, true), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                long size = TextRendererUtil.getTextSize(fontType, textSize, hostConfig);
+                paragraph.setSpan(new AbsoluteSizeSpan((int)size, true), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 // On API 28, TypefaceSpan(Typeface) was added so we don't have to use the TypefaceSpan(String) constructor
-                String fontName = hostConfig.GetFontFamily(textRun.GetFontType());
-                if (fontName.isEmpty())
+                String fontName = hostConfig.GetFontFamily(fontType);
+                if (fontName.isEmpty() && fontType == FontType.Monospace)
                 {
                     fontName = "monospace";
                 }
 
                 paragraph.setSpan(new TypefaceSpan(fontName), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
-                if(textRun.GetSelectAction() != null)
+                if(textRun.GetSelectAction() != null && textRun.GetSelectAction().GetIsEnabled())
                 {
                     paragraph.setSpan(new ActionSpan(textRun.GetSelectAction(), renderedCard, cardActionHandler), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 }
@@ -205,7 +212,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // HorizontalAlignment
         // Inlines
 
-        textView.setGravity(TextRendererUtil.getTextAlignment(richTextBlock.GetHorizontalAlignment()));
+        TextBlockRenderer.applyHorizontalAlignment(textView, richTextBlock.GetHorizontalAlignment(), renderArgs);
 
         // This is the section for rendering the paragraphs
         // Every paragraph may contain contains any number of inlines

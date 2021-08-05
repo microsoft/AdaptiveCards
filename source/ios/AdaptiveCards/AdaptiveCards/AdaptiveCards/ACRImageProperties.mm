@@ -47,7 +47,7 @@
             if (image) {
                 [self updateContentSize:image.size];
             }
-            self.acrHorizontalAlignment = getACRHorizontalAlignment(imgElem->GetHorizontalAlignment());
+            self.acrHorizontalAlignment = getACRHorizontalAlignment(imgElem->GetHorizontalAlignment().value_or(HorizontalAlignment::Left));
         }
     }
     return self;

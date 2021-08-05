@@ -256,6 +256,95 @@ namespace AdaptiveCards.Test
             Assert.IsNotNull(result.Card);
         }
 
+        [TestMethod]
+        public void Test_TypeHandling()
+        {
+            AdaptiveCard card = new AdaptiveCard("1.0")
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock("Hello world"),
+                    new AdaptiveImage("http://adaptivecards.io/content/cats/1.png"),
+                    new AdaptiveColumnSet()
+                    {
+                        Columns = new List<AdaptiveColumn>()
+                        {
+                            new AdaptiveColumn()
+                            {
+                                Width = "32px",
+                                Items = new List<AdaptiveElement>()
+                                {
+                                    new AdaptiveTextBlock("1")
+                                    {
+                                        Wrap = true,
+                                        Size = AdaptiveTextSize.Large,
+                                        HorizontalAlignment = AdaptiveHorizontalAlignment.Center,
+                                        Color = AdaptiveTextColor.Accent
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+
+            // make card into JObject with types included
+            JObject cardObject = JObject.FromObject(card, new Newtonsoft.Json.JsonSerializer()
+            {
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All
+            });
+
+            // now bring it back
+            AdaptiveCard card2 = cardObject.ToObject<AdaptiveCard>();
+
+            // card2 will now have AdditionalProperties because $type is not known and it seems $type is not ignored by Newtonsoft JsonExtensionData
+            // so we cannot easily compare the strings. We must remove $type additional property for each element we expect and nothing more
+            String typeProperty = "$type";
+
+            card2.AdditionalProperties.Remove(typeProperty);
+
+            Assert.IsTrue(card2.Body.Count == 3);
+                        
+            AdaptiveTextBlock textBlock = card2.Body[0] as AdaptiveTextBlock;
+
+            Assert.IsNotNull(textBlock);
+
+            textBlock.AdditionalProperties.Remove(typeProperty);
+
+            AdaptiveImage imageElement = card2.Body[1] as AdaptiveImage;
+
+            Assert.IsNotNull(imageElement);
+
+            imageElement.AdditionalProperties.Remove(typeProperty);
+
+            AdaptiveColumnSet columnSet = card2.Body[2] as AdaptiveColumnSet;
+
+            Assert.IsNotNull(columnSet);
+
+            columnSet.AdditionalProperties.Remove(typeProperty);
+
+            Assert.IsTrue(columnSet.Columns.Count == 1);
+
+            AdaptiveColumn column = columnSet.Columns[0];
+
+            column.AdditionalProperties.Remove(typeProperty);
+
+            Assert.IsTrue(column.Items.Count == 1);
+
+            AdaptiveTextBlock columnTextBlock = column.Items[0] as AdaptiveTextBlock;
+
+            Assert.IsNotNull(columnTextBlock);
+
+            columnTextBlock.AdditionalProperties.Remove(typeProperty);
+
+            String cardJson = card.ToJson();
+            String card2Json = card2.ToJson();
+
+            // we have cleaned the additional properties for $type that we expect and nothing more
+            // we should now have same json.
+            Assert.AreEqual(cardJson, card2Json);
+        }
 
         [TestMethod]
         public void Test_MissingTypePropertyThrowsException()
@@ -1111,5 +1200,139 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(expected: expected, actual: deserializedActual);
         }
 
+        [TestMethod]
+        public void TextBlockStyle()
+        {
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.5"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Text1""
+    },
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Text2""
+    },
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Text3"",
+      ""style"": ""heading""
+    }
+  ]
+}";
+            var card = new AdaptiveCard("1.5")
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock()
+                    {
+                        Text = "Text1"
+                    },
+                    new AdaptiveTextBlock()
+                    {
+                        Style = AdaptiveTextBlockStyle.Paragraph,
+                        Text = "Text2"
+                    },
+                    new AdaptiveTextBlock()
+                    {
+                        Style = AdaptiveTextBlockStyle.Heading,
+                        Text = "Text3"
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
+
+        [TestMethod]
+        public void RTL()
+        {
+            var card = new AdaptiveCard("1.5")
+            {
+                Body =
+                {
+                    new AdaptiveContainer()
+                    {
+                        Rtl = true
+                    },
+                    new AdaptiveContainer()
+                    {
+                        Rtl = false
+                    },
+                    new AdaptiveContainer()
+                    {
+                    },
+                    new AdaptiveColumnSet()
+                    {
+                        Columns =
+                        {
+                            new AdaptiveColumn()
+                            {
+                                Rtl = true
+                            },
+                            new AdaptiveColumn()
+                            {
+                                Rtl = false
+                            },
+                            new AdaptiveColumn()
+                            {                                
+                            }
+                        }
+                    }
+                }
+            };
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.5"",
+  ""body"": [
+    {
+      ""type"": ""Container"",
+      ""items"": [],
+      ""rtl"": true
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": [],
+      ""rtl"": false
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": []
+    },
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [
+        {
+          ""type"": ""Column"",
+          ""rtl"": true,
+          ""items"": []
+        },
+        {
+          ""type"": ""Column"",
+          ""rtl"": false,
+          ""items"": []
+        },
+        {
+          ""type"": ""Column"",
+          ""items"": []
+        }
+      ]
+    }
+  ]
+}";
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected, actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected, deserializedActual);
+        }
     }
 }

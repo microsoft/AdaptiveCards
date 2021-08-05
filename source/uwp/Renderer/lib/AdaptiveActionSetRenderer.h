@@ -4,28 +4,21 @@
 
 #include "ActionSet.h"
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveActionSetRenderer
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveElementRenderer,
-                                              ABI::AdaptiveNamespace::IAdaptiveElementParser>
+                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
     {
         InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionSetRenderer, BaseTrust);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
+                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                               _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept;
-
-        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject*,
-                                _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParsers,
-                                _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
-                                _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                                _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept;
     };
 
     ActivatableClass(AdaptiveActionSetRenderer);

@@ -5,19 +5,18 @@
 #include "AdaptiveColumnSetRenderer.h"
 
 #include "ActionHelpers.h"
-#include "AdaptiveColumnSet.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveNamespace;
+using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace
+namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveColumnSetRenderer::RuntimeClassInitialize() noexcept
     try
@@ -37,7 +36,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(cardElement.As(&adaptiveColumnSet));
 
         ComPtr<IBorder> columnSetBorder =
-            XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+            XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
         ComPtr<WholeItemsPanel> gridContainer;
         RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&gridContainer));
@@ -50,7 +49,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveContainerBase> columnSetAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsContainerBase));
 
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             columnSetAsContainerBase.Get(), columnSetBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -60,7 +59,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get(), renderArgs));
 
         ComPtr<IGrid> xamlGrid =
-            XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+            XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
@@ -74,7 +73,7 @@ namespace AdaptiveNamespace
 
         if (columnRenderer == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::NoRendererForType,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::NoRendererForType,
                                       HStringReference(L"No renderer found for type: Column").Get());
             *columnSetControl = nullptr;
             return S_OK;
@@ -89,7 +88,7 @@ namespace AdaptiveNamespace
         ComPtr<IPanel> gridAsPanel;
         RETURN_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
-        HRESULT hrColumns = XamlHelpers::IterateOverVectorWithFailure<AdaptiveColumn, IAdaptiveColumn>(columns.Get(), ancestorHasFallback, [&](IAdaptiveColumn* column) {
+        HRESULT hrColumns = IterateOverVectorWithFailure<AdaptiveColumn, IAdaptiveColumn>(columns.Get(), ancestorHasFallback, [&](IAdaptiveColumn* column) {
             ComPtr<IAdaptiveCardElement> columnAsCardElement;
             ComPtr<IAdaptiveColumn> localColumn(column);
             RETURN_IF_FAILED(localColumn.As(&columnAsCardElement));
@@ -100,18 +99,19 @@ namespace AdaptiveNamespace
             ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
             RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
 
-            ABI::AdaptiveNamespace::FallbackType fallbackType;
+            ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallbackType;
             RETURN_IF_FAILED(columnAsCardElement->get_FallbackType(&fallbackType));
 
             // Build the Column
             RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(
-                ancestorHasFallback || fallbackType != ABI::AdaptiveNamespace::FallbackType::None));
+                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None));
 
             ComPtr<IUIElement> xamlColumn;
             HRESULT hr = columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn);
             if (hr == E_PERFORM_FALLBACK)
             {
-                RETURN_IF_FAILED(XamlHelpers::RenderFallback(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn, nullptr));
+                RETURN_IF_FAILED(
+                    XamlHelpers::RenderFallback(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn, nullptr));
             }
 
             RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(ancestorHasFallback));
@@ -134,7 +134,7 @@ namespace AdaptiveNamespace
                     if (needsSeparator)
                     {
                         // Create a new ColumnDefinition for the separator
-                        ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(
+                        ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
                             HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
                         RETURN_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
                         RETURN_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
@@ -148,7 +148,7 @@ namespace AdaptiveNamespace
                 }
 
                 // Determine if the column is auto, stretch, or percentage width, and set the column width appropriately
-                ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(
+                ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
 
                 boolean isVisible;
@@ -199,7 +199,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveCardElement> columnSetAsCardElement;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsCardElement));
 
-        ABI::AdaptiveNamespace::HeightType columnSetHeightType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType columnSetHeightType;
         RETURN_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
 
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
@@ -225,19 +225,6 @@ namespace AdaptiveNamespace
                                           true,
                                           columnSetControl);
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveColumnSetRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumnSet, AdaptiveSharedNamespace::ColumnSet, AdaptiveSharedNamespace::ColumnSetParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

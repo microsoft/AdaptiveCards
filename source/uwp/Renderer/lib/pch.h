@@ -1,19 +1,16 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-//
-//    Copyright (C) Microsoft.  All rights reserved.
-//
 #pragma once
 
-#ifdef ADAPTIVE_CARDS_WINDOWS
-#include "winPch.h"
-#else
 #define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_##cls, BaseTrust)
 #define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_Rendering_Uwp_##cls, BaseTrust)
 #define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.Rendering.Uwp." L#cls, BaseTrust)
-#define AdaptiveNamespace AdaptiveCards::Rendering::Uwp
 #define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_Rendering_Uwp
 #define AdaptivePointerCast dynamic_pointer_cast
+
+// don't want windows.h min()/max() definitions as they conflict with std::numeric_limits<T>::min()/max()
+#ifndef NOMINMAX
+#define NOMINMAX
 #endif
 
 #define DISABLE_NS_PREFIX_CHECKS 1
@@ -38,7 +35,6 @@
 
 // Commonly-used AdaptiveCardRenderer headers
 #include "AdaptiveCards.Rendering.Uwp.h"
-#include "AdaptiveCardElement.h"
 #include "ErrorHandling.h"
 #include "Util.h"
 #include "Vector.h"
@@ -64,3 +60,5 @@
 #include <winrt/Windows.UI.Xaml.Automation.Peers.h>
 #include <winrt/Windows.UI.Xaml.Controls.h>
 #include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/AdaptiveCards.Rendering.Uwp.h>
