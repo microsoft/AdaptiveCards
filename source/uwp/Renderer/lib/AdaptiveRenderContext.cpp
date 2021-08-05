@@ -3,14 +3,13 @@
 #include "pch.h"
 
 #include "AdaptiveRenderContext.h"
-#include "AdaptiveError.h"
-#include "AdaptiveWarning.h"
 #include "InputValue.h"
 #include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -94,30 +93,41 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->get_UserInputs(value);
     }
 
-    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode statusCode, _In_ HSTRING message)
     {
-        ComPtr<AdaptiveError> error;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveError*>> errors;
+        ComPtr<IAdaptiveErrorFactory> errorActivationFactory;
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError).Get(),
+                                              &errorActivationFactory));
+
+        ComPtr<IAdaptiveError> error;
+        RETURN_IF_FAILED(errorActivationFactory->CreateInstance(statusCode, message, &error));
+
+        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>> errors;
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
 
-    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode, _In_ HSTRING message)
     {
-        ComPtr<AdaptiveWarning> warning;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>> warnings;
+        ComPtr<IAdaptiveWarningFactory> warningActivationFactory;
+        RETURN_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning).Get(),
+                                 &warningActivationFactory));
+
+        ComPtr<IAdaptiveWarning> warning;
+        RETURN_IF_FAILED(warningActivationFactory->CreateInstance(statusCode, message, &warning));
+
+        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>> warnings;
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }
 
-    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
-                                                     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveShowCardAction* showCardAction,
+    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
+                                                     ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
                                                      ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
                                                      ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
@@ -144,7 +154,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->AddInputValue(inputValue, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
+    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
                                                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
@@ -153,7 +163,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->LinkActionToCard(action, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* card,
+    HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card,
                                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
@@ -162,7 +172,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->LinkCardToParent(card, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* inputElement,
+    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
                                                  _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
@@ -183,25 +193,25 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     HRESULT AdaptiveRenderContext::get_TextStyle(
-        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>** textStyle)
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>** textStyle)
     {
         return m_textStyle.CopyTo(textStyle);
     }
 
-    HRESULT AdaptiveRenderContext::put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::TextStyle>* textStyle)
+    HRESULT AdaptiveRenderContext::put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>* textStyle)
     {
         m_textStyle = textStyle;
         return S_OK;
     }
 
     HRESULT AdaptiveRenderContext::get_HorizontalContentAlignment(
-        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>** horizontalAlignment)
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>** horizontalAlignment)
     {
         return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
     HRESULT AdaptiveRenderContext::put_HorizontalContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::Rendering::Uwp::HAlignment>* horizontalAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>* horizontalAlignment)
     {
         m_horizontalAlignment = horizontalAlignment;
         return S_OK;

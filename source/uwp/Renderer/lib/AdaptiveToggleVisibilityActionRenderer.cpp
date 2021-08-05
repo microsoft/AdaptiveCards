@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveToggleVisibilityAction.h"
 #include "AdaptiveToggleVisibilityActionRenderer.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "ActionHelpers.h"
 
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace Microsoft::WRL;
 
 namespace AdaptiveCards::Rendering::Uwp
@@ -26,19 +25,6 @@ namespace AdaptiveCards::Rendering::Uwp
     try
     {
         return ActionHelpers::BuildAction(action, renderContext, renderArgs, result);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveToggleVisibilityActionRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityAction, AdaptiveCards::ToggleVisibilityAction, AdaptiveCards::ToggleVisibilityActionParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

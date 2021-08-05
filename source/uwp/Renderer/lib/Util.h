@@ -130,224 +130,62 @@ void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* 
 HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::UI::Color* color) noexcept;
 
 HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor adaptiveColor,
-                                  ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor adaptiveColor,
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
                                   bool isSubtle,
                                   bool highlight,
                                   _Out_ ABI::Windows::UI::Color* uiColor) noexcept;
 
-HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style,
+HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
 
-HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style,
+HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
                                 _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                                 _Out_ ABI::Windows::UI::Color* borderColor) noexcept;
 
-HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* adaptiveTextElement,
+HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* adaptiveTextElement,
                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
                        _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept;
 
 HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                ABI::AdaptiveCards::Rendering::Uwp::FontType fontType,
-                                ABI::AdaptiveCards::Rendering::Uwp::TextSize desiredSize,
-                                ABI::AdaptiveCards::Rendering::Uwp::TextWeight desiredWeight,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
                                 _Outptr_ HSTRING* resultFontFamilyName,
                                 _Out_ UINT32* resultSize,
                                 _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
 
 HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::Rendering::Uwp::FontType fontType,
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
                                   _Outptr_ HSTRING* resultFontFamilyName) noexcept;
 
 HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                ABI::AdaptiveCards::Rendering::Uwp::FontType fontType,
-                                ABI::AdaptiveCards::Rendering::Uwp::TextSize desiredSize,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+                                ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
                                 _Out_ UINT32* resultSize) noexcept;
 
 HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveCards::Rendering::Uwp::FontType fontType,
-                               ABI::AdaptiveCards::Rendering::Uwp::TextWeight desiredWeight,
+                               ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+                               ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
 
 HRESULT GetFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                    ABI::AdaptiveCards::Rendering::Uwp::FontType fontType,
+                    ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
                     _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** styleDefinition) noexcept;
 
 HRESULT GetFontSize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontSizesConfig* sizesConfig,
-                    ABI::AdaptiveCards::Rendering::Uwp::TextSize desiredSize,
+                    ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
                     _Out_ UINT32* resultSize) noexcept;
 
 HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontWeightsConfig* weightsConfig,
-                      ABI::AdaptiveCards::Rendering::Uwp::TextWeight desiredWeight,
+                      ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
                       _Out_ UINT16* resultWeight) noexcept;
 
 HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing,
+                                  ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing,
                                   _Out_ UINT* spacingSize) noexcept;
-
-HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* items,
-                              std::shared_ptr<AdaptiveCards::BaseCardElement>& containedElement);
-
-HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>* items,
-                               std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
-
-HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* action,
-                             std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction);
-
-HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* items,
-                              std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
-
-HRESULT GenerateSharedRequirements(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveRequirement*>* adaptiveRequirements,
-    std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements) noexcept;
-
-HRESULT GenerateSharedInlines(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline*>* items,
-                              std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
-
-template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass, class TReturnedSharedModelType>
-HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* tableCells,
-                             std::vector<std::shared_ptr<TSharedClass>>& containedElements)
-{
-    containedElements.clear();
-
-    IterateOverVector<TWinrtClass, TWinrtInterface>(tableCells, [&](TWinrtInterface* tableCell) {
-        ComPtr<TImplementationClass> adaptiveElement = PeekInnards<TImplementationClass>(tableCell);
-        if (adaptiveElement == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        std::shared_ptr<TReturnedSharedModelType> sharedTableCell;
-        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedTableCell));
-        containedElements.push_back(std::AdaptivePointerCast<TSharedClass>(sharedTableCell));
-        return S_OK;
-    });
-
-    return S_OK;
-}
-
-#define GenerateSharedToggleElements(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS) \
-    GenerateSharedVector<AdaptiveCards::ToggleVisibilityTarget, \
-                         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveToggleVisibilityTarget, \
-                         ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget, \
-                         AdaptiveToggleVisibilityTarget, \
-                         AdaptiveCards::ToggleVisibilityTarget>(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS);
-
-#define GenerateSharedImages(WINRTIMAGES, SHAREDIMAGES) \
-    GenerateSharedVector<AdaptiveCards::Image, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage, AdaptiveImage, AdaptiveCards::BaseCardElement>( \
-        WINRTIMAGES, SHAREDIMAGES);
-
-#define GenerateSharedFacts(WINRTFACTS, SHAREDFACTS) \
-    GenerateSharedVector<AdaptiveCards::Fact, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact, AdaptiveFact, AdaptiveCards::Fact>( \
-        WINRTFACTS, SHAREDFACTS);
-
-#define GenerateSharedChoices(WINRTCHOICEINPUTS, SHAREDCHOICEINPUTS) \
-    GenerateSharedVector<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput, AdaptiveChoiceInput, AdaptiveCards::ChoiceInput>( \
-        WINRTCHOICEINPUTS, SHAREDCHOICEINPUTS);
-
-#define GenerateSharedMediaSources(WINRTMEDIASOURCES, SHAREDMEDIASOURCES) \
-    GenerateSharedVector<AdaptiveCards::MediaSource, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaSource, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource, AdaptiveMediaSource, AdaptiveCards::MediaSource>( \
-        WINRTMEDIASOURCES, SHAREDMEDIASOURCES);
-
-#define GenerateSharedColumns(WINRTCOLUMNS, SHAREDCOLUMNS) \
-    GenerateSharedVector<AdaptiveCards::Column, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColumn, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveColumn, AdaptiveColumn, AdaptiveCards::BaseCardElement>( \
-        WINRTCOLUMNS, SHAREDCOLUMNS);
-
-#define GenerateSharedTableCells(WINRTTABLECELLS, SHAREDTABLECELLS) \
-    GenerateSharedVector<AdaptiveCards::TableCell, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableCell, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableCell, AdaptiveTableCell, AdaptiveCards::BaseCardElement>( \
-        WINRTTABLECELLS, SHAREDTABLECELLS);
-
-#define GenerateSharedTableRows(WINRTTABLEROWS, SHAREDTABLEROWS) \
-    GenerateSharedVector<AdaptiveCards::TableRow, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableRow, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableRow, AdaptiveTableRow, AdaptiveCards::BaseCardElement>( \
-        WINRTTABLEROWS, SHAREDTABLEROWS);
-
-#define GenerateSharedTableColumnDefinitions(WINRTTABLECOLUMNS, SHAREDTABLECOLUMNS) \
-    GenerateSharedVector<AdaptiveCards::TableColumnDefinition, \
-                         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableColumnDefinition, \
-                         ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableColumnDefinition, \
-                         AdaptiveTableColumnDefinition, \
-                         AdaptiveCards::TableColumnDefinition>(WINRTTABLECOLUMNS, SHAREDTABLECOLUMNS);
-
-HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement,
-                                  _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** projectedElement) noexcept;
-
-HRESULT GenerateContainedElementsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
-
-HRESULT GenerateActionsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
-
-HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action,
-                                 _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement** projectedAction) noexcept;
-
-HRESULT GenerateInlinesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInline*>* projectedParentContainer) noexcept;
-
-HRESULT GenerateRequirementsProjection(
-    const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveRequirement*>* projectedRequirementVector) noexcept;
-
-template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass>
-HRESULT GenerateVectorProjection(const std::vector<std::shared_ptr<TSharedClass>>& containedElements,
-                                 _In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<TWinrtInterface> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<TImplementationClass>(&projectedContainedElement,
-                                                                 std::static_pointer_cast<TSharedClass>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-#define GenerateImagesProjection(SHAREDIMAGES, WINRTIMAGES) \
-    GenerateVectorProjection<AdaptiveCards::Image, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage, AdaptiveImage>( \
-        SHAREDIMAGES, WINRTIMAGES);
-
-#define GenerateFactsProjection(SHAREDFACTS, WINRTFACTS) \
-    GenerateVectorProjection<AdaptiveCards::Fact, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFact, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveFact, AdaptiveFact>( \
-        SHAREDFACTS, WINRTFACTS);
-
-#define GenerateInputChoicesProjection(SHAREDCHOICES, WINRTCHOICES) \
-    GenerateVectorProjection<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput, AdaptiveChoiceInput>( \
-        SHAREDCHOICES, WINRTCHOICES);
-
-#define GenerateMediaSourcesProjection(SHAREDMEDIASOURCES, WINRTMEDIASOURCES) \
-    GenerateVectorProjection<AdaptiveCards::MediaSource, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaSource, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaSource, AdaptiveMediaSource>( \
-        SHAREDMEDIASOURCES, WINRTMEDIASOURCES);
-
-#define GenerateColumnsProjection(SHAREDCOLUMNS, WINRTCOLUMNS) \
-    GenerateVectorProjection<AdaptiveCards::Column, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColumn, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveColumn, AdaptiveColumn>( \
-        SHAREDCOLUMNS, WINRTCOLUMNS);
-
-#define GenerateToggleTargetProjection(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS) \
-    GenerateVectorProjection<AdaptiveCards::ToggleVisibilityTarget, \
-                             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveToggleVisibilityTarget, \
-                             ABI::AdaptiveCards::Rendering::Uwp::AdaptiveToggleVisibilityTarget, \
-                             AdaptiveToggleVisibilityTarget>(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS);
-
-#define GenerateTableCellsProjection(SHAREDTABLECELLS, WINRTTABLECELLS) \
-    GenerateVectorProjection<AdaptiveCards::TableCell, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableCell, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableCell, AdaptiveTableCell>( \
-        SHAREDTABLECELLS, WINRTTABLECELLS);
-
-#define GenerateTableRowsProjection(SHAREDTABLEROWS, WINRTTABLEROWS) \
-    GenerateVectorProjection<AdaptiveCards::TableRow, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableRow, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableRow, AdaptiveTableRow>( \
-        SHAREDTABLEROWS, WINRTTABLEROWS);
-
-#define GenerateTableColumnDefinitionsProjection(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS) \
-    GenerateVectorProjection<AdaptiveCards::TableColumnDefinition, \
-                             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableColumnDefinition, \
-                             ABI::AdaptiveCards::Rendering::Uwp::AdaptiveTableColumnDefinition, \
-                             AdaptiveTableColumnDefinition>(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS);
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
@@ -362,14 +200,15 @@ HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonVa
 HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
 
-HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::Rendering::Uwp::ActionType projectedActionType, _Outptr_ HSTRING* result);
-HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Rendering::Uwp::ElementType projectedElementType, _Outptr_ HSTRING* result);
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedActionType, _Outptr_ HSTRING* result);
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedElementType,
+                                      _Outptr_ HSTRING* result);
 
-HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement,
+HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration,
                           _Out_ bool* meetsRequirements);
 
-HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveBackgroundImage* backgroundImageElement,
+HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage* backgroundImageElement,
                                _Out_ BOOL* isValid);
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
@@ -400,21 +239,10 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     }
     return inner;
 }
-
-void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementWithRemoteResources* remoteResources,
-                                                            std::vector<AdaptiveCards::RemoteResourceInformation>& resourceUris);
-
 void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
                       _In_ HSTRING urlString,
                       _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url);
 
-HRESULT SharedWarningsToAdaptiveWarnings(
-    const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings);
-
-HRESULT AdaptiveWarningsToSharedWarnings(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-    std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
 ABI::Windows::UI::Color GenerateLHoverColor(const ABI::Windows::UI::Color& originalColor);
 
@@ -425,19 +253,8 @@ HRESULT GetDateTimeReference(unsigned int year,
                              unsigned int day,
                              _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
 
-ABI::AdaptiveCards::Rendering::Uwp::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type);
-AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards::Rendering::Uwp::FallbackType type);
-
-HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement* textElement,
-                        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextElement** copiedTextElement);
-
-HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
-    const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration);
-
-HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
-    const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration);
+HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* textElement,
+                        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement** copiedTextElement);
 
 namespace AdaptiveCards::Rendering::Uwp
 {
