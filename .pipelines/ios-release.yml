@@ -65,7 +65,7 @@ jobs:
       command: run
       projects: source/ios/tools/IOSFeed/IOSFeed.csproj
   - bash: |
-     cat  ./source/ios/AdaptiveCards.podspec
+     cat ./source/ios/AdaptiveCards.podspec
   # - task: Bash@3
   #   displayName: Push To cocoapods
   #   inputs:
