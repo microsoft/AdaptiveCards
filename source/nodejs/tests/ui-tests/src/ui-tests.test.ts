@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as AdaptiveCards from "adaptivecards";
 import * as Assert from "assert";
 import * as Webdriver from "selenium-webdriver";
 
