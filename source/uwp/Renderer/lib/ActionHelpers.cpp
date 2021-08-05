@@ -6,6 +6,7 @@
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardActionRenderer.h"
 #include "LinkButton.h"
+#include "AdaptiveHostConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -80,7 +81,10 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         THROW_IF_FAILED(automationPropertiesStatics5->SetFullDescription(dependencyObject, description));
     }
 
-    void ArrangeButtonContent(_In_ IAdaptiveActionElement* action,
+    void ArrangeButtonContent(_In_ HSTRING actionTitle,
+                              _In_ HSTRING actionIconUrl,
+                              _In_ HSTRING actionTooltip,
+                              _In_ HSTRING actionAccessibilityText,
                               _In_ IAdaptiveActionsConfig* actionsConfig,
                               _In_ IAdaptiveRenderContext* renderContext,
                               ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
@@ -89,17 +93,26 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                               _In_ IButton* button)
     {
         HString title;
-        THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+        THROW_IF_FAILED(title.Set(actionTitle));
 
         HString iconUrl;
-        THROW_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
+        THROW_IF_FAILED(iconUrl.Set(actionIconUrl));
 
         HString tooltip;
-        THROW_IF_FAILED(action->get_Tooltip(tooltip.GetAddressOf()));
+        THROW_IF_FAILED(tooltip.Set(actionTooltip));
+
+        HString accessibilityText;
+        THROW_IF_FAILED(accessibilityText.Set(actionAccessibilityText));
 
         HString name;
         HString description;
-        if (title.IsValid())
+        if (accessibilityText.IsValid())
+        {
+            // If we have accessibility text use that as the name and tooltip as the description
+            name.Set(accessibilityText.Get());
+            description.Set(tooltip.Get());
+        }
+        else if (title.IsValid())
         {
             // If we have a title, use title as the automation name and tooltip as the description
             name.Set(title.Get());
@@ -227,10 +240,14 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     HRESULT HandleActionStyling(_In_ IAdaptiveActionElement* adaptiveActionElement,
                                 _In_ IFrameworkElement* buttonFrameworkElement,
+                                bool isOverflowActionButton,
                                 _In_ IAdaptiveRenderContext* renderContext)
     {
         HString actionSentiment;
-        RETURN_IF_FAILED(adaptiveActionElement->get_Style(actionSentiment.GetAddressOf()));
+        if (adaptiveActionElement != nullptr)
+        {
+            RETURN_IF_FAILED(adaptiveActionElement->get_Style(actionSentiment.GetAddressOf()));
+        }
 
         INT32 isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
 
@@ -240,6 +257,17 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
         ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
             PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
+
+        // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
+        if (isOverflowActionButton)
+        {
+            if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
+                                                                                      L"Adaptive.Action.Overflow",
+                                                                                      &styleToApply)))
+            {
+                RETURN_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
+            }
+        }
 
         if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault)) &&
              (isSentimentDefault == 0)) ||
@@ -319,6 +347,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
     HRESULT BuildAction(_In_ IAdaptiveActionElement* adaptiveActionElement,
                         _In_ IAdaptiveRenderContext* renderContext,
                         _In_ IAdaptiveRenderArgs* renderArgs,
+                        bool isOverflowActionButton,
                         _Outptr_ IUIElement** actionControl)
     {
         // determine what type of action we're building
@@ -381,7 +410,28 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         boolean allowAboveTitleIconPlacement;
         RETURN_IF_FAILED(renderArgs->get_AllowAboveTitleIconPlacement(&allowAboveTitleIconPlacement));
 
-        ArrangeButtonContent(action.Get(),
+        HString title;
+        HString iconUrl;
+        HString tooltip;
+        HString accessibilityText;
+        if (isOverflowActionButton)
+        {
+            ComPtr<AdaptiveHostConfig> hostConfigImpl = PeekInnards<AdaptiveHostConfig>(hostConfig);
+            HString overflowButtonText;
+            RETURN_IF_FAILED(hostConfigImpl->get_OverflowButtonText(title.GetAddressOf()));
+            RETURN_IF_FAILED(hostConfigImpl->get_OverflowButtonAccessibilityText(accessibilityText.GetAddressOf()));
+        }
+        else
+        {
+            RETURN_IF_FAILED(action->get_Title(title.GetAddressOf()));
+            RETURN_IF_FAILED(action->get_IconUrl(iconUrl.GetAddressOf()));
+            RETURN_IF_FAILED(action->get_Tooltip(tooltip.GetAddressOf()));
+        }
+
+        ArrangeButtonContent(title.Get(),
+                             iconUrl.Get(),
+                             tooltip.Get(),
+                             accessibilityText.Get(),
                              actionsConfig.Get(),
                              renderContext,
                              containerStyle,
@@ -394,28 +444,31 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
-        // Add click handler which calls IAdaptiveActionInvoker::SendActionEvent
-        ComPtr<IButtonBase> buttonBase;
-        RETURN_IF_FAILED(button.As(&buttonBase));
+        if (adaptiveActionElement != nullptr)
+        {
+            // Add click handler which calls IAdaptiveActionInvoker::SendActionEvent
+            ComPtr<IButtonBase> buttonBase;
+            RETURN_IF_FAILED(button.As(&buttonBase));
 
-        ComPtr<IAdaptiveActionInvoker> actionInvoker;
-        RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
-        EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                                     /*args*/) -> HRESULT {
-                                                   return actionInvoker->SendActionEvent(action.Get());
-                                               }).Get(),
-                                               &clickToken));
+            ComPtr<IAdaptiveActionInvoker> actionInvoker;
+            RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
+            EventRegistrationToken clickToken;
+            RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+                                                                                                         /*args*/) -> HRESULT {
+                                                       return actionInvoker->SendActionEvent(action.Get());
+                                                   }).Get(),
+                                                   &clickToken));
 
-        boolean isEnabled;
-        RETURN_IF_FAILED(adaptiveActionElement->get_IsEnabled(&isEnabled));
+            boolean isEnabled;
+            RETURN_IF_FAILED(adaptiveActionElement->get_IsEnabled(&isEnabled));
 
-        ComPtr<IControl> buttonAsControl;
-        RETURN_IF_FAILED(buttonBase.As(&buttonAsControl));
+            ComPtr<IControl> buttonAsControl;
+            RETURN_IF_FAILED(buttonBase.As(&buttonAsControl));
 
-        RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(isEnabled));
+            RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(isEnabled));
+        }
 
-        RETURN_IF_FAILED(HandleActionStyling(adaptiveActionElement, buttonFrameworkElement.Get(), renderContext));
+        RETURN_IF_FAILED(HandleActionStyling(adaptiveActionElement, buttonFrameworkElement.Get(), isOverflowActionButton, renderContext));
 
         ComPtr<IUIElement> buttonAsUIElement;
         RETURN_IF_FAILED(button.As(&buttonAsUIElement));
@@ -506,8 +559,7 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         ComPtr<IGridStatics> gridStatics;
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
-        ComPtr<IGrid> xamlGrid =
-            XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IGrid> xamlGrid = XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
         THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
         ComPtr<IPanel> gridAsPanel;
@@ -855,6 +907,262 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         return S_OK;
     }
 
+    HRESULT CreateFlyoutButton(_In_ IAdaptiveRenderContext* renderContext,
+                               _In_ IAdaptiveRenderArgs* renderArgs,
+                               _COM_Outptr_ IButton** overflowButton)
+    {
+        // Create an action button
+        ComPtr<IUIElement> overflowButtonAsUIElement;
+        RETURN_IF_FAILED(BuildAction(nullptr, renderContext, renderArgs, true, &overflowButtonAsUIElement));
+
+        // Create a menu flyout for the overflow button
+        ComPtr<IButtonWithFlyout> overflowButtonAsButtonWithFlyout;
+        RETURN_IF_FAILED(overflowButtonAsUIElement.As(&overflowButtonAsButtonWithFlyout));
+
+        ComPtr<IMenuFlyout> overflowFlyout =
+            XamlHelpers::CreateABIClass<IMenuFlyout>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MenuFlyout));
+
+        ComPtr<IFlyoutBase> overflowFlyoutAsFlyoutBase;
+        RETURN_IF_FAILED(overflowFlyout.As(&overflowFlyoutAsFlyoutBase));
+        RETURN_IF_FAILED(overflowButtonAsButtonWithFlyout->put_Flyout(overflowFlyoutAsFlyoutBase.Get()));
+
+        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
+            PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
+
+        // Return overflow button
+        ComPtr<IButton> overFlowButtonAsButton;
+        RETURN_IF_FAILED(overflowButtonAsUIElement.As(&overFlowButtonAsButton));
+        RETURN_IF_FAILED(overFlowButtonAsButton.CopyTo(overflowButton));
+
+        return S_OK;
+    }
+
+    HRESULT AddOverflowFlyoutItem(_In_ IAdaptiveActionElement* action,
+                                  _In_ IButton* overflowButton,
+                                  _In_ IAdaptiveRenderContext* renderContext,
+                                  _COM_Outptr_ IUIElement** flyoutUIItem)
+    {
+        // Get the flyout items vector
+        ComPtr<IButton> button(overflowButton);
+        ComPtr<IButtonWithFlyout> buttonWithFlyout;
+        RETURN_IF_FAILED(button.As(&buttonWithFlyout));
+
+        ComPtr<IFlyoutBase> flyout;
+        RETURN_IF_FAILED(buttonWithFlyout->get_Flyout(&flyout));
+
+        ComPtr<IMenuFlyout> menuFlyout;
+        RETURN_IF_FAILED(flyout.As(&menuFlyout));
+
+        ComPtr<IVector<MenuFlyoutItemBase*>> flyoutItems;
+        RETURN_IF_FAILED(menuFlyout->get_Items(&flyoutItems));
+
+        // Create a flyout item
+        ComPtr<IMenuFlyoutItem> flyoutItem =
+            XamlHelpers::CreateABIClass<IMenuFlyoutItem>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MenuFlyoutItem));
+
+        // Set the title
+        HString actionTitle;
+        RETURN_IF_FAILED(action->get_Title(actionTitle.GetAddressOf()));
+        RETURN_IF_FAILED(flyoutItem->put_Text(actionTitle.Get()));
+
+        // Set the tooltip
+        HString tooltip;
+        RETURN_IF_FAILED(action->get_Tooltip(tooltip.GetAddressOf()));
+
+        ComPtr<IDependencyObject> flyoutItemAsDependencyObject;
+        RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsDependencyObject));
+        SetTooltip(tooltip.Get(), flyoutItemAsDependencyObject.Get());
+
+        // Hook the menu item up to the action invoker
+        ComPtr<IAdaptiveActionElement> actionParam(action);
+        ComPtr<IAdaptiveActionInvoker> actionInvoker;
+        RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
+        EventRegistrationToken clickToken;
+        RETURN_IF_FAILED(flyoutItem->add_Click(Callback<IRoutedEventHandler>([actionParam, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+                                                                                                          /*args*/) -> HRESULT {
+                                                   return actionInvoker->SendActionEvent(actionParam.Get());
+                                               }).Get(),
+                                               &clickToken));
+
+        // Add the new menu item to the vector
+        ComPtr<IMenuFlyoutItemBase> flyoutItemAsBase;
+        RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsBase));
+        RETURN_IF_FAILED(flyoutItems->Append(flyoutItemAsBase.Get()));
+
+        ComPtr<IUIElement> flyoutItemAsUIElement;
+        RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsUIElement));
+        RETURN_IF_FAILED(flyoutItemAsUIElement.CopyTo(flyoutUIItem));
+
+        return S_OK;
+    }
+
+    HRESULT BuildInlineShowCard(_In_opt_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
+                                _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
+                                _In_ IAdaptiveActionElement* showCardAction,
+                                _In_ IPanel* showCardsPanel,
+                                _In_ IUIElement* actionButton,
+                                _In_ IUIElement* actionOverflowItem,
+                                UINT buttonIndex,
+                                _In_ IAdaptiveRenderContext* renderContext,
+                                _In_ IAdaptiveRenderArgs* renderArgs)
+    {
+        ComPtr<IAdaptiveActionElement> action(showCardAction);
+
+        // Check the host config to see if we need to build inline show cards
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        ComPtr<IAdaptiveActionsConfig> actionsConfig;
+        RETURN_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
+
+        ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
+        RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
+
+        ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
+        RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
+
+        if (showCardActionMode == ABI::AdaptiveCards::Rendering::Uwp::ActionMode::Inline)
+        {
+            // Get the card to be shown
+            ComPtr<IAdaptiveShowCardAction> actionAsShowCardAction;
+            RETURN_IF_FAILED(action.As(&actionAsShowCardAction));
+
+            ComPtr<IAdaptiveCard> showCard;
+            RETURN_IF_FAILED(actionAsShowCardAction->get_Card(&showCard));
+
+            // Render the card and add it to the show card panel
+            ComPtr<IUIElement> uiShowCard;
+            RETURN_IF_FAILED(AdaptiveShowCardActionRenderer::BuildShowCard(
+                showCard.Get(), renderContext, renderArgs, (adaptiveActionSet == nullptr), uiShowCard.GetAddressOf()));
+
+            XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel);
+
+            // Register the show card with the render context
+            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
+                PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
+
+            if (adaptiveActionSet)
+            {
+                RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
+                    adaptiveActionSet, actionAsShowCardAction.Get(), actionButton, actionOverflowItem, uiShowCard.Get(), buttonIndex, renderArgs));
+            }
+            else
+            {
+                RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
+                    adaptiveCard, actionAsShowCardAction.Get(), actionButton, actionOverflowItem, uiShowCard.Get(), buttonIndex, renderArgs));
+            }
+        }
+
+        return S_OK;
+    }
+
+    HRESULT CreateActionButtonInActionSet(_In_opt_ IAdaptiveCard* adaptiveCard,
+                                          _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
+                                          _In_ IAdaptiveActionElement* actionToCreate,
+                                          bool buttonVisible,
+                                          UINT columnIndex,
+                                          _In_ IPanel* actionsPanel,
+                                          _In_ IPanel* showCardPanel,
+                                          _In_ IVector<ColumnDefinition*>* columnDefinitions,
+                                          _In_opt_ IUIElement* overflowItem,
+                                          _In_ IAdaptiveRenderContext* renderContext,
+                                          _In_ IAdaptiveRenderArgs* renderArgs,
+                                          _COM_Outptr_ IUIElement** returnedActionControl)
+    {
+        ComPtr<IAdaptiveActionElement> action(actionToCreate);
+
+        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
+        RETURN_IF_FAILED(action->get_ActionType(&actionType));
+
+        // Render each action using the registered renderer
+        ComPtr<IAdaptiveActionRendererRegistration> actionRegistration;
+        RETURN_IF_FAILED(renderContext->get_ActionRenderers(&actionRegistration));
+
+        ComPtr<IUIElement> actionControl;
+        ComPtr<IAdaptiveActionRenderer> renderer;
+        while (!renderer)
+        {
+            HString actionTypeString;
+            RETURN_IF_FAILED(action->get_ActionTypeString(actionTypeString.GetAddressOf()));
+            RETURN_IF_FAILED(actionRegistration->Get(actionTypeString.Get(), &renderer));
+            if (!renderer)
+            {
+                ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType actionFallbackType;
+                RETURN_IF_FAILED(action->get_FallbackType(&actionFallbackType));
+                switch (actionFallbackType)
+                {
+                case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Drop:
+                {
+                    RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, actionTypeString.Get()));
+                    return S_OK;
+                }
+
+                case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content:
+                {
+                    ComPtr<IAdaptiveActionElement> actionFallback;
+                    RETURN_IF_FAILED(action->get_FallbackContent(&actionFallback));
+
+                    HString fallbackTypeString;
+                    RETURN_IF_FAILED(actionFallback->get_ActionTypeString(fallbackTypeString.GetAddressOf()));
+                    RETURN_IF_FAILED(XamlHelpers::WarnForFallbackContentElement(renderContext,
+                                                                                actionTypeString.Get(),
+                                                                                fallbackTypeString.Get()));
+
+                    action = actionFallback;
+                    break;
+                }
+
+                case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None:
+                default:
+                    return E_FAIL;
+                }
+            }
+        }
+
+        RETURN_IF_FAILED(renderer->Render(action.Get(), renderContext, renderArgs, &actionControl));
+
+        if (!buttonVisible)
+        {
+            RETURN_IF_FAILED(actionControl->put_Visibility(Visibility_Collapsed));
+        }
+
+        XamlHelpers::AppendXamlElementToPanel(actionControl.Get(), actionsPanel);
+
+        if (columnDefinitions != nullptr)
+        {
+            // If using the equal width columns, we'll add a column and assign the column
+            ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+            RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
+
+            if (buttonVisible)
+            {
+                RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
+            }
+            else
+            {
+                RETURN_IF_FAILED(columnDefinition->put_Width({0, GridUnitType::GridUnitType_Auto}));
+            }
+
+            ComPtr<IGridStatics> gridStatics;
+            RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
+
+            ComPtr<IFrameworkElement> actionFrameworkElement;
+            RETURN_IF_FAILED(actionControl.As(&actionFrameworkElement));
+            RETURN_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), columnIndex));
+        }
+
+        if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::ShowCard)
+        {
+            // Build the inline show card.
+            RETURN_IF_FAILED(BuildInlineShowCard(
+                adaptiveCard, adaptiveActionSet, action.Get(), showCardPanel, actionControl.Get(), overflowItem, columnIndex, renderContext, renderArgs));
+        }
+
+        RETURN_IF_FAILED(actionControl.CopyTo(returnedActionControl));
+
+        return S_OK;
+    }
+
     HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
                                  _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                  _In_ IVector<IAdaptiveActionElement*>* children,
@@ -943,9 +1251,19 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             RETURN_IF_FAILED(actionsPanelAsFrameworkElement->put_Margin({0, buttonMargin.Top * -1, 0, buttonMargin.Bottom * -1}));
         }
 
+        // Get the max number of actions and check the host config to confirm whether we render actions beyond the max in the overflow menu
         UINT32 maxActions;
         RETURN_IF_FAILED(actionsConfig->get_MaxActions(&maxActions));
 
+        ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig> hostConfigImpl =
+            PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveHostConfig>(hostConfig);
+
+        boolean overflowMaxActions;
+        RETURN_IF_FAILED(hostConfigImpl->get_OverflowMaxActions(&overflowMaxActions));
+
+        UINT currentButtonIndex = 0;
+        UINT lastPrimaryActionIndex = 0;
+        ComPtr<IAdaptiveActionElement> lastPrimaryAction;
         bool allActionsHaveIcons{true};
         IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
             HString iconUrl;
@@ -955,138 +1273,197 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             {
                 allActionsHaveIcons = false;
             }
+
+            // We need to figure out which button is going to be the last visible button. That button may need to be
+            // handled separately if we have show card actions in the overflow menu.
+            ComPtr<IAdaptiveActionElement> action(child);
+            ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode;
+            RETURN_IF_FAILED(action->get_Mode(&mode));
+            if (currentButtonIndex < maxActions && mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
+            {
+                lastPrimaryActionIndex = currentButtonIndex;
+                lastPrimaryAction = action;
+                currentButtonIndex++;
+            }
+
             return S_OK;
         });
-
-        UINT currentAction = 0;
 
         RETURN_IF_FAILED(renderArgs->put_AllowAboveTitleIconPlacement(allActionsHaveIcons));
 
-        std::shared_ptr<std::vector<ComPtr<IUIElement>>> allShowCards = std::make_shared<std::vector<ComPtr<IUIElement>>>();
         ComPtr<IStackPanel> showCardsStackPanel =
             XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<IPanel> showCardsPanel;
+        RETURN_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
+
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
+
+        currentButtonIndex = 0;
+        bool pastLastPrimaryAction = false;
+        ComPtr<IButton> overflowButton;
+        std::vector<std::pair<ComPtr<IAdaptiveActionElement>, ComPtr<IUIElement>>> showCardOverflowButtons;
         IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
-            if (currentAction < maxActions)
+            ComPtr<IAdaptiveActionElement> action(child);
+            ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode;
+            RETURN_IF_FAILED(action->get_Mode(&mode));
+
+            ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
+            RETURN_IF_FAILED(action->get_ActionType(&actionType));
+
+            ComPtr<IUIElement> actionControl;
+            if (!pastLastPrimaryAction && mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
             {
-                // Render each action using the registered renderer
-                ComPtr<IAdaptiveActionElement> action(child);
-                ComPtr<IAdaptiveActionRendererRegistration> actionRegistration;
-                RETURN_IF_FAILED(renderContext->get_ActionRenderers(&actionRegistration));
-
-                ComPtr<IAdaptiveActionRenderer> renderer;
-                while (!renderer)
+                // The last button may need special handling so don't handle it here
+                if (currentButtonIndex != lastPrimaryActionIndex)
                 {
-                    HString actionTypeString;
-                    RETURN_IF_FAILED(action->get_ActionTypeString(actionTypeString.GetAddressOf()));
-                    RETURN_IF_FAILED(actionRegistration->Get(actionTypeString.Get(), &renderer));
-                    if (!renderer)
-                    {
-                        ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType actionFallbackType;
-                        action->get_FallbackType(&actionFallbackType);
-                        switch (actionFallbackType)
-                        {
-                        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Drop:
-                        {
-                            RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, actionTypeString.Get()));
-                            return S_OK;
-                        }
+                    // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
+                    RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
+                                                                   adaptiveActionSet,
+                                                                   action.Get(),
+                                                                   true,
+                                                                   currentButtonIndex,
+                                                                   actionsPanel.Get(),
+                                                                   showCardsPanel.Get(),
+                                                                   columnDefinitions.Get(),
+                                                                   nullptr,
+                                                                   renderContext,
+                                                                   renderArgs,
+                                                                   &actionControl));
 
-                        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content:
-                        {
-                            ComPtr<IAdaptiveActionElement> actionFallback;
-                            RETURN_IF_FAILED(action->get_FallbackContent(&actionFallback));
-
-                            HString fallbackTypeString;
-                            RETURN_IF_FAILED(actionFallback->get_ActionTypeString(fallbackTypeString.GetAddressOf()));
-                            RETURN_IF_FAILED(XamlHelpers::WarnForFallbackContentElement(renderContext,
-                                                                                        actionTypeString.Get(),
-                                                                                        fallbackTypeString.Get()));
-
-                            action = actionFallback;
-                            break;
-                        }
-
-                        case ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None:
-                        default:
-                            return E_FAIL;
-                        }
-                    }
+                    currentButtonIndex++;
                 }
-
-                ComPtr<IUIElement> actionControl;
-                RETURN_IF_FAILED(renderer->Render(action.Get(), renderContext, renderArgs, &actionControl));
-
-                XamlHelpers::AppendXamlElementToPanel(actionControl.Get(), actionsPanel.Get());
-
-                ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
-                RETURN_IF_FAILED(action->get_ActionType(&actionType));
-
-                // Build inline show cards if needed
-                if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_ShowCard)
+                else
                 {
-                    ComPtr<IUIElement> uiShowCard;
-
-                    ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
-                    RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-
-                    ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
-                    RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-
-                    if (showCardActionMode == ABI::AdaptiveCards::Rendering::Uwp::ActionMode::Inline)
-                    {
-                        ComPtr<IAdaptiveShowCardAction> showCardAction;
-                        RETURN_IF_FAILED(action.As(&showCardAction));
-
-                        ComPtr<IAdaptiveCard> showCard;
-                        RETURN_IF_FAILED(showCardAction->get_Card(&showCard));
-
-                        RETURN_IF_FAILED(AdaptiveShowCardActionRenderer::BuildShowCard(
-                            showCard.Get(), renderContext, renderArgs, (adaptiveActionSet == nullptr), uiShowCard.GetAddressOf()));
-
-                        ComPtr<IPanel> showCardsPanel;
-                        RETURN_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
-                        XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel.Get());
-
-                        if (adaptiveActionSet)
-                        {
-                            RETURN_IF_FAILED(
-                                renderContext->AddInlineShowCard(adaptiveActionSet, showCardAction.Get(), uiShowCard.Get(), renderArgs));
-                        }
-                        else
-                        {
-                            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
-                                PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
-
-                            RETURN_IF_FAILED(
-                                contextImpl->AddInlineShowCard(adaptiveCard, showCardAction.Get(), uiShowCard.Get(), renderArgs));
-                        }
-                    }
-                }
-
-                if (columnDefinitions != nullptr)
-                {
-                    // If using the equal width columns, we'll add a column and assign the column
-                    ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-                        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-                    RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
-                    RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
-
-                    ComPtr<IFrameworkElement> actionFrameworkElement;
-                    THROW_IF_FAILED(actionControl.As(&actionFrameworkElement));
-                    THROW_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), currentAction));
+                    pastLastPrimaryAction = true;
                 }
             }
-            else
+            else if (pastLastPrimaryAction && (mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary) && !overflowMaxActions)
             {
+                // If we have more primary actions than the max actions and we're not allowed to overflow them just set a warning and continue
                 renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MaxActionsExceeded,
                                           HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed")
                                               .Get());
+                return S_OK;
             }
-            currentAction++;
+            else
+            {
+                // If the action's mode is secondary or we're overflowing max actions, create a flyout item on the overflow menu
+                if (overflowButton == nullptr)
+                {
+                    // Create a button for the overflow menu if it doesn't exist yet
+                    RETURN_IF_FAILED(CreateFlyoutButton(renderContext, renderArgs, &overflowButton));
+                }
+
+                // Add a flyout item to the overflow menu
+                RETURN_IF_FAILED(AddOverflowFlyoutItem(action.Get(), overflowButton.Get(), renderContext, &actionControl));
+
+                // Show card actions in the overflow menu move to the action bar when selected, so we need to keep track
+                // of these so we can make non-visible buttons for them later. They need to go after all the actions we're creating as primary.
+                if (actionType == ActionType_ShowCard)
+                {
+                    showCardOverflowButtons.emplace_back(std::make_pair(action, actionControl));
+                }
+
+                // If this was supposed to be a primary action but it got overflowed due to max actions, add a warning
+                if (mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
+                {
+                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MaxActionsExceeded,
+                                              HStringReference(L"Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed")
+                                                  .Get());
+                }
+            }
+
             return S_OK;
         });
+
+        ComPtr<IUIElement> lastActionOverflowItem;
+        if (overflowButton != nullptr && showCardOverflowButtons.size() != 0)
+        {
+            // Show card actions from the overflow menu switch places with the last primary action when invoked.
+            // If we any primary actions, create a non-visible overflow item for the last primary action. This
+            // allows it to be moved to the overflow menu to make space for a show card action.
+
+            if (lastPrimaryAction != nullptr)
+            {
+                RETURN_IF_FAILED(AddOverflowFlyoutItem(lastPrimaryAction.Get(), overflowButton.Get(), renderContext, &lastActionOverflowItem));
+                RETURN_IF_FAILED(lastActionOverflowItem->put_Visibility(Visibility_Collapsed));
+            }
+
+            // Create non-visible primary buttons for all overflow show card actions so they can be moved to the action bar when invoked
+            for (auto& overflowShowCard : showCardOverflowButtons)
+            {
+                ComPtr<IUIElement> createdButton;
+                RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
+                                                               adaptiveActionSet,
+                                                               overflowShowCard.first.Get(),
+                                                               false,
+                                                               currentButtonIndex,
+                                                               actionsPanel.Get(),
+                                                               showCardsPanel.Get(),
+                                                               columnDefinitions.Get(),
+                                                               overflowShowCard.second.Get(),
+                                                               renderContext,
+                                                               renderArgs,
+                                                               &createdButton));
+                currentButtonIndex++;
+            }
+        }
+
+        // Now that we have the overflow item if needed, we can create the button for the last primary action
+        if (lastPrimaryAction != nullptr)
+        {
+            ComPtr<IUIElement> createdButton;
+            RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
+                                                           adaptiveActionSet,
+                                                           lastPrimaryAction.Get(),
+                                                           true,
+                                                           currentButtonIndex,
+                                                           actionsPanel.Get(),
+                                                           showCardsPanel.Get(),
+                                                           columnDefinitions.Get(),
+                                                           lastActionOverflowItem.Get(),
+                                                           renderContext,
+                                                           renderArgs,
+                                                           &createdButton));
+            currentButtonIndex++;
+        }
+
+        // Lastly add the overflow button itself to the action panel
+        if (overflowButton != nullptr)
+        {
+            // If using equal width columns, add another column and assign the it to the overflow button
+            if (columnDefinitions != nullptr)
+            {
+                ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
+                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+                RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
+                RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
+
+                ComPtr<IFrameworkElement> actionFrameworkElement;
+                THROW_IF_FAILED(overflowButton.As(&actionFrameworkElement));
+                THROW_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), currentButtonIndex));
+            }
+
+            // Add the overflow button to the panel
+            XamlHelpers::AppendXamlElementToPanel(overflowButton.Get(), actionsPanel.Get());
+
+            // Register the overflow button with the render context
+            ComPtr<IUIElement> overflowButtonAsUIElement;
+            overflowButton.As(&overflowButtonAsUIElement);
+
+            ComPtr<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext> contextImpl =
+                PeekInnards<AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext>(renderContext);
+
+            if (adaptiveActionSet != nullptr)
+            {
+                RETURN_IF_FAILED(contextImpl->AddOverflowButton(adaptiveActionSet, overflowButtonAsUIElement.Get()));
+            }
+            else
+            {
+                RETURN_IF_FAILED(contextImpl->AddOverflowButton(adaptiveCard, overflowButtonAsUIElement.Get()));
+            }
+        }
 
         // Reset icon placement value
         RETURN_IF_FAILED(renderArgs->put_AllowAboveTitleIconPlacement(false));

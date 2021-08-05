@@ -876,13 +876,15 @@ namespace UWPObjectModelTest
             string id,
             bool isEnabled,
             string title,
-            string style)
+            string style,
+            ActionMode mode)
         {
             Assert.AreEqual(iconUrl, element.IconUrl);
             Assert.AreEqual(id, element.Id);
             Assert.AreEqual(style, element.Style);
             Assert.AreEqual(title, element.Title);
             Assert.AreEqual(isEnabled, element.IsEnabled);
+            Assert.AreEqual(mode, element.Mode);
         }
 
         [TestMethod]
@@ -896,18 +898,19 @@ namespace UWPObjectModelTest
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
                 IsEnabled = false,
+                Mode = ActionMode.Secondary,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", false, "Title", "Destructive");
+            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", false, "Title", "Destructive", ActionMode.Secondary);
             Assert.AreEqual(url, openUrlAction.Url);
             Assert.AreEqual("I am a tooltip", openUrlAction.Tooltip);
 
             AdaptiveCard adaptiveCard = new AdaptiveCard();
             adaptiveCard.Actions.Add(openUrlAction);
 
-            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"isEnabled\":false,\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+            string expectedSerialization = "{\"actions\":[{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"isEnabled\":false,\"mode\":\"secondary\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.OpenUrl\",\"url\":\"http://www.stuff.com/\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
 
             var jsonString = adaptiveCard.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);
@@ -927,19 +930,20 @@ namespace UWPObjectModelTest
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
                 IsEnabled = true,
+                Mode = ActionMode.Secondary,
                 Style = "Destructive",
                 Title = "Title",
                 AssociatedInputs = AssociatedInputs.None
             };
 
-            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", true, "Title", "Destructive");
+            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", true, "Title", "Destructive", ActionMode.Secondary);
             Assert.AreEqual(dataJson, submitAction.DataJson);
             Assert.AreEqual("I am a tooltip", submitAction.Tooltip);
 
             AdaptiveCard adaptiveCard = new AdaptiveCard();
             adaptiveCard.Actions.Add(submitAction);
 
-            string expectedSerialization = "{\"actions\":[{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.Submit\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+            string expectedSerialization = "{\"actions\":[{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"mode\":\"secondary\",\"style\":\"Destructive\",\"title\":\"Title\",\"tooltip\":\"I am a tooltip\",\"type\":\"Action.Submit\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
 
             var jsonString = adaptiveCard.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);
@@ -960,12 +964,13 @@ namespace UWPObjectModelTest
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
                 IsEnabled = false,
+                Mode = ActionMode.Primary,
                 Style = "Destructive",
                 Title = "Title",
                 AssociatedInputs = AssociatedInputs.None
             };
 
-            ValidateBaseActionProperties(executeAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", false, "Title", "Destructive");
+            ValidateBaseActionProperties(executeAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", false, "Title", "Destructive", ActionMode.Primary);
             Assert.AreEqual(dataJson, executeAction.DataJson);
             Assert.AreEqual("doStuff", executeAction.Verb);
             Assert.AreEqual("I am a tooltip", executeAction.Tooltip);
@@ -991,11 +996,12 @@ namespace UWPObjectModelTest
                 Tooltip = "I am a tooltip",
                 Id = "OpenUrlId",
                 IsEnabled = true,
+                Mode = ActionMode.Primary,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", true, "Title", "Destructive");
+            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", true, "Title", "Destructive", ActionMode.Primary);
 
             Assert.AreEqual("I am a tooltip", showCardAction.Tooltip);
 
@@ -1039,11 +1045,12 @@ namespace UWPObjectModelTest
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "ToggleVisibilityId",
                 IsEnabled = false,
+                Mode = ActionMode.Primary,
                 Style = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", false, "Title", "Destructive");
+            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", false, "Title", "Destructive", ActionMode.Primary);
             Assert.AreEqual("I am a tooltip", toggleAction.Tooltip);
 
             toggleAction.TargetElements.Add(toggleTarget1);
