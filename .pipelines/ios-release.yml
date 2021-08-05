@@ -1,21 +1,12 @@
-# Variable 'ADCVERSION' was defined in the Variables tab
-# Variable 'COCOAPODTRUNKTOKEN' was defined in the Variables tab
-# Variable 'Configuration' was defined in the Variables tab
-# Variable 'P12password' was defined in the Variables tab
-# Variable 'SDK' was defined in the Variables tab
-# Variable 'TestConfiguration' was defined in the Variables tab
-# Variable 'TestSDK' was defined in the Variables tab
-# Agent Queue 'Azure Pipelines' was used with unrecognized Agent Specification, vmImage property must be specified to determine image - https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software
-
-pr: none
-trigger: none
-
 name: $(date:yyyyMMdd)$(rev:.r)
 resources:
   repositories:
   - repository: self
     type: git
     ref: release/21.04
+
+pr: none
+trigger: none
 
 pool:
   name: Azure Pipelines
@@ -64,11 +55,9 @@ jobs:
     inputs:
       command: run
       projects: source/ios/tools/IOSFeed/IOSFeed.csproj
-  - bash: |
-     cat ./source/ios/AdaptiveCards.podspec
-  # - task: Bash@3
-  #   displayName: Push To cocoapods
-  #   inputs:
-  #     targetType: inline
-  #     script: "# Write your commands here\n\n\nif type brew >/dev/null 2>&1;\nthen \n   brew upgrade cocoapods >/dev/null 2>&1; \n   brew install cocoapods >/dev/null 2>&1; \nfi\n\npod trunk push  ./source/ios/AdaptiveCards.podspec\n"
+  - task: Bash@3
+    displayName: Push To cocoapods
+    inputs:
+      targetType: inline
+      script: "# Write your commands here\n\n\nif type brew >/dev/null 2>&1;\nthen \n   brew upgrade cocoapods >/dev/null 2>&1; \n   brew install cocoapods >/dev/null 2>&1; \nfi\n\npod trunk push  ./source/ios/AdaptiveCards.podspec\n"
 
