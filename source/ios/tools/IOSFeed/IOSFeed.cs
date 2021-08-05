@@ -31,12 +31,13 @@ namespace AdaptiveCards.Tools.IOSFeed
         {
             try
             {
+                Console.WriteLine("Test");
                 // Run the examples asynchronously, wait for the results before proceeding
                 ProcessAsync().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Uploading taks failed with {0} exception", ex);
+                Console.WriteLine("Uploading task failed with {0} exception", ex);
             }
         }
 
@@ -54,6 +55,8 @@ namespace AdaptiveCards.Tools.IOSFeed
             {
                 storageConnectionString = sr.ReadToEnd();
             }
+
+            Console.WriteLine("Finished file read");
 
             // Check whether the connection string can be parsed.
             if (!CloudStorageAccount.TryParse(storageConnectionString, out CloudStorageAccount storageAccount))
