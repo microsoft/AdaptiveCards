@@ -2,16 +2,14 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveContainer.h"
-
 #include "ActionHelpers.h"
 #include "AdaptiveContainerRenderer.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -64,9 +62,9 @@ namespace AdaptiveCards::Rendering::Uwp
         }
 
         // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
-        ABI::AdaptiveCards::Rendering::Uwp::HeightType containerHeightType{};
+        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType containerHeightType{};
         RETURN_IF_FAILED(cardElement->get_Height(&containerHeightType));
-        if (containerHeightType == ABI::AdaptiveCards::Rendering::Uwp::HeightType::Auto)
+        if (containerHeightType == ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Auto)
         {
             RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Stretch));
         }
@@ -82,9 +80,9 @@ namespace AdaptiveCards::Rendering::Uwp
         }
 
         ComPtr<IBorder> containerBorder =
-            XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+            XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             containerAsContainerBase.Get(), containerBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -106,11 +104,11 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
         }
 
-        ComPtr<IReference<ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
         RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignmentReference));
 
-        ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment =
-            ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Top;
+        ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Top;
         if (verticalContentAlignmentReference != nullptr)
         {
             verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
@@ -126,7 +124,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (backgroundImageIsValid)
         {
             ComPtr<IGrid> rootElement =
-                XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+                XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
             ComPtr<IPanel> rootAsPanel;
             RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
 
@@ -171,19 +169,6 @@ namespace AdaptiveCards::Rendering::Uwp
                                           true,
                                           containerControl);
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveContainerRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveContainer, AdaptiveCards::Container, AdaptiveCards::ContainerParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

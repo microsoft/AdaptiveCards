@@ -13,12 +13,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
     public:
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMedia* media);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* media);
 
         // IAdaptiveMediaEventArgs
-        IFACEMETHODIMP get_Media(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMedia** media);
+        IFACEMETHODIMP get_Media(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia** media);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMedia> m_media;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia> m_media;
     };
 }

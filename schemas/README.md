@@ -1,5 +1,5 @@
 # Schema files
-
+Are you looking to make schema changes and don't know where to start? Make sure to check out our [contribution guidelines](https://github.com/Microsoft/AdaptiveCards/blob/main/.github/CONTRIBUTING.md) to get started.
 ## AdaptiveCard schema
 
 ### Referenceable versions

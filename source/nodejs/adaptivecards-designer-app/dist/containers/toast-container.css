@@ -132,14 +132,11 @@ a.ac-anchor:visited:active {
     height: 72px;
 }
 
-.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput {
-    height: 31px;
-}
-
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
     border: 2px solid #797979;
     padding: 4px 8px 4px 8px;
     background-color: #0C0C0C;
+    height: 31px;
 }
 
 .ac-input.ac-textInput:hover, .ac-input.ac-numberInput:hover, .ac-input.ac-dateInput:hover, .ac-input.ac-timeInput:hover, .ac-input.ac-multichoiceInput:hover {

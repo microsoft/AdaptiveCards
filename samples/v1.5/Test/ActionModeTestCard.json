@@ -1,0 +1,249 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/adaptive-card-50.png"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Overflow Action Test Card!",
+			"size": "Large",
+			"weight": "Bolder"
+		},
+		{
+			"type": "TextBlock",
+			"text": "ActionSet **all secondary actions**"
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.Submit",
+					"title": "Action Submit",
+					"data": {
+						"key": "Submit from overflow menu"
+					},
+					"mode": "secondary"
+				},
+				{
+					"type": "Action.OpenUrl",
+					"title": "OpenUrl",
+					"url": "https://github.com/Microsoft/AdaptiveCards",
+					"iconUrl": "https://www.clipartmax.com/png/full/211-2118815_file-novosel-mushroom-svg-mario-mushroom-icon.png",
+					"mode": "secondary"
+				},
+				{
+					"type": "Action.ShowCard",
+					"title": "Action ShowCard",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "TextBlock",
+								"text": "Secondary action show card",
+								"wrap": true
+							}
+						]
+					},
+					"mode": "secondary"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "ActionSet **primary + secondary actions**"
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.Submit",
+					"title": "Submit",
+					"tooltip": "Tooltip",
+					"data": {
+						"key": "Submit from primary action"
+					}
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Edit",
+					"tooltip": "Tooltip",
+					"data": {
+						"key": "Edit from overflow menu"
+					},
+					"mode": "secondary"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Delete",
+					"data": {
+						"key": "Delete"
+					},
+					"mode": "secondary"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Check actions.length > maxActions"
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.Submit",
+					"title": "Action 1"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action 2"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action 3"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action 4"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action 5"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action 6"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action 7"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action 8"
+				},
+				{
+					"type": "Action.Submit",
+					"title": "Action 9"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Show Card Tests",
+			"wrap": true
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.ShowCard",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "TextBlock",
+								"text": "Show Card for Primary 1",
+								"wrap": true
+							}
+						]
+					},
+					"title": "Primary 1"
+				},
+				{
+					"type": "Action.ShowCard",
+					"title": "Primary 2",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "TextBlock",
+								"text": "Show Card for Primary 2",
+								"wrap": true
+							}
+						]
+					}
+				},
+				{
+					"type": "Action.ShowCard",
+					"title": "Secondary 1",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "TextBlock",
+								"text": "Show Card for Secondary 1",
+								"wrap": true
+							}
+						]
+					},
+					"mode": "secondary"
+				},
+				{
+					"type": "Action.ShowCard",
+					"title": "Secondary 2",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "TextBlock",
+								"text": "Show card for secondary 2",
+								"wrap": true
+							}
+						]
+					},
+					"mode": "secondary"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "========= I am bottom line of body ========="
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "Primary OpenUrl",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.Submit",
+			"title": "Secondary Submit",
+			"data": {
+				"key": "Submit from overflow menu"
+			},
+			"mode": "secondary"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"iconUrl": "https://adaptivecards.io/content/cats/2.png",
+			"url": "https://adaptivecards.io",
+			"title": "Secondary OpenUrl",
+			"mode": "secondary"
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Secondary ShowCard",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "What do you think?"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Neat!"
+					}
+				]
+			},
+			"mode": "secondary"
+		}
+	]
+}

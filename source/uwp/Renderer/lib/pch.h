@@ -35,7 +35,6 @@
 
 // Commonly-used AdaptiveCardRenderer headers
 #include "AdaptiveCards.Rendering.Uwp.h"
-#include "AdaptiveCardElement.h"
 #include "ErrorHandling.h"
 #include "Util.h"
 #include "Vector.h"
