@@ -258,11 +258,11 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         else
         {
-            if (m_verticalContentAlignment == ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Center)
+            if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Center)
             {
                 currentHeight = (finalSize.Height - m_calculatedSize) / 2;
             }
-            else if (m_verticalContentAlignment == ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment::Bottom)
+            else if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Bottom)
             {
                 currentHeight = finalSize.Height - m_calculatedSize;
             }
@@ -446,7 +446,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return isStretchable;
     }
 
-    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::Rendering::Uwp::VerticalContentAlignment verticalContentAlignment)
+    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment)
     {
         m_verticalContentAlignment = verticalContentAlignment;
     }

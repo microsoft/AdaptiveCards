@@ -14,27 +14,27 @@ namespace AdaptiveCards::Rendering::Uwp
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(InputLabelConfig inputLabelConfig) noexcept;
 
-        IFACEMETHODIMP get_Color(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor* color);
-        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor color);
+        IFACEMETHODIMP get_Color(_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor* color);
+        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor color);
 
         IFACEMETHODIMP get_IsSubtle(_Outptr_ boolean* isSubtle);
         IFACEMETHODIMP put_IsSubtle(_In_ boolean isSubtle);
 
-        IFACEMETHODIMP get_Size(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::TextSize* size);
-        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::Rendering::Uwp::TextSize size);
+        IFACEMETHODIMP get_Size(_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::TextSize* size);
+        IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::TextSize size);
 
         IFACEMETHODIMP get_Suffix(_Outptr_ HSTRING* suffix);
         IFACEMETHODIMP put_Suffix(_In_ HSTRING suffix);
 
-        IFACEMETHODIMP get_Weight(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::TextWeight* weight);
-        IFACEMETHODIMP put_Weight(_In_ ABI::AdaptiveCards::Rendering::Uwp::TextWeight weight);
+        IFACEMETHODIMP get_Weight(_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight* weight);
+        IFACEMETHODIMP put_Weight(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight weight);
 
     private:
-        ABI::AdaptiveCards::Rendering::Uwp::ForegroundColor m_color;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor m_color;
         boolean m_isSubtle;
-        ABI::AdaptiveCards::Rendering::Uwp::TextSize m_size;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextSize m_size;
         Microsoft::WRL::Wrappers::HString m_suffix;
-        ABI::AdaptiveCards::Rendering::Uwp::TextWeight m_weight;
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight m_weight;
     };
     ActivatableClass(AdaptiveInputLabelConfig);
 }

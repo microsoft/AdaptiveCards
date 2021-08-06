@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCards.ObjectModel.Uwp;
 using Windows.Data.Json;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -43,7 +44,7 @@ namespace XamlCardVisualizer.CustomElements
         public bool Separator { get; set; }
         public Spacing Spacing { get; set; }
 
-        IList<AdaptiveRequirement> IAdaptiveCardElement.Requirements => throw new NotImplementedException();
+        IList<AdaptiveRequirement> IAdaptiveCardElement.Requirements { get; }
     }
 
 
@@ -67,7 +68,7 @@ namespace XamlCardVisualizer.CustomElements
         {
             TextBox textBox = new TextBox { Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0)), HorizontalAlignment = HorizontalAlignment.Right };
 
-            Border border = new Border{ BorderThickness = new Thickness(0), BorderBrush = new SolidColorBrush(Colors.Red), Child = textBox };
+            Border border = new Border { BorderThickness = new Thickness(0), BorderBrush = new SolidColorBrush(Colors.Red), Child = textBox };
 
             context.AddInputValue(new InputValue(element as CSharpKeywordInput, border), renderArgs);
 

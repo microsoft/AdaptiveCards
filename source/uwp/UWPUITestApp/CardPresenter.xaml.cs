@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using AdaptiveCards.Rendering.Uwp;
 using System.Collections.ObjectModel;
+using AdaptiveCards.ObjectModel.Uwp;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
