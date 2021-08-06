@@ -88,6 +88,16 @@ namespace AdaptiveCards::ObjectModel::Uwp
             return AdaptiveActionElementBase::get_IsEnabled(isEnabled);
         }
 
+        IFACEMETHODIMP get_Mode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode* mode) override
+        {
+            return AdaptiveActionElementBase::get_Mode(mode);
+        }
+
+        IFACEMETHODIMP put_Mode(ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode) override
+        {
+            return AdaptiveActionElementBase::put_Mode(mode);
+        }
+
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result) override
         {
             return AdaptiveActionElementBase::get_AdditionalProperties(result);

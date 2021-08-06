@@ -22,6 +22,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetStyle(), m_style.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetTooltip(), m_tooltip.GetAddressOf()));
+        m_mode = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode>(sharedModel->GetMode());
 
         m_isEnabled = sharedModel->GetIsEnabled();
 
@@ -105,6 +106,18 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
+    HRESULT AdaptiveActionElementBase::get_Mode(ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode* mode)
+    {
+        *mode = m_mode;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveActionElementBase::put_Mode(ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode)
+    {
+        m_mode = mode;
+        return S_OK;
+    }
+
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         return m_additionalProperties.CopyTo(result);
@@ -138,6 +151,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         sharedCardElement.SetTooltip(HStringToUTF8(m_tooltip.Get()));
         sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
         sharedCardElement.SetIsEnabled(m_isEnabled);
+        sharedCardElement.SetMode(static_cast<Mode>(m_mode));
 
         if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
         {
