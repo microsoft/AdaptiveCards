@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveChoiceSetInputRenderer.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "ParseUtil.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -31,7 +30,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"ChoiceSet was stripped from card because interactivity is not supported").Get());
             return S_OK;
         }
@@ -40,17 +39,17 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveChoiceSetInput> adaptiveChoiceSetInput;
         RETURN_IF_FAILED(cardElement.As(&adaptiveChoiceSetInput));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle choiceSetStyle;
         RETURN_IF_FAILED(adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
         boolean isMultiSelect;
         RETURN_IF_FAILED(adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
-        if (choiceSetStyle == ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle_Compact && !isMultiSelect)
+        if (choiceSetStyle == ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle_Compact && !isMultiSelect)
         {
             RETURN_IF_FAILED(BuildCompactChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput.Get(), choiceInputSet));
         }
-        else if (choiceSetStyle == ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle_Filtered)
+        else if (choiceSetStyle == ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle_Filtered)
         {
             RETURN_IF_FAILED(BuildFilteredChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput.Get(), choiceInputSet));
         }
@@ -60,19 +59,6 @@ namespace AdaptiveCards::Rendering::Uwp
         }
 
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveChoiceSetInputRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveChoiceSetInput, AdaptiveCards::ChoiceSetInput, AdaptiveCards::ChoiceSetInputParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 
@@ -109,7 +95,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                        _COM_Outptr_ IUIElement** choiceInputSet)
     {
         ComPtr<IComboBox> comboBox =
-            XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
+            XamlHelpers::CreateABIClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
 
         HString placeHolderText;
         ComPtr<IComboBox2> comboBox2;
@@ -131,7 +117,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IVector<IInspectable*>> itemsVector;
         RETURN_IF_FAILED(items.As(&itemsVector));
 
-        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput*>> choices;
+        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*>> choices;
         RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
@@ -140,12 +126,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
         int currentIndex = 0;
         int selectedIndex = -1;
-        IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveChoiceInput, IAdaptiveChoiceInput>(
+        IterateOverVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput, IAdaptiveChoiceInput>(
             choices.Get(), [&currentIndex, &selectedIndex, itemsVector, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
                 HString title;
                 RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
 
-                ComPtr<IComboBoxItem> comboBoxItem = XamlHelpers::CreateXamlClass<IComboBoxItem>(
+                ComPtr<IComboBoxItem> comboBoxItem = XamlHelpers::CreateABIClass<IComboBoxItem>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBoxItem));
 
                 XamlHelpers::SetContent(comboBoxItem.Get(), title.Get(), wrap);
@@ -207,7 +193,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
         ComPtr<IStackPanel> stackPanel =
-            XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+            XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         stackPanel->put_Orientation(Orientation::Orientation_Vertical);
 
         ComPtr<IPanel> panel;
@@ -224,7 +210,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 if (isMultiSelect)
                 {
                     ComPtr<ICheckBox> checkBox =
-                        XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+                        XamlHelpers::CreateABIClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
                     RETURN_IF_FAILED(checkBox.As(&choiceItem));
 
                     ComPtr<IFrameworkElement> frameworkElement;
@@ -237,7 +223,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 }
                 else
                 {
-                    ComPtr<IRadioButton> radioButton = XamlHelpers::CreateXamlClass<IRadioButton>(
+                    ComPtr<IRadioButton> radioButton = XamlHelpers::CreateABIClass<IRadioButton>(
                         HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RadioButton));
                     RETURN_IF_FAILED(radioButton.As(&choiceItem));
 
@@ -296,7 +282,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                         _COM_Outptr_ IUIElement** choiceInputSet)
     {
         ComPtr<IAutoSuggestBox> autoSuggestBox =
-            XamlHelpers::CreateXamlClass<IAutoSuggestBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_AutoSuggestBox));
+            XamlHelpers::CreateABIClass<IAutoSuggestBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_AutoSuggestBox));
 
         ComPtr<IItemsControl> autoSuggestBoxAsItemsControl;
         RETURN_IF_FAILED(autoSuggestBox.As(&autoSuggestBoxAsItemsControl));

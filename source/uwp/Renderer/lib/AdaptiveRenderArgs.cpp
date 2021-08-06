@@ -7,6 +7,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
@@ -15,7 +16,7 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize() noexcept { return S_OK; }
 
     // This constructor is kept so all elements keep working as expected
-    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
                                                        _In_opt_ IInspectable* parentElement,
                                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept
     try
@@ -33,9 +34,9 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle,
+    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
                                                        _In_opt_ IInspectable* parentElement,
-                                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* parentCard,
+                                                       _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* parentCard,
                                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept
     try
     {
@@ -52,13 +53,13 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveRenderArgs::get_ContainerStyle(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* value)
+    HRESULT AdaptiveRenderArgs::get_ContainerStyle(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* value)
     {
         *value = m_containerStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle value)
+    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle value)
     {
         m_containerStyle = value;
         return S_OK;

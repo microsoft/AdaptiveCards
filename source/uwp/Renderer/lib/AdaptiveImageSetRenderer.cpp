@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveImageSet.h"
 #include "AdaptiveImageSetRenderer.h"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -34,12 +33,12 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveImageSet> adaptiveImageSet;
         RETURN_IF_FAILED(cardElement.As(&adaptiveImageSet));
 
-        ComPtr<IVariableSizedWrapGrid> xamlGrid = XamlHelpers::CreateXamlClass<IVariableSizedWrapGrid>(
+        ComPtr<IVariableSizedWrapGrid> xamlGrid = XamlHelpers::CreateABIClass<IVariableSizedWrapGrid>(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_VariableSizedWrapGrid));
 
         RETURN_IF_FAILED(xamlGrid->put_Orientation(Orientation_Horizontal));
 
-        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage*>> images;
+        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*>> images;
         RETURN_IF_FAILED(adaptiveImageSet->get_Images(&images));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -47,10 +46,10 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveImageSetConfig> imageSetConfig;
         RETURN_IF_FAILED(hostConfig->get_ImageSet(&imageSetConfig));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize imageSize;
         RETURN_IF_FAILED(adaptiveImageSet->get_ImageSize(&imageSize));
 
-        if (imageSize == ABI::AdaptiveCards::Rendering::Uwp::ImageSize::None)
+        if (imageSize == ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize::None)
         {
             RETURN_IF_FAILED(imageSetConfig->get_ImageSize(&imageSize));
         }
@@ -61,13 +60,13 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
         if (imageRenderer != nullptr)
         {
-            ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+            ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
             RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
             ComPtr<AdaptiveRenderArgs> childRenderArgs;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, xamlGrid.Get(), renderArgs));
 
-            IterateOverVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveImage, ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImage>(
+            IterateOverVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage>(
                 images.Get(),
                 [imageSize, xamlGrid, renderContext, childRenderArgs, imageRenderer, imageSetConfig](IAdaptiveImage* adaptiveImage) {
                     ComPtr<IUIElement> uiImage;
@@ -94,7 +93,7 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         else
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::NoRendererForType,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::NoRendererForType,
                                       HStringReference(L"No renderer found for type: Image").Get());
             *imageSetControl = nullptr;
             return S_OK;
@@ -106,19 +105,6 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.ImageSet", imageSetAsFrameworkElement.Get()));
 
         return xamlGrid.CopyTo(imageSetControl);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveImageSetRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveImageSet, AdaptiveCards::ImageSet, AdaptiveCards::ImageSetParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

@@ -16,8 +16,8 @@ namespace AdaptiveCards::Rendering::Uwp
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(LabelConfig labelConfig) noexcept;
 
-        IFACEMETHODIMP get_InputSpacing(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing);
-        IFACEMETHODIMP put_InputSpacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing);
+        IFACEMETHODIMP get_InputSpacing(_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* spacing);
+        IFACEMETHODIMP put_InputSpacing(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing);
 
         IFACEMETHODIMP get_RequiredInputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig** requiredInputs);
         IFACEMETHODIMP put_RequiredInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* requiredInputs);
@@ -26,7 +26,7 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP put_OptionalInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* optionalInputs);
 
     private:
-        ABI::AdaptiveCards::Rendering::Uwp::Spacing m_inputSpacing;
+        ABI::AdaptiveCards::ObjectModel::Uwp::Spacing m_inputSpacing;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig> m_requiredInputs;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig> m_optionalInputs;

@@ -21,26 +21,35 @@ namespace AdaptiveCards::Rendering::Uwp
         HRESULT RuntimeClassInitialize() noexcept;
 
         // IAdaptiveCardRenderer
-        IFACEMETHODIMP put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
-        IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary);
-        IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig);
-        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig** hostConfig);
-        IFACEMETHODIMP put_FeatureRegistration(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration);
-        IFACEMETHODIMP get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration** featureRegistration);
-        IFACEMETHODIMP SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight);
-        IFACEMETHODIMP ResetFixedDimensions();
+        IFACEMETHODIMP put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) override;
+        IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary) override;
+        IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig) override;
+        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig** hostConfig) override;
+        IFACEMETHODIMP put_FeatureRegistration(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration) override;
+        IFACEMETHODIMP get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration** featureRegistration) override;
+        IFACEMETHODIMP SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight) override;
+        IFACEMETHODIMP ResetFixedDimensions() override;
 
-        IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* adaptiveCard,
-                                          _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result);
+        IFACEMETHODIMP get_OverflowMaxActions(_Out_ boolean* overflowMaxActions) override;
+        IFACEMETHODIMP put_OverflowMaxActions(boolean overflowMaxActions) override;
+
+        IFACEMETHODIMP get_OverflowButtonText(_Outptr_ HSTRING* overflowButtonText) override;
+        IFACEMETHODIMP put_OverflowButtonText(_In_ HSTRING overflowButtonText) override;
+
+        IFACEMETHODIMP get_OverflowButtonAccessibilityText(_Outptr_ HSTRING* overflowButtonAccessibilityText) override;
+        IFACEMETHODIMP put_OverflowButtonAccessibilityText(_In_ HSTRING overflowButtonAccessibilityText) override;
+
+        IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
+                                          _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result) override;
 
         IFACEMETHODIMP RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result);
+                                                        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result) override;
 
         IFACEMETHODIMP RenderAdaptiveCardFromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
-                                                  _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result);
+                                                  _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard** result) override;
 
-        IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration** result);
-        IFACEMETHODIMP get_ActionRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionRendererRegistration** result);
+        IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRendererRegistration** result) override;
+        IFACEMETHODIMP get_ActionRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionRendererRegistration** result) override;
 
         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* GetHostConfig();
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetMergedDictionary();
@@ -51,8 +60,6 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardResourceResolvers** value);
 
     private:
-        HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                 _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** adaptiveCard);
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
         HRESULT TryInsertResourceToSentimentResourceDictionary(const std::wstring& resourceName, _In_ IInspectable* value);
