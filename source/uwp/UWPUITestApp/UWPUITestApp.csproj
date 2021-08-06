@@ -125,7 +125,6 @@
     <Compile Include="CardPresenter.xaml.cs">
       <DependentUpon>CardPresenter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InputValuePropertyNameConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

@@ -34,7 +34,7 @@
         </Grid>
 
         <Grid Grid.Row="2">
-            <StackPanel Width="800" Height="600">
+            <StackPanel Width="600" Height="600">
                 <ContentPresenter x:Name="PagePresenter" />
             </StackPanel>
         </Grid>

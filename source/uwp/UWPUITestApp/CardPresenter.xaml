@@ -7,50 +7,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Page.Resources>
-        <local:InputValuePropertyNameConverter x:Key="InputNamePropertyConverter" />
-    </Page.Resources>
     
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400"/>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="600"/>
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="GridContainer" Grid.Column="0"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
 
-        <Grid Grid.Column="1" Background="Gray">
+        <ScrollViewer Height="500" Width="600" HorizontalScrollBarVisibility="Disabled" 
+                  VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="0">
+            <Grid x:Name="GridContainer" />
+        </ScrollViewer>
 
-            <TextBlock Text="" AutomationProperties.Name="RetrievedInputs_TextBlock" x:Name="RetrievedInputs_TextBlock" />
-
-<!--
-            <ItemsControl ItemsSource="{x:Bind Inputs}" x:Name="InputsItemsControl">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100" />
-                                <ColumnDefinition Width="100" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Path=Item1}" Grid.Column="0"/>
-                            <TextBlock Text="{Binding Path=Item2}" 
-                                       AutomationProperties.Name="{Binding Path=Item1, Converter={StaticResource InputNamePropertyConverter}}" 
-                                       Grid.Column="1"/>
-                        </Grid>
-
-                    </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            -->
-           
+        <Grid Grid.Column="0" Grid.Row="1" Background="LightGray">
+            <ScrollViewer Height="100" Width="600" HorizontalScrollBarVisibility="Disabled" 
+                  VerticalScrollBarVisibility="Auto">
+                <TextBlock Text="" AutomationProperties.Name="RetrievedInputs_TextBlock" 
+                           x:Name="RetrievedInputs_TextBlock" 
+                           TextWrapping="WrapWholeWords" />
+            </ScrollViewer>
         </Grid>
 
     </Grid>

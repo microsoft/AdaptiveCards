@@ -52,7 +52,28 @@ namespace UWPUITests
 
         public static UIObject FindFlyoutByAutomationId(string automationId)
         {
-            return Application.Instance.CoreWindow.Parent.Descendants.Find(automationId);
+            UIObject flyout = null;
+
+            try
+            {
+                flyout = Application.Instance.CoreWindow.Parent.Descendants.Find(automationId);
+            }
+            catch (Exception)
+            {
+                for (int i = 0; i < 5 && flyout == null; ++i)
+                {
+                    try
+                    {
+                        flyout = Application.Instance.CoreWindow.Parent.Descendants.Find(automationId);
+                    }
+                    catch (Exception)
+                    {
+                        // wait 500 ms while the flyout is not found
+                        Thread.Sleep(500);
+                    }
+                }
+            }
+            return flyout;
         }
 
         public static UIObject FindByMultiple(params object[] list)
