@@ -9,6 +9,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Globalization::DateTimeFormatting;
@@ -535,7 +536,7 @@ HRESULT CompactChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceS
 HRESULT CompactChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 try
 {
-    ABI::AdaptiveCards::Rendering::Uwp::ChoiceSetStyle choiceSetStyle;
+    ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle choiceSetStyle;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
     boolean isMultiSelect;

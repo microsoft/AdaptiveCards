@@ -5,13 +5,12 @@
 #include "AdaptiveColumnSetRenderer.h"
 
 #include "ActionHelpers.h"
-#include "AdaptiveColumnSet.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -37,7 +36,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(cardElement.As(&adaptiveColumnSet));
 
         ComPtr<IBorder> columnSetBorder =
-            XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+            XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
         ComPtr<WholeItemsPanel> gridContainer;
         RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&gridContainer));
@@ -50,7 +49,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveContainerBase> columnSetAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsContainerBase));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             columnSetAsContainerBase.Get(), columnSetBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -60,7 +59,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get(), renderArgs));
 
         ComPtr<IGrid> xamlGrid =
-            XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+            XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
@@ -74,7 +73,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         if (columnRenderer == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::NoRendererForType,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::NoRendererForType,
                                       HStringReference(L"No renderer found for type: Column").Get());
             *columnSetControl = nullptr;
             return S_OK;
@@ -100,12 +99,12 @@ namespace AdaptiveCards::Rendering::Uwp
             ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
             RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
 
-            ABI::AdaptiveCards::Rendering::Uwp::FallbackType fallbackType;
+            ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallbackType;
             RETURN_IF_FAILED(columnAsCardElement->get_FallbackType(&fallbackType));
 
             // Build the Column
             RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(
-                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::Rendering::Uwp::FallbackType::None));
+                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None));
 
             ComPtr<IUIElement> xamlColumn;
             HRESULT hr = columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn);
@@ -135,7 +134,7 @@ namespace AdaptiveCards::Rendering::Uwp
                     if (needsSeparator)
                     {
                         // Create a new ColumnDefinition for the separator
-                        ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(
+                        ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
                             HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
                         RETURN_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
                         RETURN_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
@@ -149,7 +148,7 @@ namespace AdaptiveCards::Rendering::Uwp
                 }
 
                 // Determine if the column is auto, stretch, or percentage width, and set the column width appropriately
-                ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(
+                ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
 
                 boolean isVisible;
@@ -200,7 +199,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveCardElement> columnSetAsCardElement;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsCardElement));
 
-        ABI::AdaptiveCards::Rendering::Uwp::HeightType columnSetHeightType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType columnSetHeightType;
         RETURN_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
 
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
@@ -226,19 +225,6 @@ namespace AdaptiveCards::Rendering::Uwp
                                           true,
                                           columnSetControl);
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveColumnSetRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveColumnSet, AdaptiveCards::ColumnSet, AdaptiveCards::ColumnSetParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

@@ -21,23 +21,25 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP AsJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** value);
         IFACEMETHODIMP AsValueSet(_COM_Outptr_ ABI::Windows::Foundation::Collections::IPropertySet** value);
 
-        IFACEMETHODIMP ValidateInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* submitAction,
+        IFACEMETHODIMP ValidateInputs(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* submitAction,
                                       boolean* inputsAreValid);
 
         HRESULT AddInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue,
                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
-        HRESULT LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* submitAction,
+        HRESULT LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* submitAction,
                                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
-        HRESULT LinkCardToParent(_In_ InternalId cardId, _In_ InternalId parentCardId);
+        HRESULT LinkCardToParent(UINT32 cardId, UINT32 parentCardId);
 
-        HRESULT GetInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement* inputElement,
+        HRESULT GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
                               _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue);
 
     private:
         std::string GetInputItemsAsJsonString();
-        void GetInputsToValidate(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* submitAction,
+        void GetInputsToValidate(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* submitAction,
                                  _Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>>& inputs);
         void GetAllInputs(_Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue>>& inputs);
+        HRESULT AdaptiveInputs::GetInternalIdFromAction(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
+                                                        _Out_ UINT32* actionInternalId);
 
         // Map with key: input id, value: input value class
         // This one has the collection of all input element values, this was introduced to be able to set the error
