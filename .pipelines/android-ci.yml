@@ -20,23 +20,14 @@ pool:
   vmImage: internal-macos-10.13
 
 steps:
-- task: Bash@3
-  displayName: Get NDK (won't be needed w/ Android Gradle Plugin 4.1+)
-  inputs:
-    targetType: inline
-    script: >-
-      #!/usr/bin/env bash
-
-      # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, 
-      unset ANDROID_NDK_HOME
-      ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.0.6113669"
-
 - task: Gradle@2
   displayName: gradlew build
   inputs:
     wrapperScript: source/android/gradlew
     cwd: source/android
     publishJUnitResults: false
+  env:
+    ANDROID_NDK_HOME: #unset this deprecated parameter
 
 - bash: |
    #!/usr/bin/env bash
