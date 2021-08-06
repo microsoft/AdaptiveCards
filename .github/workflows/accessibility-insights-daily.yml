@@ -1,4 +1,5 @@
 name: accessibility-insights-ci
+
 on:
   workflow_dispatch:
   schedule:
