@@ -239,6 +239,11 @@ static int kToggleVisibilityContext;
     return _stackView.arrangedSubviews;
 }
 
+- (NSArray<UIView *> *_Nonnull)getContentStackSubviews
+{
+    return _stackView.subviews;
+}
+
 - (void)addArrangedSubview:(UIView *)view
 {
     [_stackView addArrangedSubview:view];

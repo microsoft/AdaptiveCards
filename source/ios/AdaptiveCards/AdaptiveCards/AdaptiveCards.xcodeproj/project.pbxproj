@@ -41,6 +41,7 @@
 		6B124C9826B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */; };
 		6B124C9B26B9F7AD007E9641 /* ACOVisibilityManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9A26B9F7AD007E9641 /* ACOVisibilityManager.mm */; };
 		6B124C9D26B9FA64007E9641 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B124C9C26B9FA64007E9641 /* UIKit.framework */; };
+		6B124C9F26BCB2FE007E9641 /* ACOVisibilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B124C9926B9F6B1007E9641 /* ACOVisibilityManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B22425D21E80647000ACDA1 /* ACOParseContextPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B22425E21E80647000ACDA1 /* ACOParseContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B22425B21E80647000ACDA1 /* ACOParseContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B22425F21E80647000ACDA1 /* ACOParseContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22425C21E80647000ACDA1 /* ACOParseContext.mm */; };
@@ -872,13 +873,15 @@
 			name = Columns;
 			sourceTree = "<group>";
 		};
-		6B124C9E26BA0D49007E9641 /* ToggleVisibility */ = {
+		6B124C9E26BA0D49007E9641 /* Action.ToggleVisibility */ = {
 			isa = PBXGroup;
 			children = (
 				6B616C3D21CB1878003E29CE /* ACRToggleVisibilityTarget.h */,
 				6B616C3E21CB1878003E29CE /* ACRToggleVisibilityTarget.mm */,
+				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
+				6B616C4221CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.mm */,
 			);
-			name = ToggleVisibility;
+			name = Action.ToggleVisibility;
 			sourceTree = "<group>";
 		};
 		6B70ABA425797B720095D925 /* InputRenderers */ = {
@@ -1306,13 +1309,12 @@
 			isa = PBXGroup;
 			children = (
 				6BFF99DC2600121A0028069F /* Action.Execute */,
-				6B124C9E26BA0D49007E9641 /* ToggleVisibility */,
+				6B124C9E26BA0D49007E9641 /* Action.ToggleVisibility */,
 				6B250FB1253F5F8E007FFCFB /* ACRTargetBuilder.h */,
 				F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */,
 				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
 				6B696CD823202B1A00E1D607 /* ACRTargetBuilderDirector.h */,
 				6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */,
-				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				6B22425B21E80647000ACDA1 /* ACOParseContext.h */,
 				6B22425C21E80647000ACDA1 /* ACOParseContext.mm */,
 				6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */,
@@ -1326,7 +1328,6 @@
 				F4C1F5FD1F2C235E0018CB78 /* ACRActionShowCardRenderer.mm */,
 				F42979381F31458800E89914 /* ACRActionSubmitRenderer.h */,
 				F42979391F31458800E89914 /* ACRActionSubmitRenderer.mm */,
-				6B616C4221CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.mm */,
 				F4F6BA3A204F3109003741B6 /* ACRAggregateTarget.h */,
 				F4F6BA39204F3109003741B6 /* ACRAggregateTarget.mm */,
 				F4C1F5E91F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.h */,
@@ -1619,6 +1620,7 @@
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 				6B8C766726461E98009548FA /* ACOBundle.h in Headers */,
 				0D34860A261A859800614EB9 /* ACOActionOverflowPrivate.h in Headers */,
+				6B124C9F26BCB2FE007E9641 /* ACOVisibilityManager.h in Headers */,
 				6B92A7E62677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h in Headers */,
 				0D3485FD26193BA500614EB9 /* ACROverflowTarget.h in Headers */,
 				0D45F5A7261731E400EF03C5 /* ACRActionOverflowRenderer.h in Headers */,

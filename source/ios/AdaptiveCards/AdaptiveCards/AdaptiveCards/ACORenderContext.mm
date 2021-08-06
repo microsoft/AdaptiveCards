@@ -41,6 +41,7 @@
     NSMutableArray<NSNumber *> *_firstRowsAsheadersContext;
     NSMutableArray<NSNumber *> *_verticalAlignmentContext;
     NSMutableArray<NSNumber *> *_horizontalAlignmentContext;
+    NSMapTable<NSNumber *, NSObject<ACOIVisibilityManagerFacade> *> *_visibilityMap;
 }
 
 - (instancetype)init
@@ -55,6 +56,7 @@
         _firstRowsAsheadersContext = [[NSMutableArray alloc] init];
         _verticalAlignmentContext = [[NSMutableArray alloc] init];
         _horizontalAlignmentContext = [[NSMutableArray alloc] init];
+        _visibilityMap = [NSMapTable mapTableWithKeyOptions:NSMapTableStrongMemory valueOptions:NSMapTableWeakMemory];
     }
 
     return self;
@@ -315,6 +317,18 @@
     std::shared_ptr<AdaptiveCard> adaptiveCard = [card card];
     NSNumber *key = [NSNumber numberWithLong:(adaptiveCard->GetInternalId()).Hash()];
     [self removeContext:key];
+}
+
+- (void)registerVisibilityManager:(NSObject<ACOIVisibilityManagerFacade> *)manager targetViewTag:(NSUInteger)viewTag
+{
+    if (manager) {
+        [_visibilityMap setObject:manager forKey:[NSNumber numberWithLong:viewTag]];
+    }
+}
+
+- (NSObject<ACOIVisibilityManagerFacade> *)retrieveVisiblityManagerWithTag:(NSUInteger)viewTag
+{
+    return [_visibilityMap objectForKey:[NSNumber numberWithLong:viewTag]];
 }
 
 @end
