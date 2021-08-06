@@ -1,5 +1,5 @@
 # Specs
-
+If you are looking to write a spec for your feature please make sure to reference our [contribution guidelines](https://github.com/Microsoft/AdaptiveCards/blob/main/.github/CONTRIBUTING.md) and [spec template](https://github.com/microsoft/AdaptiveCards/blob/main/specs/SpecTemplate.md)
 ## Updating specs
 
 ### Setup
