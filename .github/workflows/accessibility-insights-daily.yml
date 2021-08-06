@@ -1,5 +1,6 @@
 name: accessibility-insights-ci
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 10 * * Mon-Fri' # 2AM PST (3AM PDT) Daily Scan (M-F)
 
