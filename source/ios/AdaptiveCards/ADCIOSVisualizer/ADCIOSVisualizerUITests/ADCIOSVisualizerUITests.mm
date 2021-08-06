@@ -109,9 +109,12 @@
     [self tapOnButtonWithText:Id];
     
     XCUIElement *enterTheDueDateDatePicker = testApp.datePickers[label];
-    [enterTheDueDateDatePicker.pickerWheels[year] tap];
-    [enterTheDueDateDatePicker.pickerWheels[month] tap];
-    [enterTheDueDateDatePicker.pickerWheels[day] tap];
+    
+    [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:0]         adjustToPickerWheelValue:month];
+    
+    [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:1] adjustToPickerWheelValue:day];
+    
+    [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:2] adjustToPickerWheelValue:year];
     
     // Dismiss the date picker
     [testApp.toolbars[@"Toolbar"].buttons[@"Done"] tap];

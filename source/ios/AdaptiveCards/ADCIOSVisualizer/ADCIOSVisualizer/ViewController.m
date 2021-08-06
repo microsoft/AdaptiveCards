@@ -241,7 +241,9 @@ CGFloat kFileBrowserWidth = 0;
     ACVTabView.hidden = YES;
 
     NSArray<UIStackView *> *buttons = [self buildButtonsLayout:fileBrowserView.centerXAnchor];
-    UIStackView *buttonLayout0 = buttons[0], *buttonLayout1 = buttons[1], *retrievedInputsLayout;
+    UIStackView *retrievedInputsLayout = [self buildRetrievedResultsLayout:fileBrowserView.centerXAnchor];
+    
+    UIStackView *buttonLayout0 = buttons[0], *buttonLayout1 = buttons[1];
 
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
@@ -266,7 +268,6 @@ CGFloat kFileBrowserWidth = 0;
     // retrieved input values json
     if ([self appIsBeingTested])
     {
-        retrievedInputsLayout = buttons[2];
         viewMap =
         NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, retrievedInputsLayout, chatWindow);
         formats = [NSArray arrayWithObjects:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]-[retrievedInputsLayout]-[chatWindow]-40@100-|",
@@ -523,9 +524,7 @@ CGFloat kFileBrowserWidth = 0;
 {
     NSArray<UIStackView *> *layout = @[ [self configureButtons:centerXAnchor distribution:UIStackViewDistributionFillEqually],
                                         [self configureButtons:centerXAnchor
-                                                  distribution:UIStackViewDistributionFill],
-    [self configureButtons:centerXAnchor
-              distribution:UIStackViewDistributionFill] ];
+                                                  distribution:UIStackViewDistributionFill] ];
 
     // try button
     self.tryButton = [self buildButton:@"Edit" selector:@selector(editText:)];
@@ -542,6 +541,14 @@ CGFloat kFileBrowserWidth = 0;
     // custon renderer button
     self.enableCustomRendererButton = [self buildButton:@"Enable Custom Renderer" selector:@selector(toggleCustomRenderer:)];
     [layout[1] addArrangedSubview:self.enableCustomRendererButton];
+   
+    return layout;
+}
+
+- (UIStackView *)buildRetrievedResultsLayout:(NSLayoutAnchor *)centerXAnchor
+{
+    UIStackView *layout = [self configureButtons:centerXAnchor
+                                    distribution:UIStackViewDistributionFill];
 
     if ([self appIsBeingTested])
     {
@@ -552,7 +559,7 @@ CGFloat kFileBrowserWidth = 0;
         self.retrievedInputsTextView = [self buildLabel:@"" withIdentifier:@"SubmitActionRetrievedResults"];
         
         // Add the label to the container
-        [layout[2] addArrangedSubview:self.retrievedInputsTextView];
+        [layout addArrangedSubview:self.retrievedInputsTextView];
     }
     
     return layout;
@@ -693,7 +700,7 @@ CGFloat kFileBrowserWidth = 0;
 - (BOOL)appIsBeingTested
 {
     // Uncomment this line for test recording
-    // return YES;
+    return YES;
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
     return [arguments containsObject:@"ui-testing"];
 }
