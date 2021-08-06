@@ -1,4 +1,4 @@
-name: accessibility-insights-ci
+name: accessibility-insights-daily
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     - cron: '0 10 * * Mon-Fri' # 2AM PST (3AM PDT) Daily Scan (M-F)
 
 jobs:
-    accessibility-scan:
+    accessibility-insights-daily:
         runs-on: ubuntu-latest
         steps:
             - name: Scan for accessibility issues
