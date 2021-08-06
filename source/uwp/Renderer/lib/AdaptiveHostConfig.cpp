@@ -101,6 +101,10 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextStylesConfig>(m_textStyles.GetAddressOf(), sharedHostConfig.GetTextStyles()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTableConfig>(m_table.GetAddressOf(), sharedHostConfig.GetTable()));
 
+        m_overflowMaxActions = false;
+        RETURN_IF_FAILED(m_overflowButtonText.Set(L"..."));
+        RETURN_IF_FAILED(m_overflowButtonAccessibilityText.Set(L"More Actions"));
+
         return S_OK;
     }
 
@@ -290,6 +294,38 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         m_table = tableConfig;
         return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_OverflowMaxActions(_Out_ boolean* overflowMaxActions)
+    {
+        *overflowMaxActions = m_overflowMaxActions;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::put_OverflowMaxActions(boolean overflowMaxActions)
+    {
+        m_overflowMaxActions = overflowMaxActions;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_OverflowButtonText(_Outptr_ HSTRING* overflowButtonText)
+    {
+        return m_overflowButtonText.CopyTo(overflowButtonText);
+    }
+
+    HRESULT AdaptiveHostConfig::put_OverflowButtonText(_In_ HSTRING overflowButtonText)
+    {
+        return m_overflowButtonText.Set(overflowButtonText);
+    }
+
+    HRESULT AdaptiveHostConfig::get_OverflowButtonAccessibilityText(_Outptr_ HSTRING* overflowButtonAccessibilityText)
+    {
+        return m_overflowButtonAccessibilityText.CopyTo(overflowButtonAccessibilityText);
+    }
+
+    HRESULT AdaptiveHostConfig::put_OverflowButtonAccessibilityText(_In_ HSTRING overflowButtonAccessibilityText)
+    {
+        return m_overflowButtonAccessibilityText.Set(overflowButtonAccessibilityText);
     }
 
     HRESULT AdaptiveHostConfig::get_FontTypes(_COM_Outptr_ IAdaptiveFontTypesDefinition** value)

@@ -25,7 +25,7 @@ namespace AdaptiveCards::Rendering::Uwp
     try
     {
         RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(action, renderArgs));
-        return ActionHelpers::BuildAction(action, renderContext, renderArgs, result);
+        return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
     }
     CATCH_RETURN;
 }
