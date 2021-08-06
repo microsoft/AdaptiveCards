@@ -110,7 +110,8 @@
     [arrangedSubviews addObject:viewToBeHidden];
     [arrangedSubviews addObject:padding];
     // if column width is 'auto' and there isn't a view, padding disapears
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init:@{@"columnWidth" : @"auto"}];
+    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
+    manager.columnWidth = @"auto";
     manager.padding = padding;
     [manager hideView:viewToBeHidden arrangedSubviews:arrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
@@ -127,7 +128,8 @@
     NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
     [arrangedSubviews addObject:viewToBeHidden];
     [arrangedSubviews addObject:padding];
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init:@{@"columnWidth" : @"stretch"}];
+    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
+    manager.columnWidth = @"stretch";
     manager.padding = padding;
     [manager hideView:viewToBeHidden arrangedSubviews:arrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
@@ -149,7 +151,8 @@
     [arrangedSubviews addObject:viewToBeHidden1];
     [arrangedSubviews addObject:padding];
     // even if column width is 'auto', if there is a view padding doesn't disapear
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init:@{@"columnWidth" : @"auto"}];
+    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
+    manager.columnWidth = @"auto";
     manager.padding = padding;
     [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
@@ -175,7 +178,8 @@
     [arrangedSubviews addObject:viewToBeHidden1];
     [arrangedSubviews addObject:padding];
     // even if column width is 'auto', if there is a view padding doesn't disapear
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init:@{@"columnWidth" : @"auto"}];
+    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
+    manager.columnWidth = @"auto";
     manager.padding = padding;
     [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
     [manager hideView:viewToBeHidden1 arrangedSubviews:arrangedSubviews];
