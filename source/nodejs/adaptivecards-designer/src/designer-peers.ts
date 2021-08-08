@@ -2684,7 +2684,16 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
     static readonly defaultValueProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "defaultValue", "Default value");
     static readonly placeholderProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "placeholder", "Placeholder");
     static readonly isMultiselectProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isMultiSelect", "Allow multi selection");
-    static readonly isCompactProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isCompact", "Compact style");
+    static readonly styleProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_0,
+        "style",
+        "Style",
+        [
+            { targetVersion: Adaptive.Versions.v1_0, name: "Compact", value: "compact" },
+            { targetVersion: Adaptive.Versions.v1_0, name: "Expanded", value: "expanded" },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Filtered", value: "filtered" }
+        ],
+        true);
     static readonly wrapProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_2, "wrap", "Wrap");
     static readonly choicesProperty = new NameValuePairPropertyEditor(
         Adaptive.Versions.v1_0,
@@ -2704,7 +2713,7 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
             defaultCategory,
             ChoiceSetInputPeer.placeholderProperty,
             ChoiceSetInputPeer.isMultiselectProperty,
-            ChoiceSetInputPeer.isCompactProperty,
+            ChoiceSetInputPeer.styleProperty,
             ChoiceSetInputPeer.defaultValueProperty);
 
         propertySheet.add(

@@ -101,7 +101,7 @@ class TestUtil:
                 collect_properties, design_object.get("object")
             )
             property_element = property_object(
-                image, design_object.get("coords")
+                image, design_object.get("coordinates")
             )
             design_object.update(property_element)
         return [
@@ -129,8 +129,12 @@ class BaseSetUpClass(
         self.json_objects, _ = self.test_util.collect_json_objects(
             self.image, self.model_instance
         )
-        self.test_coord1 = self.json_objects["objects"][0].get("coords", [])
-        self.test_coord2 = self.json_objects["objects"][1].get("coords", [])
+        self.test_coord1 = self.json_objects["objects"][0].get(
+            "coordinates", []
+        )
+        self.test_coord2 = self.json_objects["objects"][1].get(
+            "coordinates", []
+        )
         self._started_at = time.time()
 
     def tearDown(self):

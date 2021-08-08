@@ -24,7 +24,7 @@ namespace AdaptiveCards::Rendering::Uwp
         m_actionsOrientation = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation>(actionsConfig.actionsOrientation);
         m_buttonSpacing = actionsConfig.buttonSpacing;
         m_maxActions = actionsConfig.maxActions;
-        m_spacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(actionsConfig.spacing);
+        m_spacing = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::Spacing>(actionsConfig.spacing);
         m_iconPlacement = static_cast<ABI::AdaptiveCards::Rendering::Uwp::IconPlacement>(actionsConfig.iconPlacement);
         m_iconSize = actionsConfig.iconSize;
 
@@ -69,13 +69,13 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* value)
+    HRESULT AdaptiveActionsConfig::get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* value)
     {
         *value = m_spacing;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing value)
+    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveCards::ObjectModel::Uwp::Spacing value)
     {
         m_spacing = value;
         return S_OK;

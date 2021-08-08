@@ -1,0 +1,208 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Table with gridlines",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 1
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "showGridLines value",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Behavior",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "true",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Cells are separated by 1px width gridlines",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "false",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Cells are separated by the cell spacing value configued in hostconfig",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Table without gridlines",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 1
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "showGridLines value",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Behavior",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "true",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Cells are separated by 1px width gridlines",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "false",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Cells are separated by the cell spacing value configued in hostconfig",
+									"wrap": true
+								}
+							],
+							"style": "accent"
+						}
+					]
+				}
+			],
+			"showGridLines": false
+		}
+	]
+}

@@ -279,6 +279,7 @@ xcuserdata/
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.Rendering.Uwp.h
+**/UWP/AdaptiveCardsObjectModel/AdaptiveCards.ObjectModel.Uwp.h
 *.binlog
 source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js
 source/nodejs/adaptivecards-visualizer/built/visualizer-with-renderer.js

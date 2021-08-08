@@ -105,8 +105,9 @@
 				"acd-icon-feedback",
 				function () {
 					window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
-						+ encodeURIComponent("[Designer] [Your feedback title here]")
-						+ "&body=" + encodeURIComponent("[Your detailed feedback here]"))
+						+ encodeURIComponent("[Designer] Feedback title here")
+						+ "&labels=" + encodeURIComponent("Bug,Triage-Needed,Area-Designer")
+						+ "&template=" + encodeURIComponent("designer-bug-report.md"))
 				}
 			);
 
