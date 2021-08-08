@@ -34,7 +34,7 @@ jobs:
         sudo rm -rf /var/lib/apt/lists/*
         
         python -m pip install --upgrade pip
-        pip install pytest pylint black
+        pip install pytest pylint==2.9.3 black
         if [ -f requirements/requirements.txt ]; then pip install -r requirements/requirements.txt; fi
         if [ -f requirements/requirements-frozen_graph.txt ]; then pip install -r requirements/requirements-frozen_graph.txt; fi        
         if [ -f requirements/requirements-dev.txt ]; then pip install -r requirements/requirements-dev.txt; fi
