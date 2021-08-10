@@ -114,13 +114,31 @@ export const defaultThemeConfig = {
         inactiveColor: Constants.LightBlack,
     },
     dropdown: {
-        flexDirection: Constants.FlexRow,
-        justifyContent: Constants.SpaceBetween,
-        alignItems: Constants.FlexEnd,
-        borderWidth: 1,
-        backgroundColor: Constants.WhiteColor,
-        borderColor: Constants.LightGreyColor,
-        borderRadius: 5,
+        ios: {
+            flexDirection: Constants.FlexRow,
+            justifyContent: Constants.SpaceBetween,
+            alignItems: Constants.FlexEnd,
+            borderWidth: 1,
+            backgroundColor: Constants.WhiteColor,
+            borderColor: Constants.LightGreyColor,
+            borderRadius: 5,
+        },
+        android: {
+            borderWidth: 1,
+            backgroundColor: Constants.WhiteColor,
+            borderColor: Constants.LightGreyColor,
+            borderRadius: 5,
+            backgroundColor: Constants.LightGreyColor,
+        },
+        windows: {
+            flexDirection: Constants.FlexRow,
+            justifyContent: Constants.SpaceBetween,
+            alignItems: Constants.FlexEnd,
+            borderWidth: 1,
+            backgroundColor: Constants.WhiteColor,
+            borderColor: Constants.LightGreyColor,
+            borderRadius: 5,
+        }
     },
     dropdownText: {
         color: Constants.BlackColor,
