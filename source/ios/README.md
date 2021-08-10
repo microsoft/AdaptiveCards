@@ -170,3 +170,10 @@ For more information on NSAppTransportSecurity plese check here https://develope
 Add SafariServices.framework for openning web pages
 project file -> Targets -> Linked Frameworks and Libraries -> add
 
+## Testing
+
+The iOS Renderer currently supports the following type of testing:
+
+| Type | Project | Location |
+| --- | --- | --- |
+| Unit tests | AdaptiveCardsTests | [Location](./AdaptiveCards/AdaptiveCards/AdaptiveCardsTests/) | 

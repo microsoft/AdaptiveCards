@@ -13,3 +13,12 @@ Since Adaptive Cards are hosted directly within the Windows OS we had implementa
 ## How to test
 
 To run the test project, see the [AdaptiveCardTestApp](AdaptiveCardTestApp/README.md) folder
+
+## Testing
+
+The UWP Renderer currently supports the following type of testing:
+
+| Type | Project | Location |
+| --- | --- | --- |
+| Unit tests | UWPUnitTests | [Location](./UWPUnitTests) |
+| UI tests | UWPUITests | [Location](./UWPUITests) |
