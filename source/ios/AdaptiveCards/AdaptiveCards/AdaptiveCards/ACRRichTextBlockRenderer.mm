@@ -105,8 +105,9 @@
 
                 // Obtain text color to apply to the attributed string
                 ACRContainerStyle style = lab.style;
+                auto textColor = textRun->GetTextColor().value_or(ForegroundColor::Default);
                 auto foregroundColor = [acoConfig getTextBlockColor:style
-                                                          textColor:textRun->GetTextColor().value_or(ForegroundColor::Default)
+                                                          textColor:textColor
                                                        subtleOption:textRun->GetIsSubtle().value_or(false)];
 
                 // Config and add Select Action
@@ -122,19 +123,21 @@
                         [textRunContent addAttribute:@"SelectAction"
                                                value:target
                                                range:selectActionRange];
+
                         [ACRLongPressGestureRecognizerFactory
                             addTapGestureRecognizerToUITextView:lab
                                                          target:(NSObject<ACRSelectActionDelegate>
                                                                      *)target
                                                        rootView:rootView
                                                      hostConfig:acoConfig];
-
-                        [textRunContent addAttribute:NSUnderlineStyleAttributeName
-                                               value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
-                                               range:selectActionRange];
-                        [textRunContent addAttribute:NSUnderlineColorAttributeName
-                                               value:foregroundColor
-                                               range:selectActionRange];
+                        if (textColor == ForegroundColor::Default) {
+                            if (@available(iOS 13.0, *)) {
+                                foregroundColor = UIColor.linkColor;
+                            } else {
+                                // Fallback on earlier versions
+                                foregroundColor = [ACOHostConfig convertHexColorCodeToUIColor:"#007affff"];
+                            }
+                        }
                     }
                 }
 
