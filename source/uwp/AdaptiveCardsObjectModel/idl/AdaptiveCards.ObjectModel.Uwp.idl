@@ -225,6 +225,11 @@ namespace AdaptiveCards
                 ColumnHeader,
             } TextStyle;
 
+            [version(NTDDI_WIN10_RS1)] typedef[v1_enum] enum ActionMode {
+                Primary = 0,
+                Secondary,
+            } ActionMode;
+
             declare { interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>; }
 
             interface IAdaptiveCardElement
@@ -647,6 +652,7 @@ namespace AdaptiveCards
                 String Tooltip;
                 Windows.Data.Json.JsonObject AdditionalProperties;
                 Boolean IsEnabled;
+                ActionMode Mode;
 
                 Windows.Data.Json.JsonObject ToJson();
             };
