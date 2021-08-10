@@ -182,28 +182,42 @@ export class ChoiceSetInput extends React.Component {
 					</View>
 				</TouchableOpacity>}
 				{((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
-					<Picker
-						mode={'dropdown'}
-						itemStyle={this.styleConfig.picker}
-						selectedValue={this.getPickerInitialValue(addInputItem)}
-						onValueChange={
-							(itemValue) => {
-								this.setState({
-									selectedPickerValue: itemValue,
-									isError: false
-								})
-								addInputItem(this.id, { value: itemValue, errorState: false });
-							}}>
-						{this.choices.map((item, key) => (
-							<Picker.Item
-								label={item.title}
-								value={item.value} key={key}
-							/>)
-						)}
-					</Picker>
+					this.getPickerComponent(addInputItem)
 				}
 			</View>
 		)
+	}
+
+	getPickerComponent(addInputItem) {
+		let picker = (
+			<Picker
+				mode={'dropdown'}
+				itemStyle={this.styleConfig.picker}
+				selectedValue={this.getPickerInitialValue(addInputItem)}
+				onValueChange={
+					(itemValue) => {
+						this.setState({
+							selectedPickerValue: itemValue,
+							isError: false
+						})
+						addInputItem(this.id, { value: itemValue, errorState: false });
+					}}>
+				{this.choices.map((item, key) => (
+					<Picker.Item
+						label={item.title}
+						value={item.value} key={key}
+					/>)
+				)}
+			</Picker>
+		);
+		if (Platform.OS == Constants.PlatformAndroid) {
+			picker = (
+				<View style={this.styleConfig.dropdown}>
+					{picker}
+				</View>
+			)
+		}
+		return picker;
 	}
 
 	/**
