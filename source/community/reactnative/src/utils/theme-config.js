@@ -16,6 +16,7 @@ export class ThemeConfig {
         this.dropdownText = new Config(ThemeElement.DropdownText, obj);
         this.picker = new Config(ThemeElement.Picker, obj);
         this.dateTimePicker = new Config(ThemeElement.DateTimePicker, obj)
+        this.switch = new Config(ThemeElement.Switch, obj);
     }
 }
 
@@ -143,5 +144,10 @@ export const defaultThemeConfig = {
         width: Constants.FullWidth,
         textColor: Constants.BlackColor
     },
-
+    /// Based on React-Native props of the same name that can be passed to switch.
+    switch: {
+        trackColor: undefined, /// Object of type {true: color; false: color} (See RN Docs)
+        thumbColor: undefined, 
+        ios_backgroundColor: undefined
+    },
 }
