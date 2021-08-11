@@ -261,24 +261,23 @@ CGFloat kFileBrowserWidth = 0;
     [self.view addSubview:self.chatWindow];
 
     UITableView *chatWindow = self.chatWindow;
-    NSDictionary *viewMap;
-    NSArray<NSString *> *formats;
     
     // if the app is being tested we render an extra layout that contains the
     // retrieved input values json
+    NSString *layoutOption = [self appIsBeingTested] ? @"-[retrievedInputsLayout]-" : @"-";
+    NSString *verticalFormat = [NSString stringWithFormat:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]%@[chatWindow]-40@100-|", layoutOption];
+    NSArray<NSString *> *formats = [NSArray arrayWithObjects:verticalFormat, @"H:|-[chatWindow]-|", nil];
+    
+    NSDictionary *viewMap;
     if ([self appIsBeingTested])
     {
         viewMap =
         NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, retrievedInputsLayout, chatWindow);
-        formats = [NSArray arrayWithObjects:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]-[retrievedInputsLayout]-[chatWindow]-40@100-|",
-                         @"H:|-[chatWindow]-|", nil];
     }
     else
     {
         viewMap =
         NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, chatWindow);
-        formats = [NSArray arrayWithObjects:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]-[chatWindow]-40@100-|",
-                         @"H:|-[chatWindow]-|", nil];
     }
 
     [ViewController applyConstraints:formats variables:viewMap];
@@ -338,7 +337,7 @@ CGFloat kFileBrowserWidth = 0;
         // we show the label in a popup
         if ([self appIsBeingTested])
         {
-            NSString *str2 = [NSString stringWithFormat:@"{\n\"inputs\":%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
+            NSString *str2 = [NSString stringWithFormat:@"{\n\t\"inputs\":%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
             [self.retrievedInputsTextView setText:str2];
         }
         else
@@ -681,26 +680,33 @@ CGFloat kFileBrowserWidth = 0;
 {
     dispatch_async(_global_queue,
                    ^{
-                       [self.chatWindow beginUpdates];
-                       [self.chatWindow endUpdates];
-
+                       
                        // This lines are required for updating the element tree after a
                        // show card action has taken place, otherwise no previously hidden
                        // element can be retrieved
                        if ([self appIsBeingTested])
                        {
-                           NSIndexPath* index = [NSIndexPath indexPathForRow:0 inSection:0];
-                           NSArray* indexPath = [NSArray arrayWithObjects:index, nil];
-                           [self.chatWindow reloadRowsAtIndexPaths:indexPath withRowAnimation:UITableViewRowAnimationNone];
-                       }
-        
+                            [self.chatWindow beginUpdates];
+                            
+                            NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
+                            NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+                            // reload the row; it is possible that the row height, for example, is calculated without images loaded
+                            [self.chatWindow reloadRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+
+                            [self.chatWindow endUpdates];
+                        }
+                       else
+                       {
+                            [self.chatWindow beginUpdates];
+                            [self.chatWindow endUpdates];
+                        }
     });
 }
 
 - (BOOL)appIsBeingTested
 {
     // Uncomment this line for test recording
-    return YES;
+    // return YES;
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
     return [arguments containsObject:@"ui-testing"];
 }

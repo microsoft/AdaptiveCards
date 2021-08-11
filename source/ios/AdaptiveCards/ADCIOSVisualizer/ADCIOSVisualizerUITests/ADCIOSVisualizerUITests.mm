@@ -10,14 +10,16 @@
 #import <AdaptiveCards/ACFramework.h>
 #import <XCTest/XCTest.h>
 #include <string>
+
 @interface ADCIOSVisualizerUITests : XCTestCase
-{
-    XCUIApplication* testApp;
-}
+
 @end
 
 @implementation ADCIOSVisualizerUITests
-
+{
+    XCUIApplication* testApp;
+}
+    
 - (void)setUp
 {
     [super setUp];
@@ -41,13 +43,17 @@
 - (void)resetTestEnvironment
 {
     XCUIElementQuery* buttons = testApp.buttons;
+    const int cardDepthLimit = 3;
     
     // try to find Back button and tap it while it appears
     XCUIElement* backButton = buttons[@"Back"];
-    while ([backButton exists])
+    
+    int backButtonPressedCount = 0;
+    while ([backButton exists] && backButtonPressedCount < cardDepthLimit)
     {
         [backButton tap];
         backButton = buttons[@"Back"];
+        ++backButtonPressedCount;
     }
     
     // tap on delete all cards button
@@ -110,7 +116,7 @@
     
     XCUIElement *enterTheDueDateDatePicker = testApp.datePickers[label];
     
-    [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:0]         adjustToPickerWheelValue:month];
+    [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:0] adjustToPickerWheelValue:month];
     
     [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:1] adjustToPickerWheelValue:day];
     
@@ -162,7 +168,7 @@
 
     [buttons[@"Done"] tap];
     [buttons[@"OK"] tap];
-        
+
     NSString* resultsString = [self getInputsString];
     NSDictionary* resultsDictionary = [self parseJsonToDictionary:resultsString];
     NSDictionary* inputs = [self getInputsFromResultsDictionary:resultsDictionary];
