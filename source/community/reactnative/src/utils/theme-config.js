@@ -144,7 +144,7 @@ export const defaultThemeConfig = {
         width: Constants.FullWidth,
         textColor: Constants.BlackColor
     },
-    /// Based on React-Native props of the same name that can be passed to switch.
+    /// (Input.Toggle) Based on React-Native props of the same name that can be passed to switch.
     switch: {
         trackColor: undefined, /// Object of type {true: color; false: color} (See RN Docs)
         thumbColor: undefined, 
