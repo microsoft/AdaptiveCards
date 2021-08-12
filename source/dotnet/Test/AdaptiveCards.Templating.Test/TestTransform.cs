@@ -12657,7 +12657,7 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
-        public void TestWhenWithArrayWithPropoerCommanRemoval()
+        public void TestWhenWithArrayWithProperCommaRemoval()
         {
             string jsonTemplate =
                 @"{
