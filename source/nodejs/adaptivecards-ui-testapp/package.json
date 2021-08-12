@@ -33,12 +33,6 @@
 	"dependencies": {
 		"adaptivecards-controls": "^0.9.0-beta.1"
 	},
-	"peerDependencies": {
-		"adaptive-expressions": "^4.11.0",
-		"adaptivecards": "^2.9.0",
-		"adaptivecards-templating": "^2.1.0",
-		"monaco-editor": "^0.20.0"
-	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
