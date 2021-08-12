@@ -53,10 +53,8 @@ using namespace AdaptiveCards;
 
         picker.locale = [NSLocale currentLocale];
 
-        self.isAccessibilityElement = YES;
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
-        self.accessibilityIdentifier = self.id;
 
         self.isRequired = elem->GetIsRequired();
 
