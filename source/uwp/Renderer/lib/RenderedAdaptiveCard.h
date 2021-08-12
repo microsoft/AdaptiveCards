@@ -52,13 +52,25 @@ namespace AdaptiveCards::Rendering::Uwp
 
         HRESULT AddInlineShowCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
                                   _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
+                                  UINT32 primaryButtonIndex,
                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
 
         HRESULT AddInlineShowCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
                                   _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
+                                  UINT32 primaryButtonIndex,
                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
+
+        HRESULT AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement);
+
+        HRESULT AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* actionCard,
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement);
 
         HRESULT AddInputValue(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue* inputValue,
                               _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* containerCardId);
@@ -80,7 +92,10 @@ namespace AdaptiveCards::Rendering::Uwp
 
         HRESULT AddInlineShowCardHelper(UINT32 internalId,
                                         _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                        _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                        _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
+                                        _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
+                                        _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
+                                        UINT32 primaryButtonIndex,
                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard> m_originatingCard;
@@ -92,9 +107,12 @@ namespace AdaptiveCards::Rendering::Uwp
         std::shared_ptr<ActionEventSource> m_actionEvents;
         std::shared_ptr<MediaEventSource> m_mediaClickedEvents;
 
-        // Map of rendered show cards. The key is the id of the show card action, and the value is a pair made up of the
-        // id of the action set (InvalidId for actions in the bottom action bar) and the UIElement for the card.
-        std::unordered_map<UINT32, std::pair<UINT32, Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>>> m_showCards;
+        // Map of rendered show cards. The key is the id of the show card action, and the value is the ShowCardInfo structure for that show card
+        std::unordered_map<UINT32, std::shared_ptr<ShowCardInfo>> m_showCards;
+
+        // Map of the rendered overflow buttons keyed on action set Id. This is needed to move buttons around when a
+        // show card from an overflow menu needs to be moved to a primary button in the action set
+        std::unordered_map<UINT32, Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>> m_overflowButtons;
     };
 
     ActivatableClass(RenderedAdaptiveCard);

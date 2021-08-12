@@ -124,6 +124,42 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
+    HRESULT AdaptiveCardRenderer::get_OverflowMaxActions(_Out_ boolean* overflowMaxActions)
+    {
+        ComPtr<AdaptiveHostConfig> hostConfigImpl = PeekInnards<AdaptiveHostConfig>(m_hostConfig);
+        return hostConfigImpl->get_OverflowMaxActions(overflowMaxActions);
+    }
+
+    HRESULT AdaptiveCardRenderer::put_OverflowMaxActions(boolean overflowMaxActions)
+    {
+        ComPtr<AdaptiveHostConfig> hostConfigImpl = PeekInnards<AdaptiveHostConfig>(m_hostConfig);
+        return hostConfigImpl->put_OverflowMaxActions(overflowMaxActions);
+    }
+
+    HRESULT AdaptiveCardRenderer::get_OverflowButtonText(_Outptr_ HSTRING* overflowButtonText)
+    {
+        ComPtr<AdaptiveHostConfig> hostConfigImpl = PeekInnards<AdaptiveHostConfig>(m_hostConfig);
+        return hostConfigImpl->get_OverflowButtonText(overflowButtonText);
+    }
+
+    HRESULT AdaptiveCardRenderer::put_OverflowButtonText(_In_ HSTRING overflowButtonText)
+    {
+        ComPtr<AdaptiveHostConfig> hostConfigImpl = PeekInnards<AdaptiveHostConfig>(m_hostConfig);
+        return hostConfigImpl->put_OverflowButtonText(overflowButtonText);
+    }
+
+    HRESULT AdaptiveCardRenderer::get_OverflowButtonAccessibilityText(_Outptr_ HSTRING* overflowButtonAccessibilityText)
+    {
+        ComPtr<AdaptiveHostConfig> hostConfigImpl = PeekInnards<AdaptiveHostConfig>(m_hostConfig);
+        return hostConfigImpl->get_OverflowButtonAccessibilityText(overflowButtonAccessibilityText);
+    }
+
+    HRESULT AdaptiveCardRenderer::put_OverflowButtonAccessibilityText(_In_ HSTRING overflowButtonAccessibilityText)
+    {
+        ComPtr<AdaptiveHostConfig> hostConfigImpl = PeekInnards<AdaptiveHostConfig>(m_hostConfig);
+        return hostConfigImpl->put_OverflowButtonAccessibilityText(overflowButtonAccessibilityText);
+    }
+
     HRESULT AdaptiveCardRenderer::RenderAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard, _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
         ComPtr<::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard> renderedCard;
@@ -184,9 +220,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardStatics> adaptiveCardStatics;
-        RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard).Get(),
-                                 &adaptiveCardStatics));
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard).Get(),
+                                              &adaptiveCardStatics));
 
         RETURN_IF_FAILED(adaptiveCardStatics->FromJsonString(adaptiveJson, &adaptiveCardParseResult));
 

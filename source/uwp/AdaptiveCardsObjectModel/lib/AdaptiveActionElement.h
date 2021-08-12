@@ -36,6 +36,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_IsEnabled(_Out_ boolean* isEnabled);
         IFACEMETHODIMP put_IsEnabled(boolean isEnabled);
 
+        IFACEMETHODIMP get_Mode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode* mode);
+        IFACEMETHODIMP put_Mode(ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode);
+
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
@@ -57,5 +60,6 @@ namespace AdaptiveCards::ObjectModel::Uwp
         UINT32 m_internalId;
         ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType m_fallbackType;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> m_fallbackContent;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode m_mode;
     };
 }
