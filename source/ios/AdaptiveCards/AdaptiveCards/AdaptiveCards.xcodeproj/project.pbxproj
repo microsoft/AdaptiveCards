@@ -38,6 +38,10 @@
 		6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D01F32E53A008846EC /* ACRActionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D81F32F922008846EC /* ACRShowCardTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D61F32F922008846EC /* ACRShowCardTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */; };
+		6B124C8C26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */; };
+		6B124C8E26B4B3CD007E9641 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B124C8D26B4B3CD007E9641 /* UIKit.framework */; };
+		6B124C9026B8AC37007E9641 /* MockACRView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C8F26B8AC37007E9641 /* MockACRView.mm */; };
+		6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9426B8AE72007E9641 /* MockContext.mm */; };
 		6B22425D21E80647000ACDA1 /* ACOParseContextPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B22425E21E80647000ACDA1 /* ACOParseContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B22425B21E80647000ACDA1 /* ACOParseContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B22425F21E80647000ACDA1 /* ACOParseContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22425C21E80647000ACDA1 /* ACOParseContext.mm */; };
@@ -454,6 +458,12 @@
 		6B1147D01F32E53A008846EC /* ACRActionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionDelegate.h; sourceTree = "<group>"; };
 		6B1147D61F32F922008846EC /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRShowCardTarget.mm; sourceTree = "<group>"; };
+		6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsActionsTest.mm; sourceTree = "<group>"; };
+		6B124C8D26B4B3CD007E9641 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		6B124C8F26B8AC37007E9641 /* MockACRView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MockACRView.mm; sourceTree = "<group>"; };
+		6B124C9126B8AC58007E9641 /* MockACRView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockACRView.h; sourceTree = "<group>"; };
+		6B124C9326B8AE59007E9641 /* MockContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockContext.h; sourceTree = "<group>"; };
+		6B124C9426B8AE72007E9641 /* MockContext.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MockContext.mm; sourceTree = "<group>"; };
 		6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOParseContextPrivate.h; sourceTree = "<group>"; };
 		6B22425B21E80647000ACDA1 /* ACOParseContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOParseContext.h; sourceTree = "<group>"; };
 		6B22425C21E80647000ACDA1 /* ACOParseContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOParseContext.mm; sourceTree = "<group>"; };
@@ -846,6 +856,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B124C8E26B4B3CD007E9641 /* UIKit.framework in Frameworks */,
 				F423C0BF1EE1FBAA00905679 /* AdaptiveCards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -853,6 +864,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B124C9226B8AE3B007E9641 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				6B124C8F26B8AC37007E9641 /* MockACRView.mm */,
+				6B124C9126B8AC58007E9641 /* MockACRView.h */,
+				6B124C9326B8AE59007E9641 /* MockContext.h */,
+				6B124C9426B8AE72007E9641 /* MockContext.mm */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		6B70ABA425797B720095D925 /* InputRenderers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1082,8 +1104,10 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
+				6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */,
 				30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */,
 				30D56DE8268298B300D6E418 /* AdaptiveCardsTests.mm */,
+				6B124C9226B8AE3B007E9641 /* Mocks */,
 			);
 			path = AdaptiveCardsTests;
 			sourceTree = "<group>";
@@ -1384,6 +1408,7 @@
 		F45A07191EF4BC44007C6503 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B124C8D26B4B3CD007E9641 /* UIKit.framework */,
 				6BB2121721001596009EA1BA /* AVFoundation.framework */,
 				6BB2120F210013AA009EA1BA /* AVKit.framework */,
 				F4CA74A320181B52002041DF /* QuartzCore.framework */,
@@ -1916,8 +1941,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B124C8C26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm in Sources */,
 				30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */,
+				6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */,
 				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
+				6B124C9026B8AC37007E9641 /* MockACRView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

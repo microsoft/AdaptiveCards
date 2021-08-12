@@ -36,7 +36,7 @@ namespace AdaptiveCards.Tools.IOSFeed
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Uploading taks failed with {0} exception", ex);
+                Console.WriteLine("Uploading task failed with {0} exception", ex);
             }
         }
 
@@ -142,11 +142,6 @@ namespace AdaptiveCards.Tools.IOSFeed
                             if (splits[0].Contains("spec.source", StringComparison.OrdinalIgnoreCase))
                             {
                                 stringBuilderForEditedString.Append(splits[0]).Append("= { :http => " + "'" + uri + "' }");
-                            }
-                            else if (splits[0].Contains("spec.version", StringComparison.OrdinalIgnoreCase))
-                            {
-                                var adaptiveVersion = Environment.GetEnvironmentVariable("ADCVERSION");
-                                stringBuilderForEditedString.Append(splits[0]).Append("= '" + adaptiveVersion + "'");
                             }
                             else
                             {
