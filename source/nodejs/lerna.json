@@ -2,7 +2,7 @@
 	"version": "independent",
 	"packages": [
 		"adaptivecards*/**",
-		"react-adaptivecards*/**",
+		"react-adaptivecards/**",
 		"aclint/**",
 		"marked-schema/**",
 		"spec-generator/**",
