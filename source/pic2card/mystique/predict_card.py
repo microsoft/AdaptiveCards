@@ -60,7 +60,7 @@ class PredictCard:
                     object_json["ymin"] = ymin
                     object_json["xmax"] = xmax
                     object_json["ymax"] = ymax
-                    object_json["coords"] = (xmin, ymin, xmax, ymax)
+                    object_json["coordinates"] = (xmin, ymin, xmax, ymax)
                     object_json["score"] = scores[i]
                     object_json["uuid"] = str(uuid.uuid4())
                     object_json["class"] = classes[i]
@@ -100,7 +100,7 @@ class PredictCard:
                 collect_prop, design_object.get("object")
             )
             property_element = property_object(
-                pil_image, design_object.get("coords")
+                pil_image, design_object.get("coordinates")
             )
             design_object.update(property_element)
         design_objects = classify_font_weights(design_objects)

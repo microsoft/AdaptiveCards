@@ -579,8 +579,11 @@ ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
 
 void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action)
 {
-    recipientView.userInteractionEnabled = YES;
+    recipientView.userInteractionEnabled = [action isEnabled];
     recipientView.accessibilityTraits |= action.accessibilityTraits;
+    if (![action isEnabled]) {
+        recipientView.accessibilityTraits |= UIAccessibilityTraitNotEnabled;
+    }
 }
 
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
@@ -690,25 +693,19 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     }
 }
 
-void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, const std::shared_ptr<HostConfig> &config, RichTextElementProperties &textProp)
+void TexStylesToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock,
+                                          const TextStyleConfig &textStyleConfig,
+                                          RichTextElementProperties &textProp)
 {
     textProp.SetText(textBlock->GetText());
     textProp.SetLanguage(textBlock->GetLanguage());
-
-    if (textBlock->GetStyle().value_or(TextStyle::Default) == TextStyle::Heading) {
-        TextStyleConfig textStyleConfig = config->GetTextStyles().heading;
-        textProp.SetTextSize(textBlock->GetTextSize().value_or(textStyleConfig.size));
-        textProp.SetTextWeight(textBlock->GetTextWeight().value_or(textStyleConfig.weight));
-        textProp.SetFontType(textBlock->GetFontType().value_or(textStyleConfig.fontType));
-        textProp.SetTextColor(textBlock->GetTextColor().value_or(textStyleConfig.color));
-        textProp.SetIsSubtle(textBlock->GetIsSubtle().value_or(textStyleConfig.isSubtle));
-    } else {
-        textProp.SetTextSize(textBlock->GetTextSize().value_or(TextSize::Default));
-        textProp.SetTextWeight(textBlock->GetTextWeight().value_or(TextWeight::Default));
-        textProp.SetFontType(textBlock->GetFontType().value_or(FontType::Default));
-        textProp.SetTextColor(textBlock->GetTextColor().value_or(ForegroundColor::Default));
-        textProp.SetIsSubtle(textBlock->GetIsSubtle().value_or(false));
-    }
+    textProp.SetText(textBlock->GetText());
+    textProp.SetLanguage(textBlock->GetLanguage());
+    textProp.SetTextSize(textBlock->GetTextSize().value_or(textStyleConfig.size));
+    textProp.SetTextWeight(textBlock->GetTextWeight().value_or(textStyleConfig.weight));
+    textProp.SetFontType(textBlock->GetFontType().value_or(textStyleConfig.fontType));
+    textProp.SetTextColor(textBlock->GetTextColor().value_or(textStyleConfig.color));
+    textProp.SetIsSubtle(textBlock->GetIsSubtle().value_or(textStyleConfig.isSubtle));
 }
 
 void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp)
@@ -772,7 +769,7 @@ unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &conf
         case Spacing::Padding:
             return config->GetSpacing().paddingSpacing;
         case Spacing::Default:
-            return config->GetSpacing().defaultSpacing;        
+            return config->GetSpacing().defaultSpacing;
         default:
             break;
     }
@@ -988,4 +985,16 @@ UIImage *scaleImageToSize(UIImage *image, CGSize newSize)
 NSNumber *iOSInternalIdHash(const std::size_t internalIdHash)
 {
     return [NSNumber numberWithLong:internalIdHash];
+}
+
+id traverseResponderChainForUIViewController(UIView *view)
+{
+    id nextResponder = [view nextResponder];
+    if ([nextResponder isKindOfClass:[UIViewController class]]) {
+        return nextResponder;
+    } else if ([nextResponder isKindOfClass:[UIView class]]) {
+        return traverseResponderChainForUIViewController((UIView *)nextResponder);
+    } else {
+        return nil;
+    }
 }

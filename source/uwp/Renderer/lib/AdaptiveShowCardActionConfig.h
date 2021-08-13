@@ -17,15 +17,15 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_ActionMode(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionMode* value);
         IFACEMETHODIMP put_ActionMode(ABI::AdaptiveCards::Rendering::Uwp::ActionMode value);
 
-        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle* style);
-        IFACEMETHODIMP put_Style(ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle style);
+        IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* style);
+        IFACEMETHODIMP put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style);
 
         IFACEMETHODIMP get_InlineTopMargin(_Out_ UINT32* value);
         IFACEMETHODIMP put_InlineTopMargin(UINT32 value);
 
     private:
         ABI::AdaptiveCards::Rendering::Uwp::ActionMode m_actionMode;
-        ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle m_containerStyle;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle m_containerStyle;
         UINT32 m_inlineTopMargin;
     };
 

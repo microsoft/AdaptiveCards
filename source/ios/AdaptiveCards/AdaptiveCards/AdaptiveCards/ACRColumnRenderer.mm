@@ -43,6 +43,7 @@
                                                      parentStyle:[viewGroup style]
                                                       hostConfig:acoConfig
                                                        superview:viewGroup];
+
     column.rtl = rootView.context.rtl;
 
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
@@ -132,6 +133,8 @@
     configBleed(rootView, elem, column, acoConfig, viewGroup);
 
     [rootView.context popBaseCardElementContext:acoElem];
+
+    column.accessibilityElements = [column getArrangedSubviews];
 
     return column;
 }
