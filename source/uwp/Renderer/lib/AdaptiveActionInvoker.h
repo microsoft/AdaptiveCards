@@ -18,7 +18,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         HRESULT RuntimeClassInitialize(_In_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
 
-        IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement* actionElement);
+        IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* actionElement);
 
     private:
         Microsoft::WRL::WeakRef m_weakRenderResult;

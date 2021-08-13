@@ -14,14 +14,14 @@ namespace AdaptiveCards::Rendering::Uwp
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ImageSetConfig ImageSetConfig) noexcept;
 
-        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ImageSize* imageSize);
-        IFACEMETHODIMP put_ImageSize(ABI::AdaptiveCards::Rendering::Uwp::ImageSize imageSize);
+        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize* imageSize);
+        IFACEMETHODIMP put_ImageSize(ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize imageSize);
 
         IFACEMETHODIMP get_MaxImageHeight(_Out_ UINT32* maxImageHeight);
         IFACEMETHODIMP put_MaxImageHeight(UINT32 maxImageHeight);
 
     private:
-        ABI::AdaptiveCards::Rendering::Uwp::ImageSize m_imageSize;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize m_imageSize;
         UINT32 m_maxImageHeight;
     };
 
