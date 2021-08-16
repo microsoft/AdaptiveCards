@@ -1,0 +1,50 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"style": "emphasis",
+			"minHeight": "100px",
+			"columns": [
+				{
+					"type": "Column",
+					"style": "default",
+					"minHeight": "200px",
+					"items": [
+						{
+							"type": "TextBlock",
+							"wrap": true,
+							"text": "The columnset has a minHeight of 100px while this column has a minHeight of 200px so it should override"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"style": "default",
+					"minHeight": "50px",
+					"items": [
+						{
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "ColumnSet",
+									"value": "MinHeight: 100px"
+								},
+								{
+									"title": "Column 1",
+									"value": "MinHeight: 200px"
+								},
+								{
+									"title": "Column 2",
+									"value": "MinHeight: 50px"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,693 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Bleeding container at the top of the card",
+					"wrap": true
+				}
+			],
+			"bleed": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Dummy TextBlock"
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Bleeding container in the middle of the card",
+					"wrap": true
+				}
+			],
+			"bleed": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Dummy TextBlock"
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Non-bleeding container",
+					"wrap": true
+				},
+				{
+					"type": "Container",
+					"style": "default",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Bleeding sub-container with style explicitly set to default",
+							"wrap": true
+						}
+					],
+					"bleed": true
+				},
+				{
+					"type": "Container",
+					"style": "default",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Non-bleeding sub-container with style explicitly set to default",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Bleeding sub-container with no explicit style",
+							"wrap": true
+						}
+					],
+					"bleed": true
+				},
+				{
+					"type": "Container",
+					"style": "good",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Bleeding sub-container with explicit style",
+							"wrap": true
+						}
+					],
+					"bleed": true
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Bleeding ColumnSet below"
+		},
+		{
+			"type": "ColumnSet",
+			"style": "emphasis",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Image",
+							"style": "person",
+							"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+							"size": "small"
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "Middle column",
+							"wrap": true
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "Right column",
+							"wrap": true
+						}
+					],
+					"width": "stretch"
+				}
+			],
+			"bleed": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Left and right column bleeding only"
+		},
+		{
+			"type": "ColumnSet",
+			"style": "emphasis",
+			"columns": [
+				{
+					"type": "Column",
+					"style": "default",
+					"items": [
+						{
+							"type": "Image",
+							"style": "person",
+							"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+							"size": "small"
+						}
+					],
+					"bleed": true,
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"style": "default",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"text": "Middle column",
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"spacing": "none",
+							"style": "emphasis",
+							"items": [
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "center",
+									"text": "Bleeding sub-container in center column",
+									"wrap": true
+								},
+								{
+									"type": "Container",
+									"style": "good",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "Bleeding sub-sub container in center column",
+											"wrap": true
+										}
+									],
+									"bleed": true
+								}
+							],
+							"bleed": true
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"style": "default",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "Right column",
+							"wrap": true
+						}
+					],
+					"bleed": true,
+					"width": "stretch"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Dummy TextBlock"
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Bleeding container",
+					"wrap": true
+				},
+				{
+					"type": "Container",
+					"style": "default",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Non-bleeding sub-container",
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"style": "emphasis",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Non-bleeding sub-sub-container",
+									"wrap": true
+								},
+								{
+									"type": "Container",
+									"style": "default",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "Non-bleeding sub-sub-sub-container containing bleeding ColumnSet",
+											"wrap": true
+										},
+										{
+											"type": "ColumnSet",
+											"style": "emphasis",
+											"columns": [
+												{
+													"type": "Column",
+													"items": [
+														{
+															"type": "Image",
+															"style": "person",
+															"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+															"size": "small"
+														}
+													],
+													"width": "stretch"
+												},
+												{
+													"type": "Column",
+													"verticalContentAlignment": "center",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "center",
+															"text": "Middle column",
+															"wrap": true
+														}
+													],
+													"width": "stretch"
+												},
+												{
+													"type": "Column",
+													"verticalContentAlignment": "center",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "right",
+															"text": "Right column",
+															"wrap": true
+														}
+													],
+													"width": "stretch"
+												}
+											],
+											"bleed": true
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			],
+			"bleed": true
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Non-bleeding container",
+					"wrap": true
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Non-bleeding sub-container",
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Non-bleeding sub-sub-container",
+									"wrap": true
+								},
+								{
+									"type": "Container",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "Non-bleeding sub-sub-sub-container containing bleeding ColumnSet",
+											"wrap": true
+										},
+										{
+											"type": "ColumnSet",
+											"style": "emphasis",
+											"columns": [
+												{
+													"type": "Column",
+													"items": [
+														{
+															"type": "Image",
+															"style": "person",
+															"url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+															"size": "small"
+														}
+													],
+													"width": "stretch"
+												},
+												{
+													"type": "Column",
+													"verticalContentAlignment": "center",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "center",
+															"text": "Middle column",
+															"wrap": true
+														}
+													],
+													"width": "stretch"
+												},
+												{
+													"type": "Column",
+													"verticalContentAlignment": "center",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "right",
+															"text": "Right column",
+															"wrap": true
+														}
+													],
+													"width": "stretch"
+												}
+											],
+											"bleed": true
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Nested containter and column set cases. Sub Columns marked with Y or N indicate whether they should bleed.",
+			"wrap": true
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"style": "default",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "Container",
+													"style": "emphasis",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "center",
+															"text": "Y"
+														}
+													],
+													"bleed": true
+												}
+											],
+											"width": "stretch"
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "Container",
+													"style": "emphasis",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "center",
+															"text": "N",
+															"wrap": true
+														}
+													],
+													"bleed": true
+												}
+											],
+											"width": "stretch"
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "Container",
+													"style": "emphasis",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "center",
+															"text": "N"
+														}
+													]
+												}
+											],
+											"width": "stretch"
+										}
+									]
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "Container",
+													"style": "emphasis",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "center",
+															"text": "N"
+														}
+													],
+													"bleed": true
+												}
+											],
+											"width": "stretch"
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "Container",
+													"style": "emphasis",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "center",
+															"text": "N"
+														}
+													],
+													"bleed": true
+												}
+											],
+											"width": "stretch"
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "Container",
+													"style": "emphasis",
+													"items": [
+														{
+															"type": "TextBlock",
+															"horizontalAlignment": "center",
+															"text": "Y"
+														}
+													],
+													"bleed": true
+												}
+											],
+											"width": "stretch"
+										}
+									]
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"style": "emphasis",
+			"columns": [
+				{
+					"type": "Column",
+					"style": "default",
+					"items": [
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"style": "emphasis",
+									"items": [
+										{
+											"type": "TextBlock",
+											"horizontalAlignment": "center",
+											"text": "Y",
+											"wrap": true
+										}
+									],
+									"bleed": true,
+									"width": "stretch"
+								},
+								{
+									"type": "Column",
+									"style": "emphasis",
+									"items": [
+										{
+											"type": "TextBlock",
+											"horizontalAlignment": "center",
+											"text": "N",
+											"wrap": true
+										}
+									],
+									"bleed": true,
+									"width": "stretch"
+								},
+								{
+									"type": "Column",
+									"style": "emphasis",
+									"items": [
+										{
+											"type": "TextBlock",
+											"horizontalAlignment": "center",
+											"text": "Y"
+										}
+									],
+									"bleed": true,
+									"width": "stretch"
+								}
+							]
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"style": "default",
+					"items": [
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "Container",
+											"style": "emphasis",
+											"items": [
+												{
+													"type": "TextBlock",
+													"horizontalAlignment": "center",
+													"text": "Y",
+													"wrap": true
+												}
+											],
+											"bleed": true
+										}
+									],
+									"width": "stretch"
+								},
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "Container",
+											"style": "emphasis",
+											"items": [
+												{
+													"type": "TextBlock",
+													"horizontalAlignment": "center",
+													"text": "N",
+													"wrap": true
+												}
+											],
+											"bleed": true
+										}
+									],
+									"width": "stretch"
+								},
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "Container",
+											"style": "emphasis",
+											"items": [
+												{
+													"type": "TextBlock",
+													"horizontalAlignment": "center",
+													"text": "N",
+													"wrap": true
+												}
+											]
+										}
+									],
+									"width": "stretch"
+								}
+							]
+						}
+					],
+					"width": "stretch"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Dummy TextBlock"
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Bleeding container at the bottom of the card",
+					"wrap": true
+				}
+			],
+			"bleed": true
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0"
+}

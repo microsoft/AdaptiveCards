@@ -1,0 +1,1 @@
+{"actions":[{"data":{"x":13},"title":"Action.Submit","type":"Action.Submit"}],"body":[{"text":"Present a form and submit it back to the originator","type":"TextBlock"},{"id":"firstName","placeholder":"What is your first name?","type":"Input.Text"},{"id":"lastName","placeholder":"What is your last name?","type":"Input.Text"}],"type":"AdaptiveCard","version":"1.0"}

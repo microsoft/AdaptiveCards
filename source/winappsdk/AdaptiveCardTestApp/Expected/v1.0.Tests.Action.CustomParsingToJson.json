@@ -1,0 +1,1 @@
+{"actions":[{"Blue":100,"CornerRadius":10,"Green":100,"Red":150,"alertMessage":"Add Custom Message Here","title":"New Button Type ","type":"NewStyle"}],"body":[{"text":"This card has a custom action. If renderer can render the custom type, it will render a button. try clicking the button.","type":"TextBlock","wrap":true}],"type":"AdaptiveCard","version":"1.0"}

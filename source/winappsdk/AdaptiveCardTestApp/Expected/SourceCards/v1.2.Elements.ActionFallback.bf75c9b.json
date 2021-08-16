@@ -1,0 +1,150 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "ActionSet",
+			"actions":[
+				{
+					"type": "NoExist",
+					"fallback": {
+						"type": "NeitherExist",
+						"fallback": 
+						{
+							"type": "Action.Submit",
+							"title": "Action.Submit",
+							"data": {
+								"x": 13
+							}
+						}
+					}
+				},
+				{
+					"type": "NoExist",
+					"fallback": {
+						"type": "NeitherExist",
+						"fallback": 				
+						{
+							"type": "Action.OpenUrl",
+							"title": "Action.OpenUrl",
+							"url": "https://adaptivecards.io"
+						}
+					}
+				},
+				{
+					"type": "NoExist",
+					"fallback": {
+						"type": "NeitherExist",
+						"fallback": 				
+						{
+							"type": "NopeNotThis",
+							"fallback":
+							{
+								"type": "Action.ShowCard",
+								"title": "Action.ShowCard",
+								"card": {
+									"type": "AdaptiveCard",
+									"body": [
+										{
+											"type": "TextBlock",
+											"text": "What do you think?"
+										}
+									],
+									"actions": [
+										{
+											"type": "Action.Submit",
+											"title": "Neat!"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				{
+					"type": "NoExist",
+					"fallback": {
+						"type": "NeitherExist",
+						"fallback": 
+						{
+							"type": "HaHaNope"
+						}
+					}
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "This card tests action fallback"
+		}
+	],
+	"actions": [
+		{
+			"type": "NoExist",
+			"fallback": {
+				"type": "NeitherExist",
+				"fallback": 
+				{
+					"type": "Action.Submit",
+					"title": "Action.Submit",
+					"data": {
+						"x": 13
+					}
+				}
+			}
+		},
+		{
+			"type": "NoExist",
+			"fallback": {
+				"type": "NeitherExist",
+				"fallback": 				
+				{
+					"type": "Action.OpenUrl",
+					"title": "Action.OpenUrl",
+					"url": "https://adaptivecards.io"
+				}
+			}
+		},
+		{
+			"type": "NoExist",
+			"fallback": {
+				"type": "NeitherExist",
+				"fallback": 				
+				{
+					"type": "NopeNotThis",
+					"fallback":
+					{
+						"type": "Action.ShowCard",
+						"title": "Action.ShowCard",
+						"card": {
+							"type": "AdaptiveCard",
+							"body": [
+								{
+									"type": "TextBlock",
+									"text": "What do you think?"
+								}
+							],
+							"actions": [
+								{
+									"type": "Action.Submit",
+									"title": "Neat!"
+								}
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"type": "NoExist",
+			"fallback": {
+				"type": "NeitherExist",
+				"fallback": 
+				{
+					"type": "HaHaNope"
+				}
+			}
+		}
+	]
+}

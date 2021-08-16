@@ -1,0 +1,33 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+    "version": "1.1",	
+    "minHeight": "150px",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "I'm a regular TextBlock..."
+        },
+        {
+            "type": "Container",
+            "height": "stretch",
+            "verticalContentAlignment": "center",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "But I'm centered..."
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "verticalContentAlignment": "bottom",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "And I'm like a footer!"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,144 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Card A",
+			"size": "extraLarge"
+		},
+		{
+			"type": "TextBlock",
+			"text": "If you click the Sumit button in this card you'll retrieve **input1** and **input2**",
+			"wrap": true
+		},
+		{
+			"type": "Input.Text",
+			"label": "Input1",
+			"id": "input1"
+		},
+		{
+			"type": "Input.Text",
+			"label": "Input2",
+			"id": "input2"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Show Card B",
+			"card": {
+				"type": "AdaptiveCard",
+				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"version": "1.2",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "Card B",
+						"size": "extraLarge"
+					},
+					{
+						"type": "TextBlock",
+						"text": "If you click the Sumit button in this card you'll retrieve **input3**, **input4**, **input1** and **input2**",
+						"wrap": true
+					},
+					{
+						"type": "Input.Text",
+						"label": "Input3",
+						"id": "input3"
+					},
+					{
+						"type": "Input.Text",
+						"label": "Input4",
+						"id": "input4"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Submit"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Show Card C",
+			"card": {
+				"type": "AdaptiveCard",
+				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+				"version": "1.2",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "Card C",
+						"size": "extraLarge"
+					},
+					{
+						"type": "TextBlock",
+						"text": "If you click the Sumit button in this card you'll retrieve **input5**, **input6**, **input1** and **input2**",
+						"wrap": true
+					},
+					{
+						"type": "Input.Text",
+						"label": "Input5",
+						"id": "input5"
+					},
+					{
+						"type": "Input.Text",
+						"label": "Input6",
+						"id": "input6"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Submit"
+					},
+					{
+						"type": "Action.ShowCard",
+						"title": "Show Card D",
+						"card": {
+							"type": "AdaptiveCard",
+							"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+							"version": "1.2",
+							"body": [
+								{
+									"type": "TextBlock",
+									"text": "Card D",
+									"size": "extraLarge"
+								},
+								{
+									"type": "TextBlock",
+									"text": "If you click the Sumit button in this card you'll retrieve **input7**, **input8**, **input5**, **input6**, **input1** and **input2**",
+									"wrap": true
+								},
+								{
+									"type": "Input.Text",
+									"label": "Input7",
+									"id": "input7"
+								},
+								{
+									"type": "Input.Text",
+									"label": "Input8",
+									"id": "input8"
+								}
+							],
+							"actions": [
+								{
+									"type": "Action.Submit",
+									"title": "Submit"
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

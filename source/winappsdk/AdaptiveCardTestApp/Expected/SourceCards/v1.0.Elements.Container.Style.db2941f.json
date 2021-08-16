@@ -1,0 +1,134 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"style": "emphasis",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "The card has the emphasis style"
+		},
+		{
+			"type": "Container",
+			"style": "default",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This container has the default style"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: default",
+					"color": "default"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: accent",
+					"color": "accent"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: good",
+					"color": "good"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: warning",
+					"color": "warning"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: attention",
+					"color": "attention"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: light",
+					"color": "light"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: dark",
+					"color": "dark"
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This container has the emphasis style"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: default",
+					"color": "default"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: accent",
+					"color": "accent"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: good",
+					"color": "good"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: warning",
+					"color": "warning"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: attention",
+					"color": "attention"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: light",
+					"color": "light"
+				},
+				{
+					"type": "TextBlock",
+					"text": "color: dark",
+					"color": "dark"
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Contained container - no style",
+							"color": "dark"
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"style": "emphasis",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Contained container - emphasis",
+							"color": "dark"
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"style": "default",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Contained container - default",
+							"color": "dark"
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"choices":[{"title":"Red","value":"1"},{"title":"Green","value":"2"},{"title":"Blue","value":"3"}],"id":"myColor4","isMultiSelect":true,"style":"Expanded","type":"Input.ChoiceSet","value":"1"}],"type":"AdaptiveCard","version":"1.0"}

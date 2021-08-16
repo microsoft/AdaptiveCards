@@ -1,0 +1,64 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "spacing": "none",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://www.sewausa.org/resources/Sewa%20USA%20Images/DIY%20Campaigns/profile-clipart-generic-user-12.png",
+                            "horizontalAlignment": "left",
+                            "size": "small",
+                            "style": "person"
+                        }
+                    ],
+                    "horizontalAlignment": "left",
+                    "width": "automatic",
+                    "verticalContentAlignment": "center",
+                    "separator": false
+                },
+                {
+                    "type": "Column",
+                    "verticalContentAlignment": "center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Some text here",
+                            "weight": "Bolder"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": " "
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "verticalContentAlignment": "center",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "Button description",
+                                    "data": {
+                                        "nwCommand": "ANYTIME_FEEDBACK_RECIPIENT_SELECTION",
+                                        "wid": "2a37f8012406102d1ad61154601e02a1",
+                                        "descriptor": "Logan Johnson"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

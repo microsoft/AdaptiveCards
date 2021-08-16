@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"choices":[{"title":"Red","value":"1"},{"title":"Green","value":"2"},{"title":"Blue","value":"3"}],"errorMessage":"This is a required input","id":"CompactSelectVal","isRequired":true,"label":"What color do you want? (compact)","style":"Compact","type":"Input.ChoiceSet"}],"type":"AdaptiveCard","version":"1.3"}

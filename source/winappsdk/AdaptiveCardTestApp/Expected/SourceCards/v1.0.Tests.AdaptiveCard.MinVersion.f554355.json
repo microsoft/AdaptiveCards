@@ -1,0 +1,14 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "99.0",
+	"minVersion": "99.0",
+	"fallbackText": "This card requires Adaptive Cards version 99.0, which probably doesn't exist",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "THIS SHOULD NOT APPEAR! It should show the fallback text",
+			"wrap": true
+		}
+	]
+}

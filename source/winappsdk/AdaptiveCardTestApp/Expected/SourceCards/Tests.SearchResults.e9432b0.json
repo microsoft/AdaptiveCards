@@ -1,0 +1,79 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "3 results for 3d printer filament",
+			"weight": "bolder",
+			"wrap": true,
+			"size": "large"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "filament",
+			"style": "expanded",
+			"isMultiSelect": false,
+			"value": "1",
+			"wrap": true,
+			"choices": [
+				{
+					"title": "HATCHBOX 1.75mm White PLA 3D Printer Filament - 1kg Spool (2.2 lbs) - Dimensional Accuracy +/- 0.03mm",
+					"value": "1"
+				},
+				{
+					"title": "HATCHBOX PLA 3D Printer Filament, Dimensional Accuracy +/- 0.03 mm, 1 kg Spool, 1.75 mm, Blue",
+					"value": "2"
+				},
+				{
+					"title": "3D Solutech Silver Metal 3D Printer PLA Filament 1.75MM Filament, Dimensional Accuracy +/- 0.03 mm, 2.2 LBS (1.0KG) - PLA175TCMS",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "filamentCompact",
+			"style": "compact",
+			"isMultiSelect": false,
+			"value": "1",
+			"wrap": true,
+			"choices": [
+				{
+					"title": "HATCHBOX 1.75mm White PLA 3D Printer Filament - 1kg Spool (2.2 lbs) - Dimensional Accuracy +/- 0.03mm",
+					"value": "1"
+				},
+				{
+					"title": "HATCHBOX PLA 3D Printer Filament, Dimensional Accuracy +/- 0.03 mm, 1 kg Spool, 1.75 mm, Blue",
+					"value": "2"
+				},
+				{
+					"title": "3D Solutech Silver Metal 3D Printer PLA Filament 1.75MM Filament, Dimensional Accuracy +/- 0.03 mm, 2.2 LBS (1.0KG) - PLA175TCMS",
+					"value": "3"
+				}
+			]
+		},
+	{
+		"type": "TextBlock",
+		"text": "Specify Filament Type to ABS",
+		"size": "medium",
+		"weight": "bolder"
+	},
+	{
+		"type": "Input.Toggle",
+		"id": "filamenttype",
+		"title": "Get PLA(Poly Lactic Acid) filament by tommorrow if order in next 2 hours",
+		"wrap": true,
+		"value": "true",
+		"valueOn": "true",
+		"valueOff": "false"
+	}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Order"
+		}
+	]
+}

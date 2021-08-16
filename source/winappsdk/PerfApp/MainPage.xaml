@@ -1,0 +1,60 @@
+﻿<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<Page
+    x:Class="PerfApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PerfApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel>
+            <TextBlock Margin="20,20,0,0" Text="Parse iterations:"></TextBlock>
+            <TextBox  Name="ParseIterations" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0" Text="1"></TextBox>
+            <TextBlock Margin="20,20,0,0" Text="Render iterations per parse:"></TextBlock>
+            <TextBox  Name="RenderIterations" Width="100" HorizontalAlignment="Left" Margin="20,0,0,0"  Text="1"/>            
+            <Button Name="runButton" Click="runButton_Click" Margin="20,20,0,0">Choose Samples Folder and Run</Button>
+            <TextBlock Margin="20,20,0,0">
+                <Run>Current File:</Run>
+                <Run Text="{Binding CurrentFile}"></Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Average Parse Ticks:</Run>
+                <Run Text="{Binding AverageParseTicks}"></Run>
+                <Run>(</Run>
+                <Run Text="{Binding ParsePercentage}"></Run>
+                <Run>% )</Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Average Render Ticks:</Run>
+                <Run Text="{Binding AverageRenderTicks}"></Run>
+                <Run>(</Run>
+                <Run Text="{Binding RenderPercentage}"></Run>
+                <Run>% )</Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Longest Parse Ticks:</Run>
+                <Run Text="{Binding MaxParseTicks}"></Run>
+                <Run>(</Run>
+                <Run Text="{Binding MaxParseFile}"></Run>
+                <Run>)</Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Longest Render Ticks:</Run>
+                <Run Text="{Binding MaxRenderTicks}"></Run>
+                <Run>(</Run>
+                <Run Text="{Binding MaxRenderFile}"></Run>
+                <Run>)</Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Total Render Ticks:</Run>
+                <Run Text="{Binding TotalRenderTicks}" FontFamily="Segoe UI"></Run>
+            </TextBlock>
+            <TextBlock Margin="20,0,0,0">
+                <Run>Total Text Block Ticks:</Run>
+                <Run Text="{Binding TotalTextBlockTicks}" FontFamily="Segoe UI"></Run>
+            </TextBlock>
+            <Button Name="resetButton" Click="resetButton_Click" Margin="20,20,0,0">Reset</Button>
+        </StackPanel>
+    </Grid>
+</Page>

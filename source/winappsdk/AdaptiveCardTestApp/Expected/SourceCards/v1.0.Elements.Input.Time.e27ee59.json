@@ -1,0 +1,24 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "What time do you want to meet?"
+		},
+		{
+			"type": "Input.Time",
+			"id": "time",
+			"min": "09:00",
+			"max": "17:00",
+			"value": "15:30"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}

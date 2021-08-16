@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"text":"Below markdown link should trigger telephony service","type":"TextBlock","wrap":true},{"text":"[(555) 555-5555](tel:5555555555)","type":"TextBlock"}],"type":"AdaptiveCard","version":"1.0"}

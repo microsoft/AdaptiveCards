@@ -1,0 +1,1 @@
+{"actions":[{"color":"green","title":"Action.OpenUrl","type":"Action.OpenUrl","url":"https://adaptivecards.io/"}],"body":[{"text":"Action.OpenUrl of this card has custom property that will render button green","type":"TextBlock","wrap":true}],"type":"AdaptiveCard","version":"1.0"}
