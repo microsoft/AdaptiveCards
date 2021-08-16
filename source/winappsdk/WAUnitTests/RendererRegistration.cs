@@ -12,7 +12,7 @@ using Windows.Data.Json;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using UWPTestLibrary;
+using WATestLibrary;
 
 namespace UWPUnitTests
 {

@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 #pragma once
 
-#define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_##cls, BaseTrust)
-#define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_Rendering_Uwp_##cls, BaseTrust)
+#define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_Rendering_WinAppSDK_##cls, BaseTrust)
+#define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_Rendering_WinAppSDK_##cls, BaseTrust)
 #define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.Rendering.WinAppSDK." L#cls, BaseTrust)
 #define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_Rendering_Uwp
 #define AdaptivePointerCast dynamic_pointer_cast

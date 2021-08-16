@@ -13,7 +13,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveCardElementBase>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet, BaseTrust);
+        InspectableClass(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSet, BaseTrust);
 
     public:
         AdaptiveActionSet();

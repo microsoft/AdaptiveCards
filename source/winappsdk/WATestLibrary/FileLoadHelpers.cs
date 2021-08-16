@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using Windows.ApplicationModel;
 using Windows.Storage;
 
-namespace UWPTestLibrary
+namespace WATestLibrary
 {
     public class FileLoadHelpers
     {

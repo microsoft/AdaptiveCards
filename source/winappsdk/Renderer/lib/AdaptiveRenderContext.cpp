@@ -96,7 +96,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode statusCode, _In_ HSTRING message)
     {
         ComPtr<IAdaptiveErrorFactory> errorActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError).Get(),
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveError).Get(),
                                               &errorActivationFactory));
 
         ComPtr<IAdaptiveError> error;
@@ -113,7 +113,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     {
         ComPtr<IAdaptiveWarningFactory> warningActivationFactory;
         RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning).Get(),
+            GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveWarning).Get(),
                                  &warningActivationFactory));
 
         ComPtr<IAdaptiveWarning> warning;

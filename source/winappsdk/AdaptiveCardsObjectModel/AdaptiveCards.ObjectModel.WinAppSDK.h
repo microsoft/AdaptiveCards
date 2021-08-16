@@ -5029,7 +5029,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5127,7 +5127,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardEl
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5177,9 +5177,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemote
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRemoteResourceInformation_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRemoteResourceInformation_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation";
 #endif
 
 
@@ -5195,7 +5195,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5246,7 +5246,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5296,9 +5296,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSepara
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSeparator_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSeparator_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator";
 #endif
 
 
@@ -5314,7 +5314,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5404,7 +5404,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5468,9 +5468,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlock_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlock_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock";
 #endif
 
 
@@ -5481,7 +5481,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInline[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveInline[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5529,7 +5529,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5599,9 +5599,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRu
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun";
 #endif
 
 namespace ABI {
@@ -5630,7 +5630,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5678,9 +5678,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlock_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlock_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock";
 #endif
 
 
@@ -5700,7 +5700,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5750,9 +5750,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaS
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaSource_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaSource_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource";
 #endif
 
 namespace ABI {
@@ -5781,7 +5781,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5835,9 +5835,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia;
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMedia_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMedia_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia";
 #endif
 
 namespace ABI {
@@ -5866,7 +5866,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5928,9 +5928,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgr
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveBackgroundImage_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveBackgroundImage_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage";
 #endif
 
 
@@ -5950,7 +5950,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6012,9 +6012,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthCardButton_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthCardButton_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton";
 #endif
 
 namespace ABI {
@@ -6043,7 +6043,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6099,9 +6099,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenE
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTokenExchangeResource_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTokenExchangeResource_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource";
 #endif
 
 namespace ABI {
@@ -6130,7 +6130,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6189,9 +6189,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthen
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthentication_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthentication_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication";
 #endif
 
 namespace ABI {
@@ -6220,7 +6220,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6267,9 +6267,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefres
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRefresh_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRefresh_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh";
 #endif
 
 namespace ABI {
@@ -6298,7 +6298,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6426,7 +6426,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard;
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6486,9 +6486,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardSt
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCard_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCard_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard";
 #endif
 
 
@@ -6507,7 +6507,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6554,9 +6554,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardPa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCardParseResult_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCardParseResult_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult";
 #endif
 
 
@@ -6576,7 +6576,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6669,9 +6669,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage;
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage";
 #endif
 
 namespace ABI {
@@ -6700,7 +6700,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6748,9 +6748,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSet_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSet_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet";
 #endif
 
 
@@ -6770,7 +6770,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6823,9 +6823,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput";
 #endif
 
 namespace ABI {
@@ -6854,7 +6854,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6927,9 +6927,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput";
 #endif
 
 namespace ABI {
@@ -6958,7 +6958,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7022,9 +7022,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput";
 #endif
 
 namespace ABI {
@@ -7053,7 +7053,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7117,9 +7117,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput";
 #endif
 
 namespace ABI {
@@ -7148,7 +7148,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7230,9 +7230,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput";
 #endif
 
 namespace ABI {
@@ -7261,7 +7261,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7325,9 +7325,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput";
 #endif
 
 namespace ABI {
@@ -7356,7 +7356,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7426,9 +7426,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput";
 #endif
 
 
@@ -7444,7 +7444,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7506,7 +7506,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7575,7 +7575,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7616,9 +7616,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainer_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainer_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer";
 #endif
 
 
@@ -7638,7 +7638,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7711,9 +7711,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumn_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumn_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn";
 #endif
 
 namespace ABI {
@@ -7742,7 +7742,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7785,9 +7785,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSet_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSet_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet";
 #endif
 
 
@@ -7807,7 +7807,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7866,9 +7866,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact;
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFact_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFact_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact";
 #endif
 
 namespace ABI {
@@ -7897,7 +7897,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7939,9 +7939,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSet_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSet_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet";
 #endif
 
 
@@ -7961,7 +7961,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8002,9 +8002,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableCell_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableCell_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell";
 #endif
 
 
@@ -8024,7 +8024,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8084,9 +8084,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableR
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableRow_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableRow_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow";
 #endif
 
 
@@ -8106,7 +8106,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8168,9 +8168,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableColumnDefinition_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableColumnDefinition_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition";
 #endif
 
 namespace ABI {
@@ -8199,7 +8199,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8274,9 +8274,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable;
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTable_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTable_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable";
 #endif
 
 namespace ABI {
@@ -8305,7 +8305,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8350,9 +8350,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSet_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSet_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet";
 #endif
 
 namespace ABI {
@@ -8381,7 +8381,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8420,9 +8420,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction";
 #endif
 
 namespace ABI {
@@ -8451,7 +8451,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8490,9 +8490,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedElement_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedElement_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement";
 #endif
 
 
@@ -8508,7 +8508,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8625,7 +8625,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8673,9 +8673,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction";
 #endif
 
 namespace ABI {
@@ -8704,7 +8704,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8752,9 +8752,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction";
 #endif
 
 namespace ABI {
@@ -8783,7 +8783,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8837,9 +8837,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction";
 #endif
 
 namespace ABI {
@@ -8868,7 +8868,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8928,9 +8928,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction";
 #endif
 
 
@@ -8950,7 +8950,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9000,9 +9000,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityTarget_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityTarget_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget";
 #endif
 
 namespace ABI {
@@ -9031,7 +9031,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9076,9 +9076,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction";
 #endif
 
 
@@ -9097,7 +9097,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9147,7 +9147,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9190,9 +9190,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRequirement_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRequirement_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement";
 #endif
 
 
@@ -9208,7 +9208,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9253,7 +9253,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9302,9 +9302,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveElementParserRegistration_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveElementParserRegistration_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration";
 #endif
 
 
@@ -9323,7 +9323,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9372,9 +9372,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionParserRegistration_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionParserRegistration_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration";
 #endif
 
 
@@ -9390,7 +9390,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9432,7 +9432,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9498,7 +9498,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9537,9 +9537,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlockParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlockParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser";
 #endif
 
 namespace ABI {
@@ -9568,7 +9568,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9607,9 +9607,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlockParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlockParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser";
 #endif
 
 namespace ABI {
@@ -9638,7 +9638,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9677,9 +9677,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageP
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser";
 #endif
 
 namespace ABI {
@@ -9708,7 +9708,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9747,9 +9747,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSetParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSetParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser";
 #endif
 
 namespace ABI {
@@ -9778,7 +9778,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9817,9 +9817,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainerParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainerParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser";
 #endif
 
 namespace ABI {
@@ -9848,7 +9848,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9887,9 +9887,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser";
 #endif
 
 namespace ABI {
@@ -9918,7 +9918,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9957,9 +9957,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSetParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSetParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser";
 #endif
 
 namespace ABI {
@@ -9988,7 +9988,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10027,9 +10027,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactPa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser";
 #endif
 
 namespace ABI {
@@ -10058,7 +10058,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10097,9 +10097,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser";
 #endif
 
 namespace ABI {
@@ -10128,7 +10128,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10167,9 +10167,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser";
 #endif
 
 namespace ABI {
@@ -10198,7 +10198,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10237,9 +10237,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser";
 #endif
 
 namespace ABI {
@@ -10268,7 +10268,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10307,9 +10307,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser";
 #endif
 
 namespace ABI {
@@ -10338,7 +10338,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10377,9 +10377,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser";
 #endif
 
 namespace ABI {
@@ -10408,7 +10408,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10447,9 +10447,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser";
 #endif
 
 namespace ABI {
@@ -10478,7 +10478,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10517,9 +10517,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSetParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSetParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser";
 #endif
 
 namespace ABI {
@@ -10548,7 +10548,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10587,9 +10587,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaP
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser";
 #endif
 
 namespace ABI {
@@ -10618,7 +10618,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10657,9 +10657,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSetParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSetParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser";
 #endif
 
 namespace ABI {
@@ -10688,7 +10688,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10727,9 +10727,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser";
 #endif
 
 namespace ABI {
@@ -10758,7 +10758,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10797,9 +10797,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser";
 #endif
 
 namespace ABI {
@@ -10828,7 +10828,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10867,9 +10867,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser";
 #endif
 
 namespace ABI {
@@ -10898,7 +10898,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10937,9 +10937,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser";
 #endif
 
 namespace ABI {
@@ -10968,7 +10968,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11007,9 +11007,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser";
 #endif
 
 namespace ABI {
@@ -11038,7 +11038,7 @@ namespace ABI {
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11077,9 +11077,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableP
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser";
 #endif
 
 
@@ -11098,7 +11098,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11148,7 +11148,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError;
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11191,9 +11191,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorF
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveError_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveError_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveError_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveError_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError";
 #endif
 
 
@@ -11212,7 +11212,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11262,7 +11262,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11305,9 +11305,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveWarning_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveWarning_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning";
 #endif
 
 
@@ -20600,7 +20600,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CActionMode
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement";
 /* [uuid("e0d82150-3f34-5c27-9c03-76afb5cd5925"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElementVtbl
 {
@@ -20826,7 +20826,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardEl
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation";
 /* [uuid("c4e5d8ae-4735-5c78-b439-9da7261439a1"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformationVtbl
 {
@@ -20940,9 +20940,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemote
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRemoteResourceInformation_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRemoteResourceInformation_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation";
 #endif
 
 
@@ -20958,7 +20958,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources";
 /* [uuid("2fab113d-c737-55e9-b081-4aaca4fa2043"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResourcesVtbl
 {
@@ -21052,7 +21052,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator";
 /* [uuid("ac549efa-a3c9-598e-b949-06fa14ff0eba"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparatorVtbl
 {
@@ -21166,9 +21166,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSepara
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSeparator_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSeparator_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator";
 #endif
 
 
@@ -21184,7 +21184,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement";
 /* [uuid("70bcd0cb-38be-5bec-be14-5def282f9004"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElementVtbl
 {
@@ -21369,7 +21369,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextEl
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock";
 /* [uuid("777df7f6-0669-5ee7-8961-98abfc5d6282"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockVtbl
 {
@@ -21513,9 +21513,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlock_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlock_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock";
 #endif
 
 
@@ -21526,7 +21526,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInline[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveInline[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline";
 /* [object, uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085"), version] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInlineVtbl
 {
@@ -21613,7 +21613,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun";
 /* [uuid("ad3d3e14-5ce4-5322-a0eb-56e52c92f333"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRunVtbl
 {
@@ -21771,9 +21771,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRu
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun";
 #endif
 
 
@@ -21793,7 +21793,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock";
 /* [uuid("cd4116ad-e686-5ea7-aa93-fbdc61b9722a"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockVtbl
 {
@@ -21901,9 +21901,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlock_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlock_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock";
 #endif
 
 
@@ -21923,7 +21923,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource";
 /* [uuid("5adbf4bb-a457-5c50-9c55-1dd095dcd6cc"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSourceVtbl
 {
@@ -22037,9 +22037,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaS
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaSource_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaSource_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource";
 #endif
 
 
@@ -22059,7 +22059,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia";
 /* [uuid("7c4615a2-168e-5cbc-b2f4-dbb250efb9a0"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaVtbl
 {
@@ -22181,9 +22181,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia;
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMedia_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMedia_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia";
 #endif
 
 
@@ -22203,7 +22203,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage";
 /* [uuid("f1d73147-4729-57e3-848a-419e3a3865ea"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImageVtbl
 {
@@ -22345,9 +22345,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgr
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveBackgroundImage_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveBackgroundImage_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage";
 #endif
 
 
@@ -22367,7 +22367,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton";
 /* [uuid("e4ef5280-2e37-5c4d-a580-d79be24b0fb3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButtonVtbl
 {
@@ -22509,9 +22509,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthCardButton_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthCardButton_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton";
 #endif
 
 
@@ -22531,7 +22531,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource";
 /* [uuid("21705a8e-18d5-52a7-945d-dc72595831e4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResourceVtbl
 {
@@ -22659,9 +22659,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenE
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTokenExchangeResource_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTokenExchangeResource_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource";
 #endif
 
 
@@ -22681,7 +22681,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication";
 /* [uuid("16069277-85a8-554f-a367-80b7bb59f327"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthenticationVtbl
 {
@@ -22816,9 +22816,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthen
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthentication_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthentication_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication";
 #endif
 
 
@@ -22838,7 +22838,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh";
 /* [uuid("24f82b16-5304-5e1b-a01d-b5117ae8d303"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefreshVtbl
 {
@@ -22945,9 +22945,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefres
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRefresh_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRefresh_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh";
 #endif
 
 
@@ -22967,7 +22967,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard";
 /* [uuid("ce223d5d-c836-5656-ba47-bbbcf2149244"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardVtbl
 {
@@ -23263,7 +23263,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard;
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics";
 /* [uuid("61e72d41-c07f-5b22-a9ae-49dbe10cca51"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStaticsVtbl
 {
@@ -23387,9 +23387,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardSt
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCard_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCard_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard";
 #endif
 
 
@@ -23408,7 +23408,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult";
 /* [uuid("dc2dec64-0589-5a0b-bbc5-ba0920a9641e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResultVtbl
 {
@@ -23515,9 +23515,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardPa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCardParseResult_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCardParseResult_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult";
 #endif
 
 
@@ -23537,7 +23537,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage";
 /* [uuid("341d3830-a1bc-5135-a3e4-5448dc0de8f6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageVtbl
 {
@@ -23750,9 +23750,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage;
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage";
 #endif
 
 
@@ -23772,7 +23772,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet";
 /* [uuid("3e7db841-9cd8-59c7-a27f-f635f13e89ea"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetVtbl
 {
@@ -23880,9 +23880,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSet_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSet_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet";
 #endif
 
 
@@ -23902,7 +23902,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput";
 /* [uuid("36ddb94d-cf5a-5664-9de7-e49350f732b7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInputVtbl
 {
@@ -24023,9 +24023,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput";
 #endif
 
 
@@ -24045,7 +24045,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput";
 /* [uuid("5715bcbe-935a-5b85-8230-280db6b0c4f3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputVtbl
 {
@@ -24210,9 +24210,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput";
 #endif
 
 
@@ -24232,7 +24232,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput";
 /* [uuid("0fe665a5-7ae3-52ab-bf34-d54f7f902164"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputVtbl
 {
@@ -24376,9 +24376,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput";
 #endif
 
 
@@ -24398,7 +24398,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput";
 /* [uuid("f0b4b9b0-871f-57c2-8fa2-0d6c6d122656"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputVtbl
 {
@@ -24542,9 +24542,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput";
 #endif
 
 
@@ -24564,7 +24564,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput";
 /* [uuid("f3301e8f-7c7a-57e5-8b2e-438011553708"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputVtbl
 {
@@ -24750,9 +24750,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput";
 #endif
 
 
@@ -24772,7 +24772,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput";
 /* [uuid("7d058bd4-70f5-5c54-a61b-6f986c1f4c8c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputVtbl
 {
@@ -24916,9 +24916,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput";
 #endif
 
 
@@ -24938,7 +24938,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput";
 /* [uuid("33abef6f-0668-58cd-a5b1-e1f52f356df7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputVtbl
 {
@@ -25096,9 +25096,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInput_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInput_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput";
 #endif
 
 
@@ -25114,7 +25114,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase";
 /* [uuid("e7b77b9b-61ee-5262-9b69-604554376e2b"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBaseVtbl
 {
@@ -25260,7 +25260,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer";
 /* [uuid("1f8f8b3a-63cc-5939-bbe2-7775b1834647"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerVtbl
 {
@@ -25396,7 +25396,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2";
 /* [uuid("44dada13-fe76-5808-b916-242222da9f95"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2Vtbl
 {
@@ -25485,9 +25485,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainer_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainer_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer";
 #endif
 
 
@@ -25507,7 +25507,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn";
 /* [uuid("82bf2454-4ac5-5059-8689-76274890f605"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnVtbl
 {
@@ -25672,9 +25672,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumn_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumn_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn";
 #endif
 
 
@@ -25694,7 +25694,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet";
 /* [uuid("dbc8249b-f860-5893-97e4-17793b1b7b1d"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetVtbl
 {
@@ -25789,9 +25789,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSet_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSet_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet";
 #endif
 
 
@@ -25811,7 +25811,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact";
 /* [uuid("26a54ae6-bd95-53db-8a97-08f78a93b5fd"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactVtbl
 {
@@ -25946,9 +25946,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact;
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFact_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFact_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact";
 #endif
 
 
@@ -25968,7 +25968,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet";
 /* [uuid("31157d84-5712-53af-9f01-decb48a9deba"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetVtbl
 {
@@ -26062,9 +26062,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSet_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSet_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet";
 #endif
 
 
@@ -26084,7 +26084,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell";
 /* [uuid("787d6b1f-5831-546c-9ffc-183e4b8d58c5"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCellVtbl
 {
@@ -26173,9 +26173,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableCell_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableCell_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell";
 #endif
 
 
@@ -26195,7 +26195,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow";
 /* [uuid("2d680b56-1a59-5e2d-be30-1ef86f895a31"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRowVtbl
 {
@@ -26331,9 +26331,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableR
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableRow_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableRow_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow";
 #endif
 
 
@@ -26353,7 +26353,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition";
 /* [uuid("0211d98c-5f48-54bb-b2d4-263bc4a4c6b2"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinitionVtbl
 {
@@ -26495,9 +26495,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableColumnDefinition_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableColumnDefinition_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition";
 #endif
 
 
@@ -26517,7 +26517,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable";
 /* [uuid("f8ed7b1a-0dc5-50dc-813e-2ad91178fcf7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableVtbl
 {
@@ -26688,9 +26688,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable;
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTable_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTable_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable";
 #endif
 
 
@@ -26710,7 +26710,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet";
 /* [uuid("bd40919b-01a7-55cc-9d59-20929861ab4a"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetVtbl
 {
@@ -26811,9 +26811,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSet_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSet_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet";
 #endif
 
 
@@ -26833,7 +26833,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction";
 /* [uuid("7b494796-eaab-5ef6-9c65-b8e58d94541b"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedActionVtbl
 {
@@ -26920,9 +26920,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction";
 #endif
 
 
@@ -26942,7 +26942,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement";
 /* [uuid("66396792-8fe8-5902-be97-336a769ab4a7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElementVtbl
 {
@@ -27029,9 +27029,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedElement_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedElement_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement";
 #endif
 
 
@@ -27047,7 +27047,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement";
 /* [uuid("e0a1914c-0f13-50b2-82f5-09394e088a22"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElementVtbl
 {
@@ -27295,7 +27295,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction";
 /* [uuid("b47a990b-7ea6-54db-8096-61134e92f412"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionVtbl
 {
@@ -27403,9 +27403,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction";
 #endif
 
 
@@ -27425,7 +27425,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction";
 /* [uuid("811202b5-f9b7-5527-8dc3-53be9c352f89"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionVtbl
 {
@@ -27533,9 +27533,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction";
 #endif
 
 
@@ -27555,7 +27555,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction";
 /* [uuid("54f42ecb-f10c-5aa2-bd78-9d6aba2d736f"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionVtbl
 {
@@ -27677,9 +27677,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction";
 #endif
 
 
@@ -27699,7 +27699,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction";
 /* [uuid("16ff2257-d886-58ad-adae-defcfe300284"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionVtbl
 {
@@ -27835,9 +27835,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction";
 #endif
 
 
@@ -27857,7 +27857,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget";
 /* [uuid("825d6be0-21c4-5dbe-8a15-ac0c4ba73a0c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTargetVtbl
 {
@@ -27971,9 +27971,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityTarget_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityTarget_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget";
 #endif
 
 
@@ -27993,7 +27993,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction";
 /* [uuid("f1be783e-9646-5be5-941e-99533c1da30c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionVtbl
 {
@@ -28094,9 +28094,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityAction_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityAction_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction";
 #endif
 
 
@@ -28115,7 +28115,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement";
 /* [uuid("8106c5a6-5a56-5043-bb9f-08004e1c0743"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementVtbl
 {
@@ -28229,7 +28229,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory";
 /* [uuid("59bb7fad-2626-5434-a7f3-f8b8538b93ed"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactoryVtbl
 {
@@ -28324,9 +28324,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRequirement_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRequirement_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement";
 #endif
 
 
@@ -28342,7 +28342,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser";
 /* [uuid("5ac21990-5e0f-5d71-9266-1295cac1a6ff"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserVtbl
 {
@@ -28439,7 +28439,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration";
 /* [uuid("f33af0e9-2038-526f-940b-61f52d5d28c2"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistrationVtbl
 {
@@ -28548,9 +28548,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveElementParserRegistration_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveElementParserRegistration_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration";
 #endif
 
 
@@ -28569,7 +28569,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration";
 /* [uuid("ea043181-af73-5fa8-bddc-6e89ca332e17"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistrationVtbl
 {
@@ -28678,9 +28678,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionParserRegistration_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionParserRegistration_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration";
 #endif
 
 
@@ -28696,7 +28696,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser";
 /* [uuid("12a67519-a257-57dd-87d3-2cb8d99e6b00"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserVtbl
 {
@@ -28790,7 +28790,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement";
 /* [uuid("545ecd2f-2c13-5a67-9168-5e9450a44ef8"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElementVtbl
 {
@@ -28919,7 +28919,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputE
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser";
 /* [uuid("934a0c1b-9996-51b9-afcd-5e6c3335b6c4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParserVtbl
 {
@@ -29006,9 +29006,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlockParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlockParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser";
 #endif
 
 
@@ -29028,7 +29028,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser";
 /* [uuid("cb9b71c3-75a4-5762-be9c-453a3848ce20"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParserVtbl
 {
@@ -29115,9 +29115,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlockParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlockParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser";
 #endif
 
 
@@ -29137,7 +29137,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser";
 /* [uuid("69c2476e-aab6-5c45-a829-ab1d595b377b"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParserVtbl
 {
@@ -29224,9 +29224,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageP
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser";
 #endif
 
 
@@ -29246,7 +29246,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser";
 /* [uuid("123defc6-86c2-582a-8ea4-5388237947c6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParserVtbl
 {
@@ -29333,9 +29333,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSetParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSetParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser";
 #endif
 
 
@@ -29355,7 +29355,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser";
 /* [uuid("09c3afd3-8e2f-53a6-b1e9-8dc5087a9a7e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParserVtbl
 {
@@ -29442,9 +29442,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainerParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainerParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser";
 #endif
 
 
@@ -29464,7 +29464,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser";
 /* [uuid("394513b1-6f2a-5c4a-a4b6-d3d817cdc031"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParserVtbl
 {
@@ -29551,9 +29551,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser";
 #endif
 
 
@@ -29573,7 +29573,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser";
 /* [uuid("87225a3b-40d7-5490-917d-b35cc0c2ae09"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParserVtbl
 {
@@ -29660,9 +29660,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSetParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSetParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser";
 #endif
 
 
@@ -29682,7 +29682,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser";
 /* [uuid("14195d3c-628e-51de-9890-f8d4bcb4d5d3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParserVtbl
 {
@@ -29769,9 +29769,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactPa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser";
 #endif
 
 
@@ -29791,7 +29791,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser";
 /* [uuid("c0a09ad3-867c-5db4-9c72-1a6873cad41e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParserVtbl
 {
@@ -29878,9 +29878,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser";
 #endif
 
 
@@ -29900,7 +29900,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser";
 /* [uuid("4c2b97b1-3596-5c73-a301-2b133abd9178"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParserVtbl
 {
@@ -29987,9 +29987,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser";
 #endif
 
 
@@ -30009,7 +30009,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser";
 /* [uuid("373c48fd-7caa-5a30-9806-f81e6d1ffe10"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParserVtbl
 {
@@ -30096,9 +30096,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser";
 #endif
 
 
@@ -30118,7 +30118,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser";
 /* [uuid("332f4aa7-fdb8-5413-adf4-d3530f3eddee"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParserVtbl
 {
@@ -30205,9 +30205,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser";
 #endif
 
 
@@ -30227,7 +30227,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser";
 /* [uuid("1368e8d0-6783-52b8-8af1-2aa9e7585bc3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParserVtbl
 {
@@ -30314,9 +30314,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser";
 #endif
 
 
@@ -30336,7 +30336,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser";
 /* [uuid("b8e7de6f-234b-55bc-95ca-6dd0d7b7d841"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParserVtbl
 {
@@ -30423,9 +30423,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInputParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInputParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser";
 #endif
 
 
@@ -30445,7 +30445,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser";
 /* [uuid("c0351b3a-8922-5663-a914-f646a2b0fcfd"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParserVtbl
 {
@@ -30532,9 +30532,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSetParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSetParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser";
 #endif
 
 
@@ -30554,7 +30554,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser";
 /* [uuid("a34e4a4d-dbb9-5ae1-8784-f80be7820d57"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParserVtbl
 {
@@ -30641,9 +30641,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaP
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser";
 #endif
 
 
@@ -30663,7 +30663,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser";
 /* [uuid("24f03c1d-54b9-5415-ae82-b9fcf4438699"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParserVtbl
 {
@@ -30750,9 +30750,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSetParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSetParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser";
 #endif
 
 
@@ -30772,7 +30772,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser";
 /* [uuid("1501bb19-a5d4-50f1-88fb-90338bda2a19"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParserVtbl
 {
@@ -30859,9 +30859,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser";
 #endif
 
 
@@ -30881,7 +30881,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser";
 /* [uuid("a52f4dc0-a7cc-52d2-9d57-f8dcec426e69"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParserVtbl
 {
@@ -30968,9 +30968,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser";
 #endif
 
 
@@ -30990,7 +30990,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser";
 /* [uuid("e08df80d-30b7-58dc-9c82-9f8b9a0ad3dc"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParserVtbl
 {
@@ -31077,9 +31077,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser";
 #endif
 
 
@@ -31099,7 +31099,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser";
 /* [uuid("5bfe15f9-7bb8-541c-af43-111cef59fb5c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParserVtbl
 {
@@ -31186,9 +31186,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser";
 #endif
 
 
@@ -31208,7 +31208,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser";
 /* [uuid("97fc2051-4422-5126-912e-590c759870a6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParserVtbl
 {
@@ -31295,9 +31295,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityActionParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityActionParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser";
 #endif
 
 
@@ -31317,7 +31317,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser";
 /* [uuid("4ddc01cf-604d-50ca-a438-909262797a7f"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParserVtbl
 {
@@ -31404,9 +31404,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableP
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableParser_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableParser_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser";
 #endif
 
 
@@ -31425,7 +31425,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError";
 /* [uuid("0c1c8d38-4820-5637-a337-39feb492dfc1"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorVtbl
 {
@@ -31539,7 +31539,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError;
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory";
 /* [uuid("cf7ce008-91bf-5a23-be1d-79ef6cbc1bf3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactoryVtbl
 {
@@ -31634,9 +31634,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorF
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveError_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveError_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveError_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveError_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError";
 #endif
 
 
@@ -31655,7 +31655,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning";
 /* [uuid("e87eb0c1-a2a7-5704-b7b4-d3aed92dddd1"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningVtbl
 {
@@ -31769,7 +31769,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinAppSDK_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory";
 /* [uuid("fa97db3c-8a77-5921-b462-a11f8ada4128"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactoryVtbl
 {
@@ -31864,9 +31864,9 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
  *
  */
 
-#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning_DEFINED
-#define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning";
+#ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveWarning_DEFINED
+#define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveWarning_DEFINED
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning";
 #endif
 
 

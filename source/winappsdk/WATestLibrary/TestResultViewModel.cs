@@ -8,7 +8,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
-namespace UWPTestLibrary
+namespace WATestLibrary
 {
     public class TestResultViewModel : BindableBase
     {

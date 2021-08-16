@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using UWPTestLibrary;
+using WATestLibrary;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

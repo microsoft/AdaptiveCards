@@ -4,7 +4,7 @@ using AdaptiveCards.Rendering.Uwp;
 using System;
 using Windows.UI.Xaml;
 
-namespace UWPTestLibrary
+namespace WATestLibrary
 {
     public class RenderedTestResult
     {

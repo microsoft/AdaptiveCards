@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace UWPTestLibrary
+namespace WATestLibrary
 {
     [DataContract]
     public class StoredTestResultInfo

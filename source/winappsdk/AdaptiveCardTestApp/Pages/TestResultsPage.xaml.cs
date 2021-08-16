@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using UWPTestLibrary;
+using WATestLibrary;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;

@@ -10,7 +10,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParser>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser, BaseTrust);
+        InspectableClass(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveActionSetParser, BaseTrust);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

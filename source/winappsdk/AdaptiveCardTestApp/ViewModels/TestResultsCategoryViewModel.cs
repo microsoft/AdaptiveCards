@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using UWPTestLibrary;
+using WATestLibrary;
 
 namespace AdaptiveCardTestApp.ViewModels
 {

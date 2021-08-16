@@ -870,7 +870,7 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdapti
 {
     ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextRun> localCopiedTextRun =
         XamlHelpers::CreateABIClass<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextRun>(
-            HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun));
+            HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun));
 
     ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement> localCopiedTextElement;
     RETURN_IF_FAILED(localCopiedTextRun.As(&localCopiedTextElement));

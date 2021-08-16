@@ -10,7 +10,7 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-namespace UWPTestLibrary
+namespace WATestLibrary
 {
     class SampleResourceResolver : IAdaptiveCardResourceResolver
     {

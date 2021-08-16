@@ -51,7 +51,7 @@ void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
     }
 
     ComPtr<IAdaptiveImage> adaptiveImage =
-        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
 
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
 
@@ -146,7 +146,7 @@ void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _I
 {
     // Render the custom play icon using the image renderer
     ComPtr<IAdaptiveImage> playIconAdaptiveImage =
-        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
 
     THROW_IF_FAILED(playIconAdaptiveImage->put_Url(playIconString));
 

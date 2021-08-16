@@ -3,7 +3,7 @@
 using AdaptiveCardTestApp.ViewModels;
 using System;
 using System.Collections.Generic;
-using UWPTestLibrary;
+using WATestLibrary;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

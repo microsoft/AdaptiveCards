@@ -3,7 +3,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace UWPTestLibrary
+namespace WATestLibrary
 {
     public abstract class BindableBase : INotifyPropertyChanged
     {

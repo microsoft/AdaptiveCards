@@ -146,7 +146,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
 
             // Create image and add it to the button
             ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
 
@@ -612,7 +612,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
 
             ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
 

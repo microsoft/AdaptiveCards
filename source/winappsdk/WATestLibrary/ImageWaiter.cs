@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
 
-namespace UWPTestLibrary
+namespace WATestLibrary
 {
     public class ImageWaiter
     {

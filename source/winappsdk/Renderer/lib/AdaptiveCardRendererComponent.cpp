@@ -220,7 +220,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardStatics> adaptiveCardStatics;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard).Get(),
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCard).Get(),
                                               &adaptiveCardStatics));
 
         RETURN_IF_FAILED(adaptiveCardStatics->FromJsonString(adaptiveJson, &adaptiveCardParseResult));

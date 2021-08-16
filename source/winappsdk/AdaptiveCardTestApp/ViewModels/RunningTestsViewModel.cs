@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using UWPTestLibrary;
+using WATestLibrary;
 using Windows.ApplicationModel.UserActivities;
 using Windows.Storage;
 using Windows.UI.Shell;
@@ -190,9 +190,9 @@ namespace AdaptiveCardTestApp.ViewModels
 
         private async Task<Tuple<RenderedTestResult, StorageFile, StorageFile>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
-            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
+            var renderResult = await WATestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
-            UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
+            WATestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
 
             CurrentCardVisual = renderResult.Tree;
             CurrentCardVisualWidth = renderResult.CardWidth;
@@ -206,7 +206,7 @@ namespace AdaptiveCardTestApp.ViewModels
                 imageResultFile = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
                 jsonResultFile = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
 
-                await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.RoundTrippedJSON, CurrentCardVisual);
+                await WATestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.RoundTrippedJSON, CurrentCardVisual);
             }
 
             return new Tuple<RenderedTestResult, StorageFile, StorageFile>(renderResult, imageResultFile, jsonResultFile);

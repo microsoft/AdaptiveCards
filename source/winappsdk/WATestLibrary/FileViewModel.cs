@@ -7,7 +7,7 @@ using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-namespace UWPTestLibrary
+namespace WATestLibrary
 {
     public class FileViewModel
     {

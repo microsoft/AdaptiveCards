@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using UWPTestLibrary;
+using WATestLibrary;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Storage;
@@ -114,11 +114,11 @@ namespace UWPUnitTests
 
         async public Task TestCard(FileViewModel hostConfigFile, FileViewModel cardFile)
         {
-            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
+            var renderResult = await WATestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
             if (renderResult.Tree != null)
             {
-                UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
+                WATestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
 
                 StackPanel stackPanel = new StackPanel();
                 stackPanel.Children.Add(renderResult.Tree);
@@ -143,7 +143,7 @@ namespace UWPUnitTests
                 imageResultFile = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
                 jsonResultFile = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
 
-                await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.RoundTrippedJSON, renderResult.Tree);
+                await WATestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.RoundTrippedJSON, renderResult.Tree);
             }
 
             await Task.Delay(10);

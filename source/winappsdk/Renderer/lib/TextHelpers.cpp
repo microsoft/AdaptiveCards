@@ -123,7 +123,7 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
 {
     // Create an AdaptiveTextRun with the language, text, and configuration to pass to SetXamlInlines
     ComPtr<IAdaptiveTextRun> textRun = XamlHelpers::CreateABIClass<IAdaptiveTextRun>(
-        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun));
+        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun));
 
     ComPtr<IAdaptiveTextElement> textRunAsTextElement;
     RETURN_IF_FAILED(textRun.As(&textRunAsTextElement));

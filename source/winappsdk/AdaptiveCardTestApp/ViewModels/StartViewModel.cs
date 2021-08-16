@@ -3,7 +3,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using UWPTestLibrary;
+using WATestLibrary;
 using Windows.Storage;
 
 namespace AdaptiveCardTestApp.ViewModels
@@ -33,7 +33,7 @@ namespace AdaptiveCardTestApp.ViewModels
             }
             catch { }
 
-            await UWPTestLibrary.FileLoadHelpers.LoadAsync(Cards, HostConfigs);
+            await WATestLibrary.FileLoadHelpers.LoadAsync(Cards, HostConfigs);
 
             foreach (var c in Cards)
             {

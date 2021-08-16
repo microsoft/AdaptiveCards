@@ -10,7 +10,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveElementRenderer>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionSetRenderer, BaseTrust);
+        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_WinAppSDK_AdaptiveActionSetRenderer, BaseTrust);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
