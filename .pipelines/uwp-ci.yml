@@ -50,15 +50,27 @@ steps:
     createLogFile: true
     logFileVerbosity: detailed
 
+# - task: VSTest@2
+#   displayName: 'VsTest - testAssemblies'
+#   inputs:
+#     testAssemblyVer2: |
+#      **\Release\UWPUnitTests.build.appxrecipe
+#      !**\obj\**
+#     otherConsoleOptions: '/Framework:FrameworkUap10'
+#     runInParallel: true
+#     runTestsInIsolation: true
+#     codeCoverageEnabled: false
+#     platform: '$(BuildPlatform)'
+#     configuration: '$(BuildConfiguration)'
+#     diagnosticsEnabled: True
+#     collectDumpOn: always
+
 - task: VSTest@2
   displayName: 'VsTest - testAssemblies'
   inputs:
     testAssemblyVer2: |
-     **\Release\UWPUnitTests.build.appxrecipe
+     **\Release\netcoreapp2.1\UWPUITests.dll
      !**\obj\**
-    #      **\Release\netcoreapp2.1\UWPUITests.dll
-    otherConsoleOptions: '/Framework:FrameworkUap10'
-    runInParallel: true
     uiTests: true
     runTestsInIsolation: true
     codeCoverageEnabled: false
