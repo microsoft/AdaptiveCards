@@ -1,0 +1,73 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "minHeight": "200px",
+            "items": [
+                {
+                    "type": "Input.Text",
+                    "id": "input1",
+                    "style": "text",
+                    "label": "Required Input.Text label",
+                    "isRequired": true,
+                    "errorMessage": "Required input",
+                    "height": "stretch"
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Bottom text"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "minHeight": "200px",
+            "style": "emphasis",
+            "bleed": true,
+            "verticalContentAlignment": "center",
+            "items": [
+                {
+                    "type": "Input.Text",
+                    "id": "input2",
+                    "style": "text",
+			        "label": "Required Input.Text label",
+			        "isRequired": true,
+                    "errorMessage": "Required input"
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Bottom text"
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "minHeight": "200px",
+            "bleed": true,
+            "verticalContentAlignment": "bottom",
+            "items": [
+		        {
+			        "type": "Input.Text",
+                    "id": "input3",
+                    "style": "text",
+			        "label": "Required Input.Text label",
+			        "isRequired": true,
+                    "errorMessage": "Required input"
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Bottom text"
+                }
+            ]
+        }
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
+	]
+}

@@ -1,0 +1,103 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"lang": "es",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "VALID DATE / TIME FORMATS",
+					"size": "large",
+					"color": "good"
+				},
+				{
+					"type": "TextBlock",
+					"text": "No offset {{DATE(2017-02-14T06:08:00Z)}} {{TIME(2017-02-14T06:08:00Z)}}",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "Positive offset {{DATE(2017-02-14T06:08:00+04:00)}} {{TIME(2017-02-14T06:08:00+04:00)}}",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "Negative offset {{DATE(2017-02-14T06:08:00-07:00)}} {{TIME(2017-02-14T06:08:00-07:00)}}",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"spacing": "large",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "VALID DATE FORMAT OPTIONS",
+					"size": "large",
+					"color": "good"
+				},
+				{
+					"type": "TextBlock",
+					"text": "{{DATE(2017-02-14T06:08:00Z, COMPACT)}} (Default)",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "{{DATE(2017-02-14T06:08:00Z, SHORT)}}",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "{{DATE(2017-02-14T06:08:00Z, LONG)}}",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"spacing": "large",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "INVALID DATE / TIME FORMATS",
+					"size": "large",
+					"color": "attention"
+				},
+				{
+					"type": "TextBlock",
+					"text": "Invalid Spaces {{ DATE(2017-02-14T06:08:00Z) }} {{ TIME(2017-02-14T06:08:00Z) }}",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "Invalid Date {{DATE(2017-99-14T06:08:00Z)}} {{TIME(2017-99-14T06:08:00Z)}}",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "Invalid casing {{date(2017-02-14T06:08:00Z)}} {{Time(2017-02-14T06:08:00Z)}}",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "Missing seconds {{DATE(2017-10-27T22:27Z)}} {{TIME(2017-10-27T22:27Z)}}",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "TIME doesn't allow a format param {{TIME(2017-02-14T06:08:00Z, SHORT)}}",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"text": "{{DATE(2017-02-14T06:08:00Z, RANDOMTEXT)}}"
+				}
+
+			]
+		}
+	]
+  }

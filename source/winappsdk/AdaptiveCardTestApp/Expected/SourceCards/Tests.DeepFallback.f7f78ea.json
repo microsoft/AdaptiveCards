@@ -1,0 +1,169 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.2",
+	"actions": [
+		{
+			"type": "MyCoolAction2",
+			"coolness": "to the max",
+			"title": "Be Cool",
+			"fallback": {
+				"type": "MyCoolAction",
+				"coolness": "pretty cool",
+				"title": "Pretty cool",
+				"fallback": {
+					"type": "Action.Submit",
+					"title": "Correct"
+				}
+			}
+		},
+		{
+			"type": "Unnecessary",
+			"title": "This is a bug!",
+			"fallback": "drop"
+		}
+	],
+	"body": [
+		{
+			"type": "Container",
+			"fallback": "drop",
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"width": "auto",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "You should never see this (fallback: drop)!",
+											"color": "attention",
+											"weight": "bolder"
+										},
+										{
+											"type": "Graph",
+											"id": "firstGraph",
+											"someProperty": "blah"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Nothing above this! ↑",
+			"weight": "lighter"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Message just below ↓",
+			"weight": "lighter"
+		},
+		{
+			"type": "Container",
+			"fallback": {
+				"type": "TextBlock",
+				"weight": "bolder",
+				"color": "good",
+				"text": "If you see this, things are working great!"
+			},
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"width": "auto",
+									"items": [
+										{
+											"type": "TextBlock",
+											"text": "You should never see this (fallback: textblock)!",
+											"color": "attention",
+											"weight": "bolder"
+										},
+										{
+											"type": "Graph",
+											"id": "secondGraph",
+											"someOtherProperty": "blah"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "There should be another message below ↓",
+			"weight": "lighter"
+		},
+		{
+			"type": "GraphV2",
+			"id": "firstGraphVTwo",
+			"fallback": {
+				"type": "Graph",
+				"id": "thirdGraph",
+				"fallback": {
+					"type": "TextBlock",
+					"text": "Multiply-nested fallback works!",
+					"weight": "bolder",
+					"color": "good"
+				}
+			}
+		},
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "There should be nothing between here...",
+					"wrap": true,
+					"weight": "lighter"
+				},
+				{
+					"type": "GraphV2",
+					"id": "secondGraphVTwo",
+					"fallback": {
+						"type": "Graph",
+						"id": "fourthGraph",
+						"fallback": {
+							"type": "MakeSomethingUp"
+						}
+					}
+				},
+				{
+					"type": "GraphV2",
+					"id": "thirdGraphVTwo",
+					"fallback": {
+						"type": "Graph",
+						"id": "fifthGraph",
+						"fallback": {
+							"type": "MakeSomethingElseUp",
+							"fallback": "drop"
+						}
+					}
+				},
+				{
+					"type": "TextBlock",
+					"text": "...and here",
+					"wrap": true,
+					"weight": "lighter"
+				}
+			]
+		}
+	]
+}

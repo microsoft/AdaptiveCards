@@ -1,0 +1,162 @@
+{
+	"$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type" : "AdaptiveCard",
+	"version" : "1.0",
+	"body" :
+		[ 
+			{
+				"type" : "Container",
+				"items" : [
+					{
+						"type" : "TextBlock",
+						"text" : "Every elements below this has to be convered by a purple background image",
+						"wrap" : true
+					}, 
+					{
+						"type" : "Container",
+						"backgroundImage" : 
+						{
+							"url" : "http://104.211.228.145:3000/images/assets/icons/Background.png"
+						},
+						"items" : [
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							}, 
+							{
+								"type" : "FactSet",
+								"facts" : [
+									{
+										"title" : "Fact 1", 
+										"value" : "Value 1"
+									},
+									{
+										"title" : "Fact 2", 
+										"value" : "Value 2"
+									}
+								]
+							}
+						]
+					}
+			],
+			"height" : "stretch"
+		},
+		{
+			"type": "Container",
+			"backgroundImage": {
+				"url": "http://104.211.228.145:3000/images/assets/icons/Background.png",
+				"fillMode": "Cover"
+			},
+            "items": [
+				{
+					"id": "txtid",
+					"text": "Test Card.",
+					"type": "TextBlock"
+				},
+				{
+					"value": "default text",
+					"placeholder": "Enter your text",
+					"id": "newtxt",
+					"type": "Input.Text"
+				},
+				{
+					"id": "resd",
+					"text": "My new textblock",
+					"type": "TextBlock"
+				},
+				{
+					"value": "",
+					"id": "dateid",
+					"type": "Input.Date"
+				},
+				{
+					"value": "mychoice",
+					"id": "idchoice",
+					"type": "Input.ChoiceSet",
+					"choices": [
+                        {
+                            "title": "Choice 1",
+                            "value": "Choice 1"
+                        },
+                        {
+                            "title": "Choice 2",
+                            "value": "Choice 2"
+                        }
+					]
+				},
+				{
+					"type": "TextBlock",
+					"text": "text3"
+				},
+				{
+					"type": "TextBlock",
+					"text": "Text4"
+				},
+				{
+					"type": "TextBlock",
+					"text": "Text5"
+				}
+			]
+		}
+	]
+}

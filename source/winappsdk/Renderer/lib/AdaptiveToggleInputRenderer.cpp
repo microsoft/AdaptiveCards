@@ -1,0 +1,95 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+#include "pch.h"
+
+#include "AdaptiveToggleInputRenderer.h"
+
+using namespace Microsoft::WRL;
+using namespace Microsoft::WRL::Wrappers;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
+using namespace ABI::Windows::Foundation;
+using namespace ABI::Windows::Foundation::Collections;
+using namespace ABI::Windows::UI::Xaml;
+using namespace ABI::Windows::UI::Xaml::Controls;
+using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
+
+namespace AdaptiveCards::Rendering::WinUI3
+{
+    HRESULT AdaptiveToggleInputRenderer::RuntimeClassInitialize() noexcept
+    try
+    {
+        return S_OK;
+    }
+    CATCH_RETURN();
+
+    HRESULT AdaptiveToggleInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
+                                                _In_ IAdaptiveRenderContext* renderContext,
+                                                _In_ IAdaptiveRenderArgs* renderArgs,
+                                                _COM_Outptr_ IUIElement** toggleInputControl) noexcept
+    try
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
+        {
+            renderContext->AddWarning(
+                ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Toggle Input was stripped from card because interactivity is not supported").Get());
+            return S_OK;
+        }
+
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
+        RETURN_IF_FAILED(cardElement.As(&adaptiveToggleInput));
+
+        ComPtr<ICheckBox> checkBox =
+            XamlHelpers::CreateABIClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+
+        HString title;
+        RETURN_IF_FAILED(adaptiveToggleInput->get_Title(title.GetAddressOf()));
+
+        boolean wrap;
+        adaptiveToggleInput->get_Wrap(&wrap);
+
+        XamlHelpers::SetContent(checkBox.Get(), title.Get(), wrap);
+
+        HString value;
+        RETURN_IF_FAILED(adaptiveToggleInput->get_Value(value.GetAddressOf()));
+
+        HString valueOn;
+        RETURN_IF_FAILED(adaptiveToggleInput->get_ValueOn(valueOn.GetAddressOf()));
+
+        INT32 compareValueOn;
+        RETURN_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
+
+        XamlHelpers::SetToggleValue(checkBox.Get(), (compareValueOn == 0));
+
+        ComPtr<IUIElement> checkboxAsUIElement;
+        RETURN_IF_FAILED(checkBox.As(&checkboxAsUIElement));
+        RETURN_IF_FAILED(XamlHelpers::AddHandledTappedEvent(checkboxAsUIElement.Get()));
+
+        ComPtr<IFrameworkElement> frameworkElement;
+        RETURN_IF_FAILED(checkBox.As(&frameworkElement));
+        RETURN_IF_FAILED(frameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
+        RETURN_IF_FAILED(
+            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", frameworkElement.Get()));
+
+        ComPtr<IAdaptiveInputElement> adapitveToggleInputAsAdaptiveInput;
+        RETURN_IF_FAILED(adaptiveToggleInput.As(&adapitveToggleInputAsAdaptiveInput));
+
+        ComPtr<IUIElement> inputLayout;
+        ComPtr<IUIElement> validationError;
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
+            adapitveToggleInputAsAdaptiveInput.Get(), checkboxAsUIElement.Get(), false, renderContext, &inputLayout, nullptr));
+
+        ComPtr<ToggleInputValue> input;
+        RETURN_IF_FAILED(MakeAndInitialize<ToggleInputValue>(&input, adaptiveToggleInput.Get(), checkBox.Get(), nullptr));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
+
+        RETURN_IF_FAILED(inputLayout.CopyTo(toggleInputControl));
+
+        return S_OK;
+    }
+    CATCH_RETURN();
+}

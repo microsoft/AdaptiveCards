@@ -1,0 +1,122 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This test checks if showing an element inside a container that is hiding, will behave correctly by not showing the container",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Container (id1)",
+			"wrap": true
+		},
+		{
+			"type": "Container",
+			"id": "id1",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "TextBlock",
+					"id": "id2",
+					"text": "TextBlock (id2) inside a container",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Column (id3)",
+			"wrap": true
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"spacing": "large",
+					"id": "id3",
+					"style": "emphasis",
+					"items": [
+						{
+							"type": "TextBlock",
+							"id": "id4",
+							"text": "TextBlock (id4) inside a columnSet",
+							"wrap": true
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Hide containers, show element",
+			"targetElements": [ 
+				{
+					"elementId": "id1",
+					"isVisible": false
+				},
+				{
+					"elementId": "id2",
+					"isVisible": true
+				},
+				{
+					"elementId": "id3",
+					"isVisible": false
+				},
+				{
+					"elementId": "id4",
+					"isVisible": true
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Show element, hide containers",
+			"targetElements": [ 
+				{
+					"elementId": "id2",
+					"isVisible": true
+				},
+				{
+					"elementId": "id1",
+					"isVisible": false
+				},
+				{
+					"elementId": "id4",
+					"isVisible": true
+				},
+				{
+					"elementId": "id3",
+					"isVisible": false
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Show everything",
+			"targetElements": [ 
+				{
+					"elementId": "id1",
+					"isVisible": true
+				},
+				{
+					"elementId": "id2",
+					"isVisible": true
+				},
+				{
+					"elementId": "id3",
+					"isVisible": true
+				},
+				{
+					"elementId": "id4",
+					"isVisible": true
+				}
+			]
+		}
+	]
+}

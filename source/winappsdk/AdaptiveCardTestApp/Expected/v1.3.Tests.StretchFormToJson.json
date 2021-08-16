@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"height":"Stretch","text":"This is a stretched textblock","type":"TextBlock","wrap":true},{"height":"Stretch","id":"input1","type":"Input.Text"},{"text":"This is a non-stretched textblock","type":"TextBlock","wrap":true},{"height":"Stretch","id":"input2","type":"Input.Text"}],"minHeight":"300px","type":"AdaptiveCard","version":"1.2"}

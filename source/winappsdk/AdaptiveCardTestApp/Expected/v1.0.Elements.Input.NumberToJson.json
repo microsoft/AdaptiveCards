@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"id":"number","max":10,"min":1,"placeholder":"Enter a number","type":"Input.Number","value":3}],"type":"AdaptiveCard","version":"1.0"}

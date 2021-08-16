@@ -1,0 +1,27 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card as duplicate ids and shouldn't render!"
+		},
+		{
+			"type": "Input.Text",
+			"id": "duplicate",
+			"placeholder": "uh-oh"
+		},
+		{
+			"type": "Input.Text",
+			"id": "duplicate",
+			"placeholder": "not again!"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Action.Submit"
+		}
+	]
+}

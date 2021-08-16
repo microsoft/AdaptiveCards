@@ -1,0 +1,1 @@
+{"actions":[{"title":"Good","type":"Action.Submit"},{"type":"Action.Submit"},{"type":"Action.Submit"},{"title":" ","type":"Action.Submit"}],"body":[{"text":"Action.Title is highly recommended, but for the time being not enforced","type":"TextBlock","wrap":true}],"type":"AdaptiveCard","version":"1.0"}

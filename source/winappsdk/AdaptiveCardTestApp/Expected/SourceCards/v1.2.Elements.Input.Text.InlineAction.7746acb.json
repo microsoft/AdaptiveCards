@@ -1,0 +1,58 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Text input with an inline action"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input1",
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "https://adaptivecards.io/content/cats/1.png",
+				"title": "Reply"
+			}
+		},
+		{
+			"type": "TextBlock",
+			"text": "Text input with an inline action with no icon",
+			"wrap": true
+		},
+		{
+			"type": "Input.Text",
+			"id": "input2",
+			"inlineAction": {
+				"type": "Action.OpenUrl",
+				"title": "Reply",
+				"url": "https://adaptivecards.io"
+			}
+		},
+		{
+			"type": "TextBlock",
+			"text": "Multiline Text Inputs with inline actions"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input3",
+			"isMultiline": true,
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "https://adaptivecards.io/content/cats/1.png",
+				"title": "Reply"
+			}
+		},
+		{
+			"type": "Input.Text",
+			"id": "input4",
+			"isMultiline": true,
+			"inlineAction": {
+				"type": "Action.OpenUrl",
+				"title": "Reply",
+				"url": "https://adaptivecards.io"
+			}
+		}
+	]
+}
