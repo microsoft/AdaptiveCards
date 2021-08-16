@@ -54,7 +54,7 @@ steps:
   displayName: 'VsTest - testAssemblies'
   inputs:
     testAssemblyVer2: |
-     **\Release\UWPTestApp.build.appxrecipe
+     **\Release\UWPUnitTests.build.appxrecipe
      !**\obj\**
     #      **\Release\netcoreapp2.1\UWPUITests.dll
     otherConsoleOptions: '/Framework:FrameworkUap10'
