@@ -23,7 +23,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
         m_height = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType>(sharedModel->GetHeight());
         m_internalId = sharedModel->GetInternalId().Hash();
-        m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
+        m_fallbackType = MapSharedFallbackTypeToWinUI3(sharedModel->GetFallbackType());
         if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content)
         {
             const auto fallbackObject =
@@ -171,7 +171,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         sharedCardElement.SetIsVisible(m_isVisible);
         sharedCardElement.SetSpacing(static_cast<AdaptiveCards::Spacing>(m_spacing));
         sharedCardElement.SetHeight(static_cast<AdaptiveCards::HeightType>(m_height));
-        sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+        sharedCardElement.SetFallbackType(MapWinUI3FallbackTypeToShared(m_fallbackType));
 
         RETURN_IF_FAILED(GenerateSharedRequirements(m_requirements.Get(), sharedCardElement.GetRequirements()));
 

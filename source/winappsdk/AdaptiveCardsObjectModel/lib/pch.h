@@ -5,7 +5,7 @@
 #define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_##cls, BaseTrust)
 #define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_##cls, BaseTrust)
 #define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.ObjectModel.WinUI3." L#cls, BaseTrust)
-#define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_ObjectModel_Uwp
+#define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_ObjectModel_WinUI3
 #define AdaptivePointerCast dynamic_pointer_cast
 
 // don't want windows.h min()/max() definitions as they conflict with std::numeric_limits<T>::min()/max()

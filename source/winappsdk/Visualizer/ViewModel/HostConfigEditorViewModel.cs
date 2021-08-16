@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCards.Rendering.WinUI3;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

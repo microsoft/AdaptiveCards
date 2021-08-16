@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using AdaptiveCards.Rendering.Uwp;
-using AdaptiveCards.ObjectModel.Uwp;
+using AdaptiveCards.Rendering.WinUI3;
+using AdaptiveCards.ObjectModel.WinUI3;
 using Windows.Data.Json;
 using Windows.UI;
 using Windows.UI.Xaml;

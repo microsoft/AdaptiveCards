@@ -239,8 +239,8 @@ HRESULT AdaptiveWarningsToSharedWarnings(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
-ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type);
-AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type);
+ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type);
+AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type);
 
 HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
     const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration,

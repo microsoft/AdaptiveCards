@@ -27,7 +27,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         m_isEnabled = sharedModel->GetIsEnabled();
 
         m_internalId = sharedModel->GetInternalId().Hash();
-        m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
+        m_fallbackType = MapSharedFallbackTypeToWinUI3(sharedModel->GetFallbackType());
         if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content)
         {
             const auto fallbackObject =
@@ -149,7 +149,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         sharedCardElement.SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
         sharedCardElement.SetStyle(HStringToUTF8(m_style.Get()));
         sharedCardElement.SetTooltip(HStringToUTF8(m_tooltip.Get()));
-        sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+        sharedCardElement.SetFallbackType(MapWinUI3FallbackTypeToShared(m_fallbackType));
         sharedCardElement.SetIsEnabled(m_isEnabled);
         sharedCardElement.SetMode(static_cast<Mode>(m_mode));
 

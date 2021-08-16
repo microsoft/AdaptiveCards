@@ -801,7 +801,7 @@ HRESULT AdaptiveWarningsToSharedWarnings(
     return S_OK;
 }
 
-ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type)
+ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type)
 {
     switch (type)
     {
@@ -823,7 +823,7 @@ ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToUwp
     }
 }
 
-AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type)
+AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type)
 {
     switch (type)
     {

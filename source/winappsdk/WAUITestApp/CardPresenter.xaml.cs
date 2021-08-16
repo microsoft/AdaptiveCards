@@ -6,9 +6,9 @@ using Windows.UI.Xaml.Controls;
 
 using System.Threading.Tasks;
 using Windows.Storage;
-using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCards.Rendering.WinUI3;
 using System.Collections.ObjectModel;
-using AdaptiveCards.ObjectModel.Uwp;
+using AdaptiveCards.ObjectModel.WinUI3;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
