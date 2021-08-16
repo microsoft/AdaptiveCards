@@ -4,7 +4,7 @@
 
 #include "ImageSet.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("04ed4200-de21-4587-8bc5-74b000809985") AdaptiveImageSet
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

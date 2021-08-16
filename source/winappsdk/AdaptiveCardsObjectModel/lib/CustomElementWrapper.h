@@ -5,7 +5,7 @@
 #include "AdaptiveCards.ObjectModel.WinAppSDK.h"
 #include "ObjectModelUtil.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {

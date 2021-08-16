@@ -5,9 +5,9 @@
 #include "AdaptiveImageConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize() noexcept
     try

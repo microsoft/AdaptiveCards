@@ -10,12 +10,12 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     AdaptiveTableCell::AdaptiveTableCell() : m_bleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
     {

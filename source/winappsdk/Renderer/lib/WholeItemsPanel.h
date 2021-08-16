@@ -5,7 +5,7 @@
 #include "AdaptiveCards.Rendering.WinAppSDK.h"
 #include <windows.ui.xaml.shapes.h>
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     class DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel
         : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinAppSDK::IWholeItemsPanel,

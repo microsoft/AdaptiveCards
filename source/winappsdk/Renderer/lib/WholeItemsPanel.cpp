@@ -12,7 +12,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -21,7 +21,7 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Media;
 
 static const float OutsidePanelY = -1000.0f;
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT WholeItemsPanel::RuntimeClassInitialize()
     {

@@ -7,8 +7,8 @@
 #include "XamlHelpers.h"
 
 using namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -16,7 +16,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveTableRenderer::RuntimeClassInitialize() noexcept
     try

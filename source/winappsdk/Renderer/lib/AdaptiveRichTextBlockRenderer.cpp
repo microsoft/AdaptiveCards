@@ -8,8 +8,8 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -17,7 +17,7 @@ using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace ABI::Windows::UI::Xaml::Documents;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveRichTextBlockRenderer::RuntimeClassInitialize() noexcept
     try

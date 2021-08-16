@@ -5,7 +5,7 @@
 #include "DateInput.h"
 #include "AdaptiveInputElement.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("9aa05662-098b-4588-addb-af62378a8706") AdaptiveDateInput
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

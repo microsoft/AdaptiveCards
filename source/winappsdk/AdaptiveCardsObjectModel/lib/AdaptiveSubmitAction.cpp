@@ -5,10 +5,10 @@
 #include "AdaptiveSubmitAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept
     try

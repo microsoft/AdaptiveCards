@@ -5,7 +5,7 @@
 #include "AdaptiveCards.Rendering.WinAppSDK.h"
 #include "RenderedAdaptiveCard.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     class AdaptiveMediaEventInvoker
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

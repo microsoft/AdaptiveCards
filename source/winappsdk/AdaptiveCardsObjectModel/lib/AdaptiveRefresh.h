@@ -4,7 +4,7 @@
 
 #include "Refresh.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("8D452985-D06B-4541-AEAF-DD7A3DC7CCD8") AdaptiveRefresh
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

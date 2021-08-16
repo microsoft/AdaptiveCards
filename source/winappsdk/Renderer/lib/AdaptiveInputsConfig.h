@@ -5,7 +5,7 @@
 #include "AdaptiveLabelConfig.h"
 #include "AdaptiveErrorMessageConfig.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     class AdaptiveInputsConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

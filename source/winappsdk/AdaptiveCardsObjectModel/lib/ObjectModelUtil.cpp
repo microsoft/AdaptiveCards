@@ -42,7 +42,7 @@ using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
 using namespace ABI::Windows::Data::Json;
 using namespace Microsoft::WRL;
-using namespace AdaptiveCards::ObjectModel::Uwp;
+using namespace AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 

@@ -4,7 +4,7 @@
 
 #include "BaseInputElement.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("E2E42BA6-A0AE-4B01-B161-29AF2F2B302B") AdaptiveInputElementBase : public AdaptiveCardElementBase
     {

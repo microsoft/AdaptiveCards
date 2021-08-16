@@ -5,7 +5,7 @@
 #include "AdaptiveCards.Rendering.WinAppSDK.h"
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     struct TrackedImageDetails
     {

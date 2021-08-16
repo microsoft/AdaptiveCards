@@ -6,9 +6,9 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition() {}
 

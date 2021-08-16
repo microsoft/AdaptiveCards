@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "LinkButton.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     winrt::Windows::UI::Xaml::Automation::Peers::AutomationPeer LinkButton::OnCreateAutomationPeer()
     {

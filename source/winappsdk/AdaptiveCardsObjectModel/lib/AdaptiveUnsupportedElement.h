@@ -4,7 +4,7 @@
 
 #include "UnknownElement.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("e1ab7208-17bc-4fb6-b3c0-c1886987b4cf") AdaptiveUnsupportedElement
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

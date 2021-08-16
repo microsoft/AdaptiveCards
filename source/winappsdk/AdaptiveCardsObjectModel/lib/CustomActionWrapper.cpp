@@ -4,9 +4,9 @@
 #include "CustomActionWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     CustomActionWrapper::CustomActionWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* actionElement) :
         AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom), m_actionElement(actionElement)

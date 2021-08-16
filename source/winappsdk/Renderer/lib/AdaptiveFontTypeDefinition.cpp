@@ -9,7 +9,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveFontTypeDefinition::RuntimeClassInitialize() noexcept
     try

@@ -4,7 +4,7 @@
 
 #include "AdaptiveCards.Rendering.WinAppSDK.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     // Base class for input values. The InputValue is responsible for getting the current value and submit time, and also handles input validation.
     class DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue

@@ -6,8 +6,8 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Foundation::Collections;
 
 using namespace ABI::Windows::Foundation;
@@ -16,7 +16,7 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     class DECLSPEC_UUID("0F485063-EF2A-400E-A946-73E00EDFAC83") TileControl
         : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinAppSDK::ITileControl,

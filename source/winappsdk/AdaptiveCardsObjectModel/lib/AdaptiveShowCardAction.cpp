@@ -6,9 +6,9 @@
 #include "AdaptiveShowCardAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept
     try

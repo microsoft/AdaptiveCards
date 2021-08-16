@@ -6,10 +6,10 @@
 #include "AdaptiveToggleVisibilityActionParser.h"
 #include "AdaptiveElementParserRegistration.h"
 
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace Microsoft::WRL;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveToggleVisibilityActionParser::RuntimeClassInitialize() noexcept
     try

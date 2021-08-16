@@ -5,11 +5,11 @@
 #include "AdaptiveTokenExchangeResource.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveTokenExchangeResource::RuntimeClassInitialize() noexcept
     {

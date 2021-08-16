@@ -5,7 +5,7 @@
 #include "TimeInput.h"
 #include "AdaptiveInputElement.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("5d05c3fe-f808-4181-9f44-3a802b556a43") AdaptiveTimeInput
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

@@ -5,7 +5,7 @@
 #include "UnknownAction.h"
 #include "AdaptiveActionElement.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("D5018CF5-97D9-4FC4-88E8-9415D51431B6") AdaptiveUnsupportedAction
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

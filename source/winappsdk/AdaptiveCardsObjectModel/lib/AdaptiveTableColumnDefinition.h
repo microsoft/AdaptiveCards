@@ -4,7 +4,7 @@
 
 #include "TableColumnDefinition.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("3ED8BE31-8D92-461B-8E8F-2C6C0F78E2ED") AdaptiveTableColumnDefinition
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,

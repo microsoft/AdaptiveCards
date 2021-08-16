@@ -5,10 +5,10 @@
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept
     try

@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "AdaptiveMediaSource.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveMediaSource::RuntimeClassInitialize() noexcept
     try

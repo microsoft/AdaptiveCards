@@ -10,7 +10,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveChoiceInput::RuntimeClassInitialize() noexcept
     try

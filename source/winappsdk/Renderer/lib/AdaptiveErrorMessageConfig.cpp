@@ -5,9 +5,9 @@
 #include "AdaptiveErrorMessageConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveErrorMessageConfig::RuntimeClassInitialize() noexcept
     try

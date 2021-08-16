@@ -13,7 +13,7 @@ using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::UI;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace AdaptiveCards::Rendering::Uwp;
+using namespace AdaptiveCards::Rendering::WinAppSDK;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 

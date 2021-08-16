@@ -3,7 +3,7 @@
 
 #pragma once
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     interface __declspec(uuid("0331D653-957C-4385-A327-D326750C10B6")) IElementTagContent : IInspectable
     {

@@ -6,10 +6,10 @@
 #include "AdaptiveSubmitActionParser.h"
 #include "AdaptiveElementParserRegistration.h"
 
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace Microsoft::WRL;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveSubmitActionParser::RuntimeClassInitialize() noexcept
     try

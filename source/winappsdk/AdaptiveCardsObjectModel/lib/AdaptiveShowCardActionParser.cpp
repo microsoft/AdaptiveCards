@@ -7,10 +7,10 @@
 #include "AdaptiveElementParserRegistration.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveShowCardActionParser::RuntimeClassInitialize() noexcept
     try

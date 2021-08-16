@@ -6,9 +6,9 @@
 
 #include <winrt/Windows.Foundation.h>
 
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept
     try

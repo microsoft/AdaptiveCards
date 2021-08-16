@@ -7,13 +7,13 @@
 #include "AdaptiveTableParser.h"
 #include "ObjectModelUtil.h"
 
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveTableParser::RuntimeClassInitialize() noexcept
     try

@@ -4,9 +4,9 @@
 #include "CustomElementWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     CustomElementWrapper::CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* cardElement) :
         BaseCardElement(AdaptiveCards::CardElementType::Custom), m_cardElement(cardElement)

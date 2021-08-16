@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize() noexcept
     try

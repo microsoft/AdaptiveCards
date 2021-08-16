@@ -25,10 +25,10 @@
 #include "AdaptiveTextStylesConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(_In_ HSTRING adaptiveJson,
                                                           _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult) noexcept

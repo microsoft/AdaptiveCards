@@ -5,11 +5,11 @@
 #include "AdaptiveSubmitActionRenderer.h"
 #include "ActionHelpers.h"
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace Microsoft::WRL;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveSubmitActionRenderer::RuntimeClassInitialize() noexcept
     try

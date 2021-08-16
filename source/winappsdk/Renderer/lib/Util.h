@@ -264,7 +264,7 @@ HRESULT GetDateTimeReference(unsigned int year,
 HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement* textElement,
                         _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement** copiedTextElement);
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     class XamlBuilder;
 

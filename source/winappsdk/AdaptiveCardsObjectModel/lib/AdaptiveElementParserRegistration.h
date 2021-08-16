@@ -6,7 +6,7 @@
 #include "ObjectModelUtil.h"
 #include "AdaptiveActionParserRegistration.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     constexpr char* c_uwpElementParserRegistration = "447C3D76-CAAD-405F-B929-E3201F1537AB";
 
