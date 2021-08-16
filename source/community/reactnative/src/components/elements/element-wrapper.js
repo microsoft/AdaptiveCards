@@ -59,7 +59,7 @@ export default class ElementWrapper extends React.Component {
 
 		let computedStyles = [styles.inputContainer, receivedStyles];
 
-		if (payload.parent && payload.parent["verticalContentAlignment"] && payload.parent.type === Constants.TypeColumn) {
+		if (payload.parent && payload.parent["verticalContentAlignment"] && payload.type !== Constants.TypeColumnSet) {
 			// vertical content alignment
 			let verticalContentAlignment = Utils.parseHostConfigEnum(
 				Enums.VerticalAlignment,

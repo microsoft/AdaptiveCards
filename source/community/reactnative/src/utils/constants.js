@@ -64,6 +64,7 @@ export const TypeAdaptiveCard = "AdaptiveCard";
 export const TypeTextBlock = "TextBlock";
 export const TypeRichTextBlock = "RichTextBlock";
 export const TypeColumn = "Column";
+export const TypeContainer = "Container";
 
 export const TypeString = "string";
 export const TypeObject = "object"
