@@ -316,9 +316,7 @@ namespace UWPUITests
                     string.Format("-ExecutionPolicy Unrestricted Get-AppxPackage *{0}* | Remove-AppxPackage",
                         "AdaptiveCardsUWPUITestApp"))
                 {
-                    UseShellExecute = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
+                    UseShellExecute = true
                 });
                 removeAppPowershellProcess.WaitForExit();
 
@@ -354,15 +352,11 @@ namespace UWPUITests
             {
                 Logger.LogMessage("Certificate is not installed. Installing app and certificate...");
             }
-
             var powershellProcess = Process.Start(new ProcessStartInfo("powershell",
                     string.Format("-ExecutionPolicy Unrestricted -File {0}\\Add-AppDevPackage.ps1 {1}",
-                        Path.GetDirectoryName(mostRecentlyBuiltAppx),
-                        certutilProcess.ExitCode == 0 ? "-Force" : ""))
+                        Path.GetDirectoryName(mostRecentlyBuiltAppx), "-Force"))
             {
-                UseShellExecute = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
+                UseShellExecute = true
             });
             powershellProcess.WaitForExit();
 
