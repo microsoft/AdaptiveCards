@@ -316,7 +316,9 @@ namespace UWPUITests
                     string.Format("-ExecutionPolicy Unrestricted Get-AppxPackage *{0}* | Remove-AppxPackage",
                         "AdaptiveCardsUWPUITestApp"))
                 {
-                    UseShellExecute = true
+                    UseShellExecute = true,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
                 });
                 removeAppPowershellProcess.WaitForExit();
 
@@ -358,7 +360,9 @@ namespace UWPUITests
                         Path.GetDirectoryName(mostRecentlyBuiltAppx),
                         certutilProcess.ExitCode == 0 ? "-Force" : ""))
             {
-                UseShellExecute = true
+                UseShellExecute = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
             });
             powershellProcess.WaitForExit();
 
