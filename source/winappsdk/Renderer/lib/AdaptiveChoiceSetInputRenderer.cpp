@@ -7,15 +7,15 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveChoiceSetInputRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
@@ -30,7 +30,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"ChoiceSet was stripped from card because interactivity is not supported").Get());
             return S_OK;
         }
@@ -39,17 +39,17 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IAdaptiveChoiceSetInput> adaptiveChoiceSetInput;
         RETURN_IF_FAILED(cardElement.As(&adaptiveChoiceSetInput));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle choiceSetStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle choiceSetStyle;
         RETURN_IF_FAILED(adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
         boolean isMultiSelect;
         RETURN_IF_FAILED(adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
-        if (choiceSetStyle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle_Compact && !isMultiSelect)
+        if (choiceSetStyle == ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle_Compact && !isMultiSelect)
         {
             RETURN_IF_FAILED(BuildCompactChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput.Get(), choiceInputSet));
         }
-        else if (choiceSetStyle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle_Filtered)
+        else if (choiceSetStyle == ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle_Filtered)
         {
             RETURN_IF_FAILED(BuildFilteredChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput.Get(), choiceInputSet));
         }
@@ -117,7 +117,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IVector<IInspectable*>> itemsVector;
         RETURN_IF_FAILED(items.As(&itemsVector));
 
-        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*>> choices;
+        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*>> choices;
         RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
@@ -126,7 +126,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         int currentIndex = 0;
         int selectedIndex = -1;
-        IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput, IAdaptiveChoiceInput>(
+        IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput, IAdaptiveChoiceInput>(
             choices.Get(), [&currentIndex, &selectedIndex, itemsVector, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
                 HString title;
                 RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));

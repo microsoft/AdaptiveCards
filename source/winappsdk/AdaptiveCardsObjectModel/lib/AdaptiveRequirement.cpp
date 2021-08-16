@@ -5,9 +5,9 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveRequirement::RuntimeClassInitialize() { return S_OK; }
 

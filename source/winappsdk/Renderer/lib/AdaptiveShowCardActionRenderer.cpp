@@ -6,13 +6,13 @@
 #include "ActionHelpers.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveShowCardActionRenderer::RuntimeClassInitialize() noexcept
     try
@@ -47,7 +47,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle showCardConfigStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle showCardConfigStyle;
         RETURN_IF_FAILED(showCardActionConfig->get_Style(&showCardConfigStyle));
 
         boolean wasInShowCard;
@@ -72,7 +72,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         UINT32 padding;
         RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
 
-        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode showCardActionMode;
+        ABI::AdaptiveCards::Rendering::WinUI3::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
         // Set the top margin

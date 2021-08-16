@@ -4,9 +4,9 @@
 
 #include "AdaptiveTableConfig.h"
 
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveTableConfig::RuntimeClassInitialize() noexcept
     try

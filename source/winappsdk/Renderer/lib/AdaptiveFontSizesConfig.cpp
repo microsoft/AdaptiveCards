@@ -5,9 +5,9 @@
 #include "AdaptiveFontSizesConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize() noexcept
     try

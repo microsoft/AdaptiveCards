@@ -42,7 +42,7 @@ using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
 using namespace ABI::Windows::Data::Json;
 using namespace Microsoft::WRL;
-using namespace AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
@@ -153,105 +153,105 @@ std::shared_ptr<TSharedBaseType> GetSharedModel(_In_ TAdaptiveBaseType* item)
     }
 }
 
-HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* item,
+HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* item,
                               std::shared_ptr<AdaptiveCards::BaseCardElement>& baseCardElement)
 {
-    ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType elementType;
+    ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType elementType;
     RETURN_IF_FAILED(item->get_ElementType(&elementType));
 
     switch (elementType)
     {
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::ActionSet:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ActionSet:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveActionSet>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSet>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::ChoiceSetInput:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ChoiceSetInput:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceSetInput>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInput>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::Column:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Column:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::ColumnSet:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ColumnSet:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumnSet>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnSet>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::Container:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Container:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveContainer>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveContainer>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::DateInput:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::DateInput:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveDateInput>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveDateInput>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::FactSet:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::FactSet:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFactSet>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveFactSet>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::Image:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Image:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::ImageSet:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ImageSet:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImageSet>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageSet>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::NumberInput:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::NumberInput:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveNumberInput>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveNumberInput>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::Media:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Media:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMedia>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::RichTextBlock:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::RichTextBlock:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRichTextBlock>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveRichTextBlock>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::TextBlock:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::TextBlock:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextBlock>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextBlock>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::TextInput:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::TextInput:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextInput>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::TimeInput:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::TimeInput:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTimeInput>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveTimeInput>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::ToggleInput:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ToggleInput:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleInput>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInput>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::Table:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Table:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTable>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveTable>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::Unsupported:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Unsupported:
         baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveUnsupportedElement>(
+            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedElement>(
                 item);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType::Custom:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Custom:
         baseCardElement = std::make_shared<CustomElementWrapper>(item);
         break;
     }
@@ -264,13 +264,13 @@ HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::I
     return S_OK;
 }
 
-HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>* items,
+HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*>* items,
                                std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
 {
     containedElements.clear();
 
-    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement>(
-        items, [&](ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* item) {
+    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>(
+        items, [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* item) {
             std::shared_ptr<AdaptiveCards::BaseCardElement> baseCardElement;
             RETURN_IF_FAILED(GenerateSharedElement(item, baseCardElement));
             containedElements.push_back(std::move(baseCardElement));
@@ -281,58 +281,58 @@ HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVect
     return S_OK;
 }
 
-HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action,
+HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
                              std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction)
 {
-    ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
+    ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
     RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
     switch (actionType)
     {
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::OpenUrl:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::OpenUrl:
         sharedAction =
-            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveOpenUrlAction>(
+            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveOpenUrlAction>(
                 action);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::ShowCard:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ShowCard:
         sharedAction =
-            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveShowCardAction>(
+            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveShowCardAction>(
                 action);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Submit:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Submit:
         sharedAction =
-            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveSubmitAction>(
+            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveSubmitAction>(
                 action);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::ToggleVisibility:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ToggleVisibility:
         sharedAction =
-            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityAction>(
+            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityAction>(
                 action);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Execute:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute:
         sharedAction =
-            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveExecuteAction>(
+            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveExecuteAction>(
                 action);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Custom:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Custom:
         sharedAction = std::make_shared<CustomActionWrapper>(action);
         break;
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Unsupported:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Unsupported:
         sharedAction =
-            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveUnsupportedAction>(
+            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedAction>(
                 action);
     }
 
     return S_OK;
 }
 
-HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>* actions,
+HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* actions,
                               std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements)
 {
     containedElements.clear();
 
-    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement>(
-        actions, [&](ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action) {
+    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>(
+        actions, [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action) {
             std::shared_ptr<AdaptiveCards::BaseActionElement> baseActionElement;
             GenerateSharedAction(action, baseActionElement);
             containedElements.push_back(baseActionElement);
@@ -343,14 +343,14 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
 }
 
 HRESULT GenerateSharedRequirements(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>* adaptiveRequirements,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>* adaptiveRequirements,
     std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements) noexcept
 try
 {
     sharedRequirements.clear();
 
-    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement>(
-        adaptiveRequirements, [&](ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement* requirement) {
+    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement>(
+        adaptiveRequirements, [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement* requirement) {
             HString nameHString;
             RETURN_IF_FAILED(requirement->get_Name(nameHString.GetAddressOf()));
 
@@ -379,16 +379,16 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>* inlines,
+HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* inlines,
                               std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements)
 {
     containedElements.clear();
 
-    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline>(
-        inlines, [&](ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline* thisInline) {
+    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline>(
+        inlines, [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline* thisInline) {
             // We only support text runs for now
-            ComPtr<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextRun> adaptiveTextRun =
-                PeekInnards<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextRun>(thisInline);
+            ComPtr<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextRun> adaptiveTextRun =
+                PeekInnards<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextRun>(thisInline);
             if (adaptiveTextRun == nullptr)
             {
                 return E_INVALIDARG;
@@ -404,87 +404,87 @@ HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI
 }
 
 HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement,
-                                  _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement** projectedElement) noexcept
+                                  _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** projectedElement) noexcept
 try
 {
     *projectedElement = nullptr;
     switch (baseElement->GetElementType())
     {
     case CardElementType::TextBlock:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextBlock>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextBlock>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::TextBlock>(baseElement)));
         break;
     case CardElementType::Image:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::Image>(baseElement)));
         break;
     case CardElementType::Container:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveContainer>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveContainer>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::Container>(baseElement)));
         break;
     case CardElementType::ColumnSet:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumnSet>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnSet>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::ColumnSet>(baseElement)));
         break;
     case CardElementType::FactSet:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFactSet>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFactSet>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::FactSet>(baseElement)));
         break;
     case CardElementType::ImageSet:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImageSet>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageSet>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::ImageSet>(baseElement)));
         break;
     case CardElementType::ChoiceSetInput:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceSetInput>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInput>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::ChoiceSetInput>(baseElement)));
         break;
     case CardElementType::DateInput:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveDateInput>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveDateInput>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::DateInput>(baseElement)));
         break;
     case CardElementType::Media:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMedia>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::Media>(baseElement)));
         break;
     case CardElementType::NumberInput:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveNumberInput>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveNumberInput>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::NumberInput>(baseElement)));
         break;
     case CardElementType::TextInput:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextInput>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::TextInput>(baseElement)));
         break;
     case CardElementType::TimeInput:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTimeInput>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTimeInput>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::TimeInput>(baseElement)));
         break;
     case CardElementType::ToggleInput:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleInput>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInput>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::ToggleInput>(baseElement)));
         break;
     case CardElementType::ActionSet:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveActionSet>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSet>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::ActionSet>(baseElement)));
         break;
     case CardElementType::RichTextBlock:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRichTextBlock>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRichTextBlock>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::RichTextBlock>(baseElement)));
         break;
     case CardElementType::Column:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::Column>(baseElement)));
         break;
     case CardElementType::Table:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTable>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTable>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::Table>(baseElement)));
         break;
     case CardElementType::Custom:
         RETURN_IF_FAILED(
-            std::AdaptivePointerCast<::AdaptiveCards::ObjectModel::WinAppSDK::CustomElementWrapper>(baseElement)->GetWrappedElement(projectedElement));
+            std::AdaptivePointerCast<::AdaptiveCards::ObjectModel::WinUI3::CustomElementWrapper>(baseElement)->GetWrappedElement(projectedElement));
         break;
     case CardElementType::Unknown:
     default:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveUnsupportedElement>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedElement>(
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::UnknownElement>(baseElement)));
         break;
     }
@@ -495,12 +495,12 @@ CATCH_RETURN;
 
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>* projectedParentContainer) noexcept
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*>* projectedParentContainer) noexcept
 try
 {
     for (auto& containedElement : containedElements)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement> projectedContainedElement;
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> projectedContainedElement;
         GenerateElementProjection(containedElement, &projectedContainedElement);
         if (projectedContainedElement != nullptr)
         {
@@ -513,12 +513,12 @@ CATCH_RETURN;
 
 HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>* projectedParentContainer) noexcept
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* projectedParentContainer) noexcept
 try
 {
     for (auto& containedAction : containedActions)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement> projectedContainedAction;
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> projectedContainedAction;
         RETURN_IF_FAILED(GenerateActionProjection(containedAction, &projectedContainedAction));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedAction.Detach()));
@@ -528,7 +528,7 @@ try
 CATCH_RETURN;
 
 HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action,
-                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** projectedAction) noexcept
+                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** projectedAction) noexcept
 try
 {
     if (action == nullptr)
@@ -540,30 +540,30 @@ try
     switch (action->GetElementType())
     {
     case ActionType::OpenUrl:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveOpenUrlAction>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveOpenUrlAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveCards::OpenUrlAction>(action)));
         break;
     case ActionType::ShowCard:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveShowCardAction>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveShowCardAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveCards::ShowCardAction>(action)));
         break;
     case ActionType::Submit:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveSubmitAction>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveSubmitAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveCards::SubmitAction>(action)));
         break;
     case ActionType::ToggleVisibility:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityAction>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveCards::ToggleVisibilityAction>(action)));
         break;
     case ActionType::Execute:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveExecuteAction>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveExecuteAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveCards::ExecuteAction>(action)));
         break;
     case ActionType::Custom:
         RETURN_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(projectedAction));
         break;
     case ActionType::UnknownAction:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveUnsupportedAction>(
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveCards::UnknownAction>(action)));
         break;
     default:
@@ -576,7 +576,7 @@ try
 CATCH_RETURN;
 
 HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
-                                  ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>* projectedParentContainer) noexcept
+                                  ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* projectedParentContainer) noexcept
 try
 {
     for (auto& containedElement : containedElements)
@@ -587,8 +587,8 @@ try
             return E_NOTIMPL;
         }
 
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextRun>(
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextRun>(
             &projectedContainedElement, std::static_pointer_cast<AdaptiveCards::TextRun>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -599,13 +599,13 @@ CATCH_RETURN;
 
 HRESULT GenerateRequirementsProjection(
     const std::unordered_map<std::string, SemanticVersion>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>* projectedRequirementVector) noexcept
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>* projectedRequirementVector) noexcept
 try
 {
     for (const auto& sharedRequirement : sharedRequirements)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement> projectedRequirement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement>(&projectedRequirement,
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement> projectedRequirement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>(&projectedRequirement,
                                                                                                    sharedRequirement));
         RETURN_IF_FAILED(projectedRequirementVector->Append(projectedRequirement.Detach()));
     }
@@ -708,16 +708,16 @@ HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObje
 }
 
 
-void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementWithRemoteResources* remoteResourceElement,
+void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources* remoteResourceElement,
                                                             std::vector<RemoteResourceInformation>& resourceUris)
 {
-    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*>> remoteResources;
+    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>> remoteResources;
     THROW_IF_FAILED(remoteResourceElement->GetResourceInformation(remoteResources.GetAddressOf()));
 
-    ComPtr<IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*>> vectorIterable;
-    THROW_IF_FAILED(remoteResources.As<IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*>>(&vectorIterable));
+    ComPtr<IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>> vectorIterable;
+    THROW_IF_FAILED(remoteResources.As<IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>>(&vectorIterable));
 
-    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*>> vectorIterator;
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>> vectorIterator;
     HRESULT hr = vectorIterable->First(&vectorIterator);
 
     boolean hasCurrent;
@@ -725,7 +725,7 @@ void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCa
 
     while (SUCCEEDED(hr) && hasCurrent)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation> resourceInformation;
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRemoteResourceInformation> resourceInformation;
         THROW_IF_FAILED(vectorIterator->get_Current(&resourceInformation));
 
         HString url;
@@ -747,17 +747,17 @@ void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCa
 
 HRESULT SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>* adaptiveWarnings)
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings)
 {
     for (const auto& sharedWarning : sharedWarnings)
     {
         HString warningMessage;
         RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode statusCode =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode>(sharedWarning->GetStatusCode());
+        ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode statusCode =
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode>(sharedWarning->GetStatusCode());
 
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning> adaptiveWarning;
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning> adaptiveWarning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
 
         RETURN_IF_FAILED(adaptiveWarnings->Append(adaptiveWarning.Get()));
@@ -767,15 +767,15 @@ HRESULT SharedWarningsToAdaptiveWarnings(
 }
 
 HRESULT AdaptiveWarningsToSharedWarnings(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>* adaptiveWarnings,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
 {
-    ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>> localAdaptiveWarnings{
+    ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>> localAdaptiveWarnings{
         adaptiveWarnings};
-    ComPtr<IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>> vectorIterable;
-    RETURN_IF_FAILED(localAdaptiveWarnings.As<IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>>(&vectorIterable));
+    ComPtr<IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>> vectorIterable;
+    RETURN_IF_FAILED(localAdaptiveWarnings.As<IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>>(&vectorIterable));
 
-    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>> vectorIterator;
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>> vectorIterator;
     HRESULT hr = vectorIterable->First(&vectorIterator);
 
     boolean hasCurrent;
@@ -783,13 +783,13 @@ HRESULT AdaptiveWarningsToSharedWarnings(
 
     while (SUCCEEDED(hr) && hasCurrent)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning> adaptiveWarning;
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning> adaptiveWarning;
         RETURN_IF_FAILED(vectorIterator->get_Current(&adaptiveWarning));
 
         HString message;
         RETURN_IF_FAILED(adaptiveWarning->get_Message(message.GetAddressOf()));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode statusCode;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode statusCode;
         RETURN_IF_FAILED(adaptiveWarning->get_StatusCode(&statusCode));
 
         sharedWarnings.push_back(std::make_shared<AdaptiveCardParseWarning>(static_cast<AdaptiveCards::WarningStatusCode>(statusCode),
@@ -801,43 +801,43 @@ HRESULT AdaptiveWarningsToSharedWarnings(
     return S_OK;
 }
 
-ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type)
+ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type)
 {
     switch (type)
     {
     case FallbackType::Drop:
     {
-        return ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Drop;
+        return ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop;
     }
 
     case FallbackType::Content:
     {
-        return ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content;
+        return ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content;
     }
 
     case FallbackType::None:
     default:
     {
-        return ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::None;
+        return ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None;
     }
     }
 }
 
-AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType type)
+AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type)
 {
     switch (type)
     {
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Drop:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop:
     {
         return FallbackType::Drop;
     }
 
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content:
     {
         return FallbackType::Content;
     }
 
-    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::None:
+    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None:
     default:
     {
         return FallbackType::None;
@@ -847,7 +847,7 @@ AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards:
 
 HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
     const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration)
+    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration)
 {
     // Look up the well known action parser registration to see if we've got a custom action registration to pass
     std::shared_ptr<ActionElementParser> sharedActionParser =
@@ -867,7 +867,7 @@ HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
     }
     else
     {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveActionParserRegistration>(adaptiveActionParserRegistration));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration>(adaptiveActionParserRegistration));
     }
 
     return S_OK;
@@ -875,7 +875,7 @@ HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
 
 HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
     const std::shared_ptr<ElementParserRegistration>& sharedElementParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration)
+    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration)
 {
     // Look up the well known Element parser registration to see if we've got a custom Element registration to pass
     std::shared_ptr<BaseCardElementParser> sharedElementParser =
@@ -895,7 +895,7 @@ HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
     }
     else
     {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveElementParserRegistration>(
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration>(
             adaptiveElementParserRegistration));
     }
 

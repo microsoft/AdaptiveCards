@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinAppSDK.h"
+#include "AdaptiveCards.Rendering.WinUI3.h"
 #include "Util.h"
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class DECLSPEC_UUID("34988ccd-4c0d-4043-b53d-3c1d2868860b") AdaptiveFeatureRegistration
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFeatureRegistration>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration>,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::FtmBase>
     {

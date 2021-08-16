@@ -5,9 +5,9 @@
 #include "AdaptiveImageConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize() noexcept
     try
@@ -19,17 +19,17 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize(ImageConfig sharedImageConfig) noexcept
     {
-        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize>(sharedImageConfig.imageSize);
+        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize>(sharedImageConfig.imageSize);
         return S_OK;
     }
 
-    HRESULT AdaptiveImageConfig::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize* imageSize)
+    HRESULT AdaptiveImageConfig::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize imageSize)
+    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;

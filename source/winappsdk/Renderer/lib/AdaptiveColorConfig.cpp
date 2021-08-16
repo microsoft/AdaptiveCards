@@ -6,10 +6,10 @@
 #include "AdaptiveHighlightColorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept
     try

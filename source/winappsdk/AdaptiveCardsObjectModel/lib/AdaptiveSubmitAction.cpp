@@ -5,10 +5,10 @@
 #include "AdaptiveSubmitAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept
     try
@@ -33,16 +33,16 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         }
 
         m_associatedInputs =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Submit;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Submit;
         return S_OK;
     }
 
@@ -54,13 +54,13 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::get_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs* associatedInputs)
+    HRESULT AdaptiveSubmitAction::get_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs* associatedInputs)
     {
         *associatedInputs = m_associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs associatedInputs)
+    HRESULT AdaptiveSubmitAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs associatedInputs)
     {
         m_associatedInputs = associatedInputs;
         return S_OK;

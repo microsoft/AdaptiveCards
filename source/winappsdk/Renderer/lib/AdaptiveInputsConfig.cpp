@@ -5,9 +5,9 @@
 #include "AdaptiveInputsConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveInputsConfig::RuntimeClassInitialize() noexcept
     try
@@ -25,23 +25,23 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveInputsConfig::get_ErrorMessage(_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveErrorMessageConfig** errorMessage)
+    HRESULT AdaptiveInputsConfig::get_ErrorMessage(_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveErrorMessageConfig** errorMessage)
     {
         return m_errorMessage.CopyTo(errorMessage);
     }
 
-    HRESULT AdaptiveInputsConfig::put_ErrorMessage(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveErrorMessageConfig* errorMessage)
+    HRESULT AdaptiveInputsConfig::put_ErrorMessage(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveErrorMessageConfig* errorMessage)
     {
         m_errorMessage = errorMessage;
         return S_OK;
     }
 
-    HRESULT AdaptiveInputsConfig::get_Label(_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveLabelConfig** inputLabels)
+    HRESULT AdaptiveInputsConfig::get_Label(_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveLabelConfig** inputLabels)
     {
         return m_label.CopyTo(inputLabels);
     }
 
-    HRESULT AdaptiveInputsConfig::put_Label(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveLabelConfig* inputLabels)
+    HRESULT AdaptiveInputsConfig::put_Label(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveLabelConfig* inputLabels)
     {
         m_label = inputLabels;
         return S_OK;

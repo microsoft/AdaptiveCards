@@ -10,14 +10,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
-    AdaptiveTableCell::AdaptiveTableCell() : m_bleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
+    AdaptiveTableCell::AdaptiveTableCell() : m_bleedDirection(ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::None)
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
@@ -40,18 +40,18 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         GenerateContainedElementsProjection(sharedTableCell->GetItems(), m_items.Get());
         GenerateActionProjection(sharedTableCell->GetSelectAction(), &m_selectAction);
-        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle>(sharedTableCell->GetStyle());
+        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedTableCell->GetStyle());
         if (sharedTableCell->GetVerticalContentAlignment().has_value())
         {
             m_verticalContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>(
                                      sharedTableCell->GetVerticalContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>>()
                     .get();
         }
         m_minHeight = sharedTableCell->GetMinHeight();
         m_bleed = sharedTableCell->GetBleed();
-        m_bleedDirection = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection>(sharedTableCell->GetBleedDirection());
+        m_bleedDirection = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection>(sharedTableCell->GetBleedDirection());
 
         const auto sharedRtl = sharedTableCell->GetRtl();
         if (sharedRtl)
@@ -92,26 +92,26 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveTableCell::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* style)
+    HRESULT AdaptiveTableCell::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveTableCell::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style)
+    HRESULT AdaptiveTableCell::put_Style(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
     HRESULT AdaptiveTableCell::get_VerticalContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>** verticalContentAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>** verticalContentAlignment)
     {
         return m_verticalContentAlignment.CopyTo(verticalContentAlignment);
     }
 
     HRESULT AdaptiveTableCell::put_VerticalContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>* verticalContentAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>* verticalContentAlignment)
     {
         m_verticalContentAlignment = verticalContentAlignment;
         return S_OK;
@@ -163,7 +163,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveTableCell::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection* bleedDirection)
+    HRESULT AdaptiveTableCell::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection* bleedDirection)
     {
         *bleedDirection = m_bleedDirection;
         return S_OK;
@@ -186,7 +186,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         if (m_verticalContentAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignmentValue;
             RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
             tableCell->SetVerticalContentAlignment(
                 static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));

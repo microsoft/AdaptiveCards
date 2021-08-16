@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "AdaptiveCards.Rendering.WinAppSDK.h"
+#include "AdaptiveCards.Rendering.WinUI3.h"
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class AdaptiveCardGetResourceStreamArgs
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveCardGetResourceStreamArgs>
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardGetResourceStreamArgs>
     {
         AdaptiveRuntime(AdaptiveCardGetResourceStreamArgs);
 

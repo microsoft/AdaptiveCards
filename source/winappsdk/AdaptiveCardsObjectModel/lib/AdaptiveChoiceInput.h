@@ -4,11 +4,11 @@
 
 #include "ChoiceInput.h"
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveChoiceInput);
@@ -24,7 +24,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         IFACEMETHODIMP get_Value(_Outptr_ HSTRING* value);
         IFACEMETHODIMP put_Value(_In_ HSTRING value);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType* elementType);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
 

@@ -5,10 +5,10 @@
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept
     try
@@ -20,31 +20,31 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {
-        m_actionMode = static_cast<ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode>(sharedShowCardActionConfig.actionMode);
-        m_containerStyle = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle>(sharedShowCardActionConfig.style);
+        m_actionMode = static_cast<ABI::AdaptiveCards::Rendering::WinUI3::ActionMode>(sharedShowCardActionConfig.actionMode);
+        m_containerStyle = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedShowCardActionConfig.style);
         m_inlineTopMargin = sharedShowCardActionConfig.inlineTopMargin;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::get_ActionMode(_Out_ ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode* value)
+    HRESULT AdaptiveShowCardActionConfig::get_ActionMode(_Out_ ABI::AdaptiveCards::Rendering::WinUI3::ActionMode* value)
     {
         *value = m_actionMode;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode value)
+    HRESULT AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Rendering::WinUI3::ActionMode value)
     {
         m_actionMode = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* style)
+    HRESULT AdaptiveShowCardActionConfig::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* style)
     {
         *style = m_containerStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style)
+    HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style)
     {
         m_containerStyle = style;
         return S_OK;

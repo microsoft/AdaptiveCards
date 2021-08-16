@@ -9,7 +9,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveFontTypeDefinition::RuntimeClassInitialize() noexcept
     try
@@ -31,23 +31,23 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     HRESULT AdaptiveFontTypeDefinition::put_FontFamily(_In_ HSTRING fontFamily) { return m_fontFamily.Set(fontFamily); }
 
-    HRESULT AdaptiveFontTypeDefinition::get_FontWeights(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontWeightsConfig** weightsConfig)
+    HRESULT AdaptiveFontTypeDefinition::get_FontWeights(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontWeightsConfig** weightsConfig)
     {
         return m_fontWeights.CopyTo(weightsConfig);
     }
 
-    HRESULT AdaptiveFontTypeDefinition::put_FontWeights(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontWeightsConfig* weightsConfig)
+    HRESULT AdaptiveFontTypeDefinition::put_FontWeights(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontWeightsConfig* weightsConfig)
     {
         m_fontWeights = weightsConfig;
         return S_OK;
     }
 
-    HRESULT AdaptiveFontTypeDefinition::get_FontSizes(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontSizesConfig** sizesConfig)
+    HRESULT AdaptiveFontTypeDefinition::get_FontSizes(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontSizesConfig** sizesConfig)
     {
         return m_fontSizes.CopyTo(sizesConfig);
     }
 
-    HRESULT AdaptiveFontTypeDefinition::put_FontSizes(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontSizesConfig* sizesConfig)
+    HRESULT AdaptiveFontTypeDefinition::put_FontSizes(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontSizesConfig* sizesConfig)
     {
         m_fontSizes = sizesConfig;
         return S_OK;

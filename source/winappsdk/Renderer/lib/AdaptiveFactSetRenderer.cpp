@@ -7,14 +7,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveFactSetRenderer::RuntimeClassInitialize() noexcept
     try
@@ -54,9 +54,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         RETURN_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
 
         GridLength factSetGridHeight = {0, GridUnitType::GridUnitType_Auto};
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType heightType;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType;
         RETURN_IF_FAILED(cardElement->get_Height(&heightType));
-        if (heightType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType::Stretch)
+        if (heightType == ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType::Stretch)
         {
             factSetGridHeight = {1, GridUnitType::GridUnitType_Star};
         }

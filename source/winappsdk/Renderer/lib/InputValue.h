@@ -2,21 +2,21 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinAppSDK.h"
+#include "AdaptiveCards.Rendering.WinUI3.h"
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     // Base class for input values. The InputValue is responsible for getting the current value and submit time, and also handles input validation.
     class DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputValue>
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue>
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement* adaptiveInputElement,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
                                        _In_ ABI::Windows::UI::Xaml::IUIElement* uiInputElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
-        IFACEMETHODIMP get_InputElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement** inputElement);
+        IFACEMETHODIMP get_InputElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement** inputElement);
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) = 0;
         IFACEMETHODIMP get_ErrorMessage(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiErrorMessage);
         IFACEMETHODIMP put_ErrorMessage(_In_ ABI::Windows::UI::Xaml::IUIElement* uiErrorMessage);
@@ -29,7 +29,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid);
         virtual HRESULT SetValidation(boolean isValid);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement> m_adaptiveInputElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement> m_adaptiveInputElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_uiInputElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IBorder> m_validationBorder;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_validationError;
@@ -41,7 +41,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     public:
         TextInputBase() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement* adaptiveInputElement,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -55,28 +55,28 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     class TextInputValue : public TextInputBase
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextInput* adaptiveTextInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextInput* adaptiveTextInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextInput> m_adaptiveTextInput;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextInput> m_adaptiveTextInput;
     };
 
     // Input value for Input.Number
     class NumberInputValue : public TextInputBase
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveNumberInput* adaptiveNumberInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveNumberInput* adaptiveNumberInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveNumberInput> m_adaptiveNumberInput;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveNumberInput> m_adaptiveNumberInput;
     };
 
     // Input value for Input.Date
@@ -85,14 +85,14 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     public:
         DateInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveDateInput* adaptiveDateInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveDateInput* adaptiveDateInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker* uiDatePickerElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveDateInput> m_adaptiveDateInput;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveDateInput> m_adaptiveDateInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker> m_datePickerElement;
     };
 
@@ -102,7 +102,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     public:
         TimeInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTimeInput* adaptiveTimeInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTimeInput* adaptiveTimeInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITimePicker* uiTimePickerElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -111,7 +111,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTimeInput> m_adaptiveTimeInput;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTimeInput> m_adaptiveTimeInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITimePicker> m_timePickerElement;
     };
 
@@ -121,7 +121,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     public:
         ToggleInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleInput* adaptiveTimeInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleInput* adaptiveTimeInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ICheckBox* uiCheckBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -130,7 +130,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleInput> m_adaptiveToggleInput;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleInput> m_adaptiveToggleInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICheckBox> m_checkBoxElement;
     };
 
@@ -140,7 +140,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     public:
         CompactChoiceSetInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::Primitives::ISelector* choiceSetSelector,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -148,7 +148,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::Primitives::ISelector> m_selectorElement;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
     };
 
     // Input value for Input.ChoiceSet with expanded style
@@ -157,7 +157,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     public:
         ExpandedChoiceSetInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IPanel* uiChoiceSetElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -167,7 +167,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         IFACEMETHODIMP SetFocus() override;
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPanel> m_panelElement;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
     };
 
     // Input value for Input.ChoiceSet with filtered style
@@ -176,7 +176,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     public:
         FilteredChoiceSetInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IAutoSuggestBox* uiChoiceSetElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -185,9 +185,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
 
-        HRESULT GetSelectedChoice(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput** adaptiveChoiceInput);
+        HRESULT GetSelectedChoice(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput** adaptiveChoiceInput);
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IAutoSuggestBox> m_autoSuggestBox;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
     };
 }

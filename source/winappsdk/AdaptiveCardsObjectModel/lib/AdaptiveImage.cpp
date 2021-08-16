@@ -6,10 +6,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveImage::AdaptiveImage() {}
 
@@ -33,17 +33,17 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetBackgroundColor(), m_backgroundColor.GetAddressOf()));
 
-        m_imageStyle = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle>(sharedImage->GetImageStyle());
-        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize>(sharedImage->GetImageSize());
+        m_imageStyle = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ImageStyle>(sharedImage->GetImageStyle());
+        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize>(sharedImage->GetImageSize());
         m_pixelWidth = sharedImage->GetPixelWidth();
         m_pixelHeight = sharedImage->GetPixelHeight();
 
         if (sharedImage->GetHorizontalAlignment().has_value())
         {
             m_horizontalAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment>(
                                      sharedImage->GetHorizontalAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>>()
                     .get();
         }
 
@@ -69,25 +69,25 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return m_backgroundColor.Set(backgroundColor);
     }
 
-    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle* imageStyle)
+    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ImageStyle* imageStyle)
     {
         *imageStyle = m_imageStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle imageStyle)
+    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::ObjectModel::WinUI3::ImageStyle imageStyle)
     {
         m_imageStyle = imageStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize* imageSize)
+    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize imageSize)
+    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
@@ -122,13 +122,13 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     HRESULT AdaptiveImage::put_AltText(_In_ HSTRING text) { return m_altText.Set(text); }
 
     HRESULT AdaptiveImage::get_HorizontalAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>** horizontalAlignment)
     {
         return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
     HRESULT AdaptiveImage::put_HorizontalAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>* horizontalAlignment)
     {
         m_horizontalAlignment = horizontalAlignment;
         return S_OK;
@@ -182,7 +182,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         if (m_horizontalAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment horizontalAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalAlignmentValue;
             RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
             image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
         }

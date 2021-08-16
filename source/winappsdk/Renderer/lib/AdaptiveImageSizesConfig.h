@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class AdaptiveImageSizesConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveImageSizesConfig>
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveImageSizesConfig>
     {
         AdaptiveRuntime(AdaptiveImageSizesConfig);
 

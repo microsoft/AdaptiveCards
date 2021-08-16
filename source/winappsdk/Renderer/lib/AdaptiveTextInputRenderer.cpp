@@ -7,15 +7,15 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Input;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveTextInputRenderer::RuntimeClassInitialize() noexcept
     try
@@ -106,7 +106,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
             return S_OK;
         }
@@ -141,22 +141,22 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         RETURN_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
         RETURN_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle textInputStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle textInputStyle;
         RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
 
         ComPtr<IInputScopeName> inputScopeName =
             XamlHelpers::CreateABIClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
         switch (textInputStyle)
         {
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle::Email:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle::Email:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_EmailSmtpAddress));
             break;
 
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle::Tel:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle::Tel:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_TelephoneNumber));
             break;
 
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle::Url:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle::Url:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Url));
             break;
         }

@@ -7,10 +7,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveBackgroundImage::AdaptiveBackgroundImage() {}
 
@@ -35,10 +35,10 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
             RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
         }
 
-        m_fillMode = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode>(sharedImage->GetFillMode());
+        m_fillMode = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode>(sharedImage->GetFillMode());
         m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>(sharedImage->GetHorizontalAlignment());
-        m_verticalAlignment = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment>(sharedImage->GetVerticalAlignment());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>(sharedImage->GetHorizontalAlignment());
+        m_verticalAlignment = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment>(sharedImage->GetVerticalAlignment());
 
         return S_OK;
     }
@@ -48,37 +48,37 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
     HRESULT AdaptiveBackgroundImage::put_Url(_In_ HSTRING url) { return m_url.Set(url); }
 
-    HRESULT AdaptiveBackgroundImage::get_FillMode(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode* fillMode)
+    HRESULT AdaptiveBackgroundImage::get_FillMode(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode* fillMode)
     {
         *fillMode = m_fillMode;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::put_FillMode(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode fillMode)
+    HRESULT AdaptiveBackgroundImage::put_FillMode(ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode fillMode)
     {
         m_fillMode = fillMode;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment* HorizontalAlignment)
+    HRESULT AdaptiveBackgroundImage::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment* HorizontalAlignment)
     {
         *HorizontalAlignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment HorizontalAlignment)
+    HRESULT AdaptiveBackgroundImage::put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment HorizontalAlignment)
     {
         m_horizontalAlignment = HorizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::get_VerticalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment* VerticalAlignment)
+    HRESULT AdaptiveBackgroundImage::get_VerticalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment* VerticalAlignment)
     {
         *VerticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::put_VerticalAlignment(ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment VerticalAlignment)
+    HRESULT AdaptiveBackgroundImage::put_VerticalAlignment(ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment VerticalAlignment)
     {
         m_verticalAlignment = VerticalAlignment;
         return S_OK;

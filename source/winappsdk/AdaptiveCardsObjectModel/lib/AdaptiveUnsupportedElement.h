@@ -4,14 +4,14 @@
 
 #include "UnknownElement.h"
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class DECLSPEC_UUID("e1ab7208-17bc-4fb6-b3c0-c1886987b4cf") AdaptiveUnsupportedElement
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveUnsupportedElement,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveUnsupportedElement,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveCardElementBase>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinUI3::AdaptiveCardElementBase>>
     {
         AdaptiveRuntime(AdaptiveUnsupportedElement);
 
@@ -20,13 +20,13 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::UnknownElement>& sharedTextBlock);
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType* elementType) override;
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType* elementType) override;
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing* spacing) override
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing* spacing) override
         {
             return AdaptiveCardElementBase::get_Spacing(spacing);
         }
-        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing) override
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing spacing) override
         {
             return AdaptiveCardElementBase::put_Spacing(spacing);
         }
@@ -52,22 +52,22 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) override { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) override { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType* fallback) override
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType* fallback) override
         {
             return AdaptiveCardElementBase::get_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement** content) override
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** content) override
         {
             return AdaptiveCardElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallback) override
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType fallback) override
         {
             return AdaptiveCardElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* content) override
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* content) override
         {
             return AdaptiveCardElementBase::put_FallbackContent(content);
         }
@@ -87,7 +87,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         }
 
         IFACEMETHODIMP get_Requirements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>** requirements) override
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>** requirements) override
         {
             return AdaptiveCardElementBase::get_Requirements(requirements);
         }
@@ -99,11 +99,11 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
 
-        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType* height) override
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType* height) override
         {
             return AdaptiveCardElementBase::get_Height(height);
         }
-        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType height) override
+        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType height) override
         {
             return AdaptiveCardElementBase::put_Height(height);
         }

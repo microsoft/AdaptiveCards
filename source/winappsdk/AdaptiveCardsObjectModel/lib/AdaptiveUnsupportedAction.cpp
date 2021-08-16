@@ -6,7 +6,7 @@
 
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize() noexcept
     try
@@ -29,9 +29,9 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveUnsupportedAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
+    HRESULT AdaptiveUnsupportedAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Unsupported;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Unsupported;
         return S_OK;
     }
 

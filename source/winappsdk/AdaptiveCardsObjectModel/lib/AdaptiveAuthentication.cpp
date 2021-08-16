@@ -11,11 +11,11 @@
 #include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveAuthentication::RuntimeClassInitialize() noexcept
     {
@@ -34,11 +34,11 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
             MakeAndInitialize<AdaptiveTokenExchangeResource>(m_tokenExchangeResource.GetAddressOf(), tokenExchangeResource);
         }
 
-        m_buttons = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*>>();
+        m_buttons = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*>>();
         for (auto& button : sharedAuthentication->GetButtons())
         {
-            ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton> adaptiveAuthCardButton;
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton>(&adaptiveAuthCardButton, button));
+            ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton> adaptiveAuthCardButton;
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>(&adaptiveAuthCardButton, button));
 
             RETURN_IF_FAILED(m_buttons->Append(adaptiveAuthCardButton.Detach()));
         }
@@ -61,18 +61,18 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     }
 
     HRESULT AdaptiveAuthentication::get_TokenExchangeResource(
-        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTokenExchangeResource** tokenExchangeResource)
+        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTokenExchangeResource** tokenExchangeResource)
     {
         return m_tokenExchangeResource.CopyTo(tokenExchangeResource);
     }
 
-    HRESULT AdaptiveAuthentication::put_TokenExchangeResource(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTokenExchangeResource* tokenExchangeResource)
+    HRESULT AdaptiveAuthentication::put_TokenExchangeResource(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTokenExchangeResource* tokenExchangeResource)
     {
         m_tokenExchangeResource = tokenExchangeResource;
         return S_OK;
     }
 
-    HRESULT AdaptiveAuthentication::get_Buttons(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*>** buttons)
+    HRESULT AdaptiveAuthentication::get_Buttons(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*>** buttons)
     {
         return m_buttons.CopyTo(buttons);
     }
@@ -101,10 +101,10 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         if (m_buttons)
         {
-            IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton>(
-                m_buttons.Get(), [&](ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton* authCardButton) {
-                    ComPtr<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton> buttonImpl =
-                        PeekInnards<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton>(authCardButton);
+            IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton>(
+                m_buttons.Get(), [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton* authCardButton) {
+                    ComPtr<AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton> buttonImpl =
+                        PeekInnards<AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>(authCardButton);
 
                     std::shared_ptr<AdaptiveCards::AuthCardButton> sharedAuthCardButton;
                     RETURN_IF_FAILED(buttonImpl->GetSharedModel(sharedAuthCardButton));

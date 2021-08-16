@@ -6,13 +6,13 @@ import "inspectable.idl";
 import "Windows.Foundation.idl";
 import "Windows.UI.Xaml.idl";
 import "Windows.Data.Json.idl";
-import "AdaptiveCards.ObjectModel.WinAppSDK.idl";
+import "AdaptiveCards.ObjectModel.WinUI3.idl";
 
 namespace AdaptiveCards
 {
     namespace Rendering
     {
-        namespace Uwp
+        namespace WinUI3
         {
             runtimeclass AdaptiveHostConfigParseResult;
 
@@ -54,7 +54,7 @@ namespace AdaptiveCards
                 void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
                 void ResetFixedDimensions();
 
-                RenderedAdaptiveCard RenderAdaptiveCard(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard adaptiveCard);
+                RenderedAdaptiveCard RenderAdaptiveCard(AdaptiveCards.ObjectModel.WinUI3.AdaptiveCard adaptiveCard);
                 RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(String adaptiveCard);
                 RenderedAdaptiveCard RenderAdaptiveCardFromJson(Windows.Data.Json.JsonObject adaptiveCard);
 
@@ -64,13 +64,13 @@ namespace AdaptiveCards
 
             runtimeclass AdaptiveActionEventArgs
             {
-                AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement Action { get; };
+                AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement Action { get; };
                 AdaptiveInputs Inputs { get; };
             }
 
             runtimeclass AdaptiveMediaEventArgs
             {
-                AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia Media { get; };
+                AdaptiveCards.ObjectModel.WinUI3.AdaptiveMedia Media { get; };
             }
 
             runtimeclass AdaptiveContainerStyleDefinition
@@ -163,11 +163,11 @@ namespace AdaptiveCards
 
             interface IAdaptiveTextStyleConfig
             {
-                AdaptiveCards.ObjectModel.WinAppSDK.TextWeight Weight;
-                AdaptiveCards.ObjectModel.WinAppSDK.TextSize Size;
-                AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor Color;
+                AdaptiveCards.ObjectModel.WinUI3.TextWeight Weight;
+                AdaptiveCards.ObjectModel.WinUI3.TextSize Size;
+                AdaptiveCards.ObjectModel.WinUI3.ForegroundColor Color;
                 Boolean IsSubtle;
-                AdaptiveCards.ObjectModel.WinAppSDK.FontType FontType;
+                AdaptiveCards.ObjectModel.WinUI3.FontType FontType;
             };
 
             runtimeclass AdaptiveTextStyleConfig : [default] IAdaptiveTextStyleConfig { AdaptiveTextStyleConfig(); };
@@ -221,7 +221,7 @@ namespace AdaptiveCards
             {
                 AdaptiveImageSetConfig();
 
-                AdaptiveCards.ObjectModel.WinAppSDK.ImageSize ImageSize;
+                AdaptiveCards.ObjectModel.WinUI3.ImageSize ImageSize;
                 UInt32 MaxImageHeight;
             };
 
@@ -229,7 +229,7 @@ namespace AdaptiveCards
             {
                 AdaptiveImageConfig();
 
-                AdaptiveCards.ObjectModel.WinAppSDK.ImageSize ImageSize;
+                AdaptiveCards.ObjectModel.WinUI3.ImageSize ImageSize;
             };
 
             runtimeclass AdaptiveCardConfig
@@ -253,7 +253,7 @@ namespace AdaptiveCards
                 AdaptiveShowCardActionConfig();
 
                 ActionMode ActionMode;
-                AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle Style;
+                AdaptiveCards.ObjectModel.WinUI3.ContainerStyle Style;
                 UInt32 InlineTopMargin;
             };
 
@@ -266,7 +266,7 @@ namespace AdaptiveCards
                 ActionAlignment ActionAlignment;
                 UInt32 ButtonSpacing;
                 UInt32 MaxActions;
-                AdaptiveCards.ObjectModel.WinAppSDK.Spacing Spacing;
+                AdaptiveCards.ObjectModel.WinUI3.Spacing Spacing;
                 IconPlacement IconPlacement;
                 UInt32 IconSize;
             };
@@ -284,18 +284,18 @@ namespace AdaptiveCards
             {
                 AdaptiveInputLabelConfig();
 
-                AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor Color;
+                AdaptiveCards.ObjectModel.WinUI3.ForegroundColor Color;
                 Boolean IsSubtle;
-                AdaptiveCards.ObjectModel.WinAppSDK.TextSize Size;
+                AdaptiveCards.ObjectModel.WinUI3.TextSize Size;
                 String Suffix;
-                AdaptiveCards.ObjectModel.WinAppSDK.TextWeight Weight;
+                AdaptiveCards.ObjectModel.WinUI3.TextWeight Weight;
             };
 
             runtimeclass AdaptiveLabelConfig
             {
                 AdaptiveLabelConfig();
 
-                AdaptiveCards.ObjectModel.WinAppSDK.Spacing InputSpacing;
+                AdaptiveCards.ObjectModel.WinUI3.Spacing InputSpacing;
 
                 AdaptiveInputLabelConfig RequiredInputs;
                 AdaptiveInputLabelConfig OptionalInputs;
@@ -305,9 +305,9 @@ namespace AdaptiveCards
             {
                 AdaptiveErrorMessageConfig();
 
-                AdaptiveCards.ObjectModel.WinAppSDK.TextSize Size;
-                AdaptiveCards.ObjectModel.WinAppSDK.Spacing Spacing;
-                AdaptiveCards.ObjectModel.WinAppSDK.TextWeight Weight;
+                AdaptiveCards.ObjectModel.WinUI3.TextSize Size;
+                AdaptiveCards.ObjectModel.WinUI3.Spacing Spacing;
+                AdaptiveCards.ObjectModel.WinUI3.TextWeight Weight;
             };
 
             runtimeclass AdaptiveInputsConfig
@@ -366,7 +366,7 @@ namespace AdaptiveCards
                 AdaptiveHostConfigParseResult();
 
                 AdaptiveHostConfig HostConfig { get; };
-                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError> Errors { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinUI3.AdaptiveError> Errors { get; };
             };
 
             runtimeclass AdaptiveCardResourceResolvers
@@ -397,12 +397,12 @@ namespace AdaptiveCards
             {
                 RenderedAdaptiveCard();
 
-                AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard OriginatingCard { get; };
+                AdaptiveCards.ObjectModel.WinUI3.AdaptiveCard OriginatingCard { get; };
                 AdaptiveHostConfig OriginatingHostConfig { get; };
                 Windows.UI.Xaml.FrameworkElement FrameworkElement { get; };
                 AdaptiveInputs UserInputs { get; };
-                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError> Errors { get; };
-                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning> Warnings { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinUI3.AdaptiveError> Errors { get; };
+                Windows.Foundation.Collections.IVector<AdaptiveCards.ObjectModel.WinUI3.AdaptiveWarning> Warnings { get; };
 
                 event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveActionEventArgs> Action;
                 event Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard, AdaptiveMediaEventArgs> MediaClicked;
@@ -415,7 +415,7 @@ namespace AdaptiveCards
                 Windows.Data.Json.JsonObject AsJson();
                 Windows.Foundation.Collections.ValueSet AsValueSet();
 
-                Boolean ValidateInputs(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement submitAction);
+                Boolean ValidateInputs(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement submitAction);
             };
 
             runtimeclass AdaptiveFeatureRegistration
@@ -447,32 +447,32 @@ namespace AdaptiveCards
             {
                 AdaptiveActionInvoker();
 
-                void SendActionEvent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement actionElement);
+                void SendActionEvent(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement actionElement);
             };
 
             runtimeclass AdaptiveMediaEventInvoker
             {
                 AdaptiveMediaEventInvoker();
 
-                void SendMediaClickedEvent(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia mediaElement);
+                void SendMediaClickedEvent(AdaptiveCards.ObjectModel.WinUI3.AdaptiveMedia mediaElement);
             };
 
             runtimeclass AdaptiveRenderArgs
             {
                 AdaptiveRenderArgs();
 
-                AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle ContainerStyle;
+                AdaptiveCards.ObjectModel.WinUI3.ContainerStyle ContainerStyle;
                 IInspectable ParentElement;
                 Boolean IsInShowCard;
                 Boolean AllowAboveTitleIconPlacement;
                 Boolean AncestorHasFallback;
                 Boolean AddContainerPadding;
-                AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard ParentCard;
+                AdaptiveCards.ObjectModel.WinUI3.AdaptiveCard ParentCard;
             };
 
             interface IAdaptiveInputValue
             {
-                AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement InputElement { get; };
+                AdaptiveCards.ObjectModel.WinUI3.IAdaptiveInputElement InputElement { get; };
                 String CurrentValue { get; };
                 Windows.UI.Xaml.UIElement ErrorMessage
                 {
@@ -497,29 +497,29 @@ namespace AdaptiveCards
                 Windows.UI.Xaml.ResourceDictionary OverrideStyles { get; };
                 AdaptiveInputs UserInputs { get; };
                 Windows.Foundation.IReference<Boolean> Rtl;
-                Windows.Foundation.IReference<AdaptiveCards.ObjectModel.WinAppSDK.TextStyle> TextStyle;
-                Windows.Foundation.IReference<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment> HorizontalContentAlignment;
+                Windows.Foundation.IReference<AdaptiveCards.ObjectModel.WinUI3.TextStyle> TextStyle;
+                Windows.Foundation.IReference<AdaptiveCards.ObjectModel.WinUI3.HAlignment> HorizontalContentAlignment;
 
                 void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
-                void LinkSubmitActionToCard(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement submitAction,
+                void LinkSubmitActionToCard(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement submitAction,
                                             AdaptiveRenderArgs renderArgs);
-                void LinkCardToParent(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard card, AdaptiveRenderArgs renderArgs);
-                IAdaptiveInputValue GetInputValue(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement inputElement);
+                void LinkCardToParent(AdaptiveCards.ObjectModel.WinUI3.AdaptiveCard card, AdaptiveRenderArgs renderArgs);
+                IAdaptiveInputValue GetInputValue(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveInputElement inputElement);
 
-                void AddError(AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode statusCode, String message);
-                void AddWarning(AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode statusCode, String message);
+                void AddError(AdaptiveCards.ObjectModel.WinUI3.ErrorStatusCode statusCode, String message);
+                void AddWarning(AdaptiveCards.ObjectModel.WinUI3.WarningStatusCode statusCode, String message);
             };
 
             interface IAdaptiveElementRenderer
             {
-                Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement element,
+                Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveCardElement element,
                                                  AdaptiveRenderContext context,
                                                  AdaptiveRenderArgs renderArgs);
             };
 
             interface IAdaptiveActionRenderer
             {
-                Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement element,
+                Windows.UI.Xaml.UIElement Render(AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement element,
                                                  AdaptiveRenderContext context,
                                                  AdaptiveRenderArgs renderArgs);
             };
@@ -642,7 +642,7 @@ namespace AdaptiveCards
             {
                 TileControl();
 
-                AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage BackgroundImage;
+                AdaptiveCards.ObjectModel.WinUI3.AdaptiveBackgroundImage BackgroundImage;
                 Windows.UI.Xaml.FrameworkElement RootElement;
                 Windows.UI.Xaml.UIElement ResolvedImage;
                 Windows.Foundation.Size ImageSize;

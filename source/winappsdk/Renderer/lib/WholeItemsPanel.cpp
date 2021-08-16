@@ -12,7 +12,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -21,7 +21,7 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Media;
 
 static const float OutsidePanelY = -1000.0f;
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT WholeItemsPanel::RuntimeClassInitialize()
     {
@@ -258,11 +258,11 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         }
         else
         {
-            if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment::Center)
+            if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment::Center)
             {
                 currentHeight = (finalSize.Height - m_calculatedSize) / 2;
             }
-            else if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment::Bottom)
+            else if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment::Bottom)
             {
                 currentHeight = finalSize.Height - m_calculatedSize;
             }
@@ -438,7 +438,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         boolean isStretchable = false;
         if (tagAsInspectable != nullptr)
         {
-            ComPtr<AdaptiveCards::Rendering::WinAppSDK::IElementTagContent> tagContent;
+            ComPtr<AdaptiveCards::Rendering::WinUI3::IElementTagContent> tagContent;
             THROW_IF_FAILED(tagAsInspectable.As(&tagContent));
             THROW_IF_FAILED(tagContent->get_IsStretchable(&isStretchable));
         }
@@ -446,7 +446,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return isStretchable;
     }
 
-    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignment)
+    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment)
     {
         m_verticalContentAlignment = verticalContentAlignment;
     }

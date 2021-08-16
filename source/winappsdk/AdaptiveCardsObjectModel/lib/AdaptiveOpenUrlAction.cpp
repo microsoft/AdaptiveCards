@@ -6,10 +6,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept
     try
@@ -52,9 +52,9 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::OpenUrl;
         return S_OK;
     }
 

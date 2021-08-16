@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.WinAppSDK.h"
+#include "AdaptiveCards.ObjectModel.WinUI3.h"
 #include "ObjectModelUtil.h"
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class CustomActionWrapper : public AdaptiveCards::BaseActionElement
     {
     public:
-        CustomActionWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* actionElement);
+        CustomActionWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* actionElement);
 
         void SetId(std::string&& value) override;
         void SetId(const std::string& value) override;
@@ -20,7 +20,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** actionElement);
+        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** actionElement);
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
@@ -31,6 +31,6 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         std::string GetActionElementTitle() const;
         void SetActionElementTitle(const std::string& value);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement> m_actionElement;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_actionElement;
     };
 }

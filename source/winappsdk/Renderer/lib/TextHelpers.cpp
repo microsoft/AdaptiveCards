@@ -10,11 +10,11 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
-using namespace AdaptiveCards::Rendering::WinAppSDK;
+using namespace AdaptiveCards::Rendering::WinUI3;
 using namespace AdaptiveCards;
 using namespace msl::utilities;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -22,9 +22,9 @@ using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml;
 using namespace std::string_literals;
 
-HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextBlock* adaptiveTextBlock,
-                                     _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                                     _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextBlock* adaptiveTextBlock,
+                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                                      _In_ ITextBlock* xamlTextBlock)
 {
     boolean wrap;
@@ -123,7 +123,7 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
 {
     // Create an AdaptiveTextRun with the language, text, and configuration to pass to SetXamlInlines
     ComPtr<IAdaptiveTextRun> textRun = XamlHelpers::CreateABIClass<IAdaptiveTextRun>(
-        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveTextRun));
+        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveTextRun));
 
     ComPtr<IAdaptiveTextElement> textRunAsTextElement;
     RETURN_IF_FAILED(textRun.As(&textRunAsTextElement));
@@ -134,10 +134,10 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     // For weight, color, size, fontType, and isSubtle, use the value from the text element if there is one, otherwise use the value from the text style
 
     // TextWeight
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>> weightToSet;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>> weightToSet;
     if (textElement != nullptr)
     {
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>> elementWeight;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>> elementWeight;
         RETURN_IF_FAILED(textElement->get_Weight(&elementWeight));
         if (elementWeight != nullptr)
         {
@@ -146,20 +146,20 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     }
     if (weightToSet == nullptr)
     {
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight weight;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight weight;
         RETURN_IF_FAILED(textStyle->get_Weight(&weight));
 
-        weightToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>(weight))
-                          .as<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>>()
+        weightToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::TextWeight>(weight))
+                          .as<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>>()
                           .get();
     }
     RETURN_IF_FAILED(textRunAsTextElement->put_Weight(weightToSet.Get()));
 
     // ForegroundColor
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>> colorToSet;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>> colorToSet;
     if (textElement != nullptr)
     {
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>> elementColor;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>> elementColor;
         RETURN_IF_FAILED(textElement->get_Color(&elementColor));
         if (elementColor != nullptr)
         {
@@ -168,20 +168,20 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     }
     if (colorToSet == nullptr)
     {
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor color;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor color;
         RETURN_IF_FAILED(textStyle->get_Color(&color));
 
-        colorToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>(color))
-                         .as<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>>()
+        colorToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>(color))
+                         .as<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>>()
                          .get();
     }
     RETURN_IF_FAILED(textRunAsTextElement->put_Color(colorToSet.Get()));
 
     // TextSize
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>> sizeToSet;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>> sizeToSet;
     if (textElement != nullptr)
     {
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>> elementSize;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>> elementSize;
         RETURN_IF_FAILED(textElement->get_Size(&elementSize));
         if (elementSize != nullptr)
         {
@@ -190,20 +190,20 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     }
     if (sizeToSet == nullptr)
     {
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize size;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize size;
         RETURN_IF_FAILED(textStyle->get_Size(&size));
 
-        sizeToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>(size))
-                        .as<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>>()
+        sizeToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::TextSize>(size))
+                        .as<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>>()
                         .get();
     }
     RETURN_IF_FAILED(textRunAsTextElement->put_Size(sizeToSet.Get()));
 
     // FontType
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>> fontTypeToSet;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>> fontTypeToSet;
     if (textElement != nullptr)
     {
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>> elementFontType;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>> elementFontType;
         RETURN_IF_FAILED(textElement->get_FontType(&elementFontType));
         if (elementFontType != nullptr)
         {
@@ -212,11 +212,11 @@ HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveRenderContext* renderCon
     }
     if (fontTypeToSet == nullptr)
     {
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType fontType;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType;
         RETURN_IF_FAILED(textStyle->get_FontType(&fontType));
 
-        fontTypeToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::FontType>(fontType))
-                            .as<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>>()
+        fontTypeToSet = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::FontType>(fontType))
+                            .as<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>>()
                             .get();
     }
     RETURN_IF_FAILED(textRunAsTextElement->put_FontType(fontTypeToSet.Get()));
@@ -291,9 +291,9 @@ HRESULT SetWrapProperties(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xam
     return S_OK;
 }
 
-HRESULT SetXamlInlines(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+HRESULT SetXamlInlines(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                        bool isInHyperlink,
                        _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        _Out_opt_ UINT* characterLength)
@@ -362,9 +362,9 @@ static HRESULT GetTextFromXmlNode(_In_ ABI::Windows::Data::Xml::Dom::IXmlNode* n
     return S_OK;
 }
 
-HRESULT AddListInlines(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddListInlines(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        bool isListOrdered,
                        bool isInHyperlink,
@@ -474,9 +474,9 @@ HRESULT AddListInlines(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiv
     return S_OK;
 }
 
-HRESULT AddLinkInline(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement* adaptiveTextElement,
-                      _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                      _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddLinkInline(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
+                      _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                      _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                       _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                       bool isStrikethrough,
                       bool isItalic,
@@ -626,8 +626,8 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
                 if (isBoldResult == 0)
                 {
                     RETURN_IF_FAILED(
-                        textElementToUse->put_Weight(winrt::box_value(winrt::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight::Bolder)
-                                                         .as<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>>()
+                        textElementToUse->put_Weight(winrt::box_value(winrt::AdaptiveCards::ObjectModel::WinUI3::TextWeight::Bolder)
+                                                         .as<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>>()
                                                          .get()));
                 }
             }
@@ -655,9 +655,9 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
     return S_OK;
 }
 
-HRESULT AddHtmlInlines(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+HRESULT AddHtmlInlines(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                        _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        bool isInHyperlink,
                        _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,

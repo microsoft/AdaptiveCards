@@ -10,13 +10,13 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveContainer::AdaptiveContainer() :
-        m_bleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
+        m_bleedDirection(ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::None)
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
@@ -40,19 +40,19 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         if (sharedContainer->GetVerticalContentAlignment().has_value())
         {
             m_verticalContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>(
                                      sharedContainer->GetVerticalContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>>()
                     .get();
         }
 
         GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
         GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
-        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle>(sharedContainer->GetStyle());
+        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedContainer->GetStyle());
         m_minHeight = sharedContainer->GetMinHeight();
         m_bleed = sharedContainer->GetBleed();
         m_bleedDirection =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection>(sharedContainer->GetBleedDirection());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection>(sharedContainer->GetBleedDirection());
 
         const auto sharedRtl = sharedContainer->GetRtl();
         if (sharedRtl)
@@ -93,26 +93,26 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* style)
+    HRESULT AdaptiveContainer::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style)
+    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
     HRESULT AdaptiveContainer::get_VerticalContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>** verticalContentAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>** verticalContentAlignment)
     {
         return m_verticalContentAlignment.CopyTo(verticalContentAlignment);
     }
 
     HRESULT AdaptiveContainer::put_VerticalContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>* verticalContentAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>* verticalContentAlignment)
     {
         m_verticalContentAlignment = verticalContentAlignment;
         return S_OK;
@@ -164,7 +164,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection* bleedDirection)
+    HRESULT AdaptiveContainer::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection* bleedDirection)
     {
         // TODO: Current behavior is broken because it doesn't update when bleed updates. Unfortunately, neither does
         // the shared model logic.
@@ -187,7 +187,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         if (m_verticalContentAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignmentValue;
             RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
             container->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));
         }

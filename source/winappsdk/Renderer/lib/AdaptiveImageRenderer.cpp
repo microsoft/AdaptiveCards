@@ -11,8 +11,8 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -34,7 +34,7 @@ using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace ABI::Windows::Web::Http;
 using namespace ABI::Windows::Web::Http::Filters;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     AdaptiveImageRenderer::AdaptiveImageRenderer() {}
 
@@ -86,7 +86,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         if (imageUrl == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::AssetLoadFailed,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::AssetLoadFailed,
                                       HStringReference(L"Image not found").Get());
             *imageControl = nullptr;
             return S_OK;
@@ -99,20 +99,20 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         bool isAspectRatioNeeded = (pixelWidth && pixelHeight);
 
         // Get the image's size and style
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize size = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::None;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize size = ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::None;
         if (!hasExplicitMeasurements)
         {
             RETURN_IF_FAILED(adaptiveImage->get_Size(&size));
         }
 
-        if (size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::None && !hasExplicitMeasurements)
+        if (size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::None && !hasExplicitMeasurements)
         {
             ComPtr<IAdaptiveImageConfig> imageConfig;
             RETURN_IF_FAILED(hostConfig->get_Image(&imageConfig));
             RETURN_IF_FAILED(imageConfig->get_ImageSize(&size));
         }
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle imageStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ImageStyle imageStyle;
         RETURN_IF_FAILED(adaptiveImage->get_Style(&imageStyle));
         ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
         RETURN_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
@@ -143,7 +143,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             SetImageOnUIElement(imageUrl.Get(),
                                 ellipse.Get(),
                                 resourceResolvers.Get(),
-                                (size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize_Auto),
+                                (size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize_Auto),
                                 parentElement.Get(),
                                 ellipseAsShape.Get(),
                                 isVisible,
@@ -153,9 +153,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             ComPtr<IShape> backgroundEllipseAsShape;
             RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
 
-            if (size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::None ||
-                size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::Stretch ||
-                size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::Auto || hasExplicitMeasurements)
+            if (size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::None ||
+                size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Stretch ||
+                size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Auto || hasExplicitMeasurements)
             {
                 RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
                 RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
@@ -233,7 +233,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             SetImageOnUIElement(imageUrl.Get(),
                                 xamlImage.Get(),
                                 resourceResolvers.Get(),
-                                (size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize_Auto),
+                                (size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize_Auto),
                                 parentElement.Get(),
                                 frameworkElement.Get(),
                                 isVisible,
@@ -271,26 +271,26 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         }
         else
         {
-            if (size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::Small ||
-                size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::Medium ||
-                size == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::Large)
+            if (size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Small ||
+                size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Medium ||
+                size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Large)
             {
                 UINT32 imageSize;
                 switch (size)
                 {
-                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::Small:
+                case ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Small:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
                     break;
                 }
 
-                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::Medium:
+                case ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Medium:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
                     break;
                 }
 
-                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::Large:
+                case ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Large:
                 {
                     RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
 
@@ -322,7 +322,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
         }
 
-        HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment::Left;
+        HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Left;
         if (adaptiveHorizontalAlignmentReference != nullptr)
         {
             RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment));
@@ -330,13 +330,13 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment::Left:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Left:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
             break;
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment::Right:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Right:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
             break;
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment::Center:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Center:
             RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
             break;
         }

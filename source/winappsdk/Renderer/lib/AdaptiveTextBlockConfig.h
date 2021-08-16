@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class AdaptiveTextBlockConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextBlockConfig>
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveTextBlockConfig>
     {
         AdaptiveRuntime(AdaptiveTextBlockConfig);
 

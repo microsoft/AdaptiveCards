@@ -6,9 +6,9 @@
 #include "util.h"
 #include "XamlHelpers.h"
 
-using namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -16,7 +16,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveTableRenderer::RuntimeClassInitialize() noexcept
     try
@@ -29,9 +29,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         _In_ IAdaptiveTableCell* cell,
         _In_ IAdaptiveRenderContext* renderContext,
         _In_ IAdaptiveRenderArgs* renderArgs,
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>* verticalContentAlignment,
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>* verticalContentAlignment,
         boolean showGridLines,
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle gridStyle,
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle gridStyle,
         UINT32 rowNumber,
         UINT32 columnNumber,
         _COM_Outptr_ IFrameworkElement** renderedCell)
@@ -41,7 +41,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         RETURN_IF_FAILED(tableCell.As(&tableCellAsContainer));
 
         // Get the vertical content alignemnt from the cell
-        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>> cellVerticalAlignment;
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> cellVerticalAlignment;
         RETURN_IF_FAILED(tableCellAsContainer->get_VerticalContentAlignment(&cellVerticalAlignment));
 
         // If the cell doesn't have a vertical content alignment, pass in the one from the parent
@@ -150,10 +150,10 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         _In_ IVector<AdaptiveTableColumnDefinition*>* columns,
         _In_ IAdaptiveRenderContext* renderContext,
         _In_ IAdaptiveRenderArgs* renderArgs,
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>* verticalContentAlignment,
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>* verticalContentAlignment,
         boolean firstRowAsHeaders,
         boolean showGridLines,
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle gridStyle,
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle gridStyle,
         UINT32 rowNumber,
         _In_ IGrid* xamlGrid)
     {
@@ -166,7 +166,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         RETURN_IF_FAILED(xamlRowDefinitions->Append(xamlRowDefinition.Get()));
 
         // Save the current text style
-        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>> contextTextStyle;
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>> contextTextStyle;
         RETURN_IF_FAILED(renderContext->get_TextStyle(&contextTextStyle));
 
         // Set the column header style if this is the first row and firstRowAsHeaders is set
@@ -174,8 +174,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         {
             // Set the text style to TextStyle::ColumnHeader
             RETURN_IF_FAILED(renderContext->put_TextStyle(
-                winrt::box_value(winrt::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle::ColumnHeader)
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>>()
+                winrt::box_value(winrt::AdaptiveCards::ObjectModel::WinUI3::TextStyle::ColumnHeader)
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>>()
                     .get()));
         }
 
@@ -188,7 +188,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         RETURN_IF_FAILED(row->get_HorizontalCellContentAlignment(&rowHorizontalAlignment));
 
         // Get the vertical alignemnt for this row
-        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>> rowVerticalContentAlignment;
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> rowVerticalContentAlignment;
         RETURN_IF_FAILED(row->get_VerticalCellContentAlignment(&rowVerticalContentAlignment));
 
         // If there's no row vertical alignment, use the passed in value
@@ -280,7 +280,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             RETURN_IF_FAILED(renderContext->put_HorizontalContentAlignment(tableHorizontalAlignment.Get()));
         }
 
-        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>> tableVerticalAlignment;
+        ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> tableVerticalAlignment;
         RETURN_IF_FAILED(adaptiveTable->get_VerticalCellContentAlignment(&tableVerticalAlignment));
 
         boolean showGridLines;
@@ -312,7 +312,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         boolean firstRowAsHeaders;
         RETURN_IF_FAILED(adaptiveTable->get_FirstRowAsHeaders(&firstRowAsHeaders));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle gridStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle gridStyle;
         RETURN_IF_FAILED(adaptiveTable->get_GridStyle(&gridStyle));
 
         UINT rowNumber = 0;

@@ -38,8 +38,8 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -52,7 +52,7 @@ using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize() noexcept
     try
@@ -93,13 +93,13 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return m_hostConfig.CopyTo(hostConfig);
     }
 
-    HRESULT AdaptiveCardRenderer::put_FeatureRegistration(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFeatureRegistration* featureRegistration)
+    HRESULT AdaptiveCardRenderer::put_FeatureRegistration(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration* featureRegistration)
     {
         m_featureRegistration = featureRegistration;
         return S_OK;
     }
 
-    HRESULT AdaptiveCardRenderer::get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFeatureRegistration** featureRegistration)
+    HRESULT AdaptiveCardRenderer::get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration** featureRegistration)
     {
         if (!m_featureRegistration)
         {
@@ -162,8 +162,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     HRESULT AdaptiveCardRenderer::RenderAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard, _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveCards::Rendering::WinAppSDK::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::WinAppSDK::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard>(&renderedCard));
         renderedCard->SetOriginatingCard(adaptiveCard);
         renderedCard->SetOriginatingHostConfig(m_hostConfig.Get());
 
@@ -194,7 +194,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             try
             {
                 RETURN_IF_FAILED(renderContext->LinkCardToParent(adaptiveCard, nullptr));
-                AdaptiveCards::Rendering::WinAppSDK::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
+                AdaptiveCards::Rendering::WinUI3::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
                                                                                           &xamlTreeRoot,
                                                                                           renderContext.Get(),
                                                                                           m_xamlBuilder);
@@ -203,7 +203,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             catch (...)
             {
                 RETURN_IF_FAILED(renderContext->AddError(
-                    ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode::RenderFailed,
+                    ABI::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode::RenderFailed,
                     HStringReference(L"An unrecoverable error was encountered while rendering the card").Get()));
                 renderedCard->SetFrameworkElement(nullptr);
             }
@@ -215,12 +215,12 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
                                                                    _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
-        ComPtr<::AdaptiveCards::Rendering::WinAppSDK::RenderedAdaptiveCard> renderedCard;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::WinAppSDK::RenderedAdaptiveCard>(&renderedCard));
+        ComPtr<::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard> renderedCard;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard>(&renderedCard));
 
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardStatics> adaptiveCardStatics;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveCard).Get(),
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardStatics> adaptiveCardStatics;
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveCard).Get(),
                                               &adaptiveCardStatics));
 
         RETURN_IF_FAILED(adaptiveCardStatics->FromJsonString(adaptiveJson, &adaptiveCardParseResult));
@@ -340,16 +340,16 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     {
         ABI::Windows::UI::Color accentColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
-                                                  ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor_Accent,
-                                                  ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle_Default,
+                                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor_Accent,
+                                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle_Default,
                                                   false, // isSubtle
                                                   false, // highlight
                                                   &accentColor));
 
         ABI::Windows::UI::Color attentionColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
-                                                  ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor_Attention,
-                                                  ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle_Default,
+                                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor_Attention,
+                                                  ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle_Default,
                                                   false, // isSubtle
                                                   false, // highlight
                                                   &attentionColor));

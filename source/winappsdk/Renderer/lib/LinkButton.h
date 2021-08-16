@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     // LinkButton is a templated button that exists strictly to behave as a button but appear as a link for
     // accessibility purposes.

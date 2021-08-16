@@ -4,11 +4,11 @@
 
 #include "Refresh.h"
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class DECLSPEC_UUID("8D452985-D06B-4541-AEAF-DD7A3DC7CCD8") AdaptiveRefresh
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRefresh,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRefresh,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveRefresh);
@@ -17,8 +17,8 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Refresh>& sharedRefresh);
 
-        IFACEMETHODIMP get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** action);
-        IFACEMETHODIMP put_Action(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action);
+        IFACEMETHODIMP get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_Action(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action);
 
         IFACEMETHODIMP get_UserIds(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** userIds);
 
@@ -28,7 +28,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement> m_action;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_action;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<HSTRING>> m_userIds;
     };
 

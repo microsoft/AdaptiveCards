@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class AdaptiveSeparatorConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveSeparatorConfig>
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveSeparatorConfig>
     {
         AdaptiveRuntime(AdaptiveSeparatorConfig);
 

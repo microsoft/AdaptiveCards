@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class AdaptiveFontWeightsConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontWeightsConfig>
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontWeightsConfig>
     {
         AdaptiveRuntime(AdaptiveFontWeightsConfig);
 

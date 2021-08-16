@@ -7,7 +7,7 @@
 #include "XamlHelpers.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
@@ -17,7 +17,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT TileControl::RuntimeClassInitialize() noexcept
     try
@@ -166,7 +166,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         rect->Width = m_containerSize.Width;
         rect->Height = m_containerSize.Height;
 
-        ComPtr<IRectangleGeometry> clip = AdaptiveCards::Rendering::WinAppSDK::XamlHelpers::CreateABIClass<IRectangleGeometry>(
+        ComPtr<IRectangleGeometry> clip = AdaptiveCards::Rendering::WinUI3::XamlHelpers::CreateABIClass<IRectangleGeometry>(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry));
         RETURN_IF_FAILED(clip->put_Rect(*rect));
 
@@ -262,7 +262,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             // instanciate all elements not created yet
             for (int x{}; x < (numberSpriteToInstanciate - count); x++)
             {
-                ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::WinAppSDK::XamlHelpers::CreateABIClass<IRectangle>(
+                ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::WinUI3::XamlHelpers::CreateABIClass<IRectangle>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
 
                 ComPtr<IUIElement> rectangleAsUIElement;

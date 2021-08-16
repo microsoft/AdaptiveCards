@@ -5,15 +5,15 @@
 #include "TextRun.h"
 #include "AdaptiveTextElement.h"
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveTextRun
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextRun,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextRun,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextElement>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextElement>>
     {
         AdaptiveRuntime(AdaptiveTextRun);
 
@@ -25,8 +25,8 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         IFACEMETHODIMP get_Highlight(_Out_ boolean* highlight) override;
         IFACEMETHODIMP put_Highlight(boolean highlight) override;
 
-        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** action) override;
-        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action) override;
+        IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** action) override;
+        IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action) override;
 
         IFACEMETHODIMP get_Italic(_Out_ boolean* italic) override;
         IFACEMETHODIMP put_Italic(boolean italic) override;
@@ -41,29 +41,29 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) override { return AdaptiveTextElement::get_Text(text); }
         IFACEMETHODIMP put_Text(_In_ HSTRING text) override { return AdaptiveTextElement::put_Text(text); }
 
-        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>** textSize) override
+        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>** textSize) override
         {
             return AdaptiveTextElement::get_Size(textSize);
         }
-        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>* textSize) override
+        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>* textSize) override
         {
             return AdaptiveTextElement::put_Size(textSize);
         }
 
-        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>** textWeight) override
+        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>** textWeight) override
         {
             return AdaptiveTextElement::get_Weight(textWeight);
         }
-        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>* textWeight) override
+        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>* textWeight) override
         {
             return AdaptiveTextElement::put_Weight(textWeight);
         }
 
-        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>** textColor) override
+        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>** textColor) override
         {
             return AdaptiveTextElement::get_Color(textColor);
         }
-        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>* textColor) override
+        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>* textColor) override
         {
             return AdaptiveTextElement::put_Color(textColor);
         }
@@ -86,11 +86,11 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
             return AdaptiveTextElement::put_Language(language);
         }
 
-        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>** type) override
+        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>** type) override
         {
             return AdaptiveTextElement::get_FontType(type);
         }
-        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>* type) override
+        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>* type) override
         {
             return AdaptiveTextElement::put_FontType(type);
         }
@@ -101,7 +101,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement> m_selectAction;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_selectAction;
         boolean m_highlight;
         boolean m_italic;
         boolean m_strikethrough;

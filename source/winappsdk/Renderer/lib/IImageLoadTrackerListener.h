@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     MIDL_INTERFACE("D940E878-F2E0-4AF7-A844-4D090C7379E3")
     IImageLoadTrackerListener : public IInspectable

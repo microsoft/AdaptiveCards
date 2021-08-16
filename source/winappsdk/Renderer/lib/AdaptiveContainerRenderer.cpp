@@ -8,14 +8,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveContainerRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
@@ -62,9 +62,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         }
 
         // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType containerHeightType{};
+        ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType containerHeightType{};
         RETURN_IF_FAILED(cardElement->get_Height(&containerHeightType));
-        if (containerHeightType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType::Auto)
+        if (containerHeightType == ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType::Auto)
         {
             RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Stretch));
         }
@@ -82,7 +82,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IBorder> containerBorder =
             XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             containerAsContainerBase.Get(), containerBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -104,11 +104,11 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
         }
 
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>> verticalContentAlignmentReference;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> verticalContentAlignmentReference;
         RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignmentReference));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignment =
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment::Top;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment::Top;
         if (verticalContentAlignmentReference != nullptr)
         {
             verticalContentAlignmentReference->get_Value(&verticalContentAlignment);

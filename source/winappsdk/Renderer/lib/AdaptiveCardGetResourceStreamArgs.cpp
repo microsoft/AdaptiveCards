@@ -4,10 +4,10 @@
 #include "AdaptiveCardGetResourceStreamArgs.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveCardGetResourceStreamArgs::RuntimeClassInitialize(_In_ IUriRuntimeClass* url)
     {

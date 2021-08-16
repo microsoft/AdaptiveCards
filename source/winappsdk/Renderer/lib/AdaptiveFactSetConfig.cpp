@@ -6,9 +6,9 @@
 #include "AdaptiveFactSetTextConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept
     try
@@ -27,23 +27,23 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveFactSetConfig::get_Title(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFactSetTextConfig** titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Title(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFactSetTextConfig** titleTextConfig)
     {
         return m_title.CopyTo(titleTextConfig);
     }
 
-    HRESULT AdaptiveFactSetConfig::put_Title(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFactSetTextConfig* titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Title(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFactSetTextConfig* titleTextConfig)
     {
         m_title = titleTextConfig;
         return S_OK;
     }
 
-    HRESULT AdaptiveFactSetConfig::get_Value(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFactSetTextConfig** valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Value(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFactSetTextConfig** valueTextConfig)
     {
         return m_value.CopyTo(valueTextConfig);
     }
 
-    HRESULT AdaptiveFactSetConfig::put_Value(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFactSetTextConfig* valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Value(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFactSetTextConfig* valueTextConfig)
     {
         m_value = valueTextConfig;
         return S_OK;

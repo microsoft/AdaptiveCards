@@ -7,13 +7,13 @@
 #include "AdaptiveTableParser.h"
 #include "ObjectModelUtil.h"
 
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace Microsoft::WRL;
 using namespace Windows::Foundation;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveTableParser::RuntimeClassInitialize() noexcept
     try
@@ -29,7 +29,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
                                             _COM_Outptr_ IAdaptiveCardElement** element) noexcept
     try
     {
-        return AdaptiveCards::ObjectModel::WinAppSDK::FromJson<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTable, AdaptiveCards::Table, AdaptiveCards::TableParser>(
+        return AdaptiveCards::ObjectModel::WinUI3::FromJson<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTable, AdaptiveCards::Table, AdaptiveCards::TableParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;

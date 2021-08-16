@@ -5,11 +5,11 @@
 #include "AdaptiveExecuteActionRenderer.h"
 #include "ActionHelpers.h"
 
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace Microsoft::WRL;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveExecuteActionRenderer::RuntimeClassInitialize() noexcept
     try

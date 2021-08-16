@@ -6,8 +6,8 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
 using namespace ABI::Windows::Foundation;
@@ -16,10 +16,10 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class DECLSPEC_UUID("0F485063-EF2A-400E-A946-73E00EDFAC83") TileControl
-        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinAppSDK::ITileControl,
+        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinUI3::ITileControl,
                                               ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IContentControlFactory>>
@@ -58,9 +58,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     private:
         void RefreshContainerTile();
-        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode* fillMode,
-                                           _Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment* hAlignment,
-                                           _Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment* vAlignment);
+        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode* fillMode,
+                                           _Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment* hAlignment,
+                                           _Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment* vAlignment);
 
         // Fields
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_rootElement;
@@ -68,7 +68,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICanvas> m_containerElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IImageBrush> m_brushXaml;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage> m_adaptiveBackgroundImage;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage> m_adaptiveBackgroundImage;
         ABI::Windows::Foundation::Size m_imageSize{};
         ABI::Windows::Foundation::Size m_containerSize{};
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Shapes::IRectangle>> m_xamlChildren;

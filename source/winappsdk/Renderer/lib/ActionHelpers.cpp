@@ -10,8 +10,8 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -21,7 +21,7 @@ using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
+namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 {
     HRESULT GetButtonMargin(_In_ IAdaptiveActionsConfig* actionsConfig, Thickness& buttonMargin) noexcept
     {
@@ -29,10 +29,10 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         UINT32 buttonSpacing;
         RETURN_IF_FAILED(actionsConfig->get_ButtonSpacing(&buttonSpacing));
 
-        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation actionsOrientation;
+        ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation actionsOrientation;
         RETURN_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
-        if (actionsOrientation == ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation::Horizontal)
+        if (actionsOrientation == ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation::Horizontal)
         {
             buttonMargin.Left = buttonMargin.Right = buttonSpacing / 2;
         }
@@ -87,8 +87,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
                               _In_ HSTRING actionAccessibilityText,
                               _In_ IAdaptiveActionsConfig* actionsConfig,
                               _In_ IAdaptiveRenderContext* renderContext,
-                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle,
-                              _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                              ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
+                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                               bool allActionsHaveIcons,
                               _In_ IButton* button)
     {
@@ -134,7 +134,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         if (iconUrl != nullptr)
         {
             // Get icon configs
-            ABI::AdaptiveCards::Rendering::WinAppSDK::IconPlacement iconPlacement;
+            ABI::AdaptiveCards::Rendering::WinUI3::IconPlacement iconPlacement;
             UINT32 iconSize;
 
             THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
@@ -146,13 +146,13 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
 
             // Create image and add it to the button
             ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
+                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
 
             THROW_IF_FAILED(adaptiveImage->put_HorizontalAlignment(
-                winrt::box_value(winrt::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment::Center)
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>>()
+                winrt::box_value(winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Center)
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>>()
                     .get()));
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
@@ -196,7 +196,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             THROW_IF_FAILED(buttonIconAsFrameworkElement->put_Height(iconSize));
 
             ComPtr<IUIElement> separator;
-            if (iconPlacement == ABI::AdaptiveCards::Rendering::WinAppSDK::IconPlacement::AboveTitle && allActionsHaveIcons)
+            if (iconPlacement == ABI::AdaptiveCards::Rendering::WinUI3::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
             }
@@ -206,7 +206,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
 
                 // Only add spacing when the icon must be located at the left of the title
                 UINT spacingSize;
-                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::Default, &spacingSize));
+                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing::Default, &spacingSize));
 
                 ABI::Windows::UI::Color color = {0};
                 separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
@@ -255,8 +255,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         RETURN_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
         ComPtr<IStyle> styleToApply;
 
-        ComPtr<AdaptiveCards::Rendering::WinAppSDK::AdaptiveRenderContext> contextImpl =
-            PeekInnards<AdaptiveCards::Rendering::WinAppSDK::AdaptiveRenderContext>(renderContext);
+        ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext> contextImpl =
+            PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext>(renderContext);
 
         // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
         if (isOverflowActionButton)
@@ -373,13 +373,13 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         RETURN_IF_FAILED(GetButtonMargin(actionsConfig.Get(), buttonMargin));
         RETURN_IF_FAILED(buttonFrameworkElement->put_Margin(buttonMargin));
 
-        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation actionsOrientation;
+        ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation actionsOrientation;
         RETURN_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
-        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment actionAlignment;
+        ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment actionAlignment;
         RETURN_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        if (actionsOrientation == ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation::Horizontal)
+        if (actionsOrientation == ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation::Horizontal)
         {
             // For horizontal alignment, we always use stretch
             RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(
@@ -389,22 +389,22 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         {
             switch (actionAlignment)
             {
-            case ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Center:
+            case ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Center:
                 RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
                 break;
-            case ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Left:
+            case ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Left:
                 RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
                 break;
-            case ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Right:
+            case ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Right:
                 RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
                 break;
-            case ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Stretch:
+            case ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Stretch:
                 RETURN_IF_FAILED(buttonFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Stretch));
                 break;
             }
         }
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         boolean allowAboveTitleIconPlacement;
@@ -441,7 +441,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
 
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode showCardActionMode;
+        ABI::AdaptiveCards::Rendering::WinUI3::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
         if (adaptiveActionElement != nullptr)
@@ -480,12 +480,12 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
     {
         if (action != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
             THROW_IF_FAILED(action->get_ActionType(&actionType));
 
-            if (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::ShowCard)
+            if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ShowCard)
             {
-                THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::UnsupportedValue,
+                THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::UnsupportedValue,
                                                           HStringReference(warning.c_str()).Get()));
                 return true;
             }
@@ -536,7 +536,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         ComPtr<IUIElement> localTextBoxContainer(textBoxParentContainer);
         ComPtr<IAdaptiveActionElement> localInlineAction(inlineAction);
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
         THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -549,8 +549,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             return;
         }
 
-        if ((actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Submit) ||
-            (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Execute))
+        if ((actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Submit) ||
+            (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute))
         {
             THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
         }
@@ -584,7 +584,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
         UINT spacingSize;
-        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::Default, &spacingSize));
+        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing::Default, &spacingSize));
 
         auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0, {0}, false);
 
@@ -612,7 +612,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
 
             ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
+                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
 
@@ -753,7 +753,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         // (padding, margin) for adaptive card elements to avoid adding spacings to card-level selectAction.
         if (adaptiveCardElement != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing elementSpacing;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing elementSpacing;
             THROW_IF_FAILED(adaptiveCardElement->get_Spacing(&elementSpacing));
             UINT spacingSize;
             THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), elementSpacing, &spacingSize));
@@ -865,7 +865,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         {
             if (selectAction != nullptr)
             {
-                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::InteractivityNotSupported,
+                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
                                           HStringReference(L"SelectAction present, but Interactivity is not supported").Get());
             }
 
@@ -879,7 +879,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
                          _In_ IPanel* bodyPanel,
                          bool insertSeparator,
                          _In_ IAdaptiveRenderContext* renderContext,
-                         _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
+                         _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -889,7 +889,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         // Create a separator between the body and the actions
         if (insertSeparator)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing spacing;
             RETURN_IF_FAILED(actionsConfig->get_Spacing(&spacing));
 
             UINT spacingSize;
@@ -926,8 +926,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         RETURN_IF_FAILED(overflowFlyout.As(&overflowFlyoutAsFlyoutBase));
         RETURN_IF_FAILED(overflowButtonAsButtonWithFlyout->put_Flyout(overflowFlyoutAsFlyoutBase.Get()));
 
-        ComPtr<AdaptiveCards::Rendering::WinAppSDK::AdaptiveRenderContext> contextImpl =
-            PeekInnards<AdaptiveCards::Rendering::WinAppSDK::AdaptiveRenderContext>(renderContext);
+        ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext> contextImpl =
+            PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext>(renderContext);
 
         // Return overflow button
         ComPtr<IButton> overFlowButtonAsButton;
@@ -996,7 +996,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         return S_OK;
     }
 
-    HRESULT BuildInlineShowCard(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* adaptiveCard,
+    HRESULT BuildInlineShowCard(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
                                 _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                 _In_ IAdaptiveActionElement* showCardAction,
                                 _In_ IPanel* showCardsPanel,
@@ -1017,10 +1017,10 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
 
-        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode showCardActionMode;
+        ABI::AdaptiveCards::Rendering::WinUI3::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
-        if (showCardActionMode == ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode::Inline)
+        if (showCardActionMode == ABI::AdaptiveCards::Rendering::WinUI3::ActionMode::Inline)
         {
             // Get the card to be shown
             ComPtr<IAdaptiveShowCardAction> actionAsShowCardAction;
@@ -1037,8 +1037,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel);
 
             // Register the show card with the render context
-            ComPtr<AdaptiveCards::Rendering::WinAppSDK::AdaptiveRenderContext> contextImpl =
-                PeekInnards<AdaptiveCards::Rendering::WinAppSDK::AdaptiveRenderContext>(renderContext);
+            ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext> contextImpl =
+                PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext>(renderContext);
 
             if (adaptiveActionSet)
             {
@@ -1070,7 +1070,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
     {
         ComPtr<IAdaptiveActionElement> action(actionToCreate);
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
         RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
         // Render each action using the registered renderer
@@ -1086,17 +1086,17 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             RETURN_IF_FAILED(actionRegistration->Get(actionTypeString.Get(), &renderer));
             if (!renderer)
             {
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType actionFallbackType;
+                ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType actionFallbackType;
                 RETURN_IF_FAILED(action->get_FallbackType(&actionFallbackType));
                 switch (actionFallbackType)
                 {
-                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Drop:
+                case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop:
                 {
                     RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, actionTypeString.Get()));
                     return S_OK;
                 }
 
-                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content:
+                case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content:
                 {
                     ComPtr<IAdaptiveActionElement> actionFallback;
                     RETURN_IF_FAILED(action->get_FallbackContent(&actionFallback));
@@ -1111,7 +1111,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
                     break;
                 }
 
-                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::None:
+                case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None:
                 default:
                     return E_FAIL;
                 }
@@ -1151,7 +1151,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             RETURN_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), columnIndex));
         }
 
-        if (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::ShowCard)
+        if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ShowCard)
         {
             // Build the inline show card.
             RETURN_IF_FAILED(BuildInlineShowCard(
@@ -1163,7 +1163,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         return S_OK;
     }
 
-    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* adaptiveCard,
+    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
                                  _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                  _In_ IVector<IAdaptiveActionElement*>* children,
                                  _In_ IAdaptiveRenderContext* renderContext,
@@ -1175,18 +1175,18 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         ComPtr<IAdaptiveActionsConfig> actionsConfig;
         RETURN_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
 
-        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment actionAlignment;
+        ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment actionAlignment;
         RETURN_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation actionsOrientation;
+        ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation actionsOrientation;
         RETURN_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
         // Declare the panel that will host the buttons
         ComPtr<IPanel> actionsPanel;
         ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
 
-        if (actionAlignment == ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Stretch &&
-            actionsOrientation == ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation::Horizontal)
+        if (actionAlignment == ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Stretch &&
+            actionsOrientation == ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation::Horizontal)
         {
             // If stretch alignment and orientation is horizontal, we use a grid with equal column widths to achieve
             // stretch behavior. For vertical orientation, we'll still just use a stack panel since the concept of
@@ -1202,7 +1202,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             ComPtr<IStackPanel> actionStackPanel =
                 XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
 
-            auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation::Horizontal) ?
+            auto uiOrientation = (actionsOrientation == ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation::Horizontal) ?
                 Orientation::Orientation_Horizontal :
                 Orientation::Orientation_Vertical;
 
@@ -1213,16 +1213,16 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
 
             switch (actionAlignment)
             {
-            case ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Center:
+            case ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Center:
                 RETURN_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
                 break;
-            case ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Left:
+            case ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Left:
                 RETURN_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
                 break;
-            case ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Right:
+            case ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Right:
                 RETURN_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
                 break;
-            case ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment::Stretch:
+            case ABI::AdaptiveCards::Rendering::WinUI3::ActionAlignment::Stretch:
                 RETURN_IF_FAILED(actionsFrameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Stretch));
                 break;
             }
@@ -1233,7 +1233,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
 
         Thickness buttonMargin;
         RETURN_IF_FAILED(ActionHelpers::GetButtonMargin(actionsConfig.Get(), buttonMargin));
-        if (actionsOrientation == ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation::Horizontal)
+        if (actionsOrientation == ABI::AdaptiveCards::Rendering::WinUI3::ActionsOrientation::Horizontal)
         {
             // Negate the spacing on the sides so the left and right buttons are flush on the side.
             // We do NOT remove the margin from the individual button itself, since that would cause
@@ -1255,8 +1255,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         UINT32 maxActions;
         RETURN_IF_FAILED(actionsConfig->get_MaxActions(&maxActions));
 
-        ComPtr<AdaptiveCards::Rendering::WinAppSDK::AdaptiveHostConfig> hostConfigImpl =
-            PeekInnards<AdaptiveCards::Rendering::WinAppSDK::AdaptiveHostConfig>(hostConfig);
+        ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig> hostConfigImpl =
+            PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig>(hostConfig);
 
         boolean overflowMaxActions;
         RETURN_IF_FAILED(hostConfigImpl->get_OverflowMaxActions(&overflowMaxActions));
@@ -1277,9 +1277,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             // We need to figure out which button is going to be the last visible button. That button may need to be
             // handled separately if we have show card actions in the overflow menu.
             ComPtr<IAdaptiveActionElement> action(child);
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode mode;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode mode;
             RETURN_IF_FAILED(action->get_Mode(&mode));
-            if (currentButtonIndex < maxActions && mode == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode::Primary)
+            if (currentButtonIndex < maxActions && mode == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode::Primary)
             {
                 lastPrimaryActionIndex = currentButtonIndex;
                 lastPrimaryAction = action;
@@ -1305,14 +1305,14 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         std::vector<std::pair<ComPtr<IAdaptiveActionElement>, ComPtr<IUIElement>>> showCardOverflowButtons;
         IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
             ComPtr<IAdaptiveActionElement> action(child);
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode mode;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode mode;
             RETURN_IF_FAILED(action->get_Mode(&mode));
 
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
             RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
             ComPtr<IUIElement> actionControl;
-            if (!pastLastPrimaryAction && mode == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode::Primary)
+            if (!pastLastPrimaryAction && mode == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode::Primary)
             {
                 // The last button may need special handling so don't handle it here
                 if (currentButtonIndex != lastPrimaryActionIndex)
@@ -1338,10 +1338,10 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
                     pastLastPrimaryAction = true;
                 }
             }
-            else if (pastLastPrimaryAction && (mode == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode::Primary) && !overflowMaxActions)
+            else if (pastLastPrimaryAction && (mode == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode::Primary) && !overflowMaxActions)
             {
                 // If we have more primary actions than the max actions and we're not allowed to overflow them just set a warning and continue
-                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::MaxActionsExceeded,
+                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::MaxActionsExceeded,
                                           HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed")
                                               .Get());
                 return S_OK;
@@ -1366,9 +1366,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
                 }
 
                 // If this was supposed to be a primary action but it got overflowed due to max actions, add a warning
-                if (mode == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode::Primary)
+                if (mode == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode::Primary)
                 {
-                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::MaxActionsExceeded,
+                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::MaxActionsExceeded,
                                               HStringReference(L"Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed")
                                                   .Get());
                 }
@@ -1452,8 +1452,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
             ComPtr<IUIElement> overflowButtonAsUIElement;
             overflowButton.As(&overflowButtonAsUIElement);
 
-            ComPtr<AdaptiveCards::Rendering::WinAppSDK::AdaptiveRenderContext> contextImpl =
-                PeekInnards<AdaptiveCards::Rendering::WinAppSDK::AdaptiveRenderContext>(renderContext);
+            ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext> contextImpl =
+                PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext>(renderContext);
 
             if (adaptiveActionSet != nullptr)
             {
@@ -1486,15 +1486,15 @@ namespace AdaptiveCards::Rendering::WinAppSDK::ActionHelpers
         return actionSetAsPanel.CopyTo(actionSetControl);
     }
 
-    void CreateAppropriateButton(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action, ComPtr<IButton>& button)
+    void CreateAppropriateButton(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action, ComPtr<IButton>& button)
     {
         if (action != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
             THROW_IF_FAILED(action->get_ActionType(&actionType));
 
             // construct an appropriate button for the action type
-            if (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType_OpenUrl)
+            if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType_OpenUrl)
             {
                 // OpenUrl buttons should appear as links for accessibility purposes, so we use our custom LinkButton.
                 auto linkButton = winrt::make<LinkButton>();

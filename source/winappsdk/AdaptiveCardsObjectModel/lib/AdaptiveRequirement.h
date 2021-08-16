@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.WinAppSDK.h"
+#include "AdaptiveCards.ObjectModel.WinUI3.h"
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class AdaptiveRequirement
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement>,
                                               Microsoft::WRL::FtmBase>
     {
         AdaptiveRuntime(AdaptiveRequirement);
@@ -31,11 +31,11 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     };
 
     class AdaptiveRequirementFactory
-        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirementFactory>
+        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirementFactory>
     {
         IFACEMETHODIMP CreateInstance(_In_ HSTRING name,
                                       _In_ HSTRING version,
-                                      _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement** result) override
+                                      _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement** result) override
         {
             return Microsoft::WRL::Details::MakeAndInitialize<AdaptiveRequirement>(result, name, version);
         }

@@ -9,17 +9,17 @@
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveRenderContext.h"
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class AdaptiveCardRenderer;
 
     class XamlBuilder
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               Microsoft::WRL::FtmBase,
-                                              AdaptiveCards::Rendering::WinAppSDK::IImageLoadTrackerListener>
+                                              AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener>
     {
-        friend HRESULT Microsoft::WRL::Details::MakeAndInitialize<AdaptiveCards::Rendering::WinAppSDK::XamlBuilder, AdaptiveCards::Rendering::WinAppSDK::XamlBuilder>(
-            AdaptiveCards::Rendering::WinAppSDK::XamlBuilder**);
+        friend HRESULT Microsoft::WRL::Details::MakeAndInitialize<AdaptiveCards::Rendering::WinUI3::XamlBuilder, AdaptiveCards::Rendering::WinUI3::XamlBuilder>(
+            AdaptiveCards::Rendering::WinUI3::XamlBuilder**);
 
         AdaptiveRuntimeStringClass(XamlBuilder);
 
@@ -28,27 +28,27 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         STDMETHODIMP AllImagesLoaded() noexcept;
         STDMETHODIMP ImagesLoadingHadError() noexcept;
 
-        static HRESULT BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* adaptiveCard,
+        static HRESULT BuildXamlTreeFromAdaptiveCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
                                                      _COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
-                                                     _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
+                                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                                      Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
-                                                     ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle defaultContainerStyle =
-                                                         ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::Default) noexcept;
+                                                     ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle defaultContainerStyle =
+                                                         ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle::Default) noexcept;
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT RemoveListener(_In_ IXamlBuilderListener* listener) noexcept;
         void SetFixedDimensions(UINT width, UINT height) noexcept;
         void SetEnableXamlImageHandling(bool enableXamlImageHandling) noexcept;
 
         static HRESULT BuildPanelChildren(
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>* children,
+            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
-            _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* context,
-            _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* context,
+            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
             std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback) noexcept;
 
-        HRESULT BuildImage(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* adaptiveCardElement,
-                           _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                           _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+        HRESULT BuildImage(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* adaptiveCardElement,
+                           _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                           _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
 
     private:
@@ -65,11 +65,11 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         UINT m_fixedHeight = 0;
         bool m_fixedDimensions = false;
         bool m_enableXamlImageHandling = false;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveCardResourceResolvers> m_resourceResolvers;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers> m_resourceResolvers;
 
-        static HRESULT CreateRootCardElement(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* adaptiveCard,
-                                             _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                                             _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+        static HRESULT CreateRootCardElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
+                                             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                                             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                                              Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
                                              _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer,
                                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** rootUIElement) noexcept;
@@ -84,7 +84,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         template<typename T>
         void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
                                  T* uiElement,
-                                 ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveCardResourceResolvers* resolvers,
+                                 ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers* resolvers,
                                  bool isSizeAuto,
                                  IInspectable* parentElement,
                                  IInspectable* imageContainer,

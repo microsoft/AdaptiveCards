@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class AdaptiveHighlightColorConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHighlightColorConfig>
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHighlightColorConfig>
     {
         AdaptiveRuntime(AdaptiveHighlightColorConfig);
 

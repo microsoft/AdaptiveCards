@@ -5,16 +5,16 @@
 #include "TextBlock.h"
 #include "AdaptiveTextElement.h"
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveTextBlock
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextBlock,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextBlock,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveCardElementBase>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextElement>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinUI3::AdaptiveCardElementBase>,
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextElement>>
     {
         AdaptiveRuntime(AdaptiveTextBlock);
 
@@ -30,40 +30,40 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         IFACEMETHODIMP put_MaxLines(UINT32 value) override;
 
         IFACEMETHODIMP get_HorizontalAlignment(
-            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalAlignment) override;
+            _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>** horizontalAlignment) override;
         IFACEMETHODIMP put_HorizontalAlignment(
-            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalAlignment) override;
+            _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>* horizontalAlignment) override;
 
-        IFACEMETHODIMP get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>** value) override;
-        IFACEMETHODIMP put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>* value) override;
+        IFACEMETHODIMP get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>** value) override;
+        IFACEMETHODIMP put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>* value) override;
 
         // IAdaptiveTextElement
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text) override { return AdaptiveTextElement::get_Text(text); }
         IFACEMETHODIMP put_Text(_In_ HSTRING text) override { return AdaptiveTextElement::put_Text(text); }
 
-        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>** textSize) override
+        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>** textSize) override
         {
             return AdaptiveTextElement::get_Size(textSize);
         }
-        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>* textSize) override
+        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>* textSize) override
         {
             return AdaptiveTextElement::put_Size(textSize);
         }
 
-        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>** textWeight) override
+        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>** textWeight) override
         {
             return AdaptiveTextElement::get_Weight(textWeight);
         }
-        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>* textWeight) override
+        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>* textWeight) override
         {
             return AdaptiveTextElement::put_Weight(textWeight);
         }
 
-        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>** textColor) override
+        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>** textColor) override
         {
             return AdaptiveTextElement::get_Color(textColor);
         }
-        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>* textColor) override
+        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>* textColor) override
         {
             return AdaptiveTextElement::put_Color(textColor);
         }
@@ -86,23 +86,23 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
             return AdaptiveTextElement::put_Language(language);
         }
 
-        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>** type) override
+        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>** type) override
         {
             return AdaptiveTextElement::get_FontType(type);
         }
-        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>* type) override
+        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>* type) override
         {
             return AdaptiveTextElement::put_FontType(type);
         }
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType* elementType) override;
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType* elementType) override;
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing* spacing) override
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing* spacing) override
         {
             return AdaptiveCardElementBase::get_Spacing(spacing);
         }
-        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing) override
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing spacing) override
         {
             return AdaptiveCardElementBase::put_Spacing(spacing);
         }
@@ -128,21 +128,21 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) override { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) override { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType* fallback) override
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType* fallback) override
         {
             return AdaptiveCardElementBase::get_FallbackType(fallback);
         }
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement** content) override
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** content) override
         {
             return AdaptiveCardElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallback) override
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType fallback) override
         {
             return AdaptiveCardElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* content) override
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* content) override
         {
             return AdaptiveCardElementBase::put_FallbackContent(content);
         }
@@ -162,7 +162,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         }
 
         IFACEMETHODIMP get_Requirements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>** requirements) override
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>** requirements) override
         {
             return AdaptiveCardElementBase::get_Requirements(requirements);
         }
@@ -174,11 +174,11 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
 
-        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType* height) override
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType* height) override
         {
             return AdaptiveCardElementBase::get_Height(height);
         }
-        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType height) override
+        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType height) override
         {
             return AdaptiveCardElementBase::put_Height(height);
         }
@@ -189,8 +189,8 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     private:
         boolean m_wrap;
         UINT32 m_maxLines;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>> m_horizontalAlignment;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>> m_style;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>> m_horizontalAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>> m_style;
     };
 
     ActivatableClass(AdaptiveTextBlock);

@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinAppSDK.h"
+#include "AdaptiveCards.Rendering.WinUI3.h"
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     struct TrackedImageDetails
     {

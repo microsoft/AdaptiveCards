@@ -6,10 +6,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveRichTextBlock::AdaptiveRichTextBlock() { m_inlines = Microsoft::WRL::Make<Vector<IAdaptiveInline*>>(); }
 
@@ -32,9 +32,9 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         if (sharedRichTextBlock->GetHorizontalAlignment().has_value())
         {
             m_horizontalAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment>(
                                      sharedRichTextBlock->GetHorizontalAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>>()
                     .get();
         }
 
@@ -46,20 +46,20 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     CATCH_RETURN;
 
     HRESULT AdaptiveRichTextBlock::get_HorizontalAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>** horizontalAlignment)
     {
         return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
     HRESULT AdaptiveRichTextBlock::put_HorizontalAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>* horizontalAlignment)
     {
         m_horizontalAlignment = horizontalAlignment;
         return S_OK;
     }
 
     HRESULT AdaptiveRichTextBlock::get_Inlines(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>** inlines)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>** inlines)
     {
         return m_inlines.CopyTo(inlines);
     }
@@ -79,7 +79,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         if (m_horizontalAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment horizontalAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalAlignmentValue;
             RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
             richTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
         }

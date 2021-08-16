@@ -9,14 +9,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveColumnSetRenderer::RuntimeClassInitialize() noexcept
     try
@@ -49,7 +49,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IAdaptiveContainerBase> columnSetAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsContainerBase));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             columnSetAsContainerBase.Get(), columnSetBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -73,7 +73,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         if (columnRenderer == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::NoRendererForType,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::NoRendererForType,
                                       HStringReference(L"No renderer found for type: Column").Get());
             *columnSetControl = nullptr;
             return S_OK;
@@ -99,12 +99,12 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
             RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
 
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallbackType;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType fallbackType;
             RETURN_IF_FAILED(columnAsCardElement->get_FallbackType(&fallbackType));
 
             // Build the Column
             RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(
-                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::None));
+                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None));
 
             ComPtr<IUIElement> xamlColumn;
             HRESULT hr = columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn);
@@ -199,7 +199,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IAdaptiveCardElement> columnSetAsCardElement;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsCardElement));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType columnSetHeightType;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType columnSetHeightType;
         RETURN_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
 
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;

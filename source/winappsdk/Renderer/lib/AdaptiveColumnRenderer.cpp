@@ -9,15 +9,15 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveColumnRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
@@ -72,7 +72,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumn.As(&columnAsContainerBase));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
         RETURN_IF_FAILED(
             XamlHelpers::HandleStylingAndPadding(columnAsContainerBase.Get(), columnBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -95,11 +95,11 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
         }
 
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>> verticalContentAlignmentReference;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> verticalContentAlignmentReference;
         RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignmentReference));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignment =
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment::Top;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment::Top;
         if (verticalContentAlignmentReference != nullptr)
         {
             verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
@@ -139,7 +139,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
 
             // get HeightType for column
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType columnHeightType{};
+            ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType columnHeightType{};
             RETURN_IF_FAILED(cardElement->get_Height(&columnHeightType));
 
             // Add columnBorder to rootElement

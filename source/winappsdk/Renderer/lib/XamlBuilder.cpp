@@ -11,15 +11,15 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     XamlBuilder::XamlBuilder()
     {
@@ -49,7 +49,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
                                                        _Outptr_ IFrameworkElement** xamlTreeRoot,
                                                        _In_ IAdaptiveRenderContext* renderContext,
                                                        ComPtr<XamlBuilder> xamlBuilder,
-                                                       ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle defaultContainerStyle) noexcept
+                                                       ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle defaultContainerStyle) noexcept
     try
     {
         *xamlTreeRoot = nullptr;
@@ -63,13 +63,13 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             boolean allowCustomStyle;
             RETURN_IF_FAILED(adaptiveCardConfig->get_AllowCustomStyle(&allowCustomStyle));
 
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle = defaultContainerStyle;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle = defaultContainerStyle;
             if (allowCustomStyle)
             {
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle cardStyle;
+                ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle cardStyle;
                 RETURN_IF_FAILED(adaptiveCard->get_Style(&cardStyle));
 
-                if (cardStyle != ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::None)
+                if (cardStyle != ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle::None)
                 {
                     containerStyle = cardStyle;
                 }
@@ -114,7 +114,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             RETURN_IF_FAILED(
                 BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
 
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignment;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment;
             RETURN_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
             XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer.Get(), verticalContentAlignment);
 
@@ -138,7 +138,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
                 else
                 {
                     renderContext->AddWarning(
-                        ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::InteractivityNotSupported,
+                        ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
                         HStringReference(L"Actions collection was present in card, but interactivity is not supported").Get());
                 }
             }
@@ -245,7 +245,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         ComPtr<IPanel> rootAsPanel;
         RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         ABI::Windows::UI::Color backgroundColor;
@@ -284,7 +284,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         RETURN_IF_FAILED(bodyElementHost.As(&bodyElementHostAsElement));
         RETURN_IF_FAILED(XamlHelpers::ApplyMarginToXamlElement(hostConfig.Get(), bodyElementHostAsElement.Get()));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType adaptiveCardHeightType;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType adaptiveCardHeightType;
         RETURN_IF_FAILED(adaptiveCard->get_Height(&adaptiveCardHeightType));
 
         XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
@@ -299,7 +299,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             rootAsFrameworkElement->put_MaxHeight(xamlBuilder->m_fixedHeight);
         }
 
-        if (adaptiveCardHeightType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType::Stretch)
+        if (adaptiveCardHeightType == ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType::Stretch)
         {
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
@@ -331,8 +331,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     HRESULT XamlBuilder::BuildPanelChildren(_In_ IVector<IAdaptiveCardElement*>* children,
                                             _In_ IPanel* parentPanel,
-                                            _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                                            _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
+                                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                                             std::function<void(IUIElement* child)> childCreatedCallback) noexcept
     {
         int iElement = 0;
@@ -349,7 +349,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             HRESULT hr = S_OK;
 
             // Get fallback state
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType elementFallback;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType elementFallback;
             RETURN_IF_FAILED(element->get_FallbackType(&elementFallback));
             const bool elementHasFallback = (elementFallback != FallbackType_None);
             RETURN_IF_FAILED(renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback));

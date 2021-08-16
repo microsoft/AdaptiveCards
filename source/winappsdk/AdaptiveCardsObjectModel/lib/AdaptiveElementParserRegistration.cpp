@@ -26,10 +26,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration() {}
 
@@ -101,42 +101,42 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return m_sharedParserRegistration;
     }
 
-    HRESULT AdaptiveElementParserRegistration::RegisterDefaultElementParsers(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration* registration)
+    HRESULT AdaptiveElementParserRegistration::RegisterDefaultElementParsers(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration* registration)
     {
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ActionSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveActionSetParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSetParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Column").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumnParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ColumnSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumnSetParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnSetParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Container").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveContainerParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveContainerParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"FactSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFactSetParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveFactSetParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Image").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImageParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ImageSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImageSetParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageSetParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.ChoiceSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceSetInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Date").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveDateInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveDateInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Number").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveNumberInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveNumberInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Text").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Time").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTimeInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTimeInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Toggle").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Media").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"RichTextBlock").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRichTextBlockParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveRichTextBlockParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Table").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"TextBlock").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextBlockParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextBlockParser>().Get()));
 
         return S_OK;
     }
@@ -146,7 +146,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
     }
 
-    SharedModelElementParser::SharedModelElementParser(AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveElementParserRegistration* parserRegistration)
+    SharedModelElementParser::SharedModelElementParser(AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration* parserRegistration)
     {
         ComPtr<AdaptiveElementParserRegistration> localParserRegistration(parserRegistration);
         localParserRegistration.AsWeak(&m_parserRegistration);

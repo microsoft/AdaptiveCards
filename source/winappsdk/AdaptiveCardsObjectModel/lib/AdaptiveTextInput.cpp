@@ -6,10 +6,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept
     try
@@ -33,7 +33,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
         m_textInputStyle =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle>(sharedTextInput->GetTextInputStyle());
         GenerateActionProjection(sharedTextInput->GetInlineAction(), &m_inlineAction);
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedTextInput));
@@ -77,13 +77,13 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle* textInputStyle)
+    HRESULT AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle* textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle textInputStyle)
+    HRESULT AdaptiveTextInput::put_TextInputStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle textInputStyle)
     {
         m_textInputStyle = textInputStyle;
         return S_OK;

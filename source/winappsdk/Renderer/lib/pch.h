@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 #pragma once
 
-#define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_Rendering_WinAppSDK_##cls, BaseTrust)
-#define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_Rendering_WinAppSDK_##cls, BaseTrust)
-#define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.Rendering.WinAppSDK." L#cls, BaseTrust)
+#define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_Rendering_WinUI3_##cls, BaseTrust)
+#define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_Rendering_WinUI3_##cls, BaseTrust)
+#define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.Rendering.WinUI3." L#cls, BaseTrust)
 #define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_Rendering_Uwp
 #define AdaptivePointerCast dynamic_pointer_cast
 
@@ -34,7 +34,7 @@
 #include "HostConfig.h"
 
 // Commonly-used AdaptiveCardRenderer headers
-#include "AdaptiveCards.Rendering.WinAppSDK.h"
+#include "AdaptiveCards.Rendering.WinUI3.h"
 #include "ErrorHandling.h"
 #include "Util.h"
 #include "Vector.h"
@@ -61,4 +61,4 @@
 #include <winrt/Windows.UI.Xaml.Controls.h>
 #include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
 #include <winrt/Windows.Foundation.h>
-#include <winrt/AdaptiveCards.Rendering.WinAppSDK.h>
+#include <winrt/AdaptiveCards.Rendering.WinUI3.h>

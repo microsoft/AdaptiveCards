@@ -5,9 +5,9 @@
 #include "AdaptiveImageSetConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept
     try
@@ -19,18 +19,18 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize(ImageSetConfig sharedImageSetConfig) noexcept
     {
-        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize>(sharedImageSetConfig.imageSize);
+        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize>(sharedImageSetConfig.imageSize);
         m_maxImageHeight = sharedImageSetConfig.maxImageHeight;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSetConfig::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize* imageSize)
+    HRESULT AdaptiveImageSetConfig::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize imageSize)
+    HRESULT AdaptiveImageSetConfig::put_ImageSize(ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;

@@ -6,17 +6,17 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize() noexcept { return S_OK; }
 
     // This constructor is kept so all elements keep working as expected
-    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle,
+    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
                                                        _In_opt_ IInspectable* parentElement,
                                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept
     try
@@ -34,9 +34,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle,
+    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
                                                        _In_opt_ IInspectable* parentElement,
-                                                       _In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* parentCard,
+                                                       _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* parentCard,
                                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept
     try
     {
@@ -53,13 +53,13 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveRenderArgs::get_ContainerStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* value)
+    HRESULT AdaptiveRenderArgs::get_ContainerStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* value)
     {
         *value = m_containerStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle value)
+    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle value)
     {
         m_containerStyle = value;
         return S_OK;

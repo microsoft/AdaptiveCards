@@ -5,10 +5,10 @@
 #include "AdaptiveExecuteAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveExecuteAction::RuntimeClassInitialize() noexcept
     try
@@ -28,7 +28,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         }
 
         m_associatedInputs =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedExecuteAction->GetVerb(), m_verb.GetAddressOf()));
 
@@ -37,9 +37,9 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveExecuteAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
+    HRESULT AdaptiveExecuteAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Execute;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute;
         return S_OK;
     }
 
@@ -51,13 +51,13 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs* associatedInputs)
+    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs* associatedInputs)
     {
         *associatedInputs = m_associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveExecuteAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs associatedInputs)
+    HRESULT AdaptiveExecuteAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs associatedInputs)
     {
         m_associatedInputs = associatedInputs;
         return S_OK;

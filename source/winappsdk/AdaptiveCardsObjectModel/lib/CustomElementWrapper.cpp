@@ -4,11 +4,11 @@
 #include "CustomElementWrapper.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
-    CustomElementWrapper::CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* cardElement) :
+    CustomElementWrapper::CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement) :
         BaseCardElement(AdaptiveCards::CardElementType::Custom), m_cardElement(cardElement)
     {
         BaseElement::SetId(GetCardElementId());
@@ -25,7 +25,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
     Spacing CustomElementWrapper::GetSpacing() const
     {
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing spacing;
         THROW_IF_FAILED(m_cardElement->get_Spacing(&spacing));
 
         return static_cast<Spacing>(spacing);
@@ -33,7 +33,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
     void CustomElementWrapper::SetSpacing(Spacing value)
     {
-        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing>(value)));
+        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing>(value)));
     }
 
     void CustomElementWrapper::SetId(std::string&& value)
@@ -61,14 +61,14 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
     void CustomElementWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementWithRemoteResources> remoteResources;
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources> remoteResources;
         if (SUCCEEDED(m_cardElement.As(&remoteResources)))
         {
             RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
         }
     }
 
-    HRESULT CustomElementWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement** cardElement)
+    HRESULT CustomElementWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** cardElement)
     {
         return m_cardElement.CopyTo(cardElement);
     }

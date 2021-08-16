@@ -14,10 +14,10 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveActionParserRegistration::AdaptiveActionParserRegistration() {}
 
@@ -89,22 +89,22 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return m_sharedParserRegistration;
     }
 
-    HRESULT AdaptiveActionParserRegistration::RegisterDefaultActionParsers(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration* registration)
+    HRESULT AdaptiveActionParserRegistration::RegisterDefaultActionParsers(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration* registration)
     {
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveOpenUrlActionParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveOpenUrlActionParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ShowCard").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveShowCardActionParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveShowCardActionParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveSubmitActionParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveSubmitActionParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityActionParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityActionParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Execute").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveExecuteActionParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveExecuteActionParser>().Get()));
         return S_OK;
     }
 
-    SharedModelActionParser::SharedModelActionParser(AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveActionParserRegistration* parserRegistration)
+    SharedModelActionParser::SharedModelActionParser(AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration* parserRegistration)
     {
         ComPtr<AdaptiveActionParserRegistration> localParserRegistration(parserRegistration);
         localParserRegistration.AsWeak(&m_parserRegistration);

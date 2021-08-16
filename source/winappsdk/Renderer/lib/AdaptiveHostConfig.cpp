@@ -25,10 +25,10 @@
 #include "AdaptiveTextStylesConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(_In_ HSTRING adaptiveJson,
                                                           _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult) noexcept
@@ -153,12 +153,12 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
     HRESULT AdaptiveHostConfig::put_ImageBaseUrl(_In_ HSTRING imageBaseUrl) { return m_imageBaseUrl.Set(imageBaseUrl); }
 
-    HRESULT AdaptiveHostConfig::get_ContainerStyles(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveContainerStylesDefinition** value)
+    HRESULT AdaptiveHostConfig::get_ContainerStyles(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStylesDefinition** value)
     {
         return m_containerStyles.CopyTo(value);
     }
 
-    HRESULT AdaptiveHostConfig::put_ContainerStyles(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
+    HRESULT AdaptiveHostConfig::put_ContainerStyles(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStylesDefinition* containerStylesDefinition)
     {
         m_containerStyles = containerStylesDefinition;
         return S_OK;
@@ -175,23 +175,23 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_Spacing(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveSpacingConfig** spacingConfig)
+    HRESULT AdaptiveHostConfig::get_Spacing(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveSpacingConfig** spacingConfig)
     {
         return m_spacing.CopyTo(spacingConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_Spacing(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveSpacingConfig* spacingConfig)
+    HRESULT AdaptiveHostConfig::put_Spacing(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveSpacingConfig* spacingConfig)
     {
         m_spacing = spacingConfig;
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_Separator(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveSeparatorConfig** separatorConfig)
+    HRESULT AdaptiveHostConfig::get_Separator(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveSeparatorConfig** separatorConfig)
     {
         return m_separator.CopyTo(separatorConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_Separator(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveSeparatorConfig* separatorConfig)
+    HRESULT AdaptiveHostConfig::put_Separator(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveSeparatorConfig* separatorConfig)
     {
         m_separator = separatorConfig;
         return S_OK;
@@ -274,23 +274,23 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_TextBlock(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextBlockConfig** textBlockConfig)
+    HRESULT AdaptiveHostConfig::get_TextBlock(ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveTextBlockConfig** textBlockConfig)
     {
         return m_textBlock.CopyTo(textBlockConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_TextBlock(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextBlockConfig* textBlockConfig)
+    HRESULT AdaptiveHostConfig::put_TextBlock(ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveTextBlockConfig* textBlockConfig)
     {
         m_textBlock = textBlockConfig;
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_Table(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTableConfig** tableConfig)
+    HRESULT AdaptiveHostConfig::get_Table(ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveTableConfig** tableConfig)
     {
         return m_table.CopyTo(tableConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_Table(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTableConfig* tableConfig)
+    HRESULT AdaptiveHostConfig::put_Table(ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveTableConfig* tableConfig)
     {
         m_table = tableConfig;
         return S_OK;
@@ -339,12 +339,12 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_TextStyles(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextStylesConfig** textStylesConfig)
+    HRESULT AdaptiveHostConfig::get_TextStyles(ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveTextStylesConfig** textStylesConfig)
     {
         return m_textStyles.CopyTo(textStylesConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_TextStyles(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextStylesConfig* textStylesConfig)
+    HRESULT AdaptiveHostConfig::put_TextStyles(ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveTextStylesConfig* textStylesConfig)
     {
         m_textStyles = textStylesConfig;
         return S_OK;

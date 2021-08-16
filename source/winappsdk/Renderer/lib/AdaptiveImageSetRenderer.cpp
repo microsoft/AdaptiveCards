@@ -7,14 +7,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveImageSetRenderer::RuntimeClassInitialize() noexcept
     try
@@ -38,7 +38,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         RETURN_IF_FAILED(xamlGrid->put_Orientation(Orientation_Horizontal));
 
-        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*>> images;
+        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*>> images;
         RETURN_IF_FAILED(adaptiveImageSet->get_Images(&images));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -46,10 +46,10 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IAdaptiveImageSetConfig> imageSetConfig;
         RETURN_IF_FAILED(hostConfig->get_ImageSet(&imageSetConfig));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize imageSize;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize imageSize;
         RETURN_IF_FAILED(adaptiveImageSet->get_ImageSize(&imageSize));
 
-        if (imageSize == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize::None)
+        if (imageSize == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::None)
         {
             RETURN_IF_FAILED(imageSetConfig->get_ImageSize(&imageSize));
         }
@@ -60,13 +60,13 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         RETURN_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
         if (imageRenderer != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
             RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
             ComPtr<AdaptiveRenderArgs> childRenderArgs;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, xamlGrid.Get(), renderArgs));
 
-            IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage>(
+            IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage>(
                 images.Get(),
                 [imageSize, xamlGrid, renderContext, childRenderArgs, imageRenderer, imageSetConfig](IAdaptiveImage* adaptiveImage) {
                     ComPtr<IUIElement> uiImage;
@@ -93,7 +93,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         }
         else
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::NoRendererForType,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::NoRendererForType,
                                       HStringReference(L"No renderer found for type: Image").Get());
             *imageSetControl = nullptr;
             return S_OK;

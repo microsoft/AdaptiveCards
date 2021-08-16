@@ -5,7 +5,7 @@
 
 #include <string>
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class DateTimeParser
     {

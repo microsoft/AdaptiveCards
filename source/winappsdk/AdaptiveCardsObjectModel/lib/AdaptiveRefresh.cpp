@@ -5,11 +5,11 @@
 #include "AdaptiveRefresh.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveRefresh::RuntimeClassInitialize() noexcept
     {
@@ -32,12 +32,12 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveRefresh::get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** action)
+    HRESULT AdaptiveRefresh::get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** action)
     {
         return m_action.CopyTo(action);
     }
 
-    HRESULT AdaptiveRefresh::put_Action(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action)
+    HRESULT AdaptiveRefresh::put_Action(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action)
     {
         m_action = action;
         return S_OK;

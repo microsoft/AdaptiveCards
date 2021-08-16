@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     MIDL_INTERFACE("BF58F7BB-A330-4C75-AF7F-6E5FD8C0C070")
     IXamlBuilderListener : public IInspectable

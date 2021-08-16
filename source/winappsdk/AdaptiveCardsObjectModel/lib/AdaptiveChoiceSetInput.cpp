@@ -10,14 +10,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
-        m_choices = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*>>();
+        m_choices = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*>>();
     }
 
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept
@@ -41,7 +41,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
         m_wrap = sharedChoiceSetInput->GetWrap();
         m_choiceSetStyle =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
 
@@ -81,19 +81,19 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle* choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle choiceSetStyle)
     {
         m_choiceSetStyle = choiceSetStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*>** choices)
+    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*>** choices)
     {
         return m_choices.CopyTo(choices);
     }

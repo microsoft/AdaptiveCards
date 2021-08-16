@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinAppSDK.h"
+#include "AdaptiveCards.Rendering.WinUI3.h"
 #include <windows.ui.xaml.shapes.h>
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel
-        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinAppSDK::IWholeItemsPanel,
+        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinUI3::IWholeItemsPanel,
                                               ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
@@ -43,7 +43,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         void AddElementToStretchablesList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
         bool IsUIElementInStretchableList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
-        void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignment);
+        void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
@@ -57,7 +57,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         unsigned int m_stretchableItemCount{};
         float m_calculatedSize{};
         bool m_allElementsRendered{};
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment m_verticalContentAlignment{};
+        ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.
         // Some rules such as images vertical stretching only apply for this panel

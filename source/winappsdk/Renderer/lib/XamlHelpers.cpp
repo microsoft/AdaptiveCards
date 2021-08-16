@@ -10,7 +10,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -22,7 +22,7 @@ using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
+namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 {
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
@@ -149,16 +149,16 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
                                     _In_ IBorder* containerBorder,
                                     _In_ IAdaptiveRenderContext* renderContext,
                                     _In_ IAdaptiveRenderArgs* renderArgs,
-                                    _Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* containerStyle)
+                                    _Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* containerStyle)
     {
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle localContainerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle localContainerStyle;
         RETURN_IF_FAILED(adaptiveContainer->get_Style(&localContainerStyle));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle parentContainerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle parentContainerStyle;
         RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
 
         bool hasExplicitContainerStyle{true};
-        if (localContainerStyle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::None)
+        if (localContainerStyle == ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
             localContainerStyle = parentContainerStyle;
@@ -197,32 +197,32 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
 
         // Find out which direction(s) we bleed in, and apply a negative margin to cause the
         // container to bleed
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection bleedDirection;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection bleedDirection;
         RETURN_IF_FAILED(adaptiveContainer->get_BleedDirection(&bleedDirection));
 
         Thickness marginThickness = {0};
-        if (bleedDirection != ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
+        if (bleedDirection != ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::None)
         {
-            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::Left) !=
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::Left) !=
+                ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::None)
             {
                 marginThickness.Left = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::Right) !=
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::Right) !=
+                ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::None)
             {
                 marginThickness.Right = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::Up) !=
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::Up) !=
+                ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::None)
             {
                 marginThickness.Top = -paddingAsDouble;
             }
 
-            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::Down) !=
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
+            if ((bleedDirection & ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::Down) !=
+                ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::None)
             {
                 marginThickness.Bottom = -paddingAsDouble;
             }
@@ -340,7 +340,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-            HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
+            HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
 
         HString url;
         THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
@@ -368,7 +368,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
         ComPtr<IImage> xamlImage;
         THROW_IF_FAILED(background.As(&xamlImage));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode fillMode;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode fillMode;
         THROW_IF_FAILED(backgroundImage->get_FillMode(&fillMode));
 
         // Creates the background image for all fill modes
@@ -421,7 +421,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
         ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
         RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType elementFallback;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType elementFallback;
         RETURN_IF_FAILED(currentElement->get_FallbackType(&elementFallback));
 
         HString elementType;
@@ -431,7 +431,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
         ComPtr<IUIElement> fallbackControl;
         switch (elementFallback)
         {
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content:
         {
             // We have content, get the type of the fallback element
             ComPtr<IAdaptiveCardElement> fallbackElement;
@@ -472,14 +472,14 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
             fallbackHandled = true;
             break;
         }
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Drop:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop:
         {
             // If the fallback is drop, nothing to do but warn
             RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, elementType.Get()));
             fallbackHandled = true;
             break;
         }
-        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::None:
+        case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None:
         default:
         {
             break;
@@ -503,7 +503,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
                 // standard unknown element handling
                 std::wstring errorString = L"No Renderer found for type: ";
                 errorString += elementType.GetRawBuffer(nullptr);
-                RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::NoRendererForType,
+                RETURN_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::NoRendererForType,
                                                            HStringReference(errorString.c_str()).Get()));
                 return S_OK;
             }
@@ -521,7 +521,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
                                        _Out_ ABI::Windows::UI::Color* separatorColor,
                                        _Out_ bool* needsSeparator)
     {
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing elementSpacing;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing elementSpacing;
         THROW_IF_FAILED(cardElement->get_Spacing(&elementSpacing));
 
         UINT localSpacing;
@@ -541,7 +541,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
             THROW_IF_FAILED(separatorConfig->get_LineThickness(&localThickness));
         }
 
-        *needsSeparator = hasSeparator || (elementSpacing != ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::None);
+        *needsSeparator = hasSeparator || (elementSpacing != ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing::None);
 
         *spacing = localSpacing;
         *separatorThickness = localThickness;
@@ -577,7 +577,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
                 RETURN_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
             }
 
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType heightType{};
+            ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType{};
             RETURN_IF_FAILED(element->get_Height(&heightType));
 
             ComPtr<ElementTagContent> tagContent;
@@ -699,17 +699,17 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
         return S_OK;
     }
 
-    HRESULT FormatLabelRunWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
-                                         _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputLabelConfig* inputLabelConfig,
+    HRESULT FormatLabelRunWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
+                                         _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputLabelConfig* inputLabelConfig,
                                          _In_ boolean isHint,
                                          ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
     {
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor textColor;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor textColor;
 
         // If we're formatting a hint then use attention color
         if (isHint)
         {
-            textColor = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Attention;
+            textColor = ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor::Attention;
         }
         else
         {
@@ -726,19 +726,19 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(color).Get()));
 
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize textSize;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize textSize;
         RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
-        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType_Default, textSize, &resultSize));
+        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::WinUI3::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
 
         return S_OK;
     }
 
-    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
-                                  _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputLabelConfig* inputLabelConfig,
+    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
+                                  _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputLabelConfig* inputLabelConfig,
                                   IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
     {
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines(inlines);
@@ -770,9 +770,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
         return S_OK;
     }
 
-    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement* adaptiveInputElement,
-                             _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
-                             _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* /*renderArgs*/,
+    HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
+                             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* /*renderArgs*/,
                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl)
     {
         HString inputLabel;
@@ -849,7 +849,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
         {
             // if there was no label but the input is required file a warning for the card author
             RETURN_IF_FAILED(renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::EmptyLabelInRequiredInput,
+                ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::EmptyLabelInRequiredInput,
                 HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
         }
 
@@ -857,7 +857,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
     }
 
     // Error messages are formatted for text size and weight
-    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
+    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                              ITextBlock* errorMessage)
     {
         ComPtr<ITextBlock> xamlErrorMessage(errorMessage);
@@ -872,30 +872,30 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
         RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
 
         // Set size defined in host config
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize textSize;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize textSize;
         RETURN_IF_FAILED(errorMessageConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
         RETURN_IF_FAILED(
-            GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType_Default, textSize, &resultSize));
+            GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinUI3::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(xamlErrorMessage->put_FontSize(resultSize));
 
         // Set weight defined in host config
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight textWeight;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight textWeight;
         RETURN_IF_FAILED(errorMessageConfig->get_Weight(&textWeight));
 
         ABI::Windows::UI::Text::FontWeight resultWeight;
         RETURN_IF_FAILED(
-            GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType_Default, textWeight, &resultWeight));
+            GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinUI3::FontType_Default, textWeight, &resultWeight));
 
         RETURN_IF_FAILED(xamlErrorMessage->put_FontWeight(resultWeight));
 
         return S_OK;
     }
 
-    HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement* adaptiveInputElement,
-                                    _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
+    HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
+                                    _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                     _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** errorMessageControl)
     {
         // Add the error message if present
@@ -935,7 +935,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
     }
 
     HRESULT CreateValidationBorder(_In_ ABI::Windows::UI::Xaml::IUIElement* childElement,
-                                   _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
+                                   _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                    _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -987,7 +987,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
             ComPtr<IAdaptiveLabelConfig> labelConfig;
             RETURN_IF_FAILED(inputsConfig->get_Label(labelConfig.GetAddressOf()));
 
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing labelSpacing;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing labelSpacing;
             RETURN_IF_FAILED(labelConfig->get_InputSpacing(&labelSpacing));
 
             UINT spacing{};
@@ -1059,7 +1059,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
             ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
             RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
 
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing errorSpacing;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing errorSpacing;
             RETURN_IF_FAILED(errorMessageConfig->get_Spacing(&errorSpacing));
 
             UINT spacing{};
@@ -1138,7 +1138,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK::XamlHelpers
             if (!errorMessage.IsValid())
             {
                 RETURN_IF_FAILED(
-                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::MissingValidationErrorMessage,
+                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::MissingValidationErrorMessage,
                                               HStringReference(L"Inputs with validation should include an errorMessage").Get()));
             }
         }

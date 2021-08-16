@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinAppSDK.h"
+#include "AdaptiveCards.Rendering.WinUI3.h"
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     class AdaptiveRenderArgs
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs>
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs>
     {
         AdaptiveRuntime(AdaptiveRenderArgs);
 
@@ -20,17 +20,17 @@ namespace AdaptiveCards::Rendering::WinAppSDK
 
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle,
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
                                        _In_opt_ IInspectable* parentElement,
                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept;
 
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle,
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
                                        _In_opt_ IInspectable* parentElement,
-                                       _In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* parentCard,
+                                       _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* parentCard,
                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept;
 
-        IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* value) override;
-        IFACEMETHODIMP put_ContainerStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle value) override;
+        IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* value) override;
+        IFACEMETHODIMP put_ContainerStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle value) override;
 
         IFACEMETHODIMP get_ParentElement(_COM_Outptr_ IInspectable** value) override;
         IFACEMETHODIMP put_ParentElement(_In_ IInspectable* value) override;
@@ -47,17 +47,17 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         IFACEMETHODIMP get_AddContainerPadding(_Out_ boolean* addContainerPadding) override;
         IFACEMETHODIMP put_AddContainerPadding(boolean addContainerPadding) override;
 
-        IFACEMETHODIMP get_ParentCard(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard** value) override;
-        IFACEMETHODIMP put_ParentCard(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* value) override;
+        IFACEMETHODIMP get_ParentCard(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard** value) override;
+        IFACEMETHODIMP put_ParentCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* value) override;
 
     private:
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle m_containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle m_containerStyle;
         Microsoft::WRL::ComPtr<IInspectable> m_parentElement;
         boolean m_isInShowCard;
         boolean m_allowAboveTitleIconPlacement;
         boolean m_ancestorHasFallback;
         boolean m_addContainerPadding;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard> m_parentCard;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard> m_parentCard;
     };
 
     ActivatableClass(AdaptiveRenderArgs);

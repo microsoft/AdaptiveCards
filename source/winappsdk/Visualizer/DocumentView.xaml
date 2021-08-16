@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    xmlns:toolkitControls="using:Microsoft.Toolkit.WinAppSDK.UI.Controls">
+    xmlns:toolkitControls="using:Microsoft.Toolkit.WinUI3.UI.Controls">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>

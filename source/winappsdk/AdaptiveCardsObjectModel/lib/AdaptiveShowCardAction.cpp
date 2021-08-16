@@ -6,9 +6,9 @@
 #include "AdaptiveShowCardAction.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept
     try
@@ -37,20 +37,20 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard** card)
     {
         return m_card.CopyTo(card);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* card)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* card)
     {
         m_card = card;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::ShowCard;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ShowCard;
         return S_OK;
     }
 
@@ -60,8 +60,8 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
         RETURN_IF_FAILED(CopySharedElementProperties(*showCardAction));
 
-        ComPtr<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveCard> card =
-            PeekInnards<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveCard>(m_card);
+        ComPtr<AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard> card =
+            PeekInnards<AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard>(m_card);
 
         std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedCard;
         RETURN_IF_FAILED(card->GetSharedModel(sharedCard));

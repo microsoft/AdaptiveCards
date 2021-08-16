@@ -8,8 +8,8 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -17,7 +17,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace ABI::Windows::UI::Xaml::Automation::Peers;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveTextBlockRenderer::RuntimeClassInitialize() noexcept
     try
@@ -45,7 +45,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         if (text.Get() == nullptr)
         {
             *textBlockControl = nullptr;
-            renderContext->AddError(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode::RequiredPropertyMissing,
+            renderContext->AddError(ABI::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode::RequiredPropertyMissing,
                                     HStringReference(L"Required property, \"text\", is missing from TextBlock").Get());
             return S_OK;
         }
@@ -62,9 +62,9 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         RETURN_IF_FAILED(xamlTextBlock->get_Inlines(&inlines));
 
         // Check if this text block has a style and if so apply the appropriate styling from the host config
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle textStyle = ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle::Default;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle textStyle = ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle::Default;
 
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>> textStyleRef;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>> textStyleRef;
         RETURN_IF_FAILED(adaptiveTextBlock->get_Style(&textStyleRef));
 
         if (textStyleRef == nullptr)
@@ -84,7 +84,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         ComPtr<IAdaptiveTextStylesConfig> textStylesConfig;
         RETURN_IF_FAILED(hostConfig->get_TextStyles(&textStylesConfig));
 
-        if (textStyle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle::Heading)
+        if (textStyle == ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle::Heading)
         {
             ComPtr<IAdaptiveTextStyleConfig> headingTextStyleConfig;
             RETURN_IF_FAILED(textStylesConfig->get_Heading(&headingTextStyleConfig));
@@ -92,7 +92,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             RETURN_IF_FAILED(SetXamlInlinesWithTextStyleConfig(
                 adaptiveTextElement.Get(), renderContext, renderArgs, headingTextStyleConfig.Get(), xamlTextBlock.Get()));
         }
-        else if (textStyle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle::ColumnHeader)
+        else if (textStyle == ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle::ColumnHeader)
         {
             ComPtr<IAdaptiveTextStyleConfig> columnHeaderTextStyleConfig;
             RETURN_IF_FAILED(textStylesConfig->get_ColumnHeader(&columnHeaderTextStyleConfig));
@@ -117,7 +117,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", frameworkElement.Get()));
 
         // If this text block has a heading style, set the corresponding automation property
-        if (textStyle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle::Heading)
+        if (textStyle == ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle::Heading)
         {
             ComPtr<IDependencyObject> textBlockAsDependencyObject;
             RETURN_IF_FAILED(xamlTextBlock.As(&textBlockAsDependencyObject));
@@ -141,7 +141,7 @@ namespace AdaptiveCards::Rendering::WinAppSDK
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
+    HRESULT AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                                                   ABI::Windows::UI::Xaml::Automation::Peers::AutomationHeadingLevel* headingLevel)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;

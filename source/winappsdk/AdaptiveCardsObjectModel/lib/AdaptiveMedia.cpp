@@ -6,10 +6,10 @@
 #include "Vector.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveMedia::RuntimeClassInitialize() noexcept
     try
@@ -30,7 +30,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetPoster(), m_poster.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedMedia->GetAltText(), m_altText.GetAddressOf()));
 
-        m_sources = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*>>();
+        m_sources = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*>>();
 
         GenerateMediaSourcesProjection(sharedMedia->GetSources(), m_sources.Get());
 
@@ -53,7 +53,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
     HRESULT AdaptiveMedia::put_AltText(_In_ HSTRING value) { return m_altText.Set(value); }
 
-    HRESULT AdaptiveMedia::get_Sources(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*>** sources)
+    HRESULT AdaptiveMedia::get_Sources(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*>** sources)
     {
         return m_sources.CopyTo(sources);
     }

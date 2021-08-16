@@ -7,7 +7,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize() noexcept
     try
@@ -49,22 +49,22 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveContainerStyleDefinition::get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig** colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveColorsConfig** colorsConfig)
     {
         return m_foregroundColors.CopyTo(colorsConfig);
     }
 
-    HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig* colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveColorsConfig* colorsConfig)
     {
         m_foregroundColors = colorsConfig;
         return S_OK;
     }
-    HRESULT AdaptiveContainerStyleDefinition::get_HighlightColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig** colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::get_HighlightColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveColorsConfig** colorsConfig)
     {
         return m_highlightColors.CopyTo(colorsConfig);
     }
 
-    HRESULT AdaptiveContainerStyleDefinition::put_HighlightColors(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig* colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::put_HighlightColors(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveColorsConfig* colorsConfig)
     {
         m_highlightColors = colorsConfig;
         return S_OK;

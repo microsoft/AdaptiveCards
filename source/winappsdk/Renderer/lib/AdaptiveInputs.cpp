@@ -7,8 +7,8 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Data::Json;
@@ -16,7 +16,7 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     AdaptiveInputs::AdaptiveInputs() {}
 
@@ -54,20 +54,20 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveInputs::GetInternalIdFromAction(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action,
+    HRESULT AdaptiveInputs::GetInternalIdFromAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
                                                     _Out_ UINT32* actionInternalId)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
         RETURN_IF_FAILED(localAction->get_ActionType(&actionType));
 
-        if (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Execute)
+        if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute)
         {
             ComPtr<IAdaptiveExecuteAction> executeAction;
             localAction.As(&executeAction);
             RETURN_IF_FAILED(executeAction->get_InternalId(actionInternalId));
         }
-        else if (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Submit)
+        else if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Submit)
         {
             ComPtr<IAdaptiveSubmitAction> submitAction;
             localAction.As(&submitAction);
@@ -81,8 +81,8 @@ namespace AdaptiveCards::Rendering::WinAppSDK
         return S_OK;
     }
 
-    HRESULT AdaptiveInputs::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action,
-                                                   _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
+    HRESULT AdaptiveInputs::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
+                                                   _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
     {
         UINT32 actionId;
         RETURN_IF_FAILED(GetInternalIdFromAction(action, &actionId));

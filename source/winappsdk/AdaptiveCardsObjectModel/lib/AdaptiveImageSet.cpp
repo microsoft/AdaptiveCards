@@ -7,14 +7,14 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveImageSet::AdaptiveImageSet()
     {
-        m_images = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*>>();
+        m_images = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*>>();
     }
 
     HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept
@@ -35,25 +35,25 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
 
-        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize>(sharedImageSet->GetImageSize());
+        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize>(sharedImageSet->GetImageSize());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImageSet));
         return S_OK;
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*>** images)
+    IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*>** images)
     {
         return m_images.CopyTo(images);
     }
 
-    HRESULT AdaptiveImageSet::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;

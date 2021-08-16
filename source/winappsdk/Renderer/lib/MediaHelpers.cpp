@@ -7,11 +7,11 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
-using namespace AdaptiveCards::Rendering::WinAppSDK;
+using namespace AdaptiveCards::Rendering::WinUI3;
 using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
@@ -51,7 +51,7 @@ void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
     }
 
     ComPtr<IAdaptiveImage> adaptiveImage =
-        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
+        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
 
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
 
@@ -104,7 +104,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(rectangleAsUIElement->put_Opacity(c_playIconOpacity));
 
     // Outline it in the Dark color
-    ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
+    ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
     THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
     ComPtr<IColorsStatics> colorsStatics;
@@ -146,7 +146,7 @@ void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _I
 {
     // Render the custom play icon using the image renderer
     ComPtr<IAdaptiveImage> playIconAdaptiveImage =
-        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinAppSDK_AdaptiveImage));
+        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
 
     THROW_IF_FAILED(playIconAdaptiveImage->put_Url(playIconString));
 
@@ -342,7 +342,7 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
         {
             // Create the arguments to pass to the resolver
             ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::WinAppSDK::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::WinUI3::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
 
             // Call the resolver to get the media stream
             ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;

@@ -11,7 +11,7 @@ namespace AdaptiveCards
 {
     namespace ObjectModel
     {
-        namespace Uwp
+        namespace WinUI3
         {
             runtimeclass AdaptiveCardParseResult;
 

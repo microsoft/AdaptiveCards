@@ -1,6 +1,6 @@
-# Adaptive Cards in WinAppSDK
+# Adaptive Cards in WinUI3
 
-This directory contains the renderers and tooling for the WinAppSDK platform. 
+This directory contains the renderers and tooling for the WinUI3 platform. 
 
 ## Requirements
 

@@ -173,7 +173,7 @@
     <ClInclude Include="lib\AdaptiveTableConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Rendering.WinAppSDK.idl" />
+    <Midl Include="idl\AdaptiveCards.Rendering.WinUI3.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

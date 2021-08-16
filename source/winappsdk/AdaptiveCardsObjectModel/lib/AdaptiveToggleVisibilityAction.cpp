@@ -6,11 +6,11 @@
 #include "AdaptiveToggleVisibilityTarget.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize() noexcept
     try
@@ -29,7 +29,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
             return E_INVALIDARG;
         }
 
-        m_targetElements = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*>>();
+        m_targetElements = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*>>();
         GenerateToggleTargetProjection(sharedToggleVisibilityAction->GetTargetElements(), m_targetElements.Get());
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedToggleVisibilityAction));
@@ -37,14 +37,14 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
+    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::ToggleVisibility;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ToggleVisibility;
         return S_OK;
     }
 
     HRESULT AdaptiveToggleVisibilityAction::get_TargetElements(
-        _COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*>** targetElements)
+        _COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*>** targetElements)
     {
         return m_targetElements.CopyTo(targetElements);
     }

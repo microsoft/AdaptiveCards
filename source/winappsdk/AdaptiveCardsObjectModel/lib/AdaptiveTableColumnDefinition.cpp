@@ -6,9 +6,9 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition() {}
 
@@ -27,18 +27,18 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
         if (sharedTableColumnDefinition->GetVerticalCellContentAlignment().has_value())
         {
             m_verticalCellContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>(
                                      sharedTableColumnDefinition->GetVerticalCellContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>>()
                     .get();
         }
 
         if (sharedTableColumnDefinition->GetHorizontalCellContentAlignment().has_value())
         {
             m_horizontalCellContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment>(
                                      sharedTableColumnDefinition->GetHorizontalCellContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>>()
                     .get();
         }
 
@@ -59,26 +59,26 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
     CATCH_RETURN;
 
     HRESULT AdaptiveTableColumnDefinition::get_VerticalCellContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>** verticalCellContentAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>** verticalCellContentAlignment)
     {
         return m_verticalCellContentAlignment.CopyTo(verticalCellContentAlignment);
     }
 
     HRESULT AdaptiveTableColumnDefinition::put_VerticalCellContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>* verticalCellContentAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>* verticalCellContentAlignment)
     {
         m_verticalCellContentAlignment = verticalCellContentAlignment;
         return S_OK;
     }
 
     HRESULT AdaptiveTableColumnDefinition::get_HorizontalCellContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalCellContentAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>** horizontalCellContentAlignment)
     {
         return m_horizontalCellContentAlignment.CopyTo(horizontalCellContentAlignment);
     }
 
     HRESULT AdaptiveTableColumnDefinition::put_HorizontalCellContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalCellContentAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>* horizontalCellContentAlignment)
     {
         m_horizontalCellContentAlignment = horizontalCellContentAlignment;
         return S_OK;
@@ -116,7 +116,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         if (m_verticalCellContentAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalCellContentAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalCellContentAlignmentValue;
             RETURN_IF_FAILED(m_verticalCellContentAlignment->get_Value(&verticalCellContentAlignmentValue));
             tableColumnDefinition->SetVerticalCellContentAlignment(
                 static_cast<AdaptiveCards::VerticalContentAlignment>(verticalCellContentAlignmentValue));
@@ -124,7 +124,7 @@ namespace AdaptiveCards::ObjectModel::WinAppSDK
 
         if (m_horizontalCellContentAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment horizontalCellContentAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalCellContentAlignmentValue;
             RETURN_IF_FAILED(m_horizontalCellContentAlignment->get_Value(&horizontalCellContentAlignmentValue));
             tableColumnDefinition->SetHorizontalCellContentAlignment(
                 static_cast<AdaptiveCards::HorizontalAlignment>(horizontalCellContentAlignmentValue));

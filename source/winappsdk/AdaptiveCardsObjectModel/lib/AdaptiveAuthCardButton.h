@@ -4,11 +4,11 @@
 
 #include "AuthCardButton.h"
 
-namespace AdaptiveCards::ObjectModel::WinAppSDK
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class DECLSPEC_UUID("0DF8553F-E958-4E9C-897D-847691F1F3CC") AdaptiveAuthCardButton
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton,
+                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveAuthCardButton);

@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <sstream>
 
-namespace AdaptiveCards::Rendering::WinAppSDK
+namespace AdaptiveCards::Rendering::WinUI3
 {
     DateTimeParser::DateTimeParser(const std::string& language) { m_languageString = language; }
 
