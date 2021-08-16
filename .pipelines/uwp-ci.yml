@@ -54,10 +54,12 @@ steps:
   displayName: 'VsTest - testAssemblies'
   inputs:
     testAssemblyVer2: |
-     **\Release\TestLibrary.dll
+     **\Release\UWPTestApp.build.appxrecipe
      !**\obj\**
-#     **\Release\UWPTestApp.build.appxrecipe
+    #      **\Release\netcoreapp2.1\UWPUITests.dll
+    otherConsoleOptions: '/Framework:FrameworkUap10'
     runInParallel: true
+    uiTests: true
     runTestsInIsolation: true
     codeCoverageEnabled: false
     platform: '$(BuildPlatform)'
