@@ -14,7 +14,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using WATestLibrary;
 
-namespace UWPUnitTests
+namespace WAUnitTests
 {
     [TestClass]
     public class RendererRegistrationTests

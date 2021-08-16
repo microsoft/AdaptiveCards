@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Windows.Data.Json;
 
-namespace UWPUnitTests
+namespace WAUnitTests
 {
     [TestClass]
     public class ParserRegistrationTests

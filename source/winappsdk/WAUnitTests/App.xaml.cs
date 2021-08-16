@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace UWPUnitTests
+namespace WAUnitTests
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
