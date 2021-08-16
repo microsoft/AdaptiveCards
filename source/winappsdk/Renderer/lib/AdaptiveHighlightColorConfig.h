@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveHighlightColorConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHighlightColorConfig>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHighlightColorConfig>
     {
         AdaptiveRuntime(AdaptiveHighlightColorConfig);
 

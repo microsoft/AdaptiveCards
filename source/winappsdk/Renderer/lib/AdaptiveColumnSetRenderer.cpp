@@ -49,7 +49,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveContainerBase> columnSetAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsContainerBase));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             columnSetAsContainerBase.Get(), columnSetBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -73,7 +73,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         if (columnRenderer == nullptr)
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::NoRendererForType,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::NoRendererForType,
                                       HStringReference(L"No renderer found for type: Column").Get());
             *columnSetControl = nullptr;
             return S_OK;
@@ -99,12 +99,12 @@ namespace AdaptiveCards::Rendering::Uwp
             ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
             RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
 
-            ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallbackType;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallbackType;
             RETURN_IF_FAILED(columnAsCardElement->get_FallbackType(&fallbackType));
 
             // Build the Column
             RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(
-                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None));
+                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::None));
 
             ComPtr<IUIElement> xamlColumn;
             HRESULT hr = columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn);
@@ -199,7 +199,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveCardElement> columnSetAsCardElement;
         RETURN_IF_FAILED(adaptiveColumnSet.As(&columnSetAsCardElement));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType columnSetHeightType;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType columnSetHeightType;
         RETURN_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
 
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;

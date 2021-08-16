@@ -30,18 +30,18 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize()
     {
         RETURN_IF_FAILED(RenderedAdaptiveCard::RuntimeClassInitialize(
-            Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>>().Get(),
-            Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>>().Get()));
+            Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*>>().Get(),
+            Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>>().Get()));
         return S_OK;
     }
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize(
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>* errors,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* warnings)
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*>* errors,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>* warnings)
     {
         m_errors = errors;
         m_warnings = warnings;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::WinAppSDK::AdaptiveInputs>(&m_inputs));
         m_actionEvents = std::make_shared<ActionEventSource>();
         m_mediaClickedEvents = std::make_shared<MediaEventSource>();
         return S_OK;
@@ -62,14 +62,14 @@ namespace AdaptiveCards::Rendering::Uwp
         return m_frameworkElement.CopyTo(value);
     }
 
-    HRESULT RenderedAdaptiveCard::get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value)
+    HRESULT RenderedAdaptiveCard::get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputs** value)
     {
         return m_inputs.CopyTo(value);
     }
 
     HRESULT RenderedAdaptiveCard::add_Action(
-        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
-                                                          ABI::AdaptiveCards::Rendering::Uwp::AdaptiveActionEventArgs*>* handler,
+        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinAppSDK::RenderedAdaptiveCard*,
+                                                          ABI::AdaptiveCards::Rendering::WinAppSDK::AdaptiveActionEventArgs*>* handler,
         _Out_ EventRegistrationToken* token)
     {
         return m_actionEvents->Add(handler, token);
@@ -78,8 +78,8 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token) { return m_actionEvents->Remove(token); }
 
     HRESULT RenderedAdaptiveCard::add_MediaClicked(
-        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*,
-                                                          ABI::AdaptiveCards::Rendering::Uwp::AdaptiveMediaEventArgs*>* handler,
+        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinAppSDK::RenderedAdaptiveCard*,
+                                                          ABI::AdaptiveCards::Rendering::WinAppSDK::AdaptiveMediaEventArgs*>* handler,
         _Out_ EventRegistrationToken* token)
     {
         return m_mediaClickedEvents->Add(handler, token);
@@ -91,13 +91,13 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     HRESULT RenderedAdaptiveCard::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     HRESULT RenderedAdaptiveCard::get_Warnings(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
@@ -293,7 +293,7 @@ namespace AdaptiveCards::Rendering::Uwp
             HString toggleId;
             RETURN_IF_FAILED(currentTarget->get_ElementId(toggleId.GetAddressOf()));
 
-            ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible toggle;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible toggle;
             RETURN_IF_FAILED(currentTarget->get_IsVisible(&toggle));
 
             ComPtr<IInspectable> toggleElement;
@@ -314,15 +314,15 @@ namespace AdaptiveCards::Rendering::Uwp
                 RETURN_IF_FAILED(tag.As(&elementTagContent));
 
                 Visibility visibilityToSet = Visibility_Visible;
-                if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleTrue)
+                if (toggle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible_IsVisibleTrue)
                 {
                     visibilityToSet = Visibility_Visible;
                 }
-                else if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleFalse)
+                else if (toggle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible_IsVisibleFalse)
                 {
                     visibilityToSet = Visibility_Collapsed;
                 }
-                else if (toggle == ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible_IsVisibleToggle)
+                else if (toggle == ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible_IsVisibleToggle)
                 {
                     boolean currentVisibility{};
                     RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));
@@ -367,17 +367,17 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
-        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
         RETURN_IF_FAILED(actionElement->get_ActionType(&actionType));
 
         switch (actionType)
         {
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_ToggleVisibility:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType_ToggleVisibility:
         {
             return HandleToggleVisibilityClick(m_frameworkElement.Get(), actionElement);
         }
 
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_ShowCard:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType_ShowCard:
         {
             ComPtr<IAdaptiveActionsConfig> actionConfig;
             RETURN_IF_FAILED(m_originatingHostConfig->get_Actions(&actionConfig));
@@ -385,10 +385,10 @@ namespace AdaptiveCards::Rendering::Uwp
             ComPtr<IAdaptiveShowCardActionConfig> showCardConfig;
             RETURN_IF_FAILED(actionConfig->get_ShowCard(&showCardConfig));
 
-            ABI::AdaptiveCards::Rendering::Uwp::ActionMode actionMode;
+            ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode actionMode;
             RETURN_IF_FAILED(showCardConfig->get_ActionMode(&actionMode));
 
-            bool handleInlineShowCard = (actionMode == ABI::AdaptiveCards::Rendering::Uwp::ActionMode_Inline);
+            bool handleInlineShowCard = (actionMode == ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode_Inline);
 
             if (handleInlineShowCard)
             {
@@ -417,13 +417,13 @@ namespace AdaptiveCards::Rendering::Uwp
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Submit:
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Execute:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType_Submit:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType_Execute:
         {
             ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
-            ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs associatedInputs;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs associatedInputs;
 
-            if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Submit)
+            if (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType_Submit)
             {
                 ComPtr<IAdaptiveSubmitAction> submitAction;
                 RETURN_IF_FAILED(localActionElement.As(&submitAction));
@@ -438,7 +438,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             ComPtr<IAdaptiveInputs> gatheredInputs;
             boolean inputsAreValid;
-            if (associatedInputs == ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs::None)
+            if (associatedInputs == ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs::None)
             {
                 // Create an empty inputs object
                 RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&gatheredInputs));
@@ -462,8 +462,8 @@ namespace AdaptiveCards::Rendering::Uwp
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_OpenUrl:
-        case ABI::AdaptiveCards::ObjectModel::Uwp::ActionType_Custom:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType_OpenUrl:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType_Custom:
         default:
         {
             ComPtr<IAdaptiveActionEventArgs> eventArgs;
@@ -491,12 +491,12 @@ namespace AdaptiveCards::Rendering::Uwp
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* value)
+    void RenderedAdaptiveCard::SetOriginatingCard(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* value)
     {
         m_originatingCard = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingHostConfig(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* value)
+    void RenderedAdaptiveCard::SetOriginatingHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* value)
     {
         m_originatingHostConfig = value;
     }
@@ -507,7 +507,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
                                                     UINT32 primaryButtonIndex,
-                                                    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+                                                    ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     try
     {
         UINT32 actionSetId;
@@ -520,13 +520,13 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
-                                                    ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
+    HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* adaptiveCard,
+                                                    ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveShowCardAction* showCardAction,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
                                                     UINT32 primaryButtonIndex,
-                                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+                                                    _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     try
     {
         UINT32 actionSetId;
@@ -540,12 +540,12 @@ namespace AdaptiveCards::Rendering::Uwp
     CATCH_RETURN;
 
     HRESULT RenderedAdaptiveCard::AddInlineShowCardHelper(UINT32 actionSetId,
-                                                          _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
+                                                          _In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveShowCardAction* showCardAction,
                                                           _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
                                                           _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                           _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
                                                           UINT32 primaryButtonIndex,
-                                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+                                                          _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     try
     {
         UINT32 showCardActionId;
@@ -571,7 +571,7 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
+    HRESULT RenderedAdaptiveCard::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionSet* actionSet,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
     try
     {
@@ -584,7 +584,7 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* actionCard,
+    HRESULT RenderedAdaptiveCard::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* actionCard,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
     try
     {
@@ -602,14 +602,14 @@ namespace AdaptiveCards::Rendering::Uwp
         return m_inputs->AddInputValue(inputItem, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
-                                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+    HRESULT RenderedAdaptiveCard::LinkActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action,
+                                                   _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     {
         return m_inputs->LinkSubmitActionToCard(action, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card,
-                                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+    HRESULT RenderedAdaptiveCard::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* card,
+                                                   _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     {
         // We get the card internal id from the showcard action
         UINT32 cardId;
@@ -632,8 +632,8 @@ namespace AdaptiveCards::Rendering::Uwp
         return m_inputs->LinkCardToParent(cardId, parentCardId);
     }
 
-    HRESULT RenderedAdaptiveCard::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
-                                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue)
+    HRESULT RenderedAdaptiveCard::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement* inputElement,
+                                                _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputValue** inputValue)
     {
         return m_inputs->GetInputValue(inputElement, inputValue);
     }

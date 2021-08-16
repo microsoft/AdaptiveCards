@@ -52,9 +52,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::OpenUrl;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::OpenUrl;
         return S_OK;
     }
 

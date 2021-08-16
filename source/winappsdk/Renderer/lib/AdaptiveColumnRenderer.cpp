@@ -72,7 +72,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveContainerBase> columnAsContainerBase;
         RETURN_IF_FAILED(adaptiveColumn.As(&columnAsContainerBase));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
         RETURN_IF_FAILED(
             XamlHelpers::HandleStylingAndPadding(columnAsContainerBase.Get(), columnBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -95,11 +95,11 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
         }
 
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>> verticalContentAlignmentReference;
         RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignmentReference));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment =
-            ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Top;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment::Top;
         if (verticalContentAlignmentReference != nullptr)
         {
             verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
@@ -139,7 +139,7 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
 
             // get HeightType for column
-            ABI::AdaptiveCards::ObjectModel::Uwp::HeightType columnHeightType{};
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType columnHeightType{};
             RETURN_IF_FAILED(cardElement->get_Height(&columnHeightType));
 
             // Add columnBorder to rootElement

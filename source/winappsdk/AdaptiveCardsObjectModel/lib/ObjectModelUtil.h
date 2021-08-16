@@ -31,23 +31,23 @@ inline bool Boolify(const boolean value) noexcept
     return (value > 0);
 }
 
-HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* items,
+HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* items,
                               std::shared_ptr<AdaptiveCards::BaseCardElement>& containedElement);
 
-HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>* items,
+HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>* items,
                                std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
 
-HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
+HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action,
                              std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction);
 
-HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>* items,
+HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>* items,
                               std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
 
 HRESULT GenerateSharedRequirements(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>* adaptiveRequirements,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>* adaptiveRequirements,
     std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements) noexcept;
 
-HRESULT GenerateSharedInlines(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>* items,
+HRESULT GenerateSharedInlines(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>* items,
                               std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
 template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass, class TReturnedSharedModelType>
 HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* tableCells,
@@ -73,67 +73,67 @@ HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector
 
 #define GenerateSharedToggleElements(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS) \
     GenerateSharedVector<AdaptiveCards::ToggleVisibilityTarget, \
-                         ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget, \
-                         ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget, \
+                         ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget, \
+                         ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget, \
                          AdaptiveToggleVisibilityTarget, \
                          AdaptiveCards::ToggleVisibilityTarget>(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS);
 
 #define GenerateSharedImages(WINRTIMAGES, SHAREDIMAGES) \
-    GenerateSharedVector<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage, AdaptiveImage, AdaptiveCards::BaseCardElement>( \
+    GenerateSharedVector<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage, AdaptiveImage, AdaptiveCards::BaseCardElement>( \
         WINRTIMAGES, SHAREDIMAGES);
 
 #define GenerateSharedFacts(WINRTFACTS, SHAREDFACTS) \
-    GenerateSharedVector<AdaptiveCards::Fact, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact, AdaptiveFact, AdaptiveCards::Fact>( \
+    GenerateSharedVector<AdaptiveCards::Fact, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact, AdaptiveFact, AdaptiveCards::Fact>( \
         WINRTFACTS, SHAREDFACTS);
 
 #define GenerateSharedChoices(WINRTCHOICEINPUTS, SHAREDCHOICEINPUTS) \
-    GenerateSharedVector<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput, AdaptiveChoiceInput, AdaptiveCards::ChoiceInput>( \
+    GenerateSharedVector<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput, AdaptiveChoiceInput, AdaptiveCards::ChoiceInput>( \
         WINRTCHOICEINPUTS, SHAREDCHOICEINPUTS);
 
 #define GenerateSharedMediaSources(WINRTMEDIASOURCES, SHAREDMEDIASOURCES) \
-    GenerateSharedVector<AdaptiveCards::MediaSource, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource, AdaptiveMediaSource, AdaptiveCards::MediaSource>( \
+    GenerateSharedVector<AdaptiveCards::MediaSource, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource, AdaptiveMediaSource, AdaptiveCards::MediaSource>( \
         WINRTMEDIASOURCES, SHAREDMEDIASOURCES);
 
 #define GenerateSharedColumns(WINRTCOLUMNS, SHAREDCOLUMNS) \
-    GenerateSharedVector<AdaptiveCards::Column, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn, AdaptiveColumn, AdaptiveCards::BaseCardElement>( \
+    GenerateSharedVector<AdaptiveCards::Column, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn, AdaptiveColumn, AdaptiveCards::BaseCardElement>( \
         WINRTCOLUMNS, SHAREDCOLUMNS);
 
 #define GenerateSharedTableCells(WINRTTABLECELLS, SHAREDTABLECELLS) \
-    GenerateSharedVector<AdaptiveCards::TableCell, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell, AdaptiveTableCell, AdaptiveCards::BaseCardElement>( \
+    GenerateSharedVector<AdaptiveCards::TableCell, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell, AdaptiveTableCell, AdaptiveCards::BaseCardElement>( \
         WINRTTABLECELLS, SHAREDTABLECELLS);
 
 #define GenerateSharedTableRows(WINRTTABLEROWS, SHAREDTABLEROWS) \
-    GenerateSharedVector<AdaptiveCards::TableRow, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow, AdaptiveTableRow, AdaptiveCards::BaseCardElement>( \
+    GenerateSharedVector<AdaptiveCards::TableRow, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow, AdaptiveTableRow, AdaptiveCards::BaseCardElement>( \
         WINRTTABLEROWS, SHAREDTABLEROWS);
 
 #define GenerateSharedTableColumnDefinitions(WINRTTABLECOLUMNS, SHAREDTABLECOLUMNS) \
     GenerateSharedVector<AdaptiveCards::TableColumnDefinition, \
-                         ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition, \
-                         ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition, \
+                         ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition, \
+                         ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition, \
                          AdaptiveTableColumnDefinition, \
                          AdaptiveCards::TableColumnDefinition>(WINRTTABLECOLUMNS, SHAREDTABLECOLUMNS);
 
 HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement,
-                                  _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** projectedElement) noexcept;
+                                  _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement** projectedElement) noexcept;
 
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action,
-                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** projectedAction) noexcept;
+                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** projectedAction) noexcept;
 
 HRESULT GenerateInlinesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>* projectedParentContainer) noexcept;
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateRequirementsProjection(
     const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>* projectedRequirementVector) noexcept;
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>* projectedRequirementVector) noexcept;
 
 template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass>
 HRESULT GenerateVectorProjection(const std::vector<std::shared_ptr<TSharedClass>>& containedElements,
@@ -153,43 +153,43 @@ try
 CATCH_RETURN;
 
 #define GenerateImagesProjection(SHAREDIMAGES, WINRTIMAGES) \
-    GenerateVectorProjection<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage, AdaptiveImage>( \
+    GenerateVectorProjection<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage, AdaptiveImage>( \
         SHAREDIMAGES, WINRTIMAGES);
 
 #define GenerateFactsProjection(SHAREDFACTS, WINRTFACTS) \
-    GenerateVectorProjection<AdaptiveCards::Fact, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact, AdaptiveFact>( \
+    GenerateVectorProjection<AdaptiveCards::Fact, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact, AdaptiveFact>( \
         SHAREDFACTS, WINRTFACTS);
 
 #define GenerateInputChoicesProjection(SHAREDCHOICES, WINRTCHOICES) \
-    GenerateVectorProjection<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput, AdaptiveChoiceInput>( \
+    GenerateVectorProjection<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput, AdaptiveChoiceInput>( \
         SHAREDCHOICES, WINRTCHOICES);
 
 #define GenerateMediaSourcesProjection(SHAREDMEDIASOURCES, WINRTMEDIASOURCES) \
-    GenerateVectorProjection<AdaptiveCards::MediaSource, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource, AdaptiveMediaSource>( \
+    GenerateVectorProjection<AdaptiveCards::MediaSource, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource, AdaptiveMediaSource>( \
         SHAREDMEDIASOURCES, WINRTMEDIASOURCES);
 
 #define GenerateColumnsProjection(SHAREDCOLUMNS, WINRTCOLUMNS) \
-    GenerateVectorProjection<AdaptiveCards::Column, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn, AdaptiveColumn>( \
+    GenerateVectorProjection<AdaptiveCards::Column, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn, AdaptiveColumn>( \
         SHAREDCOLUMNS, WINRTCOLUMNS);
 
 #define GenerateToggleTargetProjection(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS) \
     GenerateVectorProjection<AdaptiveCards::ToggleVisibilityTarget, \
-                             ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget, \
-                             ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget, \
+                             ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget, \
+                             ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget, \
                              AdaptiveToggleVisibilityTarget>(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS);
 
 #define GenerateTableCellsProjection(SHAREDTABLECELLS, WINRTTABLECELLS) \
-    GenerateVectorProjection<AdaptiveCards::TableCell, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell, AdaptiveTableCell>( \
+    GenerateVectorProjection<AdaptiveCards::TableCell, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell, AdaptiveTableCell>( \
         SHAREDTABLECELLS, WINRTTABLECELLS);
 
 #define GenerateTableRowsProjection(SHAREDTABLEROWS, WINRTTABLEROWS) \
-    GenerateVectorProjection<AdaptiveCards::TableRow, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow, AdaptiveTableRow>( \
+    GenerateVectorProjection<AdaptiveCards::TableRow, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow, ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow, AdaptiveTableRow>( \
         SHAREDTABLEROWS, WINRTTABLEROWS);
 
 #define GenerateTableColumnDefinitionsProjection(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS) \
     GenerateVectorProjection<AdaptiveCards::TableColumnDefinition, \
-                             ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition, \
-                             ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition, \
+                             ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition, \
+                             ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition, \
                              AdaptiveTableColumnDefinition>(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS);
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
@@ -228,27 +228,27 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     return inner;
 }
 
-void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources* remoteResources,
+void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementWithRemoteResources* remoteResources,
                                                             std::vector<AdaptiveCards::RemoteResourceInformation>& resourceUris);
 
 HRESULT SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings);
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>* adaptiveWarnings);
 
 HRESULT AdaptiveWarningsToSharedWarnings(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>* adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
-ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type);
-AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType type);
+ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type);
+AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType type);
 
 HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
     const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration);
+    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration);
 
 HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
     const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration);
+    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration);
 
 template<typename T, typename TInterface, typename C>
 HRESULT IterateOverVectorWithFailure(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)

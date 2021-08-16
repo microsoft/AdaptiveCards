@@ -19,7 +19,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveLabelConfig::RuntimeClassInitialize(LabelConfig labelConfig) noexcept
     {
-        m_inputSpacing = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::Spacing>(labelConfig.inputSpacing);
+        m_inputSpacing = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing>(labelConfig.inputSpacing);
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelConfig>(m_requiredInputs.GetAddressOf(), labelConfig.requiredInputs));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelConfig>(m_optionalInputs.GetAddressOf(), labelConfig.optionalInputs));
@@ -27,35 +27,35 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::get_InputSpacing(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* spacing)
+    HRESULT AdaptiveLabelConfig::get_InputSpacing(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing* spacing)
     {
         *spacing = m_inputSpacing;
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::put_InputSpacing(ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing)
+    HRESULT AdaptiveLabelConfig::put_InputSpacing(ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing)
     {
         m_inputSpacing = spacing;
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::get_RequiredInputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig** requiredInputs)
+    HRESULT AdaptiveLabelConfig::get_RequiredInputs(_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputLabelConfig** requiredInputs)
     {
         return m_requiredInputs.CopyTo(requiredInputs);
     }
 
-    HRESULT AdaptiveLabelConfig::put_RequiredInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* requiredInputs)
+    HRESULT AdaptiveLabelConfig::put_RequiredInputs(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputLabelConfig* requiredInputs)
     {
         m_requiredInputs = requiredInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::get_OptionalInputs(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig** optionalInputs)
+    HRESULT AdaptiveLabelConfig::get_OptionalInputs(_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputLabelConfig** optionalInputs)
     {
         return m_optionalInputs.CopyTo(optionalInputs);
     }
 
-    HRESULT AdaptiveLabelConfig::put_OptionalInputs(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputLabelConfig* optionalInputs)
+    HRESULT AdaptiveLabelConfig::put_OptionalInputs(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputLabelConfig* optionalInputs)
     {
         m_optionalInputs = optionalInputs;
         return S_OK;

@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     AdaptiveFactSet::AdaptiveFactSet()
     {
-        m_facts = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*>>();
+        m_facts = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*>>();
     }
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept
@@ -43,7 +43,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*>** facts)
+    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*>** facts)
     {
         return m_facts.CopyTo(facts);
     }

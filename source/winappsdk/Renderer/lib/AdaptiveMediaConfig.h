@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveMediaConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaConfig>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveMediaConfig>
     {
         AdaptiveRuntime(AdaptiveMediaConfig);
 

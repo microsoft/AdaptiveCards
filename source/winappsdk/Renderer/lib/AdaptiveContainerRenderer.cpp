@@ -62,9 +62,9 @@ namespace AdaptiveCards::Rendering::Uwp
         }
 
         // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
-        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType containerHeightType{};
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType containerHeightType{};
         RETURN_IF_FAILED(cardElement->get_Height(&containerHeightType));
-        if (containerHeightType == ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Auto)
+        if (containerHeightType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType::Auto)
         {
             RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Stretch));
         }
@@ -82,7 +82,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IBorder> containerBorder =
             XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             containerAsContainerBase.Get(), containerBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -104,11 +104,11 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
         }
 
-        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>> verticalContentAlignmentReference;
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>> verticalContentAlignmentReference;
         RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignmentReference));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment =
-            ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Top;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignment =
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment::Top;
         if (verticalContentAlignmentReference != nullptr)
         {
             verticalContentAlignmentReference->get_Value(&verticalContentAlignment);

@@ -184,32 +184,32 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetContainerStyleDefinition(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
-                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                    _Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition** styleDefinition) noexcept
+HRESULT GetContainerStyleDefinition(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style,
+                                    _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                                    _Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveContainerStyleDefinition** styleDefinition) noexcept
 try
 {
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStylesDefinition> containerStyles;
+    ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveContainerStylesDefinition> containerStyles;
     RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
 
     switch (style)
     {
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::Accent:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::Accent:
         RETURN_IF_FAILED(containerStyles->get_Accent(styleDefinition));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::Attention:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::Attention:
         RETURN_IF_FAILED(containerStyles->get_Attention(styleDefinition));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::Emphasis:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::Emphasis:
         RETURN_IF_FAILED(containerStyles->get_Emphasis(styleDefinition));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::Good:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::Good:
         RETURN_IF_FAILED(containerStyles->get_Good(styleDefinition));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::Warning:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::Warning:
         RETURN_IF_FAILED(containerStyles->get_Warning(styleDefinition));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle::Default:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle::Default:
     default:
         RETURN_IF_FAILED(containerStyles->get_Default(styleDefinition));
         break;
@@ -218,42 +218,42 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor adaptiveColor,
-                                  ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle,
+HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                                  ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor adaptiveColor,
+                                  ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle,
                                   bool isSubtle,
                                   bool highlight,
                                   _Out_ ABI::Windows::UI::Color* uiColor) noexcept
 try
 {
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
+    ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveContainerStyleDefinition> styleDefinition;
     GetContainerStyleDefinition(containerStyle, hostConfig, &styleDefinition);
 
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig> colorsConfig;
+    ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig> colorsConfig;
     RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
 
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorConfig> colorConfig;
+    ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorConfig> colorConfig;
     switch (adaptiveColor)
     {
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Accent:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Accent:
         RETURN_IF_FAILED(colorsConfig->get_Accent(&colorConfig));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Dark:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Dark:
         RETURN_IF_FAILED(colorsConfig->get_Dark(&colorConfig));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Light:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Light:
         RETURN_IF_FAILED(colorsConfig->get_Light(&colorConfig));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Good:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Good:
         RETURN_IF_FAILED(colorsConfig->get_Good(&colorConfig));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Warning:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Warning:
         RETURN_IF_FAILED(colorsConfig->get_Warning(&colorConfig));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Attention:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Attention:
         RETURN_IF_FAILED(colorsConfig->get_Attention(&colorConfig));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Default:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Default:
     default:
         RETURN_IF_FAILED(colorsConfig->get_Default(&colorConfig));
         break;
@@ -261,7 +261,7 @@ try
 
     if (highlight)
     {
-        ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHighlightColorConfig> highlightColorConfig;
+        ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHighlightColorConfig> highlightColorConfig;
         RETURN_IF_FAILED(colorConfig->get_HighlightColors(&highlightColorConfig));
         RETURN_IF_FAILED(isSubtle ? highlightColorConfig->get_Subtle(uiColor) : highlightColorConfig->get_Default(uiColor));
     }
@@ -274,23 +274,23 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* adaptiveTextElement,
-                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
                        _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept
 {
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextHighlighter> localTextHighlighter =
         XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::ITextHighlighter>(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_TextHighlighter));
 
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig> hostConfig;
+    ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig> hostConfig;
     RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>> adaptiveForegroundColorRef;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>> adaptiveForegroundColorRef;
     RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveForegroundColorRef));
 
-    ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor adaptiveForegroundColor =
-        ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor::Default;
+    ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor adaptiveForegroundColor =
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor::Default;
     if (adaptiveForegroundColorRef != nullptr)
     {
         adaptiveForegroundColorRef->get_Value(&adaptiveForegroundColor);
@@ -305,7 +305,7 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextE
         isSubtleRef->get_Value(&isSubtle);
     }
 
-    ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
+    ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
     RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
     ABI::Windows::UI::Color backgroundColor;
@@ -321,35 +321,35 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextE
     return S_OK;
 }
 
-HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing,
+HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                                  ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing,
                                   _Out_ UINT* spacingSize) noexcept
 try
 {
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig> spacingConfig;
+    ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveSpacingConfig> spacingConfig;
     RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
 
     switch (spacing)
     {
-    case ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::None:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::None:
         *spacingSize = 0;
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Small:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::Small:
         RETURN_IF_FAILED(spacingConfig->get_Small(spacingSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Medium:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::Medium:
         RETURN_IF_FAILED(spacingConfig->get_Medium(spacingSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Large:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::Large:
         RETURN_IF_FAILED(spacingConfig->get_Large(spacingSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::ExtraLarge:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::ExtraLarge:
         RETURN_IF_FAILED(spacingConfig->get_ExtraLarge(spacingSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Padding:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::Padding:
         RETURN_IF_FAILED(spacingConfig->get_Padding(spacingSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Default:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing::Default:
     default:
         RETURN_IF_FAILED(spacingConfig->get_Default(spacingSize));
         break;
@@ -359,12 +359,12 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
-                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style,
+                                    _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept
 try
 {
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
+    ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveContainerStyleDefinition> styleDefinition;
     RETURN_IF_FAILED(GetContainerStyleDefinition(style, hostConfig, &styleDefinition));
     RETURN_IF_FAILED(styleDefinition->get_BackgroundColor(backgroundColor));
 
@@ -372,12 +372,12 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style,
-                                _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style,
+                                _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
                                 _Out_ ABI::Windows::UI::Color* borderColor) noexcept
 try
 {
-    ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition> styleDefinition;
+    ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveContainerStyleDefinition> styleDefinition;
     RETURN_IF_FAILED(GetContainerStyleDefinition(style, hostConfig, &styleDefinition));
     RETURN_IF_FAILED(styleDefinition->get_BorderColor(borderColor));
 
@@ -385,10 +385,10 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-                                ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
-                                ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
+HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                                ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType fontType,
+                                ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize desiredSize,
+                                ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight desiredWeight,
                                 _Outptr_ HSTRING* resultFontFamilyName,
                                 _Out_ UINT32* resultSize,
                                 _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
@@ -401,20 +401,20 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                  ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
+HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                                  ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType fontType,
                                   _Outptr_ HSTRING* resultFontFamilyName) noexcept
 try
 {
     HString result;
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* typeDefinition;
+    ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypeDefinition* typeDefinition;
 
     // get FontFamily from desired style
     RETURN_IF_FAILED(GetFontType(hostConfig, fontType, &typeDefinition));
     RETURN_IF_FAILED(typeDefinition->get_FontFamily(result.GetAddressOf()));
     if (result == NULL)
     {
-        if (fontType == ABI::AdaptiveCards::ObjectModel::Uwp::FontType::Monospace)
+        if (fontType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType::Monospace)
         {
             // fallback to system default monospace FontFamily
             RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));
@@ -434,15 +434,15 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                                ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-                                ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
+HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                                ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType fontType,
+                                ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize desiredSize,
                                 _Out_ UINT32* resultSize) noexcept
 try
 {
     UINT32 result;
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* fontTypeDefinition;
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontSizesConfig* sizesConfig;
+    ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypeDefinition* fontTypeDefinition;
+    ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontSizesConfig* sizesConfig;
 
     // get FontSize from desired style
     RETURN_IF_FAILED(GetFontType(hostConfig, fontType, &fontTypeDefinition));
@@ -452,7 +452,7 @@ try
     if (result == MAXUINT32)
     {
         // get FontSize from Default style
-        RETURN_IF_FAILED(GetFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::Uwp::FontType::Default, &fontTypeDefinition));
+        RETURN_IF_FAILED(GetFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType::Default, &fontTypeDefinition));
         RETURN_IF_FAILED(fontTypeDefinition->get_FontSizes(&sizesConfig));
         RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
 
@@ -467,19 +467,19 @@ try
                 // set system default FontSize based on desired style
                 switch (desiredSize)
                 {
-                case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::Small:
+                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::Small:
                     result = 10;
                     break;
-                case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::Medium:
+                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::Medium:
                     result = 14;
                     break;
-                case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::Large:
+                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::Large:
                     result = 17;
                     break;
-                case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::ExtraLarge:
+                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::ExtraLarge:
                     result = 20;
                     break;
-                case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::Default:
+                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::Default:
                 default:
                     result = 12;
                     break;
@@ -492,15 +492,15 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                               ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-                               ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
+HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                               ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType fontType,
+                               ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight desiredWeight,
                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
 try
 {
     UINT16 result;
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* typeDefinition;
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontWeightsConfig* weightConfig;
+    ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypeDefinition* typeDefinition;
+    ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontWeightsConfig* weightConfig;
 
     // get FontWeight from desired fontType
     RETURN_IF_FAILED(GetFontType(hostConfig, fontType, &typeDefinition));
@@ -510,7 +510,7 @@ try
     if (result == MAXUINT16)
     {
         // get FontWeight from Default style
-        RETURN_IF_FAILED(GetFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::Uwp::FontType::Default, &typeDefinition));
+        RETURN_IF_FAILED(GetFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType::Default, &typeDefinition));
         RETURN_IF_FAILED(typeDefinition->get_FontWeights(&weightConfig));
         RETURN_IF_FAILED(GetFontWeight(weightConfig, desiredWeight, &result));
 
@@ -525,13 +525,13 @@ try
                 // set system default FontWeight based on desired style
                 switch (desiredWeight)
                 {
-                case ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight::Lighter:
+                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight::Lighter:
                     result = 200;
                     break;
-                case ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight::Bolder:
+                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight::Bolder:
                     result = 800;
                     break;
-                case ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight::Default:
+                case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight::Default:
                 default:
                     result = 400;
                     break;
@@ -544,20 +544,20 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontType(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
-                    ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType,
-                    _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** fontTypeDefinition) noexcept
+HRESULT GetFontType(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
+                    ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType fontType,
+                    _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypeDefinition** fontTypeDefinition) noexcept
 try
 {
-    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypesDefinition* fontTypes;
+    ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypesDefinition* fontTypes;
     RETURN_IF_FAILED(hostConfig->get_FontTypes(&fontTypes));
 
     switch (fontType)
     {
-    case ABI::AdaptiveCards::ObjectModel::Uwp::FontType::Monospace:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType::Monospace:
         RETURN_IF_FAILED(fontTypes->get_Monospace(fontTypeDefinition));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::FontType::Default:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType::Default:
     default:
         RETURN_IF_FAILED(fontTypes->get_Default(fontTypeDefinition));
         break;
@@ -566,26 +566,26 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontSize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontSizesConfig* sizesConfig,
-                    ABI::AdaptiveCards::ObjectModel::Uwp::TextSize desiredSize,
+HRESULT GetFontSize(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontSizesConfig* sizesConfig,
+                    ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize desiredSize,
                     _Out_ UINT32* resultSize) noexcept
 try
 {
     switch (desiredSize)
     {
-    case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::Small:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::Small:
         RETURN_IF_FAILED(sizesConfig->get_Small(resultSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::Medium:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::Medium:
         RETURN_IF_FAILED(sizesConfig->get_Medium(resultSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::Large:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::Large:
         RETURN_IF_FAILED(sizesConfig->get_Large(resultSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::ExtraLarge:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::ExtraLarge:
         RETURN_IF_FAILED(sizesConfig->get_ExtraLarge(resultSize));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::TextSize::Default:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize::Default:
     default:
         RETURN_IF_FAILED(sizesConfig->get_Default(resultSize));
         break;
@@ -594,20 +594,20 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontWeightsConfig* weightsConfig,
-                      ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight desiredWeight,
+HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontWeightsConfig* weightsConfig,
+                      ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight desiredWeight,
                       _Out_ UINT16* resultWeight) noexcept
 try
 {
     switch (desiredWeight)
     {
-    case ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight::Lighter:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight::Lighter:
         RETURN_IF_FAILED(weightsConfig->get_Lighter(resultWeight));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight::Bolder:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight::Bolder:
         RETURN_IF_FAILED(weightsConfig->get_Bolder(resultWeight));
         break;
-    case ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight::Default:
+    case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight::Default:
     default:
         RETURN_IF_FAILED(weightsConfig->get_Default(resultWeight));
         break;
@@ -710,23 +710,23 @@ HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObje
     return S_OK;
 }
 
-HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedActionType, _Outptr_ HSTRING* result)
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType projectedActionType, _Outptr_ HSTRING* result)
 {
     ActionType sharedActionType = static_cast<ActionType>(projectedActionType);
     return UTF8ToHString(ActionTypeToString(sharedActionType), result);
 }
 
-HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType projectedElementType, _Outptr_ HSTRING* result)
+HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType projectedElementType, _Outptr_ HSTRING* result)
 {
     CardElementType sharedElementType = static_cast<CardElementType>(projectedElementType);
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
-HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFeatureRegistration* featureRegistration,
+HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* cardElement,
+                          _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFeatureRegistration* featureRegistration,
                           _Out_ bool* meetsRequirements)
 {
-    ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>> requirements;
+    ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>> requirements;
     RETURN_IF_FAILED(cardElement->get_Requirements(&requirements));
 
     bool meetsRequirementsLocal = true;
@@ -734,8 +734,8 @@ HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCa
     if (requirements != nullptr)
     {
         HRESULT hr =
-            IterateOverVectorWithFailure<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement>(
-                requirements.Get(), true, [&](ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement* requirement) {
+            IterateOverVectorWithFailure<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement>(
+                requirements.Get(), true, [&](ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement* requirement) {
                     HString name;
                     RETURN_IF_FAILED(requirement->get_Name(name.GetAddressOf()));
 
@@ -776,11 +776,11 @@ HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCa
     return S_OK;
 }
 
-HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage* backgroundImageElement,
+HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage* backgroundImageElement,
                                _Out_ BOOL* isValid)
 {
     *isValid = FALSE;
-    ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
+    ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
     if (backgroundImage != NULL)
     {
         HString url;
@@ -790,7 +790,7 @@ HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdapt
     return S_OK;
 }
 
-void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig* hostConfig,
+void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveHostConfig* hostConfig,
                       _In_ HSTRING urlString,
                       _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url)
 {
@@ -865,21 +865,21 @@ HRESULT GetDateTimeReference(unsigned int year, unsigned int month, unsigned int
     return S_OK;
 }
 
-HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement* textElement,
-                        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement** copiedTextElement)
+HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement* textElement,
+                        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement** copiedTextElement)
 {
-    ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextRun> localCopiedTextRun =
-        XamlHelpers::CreateABIClass<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextRun>(
+    ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextRun> localCopiedTextRun =
+        XamlHelpers::CreateABIClass<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextRun>(
             HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun));
 
-    ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement> localCopiedTextElement;
+    ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement> localCopiedTextElement;
     RETURN_IF_FAILED(localCopiedTextRun.As(&localCopiedTextElement));
 
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>> color;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>> color;
     RETURN_IF_FAILED(textElement->get_Color(&color));
     RETURN_IF_FAILED(localCopiedTextElement->put_Color(color.Get()));
 
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>> fontType;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>> fontType;
     RETURN_IF_FAILED(textElement->get_FontType(&fontType));
     RETURN_IF_FAILED(localCopiedTextElement->put_FontType(fontType.Get()));
 
@@ -891,11 +891,11 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveText
     RETURN_IF_FAILED(textElement->get_Language(language.GetAddressOf()));
     RETURN_IF_FAILED(localCopiedTextElement->put_Language(language.Get()));
 
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>> size;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>> size;
     RETURN_IF_FAILED(textElement->get_Size(&size));
     RETURN_IF_FAILED(localCopiedTextElement->put_Size(size.Get()));
 
-    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>> weight;
+    ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>> weight;
     RETURN_IF_FAILED(textElement->get_Weight(&weight));
     RETURN_IF_FAILED(localCopiedTextElement->put_Weight(weight.Get()));
 

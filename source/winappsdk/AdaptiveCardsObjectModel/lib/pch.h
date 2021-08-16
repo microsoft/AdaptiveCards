@@ -4,7 +4,7 @@
 
 #define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_##cls, BaseTrust)
 #define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_##cls, BaseTrust)
-#define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.ObjectModel.Uwp." L#cls, BaseTrust)
+#define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.ObjectModel.WinAppSDK." L#cls, BaseTrust)
 #define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_ObjectModel_Uwp
 #define AdaptivePointerCast dynamic_pointer_cast
 
@@ -28,7 +28,7 @@
 #include "HostConfig.h"
 
 // Commonly-used AdaptiveCardRenderer headers
-#include "AdaptiveCards.ObjectModel.Uwp.h"
+#include "AdaptiveCards.ObjectModel.WinAppSDK.h"
 #include "AdaptiveCardElement.h"
 #include "ErrorHandling.h"
 #include "ObjectModelUtil.h"
@@ -48,4 +48,4 @@
 
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
-#include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
+#include <winrt/AdaptiveCards.ObjectModel.WinAppSDK.h>

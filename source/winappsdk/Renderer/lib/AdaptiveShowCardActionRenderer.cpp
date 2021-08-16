@@ -47,7 +47,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle showCardConfigStyle;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle showCardConfigStyle;
         RETURN_IF_FAILED(showCardActionConfig->get_Style(&showCardConfigStyle));
 
         boolean wasInShowCard;
@@ -72,7 +72,7 @@ namespace AdaptiveCards::Rendering::Uwp
         UINT32 padding;
         RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
 
-        ABI::AdaptiveCards::Rendering::Uwp::ActionMode showCardActionMode;
+        ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
 
         // Set the top margin

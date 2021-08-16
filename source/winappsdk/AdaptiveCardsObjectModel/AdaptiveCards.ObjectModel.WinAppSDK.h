@@ -1,4 +1,4 @@
-/* Header file automatically generated from AdaptiveCards.ObjectModel.Uwp.idl */
+/* Header file automatically generated from AdaptiveCards.ObjectModel.WinAppSDK.idl */
 /*
  * File built with Microsoft(R) MIDLRT Compiler Engine Version 10.00.0226 
  */
@@ -237,7 +237,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_FWD_DEFINED__
 
@@ -251,7 +251,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_FWD_DEFINED__
 
@@ -265,7 +265,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementWithRemoteResources
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_FWD_DEFINED__
 
@@ -279,7 +279,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveSeparator
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveSeparator
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_FWD_DEFINED__
 
@@ -293,7 +293,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextElement
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextElement
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_FWD_DEFINED__
 
@@ -307,7 +307,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextBlock
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextBlock
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_FWD_DEFINED__
 
@@ -321,7 +321,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_FWD_DEFINED__
 
@@ -335,7 +335,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextRun
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextRun
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_FWD_DEFINED__
 
@@ -349,7 +349,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRichTextBlock
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRichTextBlock
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_FWD_DEFINED__
 
@@ -363,7 +363,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_FWD_DEFINED__
 
@@ -377,7 +377,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMedia
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_FWD_DEFINED__
 
@@ -391,7 +391,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_FWD_DEFINED__
 
@@ -405,7 +405,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_FWD_DEFINED__
 
@@ -419,7 +419,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTokenExchangeResource
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTokenExchangeResource
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_FWD_DEFINED__
 
@@ -433,7 +433,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthentication
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthentication
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_FWD_DEFINED__
 
@@ -447,7 +447,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRefresh
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRefresh
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_FWD_DEFINED__
 
@@ -461,7 +461,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_FWD_DEFINED__
 
@@ -475,7 +475,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardStatics
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardStatics
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_FWD_DEFINED__
 
@@ -489,7 +489,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardParseResult
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_FWD_DEFINED__
 
@@ -503,7 +503,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_FWD_DEFINED__
 
@@ -517,7 +517,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImageSet
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImageSet
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_FWD_DEFINED__
 
@@ -531,7 +531,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_FWD_DEFINED__
 
@@ -545,7 +545,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInput
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceSetInput
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_FWD_DEFINED__
 
@@ -559,7 +559,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveDateInput
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveDateInput
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_FWD_DEFINED__
 
@@ -573,7 +573,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveNumberInput
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveNumberInput
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_FWD_DEFINED__
 
@@ -587,7 +587,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextInput
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_FWD_DEFINED__
 
@@ -601,7 +601,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTimeInput
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTimeInput
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_FWD_DEFINED__
 
@@ -615,7 +615,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleInput
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleInput
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_FWD_DEFINED__
 
@@ -629,7 +629,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveContainerBase
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveContainerBase
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_FWD_DEFINED__
 
@@ -643,7 +643,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveContainer
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveContainer
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_FWD_DEFINED__
 
@@ -657,7 +657,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2 ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveContainer2
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2 ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveContainer2
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_FWD_DEFINED__
 
@@ -671,7 +671,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_FWD_DEFINED__
 
@@ -685,7 +685,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumnSet
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumnSet
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_FWD_DEFINED__
 
@@ -699,7 +699,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_FWD_DEFINED__
 
@@ -713,7 +713,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFactSet
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFactSet
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_FWD_DEFINED__
 
@@ -727,7 +727,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_FWD_DEFINED__
 
@@ -741,7 +741,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_FWD_DEFINED__
 
@@ -755,7 +755,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_FWD_DEFINED__
 
@@ -769,7 +769,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTable
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTable
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_FWD_DEFINED__
 
@@ -783,7 +783,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionSet
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_FWD_DEFINED__
 
@@ -797,7 +797,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveUnsupportedAction
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveUnsupportedAction
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_FWD_DEFINED__
 
@@ -811,7 +811,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveUnsupportedElement
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveUnsupportedElement
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_FWD_DEFINED__
 
@@ -825,7 +825,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_FWD_DEFINED__
 
@@ -839,7 +839,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveOpenUrlAction
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveOpenUrlAction
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_FWD_DEFINED__
 
@@ -853,7 +853,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveShowCardAction
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_FWD_DEFINED__
 
@@ -867,7 +867,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveSubmitAction
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveSubmitAction
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_FWD_DEFINED__
 
@@ -881,7 +881,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveExecuteAction
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveExecuteAction
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_FWD_DEFINED__
 
@@ -895,7 +895,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_FWD_DEFINED__
 
@@ -909,7 +909,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityAction
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityAction
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_FWD_DEFINED__
 
@@ -923,7 +923,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_FWD_DEFINED__
 
@@ -937,7 +937,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirementFactory
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirementFactory
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_FWD_DEFINED__
 
@@ -951,7 +951,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_FWD_DEFINED__
 
@@ -965,7 +965,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_FWD_DEFINED__
 
@@ -979,7 +979,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_FWD_DEFINED__
 
@@ -993,7 +993,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_FWD_DEFINED__
 
@@ -1007,7 +1007,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_FWD_DEFINED__
 
@@ -1021,7 +1021,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextBlockParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextBlockParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_FWD_DEFINED__
 
@@ -1035,7 +1035,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRichTextBlockParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRichTextBlockParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_FWD_DEFINED__
 
@@ -1049,7 +1049,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImageParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImageParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_FWD_DEFINED__
 
@@ -1063,7 +1063,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImageSetParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImageSetParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_FWD_DEFINED__
 
@@ -1077,7 +1077,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveContainerParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveContainerParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_FWD_DEFINED__
 
@@ -1091,7 +1091,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumnParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumnParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_FWD_DEFINED__
 
@@ -1105,7 +1105,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumnSetParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumnSetParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_FWD_DEFINED__
 
@@ -1119,7 +1119,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFactParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFactParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_FWD_DEFINED__
 
@@ -1133,7 +1133,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceSetInputParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceSetInputParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_FWD_DEFINED__
 
@@ -1147,7 +1147,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveDateInputParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveDateInputParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_FWD_DEFINED__
 
@@ -1161,7 +1161,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveNumberInputParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveNumberInputParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_FWD_DEFINED__
 
@@ -1175,7 +1175,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInputParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextInputParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_FWD_DEFINED__
 
@@ -1189,7 +1189,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTimeInputParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTimeInputParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_FWD_DEFINED__
 
@@ -1203,7 +1203,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleInputParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleInputParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_FWD_DEFINED__
 
@@ -1217,7 +1217,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFactSetParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFactSetParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_FWD_DEFINED__
 
@@ -1231,7 +1231,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_FWD_DEFINED__
 
@@ -1245,7 +1245,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSetParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionSetParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_FWD_DEFINED__
 
@@ -1259,7 +1259,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveOpenUrlActionParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveOpenUrlActionParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_FWD_DEFINED__
 
@@ -1273,7 +1273,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardActionParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveShowCardActionParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_FWD_DEFINED__
 
@@ -1287,7 +1287,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveSubmitActionParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveSubmitActionParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_FWD_DEFINED__
 
@@ -1301,7 +1301,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveExecuteActionParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveExecuteActionParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_FWD_DEFINED__
 
@@ -1315,7 +1315,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityActionParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityActionParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_FWD_DEFINED__
 
@@ -1329,7 +1329,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableParser
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableParser
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_FWD_DEFINED__
 
@@ -1343,7 +1343,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_FWD_DEFINED__
 
@@ -1357,7 +1357,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveErrorFactory
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveErrorFactory
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_FWD_DEFINED__
 
@@ -1371,7 +1371,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_FWD_DEFINED__
 
@@ -1385,7 +1385,7 @@ namespace ABI {
             } /* Uwp */
         } /* ObjectModel */
     } /* AdaptiveCards */} /* ABI */
-#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarningFactory
+#define __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarningFactory
 
 #endif // ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_FWD_DEFINED__
 
@@ -1409,23 +1409,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("0ac88ac2-38b9-5008-953f-c84161142c8c"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_USE */
 
@@ -1439,23 +1439,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceIn
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("e2c03ce6-b1f2-5191-95e3-3ee65277cfee"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_USE */
 
@@ -1469,23 +1469,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceIn
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("c03ee019-c5bd-56e8-86ed-866556d9d9f2"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_USE */
 
@@ -1499,23 +1499,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResource
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("e15653bb-3415-5758-881e-a62cd9089be2"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRemoteResourceInformation_USE */
 
@@ -1712,23 +1712,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("697d0755-d7c1-584e-b937-eae09d55b3e2"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_USE */
 
@@ -1742,23 +1742,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> __
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("550c871e-a796-52bc-bb93-0825ab8d0987"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_USE */
 
@@ -1772,23 +1772,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> __
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("1ad1fe47-f1c6-521d-a4a1-dd61cbb0e1d7"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_USE */
 
@@ -1802,23 +1802,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> 
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("fcc6f528-2470-56c9-a53f-9b84ff0d0078"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveRequirement_USE */
 
@@ -1840,23 +1840,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
 struct __declspec(uuid("90ded698-9a50-5806-bd33-6a4d06400f79"))
-IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextSize> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextSize> 
+IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextSize>"; 
+        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextSize>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextSize> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize_t;
+typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize_t;
 #define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize ABI::Windows::Foundation::__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize_t
 /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextSize_USE */
 
@@ -1878,23 +1878,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
 struct __declspec(uuid("17f94da2-117f-5447-b920-77f61051f7ff"))
-IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight> 
+IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextWeight>"; 
+        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextWeight>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight_t;
+typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight_t;
 #define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight ABI::Windows::Foundation::__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight_t
 /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextWeight_USE */
 
@@ -1916,23 +1916,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
 struct __declspec(uuid("fca5504c-f0bd-5405-8cdd-5c4f9c7ec049"))
-IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor> 
+IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.ForegroundColor>"; 
+        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor_t;
+typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor_t;
 #define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor ABI::Windows::Foundation::__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor_t
 /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIReference_1_AdaptiveCards__CObjectModel__CUwp__CForegroundColor_USE */
 
@@ -1983,23 +1983,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
 struct __declspec(uuid("7ec0eae3-f9bb-5fbe-8e91-9923e8c35d67"))
-IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::FontType> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::FontType> 
+IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.FontType>"; 
+        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.FontType>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::FontType> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType_t;
+typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType_t;
 #define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType ABI::Windows::Foundation::__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType_t
 /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIReference_1_AdaptiveCards__CObjectModel__CUwp__CFontType_USE */
 
@@ -2021,23 +2021,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
 struct __declspec(uuid("70b95683-2e1b-58c2-bade-8bb3fb825fec"))
-IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment> 
+IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>"; 
+        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment_t;
+typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment_t;
 #define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment ABI::Windows::Foundation::__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment_t
 /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIReference_1_AdaptiveCards__CObjectModel__CUwp__CHAlignment_USE */
 
@@ -2059,23 +2059,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
 struct __declspec(uuid("99b1c200-6b3b-555e-8d17-2e1c6df63d9a"))
-IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle> 
+IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextStyle>"; 
+        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextStyle>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle_t;
+typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle_t;
 #define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle ABI::Windows::Foundation::__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle_t
 /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIReference_1_AdaptiveCards__CObjectModel__CUwp__CTextStyle_USE */
 
@@ -2089,23 +2089,23 @@ typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle> __
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("2a2b7ba1-6d2a-5faa-adf2-3099b1947a00"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> : IIterator_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> : IIterator_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_USE */
 
@@ -2119,23 +2119,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> __FIIt
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("e23ff770-05db-55a6-affa-bd0a1c11dfc0"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> : IIterable_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> : IIterable_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_USE */
 
@@ -2149,23 +2149,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> __FIIt
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("57ff038c-6647-5f79-9f99-6cc5998c905d"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> : IVectorView_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> : IVectorView_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_USE */
 
@@ -2179,23 +2179,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> __FI
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("ad803401-dd60-5da2-aba9-e83a7a17da40"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> : IVector_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> : IVector_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveInline_USE */
 
@@ -2218,23 +2218,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("a2e76c50-62b8-5cc0-8ef2-4c8819bcee8a"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_USE */
 
@@ -2248,23 +2248,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> __
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("acc5b752-0f69-567f-ad55-7fafe50de0a2"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_USE */
 
@@ -2278,23 +2278,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> __
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("a124950c-9ba8-574b-8943-d513d70e9599"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_USE */
 
@@ -2308,23 +2308,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> 
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("ac91b628-219b-5a2a-a97e-6d47a2b524f3"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaSource*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveMediaSource*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveMediaSource_USE */
 
@@ -2347,23 +2347,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("ea7c242f-8d33-5592-89f2-bec11766f62e"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_USE */
 
@@ -2377,23 +2377,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*>
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("0086d6a7-2d42-5286-8de3-abaebb989e94"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_USE */
 
@@ -2407,23 +2407,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*>
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("8cfbc077-5d88-5573-825f-15ea44fca8fe"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_USE */
 
@@ -2437,23 +2437,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("5c6fe6bb-ecad-55a1-a79e-707f7f120f78"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton_USE */
 
@@ -2583,23 +2583,23 @@ typedef IVector<HSTRING> __FIVector_1_HSTRING_t;
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("a87b1481-310a-550f-aa4b-2c6be98046c2"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> : IIterator_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> : IIterator_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_USE */
 
@@ -2613,23 +2613,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> _
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("c51fb479-beae-57f1-a85e-2ada2414147b"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> : IIterable_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> : IIterable_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_USE */
 
@@ -2643,23 +2643,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> _
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("e126be09-a7cb-55bc-a205-0799b6e663b1"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> : IVectorView_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> : IVectorView_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_USE */
 
@@ -2673,23 +2673,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("1401d3a8-8eee-5bca-8701-ef9e32f3d3bf"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> : IVector_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> : IVector_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement_USE */
 
@@ -2703,23 +2703,23 @@ typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*> __F
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("6eee7b8e-3b11-5b2b-be75-bf5dd731ad14"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> : IIterator_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> : IIterator_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_USE */
 
@@ -2733,23 +2733,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("721d6179-4b51-5ff1-ac84-9c06fbc00f29"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> : IIterable_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> : IIterable_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_USE */
 
@@ -2763,23 +2763,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("3104be64-6f15-571f-83cd-61b326f47c4c"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> : IVectorView_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> : IVectorView_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_USE */
 
@@ -2793,23 +2793,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("dab4d8b0-0678-5db3-bd03-5866e281d822"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> : IVector_impl<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> : IVector_impl<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement_USE */
 
@@ -2832,23 +2832,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("d842dd2c-822c-5e17-9fe9-a9a58de5a534"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveError>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_USE */
 
@@ -2862,23 +2862,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> __FIIter
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("e057cfb3-11d2-55d4-b2df-c7a2f92ac7b9"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveError>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_USE */
 
@@ -2892,23 +2892,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> __FIIter
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("ec045669-2c4f-5c23-8472-257dbf3966b9"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveError>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_USE */
 
@@ -2922,23 +2922,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> __FIVe
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("3ae3a8d1-b2c7-5a3d-b425-5d90eccdedc9"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveError>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError_USE */
 
@@ -2961,23 +2961,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("7a5e02bf-2aeb-5027-b334-9d36392ba65a"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_USE */
 
@@ -2991,23 +2991,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> __FIIt
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("4eb5602c-73bd-5a29-b4ea-6eac5d2d5f46"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_USE */
 
@@ -3021,23 +3021,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> __FIIt
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("6189e85f-929f-523c-8ad2-61195bd89e87"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_USE */
 
@@ -3051,23 +3051,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> __FI
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("61908a97-dd00-5f6b-82f2-abf4395ec1fb"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning_USE */
 
@@ -3090,23 +3090,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("6893149a-28d4-56b1-a8d8-30417c722acb"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveImage>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_USE */
 
@@ -3120,23 +3120,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> __FIIter
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("63a96eee-9c4d-576f-b90c-77aa421709cc"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveImage>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_USE */
 
@@ -3150,23 +3150,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> __FIIter
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("d5f1fe00-18e5-59a6-bc5a-0d6a1d5e18af"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveImage>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_USE */
 
@@ -3180,23 +3180,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> __FIVe
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("bf6e1a09-3d81-5701-a749-8ace2cc843fa"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveImage>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImage*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveImage*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage_USE */
 
@@ -3219,23 +3219,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("479df5b5-45b8-5669-9bba-bfac0f126819"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_USE */
 
@@ -3249,23 +3249,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> __
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("83478f4a-a4fa-5dec-9892-5a91fb6f9a61"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_USE */
 
@@ -3279,23 +3279,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> __
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("bf16a440-f67e-59ec-8f0e-425ecc0e4c7a"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_USE */
 
@@ -3309,23 +3309,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> 
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("a54d407b-0962-5532-b8cb-fc0f4915d302"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveChoiceInput*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput_USE */
 
@@ -3376,23 +3376,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
 struct __declspec(uuid("1cf6a43c-1a36-5516-8599-fa43f8d7e2b1"))
-IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment> 
+IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>"; 
+        return L"Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment_t;
+typedef IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment> __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment_t;
 #define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment ABI::Windows::Foundation::__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment_t
 /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>
-//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>
+//#define __FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment_t ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment_USE */
 
@@ -3415,23 +3415,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("eea30bf0-1e7e-57b4-a9b1-b862a7edc156"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_USE */
 
@@ -3445,23 +3445,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> __FIIte
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("18558fb0-fb87-5637-8da1-a09becaab758"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_USE */
 
@@ -3475,23 +3475,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> __FIIte
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("58f35edb-ff6f-5e35-96ab-3a8cf35e2380"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_USE */
 
@@ -3505,23 +3505,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> __FIV
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("e54c75c3-f9a8-5571-9046-f74a54f9c3d5"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveColumn*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveColumn_USE */
 
@@ -3544,23 +3544,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("12f71674-16a6-5120-a013-788d5b726554"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveFact>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_USE */
 
@@ -3574,23 +3574,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> __FIItera
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("359dad80-bb15-56de-8b7b-32ddf0b0b8e4"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveFact>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_USE */
 
@@ -3604,23 +3604,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> __FIItera
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("c72e018e-80d4-5594-b993-a9547f30888e"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveFact>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_USE */
 
@@ -3634,23 +3634,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> __FIVec
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("88e62840-cf99-537e-9942-756f46e0ca19"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveFact>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFact*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveFact*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveFact_USE */
 
@@ -3673,23 +3673,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("ce3eeb6e-5608-5bdc-ac96-3d32a7e4aec8"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_USE */
 
@@ -3703,23 +3703,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> __FI
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("345208b0-b481-513b-8afe-f49c1bcfca4f"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_USE */
 
@@ -3733,23 +3733,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> __FI
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("2791301f-56b4-53b3-ba9b-443205b0f5fe"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_USE */
 
@@ -3763,23 +3763,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> __
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("d7506917-6692-5738-9ba7-1e04d2977bc9"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableCell*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableCell*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell_USE */
 
@@ -3831,23 +3831,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("36846583-fe8a-5d61-b72d-2bba467959bb"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_USE */
 
@@ -3861,23 +3861,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefin
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("bdf79ada-1e72-51af-ace2-d67ea82258cb"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_USE */
 
@@ -3891,23 +3891,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefin
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("356d188f-c464-500a-ad31-f6a3df979383"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_USE */
 
@@ -3921,23 +3921,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDef
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("12a3c0e7-f7e1-587e-95c3-d3b6d721d6ca"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableColumnDefinition*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition_USE */
 
@@ -3960,23 +3960,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("abbec171-126b-5a47-a83d-180c4de5648e"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_USE */
 
@@ -3990,23 +3990,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> __FII
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("3019d3e8-652d-5e4b-b836-a74a3d793b2f"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_USE */
 
@@ -4020,23 +4020,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> __FII
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("6d10f448-8066-59b3-93c6-b1b4a7fc30d6"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_USE */
 
@@ -4050,23 +4050,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> __F
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("70e83535-668f-519e-a88a-39e2a071c3c4"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTableRow*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableRow_USE */
 
@@ -4089,23 +4089,23 @@ namespace ABI {
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("80b1f993-625d-5969-bcdb-ed235cd0d47a"))
-IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>> 
+IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget>"; 
+        return L"Windows.Foundation.Collections.IIterator`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t;
+typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*> __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t;
 #define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::__FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>
-//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>
+//#define __FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t ABI::Windows::Foundation::Collections::IIterator<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterator_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_USE */
 
@@ -4119,23 +4119,23 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibility
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("66f41f99-559b-5f0f-bdde-5eef1e3b59ac"))
-IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>> 
+IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget>"; 
+        return L"Windows.Foundation.Collections.IIterable`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t;
+typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*> __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t;
 #define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::__FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>
-//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>
+//#define __FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t ABI::Windows::Foundation::Collections::IIterable<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIIterable_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_USE */
 
@@ -4149,23 +4149,23 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibility
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("f50e2b84-fede-590d-ab4a-700eda5f5c5a"))
-IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>> 
+IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget>"; 
+        return L"Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t;
+typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*> __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t;
 #define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::__FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>
-//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>
+//#define __FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVectorView_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_USE */
 
@@ -4179,23 +4179,23 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibili
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
 struct __declspec(uuid("932a9feb-5847-5ee6-b46f-9ddf7e0bfdb7"))
-IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>> 
+IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
     {
-        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget>"; 
+        return L"Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget>"; 
     }
 };
 // Define a typedef for the parameterized interface specialization's mangled name.
 // This allows code which uses the mangled name for the parameterized interface to access the
 // correct parameterized interface specialization.
-typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t;
+typedef IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*> __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t;
 #define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t
 /* Collections */ } /* Foundation */ } /* Windows */ } /* ABI */ } 
 
 ////  Define an alias for the C version of the interface for compatibility purposes.
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>
-//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>
+//#define __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_t ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget*>
 #endif // !defined(RO_NO_TEMPLATE_NAME)
 #endif /* DEF___FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibilityTarget_USE */
 
@@ -4222,7 +4222,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.TextSize
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.TextSize
  *
  */
 namespace ABI {
@@ -4252,7 +4252,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.TextWeight
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.TextWeight
  *
  */
 namespace ABI {
@@ -4278,7 +4278,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ForegroundColor
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor
  *
  */
 namespace ABI {
@@ -4312,7 +4312,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.HAlignment
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.HAlignment
  *
  */
 namespace ABI {
@@ -4338,7 +4338,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.VAlignment
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.VAlignment
  *
  */
 namespace ABI {
@@ -4364,7 +4364,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.BackgroundImageFillMode
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.BackgroundImageFillMode
  *
  */
 namespace ABI {
@@ -4392,7 +4392,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ElementType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ElementType
  *
  */
 namespace ABI {
@@ -4460,7 +4460,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ActionType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ActionType
  *
  */
 namespace ABI {
@@ -4494,7 +4494,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ImageStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ImageStyle
  *
  */
 namespace ABI {
@@ -4518,7 +4518,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ImageSize
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ImageSize
  *
  */
 namespace ABI {
@@ -4550,7 +4550,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.SeparatorThickness
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.SeparatorThickness
  *
  */
 namespace ABI {
@@ -4574,7 +4574,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.Spacing
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.Spacing
  *
  */
 namespace ABI {
@@ -4608,7 +4608,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ChoiceSetStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ChoiceSetStyle
  *
  */
 namespace ABI {
@@ -4634,7 +4634,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.TextInputStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.TextInputStyle
  *
  */
 namespace ABI {
@@ -4662,7 +4662,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ContainerStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle
  *
  */
 namespace ABI {
@@ -4696,7 +4696,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.FontType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.FontType
  *
  */
 namespace ABI {
@@ -4720,7 +4720,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode
  *
  */
 namespace ABI {
@@ -4752,7 +4752,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.WarningStatusCode
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode
  *
  */
 namespace ABI {
@@ -4808,7 +4808,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment
  *
  */
 namespace ABI {
@@ -4834,7 +4834,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.HeightType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.HeightType
  *
  */
 namespace ABI {
@@ -4858,7 +4858,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.IsVisible
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.IsVisible
  *
  */
 namespace ABI {
@@ -4884,7 +4884,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.FallbackType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.FallbackType
  *
  */
 namespace ABI {
@@ -4910,7 +4910,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.BleedDirection
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.BleedDirection
  *
  */
 namespace ABI {
@@ -4944,7 +4944,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.AssociatedInputs
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs
  *
  */
 namespace ABI {
@@ -4968,7 +4968,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.TextStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.TextStyle
  *
  */
 namespace ABI {
@@ -4994,7 +4994,7 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ActionMode
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ActionMode
  *
  */
 namespace ABI {
@@ -5019,17 +5019,17 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement:HRESULT get_ElementType(AdaptiveCards.ObjectModel.Uwp.ElementType*);HRESULT get_ElementTypeString(String*);HRESULT get_Height(AdaptiveCards.ObjectModel.Uwp.HeightType*);HRESULT put_Height(AdaptiveCards.ObjectModel.Uwp.HeightType);HRESULT get_Spacing(AdaptiveCards.ObjectModel.Uwp.Spacing*);HRESULT put_Spacing(AdaptiveCards.ObjectModel.Uwp.Spacing);HRESULT get_Separator(Boolean*);HRESULT put_Separator(Boolean);HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_IsVisible(Boolean*);HRESULT put_IsVisible(Boolean);HRESULT get_FallbackType(AdaptiveCards.ObjectModel.Uwp.FallbackType*);HRESULT put_FallbackType(AdaptiveCards.ObjectModel.Uwp.FallbackType);HRESULT get_FallbackContent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement**);HRESULT put_FallbackContent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement*);HRESULT get_AdditionalProperties(Windows.Data.Json.JsonObject**);HRESULT put_AdditionalProperties(Windows.Data.Json.JsonObject*);HRESULT get_Requirements(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement>**);HRESULT ToJson(Windows.Data.Json.JsonObject**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement:HRESULT get_ElementType(AdaptiveCards.ObjectModel.WinAppSDK.ElementType*);HRESULT get_ElementTypeString(String*);HRESULT get_Height(AdaptiveCards.ObjectModel.WinAppSDK.HeightType*);HRESULT put_Height(AdaptiveCards.ObjectModel.WinAppSDK.HeightType);HRESULT get_Spacing(AdaptiveCards.ObjectModel.WinAppSDK.Spacing*);HRESULT put_Spacing(AdaptiveCards.ObjectModel.WinAppSDK.Spacing);HRESULT get_Separator(Boolean*);HRESULT put_Separator(Boolean);HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_IsVisible(Boolean*);HRESULT put_IsVisible(Boolean);HRESULT get_FallbackType(AdaptiveCards.ObjectModel.WinAppSDK.FallbackType*);HRESULT put_FallbackType(AdaptiveCards.ObjectModel.WinAppSDK.FallbackType);HRESULT get_FallbackContent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement**);HRESULT put_FallbackContent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement*);HRESULT get_AdditionalProperties(Windows.Data.Json.JsonObject**);HRESULT put_AdditionalProperties(Windows.Data.Json.JsonObject*);HRESULT get_Requirements(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement>**);HRESULT ToJson(Windows.Data.Json.JsonObject**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5040,22 +5040,22 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ElementType(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ElementType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ElementTypeString(
                         /* [out, retval] */HSTRING * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Height(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::HeightType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Height(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::HeightType value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Spacing(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::Spacing * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Spacing(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::Spacing value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Separator(
                         /* [out, retval] */::boolean * value
@@ -5076,16 +5076,16 @@ namespace ABI {
                         /* [in] */::boolean value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_FallbackType(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_FallbackType(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_FallbackContent(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_FallbackContent(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_AdditionalProperties(
                         /* [out, retval] */ABI::Windows::Data::Json::IJsonObject * * value
@@ -5114,20 +5114,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardEl
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRemoteResourceInformation
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRemoteResourceInformation:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_MimeType(String*);HRESULT put_MimeType(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_MimeType(String*);HRESULT put_MimeType(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRemoteResourceInformation";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5164,12 +5164,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemote
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRemoteResourceInformation ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -5179,23 +5179,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemote
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementWithRemoteResources
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementWithRemoteResources:HRESULT GetResourceInformation(Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources:HRESULT GetResourceInformation(Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementWithRemoteResources";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5233,20 +5233,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveSeparator
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveSeparator
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveSeparator:HRESULT get_Color(AdaptiveCards.ObjectModel.Uwp.ForegroundColor*);HRESULT put_Color(AdaptiveCards.ObjectModel.Uwp.ForegroundColor);HRESULT get_Thickness(AdaptiveCards.ObjectModel.Uwp.SeparatorThickness*);HRESULT put_Thickness(AdaptiveCards.ObjectModel.Uwp.SeparatorThickness);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator:HRESULT get_Color(AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor*);HRESULT put_Color(AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor);HRESULT get_Thickness(AdaptiveCards.ObjectModel.WinAppSDK.SeparatorThickness*);HRESULT put_Thickness(AdaptiveCards.ObjectModel.WinAppSDK.SeparatorThickness);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveSeparator";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5257,16 +5257,16 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Color(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Color(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Thickness(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::SeparatorThickness * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::SeparatorThickness * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Thickness(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::SeparatorThickness value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::SeparatorThickness value
                         ) = 0;
                     
                 };
@@ -5283,12 +5283,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSepara
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveSeparator
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveSeparator ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -5298,23 +5298,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSepara
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveSeparator";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement:HRESULT get_Size(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextSize>**);HRESULT put_Size(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextSize>*);HRESULT get_Weight(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextWeight>**);HRESULT put_Weight(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextWeight>*);HRESULT get_Color(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.ForegroundColor>**);HRESULT put_Color(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.ForegroundColor>*);HRESULT get_Text(String*);HRESULT put_Text(String);HRESULT get_IsSubtle(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_IsSubtle(Windows.Foundation.IReference`1<Boolean>*);HRESULT get_Language(String*);HRESULT put_Language(String);HRESULT get_FontType(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.FontType>**);HRESULT put_FontType(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.FontType>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement:HRESULT get_Size(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextSize>**);HRESULT put_Size(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextSize>*);HRESULT get_Weight(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextWeight>**);HRESULT put_Weight(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextWeight>*);HRESULT get_Color(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor>**);HRESULT put_Color(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor>*);HRESULT get_Text(String*);HRESULT put_Text(String);HRESULT get_IsSubtle(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_IsSubtle(Windows.Foundation.IReference`1<Boolean>*);HRESULT get_Language(String*);HRESULT put_Language(String);HRESULT get_FontType(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.FontType>**);HRESULT put_FontType(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.FontType>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5391,20 +5391,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlock
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlock
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlock:HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_MaxLines(UInt32*);HRESULT put_MaxLines(UInt32);HRESULT get_Style(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextStyle>**);HRESULT put_Style(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextStyle>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock:HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_MaxLines(UInt32*);HRESULT put_MaxLines(UInt32);HRESULT get_Style(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextStyle>**);HRESULT put_Style(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextStyle>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5453,14 +5453,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlock
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlock ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -5470,18 +5470,18 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInline[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInline[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5516,20 +5516,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextRun
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextRun
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextRun:HRESULT get_Italic(Boolean*);HRESULT put_Italic(Boolean);HRESULT get_Strikethrough(Boolean*);HRESULT put_Strikethrough(Boolean);HRESULT get_Highlight(Boolean*);HRESULT put_Highlight(Boolean);HRESULT get_Underline(Boolean*);HRESULT put_Underline(Boolean);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun:HRESULT get_Italic(Boolean*);HRESULT put_Italic(Boolean);HRESULT get_Strikethrough(Boolean*);HRESULT put_Strikethrough(Boolean);HRESULT get_Highlight(Boolean*);HRESULT put_Highlight(Boolean);HRESULT get_Underline(Boolean*);HRESULT put_Underline(Boolean);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextRun";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5564,10 +5564,10 @@ namespace ABI {
                         /* [in] */::boolean value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_SelectAction(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_SelectAction(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * value
                         ) = 0;
                     
                 };
@@ -5584,14 +5584,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRu
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextRun
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextRun ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -5601,7 +5601,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRu
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextRun";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun";
 #endif
 
 namespace ABI {
@@ -5617,20 +5617,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlock
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlock
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlock:HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_Inlines(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock:HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_Inlines(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5664,13 +5664,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlock
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlock ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -5680,27 +5680,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaSource
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaSource:HRESULT get_MimeType(String*);HRESULT put_MimeType(String);HRESULT get_Url(String*);HRESULT put_Url(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource:HRESULT get_MimeType(String*);HRESULT put_MimeType(String);HRESULT get_Url(String*);HRESULT put_Url(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaSource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5737,12 +5737,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaS
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaSource ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -5752,7 +5752,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaS
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource";
 #endif
 
 namespace ABI {
@@ -5768,20 +5768,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveMedia
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveMedia:HRESULT get_Poster(String*);HRESULT put_Poster(String);HRESULT get_AltText(String*);HRESULT put_AltText(String);HRESULT get_Sources(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia:HRESULT get_Poster(String*);HRESULT put_Poster(String);HRESULT get_AltText(String*);HRESULT put_AltText(String);HRESULT get_Sources(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveMedia";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5821,13 +5821,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia;
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveMedia ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -5837,7 +5837,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia;
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia";
 #endif
 
 namespace ABI {
@@ -5853,20 +5853,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveBackgroundImage
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveBackgroundImage:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_FillMode(AdaptiveCards.ObjectModel.Uwp.BackgroundImageFillMode*);HRESULT put_FillMode(AdaptiveCards.ObjectModel.Uwp.BackgroundImageFillMode);HRESULT get_HorizontalAlignment(AdaptiveCards.ObjectModel.Uwp.HAlignment*);HRESULT put_HorizontalAlignment(AdaptiveCards.ObjectModel.Uwp.HAlignment);HRESULT get_VerticalAlignment(AdaptiveCards.ObjectModel.Uwp.VAlignment*);HRESULT put_VerticalAlignment(AdaptiveCards.ObjectModel.Uwp.VAlignment);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_FillMode(AdaptiveCards.ObjectModel.WinAppSDK.BackgroundImageFillMode*);HRESULT put_FillMode(AdaptiveCards.ObjectModel.WinAppSDK.BackgroundImageFillMode);HRESULT get_HorizontalAlignment(AdaptiveCards.ObjectModel.WinAppSDK.HAlignment*);HRESULT put_HorizontalAlignment(AdaptiveCards.ObjectModel.WinAppSDK.HAlignment);HRESULT get_VerticalAlignment(AdaptiveCards.ObjectModel.WinAppSDK.VAlignment*);HRESULT put_VerticalAlignment(AdaptiveCards.ObjectModel.WinAppSDK.VAlignment);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveBackgroundImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5883,22 +5883,22 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_FillMode(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_FillMode(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_HorizontalAlignment(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_HorizontalAlignment(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_VerticalAlignment(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_VerticalAlignment(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment value
                         ) = 0;
                     
                 };
@@ -5915,12 +5915,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgr
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveBackgroundImage ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -5930,27 +5930,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgr
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthCardButton
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthCardButton:HRESULT get_Type(String*);HRESULT put_Type(String);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Image(String*);HRESULT put_Image(String);HRESULT get_Value(String*);HRESULT put_Value(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton:HRESULT get_Type(String*);HRESULT put_Type(String);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Image(String*);HRESULT put_Image(String);HRESULT get_Value(String*);HRESULT put_Value(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthCardButton";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -5999,12 +5999,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthCardButton ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6014,7 +6014,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton";
 #endif
 
 namespace ABI {
@@ -6030,20 +6030,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTokenExchangeResource
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTokenExchangeResource:HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_Uri(String*);HRESULT put_Uri(String);HRESULT get_ProviderId(String*);HRESULT put_ProviderId(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource:HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_Uri(String*);HRESULT put_Uri(String);HRESULT get_ProviderId(String*);HRESULT put_ProviderId(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTokenExchangeResource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6086,12 +6086,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenE
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTokenExchangeResource ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6101,7 +6101,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenE
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource";
 #endif
 
 namespace ABI {
@@ -6117,20 +6117,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthentication
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthentication:HRESULT get_Text(String*);HRESULT put_Text(String);HRESULT get_ConnectionName(String*);HRESULT put_ConnectionName(String);HRESULT get_TokenExchangeResource(AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource**);HRESULT put_TokenExchangeResource(AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource*);HRESULT get_Buttons(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication:HRESULT get_Text(String*);HRESULT put_Text(String);HRESULT get_ConnectionName(String*);HRESULT put_ConnectionName(String);HRESULT get_TokenExchangeResource(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource**);HRESULT put_TokenExchangeResource(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource*);HRESULT get_Buttons(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthentication";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6153,10 +6153,10 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_TokenExchangeResource(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTokenExchangeResource * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTokenExchangeResource * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_TokenExchangeResource(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTokenExchangeResource * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTokenExchangeResource * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Buttons(
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveAuthCardButton * * value
@@ -6176,12 +6176,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthen
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthentication ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6191,7 +6191,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthen
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication";
 #endif
 
 namespace ABI {
@@ -6207,20 +6207,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRefresh
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRefresh:HRESULT get_Action(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_Action(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_UserIds(Windows.Foundation.Collections.IVector`1<String>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh:HRESULT get_Action(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_Action(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_UserIds(Windows.Foundation.Collections.IVector`1<String>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRefresh";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6231,10 +6231,10 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Action(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Action(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_UserIds(
                         /* [out, retval] */__FIVector_1_HSTRING * * value
@@ -6254,12 +6254,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefres
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRefresh ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6269,7 +6269,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefres
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh";
 #endif
 
 namespace ABI {
@@ -6285,20 +6285,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveCard
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveCard
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveCard:HRESULT get_Body(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>**);HRESULT get_Actions(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement>**);HRESULT get_ElementType(AdaptiveCards.ObjectModel.Uwp.ElementType*);HRESULT get_InternalId(UInt32*);HRESULT get_Version(String*);HRESULT put_Version(String);HRESULT get_FallbackText(String*);HRESULT put_FallbackText(String);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage*);HRESULT get_Language(String*);HRESULT put_Language(String);HRESULT get_Speak(String*);HRESULT put_Speak(String);HRESULT get_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_VerticalContentAlignment(AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment*);HRESULT put_VerticalContentAlignment(AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment);HRESULT get_Height(AdaptiveCards.ObjectModel.Uwp.HeightType*);HRESULT put_Height(AdaptiveCards.ObjectModel.Uwp.HeightType);HRESULT get_MinHeight(UInt32*);HRESULT put_MinHeight(UInt32);HRESULT get_Refresh(AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh**);HRESULT put_Refresh(AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh*);HRESULT get_Authentication(AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication**);HRESULT put_Authentication(AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication*);HRESULT ToJson(Windows.Data.Json.JsonObject**);HRESULT GetResourceInformation(Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard:HRESULT get_Body(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>**);HRESULT get_Actions(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement>**);HRESULT get_ElementType(AdaptiveCards.ObjectModel.WinAppSDK.ElementType*);HRESULT get_InternalId(UInt32*);HRESULT get_Version(String*);HRESULT put_Version(String);HRESULT get_FallbackText(String*);HRESULT put_FallbackText(String);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage*);HRESULT get_Language(String*);HRESULT put_Language(String);HRESULT get_Speak(String*);HRESULT put_Speak(String);HRESULT get_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_VerticalContentAlignment(AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment*);HRESULT put_VerticalContentAlignment(AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment);HRESULT get_Height(AdaptiveCards.ObjectModel.WinAppSDK.HeightType*);HRESULT put_Height(AdaptiveCards.ObjectModel.WinAppSDK.HeightType);HRESULT get_MinHeight(UInt32*);HRESULT put_MinHeight(UInt32);HRESULT get_Refresh(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh**);HRESULT put_Refresh(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh*);HRESULT get_Authentication(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication**);HRESULT put_Authentication(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication*);HRESULT ToJson(Windows.Data.Json.JsonObject**);HRESULT GetResourceInformation(Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveCard";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6315,7 +6315,7 @@ namespace ABI {
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveActionElement * * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ElementType(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ElementType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_InternalId(
                         /* [out, retval] */unsigned int * value
@@ -6333,10 +6333,10 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_BackgroundImage(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Language(
                         /* [out, retval] */HSTRING * value
@@ -6351,28 +6351,28 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Style(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Style(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_SelectAction(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_SelectAction(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_VerticalContentAlignment(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_VerticalContentAlignment(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Height(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::HeightType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Height(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::HeightType value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_MinHeight(
                         /* [out, retval] */unsigned int * value
@@ -6381,16 +6381,16 @@ namespace ABI {
                         /* [in] */unsigned int value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Refresh(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRefresh * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRefresh * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Refresh(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRefresh * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRefresh * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Authentication(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthentication * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthentication * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Authentication(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthentication * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthentication * value
                         ) = 0;
                     virtual HRESULT STDMETHODCALLTYPE ToJson(
                         /* [out, retval] */ABI::Windows::Data::Json::IJsonObject * * result
@@ -6413,20 +6413,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard;
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardStatics
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveCard
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardStatics:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult**);HRESULT FromJsonWithParserRegistration(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult**);HRESULT FromJsonString(String,AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult**);HRESULT FromJsonStringWithParserRegistration(String,AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult**);HRESULT FromJsonWithParserRegistration(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult**);HRESULT FromJsonString(String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult**);HRESULT FromJsonStringWithParserRegistration(String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardStatics";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6438,23 +6438,23 @@ namespace ABI {
                 public:
                     /* [overload] */virtual HRESULT STDMETHODCALLTYPE FromJson(
                         /* [in] */ABI::Windows::Data::Json::IJsonObject * adaptiveJson,
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult * * result
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardParseResult * * result
                         ) = 0;
                     /* [overload] */virtual HRESULT STDMETHODCALLTYPE FromJsonWithParserRegistration(
                         /* [in] */ABI::Windows::Data::Json::IJsonObject * adaptiveJson,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration * elementRegistration,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration * actionRegistration,
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult * * result
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration * elementRegistration,
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration * actionRegistration,
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardParseResult * * result
                         ) = 0;
                     /* [overload] */virtual HRESULT STDMETHODCALLTYPE FromJsonString(
                         /* [in] */HSTRING adaptiveJson,
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult * * result
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardParseResult * * result
                         ) = 0;
                     /* [overload] */virtual HRESULT STDMETHODCALLTYPE FromJsonStringWithParserRegistration(
                         /* [in] */HSTRING adaptiveJson,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration * elementRegistration,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration * actionRegistration,
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardParseResult * * result
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration * elementRegistration,
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration * actionRegistration,
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardParseResult * * result
                         ) = 0;
                     
                 };
@@ -6471,14 +6471,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardSt
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveCard
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard
  *
  * RuntimeClass can be activated.
  *
  * RuntimeClass contains static methods.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCard ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6488,26 +6488,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardSt
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveCard";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardParseResult
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardParseResult:HRESULT get_AdaptiveCard(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard**);HRESULT get_Errors(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveError>**);HRESULT get_Warnings(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult:HRESULT get_AdaptiveCard(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard**);HRESULT get_Errors(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError>**);HRESULT get_Warnings(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardParseResult";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6518,7 +6518,7 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_AdaptiveCard(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard * * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Errors(
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveError * * value
@@ -6541,12 +6541,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardPa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardParseResult ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6556,27 +6556,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardPa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveImage
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveImage
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveImage:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_BackgroundColor(String*);HRESULT put_BackgroundColor(String);HRESULT get_Style(AdaptiveCards.ObjectModel.Uwp.ImageStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.Uwp.ImageStyle);HRESULT get_Size(AdaptiveCards.ObjectModel.Uwp.ImageSize*);HRESULT put_Size(AdaptiveCards.ObjectModel.Uwp.ImageSize);HRESULT get_PixelWidth(UInt32*);HRESULT put_PixelWidth(UInt32);HRESULT get_PixelHeight(UInt32*);HRESULT put_PixelHeight(UInt32);HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_AltText(String*);HRESULT put_AltText(String);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_BackgroundColor(String*);HRESULT put_BackgroundColor(String);HRESULT get_Style(AdaptiveCards.ObjectModel.WinAppSDK.ImageStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.WinAppSDK.ImageStyle);HRESULT get_Size(AdaptiveCards.ObjectModel.WinAppSDK.ImageSize*);HRESULT put_Size(AdaptiveCards.ObjectModel.WinAppSDK.ImageSize);HRESULT get_PixelWidth(UInt32*);HRESULT put_PixelWidth(UInt32);HRESULT get_PixelHeight(UInt32*);HRESULT put_PixelHeight(UInt32);HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_AltText(String*);HRESULT put_AltText(String);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6599,16 +6599,16 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Style(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Style(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Size(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Size(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_PixelWidth(
                         /* [out, retval] */unsigned int * value
@@ -6635,10 +6635,10 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_SelectAction(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_SelectAction(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * value
                         ) = 0;
                     
                 };
@@ -6655,13 +6655,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage;
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveImage
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveImage ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6671,7 +6671,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage;
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage";
 #endif
 
 namespace ABI {
@@ -6687,20 +6687,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSet
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSet
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSet:HRESULT get_Images(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveImage>**);HRESULT get_ImageSize(AdaptiveCards.ObjectModel.Uwp.ImageSize*);HRESULT put_ImageSize(AdaptiveCards.ObjectModel.Uwp.ImageSize);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet:HRESULT get_Images(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage>**);HRESULT get_ImageSize(AdaptiveCards.ObjectModel.WinAppSDK.ImageSize*);HRESULT put_ImageSize(AdaptiveCards.ObjectModel.WinAppSDK.ImageSize);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6714,10 +6714,10 @@ namespace ABI {
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveImage * * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ImageSize(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_ImageSize(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize value
                         ) = 0;
                     
                 };
@@ -6734,13 +6734,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSet
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSet ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6750,27 +6750,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceInput:HRESULT get_ElementType(AdaptiveCards.ObjectModel.Uwp.ElementType*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Value(String*);HRESULT put_Value(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput:HRESULT get_ElementType(AdaptiveCards.ObjectModel.WinAppSDK.ElementType*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Value(String*);HRESULT put_Value(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6781,7 +6781,7 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ElementType(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ElementType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Title(
                         /* [out, retval] */HSTRING * value
@@ -6810,12 +6810,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6825,7 +6825,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput";
 #endif
 
 namespace ABI {
@@ -6841,20 +6841,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInput:HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_IsMultiSelect(Boolean*);HRESULT put_IsMultiSelect(Boolean);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_ChoiceSetStyle(AdaptiveCards.ObjectModel.Uwp.ChoiceSetStyle*);HRESULT put_ChoiceSetStyle(AdaptiveCards.ObjectModel.Uwp.ChoiceSetStyle);HRESULT get_Choices(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput:HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_IsMultiSelect(Boolean*);HRESULT put_IsMultiSelect(Boolean);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_ChoiceSetStyle(AdaptiveCards.ObjectModel.WinAppSDK.ChoiceSetStyle*);HRESULT put_ChoiceSetStyle(AdaptiveCards.ObjectModel.WinAppSDK.ChoiceSetStyle);HRESULT get_Choices(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -6889,10 +6889,10 @@ namespace ABI {
                         /* [in] */::boolean value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ChoiceSetStyle(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_ChoiceSetStyle(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Choices(
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveChoiceInput * * value
@@ -6912,14 +6912,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -6929,7 +6929,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput";
 #endif
 
 namespace ABI {
@@ -6945,20 +6945,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInput:HRESULT get_Max(String*);HRESULT put_Max(String);HRESULT get_Min(String*);HRESULT put_Min(String);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput:HRESULT get_Max(String*);HRESULT put_Max(String);HRESULT get_Min(String*);HRESULT put_Min(String);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7007,14 +7007,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7024,7 +7024,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput";
 #endif
 
 namespace ABI {
@@ -7040,20 +7040,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInput:HRESULT get_Max(Windows.Foundation.IReference`1<Double>**);HRESULT put_Max(Windows.Foundation.IReference`1<Double>*);HRESULT get_Min(Windows.Foundation.IReference`1<Double>**);HRESULT put_Min(Windows.Foundation.IReference`1<Double>*);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(Windows.Foundation.IReference`1<Double>**);HRESULT put_Value(Windows.Foundation.IReference`1<Double>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput:HRESULT get_Max(Windows.Foundation.IReference`1<Double>**);HRESULT put_Max(Windows.Foundation.IReference`1<Double>*);HRESULT get_Min(Windows.Foundation.IReference`1<Double>**);HRESULT put_Min(Windows.Foundation.IReference`1<Double>*);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(Windows.Foundation.IReference`1<Double>**);HRESULT put_Value(Windows.Foundation.IReference`1<Double>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7102,14 +7102,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7119,7 +7119,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput";
 #endif
 
 namespace ABI {
@@ -7135,20 +7135,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInput:HRESULT get_IsMultiline(Boolean*);HRESULT put_IsMultiline(Boolean);HRESULT get_MaxLength(UInt32*);HRESULT put_MaxLength(UInt32);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_TextInputStyle(AdaptiveCards.ObjectModel.Uwp.TextInputStyle*);HRESULT put_TextInputStyle(AdaptiveCards.ObjectModel.Uwp.TextInputStyle);HRESULT get_InlineAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_InlineAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_Regex(String*);HRESULT put_Regex(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput:HRESULT get_IsMultiline(Boolean*);HRESULT put_IsMultiline(Boolean);HRESULT get_MaxLength(UInt32*);HRESULT put_MaxLength(UInt32);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_TextInputStyle(AdaptiveCards.ObjectModel.WinAppSDK.TextInputStyle*);HRESULT put_TextInputStyle(AdaptiveCards.ObjectModel.WinAppSDK.TextInputStyle);HRESULT get_InlineAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_InlineAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_Regex(String*);HRESULT put_Regex(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7183,16 +7183,16 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_TextInputStyle(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_TextInputStyle(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_InlineAction(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_InlineAction(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Regex(
                         /* [out, retval] */HSTRING * value
@@ -7215,14 +7215,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7232,7 +7232,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput";
 #endif
 
 namespace ABI {
@@ -7248,20 +7248,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInput:HRESULT get_Max(String*);HRESULT put_Max(String);HRESULT get_Min(String*);HRESULT put_Min(String);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput:HRESULT get_Max(String*);HRESULT put_Max(String);HRESULT get_Min(String*);HRESULT put_Min(String);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7310,14 +7310,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7327,7 +7327,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput";
 #endif
 
 namespace ABI {
@@ -7343,20 +7343,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInput:HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_ValueOff(String*);HRESULT put_ValueOff(String);HRESULT get_ValueOn(String*);HRESULT put_ValueOn(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput:HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_ValueOff(String*);HRESULT put_ValueOff(String);HRESULT get_ValueOn(String*);HRESULT put_ValueOn(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7411,14 +7411,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7428,23 +7428,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase:HRESULT get_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_Bleed(Boolean*);HRESULT put_Bleed(Boolean);HRESULT get_BleedDirection(AdaptiveCards.ObjectModel.Uwp.BleedDirection*);HRESULT get_MinHeight(UInt32*);HRESULT put_MinHeight(UInt32);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase:HRESULT get_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_Bleed(Boolean*);HRESULT put_Bleed(Boolean);HRESULT get_BleedDirection(AdaptiveCards.ObjectModel.WinAppSDK.BleedDirection*);HRESULT get_MinHeight(UInt32*);HRESULT put_MinHeight(UInt32);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7455,16 +7455,16 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Style(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Style(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_SelectAction(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_SelectAction(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Bleed(
                         /* [out, retval] */::boolean * value
@@ -7473,7 +7473,7 @@ namespace ABI {
                         /* [in] */::boolean value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_BleedDirection(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_MinHeight(
                         /* [out, retval] */unsigned int * value
@@ -7496,17 +7496,17 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer:HRESULT get_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_Items(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>**);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage*);HRESULT get_Rtl(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_Rtl(Windows.Foundation.IReference`1<Boolean>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer:HRESULT get_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_Items(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>**);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage*);HRESULT get_Rtl(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_Rtl(Windows.Foundation.IReference`1<Boolean>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7526,10 +7526,10 @@ namespace ABI {
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement * * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_BackgroundImage(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Rtl(
                         /* [out, retval] */__FIReference_1_boolean * * value
@@ -7562,20 +7562,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer2
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveContainer
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer2:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer2";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7600,15 +7600,15 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveContainer
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer2 ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2 ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7618,27 +7618,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveContainer";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumn
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumn:HRESULT get_Width(String*);HRESULT put_Width(String);HRESULT get_PixelWidth(UInt32*);HRESULT put_PixelWidth(UInt32);HRESULT get_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_Items(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>**);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage*);HRESULT get_Rtl(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_Rtl(Windows.Foundation.IReference`1<Boolean>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn:HRESULT get_Width(String*);HRESULT put_Width(String);HRESULT get_PixelWidth(UInt32*);HRESULT put_PixelWidth(UInt32);HRESULT get_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_Items(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>**);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage*);HRESULT get_Rtl(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_Rtl(Windows.Foundation.IReference`1<Boolean>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumn";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7670,10 +7670,10 @@ namespace ABI {
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CIAdaptiveCardElement * * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_BackgroundImage(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Rtl(
                         /* [out, retval] */__FIReference_1_boolean * * value
@@ -7696,14 +7696,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumn ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7713,7 +7713,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn";
 #endif
 
 namespace ABI {
@@ -7729,20 +7729,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSet
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSet
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSet:HRESULT get_Columns(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet:HRESULT get_Columns(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7770,14 +7770,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSet
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSet ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7787,27 +7787,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveFact
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveFact
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveFact:HRESULT get_ElementType(AdaptiveCards.ObjectModel.Uwp.ElementType*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_Language(String*);HRESULT put_Language(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact:HRESULT get_ElementType(AdaptiveCards.ObjectModel.WinAppSDK.ElementType*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_Language(String*);HRESULT put_Language(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveFact";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7818,7 +7818,7 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ElementType(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ElementType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Title(
                         /* [out, retval] */HSTRING * value
@@ -7853,12 +7853,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact;
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveFact
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveFact ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7868,7 +7868,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact;
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveFact";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact";
 #endif
 
 namespace ABI {
@@ -7884,20 +7884,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSet
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSet
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSet:HRESULT get_Facts(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveFact>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet:HRESULT get_Facts(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7925,13 +7925,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSet
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSet ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -7941,27 +7941,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableCell
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableCell:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableCell";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -7986,15 +7986,15 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableCell ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8004,27 +8004,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableRow
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableRow:HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle);HRESULT get_Cells(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow:HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle);HRESULT get_Cells(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableRow";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8047,10 +8047,10 @@ namespace ABI {
                         /* [in] */__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Style(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Style(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Cells(
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableCell * * value
@@ -8070,13 +8070,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableR
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableRow ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8086,27 +8086,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableR
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableColumnDefinition
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableColumnDefinition:HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_Width(Windows.Foundation.IReference`1<UInt32>**);HRESULT put_Width(Windows.Foundation.IReference`1<UInt32>*);HRESULT get_PixelWidth(Windows.Foundation.IReference`1<UInt32>**);HRESULT put_PixelWidth(Windows.Foundation.IReference`1<UInt32>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition:HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_Width(Windows.Foundation.IReference`1<UInt32>**);HRESULT put_Width(Windows.Foundation.IReference`1<UInt32>*);HRESULT get_PixelWidth(Windows.Foundation.IReference`1<UInt32>**);HRESULT put_PixelWidth(Windows.Foundation.IReference`1<UInt32>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableColumnDefinition";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8155,12 +8155,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableColumnDefinition ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8170,7 +8170,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition";
 #endif
 
 namespace ABI {
@@ -8186,20 +8186,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTable
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTable
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTable:HRESULT get_ShowGridLines(Boolean*);HRESULT put_ShowGridLines(Boolean);HRESULT get_FirstRowAsHeaders(Boolean*);HRESULT put_FirstRowAsHeaders(Boolean);HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_GridStyle(AdaptiveCards.ObjectModel.Uwp.ContainerStyle*);HRESULT put_GridStyle(AdaptiveCards.ObjectModel.Uwp.ContainerStyle);HRESULT get_Columns(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition>**);HRESULT get_Rows(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable:HRESULT get_ShowGridLines(Boolean*);HRESULT put_ShowGridLines(Boolean);HRESULT get_FirstRowAsHeaders(Boolean*);HRESULT put_FirstRowAsHeaders(Boolean);HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_GridStyle(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle*);HRESULT put_GridStyle(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle);HRESULT get_Columns(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition>**);HRESULT get_Rows(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTable";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8234,10 +8234,10 @@ namespace ABI {
                         /* [in] */__FIReference_1_AdaptiveCards__CObjectModel__CUwp__CVerticalContentAlignment * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_GridStyle(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_GridStyle(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Columns(
                         /* [out, retval] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveTableColumnDefinition * * value
@@ -8260,13 +8260,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable;
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTable
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTable ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8276,7 +8276,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable;
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTable";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable";
 #endif
 
 namespace ABI {
@@ -8292,20 +8292,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSet
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSet
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSet:HRESULT get_Actions(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement>**);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet:HRESULT get_Actions(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement>**);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8336,13 +8336,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSet
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSet ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8352,7 +8352,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet";
 #endif
 
 namespace ABI {
@@ -8368,20 +8368,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedAction:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8406,13 +8406,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8422,7 +8422,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction";
 #endif
 
 namespace ABI {
@@ -8438,20 +8438,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedElement
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedElement:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8476,13 +8476,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedElement
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedElement ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8492,23 +8492,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement:HRESULT get_ActionType(AdaptiveCards.ObjectModel.Uwp.ActionType*);HRESULT get_ActionTypeString(String*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_FallbackType(AdaptiveCards.ObjectModel.Uwp.FallbackType*);HRESULT put_FallbackType(AdaptiveCards.ObjectModel.Uwp.FallbackType);HRESULT get_FallbackContent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_FallbackContent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_IconUrl(String*);HRESULT put_IconUrl(String);HRESULT get_Style(String*);HRESULT put_Style(String);HRESULT get_Tooltip(String*);HRESULT put_Tooltip(String);HRESULT get_AdditionalProperties(Windows.Data.Json.JsonObject**);HRESULT put_AdditionalProperties(Windows.Data.Json.JsonObject*);HRESULT get_IsEnabled(Boolean*);HRESULT put_IsEnabled(Boolean);HRESULT get_Mode(AdaptiveCards.ObjectModel.Uwp.ActionMode*);HRESULT put_Mode(AdaptiveCards.ObjectModel.Uwp.ActionMode);HRESULT ToJson(Windows.Data.Json.JsonObject**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement:HRESULT get_ActionType(AdaptiveCards.ObjectModel.WinAppSDK.ActionType*);HRESULT get_ActionTypeString(String*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_FallbackType(AdaptiveCards.ObjectModel.WinAppSDK.FallbackType*);HRESULT put_FallbackType(AdaptiveCards.ObjectModel.WinAppSDK.FallbackType);HRESULT get_FallbackContent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_FallbackContent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_IconUrl(String*);HRESULT put_IconUrl(String);HRESULT get_Style(String*);HRESULT put_Style(String);HRESULT get_Tooltip(String*);HRESULT put_Tooltip(String);HRESULT get_AdditionalProperties(Windows.Data.Json.JsonObject**);HRESULT put_AdditionalProperties(Windows.Data.Json.JsonObject*);HRESULT get_IsEnabled(Boolean*);HRESULT put_IsEnabled(Boolean);HRESULT get_Mode(AdaptiveCards.ObjectModel.WinAppSDK.ActionMode*);HRESULT put_Mode(AdaptiveCards.ObjectModel.WinAppSDK.ActionMode);HRESULT ToJson(Windows.Data.Json.JsonObject**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8519,7 +8519,7 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ActionType(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ActionType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_ActionTypeString(
                         /* [out, retval] */HSTRING * value
@@ -8537,16 +8537,16 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_FallbackType(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_FallbackType(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_FallbackContent(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_FallbackContent(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_IconUrl(
                         /* [out, retval] */HSTRING * value
@@ -8579,10 +8579,10 @@ namespace ABI {
                         /* [in] */::boolean value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Mode(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Mode(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode value
                         ) = 0;
                     virtual HRESULT STDMETHODCALLTYPE ToJson(
                         /* [out, retval] */ABI::Windows::Data::Json::IJsonObject * * result
@@ -8612,20 +8612,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlAction:HRESULT get_Url(Windows.Foundation.Uri**);HRESULT put_Url(Windows.Foundation.Uri*);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction:HRESULT get_Url(Windows.Foundation.Uri**);HRESULT put_Url(Windows.Foundation.Uri*);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8659,13 +8659,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8675,7 +8675,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction";
 #endif
 
 namespace ABI {
@@ -8691,20 +8691,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardAction:HRESULT get_Card(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard**);HRESULT put_Card(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard*);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction:HRESULT get_Card(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard**);HRESULT put_Card(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard*);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8715,10 +8715,10 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Card(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard * * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard * * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_Card(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard * value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_InternalId(
                         /* [out, retval] */unsigned int * value
@@ -8738,13 +8738,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8754,7 +8754,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction";
 #endif
 
 namespace ABI {
@@ -8770,20 +8770,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitAction:HRESULT get_DataJson(Windows.Data.Json.JsonValue**);HRESULT put_DataJson(Windows.Data.Json.JsonValue*);HRESULT get_AssociatedInputs(AdaptiveCards.ObjectModel.Uwp.AssociatedInputs*);HRESULT put_AssociatedInputs(AdaptiveCards.ObjectModel.Uwp.AssociatedInputs);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction:HRESULT get_DataJson(Windows.Data.Json.JsonValue**);HRESULT put_DataJson(Windows.Data.Json.JsonValue*);HRESULT get_AssociatedInputs(AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs*);HRESULT put_AssociatedInputs(AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8800,10 +8800,10 @@ namespace ABI {
                         /* [in] */ABI::Windows::Data::Json::IJsonValue * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_AssociatedInputs(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_AssociatedInputs(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_InternalId(
                         /* [out, retval] */unsigned int * value
@@ -8823,13 +8823,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8839,7 +8839,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction";
 #endif
 
 namespace ABI {
@@ -8855,20 +8855,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteAction:HRESULT get_DataJson(Windows.Data.Json.JsonValue**);HRESULT put_DataJson(Windows.Data.Json.JsonValue*);HRESULT get_AssociatedInputs(AdaptiveCards.ObjectModel.Uwp.AssociatedInputs*);HRESULT put_AssociatedInputs(AdaptiveCards.ObjectModel.Uwp.AssociatedInputs);HRESULT get_Verb(String*);HRESULT put_Verb(String);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction:HRESULT get_DataJson(Windows.Data.Json.JsonValue**);HRESULT put_DataJson(Windows.Data.Json.JsonValue*);HRESULT get_AssociatedInputs(AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs*);HRESULT put_AssociatedInputs(AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs);HRESULT get_Verb(String*);HRESULT put_Verb(String);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8885,10 +8885,10 @@ namespace ABI {
                         /* [in] */ABI::Windows::Data::Json::IJsonValue * value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_AssociatedInputs(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_AssociatedInputs(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Verb(
                         /* [out, retval] */HSTRING * value
@@ -8914,13 +8914,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -8930,27 +8930,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityTarget
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityTarget:HRESULT get_ElementId(String*);HRESULT put_ElementId(String);HRESULT get_IsVisible(AdaptiveCards.ObjectModel.Uwp.IsVisible*);HRESULT put_IsVisible(AdaptiveCards.ObjectModel.Uwp.IsVisible);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget:HRESULT get_ElementId(String*);HRESULT put_ElementId(String);HRESULT get_IsVisible(AdaptiveCards.ObjectModel.WinAppSDK.IsVisible*);HRESULT put_IsVisible(AdaptiveCards.ObjectModel.WinAppSDK.IsVisible);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityTarget";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -8967,10 +8967,10 @@ namespace ABI {
                         /* [in] */HSTRING value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_IsVisible(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_IsVisible(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible value
                         ) = 0;
                     
                 };
@@ -8987,12 +8987,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityTarget ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9002,7 +9002,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget";
 #endif
 
 namespace ABI {
@@ -9018,20 +9018,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityAction:HRESULT get_TargetElements(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget>**);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction:HRESULT get_TargetElements(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget>**);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9062,13 +9062,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9078,26 +9078,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirement:HRESULT get_Name(String*);HRESULT put_Name(String);HRESULT get_Version(String*);HRESULT put_Version(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement:HRESULT get_Name(String*);HRESULT put_Name(String);HRESULT get_Version(String*);HRESULT put_Version(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9134,20 +9134,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirementFactory
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirementFactory:HRESULT CreateInstance(String,String,AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory:HRESULT CreateInstance(String,String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirementFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9160,7 +9160,7 @@ namespace ABI {
                     virtual HRESULT STDMETHODCALLTYPE CreateInstance(
                         /* [in] */HSTRING requirementName,
                         /* [in] */HSTRING requirementversion,
-                        /* [retval, out] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRequirement * * value
+                        /* [retval, out] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRequirement * * value
                         ) = 0;
                     
                 };
@@ -9177,12 +9177,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirement ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9192,23 +9192,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration*,Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>*,AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration*,Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>*,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9220,10 +9220,10 @@ namespace ABI {
                 public:
                     virtual HRESULT STDMETHODCALLTYPE FromJson(
                         /* [in] */ABI::Windows::Data::Json::IJsonObject * inputJson,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration * elementParsers,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration * actionParsers,
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration * elementParsers,
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration * actionParsers,
                         /* [in] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning * warnings,
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement * * result
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement * * result
                         ) = 0;
                     
                 };
@@ -9240,20 +9240,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParserRegistration
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParserRegistration:HRESULT Set(String,AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser*);HRESULT Get(String,AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser**);HRESULT Remove(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration:HRESULT Set(String,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser*);HRESULT Get(String,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser**);HRESULT Remove(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9265,11 +9265,11 @@ namespace ABI {
                 public:
                     virtual HRESULT STDMETHODCALLTYPE Set(
                         /* [in] */HSTRING type,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser * parser
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParser * parser
                         ) = 0;
                     virtual HRESULT STDMETHODCALLTYPE Get(
                         /* [in] */HSTRING type,
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser * * result
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParser * * result
                         ) = 0;
                     virtual HRESULT STDMETHODCALLTYPE Remove(
                         /* [in] */HSTRING type
@@ -9289,12 +9289,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParserRegistration ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9304,26 +9304,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParserRegistration
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParserRegistration:HRESULT Set(String,AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser*);HRESULT Get(String,AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser**);HRESULT Remove(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration:HRESULT Set(String,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser*);HRESULT Get(String,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser**);HRESULT Remove(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9335,11 +9335,11 @@ namespace ABI {
                 public:
                     virtual HRESULT STDMETHODCALLTYPE Set(
                         /* [in] */HSTRING type,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser * parser
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParser * parser
                         ) = 0;
                     virtual HRESULT STDMETHODCALLTYPE Get(
                         /* [in] */HSTRING type,
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser * * result
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParser * * result
                         ) = 0;
                     virtual HRESULT STDMETHODCALLTYPE Remove(
                         /* [in] */HSTRING type
@@ -9359,12 +9359,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParserRegistration ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9374,23 +9374,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration*,Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>*,AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration*,Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>*,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9402,10 +9402,10 @@ namespace ABI {
                 public:
                     virtual HRESULT STDMETHODCALLTYPE FromJson(
                         /* [in] */ABI::Windows::Data::Json::IJsonObject * inputJson,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration * elementParsers,
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration * actionParsers,
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration * elementParsers,
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration * actionParsers,
                         /* [in] */__FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveWarning * warnings,
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement * * result
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement * * result
                         ) = 0;
                     
                 };
@@ -9422,17 +9422,17 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement:HRESULT get_IsRequired(Boolean*);HRESULT put_IsRequired(Boolean);HRESULT get_ErrorMessage(String*);HRESULT put_ErrorMessage(String);HRESULT get_Label(String*);HRESULT put_Label(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement:HRESULT get_IsRequired(Boolean*);HRESULT put_IsRequired(Boolean);HRESULT get_ErrorMessage(String*);HRESULT put_ErrorMessage(String);HRESULT get_Label(String*);HRESULT put_Label(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9485,20 +9485,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlockParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlockParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlockParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9523,13 +9523,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlockParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlockParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9539,7 +9539,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser";
 #endif
 
 namespace ABI {
@@ -9555,20 +9555,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlockParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlockParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlockParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9593,13 +9593,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlockParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlockParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9609,7 +9609,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser";
 #endif
 
 namespace ABI {
@@ -9625,20 +9625,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveImageParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9663,13 +9663,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageP
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveImageParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9679,7 +9679,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageP
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveImageParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser";
 #endif
 
 namespace ABI {
@@ -9695,20 +9695,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSetParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSetParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSetParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9733,13 +9733,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSetParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSetParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9749,7 +9749,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser";
 #endif
 
 namespace ABI {
@@ -9765,20 +9765,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveContainerParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9803,13 +9803,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveContainerParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9819,7 +9819,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveContainerParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser";
 #endif
 
 namespace ABI {
@@ -9835,20 +9835,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9873,13 +9873,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9889,7 +9889,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser";
 #endif
 
 namespace ABI {
@@ -9905,20 +9905,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSetParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSetParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSetParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -9943,13 +9943,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSetParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSetParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -9959,7 +9959,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser";
 #endif
 
 namespace ABI {
@@ -9975,20 +9975,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveFactParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10013,13 +10013,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactPa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveFactParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10029,7 +10029,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactPa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveFactParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser";
 #endif
 
 namespace ABI {
@@ -10045,20 +10045,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10083,13 +10083,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10099,7 +10099,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser";
 #endif
 
 namespace ABI {
@@ -10115,20 +10115,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10153,13 +10153,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10169,7 +10169,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser";
 #endif
 
 namespace ABI {
@@ -10185,20 +10185,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10223,13 +10223,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10239,7 +10239,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser";
 #endif
 
 namespace ABI {
@@ -10255,20 +10255,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10293,13 +10293,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10309,7 +10309,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser";
 #endif
 
 namespace ABI {
@@ -10325,20 +10325,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10363,13 +10363,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10379,7 +10379,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser";
 #endif
 
 namespace ABI {
@@ -10395,20 +10395,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10433,13 +10433,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10449,7 +10449,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser";
 #endif
 
 namespace ABI {
@@ -10465,20 +10465,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSetParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSetParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSetParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10503,13 +10503,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSetParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSetParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10519,7 +10519,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser";
 #endif
 
 namespace ABI {
@@ -10535,20 +10535,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10573,13 +10573,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaP
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10589,7 +10589,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaP
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser";
 #endif
 
 namespace ABI {
@@ -10605,20 +10605,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSetParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSetParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSetParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10643,13 +10643,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSetParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSetParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10659,7 +10659,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser";
 #endif
 
 namespace ABI {
@@ -10675,20 +10675,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10713,13 +10713,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10729,7 +10729,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser";
 #endif
 
 namespace ABI {
@@ -10745,20 +10745,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10783,13 +10783,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10799,7 +10799,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser";
 #endif
 
 namespace ABI {
@@ -10815,20 +10815,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10853,13 +10853,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10869,7 +10869,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser";
 #endif
 
 namespace ABI {
@@ -10885,20 +10885,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10923,13 +10923,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -10939,7 +10939,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser";
 #endif
 
 namespace ABI {
@@ -10955,20 +10955,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -10993,13 +10993,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -11009,7 +11009,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser";
 #endif
 
 namespace ABI {
@@ -11025,20 +11025,20 @@ namespace ABI {
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTableParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11063,13 +11063,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableP
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTableParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -11079,26 +11079,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableP
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTableParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveError
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveError
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveError:HRESULT get_StatusCode(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode*);HRESULT put_StatusCode(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode);HRESULT get_Message(String*);HRESULT put_Message(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError:HRESULT get_StatusCode(AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode*);HRESULT put_StatusCode(AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode);HRESULT get_Message(String*);HRESULT put_Message(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveError";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11109,10 +11109,10 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_StatusCode(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_StatusCode(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Message(
                         /* [out, retval] */HSTRING * value
@@ -11135,20 +11135,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError;
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveErrorFactory
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveError
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveErrorFactory:HRESULT CreateInstance(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode,String,AdaptiveCards.ObjectModel.Uwp.AdaptiveError**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory:HRESULT CreateInstance(AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode,String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveErrorFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11159,9 +11159,9 @@ namespace ABI {
                 {
                 public:
                     virtual HRESULT STDMETHODCALLTYPE CreateInstance(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode statusCode,
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode statusCode,
                         /* [in] */HSTRING message,
-                        /* [retval, out] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveError * * value
+                        /* [retval, out] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveError * * value
                         ) = 0;
                     
                 };
@@ -11178,12 +11178,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorF
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveError
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveError ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -11193,26 +11193,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorF
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveError_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveError_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveError";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarning
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarning:HRESULT get_StatusCode(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode*);HRESULT put_StatusCode(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode);HRESULT get_Message(String*);HRESULT put_Message(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning:HRESULT get_StatusCode(AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode*);HRESULT put_StatusCode(AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode);HRESULT get_Message(String*);HRESULT put_Message(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarning";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11223,10 +11223,10 @@ namespace ABI {
                 {
                 public:
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_StatusCode(
-                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode * value
+                        /* [out, retval] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode * value
                         ) = 0;
                     /* [propput] */virtual HRESULT STDMETHODCALLTYPE put_StatusCode(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode value
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode value
                         ) = 0;
                     /* [propget] */virtual HRESULT STDMETHODCALLTYPE get_Message(
                         /* [out, retval] */HSTRING * value
@@ -11249,20 +11249,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarningFactory
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarningFactory:HRESULT CreateInstance(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode,String,AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory:HRESULT CreateInstance(AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode,String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarningFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory";
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -11273,9 +11273,9 @@ namespace ABI {
                 {
                 public:
                     virtual HRESULT STDMETHODCALLTYPE CreateInstance(
-                        /* [in] */ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode,
+                        /* [in] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode statusCode,
                         /* [in] */HSTRING message,
-                        /* [retval, out] */ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveWarning * * value
+                        /* [retval, out] */ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveWarning * * value
                         ) = 0;
                     
                 };
@@ -11292,12 +11292,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarning ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -11307,7 +11307,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning";
 #endif
 
 
@@ -20140,7 +20140,7 @@ interface __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibil
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.TextSize
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.TextSize
  *
  */
 /* [version, v1_enum] */
@@ -20157,7 +20157,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CTextSize
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.TextWeight
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.TextWeight
  *
  */
 /* [version, v1_enum] */
@@ -20172,7 +20172,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CTextWeight
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ForegroundColor
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor
  *
  */
 /* [version, v1_enum] */
@@ -20191,7 +20191,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CForegroundColor
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.HAlignment
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.HAlignment
  *
  */
 /* [version, v1_enum] */
@@ -20206,7 +20206,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CHAlignment
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.VAlignment
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.VAlignment
  *
  */
 /* [version, v1_enum] */
@@ -20221,7 +20221,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CVAlignment
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.BackgroundImageFillMode
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.BackgroundImageFillMode
  *
  */
 /* [version, v1_enum] */
@@ -20237,7 +20237,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CBackgroundImageFillMode
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ElementType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ElementType
  *
  */
 /* [version, v1_enum] */
@@ -20273,7 +20273,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CElementType
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ActionType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ActionType
  *
  */
 /* [version, v1_enum] */
@@ -20292,7 +20292,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CActionType
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ImageStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ImageStyle
  *
  */
 /* [version, v1_enum] */
@@ -20306,7 +20306,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CImageStyle
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ImageSize
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ImageSize
  *
  */
 /* [version, v1_enum] */
@@ -20324,7 +20324,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CImageSize
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.SeparatorThickness
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.SeparatorThickness
  *
  */
 /* [version, v1_enum] */
@@ -20338,7 +20338,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CSeparatorThickness
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.Spacing
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.Spacing
  *
  */
 /* [version, v1_enum] */
@@ -20357,7 +20357,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CSpacing
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ChoiceSetStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ChoiceSetStyle
  *
  */
 /* [version, v1_enum] */
@@ -20372,7 +20372,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CChoiceSetStyle
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.TextInputStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.TextInputStyle
  *
  */
 /* [version, v1_enum] */
@@ -20388,7 +20388,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CTextInputStyle
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ContainerStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle
  *
  */
 /* [version, v1_enum] */
@@ -20407,7 +20407,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CContainerStyle
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.FontType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.FontType
  *
  */
 /* [version, v1_enum] */
@@ -20421,7 +20421,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CFontType
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode
  *
  */
 /* [version, v1_enum] */
@@ -20439,7 +20439,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CErrorStatusCode
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.WarningStatusCode
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode
  *
  */
 /* [version, v1_enum] */
@@ -20469,7 +20469,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CWarningStatusCode
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment
  *
  */
 /* [version, v1_enum] */
@@ -20484,7 +20484,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CVerticalContentAlignment
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.HeightType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.HeightType
  *
  */
 /* [version, v1_enum] */
@@ -20498,7 +20498,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CHeightType
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.IsVisible
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.IsVisible
  *
  */
 /* [version, v1_enum] */
@@ -20513,7 +20513,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIsVisible
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.FallbackType
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.FallbackType
  *
  */
 /* [version, v1_enum] */
@@ -20528,7 +20528,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CFallbackType
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.BleedDirection
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.BleedDirection
  *
  */
 /* [flags, version, v1_enum] */
@@ -20546,7 +20546,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CBleedDirection
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.AssociatedInputs
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs
  *
  */
 /* [version, v1_enum] */
@@ -20560,7 +20560,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CAssociatedInputs
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.TextStyle
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.TextStyle
  *
  */
 /* [version, v1_enum] */
@@ -20575,7 +20575,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CTextStyle
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.Uwp.ActionMode
+ * Typedef of AdaptiveCards.ObjectModel.WinAppSDK.ActionMode
  *
  */
 /* [version, v1_enum] */
@@ -20590,17 +20590,17 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CActionMode
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement:HRESULT get_ElementType(AdaptiveCards.ObjectModel.Uwp.ElementType*);HRESULT get_ElementTypeString(String*);HRESULT get_Height(AdaptiveCards.ObjectModel.Uwp.HeightType*);HRESULT put_Height(AdaptiveCards.ObjectModel.Uwp.HeightType);HRESULT get_Spacing(AdaptiveCards.ObjectModel.Uwp.Spacing*);HRESULT put_Spacing(AdaptiveCards.ObjectModel.Uwp.Spacing);HRESULT get_Separator(Boolean*);HRESULT put_Separator(Boolean);HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_IsVisible(Boolean*);HRESULT put_IsVisible(Boolean);HRESULT get_FallbackType(AdaptiveCards.ObjectModel.Uwp.FallbackType*);HRESULT put_FallbackType(AdaptiveCards.ObjectModel.Uwp.FallbackType);HRESULT get_FallbackContent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement**);HRESULT put_FallbackContent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement*);HRESULT get_AdditionalProperties(Windows.Data.Json.JsonObject**);HRESULT put_AdditionalProperties(Windows.Data.Json.JsonObject*);HRESULT get_Requirements(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement>**);HRESULT ToJson(Windows.Data.Json.JsonObject**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement:HRESULT get_ElementType(AdaptiveCards.ObjectModel.WinAppSDK.ElementType*);HRESULT get_ElementTypeString(String*);HRESULT get_Height(AdaptiveCards.ObjectModel.WinAppSDK.HeightType*);HRESULT put_Height(AdaptiveCards.ObjectModel.WinAppSDK.HeightType);HRESULT get_Spacing(AdaptiveCards.ObjectModel.WinAppSDK.Spacing*);HRESULT put_Spacing(AdaptiveCards.ObjectModel.WinAppSDK.Spacing);HRESULT get_Separator(Boolean*);HRESULT put_Separator(Boolean);HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_IsVisible(Boolean*);HRESULT put_IsVisible(Boolean);HRESULT get_FallbackType(AdaptiveCards.ObjectModel.WinAppSDK.FallbackType*);HRESULT put_FallbackType(AdaptiveCards.ObjectModel.WinAppSDK.FallbackType);HRESULT get_FallbackContent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement**);HRESULT put_FallbackContent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement*);HRESULT get_AdditionalProperties(Windows.Data.Json.JsonObject**);HRESULT put_AdditionalProperties(Windows.Data.Json.JsonObject*);HRESULT get_Requirements(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement>**);HRESULT ToJson(Windows.Data.Json.JsonObject**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement";
 /* [uuid("e0d82150-3f34-5c27-9c03-76afb5cd5925"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardElementVtbl
 {
@@ -20813,20 +20813,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardEl
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRemoteResourceInformation
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRemoteResourceInformation:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_MimeType(String*);HRESULT put_MimeType(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_MimeType(String*);HRESULT put_MimeType(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRemoteResourceInformation";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation";
 /* [uuid("c4e5d8ae-4735-5c78-b439-9da7261439a1"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemoteResourceInformationVtbl
 {
@@ -20927,12 +20927,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemote
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRemoteResourceInformation ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRemoteResourceInformation ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -20942,23 +20942,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRemote
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementWithRemoteResources
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementWithRemoteResources:HRESULT GetResourceInformation(Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources:HRESULT GetResourceInformation(Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementWithRemoteResources";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementWithRemoteResources";
 /* [uuid("2fab113d-c737-55e9-b081-4aaca4fa2043"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementWithRemoteResourcesVtbl
 {
@@ -21039,20 +21039,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveSeparator
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveSeparator
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveSeparator:HRESULT get_Color(AdaptiveCards.ObjectModel.Uwp.ForegroundColor*);HRESULT put_Color(AdaptiveCards.ObjectModel.Uwp.ForegroundColor);HRESULT get_Thickness(AdaptiveCards.ObjectModel.Uwp.SeparatorThickness*);HRESULT put_Thickness(AdaptiveCards.ObjectModel.Uwp.SeparatorThickness);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator:HRESULT get_Color(AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor*);HRESULT put_Color(AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor);HRESULT get_Thickness(AdaptiveCards.ObjectModel.WinAppSDK.SeparatorThickness*);HRESULT put_Thickness(AdaptiveCards.ObjectModel.WinAppSDK.SeparatorThickness);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparator_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveSeparator";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator";
 /* [uuid("ac549efa-a3c9-598e-b949-06fa14ff0eba"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSeparatorVtbl
 {
@@ -21153,12 +21153,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSepara
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveSeparator
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveSeparator ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSeparator ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -21168,23 +21168,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSepara
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveSeparator";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSeparator";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement:HRESULT get_Size(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextSize>**);HRESULT put_Size(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextSize>*);HRESULT get_Weight(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextWeight>**);HRESULT put_Weight(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextWeight>*);HRESULT get_Color(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.ForegroundColor>**);HRESULT put_Color(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.ForegroundColor>*);HRESULT get_Text(String*);HRESULT put_Text(String);HRESULT get_IsSubtle(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_IsSubtle(Windows.Foundation.IReference`1<Boolean>*);HRESULT get_Language(String*);HRESULT put_Language(String);HRESULT get_FontType(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.FontType>**);HRESULT put_FontType(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.FontType>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement:HRESULT get_Size(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextSize>**);HRESULT put_Size(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextSize>*);HRESULT get_Weight(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextWeight>**);HRESULT put_Weight(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextWeight>*);HRESULT get_Color(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor>**);HRESULT put_Color(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.ForegroundColor>*);HRESULT get_Text(String*);HRESULT put_Text(String);HRESULT get_IsSubtle(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_IsSubtle(Windows.Foundation.IReference`1<Boolean>*);HRESULT get_Language(String*);HRESULT put_Language(String);HRESULT get_FontType(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.FontType>**);HRESULT put_FontType(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.FontType>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement";
 /* [uuid("70bcd0cb-38be-5bec-be14-5def282f9004"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextElementVtbl
 {
@@ -21356,20 +21356,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextEl
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlock
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlock
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlock:HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_MaxLines(UInt32*);HRESULT put_MaxLines(UInt32);HRESULT get_Style(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextStyle>**);HRESULT put_Style(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.TextStyle>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock:HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_MaxLines(UInt32*);HRESULT put_MaxLines(UInt32);HRESULT get_Style(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextStyle>**);HRESULT put_Style(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.TextStyle>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlock_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock";
 /* [uuid("777df7f6-0669-5ee7-8961-98abfc5d6282"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockVtbl
 {
@@ -21498,14 +21498,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlock
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlock ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlock ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -21515,18 +21515,18 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlock";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInline[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInline[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline";
 /* [object, uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085"), version] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInlineVtbl
 {
@@ -21600,20 +21600,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInline
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextRun
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextRun
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextRun:HRESULT get_Italic(Boolean*);HRESULT put_Italic(Boolean);HRESULT get_Strikethrough(Boolean*);HRESULT put_Strikethrough(Boolean);HRESULT get_Highlight(Boolean*);HRESULT put_Highlight(Boolean);HRESULT get_Underline(Boolean*);HRESULT put_Underline(Boolean);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun:HRESULT get_Italic(Boolean*);HRESULT put_Italic(Boolean);HRESULT get_Strikethrough(Boolean*);HRESULT put_Strikethrough(Boolean);HRESULT get_Highlight(Boolean*);HRESULT put_Highlight(Boolean);HRESULT get_Underline(Boolean*);HRESULT put_Underline(Boolean);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRun_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextRun";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun";
 /* [uuid("ad3d3e14-5ce4-5322-a0eb-56e52c92f333"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRunVtbl
 {
@@ -21756,14 +21756,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRu
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextRun
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextRun ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextRun ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -21773,27 +21773,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextRu
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextRun";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextRun";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlock
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlock
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlock:HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_Inlines(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveInline>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock:HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_Inlines(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInline>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock";
 /* [uuid("cd4116ad-e686-5ea7-aa93-fbdc61b9722a"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockVtbl
 {
@@ -21887,13 +21887,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlock
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlock ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlock ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -21903,27 +21903,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlock";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlock";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaSource
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaSource:HRESULT get_MimeType(String*);HRESULT put_MimeType(String);HRESULT get_Url(String*);HRESULT put_Url(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource:HRESULT get_MimeType(String*);HRESULT put_MimeType(String);HRESULT get_Url(String*);HRESULT put_Url(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSource_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaSource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource";
 /* [uuid("5adbf4bb-a457-5c50-9c55-1dd095dcd6cc"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaSourceVtbl
 {
@@ -22024,12 +22024,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaS
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaSource ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaSource ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -22039,27 +22039,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaS
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveMedia
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveMedia:HRESULT get_Poster(String*);HRESULT put_Poster(String);HRESULT get_AltText(String*);HRESULT put_AltText(String);HRESULT get_Sources(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaSource>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia:HRESULT get_Poster(String*);HRESULT put_Poster(String);HRESULT get_AltText(String*);HRESULT put_AltText(String);HRESULT get_Sources(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaSource>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveMedia";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia";
 /* [uuid("7c4615a2-168e-5cbc-b2f4-dbb250efb9a0"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaVtbl
 {
@@ -22167,13 +22167,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia;
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveMedia ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMedia ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -22183,27 +22183,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMedia;
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveMedia";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMedia";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveBackgroundImage
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveBackgroundImage:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_FillMode(AdaptiveCards.ObjectModel.Uwp.BackgroundImageFillMode*);HRESULT put_FillMode(AdaptiveCards.ObjectModel.Uwp.BackgroundImageFillMode);HRESULT get_HorizontalAlignment(AdaptiveCards.ObjectModel.Uwp.HAlignment*);HRESULT put_HorizontalAlignment(AdaptiveCards.ObjectModel.Uwp.HAlignment);HRESULT get_VerticalAlignment(AdaptiveCards.ObjectModel.Uwp.VAlignment*);HRESULT put_VerticalAlignment(AdaptiveCards.ObjectModel.Uwp.VAlignment);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_FillMode(AdaptiveCards.ObjectModel.WinAppSDK.BackgroundImageFillMode*);HRESULT put_FillMode(AdaptiveCards.ObjectModel.WinAppSDK.BackgroundImageFillMode);HRESULT get_HorizontalAlignment(AdaptiveCards.ObjectModel.WinAppSDK.HAlignment*);HRESULT put_HorizontalAlignment(AdaptiveCards.ObjectModel.WinAppSDK.HAlignment);HRESULT get_VerticalAlignment(AdaptiveCards.ObjectModel.WinAppSDK.VAlignment*);HRESULT put_VerticalAlignment(AdaptiveCards.ObjectModel.WinAppSDK.VAlignment);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveBackgroundImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage";
 /* [uuid("f1d73147-4729-57e3-848a-419e3a3865ea"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgroundImageVtbl
 {
@@ -22332,12 +22332,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgr
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveBackgroundImage ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveBackgroundImage ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -22347,27 +22347,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveBackgr
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthCardButton
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthCardButton:HRESULT get_Type(String*);HRESULT put_Type(String);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Image(String*);HRESULT put_Image(String);HRESULT get_Value(String*);HRESULT put_Value(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton:HRESULT get_Type(String*);HRESULT put_Type(String);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Image(String*);HRESULT put_Image(String);HRESULT get_Value(String*);HRESULT put_Value(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthCardButton";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton";
 /* [uuid("e4ef5280-2e37-5c4d-a580-d79be24b0fb3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCardButtonVtbl
 {
@@ -22496,12 +22496,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthCardButton ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthCardButton ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -22511,27 +22511,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthCa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTokenExchangeResource
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTokenExchangeResource:HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_Uri(String*);HRESULT put_Uri(String);HRESULT get_ProviderId(String*);HRESULT put_ProviderId(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource:HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_Uri(String*);HRESULT put_Uri(String);HRESULT get_ProviderId(String*);HRESULT put_ProviderId(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTokenExchangeResource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource";
 /* [uuid("21705a8e-18d5-52a7-945d-dc72595831e4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenExchangeResourceVtbl
 {
@@ -22646,12 +22646,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenE
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTokenExchangeResource ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTokenExchangeResource ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -22661,27 +22661,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTokenE
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthentication
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthentication:HRESULT get_Text(String*);HRESULT put_Text(String);HRESULT get_ConnectionName(String*);HRESULT put_ConnectionName(String);HRESULT get_TokenExchangeResource(AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource**);HRESULT put_TokenExchangeResource(AdaptiveCards.ObjectModel.Uwp.AdaptiveTokenExchangeResource*);HRESULT get_Buttons(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthCardButton>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication:HRESULT get_Text(String*);HRESULT put_Text(String);HRESULT get_ConnectionName(String*);HRESULT put_ConnectionName(String);HRESULT get_TokenExchangeResource(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource**);HRESULT put_TokenExchangeResource(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTokenExchangeResource*);HRESULT get_Buttons(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthCardButton>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthentication_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthentication";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication";
 /* [uuid("16069277-85a8-554f-a367-80b7bb59f327"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthenticationVtbl
 {
@@ -22803,12 +22803,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthen
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveAuthentication ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveAuthentication ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -22818,27 +22818,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAuthen
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRefresh
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRefresh:HRESULT get_Action(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_Action(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_UserIds(Windows.Foundation.Collections.IVector`1<String>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh:HRESULT get_Action(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_Action(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_UserIds(Windows.Foundation.Collections.IVector`1<String>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefresh_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRefresh";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh";
 /* [uuid("24f82b16-5304-5e1b-a01d-b5117ae8d303"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefreshVtbl
 {
@@ -22932,12 +22932,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefres
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRefresh ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRefresh ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -22947,27 +22947,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRefres
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveCard
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveCard
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveCard:HRESULT get_Body(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>**);HRESULT get_Actions(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement>**);HRESULT get_ElementType(AdaptiveCards.ObjectModel.Uwp.ElementType*);HRESULT get_InternalId(UInt32*);HRESULT get_Version(String*);HRESULT put_Version(String);HRESULT get_FallbackText(String*);HRESULT put_FallbackText(String);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage*);HRESULT get_Language(String*);HRESULT put_Language(String);HRESULT get_Speak(String*);HRESULT put_Speak(String);HRESULT get_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_VerticalContentAlignment(AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment*);HRESULT put_VerticalContentAlignment(AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment);HRESULT get_Height(AdaptiveCards.ObjectModel.Uwp.HeightType*);HRESULT put_Height(AdaptiveCards.ObjectModel.Uwp.HeightType);HRESULT get_MinHeight(UInt32*);HRESULT put_MinHeight(UInt32);HRESULT get_Refresh(AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh**);HRESULT put_Refresh(AdaptiveCards.ObjectModel.Uwp.AdaptiveRefresh*);HRESULT get_Authentication(AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication**);HRESULT put_Authentication(AdaptiveCards.ObjectModel.Uwp.AdaptiveAuthentication*);HRESULT ToJson(Windows.Data.Json.JsonObject**);HRESULT GetResourceInformation(Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveRemoteResourceInformation>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard:HRESULT get_Body(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>**);HRESULT get_Actions(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement>**);HRESULT get_ElementType(AdaptiveCards.ObjectModel.WinAppSDK.ElementType*);HRESULT get_InternalId(UInt32*);HRESULT get_Version(String*);HRESULT put_Version(String);HRESULT get_FallbackText(String*);HRESULT put_FallbackText(String);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage*);HRESULT get_Language(String*);HRESULT put_Language(String);HRESULT get_Speak(String*);HRESULT put_Speak(String);HRESULT get_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_VerticalContentAlignment(AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment*);HRESULT put_VerticalContentAlignment(AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment);HRESULT get_Height(AdaptiveCards.ObjectModel.WinAppSDK.HeightType*);HRESULT put_Height(AdaptiveCards.ObjectModel.WinAppSDK.HeightType);HRESULT get_MinHeight(UInt32*);HRESULT put_MinHeight(UInt32);HRESULT get_Refresh(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh**);HRESULT put_Refresh(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRefresh*);HRESULT get_Authentication(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication**);HRESULT put_Authentication(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveAuthentication*);HRESULT ToJson(Windows.Data.Json.JsonObject**);HRESULT GetResourceInformation(Windows.Foundation.Collections.IVectorView`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRemoteResourceInformation>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveCard";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard";
 /* [uuid("ce223d5d-c836-5656-ba47-bbbcf2149244"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardVtbl
 {
@@ -23250,20 +23250,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCard;
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardStatics
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveCard
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardStatics:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult**);HRESULT FromJsonWithParserRegistration(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult**);HRESULT FromJsonString(String,AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult**);HRESULT FromJsonStringWithParserRegistration(String,AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult**);HRESULT FromJsonWithParserRegistration(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult**);HRESULT FromJsonString(String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult**);HRESULT FromJsonStringWithParserRegistration(String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStatics_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardStatics";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardStatics";
 /* [uuid("61e72d41-c07f-5b22-a9ae-49dbe10cca51"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardStaticsVtbl
 {
@@ -23372,14 +23372,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardSt
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveCard
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard
  *
  * RuntimeClass can be activated.
  *
  * RuntimeClass contains static methods.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCard ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCard ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -23389,26 +23389,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardSt
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveCard";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardParseResult
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardParseResult:HRESULT get_AdaptiveCard(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard**);HRESULT get_Errors(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveError>**);HRESULT get_Warnings(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult:HRESULT get_AdaptiveCard(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard**);HRESULT get_Errors(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError>**);HRESULT get_Warnings(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResult_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardParseResult";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult";
 /* [uuid("dc2dec64-0589-5a0b-bbc5-ba0920a9641e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardParseResultVtbl
 {
@@ -23502,12 +23502,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardPa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardParseResult ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardParseResult ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -23517,27 +23517,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveCardPa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveCardParseResult";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCardParseResult";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveImage
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveImage
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveImage:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_BackgroundColor(String*);HRESULT put_BackgroundColor(String);HRESULT get_Style(AdaptiveCards.ObjectModel.Uwp.ImageStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.Uwp.ImageStyle);HRESULT get_Size(AdaptiveCards.ObjectModel.Uwp.ImageSize*);HRESULT put_Size(AdaptiveCards.ObjectModel.Uwp.ImageSize);HRESULT get_PixelWidth(UInt32*);HRESULT put_PixelWidth(UInt32);HRESULT get_PixelHeight(UInt32*);HRESULT put_PixelHeight(UInt32);HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_AltText(String*);HRESULT put_AltText(String);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage:HRESULT get_Url(String*);HRESULT put_Url(String);HRESULT get_BackgroundColor(String*);HRESULT put_BackgroundColor(String);HRESULT get_Style(AdaptiveCards.ObjectModel.WinAppSDK.ImageStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.WinAppSDK.ImageStyle);HRESULT get_Size(AdaptiveCards.ObjectModel.WinAppSDK.ImageSize*);HRESULT put_Size(AdaptiveCards.ObjectModel.WinAppSDK.ImageSize);HRESULT get_PixelWidth(UInt32*);HRESULT put_PixelWidth(UInt32);HRESULT get_PixelHeight(UInt32*);HRESULT put_PixelHeight(UInt32);HRESULT get_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_AltText(String*);HRESULT put_AltText(String);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage";
 /* [uuid("341d3830-a1bc-5135-a3e4-5448dc0de8f6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageVtbl
 {
@@ -23736,13 +23736,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage;
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveImage
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveImage ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImage ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -23752,27 +23752,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImage;
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveImage";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSet
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSet
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSet:HRESULT get_Images(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveImage>**);HRESULT get_ImageSize(AdaptiveCards.ObjectModel.Uwp.ImageSize*);HRESULT put_ImageSize(AdaptiveCards.ObjectModel.Uwp.ImageSize);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet:HRESULT get_Images(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImage>**);HRESULT get_ImageSize(AdaptiveCards.ObjectModel.WinAppSDK.ImageSize*);HRESULT put_ImageSize(AdaptiveCards.ObjectModel.WinAppSDK.ImageSize);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet";
 /* [uuid("3e7db841-9cd8-59c7-a27f-f635f13e89ea"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetVtbl
 {
@@ -23866,13 +23866,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSet
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSet ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSet ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -23882,27 +23882,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSet";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceInput:HRESULT get_ElementType(AdaptiveCards.ObjectModel.Uwp.ElementType*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Value(String*);HRESULT put_Value(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput:HRESULT get_ElementType(AdaptiveCards.ObjectModel.WinAppSDK.ElementType*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Value(String*);HRESULT put_Value(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput";
 /* [uuid("36ddb94d-cf5a-5664-9de7-e49350f732b7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceInputVtbl
 {
@@ -24010,12 +24010,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceInput ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -24025,27 +24025,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInput:HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_IsMultiSelect(Boolean*);HRESULT put_IsMultiSelect(Boolean);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_ChoiceSetStyle(AdaptiveCards.ObjectModel.Uwp.ChoiceSetStyle*);HRESULT put_ChoiceSetStyle(AdaptiveCards.ObjectModel.Uwp.ChoiceSetStyle);HRESULT get_Choices(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceInput>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput:HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_IsMultiSelect(Boolean*);HRESULT put_IsMultiSelect(Boolean);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_ChoiceSetStyle(AdaptiveCards.ObjectModel.WinAppSDK.ChoiceSetStyle*);HRESULT put_ChoiceSetStyle(AdaptiveCards.ObjectModel.WinAppSDK.ChoiceSetStyle);HRESULT get_Choices(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceInput>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput";
 /* [uuid("5715bcbe-935a-5b85-8230-280db6b0c4f3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputVtbl
 {
@@ -24195,14 +24195,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -24212,27 +24212,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInput";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInput:HRESULT get_Max(String*);HRESULT put_Max(String);HRESULT get_Min(String*);HRESULT put_Min(String);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput:HRESULT get_Max(String*);HRESULT put_Max(String);HRESULT get_Min(String*);HRESULT put_Min(String);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput";
 /* [uuid("0fe665a5-7ae3-52ab-bf34-d54f7f902164"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputVtbl
 {
@@ -24361,14 +24361,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -24378,27 +24378,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInput";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInput:HRESULT get_Max(Windows.Foundation.IReference`1<Double>**);HRESULT put_Max(Windows.Foundation.IReference`1<Double>*);HRESULT get_Min(Windows.Foundation.IReference`1<Double>**);HRESULT put_Min(Windows.Foundation.IReference`1<Double>*);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(Windows.Foundation.IReference`1<Double>**);HRESULT put_Value(Windows.Foundation.IReference`1<Double>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput:HRESULT get_Max(Windows.Foundation.IReference`1<Double>**);HRESULT put_Max(Windows.Foundation.IReference`1<Double>*);HRESULT get_Min(Windows.Foundation.IReference`1<Double>**);HRESULT put_Min(Windows.Foundation.IReference`1<Double>*);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(Windows.Foundation.IReference`1<Double>**);HRESULT put_Value(Windows.Foundation.IReference`1<Double>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput";
 /* [uuid("f0b4b9b0-871f-57c2-8fa2-0d6c6d122656"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputVtbl
 {
@@ -24527,14 +24527,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -24544,27 +24544,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInput";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInput:HRESULT get_IsMultiline(Boolean*);HRESULT put_IsMultiline(Boolean);HRESULT get_MaxLength(UInt32*);HRESULT put_MaxLength(UInt32);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_TextInputStyle(AdaptiveCards.ObjectModel.Uwp.TextInputStyle*);HRESULT put_TextInputStyle(AdaptiveCards.ObjectModel.Uwp.TextInputStyle);HRESULT get_InlineAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_InlineAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_Regex(String*);HRESULT put_Regex(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput:HRESULT get_IsMultiline(Boolean*);HRESULT put_IsMultiline(Boolean);HRESULT get_MaxLength(UInt32*);HRESULT put_MaxLength(UInt32);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_TextInputStyle(AdaptiveCards.ObjectModel.WinAppSDK.TextInputStyle*);HRESULT put_TextInputStyle(AdaptiveCards.ObjectModel.WinAppSDK.TextInputStyle);HRESULT get_InlineAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_InlineAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_Regex(String*);HRESULT put_Regex(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput";
 /* [uuid("f3301e8f-7c7a-57e5-8b2e-438011553708"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputVtbl
 {
@@ -24735,14 +24735,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -24752,27 +24752,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInput";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInput:HRESULT get_Max(String*);HRESULT put_Max(String);HRESULT get_Min(String*);HRESULT put_Min(String);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput:HRESULT get_Max(String*);HRESULT put_Max(String);HRESULT get_Min(String*);HRESULT put_Min(String);HRESULT get_Placeholder(String*);HRESULT put_Placeholder(String);HRESULT get_Value(String*);HRESULT put_Value(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput";
 /* [uuid("7d058bd4-70f5-5c54-a61b-6f986c1f4c8c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputVtbl
 {
@@ -24901,14 +24901,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -24918,27 +24918,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInput";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInput
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInput
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInput:HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_ValueOff(String*);HRESULT put_ValueOff(String);HRESULT get_ValueOn(String*);HRESULT put_ValueOn(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput:HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Wrap(Boolean*);HRESULT put_Wrap(Boolean);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_ValueOff(String*);HRESULT put_ValueOff(String);HRESULT get_ValueOn(String*);HRESULT put_ValueOn(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInput_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput";
 /* [uuid("33abef6f-0668-58cd-a5b1-e1f52f356df7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputVtbl
 {
@@ -25081,14 +25081,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInput
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInput ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInput ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -25098,23 +25098,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInput";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInput";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase:HRESULT get_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_Bleed(Boolean*);HRESULT put_Bleed(Boolean);HRESULT get_BleedDirection(AdaptiveCards.ObjectModel.Uwp.BleedDirection*);HRESULT get_MinHeight(UInt32*);HRESULT put_MinHeight(UInt32);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase:HRESULT get_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle);HRESULT get_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_SelectAction(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_Bleed(Boolean*);HRESULT put_Bleed(Boolean);HRESULT get_BleedDirection(AdaptiveCards.ObjectModel.WinAppSDK.BleedDirection*);HRESULT get_MinHeight(UInt32*);HRESULT put_MinHeight(UInt32);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBase_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase";
 /* [uuid("e7b77b9b-61ee-5262-9b69-604554376e2b"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerBaseVtbl
 {
@@ -25250,17 +25250,17 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer:HRESULT get_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_Items(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>**);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage*);HRESULT get_Rtl(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_Rtl(Windows.Foundation.IReference`1<Boolean>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer:HRESULT get_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_Items(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>**);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage*);HRESULT get_Rtl(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_Rtl(Windows.Foundation.IReference`1<Boolean>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer";
 /* [uuid("1f8f8b3a-63cc-5939-bbe2-7775b1834647"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerVtbl
 {
@@ -25383,20 +25383,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer2
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveContainer
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer2:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer2";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2";
 /* [uuid("44dada13-fe76-5808-b916-242222da9f95"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainer2Vtbl
 {
@@ -25469,15 +25469,15 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveContainer
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer2 ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer2 ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -25487,27 +25487,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveContainer";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainer";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumn
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumn:HRESULT get_Width(String*);HRESULT put_Width(String);HRESULT get_PixelWidth(UInt32*);HRESULT put_PixelWidth(UInt32);HRESULT get_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_Items(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement>**);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.Uwp.AdaptiveBackgroundImage*);HRESULT get_Rtl(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_Rtl(Windows.Foundation.IReference`1<Boolean>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn:HRESULT get_Width(String*);HRESULT put_Width(String);HRESULT get_PixelWidth(UInt32*);HRESULT put_PixelWidth(UInt32);HRESULT get_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_Items(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement>**);HRESULT get_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage**);HRESULT put_BackgroundImage(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveBackgroundImage*);HRESULT get_Rtl(Windows.Foundation.IReference`1<Boolean>**);HRESULT put_Rtl(Windows.Foundation.IReference`1<Boolean>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumn";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn";
 /* [uuid("82bf2454-4ac5-5059-8689-76274890f605"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnVtbl
 {
@@ -25657,14 +25657,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumn ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumn ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -25674,27 +25674,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSet
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSet
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSet:HRESULT get_Columns(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveColumn>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet:HRESULT get_Columns(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumn>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet";
 /* [uuid("dbc8249b-f860-5893-97e4-17793b1b7b1d"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetVtbl
 {
@@ -25774,14 +25774,14 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSet
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSet ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSet ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -25791,27 +25791,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSet";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveFact
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveFact
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveFact:HRESULT get_ElementType(AdaptiveCards.ObjectModel.Uwp.ElementType*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_Language(String*);HRESULT put_Language(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact:HRESULT get_ElementType(AdaptiveCards.ObjectModel.WinAppSDK.ElementType*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Value(String*);HRESULT put_Value(String);HRESULT get_Language(String*);HRESULT put_Language(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveFact";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact";
 /* [uuid("26a54ae6-bd95-53db-8a97-08f78a93b5fd"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactVtbl
 {
@@ -25933,12 +25933,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact;
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveFact
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveFact ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFact ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -25948,27 +25948,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFact;
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveFact";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSet
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSet
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSet:HRESULT get_Facts(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveFact>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet:HRESULT get_Facts(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFact>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet";
 /* [uuid("31157d84-5712-53af-9f01-decb48a9deba"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetVtbl
 {
@@ -26048,13 +26048,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSet
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSet ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSet ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -26064,27 +26064,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSet";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableCell
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableCell:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCell_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableCell";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell";
 /* [uuid("787d6b1f-5831-546c-9ffc-183e4b8d58c5"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableCellVtbl
 {
@@ -26157,15 +26157,15 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableCell ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainer
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerBase
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableCell ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainer
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerBase
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -26175,27 +26175,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableRow
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableRow:HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.Uwp.ContainerStyle);HRESULT get_Cells(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableCell>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow:HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle*);HRESULT put_Style(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle);HRESULT get_Cells(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableCell>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRow_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableRow";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow";
 /* [uuid("2d680b56-1a59-5e2d-be30-1ef86f895a31"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableRowVtbl
 {
@@ -26317,13 +26317,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableR
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableRow ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableRow ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -26333,27 +26333,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableR
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableColumnDefinition
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableColumnDefinition:HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_Width(Windows.Foundation.IReference`1<UInt32>**);HRESULT put_Width(Windows.Foundation.IReference`1<UInt32>*);HRESULT get_PixelWidth(Windows.Foundation.IReference`1<UInt32>**);HRESULT put_PixelWidth(Windows.Foundation.IReference`1<UInt32>*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition:HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_Width(Windows.Foundation.IReference`1<UInt32>**);HRESULT put_Width(Windows.Foundation.IReference`1<UInt32>*);HRESULT get_PixelWidth(Windows.Foundation.IReference`1<UInt32>**);HRESULT put_PixelWidth(Windows.Foundation.IReference`1<UInt32>*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableColumnDefinition";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition";
 /* [uuid("0211d98c-5f48-54bb-b2d4-263bc4a4c6b2"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableColumnDefinitionVtbl
 {
@@ -26482,12 +26482,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableColumnDefinition ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableColumnDefinition ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -26497,27 +26497,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableC
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTable
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTable
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTable:HRESULT get_ShowGridLines(Boolean*);HRESULT put_ShowGridLines(Boolean);HRESULT get_FirstRowAsHeaders(Boolean*);HRESULT put_FirstRowAsHeaders(Boolean);HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.Uwp.VerticalContentAlignment>*);HRESULT get_GridStyle(AdaptiveCards.ObjectModel.Uwp.ContainerStyle*);HRESULT put_GridStyle(AdaptiveCards.ObjectModel.Uwp.ContainerStyle);HRESULT get_Columns(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableColumnDefinition>**);HRESULT get_Rows(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveTableRow>**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable:HRESULT get_ShowGridLines(Boolean*);HRESULT put_ShowGridLines(Boolean);HRESULT get_FirstRowAsHeaders(Boolean*);HRESULT put_FirstRowAsHeaders(Boolean);HRESULT get_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>**);HRESULT put_HorizontalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.HAlignment>*);HRESULT get_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>**);HRESULT put_VerticalCellContentAlignment(Windows.Foundation.IReference`1<AdaptiveCards.ObjectModel.WinAppSDK.VerticalContentAlignment>*);HRESULT get_GridStyle(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle*);HRESULT put_GridStyle(AdaptiveCards.ObjectModel.WinAppSDK.ContainerStyle);HRESULT get_Columns(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableColumnDefinition>**);HRESULT get_Rows(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableRow>**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTable";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable";
 /* [uuid("f8ed7b1a-0dc5-50dc-813e-2ad91178fcf7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableVtbl
 {
@@ -26674,13 +26674,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable;
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTable
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTable ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTable ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -26690,27 +26690,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTable;
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTable";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTable";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSet
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSet
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSet:HRESULT get_Actions(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement>**);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet:HRESULT get_Actions(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement>**);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSet_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet";
 /* [uuid("bd40919b-01a7-55cc-9d59-20929861ab4a"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetVtbl
 {
@@ -26797,13 +26797,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSet
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSet ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSet ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -26813,27 +26813,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSet";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSet";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedAction:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction";
 /* [uuid("7b494796-eaab-5ef6-9c65-b8e58d94541b"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedActionVtbl
 {
@@ -26906,13 +26906,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -26922,27 +26922,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedAction";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedElement
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedElement:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement";
 /* [uuid("66396792-8fe8-5902-be97-336a769ab4a7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupportedElementVtbl
 {
@@ -27015,13 +27015,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedElement
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveUnsupportedElement ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveUnsupportedElement ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -27031,23 +27031,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveUnsupp
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveUnsupportedElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveUnsupportedElement";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement:HRESULT get_ActionType(AdaptiveCards.ObjectModel.Uwp.ActionType*);HRESULT get_ActionTypeString(String*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_FallbackType(AdaptiveCards.ObjectModel.Uwp.FallbackType*);HRESULT put_FallbackType(AdaptiveCards.ObjectModel.Uwp.FallbackType);HRESULT get_FallbackContent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);HRESULT put_FallbackContent(AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement*);HRESULT get_IconUrl(String*);HRESULT put_IconUrl(String);HRESULT get_Style(String*);HRESULT put_Style(String);HRESULT get_Tooltip(String*);HRESULT put_Tooltip(String);HRESULT get_AdditionalProperties(Windows.Data.Json.JsonObject**);HRESULT put_AdditionalProperties(Windows.Data.Json.JsonObject*);HRESULT get_IsEnabled(Boolean*);HRESULT put_IsEnabled(Boolean);HRESULT get_Mode(AdaptiveCards.ObjectModel.Uwp.ActionMode*);HRESULT put_Mode(AdaptiveCards.ObjectModel.Uwp.ActionMode);HRESULT ToJson(Windows.Data.Json.JsonObject**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement:HRESULT get_ActionType(AdaptiveCards.ObjectModel.WinAppSDK.ActionType*);HRESULT get_ActionTypeString(String*);HRESULT get_Title(String*);HRESULT put_Title(String);HRESULT get_Id(String*);HRESULT put_Id(String);HRESULT get_FallbackType(AdaptiveCards.ObjectModel.WinAppSDK.FallbackType*);HRESULT put_FallbackType(AdaptiveCards.ObjectModel.WinAppSDK.FallbackType);HRESULT get_FallbackContent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);HRESULT put_FallbackContent(AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement*);HRESULT get_IconUrl(String*);HRESULT put_IconUrl(String);HRESULT get_Style(String*);HRESULT put_Style(String);HRESULT get_Tooltip(String*);HRESULT put_Tooltip(String);HRESULT get_AdditionalProperties(Windows.Data.Json.JsonObject**);HRESULT put_AdditionalProperties(Windows.Data.Json.JsonObject*);HRESULT get_IsEnabled(Boolean*);HRESULT put_IsEnabled(Boolean);HRESULT get_Mode(AdaptiveCards.ObjectModel.WinAppSDK.ActionMode*);HRESULT put_Mode(AdaptiveCards.ObjectModel.WinAppSDK.ActionMode);HRESULT ToJson(Windows.Data.Json.JsonObject**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement";
 /* [uuid("e0a1914c-0f13-50b2-82f5-09394e088a22"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionElementVtbl
 {
@@ -27282,20 +27282,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlAction:HRESULT get_Url(Windows.Foundation.Uri**);HRESULT put_Url(Windows.Foundation.Uri*);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction:HRESULT get_Url(Windows.Foundation.Uri**);HRESULT put_Url(Windows.Foundation.Uri*);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction";
 /* [uuid("b47a990b-7ea6-54db-8096-61134e92f412"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionVtbl
 {
@@ -27389,13 +27389,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -27405,27 +27405,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlAction";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardAction:HRESULT get_Card(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard**);HRESULT put_Card(AdaptiveCards.ObjectModel.Uwp.AdaptiveCard*);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction:HRESULT get_Card(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard**);HRESULT put_Card(AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveCard*);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction";
 /* [uuid("811202b5-f9b7-5527-8dc3-53be9c352f89"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionVtbl
 {
@@ -27519,13 +27519,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -27535,27 +27535,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardAction";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitAction:HRESULT get_DataJson(Windows.Data.Json.JsonValue**);HRESULT put_DataJson(Windows.Data.Json.JsonValue*);HRESULT get_AssociatedInputs(AdaptiveCards.ObjectModel.Uwp.AssociatedInputs*);HRESULT put_AssociatedInputs(AdaptiveCards.ObjectModel.Uwp.AssociatedInputs);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction:HRESULT get_DataJson(Windows.Data.Json.JsonValue**);HRESULT put_DataJson(Windows.Data.Json.JsonValue*);HRESULT get_AssociatedInputs(AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs*);HRESULT put_AssociatedInputs(AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction";
 /* [uuid("54f42ecb-f10c-5aa2-bd78-9d6aba2d736f"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionVtbl
 {
@@ -27663,13 +27663,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -27679,27 +27679,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitAction";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteAction:HRESULT get_DataJson(Windows.Data.Json.JsonValue**);HRESULT put_DataJson(Windows.Data.Json.JsonValue*);HRESULT get_AssociatedInputs(AdaptiveCards.ObjectModel.Uwp.AssociatedInputs*);HRESULT put_AssociatedInputs(AdaptiveCards.ObjectModel.Uwp.AssociatedInputs);HRESULT get_Verb(String*);HRESULT put_Verb(String);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction:HRESULT get_DataJson(Windows.Data.Json.JsonValue**);HRESULT put_DataJson(Windows.Data.Json.JsonValue*);HRESULT get_AssociatedInputs(AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs*);HRESULT put_AssociatedInputs(AdaptiveCards.ObjectModel.WinAppSDK.AssociatedInputs);HRESULT get_Verb(String*);HRESULT put_Verb(String);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction";
 /* [uuid("16ff2257-d886-58ad-adae-defcfe300284"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionVtbl
 {
@@ -27821,13 +27821,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -27837,27 +27837,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteAction";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityTarget
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityTarget:HRESULT get_ElementId(String*);HRESULT put_ElementId(String);HRESULT get_IsVisible(AdaptiveCards.ObjectModel.Uwp.IsVisible*);HRESULT put_IsVisible(AdaptiveCards.ObjectModel.Uwp.IsVisible);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget:HRESULT get_ElementId(String*);HRESULT put_ElementId(String);HRESULT get_IsVisible(AdaptiveCards.ObjectModel.WinAppSDK.IsVisible*);HRESULT put_IsVisible(AdaptiveCards.ObjectModel.WinAppSDK.IsVisible);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityTarget";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget";
 /* [uuid("825d6be0-21c4-5dbe-8a15-ac0c4ba73a0c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityTargetVtbl
 {
@@ -27958,12 +27958,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityTarget ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityTarget ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -27973,27 +27973,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityAction
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityAction
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityAction:HRESULT get_TargetElements(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityTarget>**);HRESULT get_InternalId(UInt32*);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction:HRESULT get_TargetElements(Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityTarget>**);HRESULT get_InternalId(UInt32*);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction";
 /* [uuid("f1be783e-9646-5be5-941e-99533c1da30c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionVtbl
 {
@@ -28080,13 +28080,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityAction
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityAction ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityAction ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -28096,26 +28096,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityAction";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityAction";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirement:HRESULT get_Name(String*);HRESULT put_Name(String);HRESULT get_Version(String*);HRESULT put_Version(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement:HRESULT get_Name(String*);HRESULT put_Name(String);HRESULT get_Version(String*);HRESULT put_Version(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement";
 /* [uuid("8106c5a6-5a56-5043-bb9f-08004e1c0743"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementVtbl
 {
@@ -28216,20 +28216,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirementFactory
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirementFactory:HRESULT CreateInstance(String,String,AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory:HRESULT CreateInstance(String,String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirementFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirementFactory";
 /* [uuid("59bb7fad-2626-5434-a7f3-f8b8538b93ed"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequirementFactoryVtbl
 {
@@ -28311,12 +28311,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRequirement ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRequirement ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -28326,23 +28326,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRequir
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRequirement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRequirement";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration*,Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>*,AdaptiveCards.ObjectModel.Uwp.IAdaptiveCardElement**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration*,Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>*,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveCardElement**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser";
 /* [uuid("5ac21990-5e0f-5d71-9266-1295cac1a6ff"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserVtbl
 {
@@ -28426,20 +28426,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParserRegistration
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParserRegistration:HRESULT Set(String,AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser*);HRESULT Get(String,AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser**);HRESULT Remove(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration:HRESULT Set(String,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser*);HRESULT Get(String,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser**);HRESULT Remove(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration";
 /* [uuid("f33af0e9-2038-526f-940b-61f52d5d28c2"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElementParserRegistrationVtbl
 {
@@ -28535,12 +28535,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParserRegistration ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParserRegistration ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -28550,26 +28550,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveElemen
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParserRegistration
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParserRegistration:HRESULT Set(String,AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser*);HRESULT Get(String,AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser**);HRESULT Remove(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration:HRESULT Set(String,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser*);HRESULT Get(String,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser**);HRESULT Remove(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration";
 /* [uuid("ea043181-af73-5fa8-bddc-6e89ca332e17"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserRegistrationVtbl
 {
@@ -28665,12 +28665,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParserRegistration ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParserRegistration ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -28680,23 +28680,23 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.Uwp.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.Uwp.AdaptiveActionParserRegistration*,Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning>*,AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionElement**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser:HRESULT FromJson(Windows.Data.Json.JsonObject*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveElementParserRegistration*,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionParserRegistration*,Windows.Foundation.Collections.IVector`1<AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning>*,AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionElement**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionParser";
 /* [uuid("12a67519-a257-57dd-87d3-2cb8d99e6b00"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionParserVtbl
 {
@@ -28780,17 +28780,17 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement:HRESULT get_IsRequired(Boolean*);HRESULT put_IsRequired(Boolean);HRESULT get_ErrorMessage(String*);HRESULT put_ErrorMessage(String);HRESULT get_Label(String*);HRESULT put_Label(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement:HRESULT get_IsRequired(Boolean*);HRESULT put_IsRequired(Boolean);HRESULT get_ErrorMessage(String*);HRESULT put_ErrorMessage(String);HRESULT get_Label(String*);HRESULT put_Label(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElement_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveInputElement";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveInputElement";
 /* [uuid("545ecd2f-2c13-5a67-9168-5e9450a44ef8"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputElementVtbl
 {
@@ -28906,20 +28906,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveInputE
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlockParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlockParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlockParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser";
 /* [uuid("934a0c1b-9996-51b9-afcd-5e6c3335b6c4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBlockParserVtbl
 {
@@ -28992,13 +28992,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlockParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextBlockParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextBlockParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29008,27 +29008,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextBl
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextBlockParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlockParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlockParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlockParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser";
 /* [uuid("cb9b71c3-75a4-5762-be9c-453a3848ce20"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTextBlockParserVtbl
 {
@@ -29101,13 +29101,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlockParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveRichTextBlockParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveRichTextBlockParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29117,27 +29117,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveRichTe
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveRichTextBlockParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveRichTextBlockParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveImageParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser";
 /* [uuid("69c2476e-aab6-5c45-a829-ab1d595b377b"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageParserVtbl
 {
@@ -29210,13 +29210,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageP
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveImageParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29226,27 +29226,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageP
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveImageParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSetParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSetParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSetParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser";
 /* [uuid("123defc6-86c2-582a-8ea4-5388237947c6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageSetParserVtbl
 {
@@ -29319,13 +29319,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSetParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveImageSetParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveImageSetParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29335,27 +29335,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveImageS
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveImageSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveImageSetParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveContainerParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser";
 /* [uuid("09c3afd3-8e2f-53a6-b1e9-8dc5087a9a7e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContainerParserVtbl
 {
@@ -29428,13 +29428,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveContainerParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveContainerParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveContainerParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29444,27 +29444,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveContai
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveContainerParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveContainerParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser";
 /* [uuid("394513b1-6f2a-5c4a-a4b6-d3d817cdc031"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnParserVtbl
 {
@@ -29537,13 +29537,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29553,27 +29553,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSetParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSetParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSetParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser";
 /* [uuid("87225a3b-40d7-5490-917d-b35cc0c2ae09"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumnSetParserVtbl
 {
@@ -29646,13 +29646,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSetParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveColumnSetParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveColumnSetParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29662,27 +29662,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveColumn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveColumnSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveColumnSetParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveFactParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser";
 /* [uuid("14195d3c-628e-51de-9890-f8d4bcb4d5d3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactParserVtbl
 {
@@ -29755,13 +29755,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactPa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveFactParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29771,27 +29771,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactPa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveFactParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser";
 /* [uuid("c0a09ad3-867c-5db4-9c72-1a6873cad41e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoiceSetInputParserVtbl
 {
@@ -29864,13 +29864,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveChoiceSetInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveChoiceSetInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29880,27 +29880,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveChoice
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveChoiceSetInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveChoiceSetInputParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser";
 /* [uuid("4c2b97b1-3596-5c73-a301-2b133abd9178"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateInputParserVtbl
 {
@@ -29973,13 +29973,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveDateInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveDateInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -29989,27 +29989,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveDateIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveDateInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveDateInputParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser";
 /* [uuid("373c48fd-7caa-5a30-9806-f81e6d1ffe10"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumberInputParserVtbl
 {
@@ -30082,13 +30082,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveNumberInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveNumberInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30098,27 +30098,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveNumber
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveNumberInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveNumberInputParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser";
 /* [uuid("332f4aa7-fdb8-5413-adf4-d3530f3eddee"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextInputParserVtbl
 {
@@ -30191,13 +30191,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTextInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTextInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30207,27 +30207,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTextIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTextInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTextInputParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser";
 /* [uuid("1368e8d0-6783-52b8-8af1-2aa9e7585bc3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeInputParserVtbl
 {
@@ -30300,13 +30300,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTimeInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTimeInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30316,27 +30316,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTimeIn
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTimeInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTimeInputParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInputParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInputParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInputParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser";
 /* [uuid("b8e7de6f-234b-55bc-95ca-6dd0d7b7d841"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleInputParserVtbl
 {
@@ -30409,13 +30409,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInputParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleInputParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleInputParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30425,27 +30425,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleInputParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleInputParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSetParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSetParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSetParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser";
 /* [uuid("c0351b3a-8922-5663-a914-f646a2b0fcfd"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSetParserVtbl
 {
@@ -30518,13 +30518,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSetParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveFactSetParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveFactSetParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30534,27 +30534,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveFactSe
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveFactSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveFactSetParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser";
 /* [uuid("a34e4a4d-dbb9-5ae1-8784-f80be7820d57"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaParserVtbl
 {
@@ -30627,13 +30627,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaP
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveMediaParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveMediaParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30643,27 +30643,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveMediaP
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveMediaParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveMediaParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSetParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSetParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSetParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser";
 /* [uuid("24f03c1d-54b9-5415-ae82-b9fcf4438699"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveActionSetParserVtbl
 {
@@ -30736,13 +30736,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSetParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveActionSetParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveActionSetParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30752,27 +30752,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveAction
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveActionSetParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveActionSetParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser";
 /* [uuid("1501bb19-a5d4-50f1-88fb-90338bda2a19"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUrlActionParserVtbl
 {
@@ -30845,13 +30845,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveOpenUrlActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveOpenUrlActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30861,27 +30861,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveOpenUr
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveOpenUrlActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveOpenUrlActionParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser";
 /* [uuid("a52f4dc0-a7cc-52d2-9d57-f8dcec426e69"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCardActionParserVtbl
 {
@@ -30954,13 +30954,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveShowCardActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveShowCardActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -30970,27 +30970,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveShowCa
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveShowCardActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveShowCardActionParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser";
 /* [uuid("e08df80d-30b7-58dc-9c82-9f8b9a0ad3dc"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmitActionParserVtbl
 {
@@ -31063,13 +31063,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveSubmitActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveSubmitActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -31079,27 +31079,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveSubmit
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveSubmitActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveSubmitActionParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser";
 /* [uuid("5bfe15f9-7bb8-541c-af43-111cef59fb5c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecuteActionParserVtbl
 {
@@ -31172,13 +31172,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveExecuteActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveExecuteActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -31188,27 +31188,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveExecut
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveExecuteActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveExecuteActionParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityActionParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityActionParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityActionParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser";
 /* [uuid("97fc2051-4422-5126-912e-590c759870a6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggleVisibilityActionParserVtbl
 {
@@ -31281,13 +31281,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityActionParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveToggleVisibilityActionParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveToggleVisibilityActionParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -31297,27 +31297,27 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveToggle
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveToggleVisibilityActionParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveToggleVisibilityActionParser";
 #endif
 
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableParser
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveTableParser
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableParser:
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser:
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParser_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser";
 /* [uuid("4ddc01cf-604d-50ca-a438-909262797a7f"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableParserVtbl
 {
@@ -31390,13 +31390,13 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableP
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveTableParser
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveTableParser ** Default Interface **
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveElementParser
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveTableParser ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveElementParser
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -31406,26 +31406,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveTableP
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveTableParser";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveTableParser";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveError
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveError
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveError:HRESULT get_StatusCode(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode*);HRESULT put_StatusCode(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode);HRESULT get_Message(String*);HRESULT put_Message(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError:HRESULT get_StatusCode(AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode*);HRESULT put_StatusCode(AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode);HRESULT get_Message(String*);HRESULT put_Message(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveError";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError";
 /* [uuid("0c1c8d38-4820-5637-a337-39feb492dfc1"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorVtbl
 {
@@ -31526,20 +31526,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveError;
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveErrorFactory
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveError
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveErrorFactory:HRESULT CreateInstance(AdaptiveCards.ObjectModel.Uwp.ErrorStatusCode,String,AdaptiveCards.ObjectModel.Uwp.AdaptiveError**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory:HRESULT CreateInstance(AdaptiveCards.ObjectModel.WinAppSDK.ErrorStatusCode,String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveErrorFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveErrorFactory";
 /* [uuid("cf7ce008-91bf-5a23-be1d-79ef6cbc1bf3"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorFactoryVtbl
 {
@@ -31621,12 +31621,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorF
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveError
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveError ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveError ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -31636,26 +31636,26 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveErrorF
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveError_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveError_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveError";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveError";
 #endif
 
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarning
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarning:HRESULT get_StatusCode(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode*);HRESULT put_StatusCode(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode);HRESULT get_Message(String*);HRESULT put_Message(String);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning:HRESULT get_StatusCode(AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode*);HRESULT put_StatusCode(AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode);HRESULT get_Message(String*);HRESULT put_Message(String);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarning_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarning";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning";
 /* [uuid("e87eb0c1-a2a7-5704-b7b4-d3aed92dddd1"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningVtbl
 {
@@ -31756,20 +31756,20 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
 
 /*
  *
- * Interface AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarningFactory
+ * Interface AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory
  *
- * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning
+ * Interface is a part of the implementation of type AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning
  *
  *
  * The IID for this interface was automatically generated by MIDLRT.
  *
- * Interface IID generation seed: AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarningFactory:HRESULT CreateInstance(AdaptiveCards.ObjectModel.Uwp.WarningStatusCode,String,AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning**);
+ * Interface IID generation seed: AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory:HRESULT CreateInstance(AdaptiveCards.ObjectModel.WinAppSDK.WarningStatusCode,String,AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning**);
  *
  *
  */
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactory_INTERFACE_DEFINED__
-extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarningFactory";
+extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_Uwp_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarningFactory";
 /* [uuid("fa97db3c-8a77-5921-b462-a11f8ada4128"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarningFactoryVtbl
 {
@@ -31851,12 +31851,12 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
 
 /*
  *
- * Class AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning
+ * Class AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning
  *
  * RuntimeClass can be activated.
  *
  * Class implements the following interfaces:
- *    AdaptiveCards.ObjectModel.Uwp.IAdaptiveWarning ** Default Interface **
+ *    AdaptiveCards.ObjectModel.WinAppSDK.IAdaptiveWarning ** Default Interface **
  *
  * Class Threading Model:  Both Single and Multi Threaded Apartment
  *
@@ -31866,7 +31866,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CUwp_CIAdaptiveWarnin
 
 #ifndef RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning_DEFINED
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning_DEFINED
-extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.Uwp.AdaptiveWarning";
+extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinAppSDK.AdaptiveWarning";
 #endif
 
 

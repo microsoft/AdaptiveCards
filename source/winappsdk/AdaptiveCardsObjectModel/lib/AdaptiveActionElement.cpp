@@ -5,11 +5,11 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::WinAppSDK;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     HRESULT AdaptiveActionElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
     {
@@ -22,13 +22,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetStyle(), m_style.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetTooltip(), m_tooltip.GetAddressOf()));
-        m_mode = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode>(sharedModel->GetMode());
+        m_mode = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode>(sharedModel->GetMode());
 
         m_isEnabled = sharedModel->GetIsEnabled();
 
         m_internalId = sharedModel->GetInternalId().Hash();
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
-        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content)
         {
             const auto fallbackObject =
                 std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent());
@@ -55,20 +55,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType* fallback)
+    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType* fallback)
     {
         *fallback = m_fallbackType;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** content)
+    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** content)
     {
         return m_fallbackContent.CopyTo(content);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackType(ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallback)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallback)
     {
-        if (fallback != ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        if (fallback != ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content)
         {
             m_fallbackContent.Reset();
         }
@@ -76,7 +76,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* content)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* content)
     {
         m_fallbackContent = content;
         return S_OK;
@@ -106,13 +106,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveActionElementBase::get_Mode(ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode* mode)
+    HRESULT AdaptiveActionElementBase::get_Mode(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode* mode)
     {
         *mode = m_mode;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionElementBase::put_Mode(ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode)
+    HRESULT AdaptiveActionElementBase::put_Mode(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode mode)
     {
         m_mode = mode;
         return S_OK;
@@ -153,7 +153,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         sharedCardElement.SetIsEnabled(m_isEnabled);
         sharedCardElement.SetMode(static_cast<Mode>(m_mode));
 
-        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content)
         {
             std::shared_ptr<AdaptiveCards::BaseActionElement> fallbackSharedModel;
             RETURN_IF_FAILED(GenerateSharedAction(m_fallbackContent.Get(), fallbackSharedModel));

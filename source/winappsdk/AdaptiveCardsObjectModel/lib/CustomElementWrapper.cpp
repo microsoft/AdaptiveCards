@@ -8,7 +8,7 @@ using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
-    CustomElementWrapper::CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement) :
+    CustomElementWrapper::CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* cardElement) :
         BaseCardElement(AdaptiveCards::CardElementType::Custom), m_cardElement(cardElement)
     {
         BaseElement::SetId(GetCardElementId());
@@ -25,7 +25,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     Spacing CustomElementWrapper::GetSpacing() const
     {
-        ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing;
         THROW_IF_FAILED(m_cardElement->get_Spacing(&spacing));
 
         return static_cast<Spacing>(spacing);
@@ -33,7 +33,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     void CustomElementWrapper::SetSpacing(Spacing value)
     {
-        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::Spacing>(value)));
+        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing>(value)));
     }
 
     void CustomElementWrapper::SetId(std::string&& value)
@@ -61,14 +61,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     void CustomElementWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources> remoteResources;
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementWithRemoteResources> remoteResources;
         if (SUCCEEDED(m_cardElement.As(&remoteResources)))
         {
             RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
         }
     }
 
-    HRESULT CustomElementWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** cardElement)
+    HRESULT CustomElementWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement** cardElement)
     {
         return m_cardElement.CopyTo(cardElement);
     }

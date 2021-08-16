@@ -43,7 +43,7 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     HRESULT AdaptiveHostConfigParseResult::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }

@@ -8,7 +8,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     class DECLSPEC_UUID("60F8A683-A7A3-4E34-BE86-C809F61BD5B6") AdaptiveBackgroundImage
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage,
+                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveBackgroundImage,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveBackgroundImage);
@@ -21,14 +21,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Url(_Outptr_ HSTRING* url);
         IFACEMETHODIMP put_Url(_In_ HSTRING url);
 
-        IFACEMETHODIMP get_FillMode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode* fillMode);
-        IFACEMETHODIMP put_FillMode(ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode fillMode);
+        IFACEMETHODIMP get_FillMode(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode* fillMode);
+        IFACEMETHODIMP put_FillMode(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode fillMode);
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment HorizontalAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment* HorizontalAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment HorizontalAlignment);
 
-        IFACEMETHODIMP get_VerticalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment* VerticalAlignment);
-        IFACEMETHODIMP put_VerticalAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment VerticalAlignment);
+        IFACEMETHODIMP get_VerticalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment* VerticalAlignment);
+        IFACEMETHODIMP put_VerticalAlignment(ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment VerticalAlignment);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BackgroundImage>& sharedModel);
 
@@ -37,9 +37,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     private:
         Microsoft::WRL::Wrappers::HString m_url;
-        ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode m_fillMode;
-        ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment m_horizontalAlignment;
-        ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment m_verticalAlignment;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::BackgroundImageFillMode m_fillMode;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment m_horizontalAlignment;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::VAlignment m_verticalAlignment;
     };
     ActivatableClass(AdaptiveBackgroundImage);
 }

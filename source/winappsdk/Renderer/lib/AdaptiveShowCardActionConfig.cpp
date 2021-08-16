@@ -20,31 +20,31 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {
-        m_actionMode = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ActionMode>(sharedShowCardActionConfig.actionMode);
-        m_containerStyle = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedShowCardActionConfig.style);
+        m_actionMode = static_cast<ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode>(sharedShowCardActionConfig.actionMode);
+        m_containerStyle = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle>(sharedShowCardActionConfig.style);
         m_inlineTopMargin = sharedShowCardActionConfig.inlineTopMargin;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::get_ActionMode(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionMode* value)
+    HRESULT AdaptiveShowCardActionConfig::get_ActionMode(_Out_ ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode* value)
     {
         *value = m_actionMode;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Rendering::Uwp::ActionMode value)
+    HRESULT AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveCards::Rendering::WinAppSDK::ActionMode value)
     {
         m_actionMode = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveShowCardActionConfig::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* style)
     {
         *style = m_containerStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style)
+    HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style)
     {
         m_containerStyle = style;
         return S_OK;

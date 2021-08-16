@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveSpacingConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSpacingConfig>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveSpacingConfig>
     {
         AdaptiveRuntime(AdaptiveSpacingConfig);
 

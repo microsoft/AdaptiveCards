@@ -8,7 +8,7 @@ using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
-    CustomActionWrapper::CustomActionWrapper(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* actionElement) :
+    CustomActionWrapper::CustomActionWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* actionElement) :
         AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom), m_actionElement(actionElement)
     {
         BaseElement::SetId(GetActionElementId());
@@ -50,14 +50,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return jsonCppValue;
     }
 
-    HRESULT CustomActionWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** actionElement)
+    HRESULT CustomActionWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** actionElement)
     {
         return m_actionElement.CopyTo(actionElement);
     }
 
     void CustomActionWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources> remoteResources;
+        ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementWithRemoteResources> remoteResources;
         if (SUCCEEDED(m_actionElement.As(&remoteResources)))
         {
             RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);

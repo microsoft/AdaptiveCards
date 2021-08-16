@@ -28,7 +28,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         }
 
         m_associatedInputs =
-            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedExecuteAction->GetVerb(), m_verb.GetAddressOf()));
 
@@ -37,9 +37,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveExecuteAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
+    HRESULT AdaptiveExecuteAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Execute;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Execute;
         return S_OK;
     }
 
@@ -51,13 +51,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs* associatedInputs)
+    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs* associatedInputs)
     {
         *associatedInputs = m_associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveExecuteAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs associatedInputs)
+    HRESULT AdaptiveExecuteAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs associatedInputs)
     {
         m_associatedInputs = associatedInputs;
         return S_OK;

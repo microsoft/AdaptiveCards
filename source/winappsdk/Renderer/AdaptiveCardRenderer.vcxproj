@@ -89,7 +89,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>.\dll\AdaptiveCards.Rendering.Uwp.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>.\dll\AdaptiveCards.Rendering.WinAppSDK.def</ModuleDefinitionFile>
       <AdditionalDependencies>
         user32.lib;
         %(AdditionalDependencies);
@@ -339,7 +339,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl">
+    <Midl Include="idl\AdaptiveCards.Rendering.WinAppSDK.idl">
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <!-- Enable Windows Runtime ABI header files. when /reference is passed to midl.exe, the ABI head includes headers
            like Windows.AI.MachineLearning.MachineLearningContract.h which doesn't exist actually in SDK. To workaround

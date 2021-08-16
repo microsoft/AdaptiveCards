@@ -33,7 +33,7 @@ namespace PerfApp
 
         Platform::String^ m_currentFile;
 
-        AdaptiveCards::Rendering::Uwp::AdaptiveCardRenderer ^ m_renderer;
+        AdaptiveCards::Rendering::WinAppSDK::AdaptiveCardRenderer ^ m_renderer;
         void runButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
         void resetButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
     };

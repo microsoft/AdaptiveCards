@@ -15,35 +15,35 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveTextElement::put_Text(_In_ HSTRING text) { return m_text.Set(text); }
 
-    HRESULT AdaptiveTextElement::get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>** textSize)
+    HRESULT AdaptiveTextElement::get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>** textSize)
     {
         return m_textSize.CopyTo(textSize);
     }
 
-    HRESULT AdaptiveTextElement::put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>* textSize)
+    HRESULT AdaptiveTextElement::put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>* textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextElement::get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>** textWeight)
+    HRESULT AdaptiveTextElement::get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>** textWeight)
     {
         return m_textWeight.CopyTo(textWeight);
     }
 
-    HRESULT AdaptiveTextElement::put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>* textWeight)
+    HRESULT AdaptiveTextElement::put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>* textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
     HRESULT AdaptiveTextElement::get_Color(
-        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>** foregroundColor)
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>** foregroundColor)
     {
         return m_foregroundColor.CopyTo(foregroundColor);
     }
 
-    HRESULT AdaptiveTextElement::put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>* foregroundColor)
+    HRESULT AdaptiveTextElement::put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>* foregroundColor)
     {
         m_foregroundColor = foregroundColor;
         return S_OK;
@@ -64,12 +64,12 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveTextElement::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
 
-    HRESULT AdaptiveTextElement::get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>** fontType)
+    HRESULT AdaptiveTextElement::get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>** fontType)
     {
         return m_fontType.CopyTo(fontType);
     }
 
-    HRESULT AdaptiveTextElement::put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>* fontType)
+    HRESULT AdaptiveTextElement::put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>* fontType)
     {
         m_fontType = fontType;
         return S_OK;

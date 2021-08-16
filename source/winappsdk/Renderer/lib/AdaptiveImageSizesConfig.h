@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveImageSizesConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveImageSizesConfig>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveImageSizesConfig>
     {
         AdaptiveRuntime(AdaptiveImageSizesConfig);
 

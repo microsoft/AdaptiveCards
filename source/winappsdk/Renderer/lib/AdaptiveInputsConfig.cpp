@@ -25,23 +25,23 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveInputsConfig::get_ErrorMessage(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveErrorMessageConfig** errorMessage)
+    HRESULT AdaptiveInputsConfig::get_ErrorMessage(_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveErrorMessageConfig** errorMessage)
     {
         return m_errorMessage.CopyTo(errorMessage);
     }
 
-    HRESULT AdaptiveInputsConfig::put_ErrorMessage(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveErrorMessageConfig* errorMessage)
+    HRESULT AdaptiveInputsConfig::put_ErrorMessage(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveErrorMessageConfig* errorMessage)
     {
         m_errorMessage = errorMessage;
         return S_OK;
     }
 
-    HRESULT AdaptiveInputsConfig::get_Label(_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveLabelConfig** inputLabels)
+    HRESULT AdaptiveInputsConfig::get_Label(_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveLabelConfig** inputLabels)
     {
         return m_label.CopyTo(inputLabels);
     }
 
-    HRESULT AdaptiveInputsConfig::put_Label(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveLabelConfig* inputLabels)
+    HRESULT AdaptiveInputsConfig::put_Label(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveLabelConfig* inputLabels)
     {
         m_label = inputLabels;
         return S_OK;

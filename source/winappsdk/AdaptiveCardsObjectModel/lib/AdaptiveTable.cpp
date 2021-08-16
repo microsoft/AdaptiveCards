@@ -15,9 +15,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     AdaptiveTable::AdaptiveTable()
     {
-        m_rows = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*>>();
+        m_rows = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*>>();
         m_columnDefinitions =
-            Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*>>();
+            Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*>>();
     }
 
     HRESULT AdaptiveTable::RuntimeClassInitialize() noexcept
@@ -37,22 +37,22 @@ namespace AdaptiveCards::ObjectModel::Uwp
         if (sharedTable->GetVerticalCellContentAlignment().has_value())
         {
             m_verticalCellContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>(
                                      sharedTable->GetVerticalCellContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>>()
                     .get();
         }
 
         if (sharedTable->GetHorizontalCellContentAlignment().has_value())
         {
             m_horizontalCellContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>(
                                      sharedTable->GetHorizontalCellContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>>()
                     .get();
         }
 
-        m_gridStyle = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedTable->GetGridStyle());
+        m_gridStyle = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle>(sharedTable->GetGridStyle());
 
         GenerateTableRowsProjection(sharedTable->GetRows(), m_rows.Get());
         GenerateTableColumnDefinitionsProjection(sharedTable->GetColumns(), m_columnDefinitions.Get());
@@ -63,19 +63,19 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTable::get_ElementType(ABI::AdaptiveCards::ObjectModel::Uwp::ElementType* elementType)
+    HRESULT AdaptiveTable::get_ElementType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType* elementType)
     {
         *elementType = ElementType::Table;
         return S_OK;
     }
 
-    HRESULT AdaptiveTable::get_Rows(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow*>** rows)
+    HRESULT AdaptiveTable::get_Rows(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableRow*>** rows)
     {
         return m_rows.CopyTo(rows);
     }
 
     HRESULT AdaptiveTable::get_Columns(
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition*>** columns)
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableColumnDefinition*>** columns)
     {
         return m_columnDefinitions.CopyTo(columns);
     }
@@ -105,38 +105,38 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
 
     HRESULT AdaptiveTable::get_VerticalCellContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>** verticalCellContentAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>** verticalCellContentAlignment)
     {
         return m_verticalCellContentAlignment.CopyTo(verticalCellContentAlignment);
     }
 
     HRESULT AdaptiveTable::put_VerticalCellContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>* verticalCellContentAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>* verticalCellContentAlignment)
     {
         m_verticalCellContentAlignment = verticalCellContentAlignment;
         return S_OK;
     }
 
     HRESULT AdaptiveTable::get_HorizontalCellContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>** horizontalCellContentAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalCellContentAlignment)
     {
         return m_horizontalCellContentAlignment.CopyTo(horizontalCellContentAlignment);
     }
 
     HRESULT AdaptiveTable::put_HorizontalCellContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>* horizontalCellContentAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalCellContentAlignment)
     {
         m_horizontalCellContentAlignment = horizontalCellContentAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTable::get_GridStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* gridStyle)
+    HRESULT AdaptiveTable::get_GridStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* gridStyle)
     {
         *gridStyle = m_gridStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveTable::put_GridStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle gridStyle)
+    HRESULT AdaptiveTable::put_GridStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle gridStyle)
     {
         m_gridStyle = gridStyle;
         return S_OK;
@@ -154,14 +154,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         if (m_verticalCellContentAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalCellContentAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalCellContentAlignmentValue;
             RETURN_IF_FAILED(m_verticalCellContentAlignment->get_Value(&verticalCellContentAlignmentValue));
             table->SetVerticalCellContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalCellContentAlignmentValue));
         }
 
         if (m_horizontalCellContentAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment horizontalCellContentAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment horizontalCellContentAlignmentValue;
             RETURN_IF_FAILED(m_horizontalCellContentAlignment->get_Value(&horizontalCellContentAlignmentValue));
             table->SetHorizontalCellContentAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalCellContentAlignmentValue));
         }

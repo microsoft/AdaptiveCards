@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveContainerStyleDefinition
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveContainerStyleDefinition>
     {
         AdaptiveRuntime(AdaptiveContainerStyleDefinition);
 
@@ -20,17 +20,17 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_BorderColor(_Out_ ABI::Windows::UI::Color* value);
         IFACEMETHODIMP put_BorderColor(ABI::Windows::UI::Color value);
 
-        IFACEMETHODIMP get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig** colorsConfig);
-        IFACEMETHODIMP put_ForegroundColors(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig* colorsConfig);
+        IFACEMETHODIMP get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig** colorsConfig);
+        IFACEMETHODIMP put_ForegroundColors(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig* colorsConfig);
 
-        IFACEMETHODIMP get_HighlightColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig** colorsConfig);
-        IFACEMETHODIMP put_HighlightColors(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig* colorsConfig);
+        IFACEMETHODIMP get_HighlightColors(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig** colorsConfig);
+        IFACEMETHODIMP put_HighlightColors(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig* colorsConfig);
 
     private:
         ABI::Windows::UI::Color m_backgroundColor;
         ABI::Windows::UI::Color m_borderColor;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig> m_foregroundColors;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveColorsConfig> m_highlightColors;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig> m_foregroundColors;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveColorsConfig> m_highlightColors;
     };
 
     ActivatableClass(AdaptiveContainerStyleDefinition);

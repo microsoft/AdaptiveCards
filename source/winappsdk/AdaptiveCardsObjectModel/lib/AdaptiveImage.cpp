@@ -33,17 +33,17 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetBackgroundColor(), m_backgroundColor.GetAddressOf()));
 
-        m_imageStyle = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle>(sharedImage->GetImageStyle());
-        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize>(sharedImage->GetImageSize());
+        m_imageStyle = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle>(sharedImage->GetImageStyle());
+        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize>(sharedImage->GetImageSize());
         m_pixelWidth = sharedImage->GetPixelWidth();
         m_pixelHeight = sharedImage->GetPixelHeight();
 
         if (sharedImage->GetHorizontalAlignment().has_value())
         {
             m_horizontalAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>(
                                      sharedImage->GetHorizontalAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>>()
                     .get();
         }
 
@@ -69,25 +69,25 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return m_backgroundColor.Set(backgroundColor);
     }
 
-    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle* imageStyle)
+    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle* imageStyle)
     {
         *imageStyle = m_imageStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ImageStyle imageStyle)
+    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageStyle imageStyle)
     {
         m_imageStyle = imageStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize* imageSize)
+    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::ObjectModel::Uwp::ImageSize imageSize)
+    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
@@ -122,13 +122,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
     HRESULT AdaptiveImage::put_AltText(_In_ HSTRING text) { return m_altText.Set(text); }
 
     HRESULT AdaptiveImage::get_HorizontalAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>** horizontalAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalAlignment)
     {
         return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
     HRESULT AdaptiveImage::put_HorizontalAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>* horizontalAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalAlignment)
     {
         m_horizontalAlignment = horizontalAlignment;
         return S_OK;
@@ -182,7 +182,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         if (m_horizontalAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment horizontalAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment horizontalAlignmentValue;
             RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
             image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
         }

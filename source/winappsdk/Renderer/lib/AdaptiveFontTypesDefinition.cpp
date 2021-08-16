@@ -26,23 +26,23 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveFontTypesDefinition::get_Default(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** value)
+    HRESULT AdaptiveFontTypesDefinition::get_Default(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypeDefinition** value)
     {
         return m_default.CopyTo(value);
     }
 
-    HRESULT AdaptiveFontTypesDefinition::put_Default(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* value)
+    HRESULT AdaptiveFontTypesDefinition::put_Default(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypeDefinition* value)
     {
         m_default = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveFontTypesDefinition::get_Monospace(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition** value)
+    HRESULT AdaptiveFontTypesDefinition::get_Monospace(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypeDefinition** value)
     {
         return m_monospace.CopyTo(value);
     }
 
-    HRESULT AdaptiveFontTypesDefinition::put_Monospace(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontTypeDefinition* value)
+    HRESULT AdaptiveFontTypesDefinition::put_Monospace(_In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontTypeDefinition* value)
     {
         m_monospace = value;
         return S_OK;

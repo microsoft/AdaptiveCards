@@ -37,20 +37,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard** card)
     {
         return m_card.CopyTo(card);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* card)
     {
         m_card = card;
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::ShowCard;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::ShowCard;
         return S_OK;
     }
 
@@ -60,8 +60,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
         std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
         RETURN_IF_FAILED(CopySharedElementProperties(*showCardAction));
 
-        ComPtr<AdaptiveCards::ObjectModel::Uwp::AdaptiveCard> card =
-            PeekInnards<AdaptiveCards::ObjectModel::Uwp::AdaptiveCard>(m_card);
+        ComPtr<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveCard> card =
+            PeekInnards<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveCard>(m_card);
 
         std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedCard;
         RETURN_IF_FAILED(card->GetSharedModel(sharedCard));

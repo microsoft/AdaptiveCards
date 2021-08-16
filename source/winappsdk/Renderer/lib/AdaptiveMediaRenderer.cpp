@@ -46,7 +46,7 @@ namespace AdaptiveCards::Rendering::Uwp
         // If the host doesn't support interactivity we're done here, just return the poster image
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
+            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::InteractivityNotSupported,
                                       HStringReference(L"Media was present in card, but interactivity is not supported").Get());
 
             if (posterImage != nullptr)
@@ -99,7 +99,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
             if (mediaSourceUrl == nullptr)
             {
-                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::UnsupportedMediaType,
+                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::UnsupportedMediaType,
                                           HStringReference(L"Unsupported media element dropped").Get());
                 return S_OK;
             }

@@ -16,9 +16,9 @@ using namespace ABI::Windows::Foundation::Collections;
 namespace AdaptiveCards::ObjectModel::Uwp
 {
     AdaptiveColumnSet::AdaptiveColumnSet() :
-        m_bleedDirection(ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
+        m_bleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
     {
-        m_columns = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*>>();
+        m_columns = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*>>();
     }
 
     HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept
@@ -40,11 +40,11 @@ namespace AdaptiveCards::ObjectModel::Uwp
         GenerateColumnsProjection(sharedColumnSet->GetColumns(), m_columns.Get());
         GenerateActionProjection(sharedColumnSet->GetSelectAction(), &m_selectAction);
 
-        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedColumnSet->GetStyle());
+        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle>(sharedColumnSet->GetStyle());
         m_minHeight = sharedColumnSet->GetMinHeight();
         m_bleed = sharedColumnSet->GetBleed();
         m_bleedDirection =
-            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection>(sharedColumnSet->GetBleedDirection());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection>(sharedColumnSet->GetBleedDirection());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumnSet));
 
@@ -52,7 +52,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn*>** columns)
+    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumn*>** columns)
     {
         return m_columns.CopyTo(columns);
     }
@@ -68,13 +68,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveColumnSet::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveColumnSet::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveColumnSet::put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style)
+    HRESULT AdaptiveColumnSet::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
@@ -104,7 +104,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveColumnSet::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection* bleedDirection)
+    HRESULT AdaptiveColumnSet::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection* bleedDirection)
     {
         // TODO: Current behavior is broken because it doesn't update when bleed updates. Unfortunately, neither does
         // the shared model logic. https://github.com/Microsoft/AdaptiveCards/issues/2678

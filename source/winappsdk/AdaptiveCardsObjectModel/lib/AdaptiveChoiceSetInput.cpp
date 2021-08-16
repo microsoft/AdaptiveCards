@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
-        m_choices = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*>>();
+        m_choices = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*>>();
     }
 
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept
@@ -41,7 +41,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
         m_wrap = sharedChoiceSetInput->GetWrap();
         m_choiceSetStyle =
-            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
 
@@ -81,19 +81,19 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle* choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::ObjectModel::Uwp::ChoiceSetStyle choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ChoiceSetStyle choiceSetStyle)
     {
         m_choiceSetStyle = choiceSetStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput*>** choices)
+    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceInput*>** choices)
     {
         return m_choices.CopyTo(choices);
     }

@@ -107,7 +107,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
             RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
 
-            ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>> warnings;
+            ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>> warnings;
             RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
 
             RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(sharedParseResult->GetWarnings(), warnings.Get()));
@@ -116,11 +116,11 @@ namespace AdaptiveCards::ObjectModel::Uwp
         }
         catch (const AdaptiveCardParseException& e)
         {
-            ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>> errors;
+            ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*>> errors;
             RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
             HString errorMessage;
-            ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode statusCode =
-                static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode>(e.GetStatusCode());
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode statusCode =
+                static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode>(e.GetStatusCode());
             RETURN_IF_FAILED(UTF8ToHString(e.GetReason(), errorMessage.GetAddressOf()));
             ComPtr<IAdaptiveError> adaptiveError;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
@@ -158,10 +158,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetLanguage(), m_language.GetAddressOf()));
 
-        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedAdaptiveCard->GetStyle());
-        m_verticalAlignment = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>(
+        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+        m_verticalAlignment = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>(
             sharedAdaptiveCard->GetVerticalContentAlignment());
-        m_height = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::HeightType>(sharedAdaptiveCard->GetHeight());
+        m_height = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType>(sharedAdaptiveCard->GetHeight());
         m_minHeight = sharedAdaptiveCard->GetMinHeight();
 
         auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
@@ -243,13 +243,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveCard::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style)
+    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
@@ -259,25 +259,25 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveCard::put_Speak(_In_ HSTRING speak) { return m_speak.Set(speak); }
 
-    HRESULT AdaptiveCard::get_VerticalContentAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment* verticalAlignment)
+    HRESULT AdaptiveCard::get_VerticalContentAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment* verticalAlignment)
     {
         *verticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::put_VerticalContentAlignment(ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalAlignment)
+    HRESULT AdaptiveCard::put_VerticalContentAlignment(ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalAlignment)
     {
         m_verticalAlignment = verticalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HeightType* heightType)
+    HRESULT AdaptiveCard::get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType* heightType)
     {
         *heightType = m_height;
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::put_Height(ABI::AdaptiveCards::ObjectModel::Uwp::HeightType heightType)
+    HRESULT AdaptiveCard::put_Height(ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType heightType)
     {
         m_height = heightType;
         return S_OK;
@@ -295,23 +295,23 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::get_Refresh(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRefresh** refresh)
+    HRESULT AdaptiveCard::get_Refresh(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRefresh** refresh)
     {
         return m_refresh.CopyTo(refresh);
     }
 
-    HRESULT AdaptiveCard::put_Refresh(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRefresh* refresh)
+    HRESULT AdaptiveCard::put_Refresh(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRefresh* refresh)
     {
         m_refresh = refresh;
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::get_Authentication(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthentication** authentication)
+    HRESULT AdaptiveCard::get_Authentication(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthentication** authentication)
     {
         return m_authentication.CopyTo(authentication);
     }
 
-    HRESULT AdaptiveCard::put_Authentication(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthentication* authentication)
+    HRESULT AdaptiveCard::put_Authentication(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthentication* authentication)
     {
         m_authentication = authentication;
         return S_OK;
@@ -379,18 +379,18 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
 
     HRESULT AdaptiveCard::GetResourceInformation(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*>** resourceInformationView)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*>** resourceInformationView)
     {
         std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
         GetSharedModel(sharedModel);
 
         std::vector<RemoteResourceInformation> sharedResourceInformationVector = sharedModel->GetResourceInformation();
 
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*>> resourceInformation =
-            Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation*>>();
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*>> resourceInformation =
+            Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRemoteResourceInformation*>>();
         for (auto sharedResourceInformation : sharedResourceInformationVector)
         {
-            ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveRemoteResourceInformation> remoteResourceInformation;
+            ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveRemoteResourceInformation> remoteResourceInformation;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRemoteResourceInformation>(remoteResourceInformation.GetAddressOf(),
                                                                                   sharedResourceInformation));
 

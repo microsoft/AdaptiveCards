@@ -32,9 +32,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
         if (sharedRichTextBlock->GetHorizontalAlignment().has_value())
         {
             m_horizontalAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>(
                                      sharedRichTextBlock->GetHorizontalAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>>()
                     .get();
         }
 
@@ -46,20 +46,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
     CATCH_RETURN;
 
     HRESULT AdaptiveRichTextBlock::get_HorizontalAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>** horizontalAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalAlignment)
     {
         return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
     HRESULT AdaptiveRichTextBlock::put_HorizontalAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>* horizontalAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalAlignment)
     {
         m_horizontalAlignment = horizontalAlignment;
         return S_OK;
     }
 
     HRESULT AdaptiveRichTextBlock::get_Inlines(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>** inlines)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInline*>** inlines)
     {
         return m_inlines.CopyTo(inlines);
     }
@@ -79,7 +79,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         if (m_horizontalAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment horizontalAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment horizontalAlignmentValue;
             RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
             richTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
         }

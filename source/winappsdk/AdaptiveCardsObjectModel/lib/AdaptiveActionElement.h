@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinAppSDK
 {
     class DECLSPEC_UUID("CDCCC115-7C53-4A04-9F5B-754BBC00C80E") AdaptiveActionElementBase : public IUnknown
     {
@@ -19,10 +19,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType* fallback);
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallback);
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** content);
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* content);
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType* fallback);
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallback);
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** content);
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* content);
 
         IFACEMETHODIMP get_IconUrl(_Outptr_ HSTRING* iconUrl);
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl);
@@ -36,8 +36,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_IsEnabled(_Out_ boolean* isEnabled);
         IFACEMETHODIMP put_IsEnabled(boolean isEnabled);
 
-        IFACEMETHODIMP get_Mode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode* mode);
-        IFACEMETHODIMP put_Mode(ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode);
+        IFACEMETHODIMP get_Mode(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode* mode);
+        IFACEMETHODIMP put_Mode(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode mode);
 
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
@@ -58,8 +58,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
         Microsoft::WRL::Wrappers::HString m_typeString;
         boolean m_isEnabled;
         UINT32 m_internalId;
-        ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType m_fallbackType;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> m_fallbackContent;
-        ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode m_mode;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType m_fallbackType;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement> m_fallbackContent;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode m_mode;
     };
 }

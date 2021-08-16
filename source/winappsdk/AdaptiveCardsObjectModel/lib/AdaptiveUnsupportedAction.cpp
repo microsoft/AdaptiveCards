@@ -29,9 +29,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveUnsupportedAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
+    HRESULT AdaptiveUnsupportedAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Unsupported;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Unsupported;
         return S_OK;
     }
 

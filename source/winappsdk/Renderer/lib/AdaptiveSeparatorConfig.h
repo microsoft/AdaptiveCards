@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveSeparatorConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveSeparatorConfig>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveSeparatorConfig>
     {
         AdaptiveRuntime(AdaptiveSeparatorConfig);
 

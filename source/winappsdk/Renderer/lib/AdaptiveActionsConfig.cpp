@@ -5,10 +5,10 @@
 #include "AdaptiveShowCardActionConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::Rendering::WinAppSDK;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace AdaptiveCards::Rendering::WinAppSDK
 {
     HRESULT AdaptiveActionsConfig::RuntimeClassInitialize() noexcept
     try
@@ -20,12 +20,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveActionsConfig::RuntimeClassInitialize(AdaptiveCards::ActionsConfig actionsConfig) noexcept
     {
-        m_actionAlignment = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment>(actionsConfig.actionAlignment);
-        m_actionsOrientation = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation>(actionsConfig.actionsOrientation);
+        m_actionAlignment = static_cast<ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment>(actionsConfig.actionAlignment);
+        m_actionsOrientation = static_cast<ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation>(actionsConfig.actionsOrientation);
         m_buttonSpacing = actionsConfig.buttonSpacing;
         m_maxActions = actionsConfig.maxActions;
-        m_spacing = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::Spacing>(actionsConfig.spacing);
-        m_iconPlacement = static_cast<ABI::AdaptiveCards::Rendering::Uwp::IconPlacement>(actionsConfig.iconPlacement);
+        m_spacing = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing>(actionsConfig.spacing);
+        m_iconPlacement = static_cast<ABI::AdaptiveCards::Rendering::WinAppSDK::IconPlacement>(actionsConfig.iconPlacement);
         m_iconSize = actionsConfig.iconSize;
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveShowCardActionConfig>(m_showCardActionConfig.GetAddressOf(),
@@ -69,49 +69,49 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* value)
+    HRESULT AdaptiveActionsConfig::get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing* value)
     {
         *value = m_spacing;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveCards::ObjectModel::Uwp::Spacing value)
+    HRESULT AdaptiveActionsConfig::put_Spacing(ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing value)
     {
         m_spacing = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::get_ActionAlignment(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment* value)
+    HRESULT AdaptiveActionsConfig::get_ActionAlignment(_Out_ ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment* value)
     {
         *value = m_actionAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::put_ActionAlignment(ABI::AdaptiveCards::Rendering::Uwp::ActionAlignment value)
+    HRESULT AdaptiveActionsConfig::put_ActionAlignment(ABI::AdaptiveCards::Rendering::WinAppSDK::ActionAlignment value)
     {
         m_actionAlignment = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::get_ActionsOrientation(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation* value)
+    HRESULT AdaptiveActionsConfig::get_ActionsOrientation(_Out_ ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation* value)
     {
         *value = m_actionsOrientation;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::put_ActionsOrientation(ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation value)
+    HRESULT AdaptiveActionsConfig::put_ActionsOrientation(ABI::AdaptiveCards::Rendering::WinAppSDK::ActionsOrientation value)
     {
         m_actionsOrientation = value;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::get_IconPlacement(_Out_ ABI::AdaptiveCards::Rendering::Uwp::IconPlacement* value)
+    HRESULT AdaptiveActionsConfig::get_IconPlacement(_Out_ ABI::AdaptiveCards::Rendering::WinAppSDK::IconPlacement* value)
     {
         *value = m_iconPlacement;
         return S_OK;
     }
 
-    HRESULT AdaptiveActionsConfig::put_IconPlacement(ABI::AdaptiveCards::Rendering::Uwp::IconPlacement value)
+    HRESULT AdaptiveActionsConfig::put_IconPlacement(ABI::AdaptiveCards::Rendering::WinAppSDK::IconPlacement value)
     {
         m_iconPlacement = value;
         return S_OK;

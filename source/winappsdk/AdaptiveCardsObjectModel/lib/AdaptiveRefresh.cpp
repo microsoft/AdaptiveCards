@@ -32,12 +32,12 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveRefresh::get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** action)
+    HRESULT AdaptiveRefresh::get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** action)
     {
         return m_action.CopyTo(action);
     }
 
-    HRESULT AdaptiveRefresh::put_Action(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action)
+    HRESULT AdaptiveRefresh::put_Action(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action)
     {
         m_action = action;
         return S_OK;

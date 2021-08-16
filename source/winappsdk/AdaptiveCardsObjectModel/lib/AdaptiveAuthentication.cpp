@@ -34,11 +34,11 @@ namespace AdaptiveCards::ObjectModel::Uwp
             MakeAndInitialize<AdaptiveTokenExchangeResource>(m_tokenExchangeResource.GetAddressOf(), tokenExchangeResource);
         }
 
-        m_buttons = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*>>();
+        m_buttons = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*>>();
         for (auto& button : sharedAuthentication->GetButtons())
         {
-            ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton> adaptiveAuthCardButton;
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton>(&adaptiveAuthCardButton, button));
+            ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton> adaptiveAuthCardButton;
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton>(&adaptiveAuthCardButton, button));
 
             RETURN_IF_FAILED(m_buttons->Append(adaptiveAuthCardButton.Detach()));
         }
@@ -61,18 +61,18 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
 
     HRESULT AdaptiveAuthentication::get_TokenExchangeResource(
-        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTokenExchangeResource** tokenExchangeResource)
+        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTokenExchangeResource** tokenExchangeResource)
     {
         return m_tokenExchangeResource.CopyTo(tokenExchangeResource);
     }
 
-    HRESULT AdaptiveAuthentication::put_TokenExchangeResource(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTokenExchangeResource* tokenExchangeResource)
+    HRESULT AdaptiveAuthentication::put_TokenExchangeResource(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTokenExchangeResource* tokenExchangeResource)
     {
         m_tokenExchangeResource = tokenExchangeResource;
         return S_OK;
     }
 
-    HRESULT AdaptiveAuthentication::get_Buttons(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*>** buttons)
+    HRESULT AdaptiveAuthentication::get_Buttons(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton*>** buttons)
     {
         return m_buttons.CopyTo(buttons);
     }
@@ -101,10 +101,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         if (m_buttons)
         {
-            IterateOverVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton>(
-                m_buttons.Get(), [&](ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthCardButton* authCardButton) {
-                    ComPtr<AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton> buttonImpl =
-                        PeekInnards<AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton>(authCardButton);
+            IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton, ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton>(
+                m_buttons.Get(), [&](ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveAuthCardButton* authCardButton) {
+                    ComPtr<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton> buttonImpl =
+                        PeekInnards<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveAuthCardButton>(authCardButton);
 
                     std::shared_ptr<AdaptiveCards::AuthCardButton> sharedAuthCardButton;
                     RETURN_IF_FAILED(buttonImpl->GetSharedModel(sharedAuthCardButton));

@@ -11,7 +11,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     HRESULT AdaptiveWarning::RuntimeClassInitialize() { return S_OK; }
 
-    HRESULT AdaptiveWarning::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode,
+    HRESULT AdaptiveWarning::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode statusCode,
                                                     _In_ HSTRING message)
     {
         m_statusCode = statusCode;
@@ -19,13 +19,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveWarning::get_StatusCode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode* value)
+    HRESULT AdaptiveWarning::get_StatusCode(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode* value)
     {
         *value = m_statusCode;
         return S_OK;
     }
 
-    HRESULT AdaptiveWarning::put_StatusCode(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode value)
+    HRESULT AdaptiveWarning::put_StatusCode(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode value)
     {
         m_statusCode = value;
         return S_OK;

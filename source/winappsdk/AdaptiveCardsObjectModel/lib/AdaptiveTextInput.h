@@ -9,11 +9,11 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     class DECLSPEC_UUID("2e716e94-a83a-4e9b-9873-bff858af068d") AdaptiveTextInput
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement,
+                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveTextInput,
+                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement,
+                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::Uwp::AdaptiveInputElementBase>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveInputElementBase>>
     {
         AdaptiveRuntime(AdaptiveTextInput);
 
@@ -34,11 +34,11 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_MaxLength(_Out_ UINT32* value) override;
         IFACEMETHODIMP put_MaxLength(UINT32 value) override;
 
-        IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle* textInputStyle) override;
-        IFACEMETHODIMP put_TextInputStyle(ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle textInputStyle) override;
+        IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle* textInputStyle) override;
+        IFACEMETHODIMP put_TextInputStyle(ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle textInputStyle) override;
 
-        IFACEMETHODIMP get_InlineAction(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** action) override;
-        IFACEMETHODIMP put_InlineAction(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action) override;
+        IFACEMETHODIMP get_InlineAction(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** action) override;
+        IFACEMETHODIMP put_InlineAction(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action) override;
 
         IFACEMETHODIMP get_Regex(_Outptr_ HSTRING* regex) override;
         IFACEMETHODIMP put_Regex(_In_ HSTRING regex) override;
@@ -70,13 +70,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP put_Label(_In_ HSTRING label) override { return AdaptiveInputElementBase::put_Label(label); }
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ElementType* elementType) override;
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ElementType* elementType) override;
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* spacing) override
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing* spacing) override
         {
             return AdaptiveCardElementBase::get_Spacing(spacing);
         }
-        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing) override
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing) override
         {
             return AdaptiveCardElementBase::put_Spacing(spacing);
         }
@@ -102,21 +102,21 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) override { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) override { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType* fallback) override
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType* fallback) override
         {
             return AdaptiveCardElementBase::get_FallbackType(fallback);
         }
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** content) override
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement** content) override
         {
             return AdaptiveCardElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallback) override
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallback) override
         {
             return AdaptiveCardElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* content) override
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* content) override
         {
             return AdaptiveCardElementBase::put_FallbackContent(content);
         }
@@ -136,7 +136,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         }
 
         IFACEMETHODIMP get_Requirements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>** requirements) override
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>** requirements) override
         {
             return AdaptiveCardElementBase::get_Requirements(requirements);
         }
@@ -148,11 +148,11 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
 
-        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HeightType* height) override
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType* height) override
         {
             return AdaptiveCardElementBase::get_Height(height);
         }
-        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::ObjectModel::Uwp::HeightType height) override
+        IFACEMETHODIMP put_Height(ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType height) override
         {
             return AdaptiveCardElementBase::put_Height(height);
         }
@@ -165,8 +165,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
         Microsoft::WRL::Wrappers::HString m_value;
         UINT32 m_maxLength;
         boolean m_isMultiline;
-        ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle m_textInputStyle;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> m_inlineAction;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle m_textInputStyle;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement> m_inlineAction;
         Microsoft::WRL::Wrappers::HString m_regex;
     };
 

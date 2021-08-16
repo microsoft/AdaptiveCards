@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveFontWeightsConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontWeightsConfig>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFontWeightsConfig>
     {
         AdaptiveRuntime(AdaptiveFontWeightsConfig);
 

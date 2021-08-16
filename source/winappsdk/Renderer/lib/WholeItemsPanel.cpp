@@ -258,11 +258,11 @@ namespace AdaptiveCards::Rendering::Uwp
         }
         else
         {
-            if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Center)
+            if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment::Center)
             {
                 currentHeight = (finalSize.Height - m_calculatedSize) / 2;
             }
-            else if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment::Bottom)
+            else if (m_verticalContentAlignment == ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment::Bottom)
             {
                 currentHeight = finalSize.Height - m_calculatedSize;
             }
@@ -438,7 +438,7 @@ namespace AdaptiveCards::Rendering::Uwp
         boolean isStretchable = false;
         if (tagAsInspectable != nullptr)
         {
-            ComPtr<AdaptiveCards::Rendering::Uwp::IElementTagContent> tagContent;
+            ComPtr<AdaptiveCards::Rendering::WinAppSDK::IElementTagContent> tagContent;
             THROW_IF_FAILED(tagAsInspectable.As(&tagContent));
             THROW_IF_FAILED(tagContent->get_IsStretchable(&isStretchable));
         }
@@ -446,7 +446,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return isStretchable;
     }
 
-    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignment)
+    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignment)
     {
         m_verticalContentAlignment = verticalContentAlignment;
     }

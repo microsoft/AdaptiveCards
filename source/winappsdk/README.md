@@ -1,6 +1,6 @@
-# Adaptive Cards in UWP
+# Adaptive Cards in WinAppSDK
 
-This directory contains the renderers and tooling for the UWP platform. 
+This directory contains the renderers and tooling for the WinAppSDK platform. 
 
 ## Requirements
 

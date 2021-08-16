@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
+#include "AdaptiveCards.Rendering.WinAppSDK.h"
 #include "IImageLoadTrackerListener.h"
 
 namespace AdaptiveCards::Rendering::Uwp

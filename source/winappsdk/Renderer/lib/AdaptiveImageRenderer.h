@@ -8,22 +8,22 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveImageRenderer
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveElementRenderer>
     {
         AdaptiveRuntime(AdaptiveImageRenderer);
 
     public:
         AdaptiveImageRenderer();
-        AdaptiveImageRenderer(Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::XamlBuilder> xamlBuilder);
+        AdaptiveImageRenderer(Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::WinAppSDK::XamlBuilder> xamlBuilder);
         HRESULT RuntimeClassInitialize() noexcept;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
+        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* cardElement,
+                              _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderContext* renderContext,
+                              _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs,
                               _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::Uwp::XamlBuilder> m_xamlBuilder;
+        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::WinAppSDK::XamlBuilder> m_xamlBuilder;
     };
 
     ActivatableClass(AdaptiveImageRenderer);

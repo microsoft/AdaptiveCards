@@ -15,16 +15,16 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
     {
-        m_spacing = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::Spacing>(sharedModel->GetSpacing());
+        m_spacing = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing>(sharedModel->GetSpacing());
         m_separator = sharedModel->GetSeparator();
         m_isVisible = sharedModel->GetIsVisible();
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
-        m_height = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::HeightType>(sharedModel->GetHeight());
+        m_height = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType>(sharedModel->GetHeight());
         m_internalId = sharedModel->GetInternalId().Hash();
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
-        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content)
         {
             const auto fallbackObject =
                 std::static_pointer_cast<AdaptiveCards::BaseCardElement>(sharedModel->GetFallbackContent());
@@ -38,13 +38,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* spacing)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Spacing(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing* spacing)
     {
         *spacing = m_spacing;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_Spacing(ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_Spacing(ABI::AdaptiveCards::ObjectModel::WinAppSDK::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
@@ -74,20 +74,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType* fallback)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType* fallback)
     {
         *fallback = m_fallbackType;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** content)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement** content)
     {
         return m_fallbackContent.CopyTo(content);
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackType(ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallback)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallback)
     {
-        if (fallback != ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        if (fallback != ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content)
         {
             m_fallbackContent.Reset();
         }
@@ -96,17 +96,17 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* content)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCardElement* content)
     {
         m_fallbackContent = content;
 
-        if (content == nullptr && m_fallbackType == ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        if (content == nullptr && m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content)
         {
-            m_fallbackType = ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::None;
+            m_fallbackType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::None;
         }
         else if (content != nullptr)
         {
-            m_fallbackType = ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content;
+            m_fallbackType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content;
         }
 
         return S_OK;
@@ -138,20 +138,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HeightType* height)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType* height)
     {
         *height = m_height;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_Height(ABI::AdaptiveCards::ObjectModel::Uwp::HeightType height)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_Height(ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType height)
     {
         m_height = height;
         return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveCardElementBase::get_Requirements(
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>** requirements)
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRequirement*>** requirements)
     {
         return m_requirements.CopyTo(requirements);
     }
@@ -175,7 +175,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         RETURN_IF_FAILED(GenerateSharedRequirements(m_requirements.Get(), sharedCardElement.GetRequirements()));
 
-        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType::Content)
+        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType::Content)
         {
             std::shared_ptr<AdaptiveCards::BaseCardElement> fallbackSharedModel;
             RETURN_IF_FAILED(GenerateSharedElement(m_fallbackContent.Get(), fallbackSharedModel));

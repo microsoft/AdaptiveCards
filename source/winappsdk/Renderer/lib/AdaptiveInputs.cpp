@@ -54,20 +54,20 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveInputs::GetInternalIdFromAction(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
+    HRESULT AdaptiveInputs::GetInternalIdFromAction(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action,
                                                     _Out_ UINT32* actionInternalId)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType actionType;
         RETURN_IF_FAILED(localAction->get_ActionType(&actionType));
 
-        if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Execute)
+        if (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Execute)
         {
             ComPtr<IAdaptiveExecuteAction> executeAction;
             localAction.As(&executeAction);
             RETURN_IF_FAILED(executeAction->get_InternalId(actionInternalId));
         }
-        else if (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Submit)
+        else if (actionType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Submit)
         {
             ComPtr<IAdaptiveSubmitAction> submitAction;
             localAction.As(&submitAction);
@@ -81,8 +81,8 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveInputs::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
-                                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+    HRESULT AdaptiveInputs::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action,
+                                                   _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     {
         UINT32 actionId;
         RETURN_IF_FAILED(GetInternalIdFromAction(action, &actionId));

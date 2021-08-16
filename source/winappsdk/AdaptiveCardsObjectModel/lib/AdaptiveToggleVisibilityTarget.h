@@ -8,7 +8,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveToggleVisibilityTarget
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget,
+                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityTarget,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveToggleVisibilityTarget);
@@ -21,8 +21,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_ElementId(_Outptr_ HSTRING* id);
         IFACEMETHODIMP put_ElementId(_In_ HSTRING id);
 
-        IFACEMETHODIMP get_IsVisible(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible* value);
-        IFACEMETHODIMP put_IsVisible(ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible value);
+        IFACEMETHODIMP get_IsVisible(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible* value);
+        IFACEMETHODIMP put_IsVisible(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible value);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget>& sharedModel);
 
@@ -31,7 +31,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     private:
         Microsoft::WRL::Wrappers::HString m_elementId;
-        ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible m_visibilityToggle;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible m_visibilityToggle;
     };
 
     ActivatableClass(AdaptiveToggleVisibilityTarget);

@@ -23,7 +23,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
     HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget>& sharedToggleTarget)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleTarget->GetElementId(), m_elementId.GetAddressOf()));
-        m_visibilityToggle = (ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible)sharedToggleTarget->GetIsVisible();
+        m_visibilityToggle = (ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible)sharedToggleTarget->GetIsVisible();
         return S_OK;
     }
 
@@ -31,13 +31,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     HRESULT AdaptiveToggleVisibilityTarget::put_ElementId(_In_ HSTRING title) { return m_elementId.Set(title); }
 
-    HRESULT AdaptiveToggleVisibilityTarget::get_IsVisible(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible* value)
+    HRESULT AdaptiveToggleVisibilityTarget::get_IsVisible(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible* value)
     {
         *value = m_visibilityToggle;
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleVisibilityTarget::put_IsVisible(ABI::AdaptiveCards::ObjectModel::Uwp::IsVisible value)
+    HRESULT AdaptiveToggleVisibilityTarget::put_IsVisible(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IsVisible value)
     {
         m_visibilityToggle = value;
         return S_OK;

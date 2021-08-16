@@ -158,7 +158,7 @@
     <ClInclude Include="lib\AdaptiveTableRow.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl" />
+    <Midl Include="idl\AdaptiveCards.ObjectModel.WinAppSDK.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -166,7 +166,7 @@ namespace AdaptiveCards::Rendering::Uwp
         rect->Width = m_containerSize.Width;
         rect->Height = m_containerSize.Height;
 
-        ComPtr<IRectangleGeometry> clip = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateABIClass<IRectangleGeometry>(
+        ComPtr<IRectangleGeometry> clip = AdaptiveCards::Rendering::WinAppSDK::XamlHelpers::CreateABIClass<IRectangleGeometry>(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry));
         RETURN_IF_FAILED(clip->put_Rect(*rect));
 
@@ -262,7 +262,7 @@ namespace AdaptiveCards::Rendering::Uwp
             // instanciate all elements not created yet
             for (int x{}; x < (numberSpriteToInstanciate - count); x++)
             {
-                ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateABIClass<IRectangle>(
+                ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::WinAppSDK::XamlHelpers::CreateABIClass<IRectangle>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
 
                 ComPtr<IUIElement> rectangleAsUIElement;

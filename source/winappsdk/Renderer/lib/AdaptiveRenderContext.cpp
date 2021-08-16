@@ -93,7 +93,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->get_UserInputs(value);
     }
 
-    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode statusCode, _In_ HSTRING message)
     {
         ComPtr<IAdaptiveErrorFactory> errorActivationFactory;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveError).Get(),
@@ -102,14 +102,14 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveError> error;
         RETURN_IF_FAILED(errorActivationFactory->CreateInstance(statusCode, message, &error));
 
-        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveError*>> errors;
+        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveError*>> errors;
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
 
-    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode statusCode, _In_ HSTRING message)
     {
         ComPtr<IAdaptiveWarningFactory> warningActivationFactory;
         RETURN_IF_FAILED(
@@ -119,20 +119,20 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IAdaptiveWarning> warning;
         RETURN_IF_FAILED(warningActivationFactory->CreateInstance(statusCode, message, &warning));
 
-        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>> warnings;
+        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>> warnings;
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }
 
-    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
-                                                     ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
+    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* adaptiveCard,
+                                                     ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveShowCardAction* showCardAction,
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                      ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
                                                      UINT32 primaryButtonIndex,
-                                                     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+                                                     ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -146,7 +146,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
                                                      UINT32 primaryButtonIndex,
-                                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+                                                     _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -154,7 +154,7 @@ namespace AdaptiveCards::Rendering::Uwp
             actionSet, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
+    HRESULT AdaptiveRenderContext::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionSet* actionSet,
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
@@ -162,7 +162,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->AddOverflowButton(actionSet, actionUIElement);
     }
 
-    HRESULT AdaptiveRenderContext::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* actionCard,
+    HRESULT AdaptiveRenderContext::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* actionCard,
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
@@ -178,8 +178,8 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->AddInputValue(inputValue, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
-                                                          _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* action,
+                                                          _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -187,8 +187,8 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->LinkActionToCard(action, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* card,
-                                                    _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
+    HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveCard* card,
+                                                    _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -196,8 +196,8 @@ namespace AdaptiveCards::Rendering::Uwp
         return renderResult->LinkCardToParent(card, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* inputElement,
-                                                 _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputValue** inputValue)
+    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveInputElement* inputElement,
+                                                 _In_ ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveInputValue** inputValue)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -217,25 +217,25 @@ namespace AdaptiveCards::Rendering::Uwp
     }
 
     HRESULT AdaptiveRenderContext::get_TextStyle(
-        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>** textStyle)
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>** textStyle)
     {
         return m_textStyle.CopyTo(textStyle);
     }
 
-    HRESULT AdaptiveRenderContext::put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>* textStyle)
+    HRESULT AdaptiveRenderContext::put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>* textStyle)
     {
         m_textStyle = textStyle;
         return S_OK;
     }
 
     HRESULT AdaptiveRenderContext::get_HorizontalContentAlignment(
-        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>** horizontalAlignment)
+        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalAlignment)
     {
         return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
     HRESULT AdaptiveRenderContext::put_HorizontalContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>* horizontalAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalAlignment)
     {
         m_horizontalAlignment = horizontalAlignment;
         return S_OK;
@@ -246,7 +246,7 @@ namespace AdaptiveCards::Rendering::Uwp
         return m_actionSentimentDefaultDictionary;
     }
 
-    HRESULT AdaptiveRenderContext::GetRenderResult(AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard** renderResult)
+    HRESULT AdaptiveRenderContext::GetRenderResult(AdaptiveCards::Rendering::WinAppSDK::RenderedAdaptiveCard** renderResult)
     {
         ComPtr<IRenderedAdaptiveCard> strongRenderResult;
         RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));

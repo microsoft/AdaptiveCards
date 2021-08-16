@@ -33,17 +33,17 @@ namespace AdaptiveCards::ObjectModel::Uwp
         if (sharedTextBlock->GetHorizontalAlignment().has_value())
         {
             m_horizontalAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>(
                                      sharedTextBlock->GetHorizontalAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>>()
                     .get();
         }
 
         if (sharedTextBlock->GetStyle().has_value())
         {
             m_style = winrt::box_value(
-                          static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::TextStyle>(sharedTextBlock->GetStyle().value()))
-                          .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>>()
+                          static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>(sharedTextBlock->GetStyle().value()))
+                          .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>>()
                           .get();
         }
 
@@ -78,24 +78,24 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
 
     HRESULT AdaptiveTextBlock::get_HorizontalAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>** horizontalAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>** horizontalAlignment)
     {
         return m_horizontalAlignment.CopyTo(horizontalAlignment);
     }
 
     HRESULT AdaptiveTextBlock::put_HorizontalAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment>* horizontalAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment>* horizontalAlignment)
     {
         m_horizontalAlignment = horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>** style)
+    HRESULT AdaptiveTextBlock::get_Style(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>** style)
     {
         return m_style.CopyTo(style);
     }
 
-    HRESULT AdaptiveTextBlock::put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>* style)
+    HRESULT AdaptiveTextBlock::put_Style(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle>* style)
     {
         m_style = style;
         return S_OK;
@@ -120,14 +120,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         if (m_horizontalAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment horizontalAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::HAlignment horizontalAlignmentValue;
             RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
             textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
         }
 
         if (m_style != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle styleValue;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextStyle styleValue;
             RETURN_IF_FAILED(m_style->get_Value(&styleValue));
             textBlock->SetStyle(static_cast<AdaptiveCards::TextStyle>(styleValue));
         }

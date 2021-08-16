@@ -29,7 +29,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
                                             _COM_Outptr_ IAdaptiveCardElement** element) noexcept
     try
     {
-        return AdaptiveCards::ObjectModel::Uwp::FromJson<AdaptiveCards::ObjectModel::Uwp::AdaptiveTable, AdaptiveCards::Table, AdaptiveCards::TableParser>(
+        return AdaptiveCards::ObjectModel::WinAppSDK::FromJson<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTable, AdaptiveCards::Table, AdaptiveCards::TableParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;

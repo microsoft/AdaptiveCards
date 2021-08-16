@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.Uwp.h"
+#include "AdaptiveCards.ObjectModel.WinAppSDK.h"
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
     class AdaptiveSubmitActionParser
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser>
+                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParser>
     {
         AdaptiveRuntime(AdaptiveSubmitActionParser);
 
@@ -17,10 +17,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         IFACEMETHODIMP FromJson(
             _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** element) noexcept override;
+            _In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration* elementParserRegistration,
+            _In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveWarning*>* adaptiveWarnings,
+            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** element) noexcept override;
     };
 
     ActivatableClass(AdaptiveSubmitActionParser);

@@ -9,10 +9,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     class DECLSPEC_UUID("32114ce2-7e10-4f7f-8225-bfd661c6794c") AdaptiveToggleVisibilityAction
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityAction,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement,
+                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveToggleVisibilityAction,
+                                              ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::Uwp::AdaptiveActionElementBase>>
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveActionElementBase>>
     {
         AdaptiveRuntime(AdaptiveToggleVisibilityAction);
 
@@ -22,10 +22,10 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         // IAdaptiveToggleVisibilityAction
         IFACEMETHODIMP get_TargetElements(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*>** facts) override;
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*>** facts) override;
 
         // IAdaptiveActionElement
-        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType) override;
+        IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType) override;
         IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value) override
         {
             return AdaptiveActionElementBase::get_ActionTypeString(value);
@@ -45,22 +45,22 @@ namespace AdaptiveCards::ObjectModel::Uwp
             return AdaptiveActionElementBase::get_InternalId(id);
         }
 
-        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType* fallback) override
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType* fallback) override
         {
             return AdaptiveActionElementBase::get_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** content) override
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement** content) override
         {
             return AdaptiveActionElementBase::get_FallbackContent(content);
         }
 
-        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType fallback) override
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::FallbackType fallback) override
         {
             return AdaptiveActionElementBase::put_FallbackType(fallback);
         }
 
-        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* content) override
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveActionElement* content) override
         {
             return AdaptiveActionElementBase::put_FallbackContent(content);
         }
@@ -98,12 +98,12 @@ namespace AdaptiveCards::ObjectModel::Uwp
             return AdaptiveActionElementBase::get_IsEnabled(isEnabled);
         }
 
-        IFACEMETHODIMP get_Mode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode* mode) override
+        IFACEMETHODIMP get_Mode(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode* mode) override
         {
             return AdaptiveActionElementBase::get_Mode(mode);
         }
 
-        IFACEMETHODIMP put_Mode(ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode) override
+        IFACEMETHODIMP put_Mode(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionMode mode) override
         {
             return AdaptiveActionElementBase::put_Mode(mode);
         }
@@ -128,7 +128,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*>> m_targetElements;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*>> m_targetElements;
     };
 
     ActivatableClass(AdaptiveToggleVisibilityAction);

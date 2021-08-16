@@ -11,20 +11,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
 {
     HRESULT AdaptiveError::RuntimeClassInitialize() { return S_OK; }
 
-    HRESULT AdaptiveError::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode statusCode, _In_ HSTRING message)
+    HRESULT AdaptiveError::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode statusCode, _In_ HSTRING message)
     {
         m_statusCode = statusCode;
         m_message.Set(message);
         return S_OK;
     }
 
-    HRESULT AdaptiveError::get_StatusCode(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode* value)
+    HRESULT AdaptiveError::get_StatusCode(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode* value)
     {
         *value = m_statusCode;
         return S_OK;
     }
 
-    HRESULT AdaptiveError::put_StatusCode(ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode value)
+    HRESULT AdaptiveError::put_StatusCode(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ErrorStatusCode value)
     {
         m_statusCode = value;
         return S_OK;

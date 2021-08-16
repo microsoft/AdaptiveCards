@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveTextBlockConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlockConfig>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextBlockConfig>
     {
         AdaptiveRuntime(AdaptiveTextBlockConfig);
 

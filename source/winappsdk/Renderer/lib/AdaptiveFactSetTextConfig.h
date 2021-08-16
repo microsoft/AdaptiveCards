@@ -8,9 +8,9 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveFactSetTextConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFactSetTextConfig,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig,
-                                              Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveTextStyleConfigBase>>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveFactSetTextConfig,
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextStyleConfig,
+                                              Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::WinAppSDK::AdaptiveTextStyleConfigBase>>
     {
         AdaptiveRuntime(AdaptiveFactSetTextConfig);
 
@@ -24,32 +24,32 @@ namespace AdaptiveCards::Rendering::Uwp
         IFACEMETHODIMP get_MaxWidth(_Out_ UINT32* maxWidth) override;
         IFACEMETHODIMP put_MaxWidth(UINT32 maxWidth) override;
 
-        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight* textWeight) override
+        IFACEMETHODIMP get_Weight(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight* textWeight) override
         {
             return AdaptiveTextStyleConfigBase::get_Weight(textWeight);
         }
 
-        IFACEMETHODIMP put_Weight(ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight textWeight) override
+        IFACEMETHODIMP put_Weight(ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight textWeight) override
         {
             return AdaptiveTextStyleConfigBase::put_Weight(textWeight);
         }
 
-        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::TextSize* textSize) override
+        IFACEMETHODIMP get_Size(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize* textSize) override
         {
             return AdaptiveTextStyleConfigBase::get_Size(textSize);
         }
 
-        IFACEMETHODIMP put_Size(ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSize) override
+        IFACEMETHODIMP put_Size(ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize textSize) override
         {
             return AdaptiveTextStyleConfigBase::put_Size(textSize);
         }
 
-        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor* textColor) override
+        IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor* textColor) override
         {
             return AdaptiveTextStyleConfigBase::get_Color(textColor);
         }
 
-        IFACEMETHODIMP put_Color(ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor textColor) override
+        IFACEMETHODIMP put_Color(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor textColor) override
         {
             return AdaptiveTextStyleConfigBase::put_Color(textColor);
         }
@@ -64,12 +64,12 @@ namespace AdaptiveCards::Rendering::Uwp
             return AdaptiveTextStyleConfigBase::put_IsSubtle(isSubtle);
         }
 
-        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::FontType* fontType) override
+        IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType* fontType) override
         {
             return AdaptiveTextStyleConfigBase::get_FontType(fontType);
         }
 
-        IFACEMETHODIMP put_FontType(ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontType) override
+        IFACEMETHODIMP put_FontType(ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType fontType) override
         {
             return AdaptiveTextStyleConfigBase::put_FontType(fontType);
         }

@@ -101,42 +101,42 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return m_sharedParserRegistration;
     }
 
-    HRESULT AdaptiveElementParserRegistration::RegisterDefaultElementParsers(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* registration)
+    HRESULT AdaptiveElementParserRegistration::RegisterDefaultElementParsers(ABI::AdaptiveCards::ObjectModel::WinAppSDK::IAdaptiveElementParserRegistration* registration)
     {
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ActionSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveActionSetParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveActionSetParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Column").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveColumnParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumnParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ColumnSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveColumnSetParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveColumnSetParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Container").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveContainerParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveContainerParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"FactSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveFactSetParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveFactSetParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Image").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveImageParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImageParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ImageSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveImageSetParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveImageSetParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.ChoiceSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceSetInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveChoiceSetInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Date").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveDateInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveDateInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Number").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveNumberInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveNumberInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Text").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveTextInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Time").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveTimeInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTimeInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Toggle").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleInputParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleInputParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Media").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveMediaParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"RichTextBlock").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveRichTextBlockParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveRichTextBlockParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Table").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveTableParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTableParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"TextBlock").Get(),
-                                           Make<AdaptiveCards::ObjectModel::Uwp::AdaptiveTextBlockParser>().Get()));
+                                           Make<AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveTextBlockParser>().Get()));
 
         return S_OK;
     }
@@ -146,7 +146,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
     }
 
-    SharedModelElementParser::SharedModelElementParser(AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration* parserRegistration)
+    SharedModelElementParser::SharedModelElementParser(AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveElementParserRegistration* parserRegistration)
     {
         ComPtr<AdaptiveElementParserRegistration> localParserRegistration(parserRegistration);
         localParserRegistration.AsWeak(&m_parserRegistration);

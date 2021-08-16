@@ -33,16 +33,16 @@ namespace AdaptiveCards::ObjectModel::Uwp
         }
 
         m_associatedInputs =
-            static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
+            static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Submit;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::Submit;
         return S_OK;
     }
 
@@ -54,13 +54,13 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::get_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs* associatedInputs)
+    HRESULT AdaptiveSubmitAction::get_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs* associatedInputs)
     {
         *associatedInputs = m_associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::Uwp::AssociatedInputs associatedInputs)
+    HRESULT AdaptiveSubmitAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinAppSDK::AssociatedInputs associatedInputs)
     {
         m_associatedInputs = associatedInputs;
         return S_OK;

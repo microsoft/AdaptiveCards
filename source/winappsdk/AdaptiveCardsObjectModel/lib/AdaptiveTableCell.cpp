@@ -17,7 +17,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveCards::ObjectModel::Uwp
 {
-    AdaptiveTableCell::AdaptiveTableCell() : m_bleedDirection(ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection::None)
+    AdaptiveTableCell::AdaptiveTableCell() : m_bleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection::None)
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
@@ -40,18 +40,18 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         GenerateContainedElementsProjection(sharedTableCell->GetItems(), m_items.Get());
         GenerateActionProjection(sharedTableCell->GetSelectAction(), &m_selectAction);
-        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedTableCell->GetStyle());
+        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle>(sharedTableCell->GetStyle());
         if (sharedTableCell->GetVerticalContentAlignment().has_value())
         {
             m_verticalContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>(
+                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>(
                                      sharedTableCell->GetVerticalContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>>()
+                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>>()
                     .get();
         }
         m_minHeight = sharedTableCell->GetMinHeight();
         m_bleed = sharedTableCell->GetBleed();
-        m_bleedDirection = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection>(sharedTableCell->GetBleedDirection());
+        m_bleedDirection = static_cast<ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection>(sharedTableCell->GetBleedDirection());
 
         const auto sharedRtl = sharedTableCell->GetRtl();
         if (sharedRtl)
@@ -92,26 +92,26 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTableCell::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle* style)
+    HRESULT AdaptiveTableCell::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    HRESULT AdaptiveTableCell::put_Style(ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle style)
+    HRESULT AdaptiveTableCell::put_Style(ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
     HRESULT AdaptiveTableCell::get_VerticalContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>** verticalContentAlignment)
+        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>** verticalContentAlignment)
     {
         return m_verticalContentAlignment.CopyTo(verticalContentAlignment);
     }
 
     HRESULT AdaptiveTableCell::put_VerticalContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>* verticalContentAlignment)
+        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment>* verticalContentAlignment)
     {
         m_verticalContentAlignment = verticalContentAlignment;
         return S_OK;
@@ -163,7 +163,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTableCell::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::Uwp::BleedDirection* bleedDirection)
+    HRESULT AdaptiveTableCell::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::WinAppSDK::BleedDirection* bleedDirection)
     {
         *bleedDirection = m_bleedDirection;
         return S_OK;
@@ -186,7 +186,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         if (m_verticalContentAlignment != nullptr)
         {
-            ABI::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment verticalContentAlignmentValue;
+            ABI::AdaptiveCards::ObjectModel::WinAppSDK::VerticalContentAlignment verticalContentAlignmentValue;
             RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
             tableCell->SetVerticalContentAlignment(
                 static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));

@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     class AdaptiveTableConfig
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig>
+                                              ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTableConfig>
     {
         AdaptiveRuntime(AdaptiveTableConfig);
 

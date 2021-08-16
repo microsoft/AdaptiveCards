@@ -106,7 +106,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::WinAppSDK::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
             return S_OK;
         }
@@ -141,22 +141,22 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
         RETURN_IF_FAILED(textBox2->put_PlaceholderText(placeHolderText.Get()));
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle textInputStyle;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle textInputStyle;
         RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
 
         ComPtr<IInputScopeName> inputScopeName =
             XamlHelpers::CreateABIClass<IInputScopeName>(HStringReference(RuntimeClass_Windows_UI_Xaml_Input_InputScopeName));
         switch (textInputStyle)
         {
-        case ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle::Email:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle::Email:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_EmailSmtpAddress));
             break;
 
-        case ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle::Tel:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle::Tel:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_TelephoneNumber));
             break;
 
-        case ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle::Url:
+        case ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextInputStyle::Url:
             RETURN_IF_FAILED(inputScopeName->put_NameValue(InputScopeNameValue::InputScopeNameValue_Url));
             break;
         }

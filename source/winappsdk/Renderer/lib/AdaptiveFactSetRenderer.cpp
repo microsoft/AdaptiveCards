@@ -54,9 +54,9 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(columnDefinitions->Append(valueColumn.Get()));
 
         GridLength factSetGridHeight = {0, GridUnitType::GridUnitType_Auto};
-        ABI::AdaptiveCards::ObjectModel::Uwp::HeightType heightType;
+        ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType heightType;
         RETURN_IF_FAILED(cardElement->get_Height(&heightType));
-        if (heightType == ABI::AdaptiveCards::ObjectModel::Uwp::HeightType::Stretch)
+        if (heightType == ABI::AdaptiveCards::ObjectModel::WinAppSDK::HeightType::Stretch)
         {
             factSetGridHeight = {1, GridUnitType::GridUnitType_Star};
         }

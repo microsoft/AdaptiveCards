@@ -10,14 +10,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text);
         IFACEMETHODIMP put_Text(_In_ HSTRING text);
 
-        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>** textSize);
-        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>* textSize);
+        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>** textSize);
+        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>* textSize);
 
-        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>** textWeight);
-        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>* textWeight);
+        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>** textWeight);
+        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>* textWeight);
 
-        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>** textColor);
-        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>* textColor);
+        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>** textColor);
+        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>* textColor);
 
         IFACEMETHODIMP get_IsSubtle(_Outptr_ ABI::Windows::Foundation::IReference<bool>** isSubtle);
         IFACEMETHODIMP put_IsSubtle(_In_ ABI::Windows::Foundation::IReference<bool>* isSubtle);
@@ -25,8 +25,8 @@ namespace AdaptiveCards::ObjectModel::Uwp
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
-        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>** fontType);
-        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>* fontType);
+        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>** fontType);
+        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>* fontType);
 
     protected:
         template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
@@ -40,34 +40,34 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
             if (sharedModel->GetFontType().has_value())
             {
-                m_fontType = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::FontType>(
+                m_fontType = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::FontType>(
                                                   sharedModel->GetFontType().value()))
-                                 .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>>()
+                                 .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>>()
                                  .get();
             }
 
             if (sharedModel->GetTextSize().has_value())
             {
-                m_textSize = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::TextSize>(
+                m_textSize = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>(
                                                   sharedModel->GetTextSize().value()))
-                                 .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>>()
+                                 .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>>()
                                  .get();
             }
 
             if (sharedModel->GetTextWeight().has_value())
             {
-                m_textWeight = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::TextWeight>(
+                m_textWeight = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>(
                                                     sharedModel->GetTextWeight().value()))
-                                   .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>>()
+                                   .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>>()
                                    .get();
             }
 
             if (sharedModel->GetTextColor().has_value())
             {
                 m_foregroundColor =
-                    winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>(
+                    winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>(
                                          sharedModel->GetTextColor().value()))
-                        .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>>()
+                        .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>>()
                         .get();
             }
 
@@ -85,28 +85,28 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
             if (m_fontType != nullptr)
             {
-                ABI::AdaptiveCards::ObjectModel::Uwp::FontType fontTypeValue;
+                ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType fontTypeValue;
                 RETURN_IF_FAILED(m_fontType->get_Value(&fontTypeValue));
                 sharedCardElement.SetFontType(static_cast<AdaptiveCards::FontType>(fontTypeValue));
             }
 
             if (m_textSize != nullptr)
             {
-                ABI::AdaptiveCards::ObjectModel::Uwp::TextSize textSizeValue;
+                ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize textSizeValue;
                 RETURN_IF_FAILED(m_textSize->get_Value(&textSizeValue));
                 sharedCardElement.SetTextSize(static_cast<AdaptiveCards::TextSize>(textSizeValue));
             }
 
             if (m_textWeight != nullptr)
             {
-                ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight textWeightValue;
+                ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight textWeightValue;
                 RETURN_IF_FAILED(m_textWeight->get_Value(&textWeightValue));
                 sharedCardElement.SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeightValue));
             }
 
             if (m_foregroundColor != nullptr)
             {
-                ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor foregroundColorValue;
+                ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor foregroundColorValue;
                 RETURN_IF_FAILED(m_foregroundColor->get_Value(&foregroundColorValue));
                 sharedCardElement.SetTextColor(static_cast<AdaptiveCards::ForegroundColor>(foregroundColorValue));
             }
@@ -128,9 +128,9 @@ namespace AdaptiveCards::ObjectModel::Uwp
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<bool>> m_subtle;
         Microsoft::WRL::Wrappers::HString m_text;
         Microsoft::WRL::Wrappers::HString m_language;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::FontType>> m_fontType;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextSize>> m_textSize;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextWeight>> m_textWeight;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::Uwp::ForegroundColor>> m_foregroundColor;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::FontType>> m_fontType;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextSize>> m_textSize;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::TextWeight>> m_textWeight;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinAppSDK::ForegroundColor>> m_foregroundColor;
     };
 }

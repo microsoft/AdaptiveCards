@@ -104,7 +104,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(rectangleAsUIElement->put_Opacity(c_playIconOpacity));
 
     // Outline it in the Dark color
-    ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
+    ABI::AdaptiveCards::ObjectModel::WinAppSDK::ContainerStyle containerStyle;
     THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
     ComPtr<IColorsStatics> colorsStatics;
@@ -342,7 +342,7 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
         {
             // Create the arguments to pass to the resolver
             ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::WinAppSDK::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
 
             // Call the resolver to get the media stream
             ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;

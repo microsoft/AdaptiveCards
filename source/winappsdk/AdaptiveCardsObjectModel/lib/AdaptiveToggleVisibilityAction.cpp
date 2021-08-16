@@ -29,7 +29,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
             return E_INVALIDARG;
         }
 
-        m_targetElements = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*>>();
+        m_targetElements = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*>>();
         GenerateToggleTargetProjection(sharedToggleVisibilityAction->GetTargetElements(), m_targetElements.Get());
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedToggleVisibilityAction));
@@ -37,14 +37,14 @@ namespace AdaptiveCards::ObjectModel::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
+    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType* actionType)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::ToggleVisibility;
+        *actionType = ABI::AdaptiveCards::ObjectModel::WinAppSDK::ActionType::ToggleVisibility;
         return S_OK;
     }
 
     HRESULT AdaptiveToggleVisibilityAction::get_TargetElements(
-        _COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget*>** targetElements)
+        _COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinAppSDK::AdaptiveToggleVisibilityTarget*>** targetElements)
     {
         return m_targetElements.CopyTo(targetElements);
     }

@@ -25,23 +25,23 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStylesConfig::get_Heading(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig** headingStyle)
+    HRESULT AdaptiveTextStylesConfig::get_Heading(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextStyleConfig** headingStyle)
     {
         return m_headingStyle.CopyTo(headingStyle);
     }
 
-    IFACEMETHODIMP AdaptiveTextStylesConfig::put_Heading(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* headingStyle)
+    IFACEMETHODIMP AdaptiveTextStylesConfig::put_Heading(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextStyleConfig* headingStyle)
     {
         m_headingStyle = headingStyle;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextStylesConfig::get_ColumnHeader(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig** columnHeaderStyle)
+    HRESULT AdaptiveTextStylesConfig::get_ColumnHeader(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextStyleConfig** columnHeaderStyle)
     {
         return m_columnHeaderStyle.CopyTo(columnHeaderStyle);
     }
 
-    IFACEMETHODIMP AdaptiveTextStylesConfig::put_ColumnHeader(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStyleConfig* columnHeaderStyle)
+    IFACEMETHODIMP AdaptiveTextStylesConfig::put_ColumnHeader(ABI::AdaptiveCards::Rendering::WinAppSDK::IAdaptiveTextStyleConfig* columnHeaderStyle)
     {
         m_columnHeaderStyle = columnHeaderStyle;
         return S_OK;
