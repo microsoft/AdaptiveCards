@@ -35,7 +35,7 @@ steps:
   displayName: NuGet restore source/uwp/AdaptiveCards.sln
   inputs:
     solution: $(solution)
-    selectOrConfig: config
+    feed: AdaptiveCards
     verbosity: '-'
 - task: VSBuild@1
   name: VSBuild3
