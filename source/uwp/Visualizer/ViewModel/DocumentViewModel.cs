@@ -1,23 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using AdaptiveCards.ObjectModel.Uwp;
 using AdaptiveCards.Rendering.Uwp;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using AdaptiveCardVisualizer.Helpers;
+using AdaptiveCardVisualizer.ResourceResolvers;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Storage;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using AdaptiveCardVisualizer.Helpers;
-using AdaptiveCardVisualizer.ResourceResolvers;
 using Windows.UI.Xaml.Media;
 using XamlCardVisualizer.CustomElements;
 
@@ -240,6 +234,8 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 _renderer.HostConfig = hostConfig;
             }
+
+            _renderer.OverflowMaxActions = true;
 
             // Add a feature representing this version of the visualizer. used for test cards.
             _renderer.FeatureRegistration.Set("acTest", "1.0");

@@ -17,7 +17,7 @@ namespace AdaptiveCards
         static InternalId Current();
         static constexpr unsigned int Invalid = 0;
 
-        std::size_t Hash() const { return std::hash<unsigned int>()(m_internalId); }
+        unsigned int Hash() const { return m_internalId; }
 
         bool operator==(const unsigned int other) const { return m_internalId == other; }
         bool operator!=(const unsigned int other) const { return m_internalId != other; }

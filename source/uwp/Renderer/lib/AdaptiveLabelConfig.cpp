@@ -19,7 +19,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveLabelConfig::RuntimeClassInitialize(LabelConfig labelConfig) noexcept
     {
-        m_inputSpacing = static_cast<ABI::AdaptiveCards::Rendering::Uwp::Spacing>(labelConfig.inputSpacing);
+        m_inputSpacing = static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::Spacing>(labelConfig.inputSpacing);
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelConfig>(m_requiredInputs.GetAddressOf(), labelConfig.requiredInputs));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelConfig>(m_optionalInputs.GetAddressOf(), labelConfig.optionalInputs));
@@ -27,13 +27,13 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::get_InputSpacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+    HRESULT AdaptiveLabelConfig::get_InputSpacing(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::Spacing* spacing)
     {
         *spacing = m_inputSpacing;
         return S_OK;
     }
 
-    HRESULT AdaptiveLabelConfig::put_InputSpacing(ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+    HRESULT AdaptiveLabelConfig::put_InputSpacing(ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing)
     {
         m_inputSpacing = spacing;
         return S_OK;

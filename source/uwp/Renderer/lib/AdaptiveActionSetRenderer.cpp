@@ -5,13 +5,12 @@
 #include "AdaptiveActionSetRenderer.h"
 
 #include "ActionHelpers.h"
-#include "AdaptiveActionSet.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveRenderArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -21,19 +20,6 @@ using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveActionSetRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveActionSet, AdaptiveCards::ActionSet, AdaptiveCards::ActionSetParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-    }
-    CATCH_RETURN;
 
     HRESULT AdaptiveActionSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                               _In_ IAdaptiveRenderContext* renderContext,
@@ -47,7 +33,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"ActionSet was stripped from card because interactivity is not supported").Get());
             return S_OK;
         }

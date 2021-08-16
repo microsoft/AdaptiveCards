@@ -213,13 +213,10 @@ a.ac-anchor:visited:active {
     height: 72px;
 }
 
-.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput {
-    height: 31px;
-}
-
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
     border: 1px solid #DDDDDD;
     padding: 4px 8px 4px 8px;
+    height: 31px;
 }
 
 /* ac-inlineActionButton should set height to the same as ac-input.ac-textInput */
