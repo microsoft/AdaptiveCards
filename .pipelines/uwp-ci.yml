@@ -43,7 +43,7 @@ steps:
   inputs:
     solution: $(solution)
     vsVersion: 16.0
-    msbuildArgs: /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackages\\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload
+    msbuildArgs: /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload
     platform: $(buildPlatform)
     configuration: $(buildConfiguration)
     maximumCpuCount: true
@@ -78,3 +78,11 @@ steps:
     configuration: '$(BuildConfiguration)'
     diagnosticsEnabled: True
     collectDumpOn: always
+
+- bash: |
+   #!/usr/bin/env bash
+   cd source/uwp/
+   ls
+   cd UWPUITestApp/AppPackages
+   ls
+  workingDirectory: source/nodejs
