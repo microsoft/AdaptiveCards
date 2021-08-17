@@ -636,7 +636,8 @@ UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementP
 
         font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:sharedFontType textSize:sharedTextSize]];
     }
-    return font;
+
+    return [UIFontMetrics.defaultMetrics scaledFontForFont:font];
 }
 
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId)

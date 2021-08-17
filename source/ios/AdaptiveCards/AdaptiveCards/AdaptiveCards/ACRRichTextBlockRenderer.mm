@@ -90,6 +90,12 @@
                                                                              options:options
                                                                   documentAttributes:nil
                                                                                error:nil];
+                    [textRunContent enumerateAttribute:NSFontAttributeName
+                                               inRange:NSMakeRange(0, textRunContent.length)
+                                               options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                                            usingBlock:^(id value, NSRange range, BOOL *stop) {
+                                                [content addAttribute:NSFontAttributeName value:[UIFontMetrics.defaultMetrics scaledFontForFont:(UIFont *)value] range:range];
+                                            }];
                     lab.selectable = YES;
                     lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
                     lab.userInteractionEnabled = YES;

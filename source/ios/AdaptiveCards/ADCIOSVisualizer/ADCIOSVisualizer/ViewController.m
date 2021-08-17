@@ -202,7 +202,6 @@ CGFloat kFileBrowserWidth = 0;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     [self addChildViewController:self.ACVTabVC];
     self.ACVTabVC.delegate = self;
-    self.ACVTabVC.tableView.rowHeight = 25;
     self.ACVTabVC.tableView.sectionFooterHeight = 5;
     self.ACVTabVC.tableView.sectionHeaderHeight = 5;
     self.ACVTabVC.tableView.scrollEnabled = YES;
@@ -245,7 +244,10 @@ CGFloat kFileBrowserWidth = 0;
 
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
-    self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    [self.chatWindow registerClass:[ACRChatWindowCell class] forCellReuseIdentifier:@"adaptiveCell"];
+    self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.chatWindow.rowHeight = UITableViewAutomaticDimension;
+    self.chatWindow.estimatedRowHeight = 10;
 
     // the width of the AdaptiveCards does not need to be set.
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
@@ -611,5 +613,26 @@ CGFloat kFileBrowserWidth = 0;
                        [self.chatWindow beginUpdates];
                        [self.chatWindow endUpdates];
                    });
+}
+
+// Handle accessibility state change events
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    if (!previousTraitCollection) {
+        return;
+    }
+
+    BOOL isAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(self.traitCollection.preferredContentSizeCategory);
+
+    if (isAccessibilityCategory != UIContentSizeCategoryIsAccessibilityCategory(previousTraitCollection.preferredContentSizeCategory)) {
+        if (_dataSource) {
+		    // prep data sources for accessiblity changes, font size changes events
+            [_dataSource prepareForRedraw];
+			// ask for redraw of visible rows
+            [self.chatWindow reloadData];
+        }
+    }
 }
 @end
