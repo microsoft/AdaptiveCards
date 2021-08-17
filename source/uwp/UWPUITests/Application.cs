@@ -345,9 +345,6 @@ namespace UWPUITests
                 Logger.LogMessage("Certificate is not installed. Installing app and certificate...");
             }
 
-            Logger.LogMessage(mostRecentlyBuiltAppx);
-            Logger.LogMessage(Path.GetDirectoryName(mostRecentlyBuiltAppx));
-
             var powershellProcess = ExecuteAndLogProcess(new ProcessStartInfo("powershell",
                     string.Format("-ExecutionPolicy Unrestricted -File {0}\\Add-AppDevPackage.ps1 {1}",
                         Path.GetDirectoryName(mostRecentlyBuiltAppx), "-Force")));
