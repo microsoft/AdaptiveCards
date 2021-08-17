@@ -312,13 +312,9 @@ namespace UWPUITests
 
                 AutoResetEvent removePackageCompleteEvent = new AutoResetEvent(false);
 
-                var removeAppPowershellProcess = Process.Start(new ProcessStartInfo("powershell",
+                var removeAppPowershellProcess = ExecuteProcess(new ProcessStartInfo("powershell",
                     string.Format("-ExecutionPolicy Unrestricted Get-AppxPackage *{0}* | Remove-AppxPackage",
-                        "AdaptiveCardsUWPUITestApp"))
-                {
-                    UseShellExecute = true
-                });
-                removeAppPowershellProcess.WaitForExit();
+                        "AdaptiveCardsUWPUITestApp")));
 
                 if (removeAppPowershellProcess.ExitCode == 0)
                 {
@@ -337,14 +333,8 @@ namespace UWPUITests
 
             Logger.LogMessage("Checking if the app's certificate is installed...");
 
-            var certutilProcess = Process.Start(new ProcessStartInfo("certutil.exe",
-                    string.Format("-verifystore TrustedPeople {0}", _certSerialNumber))
-            {
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            });
-            certutilProcess.WaitForExit();
+            var certutilProcess = ExecuteProcess(new ProcessStartInfo("certutil.exe",
+                    string.Format("-verifystore TrustedPeople {0}", _certSerialNumber)));
 
             if (certutilProcess.ExitCode == 0)
             {
@@ -354,20 +344,36 @@ namespace UWPUITests
             {
                 Logger.LogMessage("Certificate is not installed. Installing app and certificate...");
             }
-            Console.WriteLine("Does this work?");
-            var powershellProcess = Process.Start(new ProcessStartInfo("powershell",
-                    string.Format("-ExecutionPolicy Unrestricted -File {0}\\Add-AppDevPackage.ps1 {1}",
-                        Path.GetDirectoryName(mostRecentlyBuiltAppx), "-Force"))
-            {
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            });
-            powershellProcess.WaitForExit();
 
+            var powershellProcess = ExecuteProcess(new ProcessStartInfo("powershell",
+                    string.Format("-ExecutionPolicy Unrestricted -File {0}\\Add-AppDevPackage.ps1 {1}",
+                        Path.GetDirectoryName(mostRecentlyBuiltAppx), "-Force")));
             if (powershellProcess.ExitCode != 0)
             {
                 throw new Exception(string.Format("Failed to install AppX for {0}!", _packageName));
+            }
+        }
+
+        private Process ExecuteProcess(ProcessStartInfo startInfo)
+        {
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+            var p = Process.Start(startInfo);
+            Task stdoutTask = Task.Run(() => RedirectStream(p.StandardOutput));
+            Task stderrTask = Task.Run(() => RedirectStream(p.StandardOutput));
+            stdoutTask.Wait();
+            stderrTask.Wait();
+            p.WaitForExit();
+            return p;
+        }
+
+        private void RedirectStream(System.IO.StreamReader sr)
+        {
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                Logger.LogMessage(line);
             }
         }
         #endregion
