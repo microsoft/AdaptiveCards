@@ -63,7 +63,7 @@
     numberOfCards += 1;
 }
 
-- (void)insertView:(ACRView *)view
+- (void)insertView:(UIView *)view
 {
     [adaptiveCardsPayloads addObject:@""];
     [adaptiveCardsViews addObject:view];
@@ -92,7 +92,7 @@
     } else {
         adaptiveCardView = (ACRView *)view;
     }
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"adaptiveCell" forIndexPath:indexPath];
     if (cell) {
         ((ACRChatWindowCell *)cell).adaptiveCardView = adaptiveCardView;
