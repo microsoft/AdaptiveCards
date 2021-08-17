@@ -53,6 +53,7 @@
   <ItemGroup>
     <None Include="PerfApp_TemporaryKey.pfx" />
     <None Include="..\..\..\samples\v1.0\Elements\AdaptiveCard.json" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainPage.xaml" />

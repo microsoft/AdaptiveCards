@@ -1492,7 +1492,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("0ac88ac2-38b9-5008-953f-c84161142c8c"))
+struct __declspec(uuid("ce09197e-008c-513c-a838-2db9995e1917"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRemoteResourceInformation*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1522,7 +1522,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourc
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("e2c03ce6-b1f2-5191-95e3-3ee65277cfee"))
+struct __declspec(uuid("7a75e67c-efb7-59ea-b309-d86d1f673cf8"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRemoteResourceInformation*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1552,7 +1552,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourc
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("c03ee019-c5bd-56e8-86ed-866556d9d9f2"))
+struct __declspec(uuid("d1afe7c9-ba1b-5402-89cc-3b129cb0d942"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRemoteResourceInformation*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1582,7 +1582,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResou
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("e15653bb-3415-5758-881e-a62cd9089be2"))
+struct __declspec(uuid("f7314ac7-47a4-506f-92ba-d2ed86a2f301"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRemoteResourceInformation*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1797,7 +1797,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("697d0755-d7c1-584e-b937-eae09d55b3e2"))
+struct __declspec(uuid("63cf05e6-1a42-5f4a-8f39-c88a76ccc3b4"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1827,7 +1827,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("550c871e-a796-52bc-bb93-0825ab8d0987"))
+struct __declspec(uuid("7eb6af3a-82bd-51d2-a8c5-4690e993d622"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1857,7 +1857,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("1ad1fe47-f1c6-521d-a4a1-dd61cbb0e1d7"))
+struct __declspec(uuid("b26725af-cb9c-52d6-adcd-220622c70006"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1887,7 +1887,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("fcc6f528-2470-56c9-a53f-9b84ff0d0078"))
+struct __declspec(uuid("47748d3f-ddc5-54e0-94d1-0cf1806fb122"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1926,7 +1926,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
-struct __declspec(uuid("90ded698-9a50-5806-bd33-6a4d06400f79"))
+struct __declspec(uuid("27a32d11-2d60-5ad8-a57b-664fe47cf827"))
 IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -1965,7 +1965,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
-struct __declspec(uuid("17f94da2-117f-5447-b920-77f61051f7ff"))
+struct __declspec(uuid("7e8c1e2d-1cee-5e7e-975f-3fa277031275"))
 IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2004,7 +2004,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
-struct __declspec(uuid("fca5504c-f0bd-5405-8cdd-5c4f9c7ec049"))
+struct __declspec(uuid("8ae17cd8-8145-5720-9713-ed15781f2802"))
 IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2072,7 +2072,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
-struct __declspec(uuid("7ec0eae3-f9bb-5fbe-8e91-9923e8c35d67"))
+struct __declspec(uuid("f4cbb1d4-3b69-536a-91ec-d484f3763d36"))
 IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::FontType> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::FontType> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2111,7 +2111,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
-struct __declspec(uuid("70b95683-2e1b-58c2-bade-8bb3fb825fec"))
+struct __declspec(uuid("c1535627-aba9-570d-9f2e-aae7dc33be83"))
 IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2150,7 +2150,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
-struct __declspec(uuid("99b1c200-6b3b-555e-8d17-2e1c6df63d9a"))
+struct __declspec(uuid("a4ec71b3-2901-52a1-b820-005d65f2e520"))
 IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2310,7 +2310,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("a2e76c50-62b8-5cc0-8ef2-4c8819bcee8a"))
+struct __declspec(uuid("43549589-2012-59a6-9377-e820b65b1e25"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMediaSource*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2340,7 +2340,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*>
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("acc5b752-0f69-567f-ad55-7fafe50de0a2"))
+struct __declspec(uuid("2555e07d-1dde-569f-ab7d-970b09c077c9"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMediaSource*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2370,7 +2370,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*>
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("a124950c-9ba8-574b-8943-d513d70e9599"))
+struct __declspec(uuid("959a1a7c-05bf-5222-ac65-90e7aa76d05e"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMediaSource*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2400,7 +2400,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("ac91b628-219b-5a2a-a97e-6d47a2b524f3"))
+struct __declspec(uuid("2655ea3c-2cb2-578b-b5ee-63d7dcb62cac"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMediaSource*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2440,7 +2440,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("ea7c242f-8d33-5592-89f2-bec11766f62e"))
+struct __declspec(uuid("b6633e81-9637-5975-b26e-8d964397f911"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2470,7 +2470,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButto
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("0086d6a7-2d42-5286-8de3-abaebb989e94"))
+struct __declspec(uuid("003e7bd8-1e36-5e83-b226-3487dc6e201b"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2500,7 +2500,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButto
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("8cfbc077-5d88-5573-825f-15ea44fca8fe"))
+struct __declspec(uuid("dbaff0b6-d64c-5896-87d1-217414b8f9b6"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2530,7 +2530,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardBut
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("5c6fe6bb-ecad-55a1-a79e-707f7f120f78"))
+struct __declspec(uuid("a676f19c-be12-5221-a010-7de5aa68dc88"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2676,7 +2676,7 @@ typedef IVector<HSTRING> __FIVector_1_HSTRING_t;
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("a87b1481-310a-550f-aa4b-2c6be98046c2"))
+struct __declspec(uuid("28a63a01-fb25-52ff-ae4b-7750cd3d88a6"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> : IIterator_impl<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2706,7 +2706,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("c51fb479-beae-57f1-a85e-2ada2414147b"))
+struct __declspec(uuid("b30da53a-4908-5bc8-bc80-517cf7a93945"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> : IIterable_impl<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2736,7 +2736,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("e126be09-a7cb-55bc-a205-0799b6e663b1"))
+struct __declspec(uuid("180a3a1d-a72a-53ba-ab35-76465a9f9e96"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> : IVectorView_impl<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2766,7 +2766,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElemen
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("1401d3a8-8eee-5bca-8701-ef9e32f3d3bf"))
+struct __declspec(uuid("aac4302a-6638-5f7e-9452-64c83ec6f282"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> : IVector_impl<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2796,7 +2796,7 @@ typedef IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*> 
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("6eee7b8e-3b11-5b2b-be75-bf5dd731ad14"))
+struct __declspec(uuid("e92a739a-5d24-5b87-99ce-4413abac5e2c"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*> : IIterator_impl<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2826,7 +2826,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElemen
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("721d6179-4b51-5ff1-ac84-9c06fbc00f29"))
+struct __declspec(uuid("c049e2b2-337c-57ad-a08d-6870f95f1c00"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*> : IIterable_impl<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2856,7 +2856,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElemen
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("3104be64-6f15-571f-83cd-61b326f47c4c"))
+struct __declspec(uuid("9e7bc0c9-8a51-5afe-a6b2-de400211f35f"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*> : IVectorView_impl<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2886,7 +2886,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElem
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("dab4d8b0-0678-5db3-bd03-5866e281d822"))
+struct __declspec(uuid("d2dc6407-fcfc-5f79-818d-77047e696ab2"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*> : IVector_impl<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2926,7 +2926,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("d842dd2c-822c-5e17-9fe9-a9a58de5a534"))
+struct __declspec(uuid("638a651b-9e3e-5c76-b9ba-08ee1abea769"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveError*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2956,7 +2956,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*> __FII
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("e057cfb3-11d2-55d4-b2df-c7a2f92ac7b9"))
+struct __declspec(uuid("c861908f-b398-59fa-a76d-ea72aeb49351"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveError*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -2986,7 +2986,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*> __FII
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("ec045669-2c4f-5c23-8472-257dbf3966b9"))
+struct __declspec(uuid("4cb4d999-8ea1-5d6a-85df-a5850b2e1d8a"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveError*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3016,7 +3016,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*> __F
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("3ae3a8d1-b2c7-5a3d-b425-5d90eccdedc9"))
+struct __declspec(uuid("5eb2553e-6812-5e28-b2a2-18587ea38927"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveError*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3056,7 +3056,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("7a5e02bf-2aeb-5027-b334-9d36392ba65a"))
+struct __declspec(uuid("92882831-9723-5301-af22-2921ca23840a"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3086,7 +3086,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*> __F
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("4eb5602c-73bd-5a29-b4ea-6eac5d2d5f46"))
+struct __declspec(uuid("e94c6e6e-0f96-5040-a54c-0a34e92ebf4a"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3116,7 +3116,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*> __F
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("6189e85f-929f-523c-8ad2-61195bd89e87"))
+struct __declspec(uuid("79bba627-ebad-52ba-9f89-49bddbacbb7d"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3146,7 +3146,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*> _
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("61908a97-dd00-5f6b-82f2-abf4395ec1fb"))
+struct __declspec(uuid("4ef2792b-1127-51ad-b73d-9f82cd755b3d"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3186,7 +3186,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("6893149a-28d4-56b1-a8d8-30417c722acb"))
+struct __declspec(uuid("19a51f47-abab-5309-97f7-1795ba76095e"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3216,7 +3216,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*> __FII
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("63a96eee-9c4d-576f-b90c-77aa421709cc"))
+struct __declspec(uuid("f82734bf-5d7c-5d36-bb36-32cb25326bd3"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3246,7 +3246,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*> __FII
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("d5f1fe00-18e5-59a6-bc5a-0d6a1d5e18af"))
+struct __declspec(uuid("f106a531-43de-5ac6-ae65-52be5f091543"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3276,7 +3276,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*> __F
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("bf6e1a09-3d81-5701-a749-8ace2cc843fa"))
+struct __declspec(uuid("1ed512c5-f8b9-5624-884c-ad5cda6954db"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3316,7 +3316,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("479df5b5-45b8-5669-9bba-bfac0f126819"))
+struct __declspec(uuid("f84549d0-9760-5bdb-88b4-213d326383c2"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3346,7 +3346,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*>
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("83478f4a-a4fa-5dec-9892-5a91fb6f9a61"))
+struct __declspec(uuid("032ae2c2-4651-5538-8d13-289db2e6b42e"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3376,7 +3376,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*>
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("bf16a440-f67e-59ec-8f0e-425ecc0e4c7a"))
+struct __declspec(uuid("619cbf43-5fb0-5d78-8e59-b61fb45f5fcc"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3406,7 +3406,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("a54d407b-0962-5532-b8cb-fc0f4915d302"))
+struct __declspec(uuid("4ba2d0f2-7a73-58dc-a991-dfd4a1f33985"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3474,7 +3474,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation {
 template <>
-struct __declspec(uuid("1cf6a43c-1a36-5516-8599-fa43f8d7e2b1"))
+struct __declspec(uuid("6a4abd68-74c1-5612-9b9f-d7423e9a1dd8"))
 IReference<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment> : IReference_impl<MIDL_ENUM ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3514,7 +3514,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("eea30bf0-1e7e-57b4-a9b1-b862a7edc156"))
+struct __declspec(uuid("db4d5add-d46f-5d5e-95b4-cda57028c8a3"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3544,7 +3544,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*> __FI
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("18558fb0-fb87-5637-8da1-a09becaab758"))
+struct __declspec(uuid("935c218a-8222-5039-88de-f7ccd8e8015f"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3574,7 +3574,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*> __FI
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("58f35edb-ff6f-5e35-96ab-3a8cf35e2380"))
+struct __declspec(uuid("627def7c-00f6-5caf-98f1-6cc40f976c0f"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3604,7 +3604,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*> __
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("e54c75c3-f9a8-5571-9046-f74a54f9c3d5"))
+struct __declspec(uuid("7955875a-d284-5f88-8a29-8138a601c7a2"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3644,7 +3644,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("12f71674-16a6-5120-a013-788d5b726554"))
+struct __declspec(uuid("d6a09537-4a11-510f-9e55-bfd8054a29fc"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveFact*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3674,7 +3674,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*> __FIIt
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("359dad80-bb15-56de-8b7b-32ddf0b0b8e4"))
+struct __declspec(uuid("882ffa00-0b04-5a58-929b-0ab5e37e7d94"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveFact*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3704,7 +3704,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*> __FIIt
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("c72e018e-80d4-5594-b993-a9547f30888e"))
+struct __declspec(uuid("528b347a-dafb-5870-a7dd-6a134f739e5e"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveFact*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3734,7 +3734,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*> __FI
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("88e62840-cf99-537e-9942-756f46e0ca19"))
+struct __declspec(uuid("fe36b82e-db8f-533d-8472-1975681a5aaa"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveFact*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3774,7 +3774,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("ce3eeb6e-5608-5bdc-ac96-3d32a7e4aec8"))
+struct __declspec(uuid("ace143dd-e04b-5295-bcba-51a4aadecb11"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableCell*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3804,7 +3804,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*> _
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("345208b0-b481-513b-8afe-f49c1bcfca4f"))
+struct __declspec(uuid("20289f6b-0c28-5c02-bc25-79ff83488815"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableCell*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3834,7 +3834,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*> _
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("2791301f-56b4-53b3-ba9b-443205b0f5fe"))
+struct __declspec(uuid("e2d61cc9-03cf-569f-9ab3-eeeeea0e964e"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableCell*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3864,7 +3864,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*>
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("d7506917-6692-5738-9ba7-1e04d2977bc9"))
+struct __declspec(uuid("6a161e9e-d0be-522b-bf9a-bf6727b28439"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableCell*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3933,7 +3933,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("36846583-fe8a-5d61-b72d-2bba467959bb"))
+struct __declspec(uuid("a513cdcd-ca4d-5426-88a8-a7a2e02f4445"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableColumnDefinition*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3963,7 +3963,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDe
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("bdf79ada-1e72-51af-ace2-d67ea82258cb"))
+struct __declspec(uuid("35026d65-3d6d-5c33-b2f3-24cb72c1578b"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableColumnDefinition*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -3993,7 +3993,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDe
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("356d188f-c464-500a-ad31-f6a3df979383"))
+struct __declspec(uuid("c118b311-9cf4-570f-b67d-30952c08c5cc"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableColumnDefinition*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4023,7 +4023,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumn
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("12a3c0e7-f7e1-587e-95c3-d3b6d721d6ca"))
+struct __declspec(uuid("d84ff5b5-2ac9-5f82-b5e4-fb9ed93b9c2d"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableColumnDefinition*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4063,7 +4063,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("abbec171-126b-5a47-a83d-180c4de5648e"))
+struct __declspec(uuid("44d5e7f0-fd56-5ea4-bf27-979fb1ff6218"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableRow*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4093,7 +4093,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*> __
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("3019d3e8-652d-5e4b-b836-a74a3d793b2f"))
+struct __declspec(uuid("837699af-76fb-5dcf-97b8-8b24b0f53f71"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableRow*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4123,7 +4123,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*> __
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("6d10f448-8066-59b3-93c6-b1b4a7fc30d6"))
+struct __declspec(uuid("3370e089-8e4d-5522-bdd9-dd1f43668f19"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableRow*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4153,7 +4153,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*> 
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("70e83535-668f-519e-a88a-39e2a071c3c4"))
+struct __declspec(uuid("8cb19e5e-741f-5b26-8966-40d0e7b1f181"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableRow*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4193,7 +4193,7 @@ namespace ABI {
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("80b1f993-625d-5969-bcdb-ed235cd0d47a"))
+struct __declspec(uuid("cb6e9327-caf7-54df-b4f7-3e05773a0207"))
 IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*> : IIterator_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleVisibilityTarget*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4223,7 +4223,7 @@ typedef IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibil
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("66f41f99-559b-5f0f-bdde-5eef1e3b59ac"))
+struct __declspec(uuid("92c14942-ac60-50b5-9062-dea3ea31de37"))
 IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*> : IIterable_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleVisibilityTarget*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4253,7 +4253,7 @@ typedef IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibil
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("f50e2b84-fede-590d-ab4a-700eda5f5c5a"))
+struct __declspec(uuid("f47680c5-c907-5281-a642-3cc64b2df2f5"))
 IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*> : IVectorView_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleVisibilityTarget*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -4283,7 +4283,7 @@ typedef IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisib
 #if !defined(RO_NO_TEMPLATE_NAME)
 namespace ABI { namespace Windows { namespace Foundation { namespace Collections {
 template <>
-struct __declspec(uuid("932a9feb-5847-5ee6-b46f-9ddf7e0bfdb7"))
+struct __declspec(uuid("02176d1e-496e-5e7d-90fa-bea6bf536f08"))
 IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*> : IVector_impl<ABI::Windows::Foundation::Internal::AggregateType<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleVisibilityTarget*>> 
 {
     static const wchar_t* z_get_rc_name_impl() 
@@ -5168,8 +5168,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("e0d82150-3f34-5c27-9c03-76afb5cd5925"), version, object] */
-                MIDL_INTERFACE("e0d82150-3f34-5c27-9c03-76afb5cd5925")
+                /* [uuid("613d5415-5306-5238-aff5-3db2698a3a0b"), version, object] */
+                MIDL_INTERFACE("613d5415-5306-5238-aff5-3db2698a3a0b")
                 IAdaptiveCardElement : public IInspectable
                 {
                 public:
@@ -5267,8 +5267,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("c4e5d8ae-4735-5c78-b439-9da7261439a1"), version, object, exclusiveto] */
-                MIDL_INTERFACE("c4e5d8ae-4735-5c78-b439-9da7261439a1")
+                /* [uuid("dd268543-43f3-5f24-8bd0-3359e6713cb4"), version, object, exclusiveto] */
+                MIDL_INTERFACE("dd268543-43f3-5f24-8bd0-3359e6713cb4")
                 IAdaptiveRemoteResourceInformation : public IInspectable
                 {
                 public:
@@ -5336,8 +5336,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("2fab113d-c737-55e9-b081-4aaca4fa2043"), version, object] */
-                MIDL_INTERFACE("2fab113d-c737-55e9-b081-4aaca4fa2043")
+                /* [uuid("c749123c-5d1e-5771-ab41-45af9744998c"), version, object] */
+                MIDL_INTERFACE("c749123c-5d1e-5771-ab41-45af9744998c")
                 IAdaptiveElementWithRemoteResources : public IInspectable
                 {
                 public:
@@ -5389,8 +5389,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("ac549efa-a3c9-598e-b949-06fa14ff0eba"), version, object, exclusiveto] */
-                MIDL_INTERFACE("ac549efa-a3c9-598e-b949-06fa14ff0eba")
+                /* [uuid("826c0c12-5725-514e-85af-0879c4a101a2"), version, object, exclusiveto] */
+                MIDL_INTERFACE("826c0c12-5725-514e-85af-0879c4a101a2")
                 IAdaptiveSeparator : public IInspectable
                 {
                 public:
@@ -5458,8 +5458,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("70bcd0cb-38be-5bec-be14-5def282f9004"), version, object] */
-                MIDL_INTERFACE("70bcd0cb-38be-5bec-be14-5def282f9004")
+                /* [uuid("98f66a00-c39b-59d5-9d8c-0f8559ec0b4b"), version, object] */
+                MIDL_INTERFACE("98f66a00-c39b-59d5-9d8c-0f8559ec0b4b")
                 IAdaptiveTextElement : public IInspectable
                 {
                 public:
@@ -5550,8 +5550,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("777df7f6-0669-5ee7-8961-98abfc5d6282"), version, object, exclusiveto] */
-                MIDL_INTERFACE("777df7f6-0669-5ee7-8961-98abfc5d6282")
+                /* [uuid("ed7d8055-a39b-5410-af31-308b9b2c623a"), version, object, exclusiveto] */
+                MIDL_INTERFACE("ed7d8055-a39b-5410-af31-308b9b2c623a")
                 IAdaptiveTextBlock : public IInspectable
                 {
                 public:
@@ -5678,8 +5678,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("ad3d3e14-5ce4-5322-a0eb-56e52c92f333"), version, object, exclusiveto] */
-                MIDL_INTERFACE("ad3d3e14-5ce4-5322-a0eb-56e52c92f333")
+                /* [uuid("36349ab1-cd6b-5d58-9b39-a4a6036e3ca4"), version, object, exclusiveto] */
+                MIDL_INTERFACE("36349ab1-cd6b-5d58-9b39-a4a6036e3ca4")
                 IAdaptiveTextRun : public IInspectable
                 {
                 public:
@@ -5781,8 +5781,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("cd4116ad-e686-5ea7-aa93-fbdc61b9722a"), version, object, exclusiveto] */
-                MIDL_INTERFACE("cd4116ad-e686-5ea7-aa93-fbdc61b9722a")
+                /* [uuid("58d1ed22-4749-5ed7-a8a0-44c114831331"), version, object, exclusiveto] */
+                MIDL_INTERFACE("58d1ed22-4749-5ed7-a8a0-44c114831331")
                 IAdaptiveRichTextBlock : public IInspectable
                 {
                 public:
@@ -5852,8 +5852,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("5adbf4bb-a457-5c50-9c55-1dd095dcd6cc"), version, object, exclusiveto] */
-                MIDL_INTERFACE("5adbf4bb-a457-5c50-9c55-1dd095dcd6cc")
+                /* [uuid("b4e7e201-1642-53aa-9f23-7d446033e0b7"), version, object, exclusiveto] */
+                MIDL_INTERFACE("b4e7e201-1642-53aa-9f23-7d446033e0b7")
                 IAdaptiveMediaSource : public IInspectable
                 {
                 public:
@@ -5935,8 +5935,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("7c4615a2-168e-5cbc-b2f4-dbb250efb9a0"), version, object, exclusiveto] */
-                MIDL_INTERFACE("7c4615a2-168e-5cbc-b2f4-dbb250efb9a0")
+                /* [uuid("960e4672-7b7c-537a-a060-e7dfc29a8e64"), version, object, exclusiveto] */
+                MIDL_INTERFACE("960e4672-7b7c-537a-a060-e7dfc29a8e64")
                 IAdaptiveMedia : public IInspectable
                 {
                 public:
@@ -6022,8 +6022,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("f1d73147-4729-57e3-848a-419e3a3865ea"), version, object, exclusiveto] */
-                MIDL_INTERFACE("f1d73147-4729-57e3-848a-419e3a3865ea")
+                /* [uuid("e73590b3-0b06-5ffc-b9f0-66fa831f38e4"), version, object, exclusiveto] */
+                MIDL_INTERFACE("e73590b3-0b06-5ffc-b9f0-66fa831f38e4")
                 IAdaptiveBackgroundImage : public IInspectable
                 {
                 public:
@@ -6107,8 +6107,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("e4ef5280-2e37-5c4d-a580-d79be24b0fb3"), version, object, exclusiveto] */
-                MIDL_INTERFACE("e4ef5280-2e37-5c4d-a580-d79be24b0fb3")
+                /* [uuid("ca052bac-4bd7-54af-ac02-9c8d3eacf688"), version, object, exclusiveto] */
+                MIDL_INTERFACE("ca052bac-4bd7-54af-ac02-9c8d3eacf688")
                 IAdaptiveAuthCardButton : public IInspectable
                 {
                 public:
@@ -6202,8 +6202,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("21705a8e-18d5-52a7-945d-dc72595831e4"), version, object, exclusiveto] */
-                MIDL_INTERFACE("21705a8e-18d5-52a7-945d-dc72595831e4")
+                /* [uuid("3aa047ef-0f8c-58c8-8b9c-b7afc522c092"), version, object, exclusiveto] */
+                MIDL_INTERFACE("3aa047ef-0f8c-58c8-8b9c-b7afc522c092")
                 IAdaptiveTokenExchangeResource : public IInspectable
                 {
                 public:
@@ -6291,8 +6291,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("16069277-85a8-554f-a367-80b7bb59f327"), version, object, exclusiveto] */
-                MIDL_INTERFACE("16069277-85a8-554f-a367-80b7bb59f327")
+                /* [uuid("ef7b0d5e-3158-5679-8bf5-92594e20e8b0"), version, object, exclusiveto] */
+                MIDL_INTERFACE("ef7b0d5e-3158-5679-8bf5-92594e20e8b0")
                 IAdaptiveAuthentication : public IInspectable
                 {
                 public:
@@ -6383,8 +6383,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("24f82b16-5304-5e1b-a01d-b5117ae8d303"), version, object, exclusiveto] */
-                MIDL_INTERFACE("24f82b16-5304-5e1b-a01d-b5117ae8d303")
+                /* [uuid("03e01cf1-55f0-52dc-9bbb-771e46b091aa"), version, object, exclusiveto] */
+                MIDL_INTERFACE("03e01cf1-55f0-52dc-9bbb-771e46b091aa")
                 IAdaptiveRefresh : public IInspectable
                 {
                 public:
@@ -6463,8 +6463,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("ce223d5d-c836-5656-ba47-bbbcf2149244"), version, object, exclusiveto] */
-                MIDL_INTERFACE("ce223d5d-c836-5656-ba47-bbbcf2149244")
+                /* [uuid("cffcd906-289a-5b41-845f-dfa4dec36c47"), version, object, exclusiveto] */
+                MIDL_INTERFACE("cffcd906-289a-5b41-845f-dfa4dec36c47")
                 IAdaptiveCard : public IInspectable
                 {
                 public:
@@ -6592,8 +6592,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("61e72d41-c07f-5b22-a9ae-49dbe10cca51"), version, object, exclusiveto] */
-                MIDL_INTERFACE("61e72d41-c07f-5b22-a9ae-49dbe10cca51")
+                /* [uuid("1b938380-0e82-5044-be9b-95ea6f86cadb"), version, object, exclusiveto] */
+                MIDL_INTERFACE("1b938380-0e82-5044-be9b-95ea6f86cadb")
                 IAdaptiveCardStatics : public IInspectable
                 {
                 public:
@@ -6674,8 +6674,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("dc2dec64-0589-5a0b-bbc5-ba0920a9641e"), version, object, exclusiveto] */
-                MIDL_INTERFACE("dc2dec64-0589-5a0b-bbc5-ba0920a9641e")
+                /* [uuid("e027bfe3-0ba4-581b-aa5c-a76fb99e8eb6"), version, object, exclusiveto] */
+                MIDL_INTERFACE("e027bfe3-0ba4-581b-aa5c-a76fb99e8eb6")
                 IAdaptiveCardParseResult : public IInspectable
                 {
                 public:
@@ -6744,8 +6744,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("341d3830-a1bc-5135-a3e4-5448dc0de8f6"), version, object, exclusiveto] */
-                MIDL_INTERFACE("341d3830-a1bc-5135-a3e4-5448dc0de8f6")
+                /* [uuid("69d2d295-1f44-50d9-8615-c7a555ded6ae"), version, object, exclusiveto] */
+                MIDL_INTERFACE("69d2d295-1f44-50d9-8615-c7a555ded6ae")
                 IAdaptiveImage : public IInspectable
                 {
                 public:
@@ -6870,8 +6870,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("3e7db841-9cd8-59c7-a27f-f635f13e89ea"), version, object, exclusiveto] */
-                MIDL_INTERFACE("3e7db841-9cd8-59c7-a27f-f635f13e89ea")
+                /* [uuid("c31651d4-cf25-50c4-9cca-b25b86226b98"), version, object, exclusiveto] */
+                MIDL_INTERFACE("c31651d4-cf25-50c4-9cca-b25b86226b98")
                 IAdaptiveImageSet : public IInspectable
                 {
                 public:
@@ -6941,8 +6941,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("36ddb94d-cf5a-5664-9de7-e49350f732b7"), version, object, exclusiveto] */
-                MIDL_INTERFACE("36ddb94d-cf5a-5664-9de7-e49350f732b7")
+                /* [uuid("b15cea61-9c8a-519e-9745-bfe599dd396e"), version, object, exclusiveto] */
+                MIDL_INTERFACE("b15cea61-9c8a-519e-9745-bfe599dd396e")
                 IAdaptiveChoiceInput : public IInspectable
                 {
                 public:
@@ -7027,8 +7027,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("5715bcbe-935a-5b85-8230-280db6b0c4f3"), version, object, exclusiveto] */
-                MIDL_INTERFACE("5715bcbe-935a-5b85-8230-280db6b0c4f3")
+                /* [uuid("fcbed866-ee11-5785-83c0-b5c62681d859"), version, object, exclusiveto] */
+                MIDL_INTERFACE("fcbed866-ee11-5785-83c0-b5c62681d859")
                 IAdaptiveChoiceSetInput : public IInspectable
                 {
                 public:
@@ -7133,8 +7133,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("0fe665a5-7ae3-52ab-bf34-d54f7f902164"), version, object, exclusiveto] */
-                MIDL_INTERFACE("0fe665a5-7ae3-52ab-bf34-d54f7f902164")
+                /* [uuid("5a7e16c1-1866-5985-acbd-2bba9220625e"), version, object, exclusiveto] */
+                MIDL_INTERFACE("5a7e16c1-1866-5985-acbd-2bba9220625e")
                 IAdaptiveDateInput : public IInspectable
                 {
                 public:
@@ -7230,8 +7230,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("f0b4b9b0-871f-57c2-8fa2-0d6c6d122656"), version, object, exclusiveto] */
-                MIDL_INTERFACE("f0b4b9b0-871f-57c2-8fa2-0d6c6d122656")
+                /* [uuid("778baa12-ee05-5eb9-85c5-6b650bc65f64"), version, object, exclusiveto] */
+                MIDL_INTERFACE("778baa12-ee05-5eb9-85c5-6b650bc65f64")
                 IAdaptiveNumberInput : public IInspectable
                 {
                 public:
@@ -7327,8 +7327,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("f3301e8f-7c7a-57e5-8b2e-438011553708"), version, object, exclusiveto] */
-                MIDL_INTERFACE("f3301e8f-7c7a-57e5-8b2e-438011553708")
+                /* [uuid("fee1e034-5807-5ec8-8342-b1d06b12fba9"), version, object, exclusiveto] */
+                MIDL_INTERFACE("fee1e034-5807-5ec8-8342-b1d06b12fba9")
                 IAdaptiveTextInput : public IInspectable
                 {
                 public:
@@ -7442,8 +7442,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("7d058bd4-70f5-5c54-a61b-6f986c1f4c8c"), version, object, exclusiveto] */
-                MIDL_INTERFACE("7d058bd4-70f5-5c54-a61b-6f986c1f4c8c")
+                /* [uuid("456df761-ec55-5f2f-b886-92f4e5551e0b"), version, object, exclusiveto] */
+                MIDL_INTERFACE("456df761-ec55-5f2f-b886-92f4e5551e0b")
                 IAdaptiveTimeInput : public IInspectable
                 {
                 public:
@@ -7539,8 +7539,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("33abef6f-0668-58cd-a5b1-e1f52f356df7"), version, object, exclusiveto] */
-                MIDL_INTERFACE("33abef6f-0668-58cd-a5b1-e1f52f356df7")
+                /* [uuid("83eeed9b-4930-5873-a2b1-3548c25d4511"), version, object, exclusiveto] */
+                MIDL_INTERFACE("83eeed9b-4930-5873-a2b1-3548c25d4511")
                 IAdaptiveToggleInput : public IInspectable
                 {
                 public:
@@ -7628,8 +7628,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("e7b77b9b-61ee-5262-9b69-604554376e2b"), version, object] */
-                MIDL_INTERFACE("e7b77b9b-61ee-5262-9b69-604554376e2b")
+                /* [uuid("66e0218b-4318-5d07-ba3c-1b05bd4d75f6"), version, object] */
+                MIDL_INTERFACE("66e0218b-4318-5d07-ba3c-1b05bd4d75f6")
                 IAdaptiveContainerBase : public IInspectable
                 {
                 public:
@@ -7691,8 +7691,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("1f8f8b3a-63cc-5939-bbe2-7775b1834647"), version, object] */
-                MIDL_INTERFACE("1f8f8b3a-63cc-5939-bbe2-7775b1834647")
+                /* [uuid("5e19b40e-f565-53cf-8a97-0313f721f14c"), version, object] */
+                MIDL_INTERFACE("5e19b40e-f565-53cf-8a97-0313f721f14c")
                 IAdaptiveContainer : public IInspectable
                 {
                 public:
@@ -7762,8 +7762,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("44dada13-fe76-5808-b916-242222da9f95"), version, object, exclusiveto] */
-                MIDL_INTERFACE("44dada13-fe76-5808-b916-242222da9f95")
+                /* [uuid("1d66a356-93b3-5b52-a1ca-2f250778689c"), version, object, exclusiveto] */
+                MIDL_INTERFACE("1d66a356-93b3-5b52-a1ca-2f250778689c")
                 IAdaptiveContainer2 : public IInspectable
                 {
                 public:
@@ -7826,8 +7826,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("82bf2454-4ac5-5059-8689-76274890f605"), version, object, exclusiveto] */
-                MIDL_INTERFACE("82bf2454-4ac5-5059-8689-76274890f605")
+                /* [uuid("50ddd1a9-9763-5900-b17c-6472bcd652f6"), version, object, exclusiveto] */
+                MIDL_INTERFACE("50ddd1a9-9763-5900-b17c-6472bcd652f6")
                 IAdaptiveColumn : public IInspectable
                 {
                 public:
@@ -7932,8 +7932,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("dbc8249b-f860-5893-97e4-17793b1b7b1d"), version, object, exclusiveto] */
-                MIDL_INTERFACE("dbc8249b-f860-5893-97e4-17793b1b7b1d")
+                /* [uuid("35ecfbde-a805-57f3-a5b8-0c3c683f8fff"), version, object, exclusiveto] */
+                MIDL_INTERFACE("35ecfbde-a805-57f3-a5b8-0c3c683f8fff")
                 IAdaptiveColumnSet : public IInspectable
                 {
                 public:
@@ -7998,8 +7998,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("26a54ae6-bd95-53db-8a97-08f78a93b5fd"), version, object, exclusiveto] */
-                MIDL_INTERFACE("26a54ae6-bd95-53db-8a97-08f78a93b5fd")
+                /* [uuid("e4a4640c-0a28-580c-a08a-d47b546dca24"), version, object, exclusiveto] */
+                MIDL_INTERFACE("e4a4640c-0a28-580c-a08a-d47b546dca24")
                 IAdaptiveFact : public IInspectable
                 {
                 public:
@@ -8090,8 +8090,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("31157d84-5712-53af-9f01-decb48a9deba"), version, object, exclusiveto] */
-                MIDL_INTERFACE("31157d84-5712-53af-9f01-decb48a9deba")
+                /* [uuid("46dd1203-fd15-5f9d-bb75-8fc4efead046"), version, object, exclusiveto] */
+                MIDL_INTERFACE("46dd1203-fd15-5f9d-bb75-8fc4efead046")
                 IAdaptiveFactSet : public IInspectable
                 {
                 public:
@@ -8155,8 +8155,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("787d6b1f-5831-546c-9ffc-183e4b8d58c5"), version, object, exclusiveto] */
-                MIDL_INTERFACE("787d6b1f-5831-546c-9ffc-183e4b8d58c5")
+                /* [uuid("7195002a-4a36-59a3-ac61-dce5f94ff5f8"), version, object, exclusiveto] */
+                MIDL_INTERFACE("7195002a-4a36-59a3-ac61-dce5f94ff5f8")
                 IAdaptiveTableCell : public IInspectable
                 {
                 public:
@@ -8219,8 +8219,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("2d680b56-1a59-5e2d-be30-1ef86f895a31"), version, object, exclusiveto] */
-                MIDL_INTERFACE("2d680b56-1a59-5e2d-be30-1ef86f895a31")
+                /* [uuid("2e6e6f9a-7839-505c-a9fb-60a3b41f547c"), version, object, exclusiveto] */
+                MIDL_INTERFACE("2e6e6f9a-7839-505c-a9fb-60a3b41f547c")
                 IAdaptiveTableRow : public IInspectable
                 {
                 public:
@@ -8302,8 +8302,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("0211d98c-5f48-54bb-b2d4-263bc4a4c6b2"), version, object, exclusiveto] */
-                MIDL_INTERFACE("0211d98c-5f48-54bb-b2d4-263bc4a4c6b2")
+                /* [uuid("696cf294-2850-58f3-9d74-67edddb3dbe6"), version, object, exclusiveto] */
+                MIDL_INTERFACE("696cf294-2850-58f3-9d74-67edddb3dbe6")
                 IAdaptiveTableColumnDefinition : public IInspectable
                 {
                 public:
@@ -8397,8 +8397,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("f8ed7b1a-0dc5-50dc-813e-2ad91178fcf7"), version, object, exclusiveto] */
-                MIDL_INTERFACE("f8ed7b1a-0dc5-50dc-813e-2ad91178fcf7")
+                /* [uuid("7aebb558-5012-5bf7-8f54-ff63bcb3a900"), version, object, exclusiveto] */
+                MIDL_INTERFACE("7aebb558-5012-5bf7-8f54-ff63bcb3a900")
                 IAdaptiveTable : public IInspectable
                 {
                 public:
@@ -8505,8 +8505,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("bd40919b-01a7-55cc-9d59-20929861ab4a"), version, object, exclusiveto] */
-                MIDL_INTERFACE("bd40919b-01a7-55cc-9d59-20929861ab4a")
+                /* [uuid("ab61d9d7-ea13-56e8-81d5-2408907b3ef1"), version, object, exclusiveto] */
+                MIDL_INTERFACE("ab61d9d7-ea13-56e8-81d5-2408907b3ef1")
                 IAdaptiveActionSet : public IInspectable
                 {
                 public:
@@ -8583,8 +8583,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("7b494796-eaab-5ef6-9c65-b8e58d94541b"), version, object, exclusiveto] */
-                MIDL_INTERFACE("7b494796-eaab-5ef6-9c65-b8e58d94541b")
+                /* [uuid("f6dc3499-33d2-51f4-9107-d4b34a943ff5"), version, object, exclusiveto] */
+                MIDL_INTERFACE("f6dc3499-33d2-51f4-9107-d4b34a943ff5")
                 IAdaptiveUnsupportedAction : public IInspectable
                 {
                 public:
@@ -8655,8 +8655,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("66396792-8fe8-5902-be97-336a769ab4a7"), version, object, exclusiveto] */
-                MIDL_INTERFACE("66396792-8fe8-5902-be97-336a769ab4a7")
+                /* [uuid("6f2ae692-57b1-59f3-8b97-e712ff3fd2f0"), version, object, exclusiveto] */
+                MIDL_INTERFACE("6f2ae692-57b1-59f3-8b97-e712ff3fd2f0")
                 IAdaptiveUnsupportedElement : public IInspectable
                 {
                 public:
@@ -8713,8 +8713,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("e0a1914c-0f13-50b2-82f5-09394e088a22"), version, object] */
-                MIDL_INTERFACE("e0a1914c-0f13-50b2-82f5-09394e088a22")
+                /* [uuid("9c4de627-540c-5dfc-8abe-94595c6daae2"), version, object] */
+                MIDL_INTERFACE("9c4de627-540c-5dfc-8abe-94595c6daae2")
                 IAdaptiveActionElement : public IInspectable
                 {
                 public:
@@ -8832,8 +8832,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("b47a990b-7ea6-54db-8096-61134e92f412"), version, object, exclusiveto] */
-                MIDL_INTERFACE("b47a990b-7ea6-54db-8096-61134e92f412")
+                /* [uuid("74610abd-0a85-52ef-8baa-7b6b16970d62"), version, object, exclusiveto] */
+                MIDL_INTERFACE("74610abd-0a85-52ef-8baa-7b6b16970d62")
                 IAdaptiveOpenUrlAction : public IInspectable
                 {
                 public:
@@ -8913,8 +8913,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("811202b5-f9b7-5527-8dc3-53be9c352f89"), version, object, exclusiveto] */
-                MIDL_INTERFACE("811202b5-f9b7-5527-8dc3-53be9c352f89")
+                /* [uuid("09d98c50-e9b8-5da4-8168-1aa95eaad032"), version, object, exclusiveto] */
+                MIDL_INTERFACE("09d98c50-e9b8-5da4-8168-1aa95eaad032")
                 IAdaptiveShowCardAction : public IInspectable
                 {
                 public:
@@ -8994,8 +8994,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("54f42ecb-f10c-5aa2-bd78-9d6aba2d736f"), version, object, exclusiveto] */
-                MIDL_INTERFACE("54f42ecb-f10c-5aa2-bd78-9d6aba2d736f")
+                /* [uuid("e9fa52e0-d037-54b7-b5e8-aa274c21327e"), version, object, exclusiveto] */
+                MIDL_INTERFACE("e9fa52e0-d037-54b7-b5e8-aa274c21327e")
                 IAdaptiveSubmitAction : public IInspectable
                 {
                 public:
@@ -9081,8 +9081,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("16ff2257-d886-58ad-adae-defcfe300284"), version, object, exclusiveto] */
-                MIDL_INTERFACE("16ff2257-d886-58ad-adae-defcfe300284")
+                /* [uuid("98e275d8-805a-5038-ba4a-3a896aee55cd"), version, object, exclusiveto] */
+                MIDL_INTERFACE("98e275d8-805a-5038-ba4a-3a896aee55cd")
                 IAdaptiveExecuteAction : public IInspectable
                 {
                 public:
@@ -9164,8 +9164,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("825d6be0-21c4-5dbe-8a15-ac0c4ba73a0c"), version, object, exclusiveto] */
-                MIDL_INTERFACE("825d6be0-21c4-5dbe-8a15-ac0c4ba73a0c")
+                /* [uuid("cee5e594-75a7-5745-ac03-05ead1c915ef"), version, object, exclusiveto] */
+                MIDL_INTERFACE("cee5e594-75a7-5745-ac03-05ead1c915ef")
                 IAdaptiveToggleVisibilityTarget : public IInspectable
                 {
                 public:
@@ -9247,8 +9247,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("f1be783e-9646-5be5-941e-99533c1da30c"), version, object, exclusiveto] */
-                MIDL_INTERFACE("f1be783e-9646-5be5-941e-99533c1da30c")
+                /* [uuid("5c3af828-aaab-575a-b078-8b3c1a397fa0"), version, object, exclusiveto] */
+                MIDL_INTERFACE("5c3af828-aaab-575a-b078-8b3c1a397fa0")
                 IAdaptiveToggleVisibilityAction : public IInspectable
                 {
                 public:
@@ -9314,8 +9314,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("8106c5a6-5a56-5043-bb9f-08004e1c0743"), version, object, exclusiveto] */
-                MIDL_INTERFACE("8106c5a6-5a56-5043-bb9f-08004e1c0743")
+                /* [uuid("e9553c58-0e73-5ae4-a9cd-a3dfe38e3598"), version, object, exclusiveto] */
+                MIDL_INTERFACE("e9553c58-0e73-5ae4-a9cd-a3dfe38e3598")
                 IAdaptiveRequirement : public IInspectable
                 {
                 public:
@@ -9365,8 +9365,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("59bb7fad-2626-5434-a7f3-f8b8538b93ed"), version, object, exclusiveto] */
-                MIDL_INTERFACE("59bb7fad-2626-5434-a7f3-f8b8538b93ed")
+                /* [uuid("50cbba11-c95b-5789-85ba-322cc8fefb22"), version, object, exclusiveto] */
+                MIDL_INTERFACE("50cbba11-c95b-5789-85ba-322cc8fefb22")
                 IAdaptiveRequirementFactory : public IInspectable
                 {
                 public:
@@ -9427,8 +9427,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("5ac21990-5e0f-5d71-9266-1295cac1a6ff"), version, object] */
-                MIDL_INTERFACE("5ac21990-5e0f-5d71-9266-1295cac1a6ff")
+                /* [uuid("890d4236-3e32-5fba-adce-ac75e2b7bc51"), version, object] */
+                MIDL_INTERFACE("890d4236-3e32-5fba-adce-ac75e2b7bc51")
                 IAdaptiveElementParser : public IInspectable
                 {
                 public:
@@ -9473,8 +9473,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("f33af0e9-2038-526f-940b-61f52d5d28c2"), version, object, exclusiveto] */
-                MIDL_INTERFACE("f33af0e9-2038-526f-940b-61f52d5d28c2")
+                /* [uuid("f4c6ad0a-f047-5e9f-8fcf-5ae9c5d02b17"), version, object, exclusiveto] */
+                MIDL_INTERFACE("f4c6ad0a-f047-5e9f-8fcf-5ae9c5d02b17")
                 IAdaptiveElementParserRegistration : public IInspectable
                 {
                 public:
@@ -9544,8 +9544,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("ea043181-af73-5fa8-bddc-6e89ca332e17"), version, object, exclusiveto] */
-                MIDL_INTERFACE("ea043181-af73-5fa8-bddc-6e89ca332e17")
+                /* [uuid("042f2527-6090-5ab3-830d-1a17590638c1"), version, object, exclusiveto] */
+                MIDL_INTERFACE("042f2527-6090-5ab3-830d-1a17590638c1")
                 IAdaptiveActionParserRegistration : public IInspectable
                 {
                 public:
@@ -9612,8 +9612,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("12a67519-a257-57dd-87d3-2cb8d99e6b00"), version, object] */
-                MIDL_INTERFACE("12a67519-a257-57dd-87d3-2cb8d99e6b00")
+                /* [uuid("44a6df69-213e-5920-834d-a30afb8bdd8e"), version, object] */
+                MIDL_INTERFACE("44a6df69-213e-5920-834d-a30afb8bdd8e")
                 IAdaptiveActionParser : public IInspectable
                 {
                 public:
@@ -9655,8 +9655,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("545ecd2f-2c13-5a67-9168-5e9450a44ef8"), version, object] */
-                MIDL_INTERFACE("545ecd2f-2c13-5a67-9168-5e9450a44ef8")
+                /* [uuid("35042a1e-9252-54aa-8f37-1b3e922661cb"), version, object] */
+                MIDL_INTERFACE("35042a1e-9252-54aa-8f37-1b3e922661cb")
                 IAdaptiveInputElement : public IInspectable
                 {
                 public:
@@ -9723,8 +9723,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("934a0c1b-9996-51b9-afcd-5e6c3335b6c4"), version, object, exclusiveto] */
-                MIDL_INTERFACE("934a0c1b-9996-51b9-afcd-5e6c3335b6c4")
+                /* [uuid("911e49c6-425d-5a1e-a8a1-b0c604628d49"), version, object, exclusiveto] */
+                MIDL_INTERFACE("911e49c6-425d-5a1e-a8a1-b0c604628d49")
                 IAdaptiveTextBlockParser : public IInspectable
                 {
                 public:
@@ -9795,8 +9795,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("cb9b71c3-75a4-5762-be9c-453a3848ce20"), version, object, exclusiveto] */
-                MIDL_INTERFACE("cb9b71c3-75a4-5762-be9c-453a3848ce20")
+                /* [uuid("750fdd9f-bef9-50e4-8532-002a1eca600d"), version, object, exclusiveto] */
+                MIDL_INTERFACE("750fdd9f-bef9-50e4-8532-002a1eca600d")
                 IAdaptiveRichTextBlockParser : public IInspectable
                 {
                 public:
@@ -9867,8 +9867,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("69c2476e-aab6-5c45-a829-ab1d595b377b"), version, object, exclusiveto] */
-                MIDL_INTERFACE("69c2476e-aab6-5c45-a829-ab1d595b377b")
+                /* [uuid("9062cf83-055e-5bb5-a3c8-ac203e39f63f"), version, object, exclusiveto] */
+                MIDL_INTERFACE("9062cf83-055e-5bb5-a3c8-ac203e39f63f")
                 IAdaptiveImageParser : public IInspectable
                 {
                 public:
@@ -9939,8 +9939,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("123defc6-86c2-582a-8ea4-5388237947c6"), version, object, exclusiveto] */
-                MIDL_INTERFACE("123defc6-86c2-582a-8ea4-5388237947c6")
+                /* [uuid("8ff27d59-ef49-503d-99a8-0350497a8748"), version, object, exclusiveto] */
+                MIDL_INTERFACE("8ff27d59-ef49-503d-99a8-0350497a8748")
                 IAdaptiveImageSetParser : public IInspectable
                 {
                 public:
@@ -10011,8 +10011,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("09c3afd3-8e2f-53a6-b1e9-8dc5087a9a7e"), version, object, exclusiveto] */
-                MIDL_INTERFACE("09c3afd3-8e2f-53a6-b1e9-8dc5087a9a7e")
+                /* [uuid("876e1f8f-bc83-5757-9e61-85cceedbec8e"), version, object, exclusiveto] */
+                MIDL_INTERFACE("876e1f8f-bc83-5757-9e61-85cceedbec8e")
                 IAdaptiveContainerParser : public IInspectable
                 {
                 public:
@@ -10083,8 +10083,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("394513b1-6f2a-5c4a-a4b6-d3d817cdc031"), version, object, exclusiveto] */
-                MIDL_INTERFACE("394513b1-6f2a-5c4a-a4b6-d3d817cdc031")
+                /* [uuid("6d048f74-ba87-584f-b991-7c5dcb602644"), version, object, exclusiveto] */
+                MIDL_INTERFACE("6d048f74-ba87-584f-b991-7c5dcb602644")
                 IAdaptiveColumnParser : public IInspectable
                 {
                 public:
@@ -10155,8 +10155,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("87225a3b-40d7-5490-917d-b35cc0c2ae09"), version, object, exclusiveto] */
-                MIDL_INTERFACE("87225a3b-40d7-5490-917d-b35cc0c2ae09")
+                /* [uuid("75747743-7d11-56b8-b5fd-7f702e91599f"), version, object, exclusiveto] */
+                MIDL_INTERFACE("75747743-7d11-56b8-b5fd-7f702e91599f")
                 IAdaptiveColumnSetParser : public IInspectable
                 {
                 public:
@@ -10227,8 +10227,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("14195d3c-628e-51de-9890-f8d4bcb4d5d3"), version, object, exclusiveto] */
-                MIDL_INTERFACE("14195d3c-628e-51de-9890-f8d4bcb4d5d3")
+                /* [uuid("64ff1eb4-d81d-58df-8844-930b358f5c7d"), version, object, exclusiveto] */
+                MIDL_INTERFACE("64ff1eb4-d81d-58df-8844-930b358f5c7d")
                 IAdaptiveFactParser : public IInspectable
                 {
                 public:
@@ -10299,8 +10299,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("c0a09ad3-867c-5db4-9c72-1a6873cad41e"), version, object, exclusiveto] */
-                MIDL_INTERFACE("c0a09ad3-867c-5db4-9c72-1a6873cad41e")
+                /* [uuid("a7d8ff27-e9c1-5fd4-b3b0-5f186df08683"), version, object, exclusiveto] */
+                MIDL_INTERFACE("a7d8ff27-e9c1-5fd4-b3b0-5f186df08683")
                 IAdaptiveChoiceSetInputParser : public IInspectable
                 {
                 public:
@@ -10371,8 +10371,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("4c2b97b1-3596-5c73-a301-2b133abd9178"), version, object, exclusiveto] */
-                MIDL_INTERFACE("4c2b97b1-3596-5c73-a301-2b133abd9178")
+                /* [uuid("40fc160d-0a42-578b-ab59-568901b08dcf"), version, object, exclusiveto] */
+                MIDL_INTERFACE("40fc160d-0a42-578b-ab59-568901b08dcf")
                 IAdaptiveDateInputParser : public IInspectable
                 {
                 public:
@@ -10443,8 +10443,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("373c48fd-7caa-5a30-9806-f81e6d1ffe10"), version, object, exclusiveto] */
-                MIDL_INTERFACE("373c48fd-7caa-5a30-9806-f81e6d1ffe10")
+                /* [uuid("e6c9fc36-7008-5e91-8153-4f52c140caea"), version, object, exclusiveto] */
+                MIDL_INTERFACE("e6c9fc36-7008-5e91-8153-4f52c140caea")
                 IAdaptiveNumberInputParser : public IInspectable
                 {
                 public:
@@ -10515,8 +10515,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("332f4aa7-fdb8-5413-adf4-d3530f3eddee"), version, object, exclusiveto] */
-                MIDL_INTERFACE("332f4aa7-fdb8-5413-adf4-d3530f3eddee")
+                /* [uuid("418dfc6f-1c4c-5760-b5a9-fdf851c7b511"), version, object, exclusiveto] */
+                MIDL_INTERFACE("418dfc6f-1c4c-5760-b5a9-fdf851c7b511")
                 IAdaptiveTextInputParser : public IInspectable
                 {
                 public:
@@ -10587,8 +10587,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("1368e8d0-6783-52b8-8af1-2aa9e7585bc3"), version, object, exclusiveto] */
-                MIDL_INTERFACE("1368e8d0-6783-52b8-8af1-2aa9e7585bc3")
+                /* [uuid("27b60d29-534c-5c57-97c8-8b5d9c44e5b4"), version, object, exclusiveto] */
+                MIDL_INTERFACE("27b60d29-534c-5c57-97c8-8b5d9c44e5b4")
                 IAdaptiveTimeInputParser : public IInspectable
                 {
                 public:
@@ -10659,8 +10659,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("b8e7de6f-234b-55bc-95ca-6dd0d7b7d841"), version, object, exclusiveto] */
-                MIDL_INTERFACE("b8e7de6f-234b-55bc-95ca-6dd0d7b7d841")
+                /* [uuid("403e62f0-9f58-57fd-9632-14220efd26a4"), version, object, exclusiveto] */
+                MIDL_INTERFACE("403e62f0-9f58-57fd-9632-14220efd26a4")
                 IAdaptiveToggleInputParser : public IInspectable
                 {
                 public:
@@ -10731,8 +10731,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("c0351b3a-8922-5663-a914-f646a2b0fcfd"), version, object, exclusiveto] */
-                MIDL_INTERFACE("c0351b3a-8922-5663-a914-f646a2b0fcfd")
+                /* [uuid("1df433c9-93c4-5c9b-ae76-40ff2fedf467"), version, object, exclusiveto] */
+                MIDL_INTERFACE("1df433c9-93c4-5c9b-ae76-40ff2fedf467")
                 IAdaptiveFactSetParser : public IInspectable
                 {
                 public:
@@ -10803,8 +10803,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("a34e4a4d-dbb9-5ae1-8784-f80be7820d57"), version, object, exclusiveto] */
-                MIDL_INTERFACE("a34e4a4d-dbb9-5ae1-8784-f80be7820d57")
+                /* [uuid("b60cc970-d08e-57ea-b038-0a9d07cb4e07"), version, object, exclusiveto] */
+                MIDL_INTERFACE("b60cc970-d08e-57ea-b038-0a9d07cb4e07")
                 IAdaptiveMediaParser : public IInspectable
                 {
                 public:
@@ -10875,8 +10875,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("24f03c1d-54b9-5415-ae82-b9fcf4438699"), version, object, exclusiveto] */
-                MIDL_INTERFACE("24f03c1d-54b9-5415-ae82-b9fcf4438699")
+                /* [uuid("4aa2144f-49ba-596f-abbf-d3161f7965aa"), version, object, exclusiveto] */
+                MIDL_INTERFACE("4aa2144f-49ba-596f-abbf-d3161f7965aa")
                 IAdaptiveActionSetParser : public IInspectable
                 {
                 public:
@@ -10947,8 +10947,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("1501bb19-a5d4-50f1-88fb-90338bda2a19"), version, object, exclusiveto] */
-                MIDL_INTERFACE("1501bb19-a5d4-50f1-88fb-90338bda2a19")
+                /* [uuid("df43578a-4deb-565a-87c1-79ab6e7ec182"), version, object, exclusiveto] */
+                MIDL_INTERFACE("df43578a-4deb-565a-87c1-79ab6e7ec182")
                 IAdaptiveOpenUrlActionParser : public IInspectable
                 {
                 public:
@@ -11019,8 +11019,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("a52f4dc0-a7cc-52d2-9d57-f8dcec426e69"), version, object, exclusiveto] */
-                MIDL_INTERFACE("a52f4dc0-a7cc-52d2-9d57-f8dcec426e69")
+                /* [uuid("d4c238dd-b879-55d2-b04a-a0e1c2de6522"), version, object, exclusiveto] */
+                MIDL_INTERFACE("d4c238dd-b879-55d2-b04a-a0e1c2de6522")
                 IAdaptiveShowCardActionParser : public IInspectable
                 {
                 public:
@@ -11091,8 +11091,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("e08df80d-30b7-58dc-9c82-9f8b9a0ad3dc"), version, object, exclusiveto] */
-                MIDL_INTERFACE("e08df80d-30b7-58dc-9c82-9f8b9a0ad3dc")
+                /* [uuid("74cdfb54-53b6-563c-af17-9d78698a4b35"), version, object, exclusiveto] */
+                MIDL_INTERFACE("74cdfb54-53b6-563c-af17-9d78698a4b35")
                 IAdaptiveSubmitActionParser : public IInspectable
                 {
                 public:
@@ -11163,8 +11163,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("5bfe15f9-7bb8-541c-af43-111cef59fb5c"), version, object, exclusiveto] */
-                MIDL_INTERFACE("5bfe15f9-7bb8-541c-af43-111cef59fb5c")
+                /* [uuid("b5db3774-8a97-5b3c-8538-6a3bac79bc6c"), version, object, exclusiveto] */
+                MIDL_INTERFACE("b5db3774-8a97-5b3c-8538-6a3bac79bc6c")
                 IAdaptiveExecuteActionParser : public IInspectable
                 {
                 public:
@@ -11235,8 +11235,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("97fc2051-4422-5126-912e-590c759870a6"), version, object, exclusiveto] */
-                MIDL_INTERFACE("97fc2051-4422-5126-912e-590c759870a6")
+                /* [uuid("df10f0ce-3367-58b6-ab3b-9a15031f2327"), version, object, exclusiveto] */
+                MIDL_INTERFACE("df10f0ce-3367-58b6-ab3b-9a15031f2327")
                 IAdaptiveToggleVisibilityActionParser : public IInspectable
                 {
                 public:
@@ -11307,8 +11307,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("4ddc01cf-604d-50ca-a438-909262797a7f"), version, object, exclusiveto] */
-                MIDL_INTERFACE("4ddc01cf-604d-50ca-a438-909262797a7f")
+                /* [uuid("eb0e0387-fcc5-52f7-ba8b-586d3f92f422"), version, object, exclusiveto] */
+                MIDL_INTERFACE("eb0e0387-fcc5-52f7-ba8b-586d3f92f422")
                 IAdaptiveTableParser : public IInspectable
                 {
                 public:
@@ -11368,8 +11368,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("0c1c8d38-4820-5637-a337-39feb492dfc1"), version, object, exclusiveto] */
-                MIDL_INTERFACE("0c1c8d38-4820-5637-a337-39feb492dfc1")
+                /* [uuid("14987a16-f74a-5782-ae83-66f63366b6de"), version, object, exclusiveto] */
+                MIDL_INTERFACE("14987a16-f74a-5782-ae83-66f63366b6de")
                 IAdaptiveError : public IInspectable
                 {
                 public:
@@ -11419,8 +11419,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("cf7ce008-91bf-5a23-be1d-79ef6cbc1bf3"), version, object, exclusiveto] */
-                MIDL_INTERFACE("cf7ce008-91bf-5a23-be1d-79ef6cbc1bf3")
+                /* [uuid("dfe1811e-8b65-5eac-b3f7-47d77af7b6d2"), version, object, exclusiveto] */
+                MIDL_INTERFACE("dfe1811e-8b65-5eac-b3f7-47d77af7b6d2")
                 IAdaptiveErrorFactory : public IInspectable
                 {
                 public:
@@ -11484,8 +11484,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("e87eb0c1-a2a7-5704-b7b4-d3aed92dddd1"), version, object, exclusiveto] */
-                MIDL_INTERFACE("e87eb0c1-a2a7-5704-b7b4-d3aed92dddd1")
+                /* [uuid("cd2733ae-6877-5899-a245-0994e5095180"), version, object, exclusiveto] */
+                MIDL_INTERFACE("cd2733ae-6877-5899-a245-0994e5095180")
                 IAdaptiveWarning : public IInspectable
                 {
                 public:
@@ -11535,8 +11535,8 @@ namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [uuid("fa97db3c-8a77-5921-b462-a11f8ada4128"), version, object, exclusiveto] */
-                MIDL_INTERFACE("fa97db3c-8a77-5921-b462-a11f8ada4128")
+                /* [uuid("0aee9ea3-6f52-5f3b-a730-cc28870d908e"), version, object, exclusiveto] */
+                MIDL_INTERFACE("0aee9ea3-6f52-5f3b-a730-cc28870d908e")
                 IAdaptiveWarningFactory : public IInspectable
                 {
                 public:
@@ -20872,7 +20872,7 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CActionMode
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardElement_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveCardElement[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveCardElement";
-/* [uuid("e0d82150-3f34-5c27-9c03-76afb5cd5925"), version, object] */
+/* [uuid("613d5415-5306-5238-aff5-3db2698a3a0b"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardElementVtbl
 {
     BEGIN_INTERFACE
@@ -21098,7 +21098,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCar
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRemoteResourceInformation_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveRemoteResourceInformation[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveRemoteResourceInformation";
-/* [uuid("c4e5d8ae-4735-5c78-b439-9da7261439a1"), version, object, exclusiveto] */
+/* [uuid("dd268543-43f3-5f24-8bd0-3359e6713cb4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRemoteResourceInformationVtbl
 {
     BEGIN_INTERFACE
@@ -21230,7 +21230,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementWithRemoteResources_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveElementWithRemoteResources[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementWithRemoteResources";
-/* [uuid("2fab113d-c737-55e9-b081-4aaca4fa2043"), version, object] */
+/* [uuid("c749123c-5d1e-5771-ab41-45af9744998c"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementWithRemoteResourcesVtbl
 {
     BEGIN_INTERFACE
@@ -21324,7 +21324,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveEle
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSeparator_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSeparator_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveSeparator[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveSeparator";
-/* [uuid("ac549efa-a3c9-598e-b949-06fa14ff0eba"), version, object, exclusiveto] */
+/* [uuid("826c0c12-5725-514e-85af-0879c4a101a2"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSeparatorVtbl
 {
     BEGIN_INTERFACE
@@ -21456,7 +21456,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextElement_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTextElement[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTextElement";
-/* [uuid("70bcd0cb-38be-5bec-be14-5def282f9004"), version, object] */
+/* [uuid("98f66a00-c39b-59d5-9d8c-0f8559ec0b4b"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextElementVtbl
 {
     BEGIN_INTERFACE
@@ -21641,7 +21641,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTex
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextBlock_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTextBlock[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTextBlock";
-/* [uuid("777df7f6-0669-5ee7-8961-98abfc5d6282"), version, object, exclusiveto] */
+/* [uuid("ed7d8055-a39b-5410-af31-308b9b2c623a"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextBlockVtbl
 {
     BEGIN_INTERFACE
@@ -21885,7 +21885,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveInl
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextRun_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextRun_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTextRun[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTextRun";
-/* [uuid("ad3d3e14-5ce4-5322-a0eb-56e52c92f333"), version, object, exclusiveto] */
+/* [uuid("36349ab1-cd6b-5d58-9b39-a4a6036e3ca4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextRunVtbl
 {
     BEGIN_INTERFACE
@@ -22065,7 +22065,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRichTextBlock_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveRichTextBlock[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveRichTextBlock";
-/* [uuid("cd4116ad-e686-5ea7-aa93-fbdc61b9722a"), version, object, exclusiveto] */
+/* [uuid("58d1ed22-4749-5ed7-a8a0-44c114831331"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRichTextBlockVtbl
 {
     BEGIN_INTERFACE
@@ -22195,7 +22195,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMediaSource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMediaSource_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveMediaSource[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveMediaSource";
-/* [uuid("5adbf4bb-a457-5c50-9c55-1dd095dcd6cc"), version, object, exclusiveto] */
+/* [uuid("b4e7e201-1642-53aa-9f23-7d446033e0b7"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMediaSourceVtbl
 {
     BEGIN_INTERFACE
@@ -22331,7 +22331,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMedia_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMedia_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveMedia[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveMedia";
-/* [uuid("7c4615a2-168e-5cbc-b2f4-dbb250efb9a0"), version, object, exclusiveto] */
+/* [uuid("960e4672-7b7c-537a-a060-e7dfc29a8e64"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMediaVtbl
 {
     BEGIN_INTERFACE
@@ -22475,7 +22475,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveBackgroundImage_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveBackgroundImage[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveBackgroundImage";
-/* [uuid("f1d73147-4729-57e3-848a-419e3a3865ea"), version, object, exclusiveto] */
+/* [uuid("e73590b3-0b06-5ffc-b9f0-66fa831f38e4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveBackgroundImageVtbl
 {
     BEGIN_INTERFACE
@@ -22639,7 +22639,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveAuthCardButton_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveAuthCardButton[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveAuthCardButton";
-/* [uuid("e4ef5280-2e37-5c4d-a580-d79be24b0fb3"), version, object, exclusiveto] */
+/* [uuid("ca052bac-4bd7-54af-ac02-9c8d3eacf688"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveAuthCardButtonVtbl
 {
     BEGIN_INTERFACE
@@ -22803,7 +22803,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTokenExchangeResource_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTokenExchangeResource[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTokenExchangeResource";
-/* [uuid("21705a8e-18d5-52a7-945d-dc72595831e4"), version, object, exclusiveto] */
+/* [uuid("3aa047ef-0f8c-58c8-8b9c-b7afc522c092"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTokenExchangeResourceVtbl
 {
     BEGIN_INTERFACE
@@ -22953,7 +22953,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveAuthentication_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveAuthentication_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveAuthentication[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveAuthentication";
-/* [uuid("16069277-85a8-554f-a367-80b7bb59f327"), version, object, exclusiveto] */
+/* [uuid("ef7b0d5e-3158-5679-8bf5-92594e20e8b0"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveAuthenticationVtbl
 {
     BEGIN_INTERFACE
@@ -23110,7 +23110,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRefresh_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRefresh_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveRefresh[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveRefresh";
-/* [uuid("24f82b16-5304-5e1b-a01d-b5117ae8d303"), version, object, exclusiveto] */
+/* [uuid("03e01cf1-55f0-52dc-9bbb-771e46b091aa"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRefreshVtbl
 {
     BEGIN_INTERFACE
@@ -23239,7 +23239,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCard_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCard_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveCard[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveCard";
-/* [uuid("ce223d5d-c836-5656-ba47-bbbcf2149244"), version, object, exclusiveto] */
+/* [uuid("cffcd906-289a-5b41-845f-dfa4dec36c47"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardVtbl
 {
     BEGIN_INTERFACE
@@ -23535,7 +23535,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCar
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardStatics_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardStatics_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveCardStatics[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveCardStatics";
-/* [uuid("61e72d41-c07f-5b22-a9ae-49dbe10cca51"), version, object, exclusiveto] */
+/* [uuid("1b938380-0e82-5044-be9b-95ea6f86cadb"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardStaticsVtbl
 {
     BEGIN_INTERFACE
@@ -23680,7 +23680,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardParseResult_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardParseResult_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveCardParseResult[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveCardParseResult";
-/* [uuid("dc2dec64-0589-5a0b-bbc5-ba0920a9641e"), version, object, exclusiveto] */
+/* [uuid("e027bfe3-0ba4-581b-aa5c-a76fb99e8eb6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCardParseResultVtbl
 {
     BEGIN_INTERFACE
@@ -23809,7 +23809,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImage_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImage_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveImage[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveImage";
-/* [uuid("341d3830-a1bc-5135-a3e4-5448dc0de8f6"), version, object, exclusiveto] */
+/* [uuid("69d2d295-1f44-50d9-8615-c7a555ded6ae"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageVtbl
 {
     BEGIN_INTERFACE
@@ -24044,7 +24044,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageSet_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveImageSet[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveImageSet";
-/* [uuid("3e7db841-9cd8-59c7-a27f-f635f13e89ea"), version, object, exclusiveto] */
+/* [uuid("c31651d4-cf25-50c4-9cca-b25b86226b98"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageSetVtbl
 {
     BEGIN_INTERFACE
@@ -24174,7 +24174,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceInput_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveChoiceInput[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveChoiceInput";
-/* [uuid("36ddb94d-cf5a-5664-9de7-e49350f732b7"), version, object, exclusiveto] */
+/* [uuid("b15cea61-9c8a-519e-9745-bfe599dd396e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceInputVtbl
 {
     BEGIN_INTERFACE
@@ -24317,7 +24317,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceSetInput_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveChoiceSetInput[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveChoiceSetInput";
-/* [uuid("5715bcbe-935a-5b85-8230-280db6b0c4f3"), version, object, exclusiveto] */
+/* [uuid("fcbed866-ee11-5785-83c0-b5c62681d859"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceSetInputVtbl
 {
     BEGIN_INTERFACE
@@ -24504,7 +24504,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveDateInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveDateInput_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveDateInput[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveDateInput";
-/* [uuid("0fe665a5-7ae3-52ab-bf34-d54f7f902164"), version, object, exclusiveto] */
+/* [uuid("5a7e16c1-1866-5985-acbd-2bba9220625e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveDateInputVtbl
 {
     BEGIN_INTERFACE
@@ -24670,7 +24670,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveNumberInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveNumberInput_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveNumberInput[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveNumberInput";
-/* [uuid("f0b4b9b0-871f-57c2-8fa2-0d6c6d122656"), version, object, exclusiveto] */
+/* [uuid("778baa12-ee05-5eb9-85c5-6b650bc65f64"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveNumberInputVtbl
 {
     BEGIN_INTERFACE
@@ -24836,7 +24836,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextInput_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTextInput[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTextInput";
-/* [uuid("f3301e8f-7c7a-57e5-8b2e-438011553708"), version, object, exclusiveto] */
+/* [uuid("fee1e034-5807-5ec8-8342-b1d06b12fba9"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextInputVtbl
 {
     BEGIN_INTERFACE
@@ -25044,7 +25044,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTimeInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTimeInput_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTimeInput[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTimeInput";
-/* [uuid("7d058bd4-70f5-5c54-a61b-6f986c1f4c8c"), version, object, exclusiveto] */
+/* [uuid("456df761-ec55-5f2f-b886-92f4e5551e0b"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTimeInputVtbl
 {
     BEGIN_INTERFACE
@@ -25210,7 +25210,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleInput_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleInput_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveToggleInput[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveToggleInput";
-/* [uuid("33abef6f-0668-58cd-a5b1-e1f52f356df7"), version, object, exclusiveto] */
+/* [uuid("83eeed9b-4930-5873-a2b1-3548c25d4511"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleInputVtbl
 {
     BEGIN_INTERFACE
@@ -25386,7 +25386,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainerBase_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainerBase_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveContainerBase[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveContainerBase";
-/* [uuid("e7b77b9b-61ee-5262-9b69-604554376e2b"), version, object] */
+/* [uuid("66e0218b-4318-5d07-ba3c-1b05bd4d75f6"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainerBaseVtbl
 {
     BEGIN_INTERFACE
@@ -25532,7 +25532,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCon
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainer_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainer_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveContainer[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveContainer";
-/* [uuid("1f8f8b3a-63cc-5939-bbe2-7775b1834647"), version, object] */
+/* [uuid("5e19b40e-f565-53cf-8a97-0313f721f14c"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainerVtbl
 {
     BEGIN_INTERFACE
@@ -25668,7 +25668,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveCon
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainer2_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainer2_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveContainer2[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveContainer2";
-/* [uuid("44dada13-fe76-5808-b916-242222da9f95"), version, object, exclusiveto] */
+/* [uuid("1d66a356-93b3-5b52-a1ca-2f250778689c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainer2Vtbl
 {
     BEGIN_INTERFACE
@@ -25779,7 +25779,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumn_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumn_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveColumn[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveColumn";
-/* [uuid("82bf2454-4ac5-5059-8689-76274890f605"), version, object, exclusiveto] */
+/* [uuid("50ddd1a9-9763-5900-b17c-6472bcd652f6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnVtbl
 {
     BEGIN_INTERFACE
@@ -25966,7 +25966,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnSet_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveColumnSet[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveColumnSet";
-/* [uuid("dbc8249b-f860-5893-97e4-17793b1b7b1d"), version, object, exclusiveto] */
+/* [uuid("35ecfbde-a805-57f3-a5b8-0c3c683f8fff"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnSetVtbl
 {
     BEGIN_INTERFACE
@@ -26083,7 +26083,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFact_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFact_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveFact[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveFact";
-/* [uuid("26a54ae6-bd95-53db-8a97-08f78a93b5fd"), version, object, exclusiveto] */
+/* [uuid("e4a4640c-0a28-580c-a08a-d47b546dca24"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactVtbl
 {
     BEGIN_INTERFACE
@@ -26240,7 +26240,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactSet_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveFactSet[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveFactSet";
-/* [uuid("31157d84-5712-53af-9f01-decb48a9deba"), version, object, exclusiveto] */
+/* [uuid("46dd1203-fd15-5f9d-bb75-8fc4efead046"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactSetVtbl
 {
     BEGIN_INTERFACE
@@ -26356,7 +26356,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableCell_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableCell_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTableCell[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTableCell";
-/* [uuid("787d6b1f-5831-546c-9ffc-183e4b8d58c5"), version, object, exclusiveto] */
+/* [uuid("7195002a-4a36-59a3-ac61-dce5f94ff5f8"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableCellVtbl
 {
     BEGIN_INTERFACE
@@ -26467,7 +26467,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableRow_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableRow_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTableRow[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTableRow";
-/* [uuid("2d680b56-1a59-5e2d-be30-1ef86f895a31"), version, object, exclusiveto] */
+/* [uuid("2e6e6f9a-7839-505c-a9fb-60a3b41f547c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableRowVtbl
 {
     BEGIN_INTERFACE
@@ -26625,7 +26625,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableColumnDefinition_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTableColumnDefinition[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTableColumnDefinition";
-/* [uuid("0211d98c-5f48-54bb-b2d4-263bc4a4c6b2"), version, object, exclusiveto] */
+/* [uuid("696cf294-2850-58f3-9d74-67edddb3dbe6"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableColumnDefinitionVtbl
 {
     BEGIN_INTERFACE
@@ -26789,7 +26789,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTable_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTable_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTable[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTable";
-/* [uuid("f8ed7b1a-0dc5-50dc-813e-2ad91178fcf7"), version, object, exclusiveto] */
+/* [uuid("7aebb558-5012-5bf7-8f54-ff63bcb3a900"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableVtbl
 {
     BEGIN_INTERFACE
@@ -26982,7 +26982,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionSet_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionSet_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveActionSet[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionSet";
-/* [uuid("bd40919b-01a7-55cc-9d59-20929861ab4a"), version, object, exclusiveto] */
+/* [uuid("ab61d9d7-ea13-56e8-81d5-2408907b3ef1"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionSetVtbl
 {
     BEGIN_INTERFACE
@@ -27105,7 +27105,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveUnsupportedAction_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveUnsupportedAction[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveUnsupportedAction";
-/* [uuid("7b494796-eaab-5ef6-9c65-b8e58d94541b"), version, object, exclusiveto] */
+/* [uuid("f6dc3499-33d2-51f4-9107-d4b34a943ff5"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveUnsupportedActionVtbl
 {
     BEGIN_INTERFACE
@@ -27214,7 +27214,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveUnsupportedElement_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveUnsupportedElement[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveUnsupportedElement";
-/* [uuid("66396792-8fe8-5902-be97-336a769ab4a7"), version, object, exclusiveto] */
+/* [uuid("6f2ae692-57b1-59f3-8b97-e712ff3fd2f0"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveUnsupportedElementVtbl
 {
     BEGIN_INTERFACE
@@ -27319,7 +27319,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionElement_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveActionElement[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionElement";
-/* [uuid("e0a1914c-0f13-50b2-82f5-09394e088a22"), version, object] */
+/* [uuid("9c4de627-540c-5dfc-8abe-94595c6daae2"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionElementVtbl
 {
     BEGIN_INTERFACE
@@ -27567,7 +27567,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveAct
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveOpenUrlAction_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveOpenUrlAction[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveOpenUrlAction";
-/* [uuid("b47a990b-7ea6-54db-8096-61134e92f412"), version, object, exclusiveto] */
+/* [uuid("74610abd-0a85-52ef-8baa-7b6b16970d62"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveOpenUrlActionVtbl
 {
     BEGIN_INTERFACE
@@ -27697,7 +27697,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveShowCardAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveShowCardAction_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveShowCardAction[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveShowCardAction";
-/* [uuid("811202b5-f9b7-5527-8dc3-53be9c352f89"), version, object, exclusiveto] */
+/* [uuid("09d98c50-e9b8-5da4-8168-1aa95eaad032"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveShowCardActionVtbl
 {
     BEGIN_INTERFACE
@@ -27827,7 +27827,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSubmitAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSubmitAction_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveSubmitAction[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveSubmitAction";
-/* [uuid("54f42ecb-f10c-5aa2-bd78-9d6aba2d736f"), version, object, exclusiveto] */
+/* [uuid("e9fa52e0-d037-54b7-b5e8-aa274c21327e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSubmitActionVtbl
 {
     BEGIN_INTERFACE
@@ -27971,7 +27971,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveExecuteAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveExecuteAction_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveExecuteAction[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveExecuteAction";
-/* [uuid("16ff2257-d886-58ad-adae-defcfe300284"), version, object, exclusiveto] */
+/* [uuid("98e275d8-805a-5038-ba4a-3a896aee55cd"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveExecuteActionVtbl
 {
     BEGIN_INTERFACE
@@ -28129,7 +28129,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityTarget_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveToggleVisibilityTarget[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveToggleVisibilityTarget";
-/* [uuid("825d6be0-21c4-5dbe-8a15-ac0c4ba73a0c"), version, object, exclusiveto] */
+/* [uuid("cee5e594-75a7-5745-ac03-05ead1c915ef"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityTargetVtbl
 {
     BEGIN_INTERFACE
@@ -28265,7 +28265,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityAction_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveToggleVisibilityAction[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveToggleVisibilityAction";
-/* [uuid("f1be783e-9646-5be5-941e-99533c1da30c"), version, object, exclusiveto] */
+/* [uuid("5c3af828-aaab-575a-b078-8b3c1a397fa0"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityActionVtbl
 {
     BEGIN_INTERFACE
@@ -28387,7 +28387,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRequirement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRequirement_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveRequirement[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveRequirement";
-/* [uuid("8106c5a6-5a56-5043-bb9f-08004e1c0743"), version, object, exclusiveto] */
+/* [uuid("e9553c58-0e73-5ae4-a9cd-a3dfe38e3598"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRequirementVtbl
 {
     BEGIN_INTERFACE
@@ -28501,7 +28501,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveReq
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRequirementFactory_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveRequirementFactory[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveRequirementFactory";
-/* [uuid("59bb7fad-2626-5434-a7f3-f8b8538b93ed"), version, object, exclusiveto] */
+/* [uuid("50cbba11-c95b-5789-85ba-322cc8fefb22"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRequirementFactoryVtbl
 {
     BEGIN_INTERFACE
@@ -28614,7 +28614,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveElementParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParser";
-/* [uuid("5ac21990-5e0f-5d71-9266-1295cac1a6ff"), version, object] */
+/* [uuid("890d4236-3e32-5fba-adce-ac75e2b7bc51"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementParserVtbl
 {
     BEGIN_INTERFACE
@@ -28711,7 +28711,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveEle
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementParserRegistration_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveElementParserRegistration[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveElementParserRegistration";
-/* [uuid("f33af0e9-2038-526f-940b-61f52d5d28c2"), version, object, exclusiveto] */
+/* [uuid("f4c6ad0a-f047-5e9f-8fcf-5ae9c5d02b17"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveElementParserRegistrationVtbl
 {
     BEGIN_INTERFACE
@@ -28841,7 +28841,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionParserRegistration_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveActionParserRegistration[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParserRegistration";
-/* [uuid("ea043181-af73-5fa8-bddc-6e89ca332e17"), version, object, exclusiveto] */
+/* [uuid("042f2527-6090-5ab3-830d-1a17590638c1"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionParserRegistrationVtbl
 {
     BEGIN_INTERFACE
@@ -28968,7 +28968,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveActionParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionParser";
-/* [uuid("12a67519-a257-57dd-87d3-2cb8d99e6b00"), version, object] */
+/* [uuid("44a6df69-213e-5920-834d-a30afb8bdd8e"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionParserVtbl
 {
     BEGIN_INTERFACE
@@ -29062,7 +29062,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveAct
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveInputElement_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveInputElement_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveInputElement[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveInputElement";
-/* [uuid("545ecd2f-2c13-5a67-9168-5e9450a44ef8"), version, object] */
+/* [uuid("35042a1e-9252-54aa-8f37-1b3e922661cb"), version, object] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveInputElementVtbl
 {
     BEGIN_INTERFACE
@@ -29191,7 +29191,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveInp
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextBlockParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTextBlockParser";
-/* [uuid("934a0c1b-9996-51b9-afcd-5e6c3335b6c4"), version, object, exclusiveto] */
+/* [uuid("911e49c6-425d-5a1e-a8a1-b0c604628d49"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextBlockParserVtbl
 {
     BEGIN_INTERFACE
@@ -29300,7 +29300,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRichTextBlockParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveRichTextBlockParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveRichTextBlockParser";
-/* [uuid("cb9b71c3-75a4-5762-be9c-453a3848ce20"), version, object, exclusiveto] */
+/* [uuid("750fdd9f-bef9-50e4-8532-002a1eca600d"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveRichTextBlockParserVtbl
 {
     BEGIN_INTERFACE
@@ -29409,7 +29409,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveImageParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveImageParser";
-/* [uuid("69c2476e-aab6-5c45-a829-ab1d595b377b"), version, object, exclusiveto] */
+/* [uuid("9062cf83-055e-5bb5-a3c8-ac203e39f63f"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageParserVtbl
 {
     BEGIN_INTERFACE
@@ -29518,7 +29518,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageSetParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveImageSetParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveImageSetParser";
-/* [uuid("123defc6-86c2-582a-8ea4-5388237947c6"), version, object, exclusiveto] */
+/* [uuid("8ff27d59-ef49-503d-99a8-0350497a8748"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveImageSetParserVtbl
 {
     BEGIN_INTERFACE
@@ -29627,7 +29627,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainerParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainerParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveContainerParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveContainerParser";
-/* [uuid("09c3afd3-8e2f-53a6-b1e9-8dc5087a9a7e"), version, object, exclusiveto] */
+/* [uuid("876e1f8f-bc83-5757-9e61-85cceedbec8e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveContainerParserVtbl
 {
     BEGIN_INTERFACE
@@ -29736,7 +29736,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveColumnParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveColumnParser";
-/* [uuid("394513b1-6f2a-5c4a-a4b6-d3d817cdc031"), version, object, exclusiveto] */
+/* [uuid("6d048f74-ba87-584f-b991-7c5dcb602644"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnParserVtbl
 {
     BEGIN_INTERFACE
@@ -29845,7 +29845,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnSetParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveColumnSetParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveColumnSetParser";
-/* [uuid("87225a3b-40d7-5490-917d-b35cc0c2ae09"), version, object, exclusiveto] */
+/* [uuid("75747743-7d11-56b8-b5fd-7f702e91599f"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveColumnSetParserVtbl
 {
     BEGIN_INTERFACE
@@ -29954,7 +29954,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveFactParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveFactParser";
-/* [uuid("14195d3c-628e-51de-9890-f8d4bcb4d5d3"), version, object, exclusiveto] */
+/* [uuid("64ff1eb4-d81d-58df-8844-930b358f5c7d"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactParserVtbl
 {
     BEGIN_INTERFACE
@@ -30063,7 +30063,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceSetInputParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveChoiceSetInputParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveChoiceSetInputParser";
-/* [uuid("c0a09ad3-867c-5db4-9c72-1a6873cad41e"), version, object, exclusiveto] */
+/* [uuid("a7d8ff27-e9c1-5fd4-b3b0-5f186df08683"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveChoiceSetInputParserVtbl
 {
     BEGIN_INTERFACE
@@ -30172,7 +30172,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveDateInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveDateInputParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveDateInputParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveDateInputParser";
-/* [uuid("4c2b97b1-3596-5c73-a301-2b133abd9178"), version, object, exclusiveto] */
+/* [uuid("40fc160d-0a42-578b-ab59-568901b08dcf"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveDateInputParserVtbl
 {
     BEGIN_INTERFACE
@@ -30281,7 +30281,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveNumberInputParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveNumberInputParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveNumberInputParser";
-/* [uuid("373c48fd-7caa-5a30-9806-f81e6d1ffe10"), version, object, exclusiveto] */
+/* [uuid("e6c9fc36-7008-5e91-8153-4f52c140caea"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveNumberInputParserVtbl
 {
     BEGIN_INTERFACE
@@ -30390,7 +30390,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextInputParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTextInputParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTextInputParser";
-/* [uuid("332f4aa7-fdb8-5413-adf4-d3530f3eddee"), version, object, exclusiveto] */
+/* [uuid("418dfc6f-1c4c-5760-b5a9-fdf851c7b511"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTextInputParserVtbl
 {
     BEGIN_INTERFACE
@@ -30499,7 +30499,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTimeInputParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTimeInputParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTimeInputParser";
-/* [uuid("1368e8d0-6783-52b8-8af1-2aa9e7585bc3"), version, object, exclusiveto] */
+/* [uuid("27b60d29-534c-5c57-97c8-8b5d9c44e5b4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTimeInputParserVtbl
 {
     BEGIN_INTERFACE
@@ -30608,7 +30608,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleInputParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveToggleInputParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveToggleInputParser";
-/* [uuid("b8e7de6f-234b-55bc-95ca-6dd0d7b7d841"), version, object, exclusiveto] */
+/* [uuid("403e62f0-9f58-57fd-9632-14220efd26a4"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleInputParserVtbl
 {
     BEGIN_INTERFACE
@@ -30717,7 +30717,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactSetParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveFactSetParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveFactSetParser";
-/* [uuid("c0351b3a-8922-5663-a914-f646a2b0fcfd"), version, object, exclusiveto] */
+/* [uuid("1df433c9-93c4-5c9b-ae76-40ff2fedf467"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveFactSetParserVtbl
 {
     BEGIN_INTERFACE
@@ -30826,7 +30826,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMediaParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMediaParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveMediaParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveMediaParser";
-/* [uuid("a34e4a4d-dbb9-5ae1-8784-f80be7820d57"), version, object, exclusiveto] */
+/* [uuid("b60cc970-d08e-57ea-b038-0a9d07cb4e07"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveMediaParserVtbl
 {
     BEGIN_INTERFACE
@@ -30935,7 +30935,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionSetParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionSetParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveActionSetParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveActionSetParser";
-/* [uuid("24f03c1d-54b9-5415-ae82-b9fcf4438699"), version, object, exclusiveto] */
+/* [uuid("4aa2144f-49ba-596f-abbf-d3161f7965aa"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveActionSetParserVtbl
 {
     BEGIN_INTERFACE
@@ -31044,7 +31044,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveOpenUrlActionParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveOpenUrlActionParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveOpenUrlActionParser";
-/* [uuid("1501bb19-a5d4-50f1-88fb-90338bda2a19"), version, object, exclusiveto] */
+/* [uuid("df43578a-4deb-565a-87c1-79ab6e7ec182"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveOpenUrlActionParserVtbl
 {
     BEGIN_INTERFACE
@@ -31153,7 +31153,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveShowCardActionParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveShowCardActionParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveShowCardActionParser";
-/* [uuid("a52f4dc0-a7cc-52d2-9d57-f8dcec426e69"), version, object, exclusiveto] */
+/* [uuid("d4c238dd-b879-55d2-b04a-a0e1c2de6522"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveShowCardActionParserVtbl
 {
     BEGIN_INTERFACE
@@ -31262,7 +31262,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSubmitActionParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveSubmitActionParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveSubmitActionParser";
-/* [uuid("e08df80d-30b7-58dc-9c82-9f8b9a0ad3dc"), version, object, exclusiveto] */
+/* [uuid("74cdfb54-53b6-563c-af17-9d78698a4b35"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveSubmitActionParserVtbl
 {
     BEGIN_INTERFACE
@@ -31371,7 +31371,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveExecuteActionParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveExecuteActionParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveExecuteActionParser";
-/* [uuid("5bfe15f9-7bb8-541c-af43-111cef59fb5c"), version, object, exclusiveto] */
+/* [uuid("b5db3774-8a97-5b3c-8538-6a3bac79bc6c"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveExecuteActionParserVtbl
 {
     BEGIN_INTERFACE
@@ -31480,7 +31480,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityActionParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveToggleVisibilityActionParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveToggleVisibilityActionParser";
-/* [uuid("97fc2051-4422-5126-912e-590c759870a6"), version, object, exclusiveto] */
+/* [uuid("df10f0ce-3367-58b6-ab3b-9a15031f2327"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveToggleVisibilityActionParserVtbl
 {
     BEGIN_INTERFACE
@@ -31589,7 +31589,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableParser_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableParser_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveTableParser[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveTableParser";
-/* [uuid("4ddc01cf-604d-50ca-a438-909262797a7f"), version, object, exclusiveto] */
+/* [uuid("eb0e0387-fcc5-52f7-ba8b-586d3f92f422"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveTableParserVtbl
 {
     BEGIN_INTERFACE
@@ -31697,7 +31697,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveError_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveError_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveError[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveError";
-/* [uuid("0c1c8d38-4820-5637-a337-39feb492dfc1"), version, object, exclusiveto] */
+/* [uuid("14987a16-f74a-5782-ae83-66f63366b6de"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveErrorVtbl
 {
     BEGIN_INTERFACE
@@ -31811,7 +31811,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveErr
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveErrorFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveErrorFactory_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveErrorFactory[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveErrorFactory";
-/* [uuid("cf7ce008-91bf-5a23-be1d-79ef6cbc1bf3"), version, object, exclusiveto] */
+/* [uuid("dfe1811e-8b65-5eac-b3f7-47d77af7b6d2"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveErrorFactoryVtbl
 {
     BEGIN_INTERFACE
@@ -31927,7 +31927,7 @@ extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_Adaptive
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWarning_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWarning_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveWarning";
-/* [uuid("e87eb0c1-a2a7-5704-b7b4-d3aed92dddd1"), version, object, exclusiveto] */
+/* [uuid("cd2733ae-6877-5899-a245-0994e5095180"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWarningVtbl
 {
     BEGIN_INTERFACE
@@ -32041,7 +32041,7 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWar
 #if !defined(____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWarningFactory_INTERFACE_DEFINED__)
 #define ____x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWarningFactory_INTERFACE_DEFINED__
 extern const __declspec(selectany) _Null_terminated_ WCHAR InterfaceName_AdaptiveCards_ObjectModel_WinUI3_IAdaptiveWarningFactory[] = L"AdaptiveCards.ObjectModel.WinUI3.IAdaptiveWarningFactory";
-/* [uuid("fa97db3c-8a77-5921-b462-a11f8ada4128"), version, object, exclusiveto] */
+/* [uuid("0aee9ea3-6f52-5f3b-a730-cc28870d908e"), version, object, exclusiveto] */
 typedef struct __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWarningFactoryVtbl
 {
     BEGIN_INTERFACE
