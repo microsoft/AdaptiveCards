@@ -628,9 +628,9 @@ CGFloat kFileBrowserWidth = 0;
 
     if (isAccessibilityCategory != UIContentSizeCategoryIsAccessibilityCategory(previousTraitCollection.preferredContentSizeCategory)) {
         if (_dataSource) {
-		    // prep data sources for accessiblity changes, font size changes events
+            // prep data sources for accessiblity changes, font size changes events
             [_dataSource prepareForRedraw];
-			// ask for redraw of visible rows
+            // ask for redraw of visible rows
             [self.chatWindow reloadData];
         }
     }
