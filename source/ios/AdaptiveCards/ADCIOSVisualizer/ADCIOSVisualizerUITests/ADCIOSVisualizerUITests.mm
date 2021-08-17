@@ -10,12 +10,16 @@
 #import <AdaptiveCards/ACFramework.h>
 #import <XCTest/XCTest.h>
 #include <string>
+
 @interface ADCIOSVisualizerUITests : XCTestCase
 
 @end
 
 @implementation ADCIOSVisualizerUITests
-
+{
+    XCUIApplication* testApp;
+}
+    
 - (void)setUp
 {
     [super setUp];
@@ -24,12 +28,170 @@
     self.continueAfterFailure = NO;
     // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
     // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    
+    testApp = [[XCUIApplication alloc] init];
+    testApp.launchArguments = [NSArray arrayWithObject:@"ui-testing"];
+    [testApp launch];
 }
 
 - (void)tearDown
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
+}
+
+- (void)resetTestEnvironment
+{
+    XCUIElementQuery* buttons = testApp.buttons;
+    const int cardDepthLimit = 3;
+    
+    // try to find Back button and tap it while it appears
+    XCUIElement* backButton = buttons[@"Back"];
+    
+    int backButtonPressedCount = 0;
+    while ([backButton exists] && backButtonPressedCount < cardDepthLimit)
+    {
+        [backButton tap];
+        backButton = buttons[@"Back"];
+        ++backButtonPressedCount;
+    }
+    
+    // tap on delete all cards button
+    [buttons[@"Delete All Cards"] tap];
+}
+
+- (void)openCardForVersion:(NSString*)version forCardType:(NSString*)type withCardName:(NSString*)scenarioName
+{
+    XCUIElementQuery* buttons = testApp.buttons;
+    [buttons[version] tap];
+    [buttons[type] tap];
+    
+    XCUIElementQuery* tables = testApp.tables;
+    XCUIElement* table = [tables elementBoundByIndex:1];
+    XCUIElementQuery* cell = [[table staticTexts] matchingIdentifier:scenarioName];
+    
+    // Interact with it when visible
+    [[cell elementBoundByIndex:0] tap];
+}
+
+- (NSDictionary*)parseJsonToDictionary:(NSString*)json
+{
+    NSData* jsonData = [json dataUsingEncoding:NSUTF8StringEncoding];
+    NSError* jsonError;
+    NSDictionary* parsedJsonData = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                                   options:NSJSONWritingPrettyPrinted
+                                                                     error:&jsonError];
+    return parsedJsonData;
+}
+
+- (NSDictionary*)getInputsFromResultsDictionary:(NSDictionary*)results
+{
+    return [results objectForKey:@"inputs"];
+}
+
+- (NSString*)getInputsString
+{
+    XCUIElement* resultsTextView = [testApp.staticTexts elementMatchingType:XCUIElementTypeAny identifier:@"SubmitActionRetrievedResults"];
+    return resultsTextView.label;
+}
+
+- (void)tapOnButtonWithText:(NSString*)buttonText
+{
+    XCUIElementQuery* buttons = testApp.buttons;
+    XCUIElement* button = buttons[buttonText];
+    XCTAssertTrue([button exists]);
+    [button tap];
+}
+
+- (void)verifyInput:(NSString*)inputId matchesExpectedValue:(NSString*)expectedValue inInputSet:(NSDictionary*)inputDictionary
+{
+    id inputValue = [inputDictionary objectForKey:inputId];
+    
+    XCTAssertTrue([expectedValue isEqualToString:inputValue], @"Input Id: %@ has value: %@ for expected value: %@", inputId, inputValue, expectedValue);
+}
+
+- (void)setDateOnInputDateWithId:(NSString*)Id andLabel:(NSString*)label forYear:(NSString*)year month:(NSString*)month day:(NSString*)day
+{
+    [self tapOnButtonWithText:Id];
+    
+    XCUIElement *enterTheDueDateDatePicker = testApp.datePickers[label];
+    
+    [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:0] adjustToPickerWheelValue:month];
+    
+    [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:1] adjustToPickerWheelValue:day];
+    
+    [[enterTheDueDateDatePicker.pickerWheels elementBoundByIndex:2] adjustToPickerWheelValue:year];
+    
+    // Dismiss the date picker
+    [testApp.toolbars[@"Toolbar"].buttons[@"Done"] tap];
+}
+
+- (void)testSmokeTestActivityUpdateDate
+{
+    [self resetTestEnvironment];
+    [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
+    
+    [self tapOnButtonWithText:@"Set due date"];
+
+    XCUIElementQuery* tables = testApp.tables;
+    XCUIElement* chatWindow = tables[@"ChatWindow"];
+    
+    [self setDateOnInputDateWithId:@"dueDate"
+                          andLabel:@"Enter the due date"
+                           forYear:@"2021"
+                             month:@"July"
+                               day:@"15"];
+    
+    [self tapOnButtonWithText:@"OK"];
+        
+    NSString* resultsString = [self getInputsString];
+    NSDictionary* resultsDictionary = [self parseJsonToDictionary:resultsString];
+    NSDictionary* inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    
+    [self verifyInput:@"dueDate" matchesExpectedValue:@"2021-07-15" inInputSet:inputs];
+}
+
+- (void)testSmokeTestActivityUpdateComment
+{
+    [self resetTestEnvironment];
+    [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
+    
+    XCUIElementQuery* buttons = testApp.buttons;
+    [buttons[@"Comment"] tap];
+
+    XCUIElementQuery* tables = testApp.tables;
+    XCUIElement* chatWindow = tables[@"ChatWindow"];
+    
+    XCUIElement* commentTextInput = [chatWindow.textViews elementMatchingType:XCUIElementTypeAny identifier:@"comment"];
+    [commentTextInput tap];
+    [commentTextInput typeText:@"A comment"];
+
+    [buttons[@"Done"] tap];
+    [buttons[@"OK"] tap];
+
+    NSString* resultsString = [self getInputsString];
+    NSDictionary* resultsDictionary = [self parseJsonToDictionary:resultsString];
+    NSDictionary* inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    
+    [self verifyInput:@"comment" matchesExpectedValue:@"A comment" inInputSet:inputs];
+}
+
+- (void)testFocusOnValidationFailure
+{
+    [self resetTestEnvironment];
+    [self openCardForVersion:@"v1.3" forCardType:@"Elements" withCardName:@"Input.Text.ErrorMessage.json"];
+    
+    [self tapOnButtonWithText:@"Submit"];
+    
+    /*
+    NSString* resultsString = [self getInputsString];
+    XCTAssertTrue([resultsString isEqualToString:@""]);
+    */
+     
+    XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
+    XCUIElement* firstInput = [chatWindow.textFields elementMatchingType:XCUIElementTypeAny identifier:@"Required Input.Text *, This is a required input,"];
+    
+    XCTAssertTrue([firstInput valueForKey:@"hasKeyboardFocus"], "First input is not selected");
 }
 
 - (void)verifyChoiceSetInput:(NSDictionary<NSString *, NSString *> *)expectedValue application:(XCUIApplication *)app
@@ -109,22 +271,22 @@
 
 - (void)testCanGatherCorrectValuesFromChoiceset
 {
-    XCUIApplication *app = [[XCUIApplication alloc] init];
-    [app launch];
+    // XCUIApplication *app = [[XCUIApplication alloc] init];
+    // [app launch];
 
-    XCUIElementQuery *tablesQuery = app.tables;
+    XCUIElementQuery *tablesQuery = testApp.tables;
     [tablesQuery /*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"] /*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
 
-    XCUIElement *acrRootViewElement = app /*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"] /*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/;
+    XCUIElement *acrRootViewElement = testApp /*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"] /*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/;
     //[[[[acrRootViewElement childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:4] swipeUp];
-    [/*@START_MENU_TOKEN@*/ [[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"] /*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Red\"]",".staticTexts[@\"Red\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ tap];
-    [/*@START_MENU_TOKEN@*/ [[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Blue"] /*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Blue\"]",".staticTexts[@\"Blue\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ tap];
+    [ [[[testApp.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"]  tap];
+    [ [[[testApp.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Blue"]  tap];
 
     XCUIElementQuery *scrollViewsQuery = acrRootViewElement.scrollViews;
     [scrollViewsQuery.otherElements.buttons[@"OK"] tap];
 
     NSDictionary<NSString *, NSString *> *expectedValue = @{@"myColor" : @"1", @"myColor3" : @"", @"myColor2" : @"1", @"myColor4" : @"1"};
-    [self verifyChoiceSetInput:expectedValue application:app];
+    [self verifyChoiceSetInput:expectedValue application:testApp];
 }
 
 - (void)testHexColorCodeConversion

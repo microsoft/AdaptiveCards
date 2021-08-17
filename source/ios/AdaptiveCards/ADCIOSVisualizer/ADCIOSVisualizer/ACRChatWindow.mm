@@ -82,18 +82,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-
+    
     UIView *adaptiveCardView = adaptiveCardsViews[indexPath.row];
     NSString *identifier = [NSString stringWithFormat:@"%p", adaptiveCardView];
+    
+    // TODO: There's a memory leak as views are not being reused, this memory leak only occurs during ui testing. Tracked on #6207
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
 
-    cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell) {
-        return cell;
-    } else {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:identifier];
-        [cell.contentView addSubview:adaptiveCardView];
-    }
+//    cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//    if (cell) {
+//        return cell;
+//    } else {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//    }
+    
+    [cell.contentView addSubview:adaptiveCardView];
 
     [adaptiveCardView.centerXAnchor constraintEqualToAnchor:cell.contentView.centerXAnchor].active = YES;
     [adaptiveCardView.centerYAnchor constraintEqualToAnchor:cell.contentView.centerYAnchor].active = YES;
