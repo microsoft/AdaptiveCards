@@ -138,13 +138,14 @@ export abstract class Dialog {
             let buttonBarElement = document.createElement("div");
             buttonBarElement.className = "acd-dialog-buttonBar";
             buttonBarElement.style.flex = "0 0 auto";
-            buttonBarElement.appendChild(this.closeButton.render());
 
             if (this.buttons?.length > 0) {
                 for (const button of this.buttons) {
                     buttonBarElement.appendChild(button.render());
                 }
             }
+
+            buttonBarElement.appendChild(this.closeButton.render());
 
             dialogFrameElement.appendChild(titleBarElement);
             dialogFrameElement.appendChild(contentElement);
