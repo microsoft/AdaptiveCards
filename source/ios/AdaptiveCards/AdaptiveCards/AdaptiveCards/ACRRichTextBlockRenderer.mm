@@ -130,13 +130,12 @@
                                                                      *)target
                                                        rootView:rootView
                                                      hostConfig:acoConfig];
-                        if (textColor == ForegroundColor::Default) {
-                            if (@available(iOS 13.0, *)) {
-                                foregroundColor = UIColor.linkColor;
-                            } else {
-                                // Fallback on earlier versions
-                                foregroundColor = [ACOHostConfig convertHexColorCodeToUIColor:"#007affff"];
-                            }
+
+                        if (@available(iOS 13.0, *)) {
+                            foregroundColor = UIColor.linkColor;
+                        } else {
+                            // Fallback on earlier versions
+                            foregroundColor = [ACOHostConfig convertHexColorCodeToUIColor:"#007affff"];
                         }
                     }
                 }
