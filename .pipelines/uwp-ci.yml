@@ -1,9 +1,11 @@
-# Multi-job configuration must be converted to matrix strategy: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#multi-job-configuration
-# Multi-job configuration must be converted to matrix strategy: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml#multi-job-configuration
-variables:
-  solution: source/uwp/AdaptiveCards.sln
-  buildConfiguration: Release
-  buildPlatform: x64
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/*
 
 trigger:
   branches:
@@ -11,35 +13,35 @@ trigger:
     - main
     - feature/*
     - release/*
-    exclude:
-    - release/1.2
   batch: True
 
-name: $(date:yyMM).$(date:dd)$(rev:rrr)
+variables:
+  solution: source/uwp/AdaptiveCards.sln
+  buildConfiguration: Release
+  buildPlatform: x64
 
 pool:
   name: Azure Pipelines
   vmImage: windows-2019
 
 steps:
-- checkout: self
-  clean: true
-  fetchDepth: 1
 - task: NuGetToolInstaller@0
   name: NuGetToolInstaller1
   displayName: Use NuGet 5.x
   inputs:
     versionSpec: 5.x
+
 - task: NuGetRestore@1
   name: NuGetCommand2
-  displayName: NuGet restore source/uwp/AdaptiveCards.sln
+  displayName: NuGet restore
   inputs:
     solution: $(solution)
     feed: AdaptiveCards
     verbosity: '-'
+
 - task: VSBuild@1
   name: VSBuild3
-  displayName: Build solution source/uwp/AdaptiveCards.sln
+  displayName: Build solution
   inputs:
     solution: $(solution)
     vsVersion: 16.0
@@ -49,30 +51,23 @@ steps:
     createLogFile: true
     logFileVerbosity: detailed
 
-# - task: VSTest@2
-#   displayName: 'VsTest - testAssemblies'
-#   inputs:
-#     testAssemblyVer2: |
-#      **\Release\UWPUnitTests.build.appxrecipe
-#      !**\obj\**
-#     otherConsoleOptions: '/Framework:FrameworkUap10'
-#     runInParallel: true
-#     runTestsInIsolation: true
-#     codeCoverageEnabled: false
-#     platform: '$(BuildPlatform)'
-#     configuration: '$(BuildConfiguration)'
-#     diagnosticsEnabled: True
-#     collectDumpOn: always
-
-- bash: |
-   #!/usr/bin/env bash
-   ls
-   cd UWPUITestApp/AppPackages
-   ls
-  workingDirectory: source/uwp
+- task: VSTest@2
+  displayName: 'VsTest - Unit Tests'
+  inputs:
+    testAssemblyVer2: |
+     **\Release\UWPUnitTests.build.appxrecipe
+     !**\obj\**
+    otherConsoleOptions: '/Framework:FrameworkUap10'
+    runInParallel: true
+    runTestsInIsolation: true
+    codeCoverageEnabled: false
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    diagnosticsEnabled: True
+    collectDumpOn: always
 
 - task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
+  displayName: 'VsTest - UI Tests'
   inputs:
     testAssemblyVer2: |
      **\Release\netcoreapp2.1\UWPUITests.dll

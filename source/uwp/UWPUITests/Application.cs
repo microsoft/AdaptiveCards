@@ -312,7 +312,7 @@ namespace UWPUITests
 
                 AutoResetEvent removePackageCompleteEvent = new AutoResetEvent(false);
 
-                var removeAppPowershellProcess = ExecuteProcess(new ProcessStartInfo("powershell",
+                var removeAppPowershellProcess = ExecuteAndLogProcess(new ProcessStartInfo("powershell",
                     string.Format("-ExecutionPolicy Unrestricted Get-AppxPackage *{0}* | Remove-AppxPackage",
                         "AdaptiveCardsUWPUITestApp")));
 
@@ -333,7 +333,7 @@ namespace UWPUITests
 
             Logger.LogMessage("Checking if the app's certificate is installed...");
 
-            var certutilProcess = ExecuteProcess(new ProcessStartInfo("certutil.exe",
+            var certutilProcess = ExecuteAndLogProcess(new ProcessStartInfo("certutil.exe",
                     string.Format("-verifystore TrustedPeople {0}", _certSerialNumber)));
 
             if (certutilProcess.ExitCode == 0)
@@ -348,7 +348,7 @@ namespace UWPUITests
             Logger.LogMessage(mostRecentlyBuiltAppx);
             Logger.LogMessage(Path.GetDirectoryName(mostRecentlyBuiltAppx));
 
-            var powershellProcess = ExecuteProcess(new ProcessStartInfo("powershell",
+            var powershellProcess = ExecuteAndLogProcess(new ProcessStartInfo("powershell",
                     string.Format("-ExecutionPolicy Unrestricted -File {0}\\Add-AppDevPackage.ps1 {1}",
                         Path.GetDirectoryName(mostRecentlyBuiltAppx), "-Force")));
             if (powershellProcess.ExitCode != 0)
@@ -357,21 +357,21 @@ namespace UWPUITests
             }
         }
 
-        private Process ExecuteProcess(ProcessStartInfo startInfo)
+        private Process ExecuteAndLogProcess(ProcessStartInfo startInfo)
         {
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
             var p = Process.Start(startInfo);
-            Task stdoutTask = Task.Run(() => RedirectStream(p.StandardOutput));
-            Task stderrTask = Task.Run(() => RedirectStream(p.StandardOutput));
+            Task stdoutTask = Task.Run(() => RedirectStreamToLog(p.StandardOutput));
+            Task stderrTask = Task.Run(() => RedirectStreamToLog(p.StandardError));
             stdoutTask.Wait();
             stderrTask.Wait();
             p.WaitForExit();
             return p;
         }
 
-        private void RedirectStream(System.IO.StreamReader sr)
+        private void RedirectStreamToLog(System.IO.StreamReader sr)
         {
             string line;
             while ((line = sr.ReadLine()) != null)
