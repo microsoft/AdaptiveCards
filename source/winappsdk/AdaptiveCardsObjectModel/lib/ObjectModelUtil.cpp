@@ -115,6 +115,11 @@ try
 }
 CATCH_RETURN;
 
+winrt::hstring UTF8ToHString(std::string_view in)
+{
+    return winrt::hstring{StringToWString(in)};
+}
+
 HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept
 try
 {
@@ -135,6 +140,11 @@ std::string HStringToUTF8(HSTRING in)
     }
 
     return {};
+}
+
+std::string HStringToUTF8(winrt::hstring const& in)
+{
+    return WStringToString(static_cast<std::wstring_view>(in));
 }
 
 template<typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>
@@ -324,6 +334,14 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdap
     }
 
     return S_OK;
+}
+
+std::shared_ptr<AdaptiveCards::BaseActionElement>
+GenerateSharedAction(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& action)
+{
+    std::shared_ptr<AdaptiveCards::BaseActionElement> returned;
+    THROW_IF_FAILED(GenerateSharedAction(action.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>().get(), returned));
+    return returned;
 }
 
 HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* actions,
@@ -575,6 +593,61 @@ try
 }
 CATCH_RETURN;
 
+template<typename D, typename... Args> auto MakeOrThrow(Args&&... args)
+{
+    Microsoft::WRL::ComPtr<D> created;
+    THROW_IF_FAILED(MakeAndInitialize<D>(&created, std::forward<Args>(args)...));
+    return created;
+}
+
+winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateActionProjection(
+    const std::shared_ptr<AdaptiveCards::BaseActionElement>& action)
+{
+    if (!action)
+    {
+        return nullptr;
+    }
+
+    Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> abiElement;
+
+    switch (action->GetElementType())
+    {
+    case ActionType::OpenUrl:
+        abiElement = MakeOrThrow<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveOpenUrlAction>(
+            std::AdaptivePointerCast<AdaptiveCards::OpenUrlAction>(action));
+        break;
+    case ActionType::ShowCard:
+        abiElement = MakeOrThrow<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveShowCardAction>(
+            std::AdaptivePointerCast<AdaptiveCards::ShowCardAction>(action));
+        break;
+    case ActionType::Submit:
+        abiElement = MakeOrThrow<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveSubmitAction>(
+            std::AdaptivePointerCast<AdaptiveCards::SubmitAction>(action));
+        break;
+    case ActionType::ToggleVisibility:
+        abiElement = MakeOrThrow<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityAction>(
+            std::AdaptivePointerCast<AdaptiveCards::ToggleVisibilityAction>(action));
+        break;
+    case ActionType::Execute:
+        abiElement = MakeOrThrow<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveExecuteAction>(
+            std::AdaptivePointerCast<AdaptiveCards::ExecuteAction>(action));
+        break;
+    case ActionType::Custom:
+        THROW_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(&abiElement));
+        break;
+    case ActionType::UnknownAction:
+        abiElement = MakeOrThrow<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedAction>(
+            std::AdaptivePointerCast<AdaptiveCards::UnknownAction>(action));
+        break;
+    default:
+        throw winrt::hresult_error(E_UNEXPECTED);
+    }
+
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement element;
+    winrt::check_hresult(abiElement->QueryInterface(winrt::guid_of<decltype(element)>(), winrt::put_abi(element)));
+    return element;
+}
+
 HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
                                   ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* projectedParentContainer) noexcept
 try
@@ -620,6 +693,11 @@ HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ IJsonObj
     return HStringToJsonObject(asHstring.Get(), result);
 }
 
+winrt::Windows::Data::Json::IJsonObject StringToJsonObject(const std::string& inputString)
+{
+    return HStringToJsonObject(UTF8ToHString(inputString));
+}
+
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ IJsonObject** result)
 {
     ComPtr<IJsonObjectStatics> jObjectStatics;
@@ -634,11 +712,27 @@ HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ IJsonObjec
     return S_OK;
 }
 
+winrt::Windows::Data::Json::IJsonObject HStringToJsonObject(winrt::hstring const& inputHString)
+{
+    winrt::Windows::Data::Json::JsonObject result{nullptr};
+    if (!winrt::Windows::Data::Json::JsonObject::TryParse(inputHString, result))
+    {
+        result = winrt::Windows::Data::Json::JsonObject();
+    }
+    return result;
+}
+
+
 HRESULT JsonObjectToString(_In_ IJsonObject* inputJson, std::string& result)
 {
     HString asHstring;
     RETURN_IF_FAILED(JsonObjectToHString(inputJson, asHstring.GetAddressOf()));
     return HStringToUTF8(asHstring.Get(), result);
+}
+
+std::string JsonObjectToString(_In_ winrt::Windows::Data::Json::IJsonObject const& inputJson)
+{
+    return HStringToUTF8(JsonObjectToHString(inputJson));
 }
 
 HRESULT JsonObjectToHString(_In_ IJsonObject* inputJson, _Outptr_ HSTRING* result)
@@ -651,6 +745,16 @@ HRESULT JsonObjectToHString(_In_ IJsonObject* inputJson, _Outptr_ HSTRING* resul
     ComPtr<IJsonValue> asJsonValue;
     RETURN_IF_FAILED(localInputJson.As(&asJsonValue));
     return (asJsonValue->Stringify(result));
+}
+
+winrt::hstring JsonObjectToHString(_In_ winrt::Windows::Data::Json::IJsonObject const& inputJson)
+{
+    if (!inputJson)
+    {
+        throw winrt::hresult_invalid_argument();
+    }
+
+    return inputJson.as<winrt::Windows::Data::Json::JsonValue>().Stringify();
 }
 
 HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ IJsonValue** result)
@@ -697,6 +801,11 @@ HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ IJsonO
     return StringToJsonObject(jsonString, result);
 }
 
+winrt::Windows::Data::Json::IJsonObject JsonCppToJsonObject(const Json::Value& jsonCppValue)
+{
+    return StringToJsonObject(ParseUtil::JsonToString(jsonCppValue));
+}
+
 HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue)
 {
     std::string jsonString;
@@ -707,6 +816,10 @@ HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObje
     return S_OK;
 }
 
+Json::Value JsonObjectToJsonCpp(_In_ winrt::Windows::Data::Json::IJsonObject const& jsonObject)
+{
+    return ParseUtil::GetJsonValueFromString(JsonObjectToString(jsonObject));
+}
 
 void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources* remoteResourceElement,
                                                             std::vector<RemoteResourceInformation>& resourceUris)

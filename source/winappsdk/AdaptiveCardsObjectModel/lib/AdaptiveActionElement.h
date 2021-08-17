@@ -2,6 +2,103 @@
 // Licensed under the MIT License.
 #pragma once
 
+template<typename TStored> struct property
+{
+    TStored m_stored;
+
+    template<typename T> void operator()(T&& t) { m_stored = std::forward<T>(t); }
+    TStored operator()() { return m_stored; }
+
+    template<typename T> void operator=(T&& t) { m_stored = std::forward<T>(t); }
+    operator TStored() { return m_stored; }
+
+    TStored const& get() const { return m_stored; }
+};
+
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+{
+    struct AdaptiveActionElementBase
+    {
+        property<hstring> Id;
+        property<hstring> Title;
+        property<hstring> IconUrl;
+        property<hstring> Style;
+        property<hstring> ToolTip;
+        property<winrt::Windows::Data::Json::IJsonObject> AdditionalProperties;
+
+        void FallbackType(WinUI3::FallbackType const& fallback)
+        {
+            if (fallback != WinUI3::FallbackType::Content)
+            {
+                FallbackContent = nullptr;
+            }
+
+            m_fallbackType = fallback;
+        }
+
+        auto FallbackType() { return m_fallbackType; }
+
+        property<IAdaptiveActionElement> FallbackContent;
+        property<ActionMode> Mode;
+        property<hstring> ActionTypeString;
+
+        virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() = 0;
+
+        winrt::Windows::Data::Json::IJsonObject ToJson() { return StringToJsonObject(GetSharedModel()->Serialize()); }
+
+        void CopySharedElementProperties(::AdaptiveCards::BaseActionElement& sharedCardElement)
+        {
+            sharedCardElement.SetId(HStringToUTF8(Id));
+            sharedCardElement.SetTitle(HStringToUTF8(Title));
+            sharedCardElement.SetIconUrl(HStringToUTF8(IconUrl));
+            sharedCardElement.SetStyle(HStringToUTF8(Style));
+            sharedCardElement.SetTooltip(HStringToUTF8(ToolTip));
+            sharedCardElement.SetFallbackType(MapWinUI3FallbackTypeToShared(m_fallbackType));
+            sharedCardElement.SetIsEnabled(m_isEnabled);
+            sharedCardElement.SetMode(static_cast<::AdaptiveCards::Mode>(Mode.get()));
+
+            if (m_fallbackType == FallbackType::Content)
+            {
+                auto fallbackSharedModel = GenerateSharedAction(FallbackContent);
+                sharedCardElement.SetFallbackContent(std::static_pointer_cast<::AdaptiveCards::BaseElement>(fallbackSharedModel));
+            }
+
+            if (AdditionalProperties != nullptr)
+            {
+                sharedCardElement.SetAdditionalProperties(JsonObjectToJsonCpp(AdditionalProperties));
+            }
+        }
+
+        void InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseActionElement>& sharedModel)
+        {
+            Id = UTF8ToHString(sharedModel->GetId());
+            Title = UTF8ToHString(sharedModel->GetTitle());
+            AdditionalProperties = JsonCppToJsonObject(sharedModel->GetAdditionalProperties());
+            ActionTypeString = UTF8ToHString(sharedModel->GetElementTypeString());
+            IconUrl = UTF8ToHString(sharedModel->GetIconUrl());
+            Style = UTF8ToHString(sharedModel->GetStyle());
+            ToolTip = UTF8ToHString(sharedModel->GetTooltip());
+            Mode = static_cast<WinUI3::ActionMode>(sharedModel->GetMode());
+            m_isEnabled = sharedModel->GetIsEnabled();
+            m_internalId = sharedModel->GetInternalId().Hash();
+
+            m_fallbackType = static_cast<WinUI3::FallbackType>(MapSharedFallbackTypeToWinUI3(sharedModel->GetFallbackType()));
+            if (m_fallbackType == WinUI3::FallbackType::Content)
+            {
+                if (auto object = std::static_pointer_cast<::AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent()))
+                {
+                    FallbackContent = GenerateActionProjection(object);
+                }
+            }
+        }
+
+    private:
+        bool m_isEnabled;
+        uint32_t m_internalId;
+        WinUI3::FallbackType m_fallbackType;
+    };
+}
+
 namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class DECLSPEC_UUID("CDCCC115-7C53-4A04-9F5B-754BBC00C80E") AdaptiveActionElementBase : public IUnknown

@@ -27,13 +27,6 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-// Commonly-used AdaptiveCardRenderer headers
-#include "AdaptiveCards.ObjectModel.WinUI3.h"
-#include "AdaptiveCardElement.h"
-#include "ErrorHandling.h"
-#include "ObjectModelUtil.h"
-#include "Vector.h"
-
 #ifndef MAKE_HRESULT
 #define MAKE_HRESULT(sev, fac, code) \
     ((HRESULT)(((unsigned long)(sev) << 31) | ((unsigned long)(fac) << 16) | ((unsigned long)(code))))
@@ -49,3 +42,11 @@
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/AdaptiveCards.ObjectModel.WinUI3.h>
+#include <winrt/Windows.Data.Json.h>
+
+// Commonly-used AdaptiveCardRenderer headers
+#include "AdaptiveCards.ObjectModel.WinUI3.h"
+#include "AdaptiveCardElement.h"
+#include "ErrorHandling.h"
+#include "ObjectModelUtil.h"
+#include "Vector.h"

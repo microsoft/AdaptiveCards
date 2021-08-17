@@ -19,12 +19,15 @@ std::wstring StringToWString(std::string_view in);
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
 HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept;
+winrt::hstring UTF8ToHString(std::string_view in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
 HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept;
 
 std::string HStringToUTF8(HSTRING in);
+
+std::string HStringToUTF8(winrt::hstring const& in);
 
 inline bool Boolify(const boolean value) noexcept
 {
@@ -127,6 +130,9 @@ HRESULT GenerateActionsProjection(
 HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action,
                                  _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** projectedAction) noexcept;
 
+winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement
+GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
+
 HRESULT GenerateInlinesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* projectedParentContainer) noexcept;
@@ -193,9 +199,14 @@ CATCH_RETURN;
                              AdaptiveTableColumnDefinition>(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS);
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
+winrt::Windows::Data::Json::IJsonObject StringToJsonObject(const std::string& inputString);
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
+winrt::Windows::Data::Json::IJsonObject HStringToJsonObject(winrt::hstring const& inputHString);
 HRESULT JsonObjectToHString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, _Outptr_ HSTRING* result);
+winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::IJsonObject const& inputJson);
 HRESULT JsonObjectToString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
+
+std::string JsonObjectToString(winrt::Windows::Data::Json::IJsonObject const& inputJson);
 
 HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
 HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
@@ -203,7 +214,10 @@ HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonV
 HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
 
 HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
+winrt::Windows::Data::Json::IJsonObject JsonCppToJsonObject(const Json::Value& jsonCppValue);
 HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
+
+Json::Value JsonObjectToJsonCpp(winrt::Windows::Data::Json::IJsonObject const& jsonObject);
 
 
 // Peek interface to help get implementation types from winrt interfaces
