@@ -36,7 +36,7 @@ steps:
   displayName: NuGet restore
   inputs:
     solution: $(solution)
-    feed: AdaptiveCards
+    selectOrConfig: config
     verbosity: '-'
 
 - task: VSBuild@1
