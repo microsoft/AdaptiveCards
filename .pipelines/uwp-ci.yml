@@ -43,7 +43,6 @@ steps:
   inputs:
     solution: $(solution)
     vsVersion: 16.0
-    msbuildArgs: /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload
     platform: $(buildPlatform)
     configuration: $(buildConfiguration)
     maximumCpuCount: true
@@ -65,6 +64,13 @@ steps:
 #     diagnosticsEnabled: True
 #     collectDumpOn: always
 
+- bash: |
+   #!/usr/bin/env bash
+   ls
+   cd UWPUITestApp/AppPackages
+   ls
+  workingDirectory: source/uwp
+
 - task: VSTest@2
   displayName: 'VsTest - testAssemblies'
   inputs:
@@ -79,10 +85,3 @@ steps:
     diagnosticsEnabled: True
     collectDumpOn: always
 
-- bash: |
-   #!/usr/bin/env bash
-   cd source/uwp/
-   ls
-   cd UWPUITestApp/AppPackages
-   ls
-  workingDirectory: source/nodejs
