@@ -104,7 +104,7 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
     }
     
     var isValid: Bool {
-        return !isHidden && !(superview?.isHidden ?? false)
+        return true
     }
 }
 // MARK: EXTENSION

@@ -189,7 +189,7 @@ extension ACRNumericTextField: InputHandlingViewProtocol {
     }
     
     var isValid: Bool {
-        return !isHidden && !(superview?.isHidden ?? false)
+        return true
     }
 }
 

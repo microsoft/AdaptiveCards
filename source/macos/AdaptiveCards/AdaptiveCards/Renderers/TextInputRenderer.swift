@@ -155,7 +155,7 @@ class ACRTextInputView: NSTextField, InputHandlingViewProtocol {
     }
     
     var isValid: Bool {
-        return !isHidden && !(superview?.isHidden ?? false)
+        return true
     }
     
     var maxLen: Int = 0

@@ -18,11 +18,13 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
         textView.layoutManager?.usesFontLeading = false
         textView.setContentHuggingPriority(.required, for: .vertical)
         textView.backgroundColor = .clear
-        textView.linkTextAttributes = [
+        
+        let linkAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.foregroundColor: config.hyperlinkColorConfig.foregroundColor,
             NSAttributedString.Key.underlineColor: config.hyperlinkColorConfig.underlineColor,
             NSAttributedString.Key.underlineStyle: config.hyperlinkColorConfig.underlineStyle.rawValue
         ]
+        textView.linkTextAttributes = linkAttributes
         // init content
         let content = NSMutableAttributedString()
         
@@ -63,8 +65,7 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
                 let target = textView.getTargetHandler(for: textRun.getSelectAction(), rootView: rootView)
                 if let actionTarget = target {
                     textRunContent.addAttributes([.selectAction: actionTarget], range: NSRange(location: 0, length: textRunContent.length))
-                    textRunContent.addAttributes([.foregroundColor: NSColor.linkColor], range: NSRange(location: 0, length: textRunContent.length))
-                    textRunContent.addAttributes([.underlineStyle: 1], range: NSRange(location: 0, length: textRunContent.length))
+                    textRunContent.addAttributes(linkAttributes, range: NSRange(location: 0, length: textRunContent.length))
                     
                     // setup textView to handle selectAction events
                     textView.setupSelectAction(textRun.getSelectAction(), rootView: rootView)

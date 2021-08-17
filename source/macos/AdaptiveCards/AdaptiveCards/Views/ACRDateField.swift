@@ -118,7 +118,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     }
     
     var isValid: Bool {
-        return !isHidden && !(superview?.isHidden ?? false)
+        return true
     }
     
     init(isTimeMode: Bool, isDarkMode: Bool) {

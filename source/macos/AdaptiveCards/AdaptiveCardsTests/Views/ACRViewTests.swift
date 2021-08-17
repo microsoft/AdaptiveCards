@@ -209,6 +209,26 @@ class ACRViewTests: XCTestCase {
         XCTAssertEqual("1234567890", actionDelegate.dict["id"] as? String)
     }
     
+    func testInputHandlers_WithHiddenViews() {
+        let inputView1 = ACRTextInputView()
+        let inputView2 = ACRTextInputView()
+        
+        inputView1.idString = "id-1"
+        inputView1.stringValue = "hello"
+        
+        inputView2.idString = "id-2"
+        inputView2.stringValue = "world"
+        inputView2.isHidden = true
+        
+        view.addInputHandler(inputView1)
+        view.addInputHandler(inputView2)
+        view.handleSubmitAction(actionView: NSButton(), dataJson: nil)
+        
+        XCTAssertEqual(2, actionDelegate.dict.count)
+        XCTAssertEqual("hello", actionDelegate.dict["id-1"] as? String)
+        XCTAssertEqual("world", actionDelegate.dict["id-2"] as? String)
+    }
+    
     func testToggleVisibilityAction_toggleMode() {
         let tView1 = NSView.create(with: "id1")
         let tView2 = NSView.create(with: "id2")

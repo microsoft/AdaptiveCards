@@ -74,7 +74,7 @@ class ACRChoiceSetView: NSView, InputHandlingViewProtocol {
     }
     
     var isValid: Bool {
-        return !isHidden && !(superview?.isHidden ?? false)
+        return true
     }
 }
 // MARK: Extension
@@ -124,6 +124,6 @@ class ACRChoiceSetCompactView: NSPopUpButton, InputHandlingViewProtocol {
     }
     
     var isValid: Bool {
-        return !isHidden && !(superview?.isHidden ?? false)
+        return true
     }
 }
