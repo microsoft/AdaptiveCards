@@ -340,7 +340,9 @@ namespace UWPUITests
             var certutilProcess = Process.Start(new ProcessStartInfo("certutil.exe",
                     string.Format("-verifystore TrustedPeople {0}", _certSerialNumber))
             {
-                UseShellExecute = true
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
             });
             certutilProcess.WaitForExit();
 
@@ -352,11 +354,14 @@ namespace UWPUITests
             {
                 Logger.LogMessage("Certificate is not installed. Installing app and certificate...");
             }
+            Console.WriteLine("Does this work?");
             var powershellProcess = Process.Start(new ProcessStartInfo("powershell",
                     string.Format("-ExecutionPolicy Unrestricted -File {0}\\Add-AppDevPackage.ps1 {1}",
                         Path.GetDirectoryName(mostRecentlyBuiltAppx), "-Force"))
             {
-                UseShellExecute = true
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
             });
             powershellProcess.WaitForExit();
 
