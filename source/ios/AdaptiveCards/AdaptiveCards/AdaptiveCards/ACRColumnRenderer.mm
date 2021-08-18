@@ -123,7 +123,9 @@
             .active = YES;
     }
 
+    // config visibility for column view followed by configuring visibility of the items of column
     configVisibility(column, elem);
+    configVisibilityWithVisibilityManager(rootView, column, column);
 
     [column hideIfSubviewsAreAllHidden];
 

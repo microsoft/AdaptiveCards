@@ -8,6 +8,7 @@
 #import "ACRToggleVisibilityTarget.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACOVisibilityManager.h"
 #import "ACRRendererPrivate.h"
 #import "ACRView.h"
 #import "BaseActionElement.h"
@@ -38,32 +39,49 @@
         NSString *hashString = [NSString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
         NSUInteger tag = hashString.hash;
         UIView *view = [_rootView viewWithTag:tag];
+        UIView *separator = nil;
+        BOOL bHide = NO;
 
-        NSMutableString *hashStringForSeparator = [NSMutableString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
-        [hashStringForSeparator appendString:@"-separator"];
-        NSUInteger separatorTag = hashStringForSeparator.hash;
-        UIView *separator = [_rootView viewWithTag:separatorTag];
+        id<ACOIVisibilityManagerFacade> facade = [_rootView.context retrieveVisiblityManagerWithTag:view.tag];
+        // if facade is available, use the interface, otherwise stick to the old interface until the change is complete
+        if (!facade) {
+            NSMutableString *hashStringForSeparator = [NSMutableString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
+            [hashStringForSeparator appendString:@"-separator"];
+            NSUInteger separatorTag = hashStringForSeparator.hash;
+            separator = [_rootView viewWithTag:separatorTag];
+        }
 
         AdaptiveCards::IsVisible toggleEnum = target->GetIsVisible();
         if (toggleEnum == AdaptiveCards::IsVisibleToggle) {
-            BOOL isHidden = view.hidden;
-            view.hidden = !isHidden;
-            if (separator) {
-                separator.hidden = view.hidden;
-            }
+            BOOL isHidden = view.isHidden;
+            bHide = !isHidden;
         } else if (toggleEnum == AdaptiveCards::IsVisibleTrue) {
-            if (view.hidden == YES) {
-                view.hidden = NO;
-            }
-            if (separator && separator.hidden == YES) {
-                separator.hidden = NO;
+            bHide = NO;
+        } else {
+            bHide = YES;
+        }
+
+        if (facade) {
+            if (bHide) {
+                [facade hideView:view];
+            } else {
+                [facade unhideView:view];
             }
         } else {
-            if (view.hidden == NO) {
-                view.hidden = YES;
-            }
-            if (separator && separator.hidden == NO) {
-                separator.hidden = YES;
+            if (bHide) {
+                if (!view.isHidden) {
+                    view.hidden = bHide;
+                }
+                if (separator && !separator.isHidden) {
+                    separator.hidden = bHide;
+                }
+            } else {
+                if (view.isHidden) {
+                    view.hidden = bHide;
+                }
+                if (separator && separator.isHidden) {
+                    separator.hidden = bHide;
+                }
             }
         }
     }

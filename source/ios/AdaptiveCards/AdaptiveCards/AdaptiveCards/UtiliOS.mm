@@ -38,6 +38,14 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
     view.tag = hashkey.hash;
 }
 
+void configVisibilityWithVisibilityManager(ACRView *rootView, NSObject<ACOIVisibilityManagerFacade> *facade, ACRContentStackView *view)
+{
+    for (UIView *subview in [view getContentStackSubviews]) {
+        [rootView.context registerVisibilityManager:facade targetViewTag:subview.tag];
+    }
+}
+
+
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {

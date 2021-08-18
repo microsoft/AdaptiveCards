@@ -148,8 +148,7 @@
     if (view && view.image) {
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
         [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:view.image imageView:view];
-    }
-
+    }   
     return wrappingView;
 }
 
