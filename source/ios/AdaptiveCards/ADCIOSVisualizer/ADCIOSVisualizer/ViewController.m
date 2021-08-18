@@ -241,11 +241,16 @@ CGFloat kFileBrowserWidth = 0;
     ACVTabView.hidden = YES;
 
     NSArray<UIStackView *> *buttons = [self buildButtonsLayout:fileBrowserView.centerXAnchor];
+    UIStackView *retrievedInputsLayout = [self buildRetrievedResultsLayout:fileBrowserView.centerXAnchor];
+    
     UIStackView *buttonLayout0 = buttons[0], *buttonLayout1 = buttons[1];
 
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    
+    // set a identifier to ease development of UI tests
+    self.chatWindow.accessibilityIdentifier = @"ChatWindow";
 
     // the width of the AdaptiveCards does not need to be set.
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
@@ -256,12 +261,24 @@ CGFloat kFileBrowserWidth = 0;
     [self.view addSubview:self.chatWindow];
 
     UITableView *chatWindow = self.chatWindow;
-    NSDictionary *viewMap =
+    
+    // if the app is being tested we render an extra layout that contains the
+    // retrieved input values json
+    NSString *layoutOption = [self appIsBeingTested] ? @"-[retrievedInputsLayout]-" : @"-";
+    NSString *verticalFormat = [NSString stringWithFormat:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]%@[chatWindow]-40@100-|", layoutOption];
+    NSArray<NSString *> *formats = [NSArray arrayWithObjects:verticalFormat, @"H:|-[chatWindow]-|", nil];
+    
+    NSDictionary *viewMap;
+    if ([self appIsBeingTested])
+    {
+        viewMap =
+        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, retrievedInputsLayout, chatWindow);
+    }
+    else
+    {
+        viewMap =
         NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, chatWindow);
-
-    NSArray<NSString *> *formats = [NSArray
-        arrayWithObjects:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]-[chatWindow]-40@100-|",
-                         @"H:|-[chatWindow]-|", nil];
+    }
 
     [ViewController applyConstraints:formats variables:viewMap];
 
@@ -315,7 +332,19 @@ CGFloat kFileBrowserWidth = 0;
             [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
         }
         NSString *str = [NSString stringWithFormat:@"{\n%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
-        [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
+        
+        // if the app is being tested we set the result in the uilabel, otherwise
+        // we show the label in a popup
+        if ([self appIsBeingTested])
+        {
+            NSString *str2 = [NSString stringWithFormat:@"{\n\t\"inputs\":%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
+            [self.retrievedInputsTextView setText:str2];
+        }
+        else
+        {
+            [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
+        }
+        
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
@@ -348,7 +377,7 @@ CGFloat kFileBrowserWidth = 0;
         UIView *focusedView = properties[ACRAggregateTargetFirstResponder];
         if (focusedView && [focusedView isKindOfClass:[UIView class]]) {
             [self.chatWindow setContentOffset:focusedView.frame.origin animated:YES];
-            [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForVisibleRows];
+            [self reloadRowsAtChatWindowsWithIndexPathsAfterValidation:self.chatWindow.indexPathsForVisibleRows];
         }
     } else {
         [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForVisibleRows];
@@ -511,7 +540,27 @@ CGFloat kFileBrowserWidth = 0;
     // custon renderer button
     self.enableCustomRendererButton = [self buildButton:@"Enable Custom Renderer" selector:@selector(toggleCustomRenderer:)];
     [layout[1] addArrangedSubview:self.enableCustomRendererButton];
+   
+    return layout;
+}
 
+- (UIStackView *)buildRetrievedResultsLayout:(NSLayoutAnchor *)centerXAnchor
+{
+    UIStackView *layout = [self configureButtons:centerXAnchor
+                                    distribution:UIStackViewDistributionFill];
+
+    if ([self appIsBeingTested])
+    {
+        // Set a background red color to signalize the app is in test mode
+        self.view.backgroundColor = [UIColor colorWithRed:1.0 green:0.80 blue:0.80 alpha:1];
+        
+        // Initialize the input results label
+        self.retrievedInputsTextView = [self buildLabel:@"" withIdentifier:@"SubmitActionRetrievedResults"];
+        
+        // Add the label to the container
+        [layout addArrangedSubview:self.retrievedInputsTextView];
+    }
+    
     return layout;
 }
 
@@ -535,6 +584,19 @@ CGFloat kFileBrowserWidth = 0;
     button.contentEdgeInsets = UIEdgeInsetsMake(5, 8, 5, 8);
     button.layer.cornerRadius = 10;
     return button;
+}
+
+- (UILabel *)buildLabel:(NSString*)text withIdentifier:(NSString*)identifier
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    [label setText:text];
+    [label setTextColor:[UIColor blackColor]];
+    [label setBaselineAdjustment:UIBaselineAdjustmentAlignBaselines];
+    [label setLineBreakMode:NSLineBreakByCharWrapping];
+    [label setNumberOfLines:4];
+    
+    [label setAccessibilityIdentifier:identifier];
+    return label;
 }
 
 - (UIStackView *)configureButtons:(NSLayoutAnchor *)centerXAnchor distribution:(UIStackViewDistribution)distribution
@@ -569,6 +631,7 @@ CGFloat kFileBrowserWidth = 0;
         // tell the table view UI to add N rows.
         // The delta change might be > 1 since [_dataSource insertView] might have been called to
         // insert additional non-card views (such as overflow button)
+
         NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
         NSInteger postCount = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
         NSInteger rowsToAdd = postCount - prevCount;
@@ -604,12 +667,48 @@ CGFloat kFileBrowserWidth = 0;
     [self reloadRowsAtChatWindowsWithIndexPaths:@[ indexPath ]];
 }
 
-- (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+- (void)reloadRowsAtChatWindowsWithIndexPathsAfterValidation:(NSArray<NSIndexPath *> *)indexPaths
 {
     dispatch_async(_global_queue,
                    ^{
                        [self.chatWindow beginUpdates];
                        [self.chatWindow endUpdates];
-                   });
+    });
 }
+
+- (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+{
+    dispatch_async(_global_queue,
+                   ^{
+                       
+                       // This lines are required for updating the element tree after a
+                       // show card action has taken place, otherwise no previously hidden
+                       // element can be retrieved
+                       if ([self appIsBeingTested])
+                       {
+                            [self.chatWindow beginUpdates];
+                            
+                            NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
+                            NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+                            // reload the row; it is possible that the row height, for example, is calculated without images loaded
+                            [self.chatWindow reloadRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+
+                            [self.chatWindow endUpdates];
+                        }
+                       else
+                       {
+                            [self.chatWindow beginUpdates];
+                            [self.chatWindow endUpdates];
+                        }
+    });
+}
+
+- (BOOL)appIsBeingTested
+{
+    // Uncomment this line for test recording
+    // return YES;
+    NSArray *arguments = [[NSProcessInfo processInfo] arguments];
+    return [arguments containsObject:@"ui-testing"];
+}
+
 @end
