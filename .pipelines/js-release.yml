@@ -11,7 +11,7 @@ pool:
 
 parameters:
 - name: target_packages
-  displayName: "Which packages to publish? Provide YAML sequence of package details (name, increment-level, prerelease-identifier). See https://docs.npmjs.com/cli/v7/commands/npm-version for how to configure version increment."
+  displayName: "Which packages to publish? Provide YAML sequence of package names."
   type: object
   default:
   - adaptivecards
