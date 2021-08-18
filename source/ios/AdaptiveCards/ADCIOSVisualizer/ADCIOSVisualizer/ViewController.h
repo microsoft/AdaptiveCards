@@ -29,4 +29,6 @@
 @property UIScrollView *scrView;
 @property UITableView *chatWindow;
 
+@property UILabel *retrievedInputsTextView;
+
 @end

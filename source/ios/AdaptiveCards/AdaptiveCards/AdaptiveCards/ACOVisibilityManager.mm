@@ -27,7 +27,7 @@
     // check to the right, and if the right separator and not hidden,
     // hide the separator
     // if the target view is tail, check to left, and if the left is separator and not hidden,
-    // nhide the separator
+    // hide the separator
     NSInteger index = [subviews indexOfObject:viewToBeHidden];
     if (index + 1 < subviews.count) {
         NSInteger nextViewIndex = index + 1;

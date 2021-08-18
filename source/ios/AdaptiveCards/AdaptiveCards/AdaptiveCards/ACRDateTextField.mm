@@ -55,6 +55,7 @@ using namespace AdaptiveCards;
 
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
+
         self.isRequired = elem->GetIsRequired();
 
         DateTimePreparser preparser;

@@ -27,7 +27,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                    _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
     try
     {
-        return ActionHelpers::BuildAction(action, renderContext, renderArgs, result);
+        return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
     }
     CATCH_RETURN;
 

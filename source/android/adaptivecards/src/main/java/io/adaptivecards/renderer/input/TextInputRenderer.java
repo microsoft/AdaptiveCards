@@ -37,6 +37,7 @@ import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.TextInput;
@@ -195,6 +196,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             boolean hasSpecificValidation)
     {
         EditText editText = null;
+        TextInput textInput = Util.tryCastTo(baseInputElement, TextInput.class);
 
         if (baseInputElement.GetIsRequired() || hasSpecificValidation)
         {
@@ -203,7 +205,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
         else
         {
             editText = new EditText(context);
-            editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            // if the Input.Text element is multiline with height "Stretch" change height to match the parent container
+            int editTextHeight = (textInput != null && baseInputElement.GetHeight() == HeightType.Stretch && textInput.GetIsMultiline()) ?
+                ViewGroup.LayoutParams.MATCH_PARENT :
+                ViewGroup.LayoutParams.WRAP_CONTENT;
+
+            editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, editTextHeight));
             // editText.addTextChangedListener(new UnvalidatedTextWatcher(textInputHandler));
         }
 
@@ -243,10 +251,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         LinearLayout textInputViewGroup = null;
 
-        if (baseInputElement instanceof TextInput)
+        if (textInput != null)
         {
-            TextInput textInput = (TextInput) baseInputElement;
-
             BaseActionElement action = textInput.GetInlineAction();
 
             if (action != null)
@@ -393,7 +399,16 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         if (textInput.GetIsMultiline())
         {
-            editText.setLines(3);
+            // If the Input.Text has to stretch then don't limit the number of lines,
+            // otherwise default to 3 lines
+            if (textInput.GetHeight() == HeightType.Stretch)
+            {
+                editText.setMinLines(3);
+            }
+            else
+            {
+                editText.setLines(3);
+            }
 
             // Solution taken from here: https://stackoverflow.com/questions/6123973/android-edittext-vertical-scrolling-problem
             editText.setOnTouchListener(new EditTextTouchListener(editText));
