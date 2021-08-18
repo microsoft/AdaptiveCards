@@ -216,7 +216,7 @@ function ParagraphElement (props) {
         <>
             <Text key={"paragraph" + props.index} numberOfLines={props.numberOfLines}
                 onTextLayout={(event) => {
-                    if (!accContainers && !accRole) {
+                    if (!accContainers) {
                         const lines = event.nativeEvent.lines;
                         _linksSetPromise.current.then(() => {
                             addAccContainers(lines, _links.current);
