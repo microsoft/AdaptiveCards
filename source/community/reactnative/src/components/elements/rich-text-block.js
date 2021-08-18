@@ -201,7 +201,7 @@ function ParagraphElement (props) {
           const sIdx = indexLte(cumulative_len, start);
           const eIdx = indexLte(cumulative_len, end);
           _accViews.push((
-            <Text key={"__Acc_View" + index} 
+            <Text key={"__Acc_View_rtb" + index} 
                 style={{height: lines[eIdx].y - lines[sIdx].y + lines[eIdx].height, width: lines[sIdx].width, position: 'absolute', top: 1+lines[sIdx].y, left: lines[sIdx].x}}
                 accessibilityLabel={link.text}
                 accessibilityRole='link'
