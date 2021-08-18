@@ -1,5 +1,5 @@
 {
-	"name": "react-adaptivecards",
+	"name": "adaptivecards-react",
 	"version": "2.10.0-beta.1",
 	"description": "React.js Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards",
@@ -8,10 +8,11 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/microsoft/AdaptiveCards.git",
-		"directory": "source/nodejs/react-adaptivecards"
+		"directory": "source/nodejs/adaptivecards-react"
 	},
 	"keywords": [
 		"adaptivecards",
+		"react",
 		"adaptive",
 		"cards",
 		"microsoft",
