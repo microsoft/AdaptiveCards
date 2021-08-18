@@ -134,7 +134,6 @@
     [self tapOnButtonWithText:@"Set due date"];
 
     XCUIElementQuery* tables = testApp.tables;
-    XCUIElement* chatWindow = tables[@"ChatWindow"];
     
     [self setDateOnInputDateWithId:@"dueDate"
                           andLabel:@"Enter the due date"
@@ -182,11 +181,6 @@
     [self openCardForVersion:@"v1.3" forCardType:@"Elements" withCardName:@"Input.Text.ErrorMessage.json"];
     
     [self tapOnButtonWithText:@"Submit"];
-    
-    /*
-    NSString* resultsString = [self getInputsString];
-    XCTAssertTrue([resultsString isEqualToString:@""]);
-    */
      
     XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
     XCUIElement* firstInput = [chatWindow.textFields elementMatchingType:XCUIElementTypeAny identifier:@"Required Input.Text *, This is a required input,"];

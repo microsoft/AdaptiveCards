@@ -636,7 +636,8 @@ UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementP
 
         font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:sharedFontType textSize:sharedTextSize]];
     }
-    return font;
+
+    return [UIFontMetrics.defaultMetrics scaledFontForFont:font];
 }
 
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId)
@@ -691,6 +692,16 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
         [rootView enqueueIntermediateTextProcessingResult:data
                                                 elementId:elementId];
     }
+}
+
+void UpdateFontWithDynamicType(NSMutableAttributedString *content)
+{
+    [content enumerateAttribute:NSFontAttributeName
+                        inRange:NSMakeRange(0, content.length)
+                        options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                     usingBlock:^(id value, NSRange range, BOOL *stop) {
+                         [content addAttribute:NSFontAttributeName value:[UIFontMetrics.defaultMetrics scaledFontForFont:(UIFont *)value] range:range];
+                     }];
 }
 
 void TexStylesToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock,

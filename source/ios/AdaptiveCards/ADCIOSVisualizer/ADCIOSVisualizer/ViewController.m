@@ -202,7 +202,6 @@ CGFloat kFileBrowserWidth = 0;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     [self addChildViewController:self.ACVTabVC];
     self.ACVTabVC.delegate = self;
-    self.ACVTabVC.tableView.rowHeight = 25;
     self.ACVTabVC.tableView.sectionFooterHeight = 5;
     self.ACVTabVC.tableView.sectionHeaderHeight = 5;
     self.ACVTabVC.tableView.scrollEnabled = YES;
@@ -247,7 +246,8 @@ CGFloat kFileBrowserWidth = 0;
 
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
-    self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    [self.chatWindow registerClass:[ACRChatWindowCell class] forCellReuseIdentifier:@"adaptiveCell"];
+    self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
     // set a identifier to ease development of UI tests
     self.chatWindow.accessibilityIdentifier = @"ChatWindow";
@@ -701,6 +701,27 @@ CGFloat kFileBrowserWidth = 0;
                             [self.chatWindow endUpdates];
                         }
     });
+}
+
+// Handle accessibility state change events
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    if (!previousTraitCollection) {
+        return;
+    }
+
+    BOOL isAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(self.traitCollection.preferredContentSizeCategory);
+
+    if (isAccessibilityCategory != UIContentSizeCategoryIsAccessibilityCategory(previousTraitCollection.preferredContentSizeCategory)) {
+        if (_dataSource) {
+            // prep data sources for accessiblity changes, font size changes events
+            [_dataSource prepareForRedraw];
+            // ask for redraw of visible rows
+            [self.chatWindow reloadData];
+        }
+    }
 }
 
 - (BOOL)appIsBeingTested
