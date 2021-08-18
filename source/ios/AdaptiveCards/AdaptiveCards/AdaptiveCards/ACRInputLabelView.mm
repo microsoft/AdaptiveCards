@@ -111,7 +111,7 @@
         self.isAccessibilityElement = NO;
         inputView.accessibilityLabel = self.label.text;
         self.inputAccessibilityItem = inputView;
-
+        self.inputAccessibilityItem.accessibilityIdentifier = [NSString stringWithUTF8String:inputBlck->GetId().c_str()];
         if (inputView != accessibilityItem) {
             self.inputAccessibilityItem = accessibilityItem;
             self.inputAccessibilityItem.accessibilityLabel = inputView.accessibilityLabel;
@@ -176,6 +176,7 @@
                 self.errorMessage.hidden = NO;
                 self.errorMessage.isAccessibilityElement = NO;
                 self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
+                self.inputAccessibilityItem.accessibilityIdentifier = self.id;
             }
         } else {
             if (self.hasErrorMessage) {

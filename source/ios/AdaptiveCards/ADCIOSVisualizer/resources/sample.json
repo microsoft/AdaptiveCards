@@ -11,7 +11,7 @@
 	"imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
 	"fontTypes": {
 		"default": {
-			"fontFamily": "'Segoe UI', 'sans-serif', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
+			"fontFamily": "San Francisco, American Typewriter, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -240,7 +240,7 @@
 		"large": 160
 	},
 	"actions": {
-		"maxActions": 5,
+		"maxActions": 10,
 		"spacing": "Default",
 		"buttonSpacing": 15,
 		"showCard": {
