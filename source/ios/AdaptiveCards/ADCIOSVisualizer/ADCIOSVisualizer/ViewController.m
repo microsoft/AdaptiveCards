@@ -247,7 +247,6 @@ CGFloat kFileBrowserWidth = 0;
     [self.chatWindow registerClass:[ACRChatWindowCell class] forCellReuseIdentifier:@"adaptiveCell"];
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.chatWindow.rowHeight = UITableViewAutomaticDimension;
-    self.chatWindow.estimatedRowHeight = 10;
 
     // the width of the AdaptiveCards does not need to be set.
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.

@@ -166,14 +166,14 @@
 
 // configure the content cell
 @implementation ACRChatWindowCell {
-    NSArray<NSLayoutConstraint *> *_contentViewConstratins;
+    NSArray<NSLayoutConstraint *> *_contentViewConstraints;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        _contentViewConstratins = [[NSMutableArray alloc] init];
+        _contentViewConstraints = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -192,13 +192,13 @@
 
 - (void)updateLayoutConstraints
 {
-    _contentViewConstratins = @[
+    _contentViewConstraints = @[
         [self.adaptiveCardView.centerXAnchor constraintEqualToAnchor:self.contentView.centerXAnchor],
         [self.adaptiveCardView.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor],
         [self.contentView.heightAnchor constraintEqualToAnchor:self.adaptiveCardView.heightAnchor],
         [self.contentView.widthAnchor constraintEqualToAnchor:self.adaptiveCardView.widthAnchor]
     ];
-    [NSLayoutConstraint activateConstraints:_contentViewConstratins];
+    [NSLayoutConstraint activateConstraints:_contentViewConstraints];
 }
 
 @end

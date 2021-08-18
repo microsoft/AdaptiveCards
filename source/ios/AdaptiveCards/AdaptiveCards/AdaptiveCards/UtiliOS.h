@@ -84,6 +84,8 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
 
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties);
 
+void UpdateFontWithDynamicType(NSMutableAttributedString *content);
+
 ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_ptr<UnknownAction> action);
 
 UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> const &config, ACRContainerStyle style, ForegroundColor textColor = ForegroundColor::Default, bool isSubtle = false);

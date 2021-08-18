@@ -694,6 +694,16 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     }
 }
 
+void UpdateFontWithDynamicType(NSMutableAttributedString *content)
+{
+    [content enumerateAttribute:NSFontAttributeName
+                        inRange:NSMakeRange(0, content.length)
+                        options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                     usingBlock:^(id value, NSRange range, BOOL *stop) {
+                         [content addAttribute:NSFontAttributeName value:[UIFontMetrics.defaultMetrics scaledFontForFont:(UIFont *)value] range:range];
+                     }];
+}
+
 void TexStylesToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock,
                                           const TextStyleConfig &textStyleConfig,
                                           RichTextElementProperties &textProp)

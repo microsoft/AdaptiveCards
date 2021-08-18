@@ -65,12 +65,7 @@
             content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
-            [content enumerateAttribute:NSFontAttributeName
-                                inRange:NSMakeRange(0, content.length)
-                                options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
-                             usingBlock:^(id value, NSRange range, BOOL *stop) {
-                                 [content addAttribute:NSFontAttributeName value:[UIFontMetrics.defaultMetrics scaledFontForFont:(UIFont *)value] range:range];
-                             }];
+            UpdateFontWithDynamicType(content);
         } else {
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
         }
