@@ -15,6 +15,7 @@ module.exports = (env, argv) => {
 
 	return {
 		mode: mode,
+		target: 'node',
 		entry: {
 			"adaptivecards-ui-testapp": "./src/adaptivecards-ui-testapp.ts"
 		},
@@ -73,6 +74,12 @@ module.exports = (env, argv) => {
 					from: 'src/adaptivecards-ui-testapp.css',
 					to: '.',
 					flatten: true
+				},
+				{
+					from: '../../../samples/',
+					to: './samples/',
+					context: '.',
+					flatten: false
 				}],
 				options: {
 					concurrency: 8
