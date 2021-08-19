@@ -148,48 +148,32 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     SharedModelElementParser::SharedModelElementParser(AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration* parserRegistration)
     {
-        ComPtr<AdaptiveElementParserRegistration> localParserRegistration(parserRegistration);
-        localParserRegistration.AsWeak(&m_parserRegistration);
+        m_parserRegistration = winrt::make_weak(
+            copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration>(parserRegistration));
     }
 
     std::shared_ptr<BaseCardElement> SharedModelElementParser::Deserialize(ParseContext& context, const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
 
-        HString typeAsHstring;
-        THROW_IF_FAILED(UTF8ToHString(type, typeAsHstring.GetAddressOf()));
-
-        ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        THROW_IF_FAILED(GetAdaptiveParserRegistration(&adaptiveElementParserRegistration));
-
-        ComPtr<IAdaptiveElementParser> parser;
-        THROW_IF_FAILED(adaptiveElementParserRegistration->Get(typeAsHstring.Get(), &parser));
-
-        ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
-        THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
+        auto adaptiveElementParserRegistration = GetAdaptiveParserRegistration();
+        auto parser = adaptiveElementParserRegistration.Get(UTF8ToHString(type));
+        auto jsonObject = JsonCppToJsonObject(value);
 
         // Get the action parser registration from the shared model
-        ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        THROW_IF_FAILED(GetAdaptiveActionParserRegistrationFromSharedModel(context.actionParserRegistration,
-                                                                           &adaptiveActionParserRegistration));
+        auto adaptiveActionParserRegistration = GetAdaptiveActionParserRegistrationFromSharedModel(context.actionParserRegistration);
+        auto adaptiveWarnings = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>();
 
-        ComPtr<IAdaptiveCardElement> cardElement;
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<AdaptiveWarning*>> adaptiveWarnings =
-            Make<Vector<AdaptiveWarning*>>();
-        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(),
-                                         adaptiveElementParserRegistration.Get(),
-                                         adaptiveActionParserRegistration.Get(),
-                                         adaptiveWarnings.Get(),
-                                         &cardElement));
+        auto cardElement =
+            parser.FromJson(jsonObject, adaptiveElementParserRegistration, adaptiveActionParserRegistration, adaptiveWarnings);
 
-        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), context.warnings));
+        AdaptiveWarningsToSharedWarnings(adaptiveWarnings, context.warnings);
 
-        std::shared_ptr<CustomElementWrapper> elementWrapper = std::make_shared<CustomElementWrapper>(cardElement.Get());
-        return elementWrapper;
+        return std::make_shared<CustomElementWrapper>(cardElement);
     }
 
-    HRESULT SharedModelElementParser::GetAdaptiveParserRegistration(_COM_Outptr_ IAdaptiveElementParserRegistration** elementParserRegistration)
+    winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration SharedModelElementParser::GetAdaptiveParserRegistration()
     {
-        return m_parserRegistration.CopyTo<IAdaptiveElementParserRegistration>(elementParserRegistration);
+        return m_parserRegistration.get();
     }
 }

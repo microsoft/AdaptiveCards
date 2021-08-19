@@ -41,6 +41,7 @@
 
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/AdaptiveCards.ObjectModel.WinUI3.h>
 #include <winrt/Windows.Data.Json.h>
 

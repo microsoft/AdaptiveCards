@@ -95,34 +95,28 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             }
         }
 
-        ComPtr<AdaptiveCardParseResult> adaptiveParseResult;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
+        auto adaptiveParseResult =
+            winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveCardParseResult>();
         try
         {
             ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
             const std::string c_rendererVersion = "1.5";
             std::shared_ptr<AdaptiveCards::ParseResult> sharedParseResult =
                 AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
-            ComPtr<IAdaptiveCard> adaptiveCard;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
-            RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
-
-            ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>> warnings;
-            RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
-
-            RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(sharedParseResult->GetWarnings(), warnings.Get()));
+            auto adaptiveCard = MakeOrThrow<AdaptiveCard>(sharedParseResult->GetAdaptiveCard());
+            adaptiveParseResult->AdaptiveCard = adaptiveCard.as<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard>();
+            adaptiveParseResult->Warnings = SharedWarningsToAdaptiveWarnings(sharedParseResult->GetWarnings());
         }
         catch (const AdaptiveCardParseException& e)
         {
-            ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*>> errors;
-            RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
-            auto newError = winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveError>(
+            auto error = winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveError>(
                 static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode>(e.GetStatusCode()),
                 UTF8ToHString(e.GetReason()));
-            errors->Append(newError.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveError>().get());
+            adaptiveParseResult->Errors().Append(*error);
         }
 
-        return adaptiveParseResult.CopyTo(parseResult);
+        // TODO: use "put abi" or something here
+        return adaptiveParseResult->QueryInterface(IID_PPV_ARGS(parseResult));
     }
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()

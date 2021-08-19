@@ -37,6 +37,7 @@
 #include "AdaptiveWarning.h"
 #include "CustomActionWrapper.h"
 #include "CustomElementWrapper.h"
+#include "winrt/Windows.Foundation.Collections.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -262,7 +263,7 @@ HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAda
                 item);
         break;
     case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Custom:
-        baseCardElement = std::make_shared<CustomElementWrapper>(item);
+        baseCardElement = std::make_shared<CustomElementWrapper>(copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>(item));
         break;
     }
 
@@ -325,7 +326,7 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdap
                 action);
         break;
     case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Custom:
-        sharedAction = std::make_shared<CustomActionWrapper>(action);
+        sharedAction = std::make_shared<CustomActionWrapper>(copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>(action));
         break;
     case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Unsupported:
         sharedAction =
@@ -497,8 +498,10 @@ try
             projectedElement, std::AdaptivePointerCast<AdaptiveCards::Table>(baseElement)));
         break;
     case CardElementType::Custom:
-        RETURN_IF_FAILED(
-            std::AdaptivePointerCast<::AdaptiveCards::ObjectModel::WinUI3::CustomElementWrapper>(baseElement)->GetWrappedElement(projectedElement));
+    {
+        auto e = std::AdaptivePointerCast<::AdaptiveCards::ObjectModel::WinUI3::CustomElementWrapper>(baseElement)->GetWrappedElement();
+        *projectedElement = e.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>().detach();
+    }
         break;
     case CardElementType::Unknown:
     default:
@@ -578,7 +581,10 @@ try
             projectedAction, std::AdaptivePointerCast<AdaptiveCards::ExecuteAction>(action)));
         break;
     case ActionType::Custom:
-        RETURN_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(projectedAction));
+        {
+            auto e = std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement();
+            *projectedAction = e.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>().detach();
+        }
         break;
     case ActionType::UnknownAction:
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedAction>(
@@ -593,13 +599,6 @@ try
 }
 CATCH_RETURN;
 
-template<typename D, typename... Args> auto MakeOrThrow(Args&&... args)
-{
-    Microsoft::WRL::ComPtr<D> created;
-    THROW_IF_FAILED(MakeAndInitialize<D>(&created, std::forward<Args>(args)...));
-    return created;
-}
-
 winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateActionProjection(
     const std::shared_ptr<AdaptiveCards::BaseActionElement>& action)
 {
@@ -608,7 +607,7 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateAction
         return nullptr;
     }
 
-    Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> abiElement;
+    winrt::com_ptr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> abiElement;
 
     switch (action->GetElementType())
     {
@@ -633,7 +632,8 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateAction
             std::AdaptivePointerCast<AdaptiveCards::ExecuteAction>(action));
         break;
     case ActionType::Custom:
-        THROW_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(&abiElement));
+        abiElement =
+            std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement().as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>();
         break;
     case ActionType::UnknownAction:
         abiElement = MakeOrThrow<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedAction>(
@@ -693,7 +693,7 @@ HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ IJsonObj
     return HStringToJsonObject(asHstring.Get(), result);
 }
 
-winrt::Windows::Data::Json::IJsonObject StringToJsonObject(const std::string& inputString)
+winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString)
 {
     return HStringToJsonObject(UTF8ToHString(inputString));
 }
@@ -712,7 +712,7 @@ HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ IJsonObjec
     return S_OK;
 }
 
-winrt::Windows::Data::Json::IJsonObject HStringToJsonObject(winrt::hstring const& inputHString)
+winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString)
 {
     winrt::Windows::Data::Json::JsonObject result{nullptr};
     if (!winrt::Windows::Data::Json::JsonObject::TryParse(inputHString, result))
@@ -721,7 +721,6 @@ winrt::Windows::Data::Json::IJsonObject HStringToJsonObject(winrt::hstring const
     }
     return result;
 }
-
 
 HRESULT JsonObjectToString(_In_ IJsonObject* inputJson, std::string& result)
 {
@@ -801,7 +800,7 @@ HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ IJsonO
     return StringToJsonObject(jsonString, result);
 }
 
-winrt::Windows::Data::Json::IJsonObject JsonCppToJsonObject(const Json::Value& jsonCppValue)
+winrt::Windows::Data::Json::JsonObject JsonCppToJsonObject(const Json::Value& jsonCppValue)
 {
     return StringToJsonObject(ParseUtil::JsonToString(jsonCppValue));
 }
@@ -821,63 +820,52 @@ Json::Value JsonObjectToJsonCpp(_In_ winrt::Windows::Data::Json::IJsonObject con
     return ParseUtil::GetJsonValueFromString(JsonObjectToString(jsonObject));
 }
 
-void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources* remoteResourceElement,
+void RemoteResourceElementToRemoteResourceInformationVector(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
                                                             std::vector<RemoteResourceInformation>& resourceUris)
 {
-    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>> remoteResources;
-    THROW_IF_FAILED(remoteResourceElement->GetResourceInformation(remoteResources.GetAddressOf()));
-
-    ComPtr<IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>> vectorIterable;
-    THROW_IF_FAILED(remoteResources.As<IIterable<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>>(&vectorIterable));
-
-    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>> vectorIterator;
-    HRESULT hr = vectorIterable->First(&vectorIterator);
-
-    boolean hasCurrent;
-    THROW_IF_FAILED(vectorIterator->get_HasCurrent(&hasCurrent));
-
-    while (SUCCEEDED(hr) && hasCurrent)
+    for (auto&& resourceInformation : remoteResourceElement.GetResourceInformation())
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRemoteResourceInformation> resourceInformation;
-        THROW_IF_FAILED(vectorIterator->get_Current(&resourceInformation));
-
-        HString url;
-        THROW_IF_FAILED(resourceInformation->get_Url(url.GetAddressOf()));
-
         RemoteResourceInformation uriInfo;
-        THROW_IF_FAILED(HStringToUTF8(url.Get(), uriInfo.url));
-
-        HString mimeType;
-        THROW_IF_FAILED(resourceInformation->get_MimeType(mimeType.GetAddressOf()));
-
-        uriInfo.mimeType = HStringToUTF8(mimeType.Get());
-
-        resourceUris.push_back(uriInfo);
-
-        hr = vectorIterator->MoveNext(&hasCurrent);
+        uriInfo.url = HStringToUTF8(resourceInformation.Url());
+        uriInfo.mimeType = HStringToUTF8(resourceInformation.MimeType());
+        resourceUris.emplace_back(std::move(uriInfo));
     }
 }
 
 HRESULT SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings)
+try
 {
     for (const auto& sharedWarning : sharedWarnings)
     {
-        HString warningMessage;
-        RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));
+        auto warning = winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveWarning>(
+            static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode>(sharedWarning->GetStatusCode()),
+            UTF8ToHString(sharedWarning->GetReason()));
 
-        ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode statusCode =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode>(sharedWarning->GetStatusCode());
-
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning> adaptiveWarning;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&adaptiveWarning, statusCode, warningMessage.Get()));
-
-        RETURN_IF_FAILED(adaptiveWarnings->Append(adaptiveWarning.Get()));
+        RETURN_IF_FAILED(adaptiveWarnings->Append(warning.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning>().get()));
     }
 
     return S_OK;
 }
+CATCH_RETURN;
+
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>
+SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
+{
+    auto result = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>();
+
+    for (const auto& sharedWarning : sharedWarnings)
+    {
+        auto warning = winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveWarning>(
+            static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode>(sharedWarning->GetStatusCode()),
+            UTF8ToHString(sharedWarning->GetReason()));
+        result.Append(*warning);
+    }
+
+    return result;
+}
+
 
 HRESULT AdaptiveWarningsToSharedWarnings(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings,
@@ -912,6 +900,19 @@ HRESULT AdaptiveWarningsToSharedWarnings(
     }
 
     return S_OK;
+}
+
+
+void AdaptiveWarningsToSharedWarnings(
+    _In_ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
+{
+    for (auto&& adaptiveWarning : adaptiveWarnings)
+    {
+        sharedWarnings.emplace_back(
+            std::make_shared<AdaptiveCardParseWarning>(static_cast<AdaptiveCards::WarningStatusCode>(adaptiveWarning.StatusCode()),
+                                                       HStringToUTF8(adaptiveWarning.Message())));
+    }
 }
 
 ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type)
@@ -981,15 +982,11 @@ AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::
     }
 }
 
-HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
-    const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration)
+winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration GetAdaptiveActionParserRegistrationFromSharedModel(
+    const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration)
 {
     // Look up the well known action parser registration to see if we've got a custom action registration to pass
-    std::shared_ptr<ActionElementParser> sharedActionParser =
-        sharedActionParserRegistration->GetParser(c_upwActionParserRegistration);
-
-    if (sharedActionParser != nullptr)
+    if (auto sharedActionParser = sharedActionParserRegistration->GetParser(c_upwActionParserRegistration))
     {
         // The shared model wraps the passed in parsers. Get our SharedModelActionParser from it so we can retrieve the
         // IAdaptiveActionParserRegistration
@@ -999,25 +996,20 @@ HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
         std::shared_ptr<SharedModelActionParser> sharedModelParser =
             std::static_pointer_cast<SharedModelActionParser>(parserWrapper->GetActualParser());
 
-        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveActionParserRegistration));
+        return sharedModelParser->GetAdaptiveParserRegistration();
     }
     else
     {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration>(adaptiveActionParserRegistration));
+        auto registration = MakeOrThrow<AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration>();
+        return copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration>(registration.get());
     }
-
-    return S_OK;
 }
 
-HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
-    const std::shared_ptr<ElementParserRegistration>& sharedElementParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration)
+winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration GetAdaptiveElementParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration)
 {
     // Look up the well known Element parser registration to see if we've got a custom Element registration to pass
-    std::shared_ptr<BaseCardElementParser> sharedElementParser =
-        sharedElementParserRegistration->GetParser(c_uwpElementParserRegistration);
-
-    if (sharedElementParser != nullptr)
+    if (auto sharedElementParser = sharedElementParserRegistration->GetParser(c_uwpElementParserRegistration))
     {
         // The shared model wraps the passed in parsers. Get our SharedModelElementParser from it so we can retrieve the
         // IAdaptiveElementParserRegistration
@@ -1027,13 +1019,11 @@ HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
         std::shared_ptr<SharedModelElementParser> sharedModelParser =
             std::static_pointer_cast<SharedModelElementParser>(parserWrapper->GetActualParser());
 
-        RETURN_IF_FAILED(sharedModelParser->GetAdaptiveParserRegistration(adaptiveElementParserRegistration));
+        return sharedModelParser->GetAdaptiveParserRegistration();
     }
     else
     {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration>(
-            adaptiveElementParserRegistration));
+        auto registration = MakeOrThrow<AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration>();
+        return copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration>(registration.get());
     }
-
-    return S_OK;
 }

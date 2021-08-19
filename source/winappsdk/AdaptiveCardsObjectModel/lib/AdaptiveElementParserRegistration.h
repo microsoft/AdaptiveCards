@@ -53,7 +53,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
 
-        HRESULT GetAdaptiveParserRegistration(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration** elementParserRegistration);
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration GetAdaptiveParserRegistration();
 
     private:
         // This a a weak reference to the UWP level AdaptiveElementParserRegistration for this parse. Store as a weak
@@ -63,7 +63,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         //      m_parserRegistration(AdaptiveElementParserRegistration)->
         //          m_sharedParserRegistration(ElementParserRegistration)->
         //              m_cardElementParsers (Contains this object)
-        Microsoft::WRL::WeakRef m_parserRegistration;
+        winrt::weak_ref<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration> m_parserRegistration;
     };
 
     template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser, typename TAdaptiveElementInterface>

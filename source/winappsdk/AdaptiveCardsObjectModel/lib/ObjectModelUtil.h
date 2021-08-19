@@ -174,6 +174,33 @@ try
 }
 CATCH_RETURN;
 
+template<typename D, typename... Args> auto MakeOrThrow(Args&&... args)
+{
+    ComPtr<D> tempD;
+    THROW_IF_FAILED(MakeAndInitialize<D>(&tempD, std::forward<Args>(args)...));
+    return winrt::com_ptr<D>{tempD.Detach(), winrt::take_ownership_from_abi};
+}
+
+template<typename I, typename Abi>
+auto copy_from_abi(Abi* abi)
+{
+    I returned{nullptr};
+    winrt::copy_from_abi(returned, abi);
+    return returned;
+}
+
+template<typename T, typename I>
+inline auto put_abi(T& i)
+{
+    return reinterpret_cast<T**>(winrt::put_abi(i));
+}
+
+template<typename I, typename Abi>
+void copy_to_abi(I&& i, Abi** abi)
+{
+    *abi = i.as<Abi>().detach();
+}
+
 #define GenerateImagesProjection(SHAREDIMAGES, WINRTIMAGES) \
     GenerateVectorProjection<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage, AdaptiveImage>( \
         SHAREDIMAGES, WINRTIMAGES);
@@ -215,9 +242,9 @@ CATCH_RETURN;
                              AdaptiveTableColumnDefinition>(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS);
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-winrt::Windows::Data::Json::IJsonObject StringToJsonObject(const std::string& inputString);
+winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString);
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-winrt::Windows::Data::Json::IJsonObject HStringToJsonObject(winrt::hstring const& inputHString);
+winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
 HRESULT JsonObjectToHString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, _Outptr_ HSTRING* result);
 winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::IJsonObject const& inputJson);
 HRESULT JsonObjectToString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
@@ -230,11 +257,14 @@ HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonV
 HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
 
 HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-winrt::Windows::Data::Json::IJsonObject JsonCppToJsonObject(const Json::Value& jsonCppValue);
+winrt::Windows::Data::Json::JsonObject JsonCppToJsonObject(const Json::Value& jsonCppValue);
 HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
 
 Json::Value JsonObjectToJsonCpp(winrt::Windows::Data::Json::IJsonObject const& jsonObject);
 
+void RemoteResourceElementToRemoteResourceInformationVector(
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
+    std::vector<::AdaptiveCards::RemoteResourceInformation>& resourceUris);
 
 // Peek interface to help get implementation types from winrt interfaces
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
@@ -258,15 +288,19 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     return inner;
 }
 
-void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources* remoteResources,
-                                                            std::vector<AdaptiveCards::RemoteResourceInformation>& resourceUris);
-
 HRESULT SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings);
 
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>
+SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
+
 HRESULT AdaptiveWarningsToSharedWarnings(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
+
+void AdaptiveWarningsToSharedWarnings(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
 ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type);
@@ -274,13 +308,11 @@ AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCar
 
 AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType const& type);
 
-HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
-    const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration);
+winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration GetAdaptiveActionParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration);
 
-HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
-    const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration);
+winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration GetAdaptiveElementParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration);
 
 template<typename T, typename TInterface, typename C>
 HRESULT IterateOverVectorWithFailure(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)

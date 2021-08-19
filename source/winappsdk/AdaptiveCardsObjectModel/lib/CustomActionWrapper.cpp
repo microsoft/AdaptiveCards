@@ -8,7 +8,7 @@ using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 
 namespace AdaptiveCards::ObjectModel::WinUI3
 {
-    CustomActionWrapper::CustomActionWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* actionElement) :
+    CustomActionWrapper::CustomActionWrapper(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement) :
         AdaptiveCards::BaseActionElement(AdaptiveCards::ActionType::Custom), m_actionElement(actionElement)
     {
         BaseElement::SetId(GetActionElementId());
@@ -41,60 +41,40 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     Json::Value CustomActionWrapper::SerializeToJsonValue() const
     {
-        ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
-        THROW_IF_FAILED(m_actionElement->ToJson(&jsonObject));
-
-        Json::Value jsonCppValue;
-        JsonObjectToJsonCpp(jsonObject.Get(), &jsonCppValue);
-
-        return jsonCppValue;
+        auto jsonObject = m_actionElement.ToJson();
+        return JsonObjectToJsonCpp(jsonObject);
     }
 
-    HRESULT CustomActionWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** actionElement)
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement CustomActionWrapper::GetWrappedElement()
     {
-        return m_actionElement.CopyTo(actionElement);
+        return m_actionElement;
     }
 
     void CustomActionWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources> remoteResources;
-        if (SUCCEEDED(m_actionElement.As(&remoteResources)))
+        if (auto resources = m_actionElement.try_as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources>())
         {
-            RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
+            RemoteResourceElementToRemoteResourceInformationVector(resources, resourceInfo);
         }
     }
 
     std::string CustomActionWrapper::GetActionElementId() const
     {
-        Wrappers::HString id;
-        THROW_IF_FAILED(m_actionElement->get_Id(id.GetAddressOf()));
-        return HStringToUTF8(id.Get());
+        return HStringToUTF8(m_actionElement.Id());
     }
 
     void CustomActionWrapper::SetActionElementId(const std::string& value)
     {
-        Wrappers::HString id;
-        THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
-        THROW_IF_FAILED(m_actionElement->put_Id(id.Get()));
+        m_actionElement.Id(UTF8ToHString(value));
     }
 
     std::string CustomActionWrapper::GetActionElementTitle() const
     {
-        Wrappers::HString title;
-        if (SUCCEEDED(m_actionElement->get_Title(title.GetAddressOf())) && title.IsValid())
-        {
-            return HStringToUTF8(title.Get());
-        }
-        else
-        {
-            return "";
-        }
+        return HStringToUTF8(m_actionElement.Title());
     }
 
     void CustomActionWrapper::SetActionElementTitle(const std::string& value)
     {
-        Wrappers::HString title;
-        THROW_IF_FAILED(UTF8ToHString(value, title.GetAddressOf()));
-        THROW_IF_FAILED(m_actionElement->put_Title(title.Get()));
+        m_actionElement.Title(UTF8ToHString(value));
     }
 }

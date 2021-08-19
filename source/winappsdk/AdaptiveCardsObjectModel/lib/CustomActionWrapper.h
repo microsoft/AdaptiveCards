@@ -10,7 +10,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
     class CustomActionWrapper : public AdaptiveCards::BaseActionElement
     {
     public:
-        CustomActionWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* actionElement);
+        CustomActionWrapper(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement);
 
         void SetId(std::string&& value) override;
         void SetId(const std::string& value) override;
@@ -20,7 +20,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** actionElement);
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GetWrappedElement();
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
@@ -31,6 +31,6 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::string GetActionElementTitle() const;
         void SetActionElementTitle(const std::string& value);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_actionElement;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement m_actionElement;
     };
 }

@@ -10,7 +10,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
     class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {
     public:
-        CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement);
+        CustomElementWrapper(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement);
 
         bool GetSeparator() const override;
         void SetSeparator(bool value) override;
@@ -25,12 +25,12 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** cardElement);
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement GetWrappedElement();
 
     private:
         std::string GetCardElementId() const;
         void SetCardElementId(const std::string& value);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> m_cardElement;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement m_cardElement;
     };
 }
