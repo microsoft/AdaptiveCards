@@ -111,22 +111,18 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
 
             RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(sharedParseResult->GetWarnings(), warnings.Get()));
-
-            return adaptiveParseResult.CopyTo(parseResult);
         }
         catch (const AdaptiveCardParseException& e)
         {
             ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*>> errors;
             RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
-            HString errorMessage;
-            ABI::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode statusCode =
-                static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode>(e.GetStatusCode());
-            RETURN_IF_FAILED(UTF8ToHString(e.GetReason(), errorMessage.GetAddressOf()));
-            ComPtr<IAdaptiveError> adaptiveError;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
-            RETURN_IF_FAILED(errors->Append(adaptiveError.Get()));
-            return adaptiveParseResult.CopyTo(parseResult);
+            auto newError = winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveError>(
+                static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode>(e.GetStatusCode()),
+                UTF8ToHString(e.GetReason()));
+            errors->Append(newError.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveError>().get());
         }
+
+        return adaptiveParseResult.CopyTo(parseResult);
     }
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()

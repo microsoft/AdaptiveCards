@@ -2,19 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-template<typename TStored> struct property
-{
-    TStored m_stored;
-
-    template<typename T> void operator()(T&& t) { m_stored = std::forward<T>(t); }
-    TStored operator()() { return m_stored; }
-
-    template<typename T> void operator=(T&& t) { m_stored = std::forward<T>(t); }
-    operator TStored() { return m_stored; }
-
-    TStored const& get() const { return m_stored; }
-};
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     struct AdaptiveActionElementBase

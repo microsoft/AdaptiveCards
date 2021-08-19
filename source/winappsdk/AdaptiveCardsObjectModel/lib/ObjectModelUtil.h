@@ -13,6 +13,19 @@ private:
     DWORD _dwErr;
 };
 
+template<typename TStored> struct property
+{
+    TStored m_stored;
+
+    template<typename T> void operator()(T&& t) { m_stored = std::forward<T>(t); }
+    TStored operator()() { return m_stored; }
+
+    template<typename T> void operator=(T&& t) { m_stored = std::forward<T>(t); }
+    operator TStored() { return m_stored; }
+
+    TStored const& get() const { return m_stored; }
+};
+
 std::string WStringToString(std::wstring_view in);
 std::wstring StringToWString(std::string_view in);
 
@@ -42,6 +55,9 @@ HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVect
 
 HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
                              std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction);
+
+std::shared_ptr<AdaptiveCards::BaseActionElement>
+GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& action);
 
 HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* items,
                               std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
@@ -255,6 +271,8 @@ HRESULT AdaptiveWarningsToSharedWarnings(
 
 ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type);
 AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type);
+
+AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType const& type);
 
 HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
     const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration,

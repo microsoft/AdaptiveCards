@@ -958,6 +958,29 @@ AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCar
     }
 }
 
+
+AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType const& type)
+{
+    switch (type)
+    {
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop:
+    {
+        return FallbackType::Drop;
+    }
+
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content:
+    {
+        return FallbackType::Content;
+    }
+
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None:
+    default:
+    {
+        return FallbackType::None;
+    }
+    }
+}
+
 HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
     const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration,
     _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration)
