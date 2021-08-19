@@ -160,10 +160,9 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
         }
 
-        auto refresh = sharedAdaptiveCard->GetRefresh();
-        if (refresh != nullptr)
+        if (auto refresh = sharedAdaptiveCard->GetRefresh())
         {
-            MakeAndInitialize<AdaptiveRefresh>(m_refresh.GetAddressOf(), refresh);
+            m_refresh = *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveRefresh>(refresh);
         }
 
         auto authentication = sharedAdaptiveCard->GetAuthentication();
@@ -287,12 +286,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveCard::get_Refresh(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRefresh** refresh)
     {
-        return m_refresh.CopyTo(refresh);
+        copy_to_abi(m_refresh, refresh);
+        return S_OK;
     }
 
     HRESULT AdaptiveCard::put_Refresh(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRefresh* refresh)
     {
-        m_refresh = refresh;
+        m_refresh = copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRefresh>(refresh);
         return S_OK;
     }
 
@@ -348,11 +348,8 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         if (m_refresh)
         {
-            ComPtr<AdaptiveRefresh> refreshImpl = PeekInnards<AdaptiveRefresh>(m_refresh);
-
-            std::shared_ptr<AdaptiveCards::Refresh> sharedModelRefresh;
-            RETURN_IF_FAILED(refreshImpl->GetSharedModel(sharedModelRefresh));
-            adaptiveCard->SetRefresh(sharedModelRefresh);
+            auto refresh = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveRefresh>(m_refresh);
+            adaptiveCard->SetRefresh(refresh->GetSharedModel());
         }
 
         if (m_authentication)

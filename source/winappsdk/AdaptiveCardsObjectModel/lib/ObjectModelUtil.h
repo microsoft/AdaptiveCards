@@ -286,6 +286,20 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     return inner;
 }
 
+template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
+{
+    winrt::com_ptr<D> out;
+    if (auto p = o.try_as<ITypePeek>())
+    {
+        if (p->PeekAt(__uuidof(D)))
+        {
+            out.copy_from(winrt::get_self<D>(o));
+        }
+    }
+
+    return out;
+}
+
 HRESULT SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings);

@@ -97,7 +97,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle m_style;
         ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment m_verticalAlignment;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRefresh> m_refresh;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRefresh m_refresh;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthentication> m_authentication;
     };
 
