@@ -1,45 +1,29 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 #pragma once
-
 #include "AuthCardButton.h"
+#include "AdaptiveAuthCardButton.g.h"
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class DECLSPEC_UUID("0DF8553F-E958-4E9C-897D-847691F1F3CC") AdaptiveAuthCardButton
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>>
+    struct DECLSPEC_UUID("0DF8553F-E958-4E9C-897D-847691F1F3CC") AdaptiveAuthCardButton
+        : AdaptiveAuthCardButtonT<AdaptiveAuthCardButton, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveAuthCardButton);
+        AdaptiveAuthCardButton() : AdaptiveAuthCardButton(std::make_shared<::AdaptiveCards::AuthCardButton>()) {}
+        AdaptiveAuthCardButton(std::shared_ptr<::AdaptiveCards::AuthCardButton> const& sharedAuthCardButton);
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::AuthCardButton>& sharedAuthCardButton);
+        property<hstring> Type;
+        property<hstring> Title;
+        property<hstring> Image;
+        property<hstring> Value;
 
-        IFACEMETHODIMP get_Type(_Outptr_ HSTRING* type);
-        IFACEMETHODIMP put_Type(_In_ HSTRING type);
-
-        IFACEMETHODIMP get_Title(_Outptr_ HSTRING* title);
-        IFACEMETHODIMP put_Title(_In_ HSTRING title);
-
-        IFACEMETHODIMP get_Image(_Outptr_ HSTRING* image);
-        IFACEMETHODIMP put_Image(_In_ HSTRING image);
-
-        IFACEMETHODIMP get_Value(_Outptr_ HSTRING* value);
-        IFACEMETHODIMP put_Value(_In_ HSTRING value);
-
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::AuthCardButton>& sharedModel);
+        std::shared_ptr<::AdaptiveCards::AuthCardButton> GetSharedModel();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-    private:
-        Microsoft::WRL::Wrappers::HString m_type;
-        Microsoft::WRL::Wrappers::HString m_title;
-        Microsoft::WRL::Wrappers::HString m_image;
-        Microsoft::WRL::Wrappers::HString m_value;
     };
-
-    ActivatableClass(AdaptiveAuthCardButton);
+}
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveAuthCardButton : AdaptiveAuthCardButtonT<AdaptiveAuthCardButton, implementation::AdaptiveAuthCardButton>
+    {
+    };
 }

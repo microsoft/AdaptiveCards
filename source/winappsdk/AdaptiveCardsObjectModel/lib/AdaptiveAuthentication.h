@@ -38,7 +38,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         Microsoft::WRL::Wrappers::HString m_text;
         Microsoft::WRL::Wrappers::HString m_connectionName;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTokenExchangeResource> m_tokenExchangeResource;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*>> m_buttons;
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton> m_buttons;
     };
 
     ActivatableClass(AdaptiveAuthentication);

@@ -34,14 +34,16 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             MakeAndInitialize<AdaptiveTokenExchangeResource>(m_tokenExchangeResource.GetAddressOf(), tokenExchangeResource);
         }
 
-        m_buttons = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*>>();
+        std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton> buttons;
         for (auto& button : sharedAuthentication->GetButtons())
         {
-            ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton> adaptiveAuthCardButton;
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>(&adaptiveAuthCardButton, button));
-
-            RETURN_IF_FAILED(m_buttons->Append(adaptiveAuthCardButton.Detach()));
+            auto newShared =
+                winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthCardButton>(button);
+            buttons.push_back(*newShared);
         }
+
+        m_buttons =
+            winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>(std::move(buttons));
 
         return S_OK;
     }
@@ -74,7 +76,8 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveAuthentication::get_Buttons(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*>** buttons)
     {
-        return m_buttons.CopyTo(buttons);
+        copy_to_abi(m_buttons, buttons);
+        return S_OK;
     }
 
     HRESULT AdaptiveAuthentication::GetSharedModel(std::shared_ptr<AdaptiveCards::Authentication>& sharedModel)
@@ -101,16 +104,12 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         if (m_buttons)
         {
-            IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton>(
-                m_buttons.Get(), [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthCardButton* authCardButton) {
-                    ComPtr<AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton> buttonImpl =
-                        PeekInnards<AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>(authCardButton);
-
-                    std::shared_ptr<AdaptiveCards::AuthCardButton> sharedAuthCardButton;
-                    RETURN_IF_FAILED(buttonImpl->GetSharedModel(sharedAuthCardButton));
-                    authentication->GetButtons().push_back(std::AdaptivePointerCast<AdaptiveCards::AuthCardButton>(sharedAuthCardButton));
-                    return S_OK;
-                });
+            for (auto&& button : m_buttons)
+            {
+                auto impl = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthCardButton>(button);
+                auto sharedAuthCardButton = impl->GetSharedModel();
+                authentication->GetButtons().emplace_back(std::AdaptivePointerCast<AdaptiveCards::AuthCardButton>(sharedAuthCardButton));
+            }
         }
 
         sharedModel = std::move(authentication);
