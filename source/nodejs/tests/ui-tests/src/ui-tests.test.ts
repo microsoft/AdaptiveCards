@@ -26,15 +26,8 @@ describe("Mock function", function() {
 
         await testUtils.clickOnActionWithTitle("Set due date");
 
-        const dueDateInputDiv: Webdriver.WebElement = await driver.findElement(Webdriver.By.id("dueDate"));
-        const dueDateInput = await dueDateInputDiv.findElement(Webdriver.By.className("ac-dateInput"));
-        await dueDateInput.click();
-        await dueDateInput.sendKeys("02041993");
-
-        const commentInputDiv: Webdriver.WebElement = await driver.findElement(Webdriver.By.id("comment"));
-        const commentInput = await commentInputDiv.findElement(Webdriver.By.className("ac-textInput"));
-        await commentInput.click();
-        await commentInput.sendKeys("A comment");
+        await testUtils.setDateOnDateInput("dueDate", "02041993");
+        await testUtils.setTextOnTextInput("comment", "A comment");
 
         await testUtils.clickOnActionWithTitle("OK");
 
@@ -50,8 +43,7 @@ describe("Mock function", function() {
 
         await testUtils.clickOnActionWithTitle("Submit");
 
-        const firstInputDiv: Webdriver.WebElement = await driver.findElement(Webdriver.By.id("id1"));
-        const firstInput: Webdriver.WebElement = await firstInputDiv.findElement(Webdriver.By.className("ac-textInput"));
+        const firstInput: Webdriver.WebElement = await testUtils.getTextInput("id1");
 
         const firstInputId: string = await firstInput.getAttribute("id");
         const activeElementId: string = await driver.switchTo().activeElement().getAttribute("id");

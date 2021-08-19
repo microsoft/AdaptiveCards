@@ -38,4 +38,31 @@ export class TestUtils {
 
         return retrievedInputs[inputId];
     }
+
+    async getInput(inputId: string, className: string): Promise<Webdriver.WebElement> {
+        const inputDiv: Webdriver.WebElement = await this.driver.findElement(Webdriver.By.id(inputId));
+        const input = await inputDiv.findElement(Webdriver.By.className(className));
+
+        return input;
+    }
+
+    async setValueOnInput(inputId: string, className: string, value: string) {
+        const input: Webdriver.WebElement = await this.getInput(inputId, className);
+        await input.click();
+        await input.sendKeys(value);
+    }
+
+    async setDateOnDateInput(dateInputId: string, value: string): Promise<void> {
+        await this.setValueOnInput(dateInputId, "ac-dateInput", value);
+    }
+
+    async setTextOnTextInput(textInputId: string, value: string): Promise<void> {
+        await this.setValueOnInput(textInputId, "ac-textInput", value);
+    }
+
+    async getTextInput(textInputId: string): Promise<Webdriver.WebElement> {
+        const textInput: Webdriver.WebElement = await this.getInput(textInputId, "ac-textInput");
+
+        return textInput;
+    }
 }
