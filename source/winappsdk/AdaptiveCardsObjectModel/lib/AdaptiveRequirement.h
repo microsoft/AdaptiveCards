@@ -1,45 +1,20 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 #pragma once
+#include "AdaptiveRequirement.g.h"
 
-#include "AdaptiveCards.ObjectModel.WinUI3.h"
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class AdaptiveRequirement
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement>,
-                                              Microsoft::WRL::FtmBase>
+    struct AdaptiveRequirement : AdaptiveRequirementT<AdaptiveRequirement>
     {
-        AdaptiveRuntime(AdaptiveRequirement);
+        AdaptiveRequirement(hstring const& requirementName, hstring const& requirementversion);
+        AdaptiveRequirement(std::pair<const std::string, ::AdaptiveCards::SemanticVersion> const& shared);
 
-    public:
-        HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ HSTRING name, _In_ HSTRING version);
-        HRESULT RuntimeClassInitialize(const std::pair<const std::string, AdaptiveCards::SemanticVersion>& sharedRequirement) noexcept;
-
-        // IAdaptiveRequirement
-        IFACEMETHODIMP put_Name(_In_ HSTRING value);
-        IFACEMETHODIMP get_Name(_Outptr_ HSTRING* value);
-
-        IFACEMETHODIMP put_Version(_In_ HSTRING value);
-        IFACEMETHODIMP get_Version(_Outptr_ HSTRING* value);
-
-    private:
-        Microsoft::WRL::Wrappers::HString m_name;
-        Microsoft::WRL::Wrappers::HString m_version;
+        property<hstring> Name;
+        property<hstring> Version;
     };
-
-    class AdaptiveRequirementFactory
-        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirementFactory>
+}
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveRequirement : AdaptiveRequirementT<AdaptiveRequirement, implementation::AdaptiveRequirement>
     {
-        IFACEMETHODIMP CreateInstance(_In_ HSTRING name,
-                                      _In_ HSTRING version,
-                                      _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement** result) override
-        {
-            return Microsoft::WRL::Details::MakeAndInitialize<AdaptiveRequirement>(result, name, version);
-        }
     };
-
-    ActivatableClassWithFactory(AdaptiveRequirement, AdaptiveRequirementFactory);
 }

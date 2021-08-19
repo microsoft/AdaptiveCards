@@ -361,42 +361,26 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
     return S_OK;
 }
 
-HRESULT GenerateSharedRequirements(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>* adaptiveRequirements,
-    std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements) noexcept
-try
+std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRequirements(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> const& adaptiveRequirements)
 {
-    sharedRequirements.clear();
+    std::unordered_map<std::string, AdaptiveCards::SemanticVersion> sharedRequirements;
 
-    IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement>(
-        adaptiveRequirements, [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement* requirement) {
-            HString nameHString;
-            RETURN_IF_FAILED(requirement->get_Name(nameHString.GetAddressOf()));
+    for (auto&& requirement : adaptiveRequirements)
+    {
+        auto name = HStringToUTF8(requirement.Name());
+        auto version = HStringToUTF8(requirement.Version());
 
-            HString versionHString;
-            RETURN_IF_FAILED(requirement->get_Version(versionHString.GetAddressOf()));
+        if (version == "*")
+        {
+            version = "0";
+        }
 
-            std::string nameString;
-            RETURN_IF_FAILED(HStringToUTF8(nameHString.Get(), nameString));
+        sharedRequirements.emplace(std::move(name), std::move(version));
+    }
 
-            std::string versionString;
-            RETURN_IF_FAILED(HStringToUTF8(versionHString.Get(), versionString));
-
-            if (versionString == "*")
-            {
-                sharedRequirements.emplace(std::move(nameString), "0");
-            }
-            else
-            {
-                sharedRequirements.emplace(std::move(nameString), std::move(versionString));
-            }
-
-            return S_OK;
-        });
-
-    return S_OK;
+    return sharedRequirements;
 }
-CATCH_RETURN;
 
 HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* inlines,
                               std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements)
@@ -670,21 +654,20 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateRequirementsProjection(
-    const std::unordered_map<std::string, SemanticVersion>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>* projectedRequirementVector) noexcept
-try
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> GenerateRequirementsProjection(
+    const std::unordered_map<std::string, SemanticVersion>& sharedRequirements)
 {
+    std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> results;
     for (const auto& sharedRequirement : sharedRequirements)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement> projectedRequirement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>(&projectedRequirement,
-                                                                                                   sharedRequirement));
-        RETURN_IF_FAILED(projectedRequirementVector->Append(projectedRequirement.Detach()));
+        auto requirement =
+            winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveRequirement>(sharedRequirement);
+
+        results.emplace_back(*requirement);
     }
-    return S_OK;
+
+    return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>(std::move(results));
 }
-CATCH_RETURN;
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ IJsonObject** result)
 {

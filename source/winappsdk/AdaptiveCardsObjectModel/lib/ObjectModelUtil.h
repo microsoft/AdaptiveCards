@@ -62,9 +62,8 @@ GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionE
 HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* items,
                               std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
 
-HRESULT GenerateSharedRequirements(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>* adaptiveRequirements,
-    std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements) noexcept;
+std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRequirements(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> const& adaptiveRequirements);
 
 HRESULT GenerateSharedInlines(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* items,
                               std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
@@ -153,9 +152,8 @@ HRESULT GenerateInlinesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* projectedParentContainer) noexcept;
 
-HRESULT GenerateRequirementsProjection(
-    const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>* projectedRequirementVector) noexcept;
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>
+    GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);
 
 template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass>
 HRESULT GenerateVectorProjection(const std::vector<std::shared_ptr<TSharedClass>>& containedElements,
@@ -196,7 +194,7 @@ inline auto put_abi(T& i)
 }
 
 template<typename I, typename Abi>
-void copy_to_abi(I&& i, Abi** abi)
+void copy_to_abi(I const& i, Abi** abi)
 {
     *abi = i.as<Abi>().detach();
 }

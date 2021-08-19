@@ -59,6 +59,6 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType m_height;
         ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType m_fallbackType;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> m_fallbackContent;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>> m_requirements;
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> m_requirements;
     };
 }

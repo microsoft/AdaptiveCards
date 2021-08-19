@@ -33,8 +33,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
                 RETURN_IF_FAILED(GenerateElementProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
             }
         }
-        m_requirements = Microsoft::WRL::Make<Vector<AdaptiveRequirement*>>();
-        GenerateRequirementsProjection(sharedModel->GetRequirements(), m_requirements.Get());
+        m_requirements = GenerateRequirementsProjection(sharedModel->GetRequirements());
         return S_OK;
     }
 
@@ -152,9 +151,12 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     IFACEMETHODIMP AdaptiveCardElementBase::get_Requirements(
         ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement*>** requirements)
+    try
     {
-        return m_requirements.CopyTo(requirements);
+        copy_to_abi(m_requirements, requirements);
+        return S_OK;
     }
+    CATCH_RETURN;
 
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
@@ -173,7 +175,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         sharedCardElement.SetHeight(static_cast<AdaptiveCards::HeightType>(m_height));
         sharedCardElement.SetFallbackType(MapWinUI3FallbackTypeToShared(m_fallbackType));
 
-        RETURN_IF_FAILED(GenerateSharedRequirements(m_requirements.Get(), sharedCardElement.GetRequirements()));
+        sharedCardElement.GetRequirements() = GenerateSharedRequirements(m_requirements);
 
         if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content)
         {
