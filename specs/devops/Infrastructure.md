@@ -25,12 +25,13 @@ Monthly
 * Ahead of release, each package needs to be independently versioned, so manual PRs are created to modify version numbers defined in config files (i.e. `gradle.properties`, `custom.props`, and `package.json`).
 * Smoke testing is manually performed on the latest available apps created by the nightly pipelines, checking for any major visible regressions in `samples/Scenario` cards. When an app is signed off by a tester, the corresponding rendering library is approved for release.
 * A release pipeline is defined for 4 platforms and the website.
-    * Android pipeline produces artifacts that must be manually uploaded to a public repository
-    * iOS pipeline is fully automated to publish, but requires the package version number to be entered at runtime
+    * Android pipeline is fully automated to publish
+    * iOS pipeline is fully automated to publish
         * iOS packages are not signed
     * .NET piplines are fully automated to publish
-    * Web rendering library must be manually audited, fixed, and published
-    * Website pipeline, contingent on the aforementioned audit, is fully automated to release
+    * Web rendering libraryis fully automated to publish
+		* JS packages are not signed
+    * Website pipeline is fully automated to release
 * Release notes are manually compiled
     * List of issues that were fixed since last stable release is compiled for each platform. Ideally, this involves only going through issues tagged with the current milestone. In reality, some issues are fixed without changing milestones, while some fixes are issue-less PRs, which must all be manually checked
     * Notes must be written with issue URLs linked, to trigger bot comment on issues (notifies users who are waiting for fix to be available)
@@ -55,12 +56,12 @@ To fully benefit from agile development, teams need to be able to unceremoniousl
 
 ## Roadmap
 
-### Epic 1. Enable automated publishing
-Estimate: 10-13 points
+### ~~Epic 1. Enable automated publishing~~
+~~Estimate: 10-13 points~~
 
-* Modify Android SDK release pipeline to upload signed artifact to Sonatype, and release to Maven Central after approval
-* Create NodeJS SDK release pipeline to build and publish packages to npm
-* Modify all pipelines to standardize version string handling
+* ~~Modify Android SDK release pipeline to upload signed artifact to Sonatype, and release to Maven Central after approval~~
+* ~~Create NodeJS SDK release pipeline to build and publish packages to npm~~
+* ~~Modify all pipelines to standardize version string handling~~
     * Open question: checked-in vs. runtime-configured version strings
         * Oversight: checked-in versions must be reviewed vs. runtime versions are susceptible to unchecked typos
         * Convenience: checked-in versions require PR checks to complete vs. runtime versions avoid release overhead
@@ -69,8 +70,11 @@ Estimate: 10-13 points
         * Version of a release is specified at pipeline runtime (no PR's needed)
         * Final publish of artifact is gated on additional approval, who is expected to check version number
         * Pipeline pushes updated version string into source control after successful publish
-* Modify all release pipelines to push git tags after release
-* Modify all release pipelines to migrate off of deprecated PackageES build pool
+	* Final decision:
+		* Maintain previous practice of checked-in versioning, following Azure SDK guidance
+		* TODO: Create bot (leverage Azure SDK's infra for this, if possible) to bump version post-release
+* ~~Modify all release pipelines to push git tags after release~~
+* ~~Modify all release pipelines to migrate off of deprecated PackageES build pool~~
 
 Outcome:
 Any member should be able to publish any library using only their web browser.
@@ -78,8 +82,17 @@ Any member should be able to publish any library using only their web browser.
 ### Epic 2. Lay groundwork for automated UI tests
 Estimate: 7-10 points
 
-* Investigate and finalize UI testing tool(s) to use
-* Modify all pipelines to execute tool(s) and report output
+* CI pipelines should run written tests
+	* ~~Android unit tests~~
+	* ~~Android UI tests~~
+	* ~~UWP unit tests~~
+	* ~~UWP UI tests~~
+	* ~~iOS unit tests~~
+	* iOS UI tests
+	* JS unit tests
+	* JS UI tests
+	* .NET unit tests
+	* .NET UI tests
 
 Outcome:
 Pending configuration and writing of tests, pipelines should now be ready to report any failing automated UI tests.
