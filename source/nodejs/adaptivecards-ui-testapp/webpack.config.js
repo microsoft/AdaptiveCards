@@ -4,7 +4,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ConcatPlugin = require('webpack-concat-plugin');
+const ConcatPlugin = require('webpack-concat-files-plugin');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = (env, argv) => {
@@ -61,11 +61,12 @@ module.exports = (env, argv) => {
 				filename: '[name].css'
 			}),
 			new ConcatPlugin({
-				uglify: false,
-				sourceMap: false,
-				fileName: 'adaptivecards-ui-testapp.css',
-				injectType: 'none',
-				filesToConcat: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-ui-testapp.css']
+				bundles: [
+					{
+						dest: 'adaptivecards-ui-testapp.css',
+						src: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-ui-testapp.css']
+					}
+				],
 			}),
 			new CopyWebpackPlugin({
 				patterns: [
