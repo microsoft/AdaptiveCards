@@ -62,7 +62,8 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         auto backgroundImage = sharedTableCell->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
         {
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
+            m_backgroundImage =
+                *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveBackgroundImage>(backgroundImage);
         }
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTableCell));
@@ -119,12 +120,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveTableCell::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
     {
-        return m_backgroundImage.CopyTo(backgroundImage);
+        copy_to_abi(m_backgroundImage, backgroundImage);
+        return S_OK;
     }
 
     HRESULT AdaptiveTableCell::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
     {
-        m_backgroundImage = backgroundImage;
+        m_backgroundImage = copy_from_abi<decltype(m_backgroundImage)>(backgroundImage);
         return S_OK;
     }
 
@@ -194,9 +196,9 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         tableCell->SetMinHeight(m_minHeight);
 
-        ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
+        auto adaptiveBackgroundImage = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveCards::BackgroundImage> sharedBackgroundImage;
-        if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
+        if (adaptiveBackgroundImage && (sharedBackgroundImage = adaptiveBackgroundImage->GetSharedModel()))
         {
             tableCell->SetBackgroundImage(std::move(sharedBackgroundImage));
         }

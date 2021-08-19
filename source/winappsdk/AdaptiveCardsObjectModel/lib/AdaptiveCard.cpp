@@ -22,376 +22,168 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveCardStaticsImpl::FromJsonString(_In_ HSTRING adaptiveJson, _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept
-    try
+    winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCardParseResult _FromJsonString(
+        std::string const& jsonString,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParserRegistration,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParserRegistration)
     {
-        return FromJsonStringWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(_In_ HSTRING adaptiveJson,
-                                                                          _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
-                                                                          _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
-                                                                          _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept
-    try
-    {
-        *parseResult = nullptr;
-
-        std::string adaptiveJsonString;
-        RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
-
-        return _FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveCardStaticsImpl::FromJson(_In_ IJsonObject* adaptiveJson, _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept
-    try
-    {
-        return FromJsonWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveCardStaticsImpl::FromJsonWithParserRegistration(_In_ IJsonObject* adaptiveJson,
-                                                                    _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
-                                                                    _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
-                                                                    _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept
-    try
-    {
-        *parseResult = nullptr;
-
-        std::string adaptiveJsonString;
-        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
-
-        return _FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveCardStaticsImpl::_FromJsonString(const std::string& jsonString,
-                                                     _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
-                                                     _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
-                                                     _COM_Outptr_ IAdaptiveCardParseResult** parseResult)
-    {
-        std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
-        if (elementParserRegistration != nullptr)
+        std::shared_ptr<::AdaptiveCards::ElementParserRegistration> sharedModelElementParserRegistration;
+        if (auto innerElementRegistration = peek_innards<implementation::AdaptiveElementParserRegistration>(elementParserRegistration))
         {
-            ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl =
-                PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
-            if (elementParserRegistrationImpl != nullptr)
-            {
-                sharedModelElementParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
-            }
+            sharedModelElementParserRegistration = innerElementRegistration->GetSharedParserRegistration();
         }
 
-        std::shared_ptr<ActionParserRegistration> sharedModelActionParserRegistration;
-        if (actionParserRegistration != nullptr)
+        std::shared_ptr<::AdaptiveCards::ActionParserRegistration> sharedModelActionParserRegistration;
+        if (auto innerActionRegistration = peek_innards<implementation::AdaptiveActionParserRegistration>(actionParserRegistration))
         {
-            ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl =
-                PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
-            if (actionParserRegistrationImpl != nullptr)
-            {
-                sharedModelActionParserRegistration = actionParserRegistrationImpl->GetSharedParserRegistration();
-            }
+            sharedModelActionParserRegistration = innerActionRegistration->GetSharedParserRegistration();
         }
 
-        auto adaptiveParseResult =
-            winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveCardParseResult>();
+        auto adaptiveParseResult = winrt::make_self<implementation::AdaptiveCardParseResult>();
         try
         {
-            ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
+            ::AdaptiveCards::ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
             const std::string c_rendererVersion = "1.5";
-            std::shared_ptr<AdaptiveCards::ParseResult> sharedParseResult =
-                AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
-            auto adaptiveCard = MakeOrThrow<AdaptiveCard>(sharedParseResult->GetAdaptiveCard());
-            adaptiveParseResult->AdaptiveCard = adaptiveCard.as<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard>();
+            auto sharedParseResult = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
+            adaptiveParseResult->AdaptiveCard =
+                *winrt::make_self<implementation::AdaptiveCard>(sharedParseResult->GetAdaptiveCard());
             adaptiveParseResult->Warnings = SharedWarningsToAdaptiveWarnings(sharedParseResult->GetWarnings());
         }
-        catch (const AdaptiveCardParseException& e)
+        catch(::AdaptiveCards::AdaptiveCardParseException const& e)
         {
-            auto error = winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveError>(
+            auto error = winrt::make_self<implementation::AdaptiveError>(
                 static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode>(e.GetStatusCode()),
                 UTF8ToHString(e.GetReason()));
             adaptiveParseResult->Errors().Append(*error);
         }
 
-        // TODO: use "put abi" or something here
-        return adaptiveParseResult->QueryInterface(IID_PPV_ARGS(parseResult));
+        return *adaptiveParseResult;
     }
 
-    HRESULT AdaptiveCard::RuntimeClassInitialize()
+    winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCardParseResult AdaptiveCard::FromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson)
     {
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
-        return RuntimeClassInitialize(adaptiveCard);
+        return FromJson(adaptiveJson, nullptr, nullptr);
     }
 
-    HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedAdaptiveCard)
+    winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCardParseResult AdaptiveCard::FromJson(
+        winrt::Windows::Data::Json::JsonObject const& adaptiveJson,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementRegistration,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionRegistration)
     {
-        m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
-        if (m_body == nullptr)
-        {
-            return E_FAIL;
-        }
+        return _FromJsonString(JsonObjectToString(adaptiveJson), elementRegistration, actionRegistration);
+    }
 
-        m_actions = Microsoft::WRL::Make<Vector<IAdaptiveActionElement*>>();
-        if (m_actions == nullptr)
-        {
-            return E_FAIL;
-        }
+    winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCardParseResult AdaptiveCard::FromJsonString(hstring const& adaptiveJson)
+    {
+        return FromJsonString(adaptiveJson, nullptr, nullptr);
+    }
 
-        RETURN_IF_FAILED(GenerateContainedElementsProjection(sharedAdaptiveCard->GetBody(), m_body.Get()));
-        RETURN_IF_FAILED(GenerateActionsProjection(sharedAdaptiveCard->GetActions(), m_actions.Get()));
-        RETURN_IF_FAILED(GenerateActionProjection(sharedAdaptiveCard->GetSelectAction(), &m_selectAction));
+    winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCardParseResult AdaptiveCard::FromJsonString(
+        hstring const& adaptiveJson,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementRegistration,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionRegistration)
+    {
+        return _FromJsonString(HStringToUTF8(adaptiveJson), elementRegistration, actionRegistration);
+    }
 
-        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetVersion(), m_version.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetFallbackText(), m_fallbackText.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetSpeak(), m_speak.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetLanguage(), m_language.GetAddressOf()));
-
-        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedAdaptiveCard->GetStyle());
-        m_verticalAlignment = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>(
+    AdaptiveCard::AdaptiveCard(std::shared_ptr<::AdaptiveCards::AdaptiveCard> const& sharedAdaptiveCard) {
+        Body = winrt::single_threaded_vector<WinUI3::IAdaptiveCardElement>();
+        Actions = winrt::single_threaded_vector<WinUI3::IAdaptiveActionElement>();
+        Body = GenerateContainedElementsProjection(sharedAdaptiveCard->GetBody());
+        Actions = GenerateActionsProjection(sharedAdaptiveCard->GetActions());
+        SelectAction = GenerateActionProjection(sharedAdaptiveCard->GetSelectAction());
+        Version = UTF8ToHString(sharedAdaptiveCard->GetVersion());
+        FallbackText = UTF8ToHString(sharedAdaptiveCard->GetFallbackText());
+        Speak = UTF8ToHString(sharedAdaptiveCard->GetSpeak());
+        Language = UTF8ToHString(sharedAdaptiveCard->GetLanguage());
+        Style = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedAdaptiveCard->GetStyle());
+        VerticalContentAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>(
             sharedAdaptiveCard->GetVerticalContentAlignment());
-        m_height = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType>(sharedAdaptiveCard->GetHeight());
-        m_minHeight = sharedAdaptiveCard->GetMinHeight();
+        Height = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::HeightType>(sharedAdaptiveCard->GetHeight());
+        MinHeight = sharedAdaptiveCard->GetMinHeight();
 
         auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
-        if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
+        if (backgroundImage && !backgroundImage->GetUrl().empty())
         {
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
+            BackgroundImage = *winrt::make_self<implementation::AdaptiveBackgroundImage>(backgroundImage);
         }
 
         if (auto refresh = sharedAdaptiveCard->GetRefresh())
         {
-            m_refresh = *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveRefresh>(refresh);
+            Refresh = *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveRefresh>(refresh);
         }
 
         if (auto authentication = sharedAdaptiveCard->GetAuthentication())
         {
-            m_authentication =
+            Authentication =
                 *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthentication>(authentication);
         }
 
-        m_internalId = sharedAdaptiveCard->GetInternalId().Hash();
-
-        return S_OK;
+        InternalId = sharedAdaptiveCard->GetInternalId().Hash();
     }
 
-    HRESULT AdaptiveCard::get_InternalId(_Out_ UINT32* id)
+    winrt::Windows::Data::Json::JsonObject AdaptiveCard::ToJson()
     {
-        *id = m_internalId;
-        return S_OK;
+        return StringToJsonObject(GetSharedModel()->Serialize());
     }
 
-    HRESULT AdaptiveCard::get_Version(_Outptr_ HSTRING* version) { return m_version.CopyTo(version); }
-
-    HRESULT AdaptiveCard::put_Version(_In_ HSTRING version) { return m_version.Set(version); }
-
-    HRESULT AdaptiveCard::get_FallbackText(_Outptr_ HSTRING* fallbackText)
+    std::shared_ptr<::AdaptiveCards::AdaptiveCard> AdaptiveCard::GetSharedModel()
     {
-        return m_fallbackText.CopyTo(fallbackText);
-    }
+        auto adaptiveCard = std::make_shared<::AdaptiveCards::AdaptiveCard>();
 
-    HRESULT AdaptiveCard::put_FallbackText(_In_ HSTRING fallbackText) { return m_fallbackText.Set(fallbackText); }
+        adaptiveCard->SetVersion(HStringToUTF8(Version));
+        adaptiveCard->SetFallbackText(HStringToUTF8(FallbackText));
+        adaptiveCard->SetSpeak(HStringToUTF8(Speak));
+        adaptiveCard->SetHeight(static_cast<::AdaptiveCards::HeightType>(Height.get()));
+        adaptiveCard->SetLanguage(HStringToUTF8(Language));
+        adaptiveCard->SetMinHeight(MinHeight);
 
-    HRESULT AdaptiveCard::get_Language(_Outptr_ HSTRING* language) { return m_language.CopyTo(language); }
-
-    HRESULT AdaptiveCard::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
-
-    HRESULT AdaptiveCard::get_Body(_COM_Outptr_ IVector<IAdaptiveCardElement*>** body) { return m_body.CopyTo(body); }
-
-    HRESULT AdaptiveCard::get_Actions(_COM_Outptr_ IVector<IAdaptiveActionElement*>** actions)
-    {
-        return m_actions.CopyTo(actions);
-    }
-
-    HRESULT AdaptiveCard::get_ElementType(_Out_ ElementType* elementType)
-    {
-        *elementType = ElementType::AdaptiveCard;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
-    {
-        return m_backgroundImage.CopyTo(backgroundImage);
-    }
-
-    HRESULT AdaptiveCard::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
-    {
-        m_backgroundImage = backgroundImage;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveCard::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
-    {
-        return m_selectAction.CopyTo(action);
-    }
-
-    IFACEMETHODIMP AdaptiveCard::put_SelectAction(_In_ IAdaptiveActionElement* action)
-    {
-        m_selectAction = action;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* style)
-    {
-        *style = m_style;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style)
-    {
-        m_style = style;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::get_Speak(_Outptr_ HSTRING* speak) { return m_speak.CopyTo(speak); }
-
-    HRESULT AdaptiveCard::put_Speak(_In_ HSTRING speak) { return m_speak.Set(speak); }
-
-    HRESULT AdaptiveCard::get_VerticalContentAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment* verticalAlignment)
-    {
-        *verticalAlignment = m_verticalAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::put_VerticalContentAlignment(ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalAlignment)
-    {
-        m_verticalAlignment = verticalAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType* heightType)
-    {
-        *heightType = m_height;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::put_Height(ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType)
-    {
-        m_height = heightType;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::get_MinHeight(_Out_ UINT32* minHeight)
-    {
-        *minHeight = m_minHeight;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::put_MinHeight(UINT32 minHeight)
-    {
-        m_minHeight = minHeight;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::get_Refresh(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRefresh** refresh)
-    {
-        copy_to_abi(m_refresh, refresh);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::put_Refresh(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRefresh* refresh)
-    {
-        m_refresh = copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRefresh>(refresh);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::get_Authentication(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthentication** authentication)
-    {
-        copy_to_abi(m_authentication, authentication);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::put_Authentication(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthentication* authentication)
-    {
-        m_authentication = copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthentication>(authentication);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::ToJson(_COM_Outptr_ IJsonObject** result)
-    {
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
-        RETURN_IF_FAILED(GetSharedModel(sharedModel));
-
-        return StringToJsonObject(sharedModel->Serialize(), result);
-    }
-
-    HRESULT AdaptiveCard::GetSharedModel(std::shared_ptr<AdaptiveCards::AdaptiveCard>& sharedModel)
-    {
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveCards::AdaptiveCard>();
-
-        adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
-        adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
-        adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
-        adaptiveCard->SetHeight(static_cast<AdaptiveCards::HeightType>(m_height));
-        adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
-        adaptiveCard->SetMinHeight(m_minHeight);
-
-        ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
-        std::shared_ptr<AdaptiveCards::BackgroundImage> sharedBackgroundImage;
-        if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
+        auto adaptiveBackgroundImage =
+            peek_innards<implementation::AdaptiveBackgroundImage>(BackgroundImage.get());
+        std::shared_ptr<::AdaptiveCards::BackgroundImage> sharedBackgroundImage;
+        if (adaptiveBackgroundImage && (sharedBackgroundImage = adaptiveBackgroundImage->GetSharedModel()))
         {
             adaptiveCard->SetBackgroundImage(std::move(sharedBackgroundImage));
         }
 
-        adaptiveCard->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
-        adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(m_verticalAlignment));
+        adaptiveCard->SetStyle(static_cast<::AdaptiveCards::ContainerStyle>(Style.get()));
+        adaptiveCard->SetVerticalContentAlignment(static_cast<::AdaptiveCards::VerticalContentAlignment>(VerticalContentAlignment.get()));
 
-        if (m_selectAction != nullptr)
+        if (SelectAction.get())
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            adaptiveCard->SetSelectAction(std::move(sharedAction));
+            adaptiveCard->SetSelectAction(GenerateSharedAction(SelectAction));
         }
 
-        GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
-        GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
+        adaptiveCard->GetBody() = GenerateSharedElements(Body);
+        adaptiveCard->GetActions() = GenerateSharedActions(Actions);
 
-        if (m_refresh)
+        if (auto refresh = peek_innards<implementation::AdaptiveRefresh>(Refresh.get()))
         {
-            auto refresh = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveRefresh>(m_refresh);
             adaptiveCard->SetRefresh(refresh->GetSharedModel());
         }
 
-        if (m_authentication)
+        if (auto authentication = peek_innards<implementation::AdaptiveAuthentication>(Authentication.get()))
         {
-            auto authenticationImpl = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthentication>(m_authentication);
-            adaptiveCard->SetAuthentication(authenticationImpl->GetSharedModel());
+            adaptiveCard->SetAuthentication(authentication->GetSharedModel());
         }
 
-        sharedModel = std::move(adaptiveCard);
-        return S_OK;
+        return adaptiveCard;
     }
 
-    HRESULT AdaptiveCard::GetResourceInformation(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>** resourceInformationView)
+    winrt::Windows::Foundation::Collections::IVectorView<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation>
+    AdaptiveCard::GetResourceInformation()
     {
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
-        GetSharedModel(sharedModel);
-
-        std::vector<RemoteResourceInformation> sharedResourceInformationVector = sharedModel->GetResourceInformation();
-
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>> resourceInformation =
-            Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation*>>();
-        for (auto sharedResourceInformation : sharedResourceInformationVector)
+        std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation> resourceInformation;
+        for (auto&& item : GetSharedModel()->GetResourceInformation())
         {
-            ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRemoteResourceInformation> remoteResourceInformation;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRemoteResourceInformation>(remoteResourceInformation.GetAddressOf(),
-                                                                                  sharedResourceInformation));
-
-            HString resourceUriHString;
-            RETURN_IF_FAILED(UTF8ToHString(sharedResourceInformation.url, resourceUriHString.GetAddressOf()));
-            RETURN_IF_FAILED(remoteResourceInformation->put_Url(resourceUriHString.Get()));
-
-            HString mimeType;
-            RETURN_IF_FAILED(UTF8ToHString(sharedResourceInformation.mimeType, mimeType.GetAddressOf()));
-            RETURN_IF_FAILED(remoteResourceInformation->put_MimeType(mimeType.Get()));
-
-            RETURN_IF_FAILED(resourceInformation->Append(remoteResourceInformation.Get()));
+            auto resourceInfo = winrt::make_self<implementation::AdaptiveRemoteResourceInformation>(item);
+            resourceInformation.push_back(*resourceInfo);
         }
 
-        RETURN_IF_FAILED(resourceInformation->GetView(resourceInformationView));
-
-        return S_OK;
+        return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation>(
+                   std::move(resourceInformation))
+            .GetView();
     }
 }

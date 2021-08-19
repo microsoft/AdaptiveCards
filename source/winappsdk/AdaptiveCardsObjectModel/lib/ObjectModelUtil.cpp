@@ -275,6 +275,13 @@ HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAda
     return S_OK;
 }
 
+std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& item)
+{
+    std::shared_ptr<AdaptiveCards::BaseCardElement> returned;
+    THROW_IF_FAILED(GenerateSharedElement(item.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>().get(), returned));
+    return returned;
+}
+
 HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*>* items,
                                std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
 {
@@ -290,6 +297,17 @@ HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVect
         });
 
     return S_OK;
+}
+
+std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> GenerateSharedElements(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& items)
+{
+    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> containedElements;
+    for (auto&& item : items)
+    {
+        containedElements.emplace_back(GenerateSharedElement(item));
+    }
+    return containedElements;
 }
 
 HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
@@ -340,9 +358,9 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdap
 std::shared_ptr<AdaptiveCards::BaseActionElement>
 GenerateSharedAction(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& action)
 {
-    std::shared_ptr<AdaptiveCards::BaseActionElement> returned;
-    THROW_IF_FAILED(GenerateSharedAction(action.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>().get(), returned));
-    return returned;
+    std::shared_ptr<AdaptiveCards::BaseActionElement> result;
+    THROW_IF_FAILED(GenerateSharedAction(action.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>().get(), result));
+    return result;
 }
 
 HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* actions,
@@ -360,6 +378,18 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
 
     return S_OK;
 }
+
+std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> GenerateSharedActions(
+    _In_ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> const& actions)
+{
+    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> containedElements;
+    for (auto&& action : actions)
+    {
+        containedElements.emplace_back(GenerateSharedAction(action));
+    }
+    return containedElements;
+}
+
 
 std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRequirements(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> const& adaptiveRequirements)
@@ -404,6 +434,14 @@ HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI
         });
 
     return S_OK;
+}
+
+winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement
+GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement)
+{
+    ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> element;
+    THROW_IF_FAILED(GenerateElementProjection(baseElement, &element));
+    return copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>(element.Get());
 }
 
 HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement,
@@ -515,6 +553,27 @@ try
     return S_OK;
 }
 CATCH_RETURN;
+
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> GenerateContainedElementsProjection(
+    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
+{
+    std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> elements;
+    for (auto&& containedElement : containedElements)
+    {
+        elements.emplace_back(GenerateElementProjection(containedElement));
+    }
+    return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>(std::move(elements));
+}
+
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions)
+{
+    std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> actions;
+    for (auto&& containedAction : containedActions)
+    {
+        actions.emplace_back(GenerateActionProjection(containedAction));
+    }
+    return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>(std::move(actions));
+}
 
 HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions,
@@ -973,18 +1032,14 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration GetA
     {
         // The shared model wraps the passed in parsers. Get our SharedModelActionParser from it so we can retrieve the
         // IAdaptiveActionParserRegistration
-        std::shared_ptr<ActionElementParserWrapper> parserWrapper =
-            std::static_pointer_cast<ActionElementParserWrapper>(sharedActionParser);
-
-        std::shared_ptr<SharedModelActionParser> sharedModelParser =
-            std::static_pointer_cast<SharedModelActionParser>(parserWrapper->GetActualParser());
+        auto parserWrapper = std::static_pointer_cast<ActionElementParserWrapper>(sharedActionParser);
+        auto sharedModelParser = std::static_pointer_cast<SharedModelActionParser>(parserWrapper->GetActualParser());
 
         return sharedModelParser->GetAdaptiveParserRegistration();
     }
     else
     {
-        auto registration = MakeOrThrow<AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration>();
-        return copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration>(registration.get());
+        return *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveActionParserRegistration>();
     }
 }
 
@@ -996,17 +1051,13 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration Get
     {
         // The shared model wraps the passed in parsers. Get our SharedModelElementParser from it so we can retrieve the
         // IAdaptiveElementParserRegistration
-        std::shared_ptr<BaseCardElementParserWrapper> parserWrapper =
-            std::static_pointer_cast<BaseCardElementParserWrapper>(sharedElementParser);
-
-        std::shared_ptr<SharedModelElementParser> sharedModelParser =
-            std::static_pointer_cast<SharedModelElementParser>(parserWrapper->GetActualParser());
+        auto parserWrapper = std::static_pointer_cast<BaseCardElementParserWrapper>(sharedElementParser);
+        auto sharedModelParser = std::static_pointer_cast<SharedModelElementParser>(parserWrapper->GetActualParser());
 
         return sharedModelParser->GetAdaptiveParserRegistration();
     }
     else
     {
-        auto registration = MakeOrThrow<AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration>();
-        return copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration>(registration.get());
+        return *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveElementParserRegistration>();
     }
 }

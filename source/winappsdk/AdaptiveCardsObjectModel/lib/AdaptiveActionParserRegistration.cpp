@@ -17,97 +17,77 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    AdaptiveActionParserRegistration::AdaptiveActionParserRegistration() {}
-
-    HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveActionParserRegistration::AdaptiveActionParserRegistration()
     {
-        m_registration = std::make_shared<RegistrationMap>();
-        m_sharedParserRegistration = std::make_shared<ActionParserRegistration>();
-
-        m_isInitializing = true;
-        RegisterDefaultActionParsers(this);
+        RegisterDefaultActionParsers();
 
         // Register this (UWP) registration with a well known guid string in the shared model
         // registration so we can get it back again
-        m_sharedParserRegistration->AddParser(c_upwActionParserRegistration, std::make_shared<SharedModelActionParser>(this));
+        m_sharedParserRegistration->AddParser(::AdaptiveCards::ObjectModel::WinUI3::c_upwActionParserRegistration,
+                                              std::make_shared<::AdaptiveCards::ObjectModel::WinUI3::SharedModelActionParser>(*this));
 
         m_isInitializing = false;
-
-        return S_OK;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveActionParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveActionParser* Parser) noexcept
-    try
+    void AdaptiveActionParserRegistration::Set(hstring const& type, _In_ WinUI3::IAdaptiveActionParser const& Parser)
     {
         std::string typeString = HStringToUTF8(type);
-
-        ComPtr<IAdaptiveActionParser> localParser(Parser);
-        (*m_registration)[typeString] = localParser;
+        (*m_registration)[typeString] = Parser;
 
         // During initialization we will add the known parsers to m_registration. These are already present in the corresponding
         // shared model registration (m_sharedParserRegistration) which will throw if we attempt to modify them by adding them again.
         if (!m_isInitializing)
         {
-            m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelActionParser>(this));
+            m_sharedParserRegistration->AddParser(
+                typeString, std::make_shared<::AdaptiveCards::ObjectModel::WinUI3::SharedModelActionParser>(*this));
         }
-
-        return S_OK;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveActionParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveActionParser** result) noexcept
-    try
+    WinUI3::IAdaptiveActionParser AdaptiveActionParserRegistration::Get(hstring const& type)
     {
-        *result = nullptr;
-
-        RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
+        auto found = m_registration->find(HStringToUTF8(type));
         if (found != m_registration->end())
         {
-            RETURN_IF_FAILED(found->second.CopyTo(result));
+            return found->second;
         }
-        return S_OK;
+        return nullptr;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveActionParserRegistration::Remove(_In_ HSTRING type) noexcept
-    try
+    void AdaptiveActionParserRegistration::Remove(hstring const& type)
     {
         std::string typeString = HStringToUTF8(type);
 
         m_sharedParserRegistration->RemoveParser(typeString);
         m_registration->erase(typeString);
-        return S_OK;
     }
-    CATCH_RETURN;
 
-    std::shared_ptr<ActionParserRegistration> AdaptiveActionParserRegistration::GetSharedParserRegistration()
+    std::shared_ptr<::AdaptiveCards::ActionParserRegistration> AdaptiveActionParserRegistration::GetSharedParserRegistration()
     {
         return m_sharedParserRegistration;
     }
 
-    HRESULT AdaptiveActionParserRegistration::RegisterDefaultActionParsers(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration* registration)
+    template<typename D> auto MakeParser()
     {
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveOpenUrlActionParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ShowCard").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveShowCardActionParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveSubmitActionParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityActionParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Execute").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveExecuteActionParser>().Get()));
-        return S_OK;
+        return MakeOrThrow<D>().as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser>();
     }
 
-    SharedModelActionParser::SharedModelActionParser(AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration* parserRegistration)
+    void AdaptiveActionParserRegistration::RegisterDefaultActionParsers()
     {
-        m_parserRegistration = winrt::make_weak(
-            copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration>(parserRegistration));
+        Set(L"Action.OpenUrl", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveOpenUrlActionParser>());
+        Set(L"Action.ShowCard", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveShowCardActionParser>());
+        Set(L"Action.Submit", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveSubmitActionParser>());
+        Set(L"Action.ToggleVisibility", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityActionParser>());
+        Set(L"Action.Execute", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveExecuteActionParser>());
+    }
+}
+
+namespace AdaptiveCards::ObjectModel::WinUI3
+{
+    SharedModelActionParser::SharedModelActionParser(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& parserRegistration)
+    {
+        m_parserRegistration = winrt::make_weak(parserRegistration);
     }
 
     std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(ParseContext& context, const Json::Value& value)

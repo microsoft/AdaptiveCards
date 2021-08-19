@@ -55,7 +55,8 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         auto backgroundImage = sharedColumn->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
         {
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
+            m_backgroundImage =
+                *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveBackgroundImage>(backgroundImage);
         }
 
         const auto sharedRtl = sharedColumn->GetRtl();
@@ -110,12 +111,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveColumn::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
     {
-        return m_backgroundImage.CopyTo(backgroundImage);
+        copy_to_abi(m_backgroundImage, backgroundImage);
+        return S_OK;
     }
 
     HRESULT AdaptiveColumn::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
     {
-        m_backgroundImage = backgroundImage;
+        m_backgroundImage = copy_from_abi<decltype(m_backgroundImage)>(backgroundImage);
         return S_OK;
     }
 
@@ -211,11 +213,14 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         column->SetMinHeight(m_minHeight);
         column->SetBleed(m_bleed);
 
-        ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
+        auto adaptiveBackgroundImage = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveCards::BackgroundImage> sharedBackgroundImage;
-        if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
+        if (adaptiveBackgroundImage)
         {
-            column->SetBackgroundImage(std::move(sharedBackgroundImage));
+            if (auto sharedBackgroundImage = adaptiveBackgroundImage->GetSharedModel())
+            {
+                column->SetBackgroundImage(std::move(sharedBackgroundImage));
+            }
         }
 
         if (m_selectAction != nullptr)

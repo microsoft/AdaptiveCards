@@ -26,10 +26,9 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             return E_INVALIDARG;
         }
 
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> card = sharedShowCardAction->GetCard();
-        if (card != nullptr)
+        if (auto card = sharedShowCardAction->GetCard())
         {
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&m_card, sharedShowCardAction->GetCard()));
+            m_card = *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveCard>(card);
         }
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedShowCardAction));
@@ -39,12 +38,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard** card)
     {
-        return m_card.CopyTo(card);
+        copy_to_abi(m_card, card);
+        return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* card)
     {
-        m_card = card;
+        m_card = copy_from_abi<decltype(m_card)>(card);
         return S_OK;
     }
 
@@ -60,13 +60,8 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
         RETURN_IF_FAILED(CopySharedElementProperties(*showCardAction));
 
-        ComPtr<AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard> card =
-            PeekInnards<AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard>(m_card);
-
-        std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedCard;
-        RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
-
-        showCardAction->SetCard(std::move(sharedCard));
+        auto card = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveCard>(m_card);
+        showCardAction->SetCard(card->GetSharedModel());
 
         sharedModel = std::move(showCardAction);
         return S_OK;

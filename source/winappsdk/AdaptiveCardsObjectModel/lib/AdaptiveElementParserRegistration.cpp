@@ -29,132 +29,100 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    AdaptiveElementParserRegistration::AdaptiveElementParserRegistration() {}
-
-    HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveElementParserRegistration::AdaptiveElementParserRegistration()
     {
-        m_registration = std::make_shared<RegistrationMap>();
-        m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
-
-        m_isInitializing = true;
-        RegisterDefaultElementParsers(this);
+        RegisterDefaultElementParsers();
 
         // Register this (UWP) registration with a well known guid string in the shared model
         // registration so we can get it back again
-        m_sharedParserRegistration->AddParser(c_uwpElementParserRegistration, std::make_shared<SharedModelElementParser>(this));
+        m_sharedParserRegistration->AddParser(::AdaptiveCards::ObjectModel::WinUI3::c_uwpElementParserRegistration,
+                                              std::make_shared<::AdaptiveCards::ObjectModel::WinUI3::SharedModelElementParser>(*this));
 
         m_isInitializing = false;
-        return S_OK;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveElementParser* Parser) noexcept
-    try
+    void AdaptiveElementParserRegistration::Set(hstring const& type,
+                                                winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser const& Parser)
     {
-        std::string typeString = HStringToUTF8(type);
-
-        // During initialization we will add the known parsers to m_registration. These are already present in the corresponding
-        // shared model registration (m_sharedParserRegistration) which will throw if we attempt to modify them by adding them again.
+        auto typeString = HStringToUTF8(type);
         if (!m_isInitializing)
         {
-            m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelElementParser>(this));
+            m_sharedParserRegistration->AddParser(
+                typeString, std::make_shared<::AdaptiveCards::ObjectModel::WinUI3::SharedModelElementParser>(*this));
         }
 
-        ComPtr<IAdaptiveElementParser> localParser(Parser);
-        (*m_registration)[typeString] = localParser;
-
-        return S_OK;
+        (*m_registration)[typeString] = Parser;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveElementParser** result) noexcept
-    try
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser AdaptiveElementParserRegistration::Get(hstring const& type)
     {
-        *result = nullptr;
-
-        RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
+        auto found = m_registration->find(HStringToUTF8(type));
         if (found != m_registration->end())
         {
-            RETURN_IF_FAILED(found->second.CopyTo(result));
+            return found->second;
         }
-        return S_OK;
+        return nullptr;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Remove(_In_ HSTRING type) noexcept
-    try
+    void AdaptiveElementParserRegistration::Remove(hstring const& type)
     {
         std::string typeString = HStringToUTF8(type);
 
         m_sharedParserRegistration->RemoveParser(typeString);
         m_registration->erase(typeString);
-
-        return S_OK;
     }
-    CATCH_RETURN;
 
-    std::shared_ptr<ElementParserRegistration> AdaptiveElementParserRegistration::GetSharedParserRegistration()
+    std::shared_ptr<::AdaptiveCards::ElementParserRegistration> AdaptiveElementParserRegistration::GetSharedParserRegistration()
     {
         return m_sharedParserRegistration;
     }
 
-    HRESULT AdaptiveElementParserRegistration::RegisterDefaultElementParsers(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration* registration)
+    template<typename D> auto MakeParser()
     {
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"ActionSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSetParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Column").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"ColumnSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnSetParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Container").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveContainerParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"FactSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveFactSetParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Image").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"ImageSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageSetParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.ChoiceSet").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInputParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Date").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveDateInputParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Number").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveNumberInputParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Text").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInputParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Time").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTimeInputParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Toggle").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInputParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Media").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"RichTextBlock").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveRichTextBlockParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Table").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableParser>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"TextBlock").Get(),
-                                           Make<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextBlockParser>().Get()));
-
-        return S_OK;
+        return MakeOrThrow<D>().as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser>();
     }
 
-    std::shared_ptr<BaseCardElement> SharedModelElementParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+    void AdaptiveElementParserRegistration::RegisterDefaultElementParsers()
     {
-        return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+        Set(L"ActionSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSetParser>());
+        Set(L"Column", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnParser>());
+        Set(L"ColumnSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnSetParser>());
+        Set(L"Container", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveContainerParser>());
+        Set(L"FactSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFactSetParser>());
+        Set(L"Image", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageParser>());
+        Set(L"ImageSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageSetParser>());
+        Set(L"Input.ChoiceSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInputParser>());
+        Set(L"Input.Date", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveDateInputParser>());
+        Set(L"Input.Number", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveNumberInputParser>());
+        Set(L"Input.Text", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInputParser>());
+        Set(L"Input.Time", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTimeInputParser>());
+        Set(L"Input.Toggle", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInputParser>());
+        Set(L"Media", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaParser>());
+        Set(L"RichTextBlock", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRichTextBlockParser>());
+        Set(L"Table", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableParser>());
+        Set(L"TextBlock", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextBlockParser>());
+    }
+}
+
+namespace AdaptiveCards::ObjectModel::WinUI3
+{
+    std::shared_ptr<::AdaptiveCards::BaseCardElement>
+    SharedModelElementParser::DeserializeFromString(::AdaptiveCards::ParseContext& context, const std::string& jsonString)
+    {
+        return Deserialize(context, ::AdaptiveCards::ParseUtil::GetJsonValueFromString(jsonString));
     }
 
-    SharedModelElementParser::SharedModelElementParser(AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration* parserRegistration)
+    SharedModelElementParser::SharedModelElementParser(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& parserRegistration)
     {
-        m_parserRegistration = winrt::make_weak(
-            copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration>(parserRegistration));
+        m_parserRegistration = winrt::make_weak(parserRegistration);
     }
 
-    std::shared_ptr<BaseCardElement> SharedModelElementParser::Deserialize(ParseContext& context, const Json::Value& value)
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> SharedModelElementParser::Deserialize(::AdaptiveCards::ParseContext& context,
+                                                                                            const Json::Value& value)
     {
-        std::string type = ParseUtil::GetTypeAsString(value);
+        std::string type = ::AdaptiveCards::ParseUtil::GetTypeAsString(value);
 
         auto adaptiveElementParserRegistration = GetAdaptiveParserRegistration();
         auto parser = adaptiveElementParserRegistration.Get(UTF8ToHString(type));
@@ -169,7 +137,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         AdaptiveWarningsToSharedWarnings(adaptiveWarnings, context.warnings);
 
-        return std::make_shared<CustomElementWrapper>(cardElement);
+        return std::make_shared<::AdaptiveCards::ObjectModel::WinUI3::CustomElementWrapper>(cardElement);
     }
 
     winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration SharedModelElementParser::GetAdaptiveParserRegistration()

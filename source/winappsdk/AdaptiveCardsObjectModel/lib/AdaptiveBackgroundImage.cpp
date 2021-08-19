@@ -5,97 +5,25 @@
 
 #include "ObjectModelUtil.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    AdaptiveBackgroundImage::AdaptiveBackgroundImage() {}
-
-    HRESULT AdaptiveBackgroundImage::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveBackgroundImage::AdaptiveBackgroundImage(const std::shared_ptr<::AdaptiveCards::BackgroundImage>& sharedImage)
     {
-        std::shared_ptr<AdaptiveCards::BackgroundImage> image = std::make_shared<AdaptiveCards::BackgroundImage>();
-        return RuntimeClassInitialize(image);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveBackgroundImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::BackgroundImage>& sharedImage)
-    try
-    {
-        if (sharedImage == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        if (!sharedImage->GetUrl().empty())
-        {
-            RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
-        }
-
-        m_fillMode = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode>(sharedImage->GetFillMode());
-        m_horizontalAlignment =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>(sharedImage->GetHorizontalAlignment());
-        m_verticalAlignment = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment>(sharedImage->GetVerticalAlignment());
-
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveBackgroundImage::get_Url(_Outptr_ HSTRING* url) { return m_url.CopyTo(url); }
-
-    HRESULT AdaptiveBackgroundImage::put_Url(_In_ HSTRING url) { return m_url.Set(url); }
-
-    HRESULT AdaptiveBackgroundImage::get_FillMode(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode* fillMode)
-    {
-        *fillMode = m_fillMode;
-        return S_OK;
+        Url = UTF8ToHString(sharedImage->GetUrl());
+        FillMode = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode>(sharedImage->GetFillMode());
+        HorizontalAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment>(sharedImage->GetHorizontalAlignment());
+        VerticalAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::VAlignment>(sharedImage->GetVerticalAlignment());
     }
 
-    HRESULT AdaptiveBackgroundImage::put_FillMode(ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode fillMode)
+    std::shared_ptr<::AdaptiveCards::BackgroundImage> AdaptiveBackgroundImage::GetSharedModel()
     {
-        m_fillMode = fillMode;
-        return S_OK;
+        auto image = std::make_shared<::AdaptiveCards::BackgroundImage>();
+
+        image->SetUrl(HStringToUTF8(Url));
+        image->SetFillMode(static_cast<::AdaptiveCards::ImageFillMode>(FillMode.get()));
+        image->SetHorizontalAlignment(static_cast<::AdaptiveCards::HorizontalAlignment>(HorizontalAlignment.get()));
+        image->SetVerticalAlignment(static_cast<::AdaptiveCards::VerticalAlignment>(VerticalAlignment.get()));
+
+        return image;
     }
-
-    HRESULT AdaptiveBackgroundImage::get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment* HorizontalAlignment)
-    {
-        *HorizontalAlignment = m_horizontalAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveBackgroundImage::put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment HorizontalAlignment)
-    {
-        m_horizontalAlignment = HorizontalAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveBackgroundImage::get_VerticalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment* VerticalAlignment)
-    {
-        *VerticalAlignment = m_verticalAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveBackgroundImage::put_VerticalAlignment(ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment VerticalAlignment)
-    {
-        m_verticalAlignment = VerticalAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveBackgroundImage::GetSharedModel(std::shared_ptr<AdaptiveCards::BackgroundImage>& sharedImage)
-    try
-    {
-        std::shared_ptr<AdaptiveCards::BackgroundImage> image = std::make_shared<AdaptiveCards::BackgroundImage>();
-
-        image->SetUrl(HStringToUTF8(m_url.Get()));
-        image->SetFillMode(static_cast<AdaptiveCards::ImageFillMode>(m_fillMode));
-        image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(m_horizontalAlignment));
-        image->SetVerticalAlignment(static_cast<AdaptiveCards::VerticalAlignment>(m_verticalAlignment));
-
-        sharedImage = std::move(image);
-        return S_OK;
-    }
-    CATCH_RETURN;
 }

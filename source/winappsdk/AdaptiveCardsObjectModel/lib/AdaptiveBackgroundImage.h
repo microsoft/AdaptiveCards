@@ -3,43 +3,30 @@
 #pragma once
 
 #include "BackgroundImage.h"
+#include "AdaptiveBackgroundImage.g.h"
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class DECLSPEC_UUID("60F8A683-A7A3-4E34-BE86-C809F61BD5B6") AdaptiveBackgroundImage
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>>
+    struct DECLSPEC_UUID("60F8A683-A7A3-4E34-BE86-C809F61BD5B6") AdaptiveBackgroundImage : AdaptiveBackgroundImageT < AdaptiveBackgroundImage, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveBackgroundImage);
+        AdaptiveBackgroundImage() : AdaptiveBackgroundImage(std::make_shared<::AdaptiveCards::BackgroundImage>()) {}
+        AdaptiveBackgroundImage(_In_ const std::shared_ptr<::AdaptiveCards::BackgroundImage>& sharedImage);
 
-    public:
-        AdaptiveBackgroundImage();
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::BackgroundImage>& sharedImage);
+        property<hstring> Url;
+        property<winrt::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode> FillMode;
+        property<winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment> HorizontalAlignment;
+        property<winrt::AdaptiveCards::ObjectModel::WinUI3::VAlignment> VerticalAlignment;
 
-        IFACEMETHODIMP get_Url(_Outptr_ HSTRING* url);
-        IFACEMETHODIMP put_Url(_In_ HSTRING url);
-
-        IFACEMETHODIMP get_FillMode(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode* fillMode);
-        IFACEMETHODIMP put_FillMode(ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode fillMode);
-
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment HorizontalAlignment);
-
-        IFACEMETHODIMP get_VerticalAlignment(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment* VerticalAlignment);
-        IFACEMETHODIMP put_VerticalAlignment(ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment VerticalAlignment);
-
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BackgroundImage>& sharedModel);
+        std::shared_ptr<::AdaptiveCards::BackgroundImage> GetSharedModel();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-    private:
-        Microsoft::WRL::Wrappers::HString m_url;
-        ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode m_fillMode;
-        ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment m_horizontalAlignment;
-        ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment m_verticalAlignment;
     };
-    ActivatableClass(AdaptiveBackgroundImage);
+}
+
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveBackgroundImage : AdaptiveBackgroundImageT<AdaptiveBackgroundImage, implementation::AdaptiveBackgroundImage>
+    {
+    };
 }

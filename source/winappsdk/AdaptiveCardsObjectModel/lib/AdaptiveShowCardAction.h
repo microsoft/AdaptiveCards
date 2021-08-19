@@ -128,7 +128,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard> m_card;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard m_card;
     };
 
     ActivatableClass(AdaptiveShowCardAction);

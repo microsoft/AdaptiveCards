@@ -3,50 +3,43 @@
 #pragma once
 
 #include "AdaptiveCards.ObjectModel.WinUI3.h"
+#include "AdaptiveActionParserRegistration.g.h"
+
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+{
+    struct DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration : AdaptiveActionParserRegistrationT<AdaptiveActionParserRegistration, ITypePeek>
+    {
+        using RegistrationMap = std::unordered_map<std::string, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
+
+    public:
+        AdaptiveActionParserRegistration();
+
+        void Set(hstring const& type, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser const& Parser);
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser Get(hstring const& type);
+        void Remove(hstring const& type);
+
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+
+        std::shared_ptr<::AdaptiveCards::ActionParserRegistration> GetSharedParserRegistration();
+
+    private:
+        void RegisterDefaultActionParsers();
+
+        bool m_isInitializing{true};
+        std::shared_ptr<RegistrationMap> m_registration{std::make_shared<RegistrationMap>()};
+        std::shared_ptr<::AdaptiveCards::ActionParserRegistration> m_sharedParserRegistration{std::make_shared<::AdaptiveCards::ActionParserRegistration>()};
+    };
+}
 
 namespace AdaptiveCards::ObjectModel::WinUI3
 {
     constexpr char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";
 
-    class DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration>,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::FtmBase>
-    {
-        AdaptiveRuntime(AdaptiveActionParserRegistration);
-
-        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
-
-    public:
-        AdaptiveActionParserRegistration();
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept;
-
-        // IAdaptiveActionParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser* Parser) noexcept;
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser** result) noexcept;
-        IFACEMETHODIMP Remove(_In_ HSTRING type) noexcept;
-
-        // ITypePeek method
-        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-        std::shared_ptr<ActionParserRegistration> GetSharedParserRegistration();
-
-    private:
-        HRESULT RegisterDefaultActionParsers(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration* registration);
-
-        bool m_isInitializing;
-        std::shared_ptr<RegistrationMap> m_registration;
-        std::shared_ptr<ActionParserRegistration> m_sharedParserRegistration;
-    };
-
-    ActivatableClass(AdaptiveActionParserRegistration);
-
     class SharedModelActionParser : public AdaptiveCards::ActionElementParser
     {
     public:
-        SharedModelActionParser(_In_ AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration* parserRegistration);
+        SharedModelActionParser(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& parserRegistration);
 
         // AdaptiveCards::ActionElementParser
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;

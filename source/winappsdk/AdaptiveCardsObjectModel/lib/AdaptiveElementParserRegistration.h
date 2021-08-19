@@ -5,53 +5,59 @@
 #include "AdaptiveCards.ObjectModel.WinUI3.h"
 #include "ObjectModelUtil.h"
 #include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveElementParserRegistration.g.h"
+
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+{
+    struct DECLSPEC_UUID("fdf8457d-639f-4bbd-9e32-26c14bac3813") AdaptiveElementParserRegistration
+        : AdaptiveElementParserRegistrationT<AdaptiveElementParserRegistration, ITypePeek>
+    {
+        using RegistrationMap =
+            std::unordered_map<std::string, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
+
+        AdaptiveElementParserRegistration();
+
+        void Set(hstring const& type, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser const& Parser);
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser Get(hstring const& type);
+        void Remove(hstring const& type);
+
+        // ITypePeek method
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+
+        std::shared_ptr<::AdaptiveCards::ElementParserRegistration> GetSharedParserRegistration();
+
+    private:
+        void RegisterDefaultElementParsers();
+
+        bool m_isInitializing{true};
+        std::shared_ptr<RegistrationMap> m_registration{std::make_shared<RegistrationMap>()};
+        std::shared_ptr<::AdaptiveCards::ElementParserRegistration> m_sharedParserRegistration{
+            std::make_shared<::AdaptiveCards::ElementParserRegistration>()};
+    };
+}
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveElementParserRegistration
+        : AdaptiveElementParserRegistrationT<AdaptiveElementParserRegistration, implementation::AdaptiveElementParserRegistration>
+    {
+    };
+}
 
 namespace AdaptiveCards::ObjectModel::WinUI3
 {
     constexpr char* c_uwpElementParserRegistration = "447C3D76-CAAD-405F-B929-E3201F1537AB";
 
-    class DECLSPEC_UUID("fdf8457d-639f-4bbd-9e32-26c14bac3813") AdaptiveElementParserRegistration
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration>,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::FtmBase>
-    {
-        AdaptiveRuntime(AdaptiveElementParserRegistration);
-
-        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
-
-    public:
-        AdaptiveElementParserRegistration();
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        // IAdaptiveElementParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser* Parser) noexcept;
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser** result) noexcept;
-        IFACEMETHODIMP Remove(_In_ HSTRING type) noexcept;
-
-        // ITypePeek method
-        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-        std::shared_ptr<ElementParserRegistration> GetSharedParserRegistration();
-
-    private:
-        HRESULT RegisterDefaultElementParsers(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration* registration);
-
-        bool m_isInitializing;
-        std::shared_ptr<RegistrationMap> m_registration;
-        std::shared_ptr<ElementParserRegistration> m_sharedParserRegistration;
-    };
-
-    ActivatableClass(AdaptiveElementParserRegistration);
-
-    class SharedModelElementParser : public AdaptiveCards::BaseCardElementParser
+    class SharedModelElementParser : public ::AdaptiveCards::BaseCardElementParser
     {
     public:
-        SharedModelElementParser(_In_ AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration* parserRegistration);
+        SharedModelElementParser(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& parserRegistration);
 
         // AdaptiveCards::BaseCardElementParser
-        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
-        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+        std::shared_ptr<::AdaptiveCards::BaseCardElement> Deserialize(::AdaptiveCards::ParseContext& context,
+                                                                      const Json::Value& value) override;
+
+        std::shared_ptr<::AdaptiveCards::BaseCardElement> DeserializeFromString(::AdaptiveCards::ParseContext& context,
+                                                                                const std::string& jsonString) override;
 
         winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration GetAdaptiveParserRegistration();
 
@@ -75,12 +81,8 @@ namespace AdaptiveCards::ObjectModel::WinUI3
     {
         std::string jsonString;
         JsonObjectToString(jsonObject, jsonString);
-
-        ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl =
-            PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
-
-        ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl =
-            PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
+        auto elementParserRegistrationImpl = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveElementParserRegistration>(elementParserRegistration);
+        auto actionParserRegistrationImpl = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveActionParserRegistration>(actionParserRegistration);
 
         ParseContext context(elementParserRegistrationImpl->GetSharedParserRegistration(),
                              actionParserRegistrationImpl->GetSharedParserRegistration());

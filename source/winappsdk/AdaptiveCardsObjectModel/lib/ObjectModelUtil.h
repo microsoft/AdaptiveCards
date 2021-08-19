@@ -50,8 +50,13 @@ inline bool Boolify(const boolean value) noexcept
 HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* items,
                               std::shared_ptr<AdaptiveCards::BaseCardElement>& containedElement);
 
+std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& item);
+
 HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*>* items,
-                               std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
+    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
+
+std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> GenerateSharedElements(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& items);
 
 HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
                              std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction);
@@ -60,13 +65,20 @@ std::shared_ptr<AdaptiveCards::BaseActionElement>
 GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& action);
 
 HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* items,
-                              std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
+    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
+
+std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> GenerateSharedActions(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> const& actions);
 
 std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRequirements(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> const& adaptiveRequirements);
 
 HRESULT GenerateSharedInlines(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* items,
                               std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
+
+winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement
+GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement);
+
 template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass, class TReturnedSharedModelType>
 HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* tableCells,
                              std::vector<std::shared_ptr<TSharedClass>>& containedElements)
@@ -137,6 +149,12 @@ HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveCards::Base
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
+
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>
+GenerateContainedElementsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
+
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>
+GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions);
 
 HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
@@ -299,6 +317,15 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
 
     return out;
 }
+
+template<typename D, typename I>
+winrt::com_ptr<D> peek_innards(I* o)
+{
+    winrt::com_ptr<I> i;
+    i.copy_from(o);
+    return peek_innards<D>(i);
+}
+
 
 HRESULT SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
