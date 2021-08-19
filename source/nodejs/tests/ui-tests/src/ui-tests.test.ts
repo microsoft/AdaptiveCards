@@ -21,16 +21,10 @@ describe("Mock function", function() {
         }
     });
 
-    test("Test case should work", async function() {
-        Assert.strictEqual(true, true);
-    });
-
     test("Test ActivityUpdate submit", async function() {
-        const elementLinkText: Webdriver.WebElement = await driver.findElement(Webdriver.By.id("v1.0/ActivityUpdate"));
-        await elementLinkText.click();
+        await testUtils.goToTestCase("v1.0/ActivityUpdate");
 
-        const dueDateButton: Webdriver.WebElement = await driver.findElement(Webdriver.By.xpath("//*[@aria-label='Set due date']"));
-        await dueDateButton.click();
+        await testUtils.clickOnActionWithTitle("Set due date");
 
         const dueDateInputDiv: Webdriver.WebElement = await driver.findElement(Webdriver.By.id("dueDate"));
         const dueDateInput = await dueDateInputDiv.findElement(Webdriver.By.className("ac-dateInput"));
@@ -42,13 +36,26 @@ describe("Mock function", function() {
         await commentInput.click();
         await commentInput.sendKeys("A comment");
 
-        const okButton: Webdriver.WebElement = await driver.findElement(Webdriver.By.xpath("//*[@aria-label='OK']"));
-        await okButton.click();
+        await testUtils.clickOnActionWithTitle("OK");
 
         const dueDateRetrievedValue: string = await testUtils.getInputFor("dueDate");
         Assert.strictEqual("1993-02-04", dueDateRetrievedValue);
 
         const commentRetrievedValue: string = await testUtils.getInputFor("comment");
         Assert.strictEqual("A comment", commentRetrievedValue);
+    });
+
+    test("Test TextInput get focus on invalid submit", async function() {
+        await testUtils.goToTestCase("v1.3/Input.Text.ErrorMessage");
+
+        await testUtils.clickOnActionWithTitle("Submit");
+
+        const firstInputDiv: Webdriver.WebElement = await driver.findElement(Webdriver.By.id("id1"));
+        const firstInput: Webdriver.WebElement = await firstInputDiv.findElement(Webdriver.By.className("ac-textInput"));
+
+        const firstInputId: string = await firstInput.getAttribute("id");
+        const activeElementId: string = await driver.switchTo().activeElement().getAttribute("id");
+
+        Assert.strictEqual(firstInputId, activeElementId);
     });
 });
