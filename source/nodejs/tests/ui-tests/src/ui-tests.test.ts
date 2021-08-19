@@ -17,7 +17,7 @@ describe("Mock function", function() {
 
     afterAll(async function() {
         if (driver) {
-            // driver.quit();
+            await driver.quit();
         }
     });
 
