@@ -7,31 +7,19 @@
 #include "AdaptiveAuthCardButton.h"
 
 #include "ObjectModelUtil.h"
-#include "Vector.h"
-#include <windows.foundation.collections.h>
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveAuthentication::RuntimeClassInitialize() noexcept
+    AdaptiveAuthentication::AdaptiveAuthentication(const std::shared_ptr<::AdaptiveCards::Authentication>& sharedAuthentication)
     {
-        std::shared_ptr<AdaptiveCards::Authentication> authentication = std::make_shared<AdaptiveCards::Authentication>();
-        return RuntimeClassInitialize(authentication);
-    }
+        Text = UTF8ToHString(sharedAuthentication->GetText());
+        ConnectionName = UTF8ToHString(sharedAuthentication->GetConnectionName());
 
-    HRESULT AdaptiveAuthentication::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Authentication>& sharedAuthentication)
-    {
-        RETURN_IF_FAILED(UTF8ToHString(sharedAuthentication->GetText(), m_text.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedAuthentication->GetConnectionName(), m_connectionName.GetAddressOf()));
-
-        auto tokenExchangeResource = sharedAuthentication->GetTokenExchangeResource();
-        if (tokenExchangeResource != nullptr)
+        if (auto tokenExchangeResource = sharedAuthentication->GetTokenExchangeResource())
         {
-            MakeAndInitialize<AdaptiveTokenExchangeResource>(m_tokenExchangeResource.GetAddressOf(), tokenExchangeResource);
+            TokenExchangeResource =
+                *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTokenExchangeResource>(
+                    tokenExchangeResource);
         }
 
         std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton> buttons;
@@ -42,77 +30,27 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             buttons.push_back(*newShared);
         }
 
-        m_buttons =
-            winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>(std::move(buttons));
-
-        return S_OK;
+        Buttons = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>(std::move(buttons));
     }
 
-    HRESULT AdaptiveAuthentication::get_Text(_Outptr_ HSTRING* text) { return m_text.CopyTo(text); }
-
-    HRESULT AdaptiveAuthentication::put_Text(_In_ HSTRING text) { return m_text.Set(text); }
-
-    HRESULT AdaptiveAuthentication::get_ConnectionName(_Outptr_ HSTRING* connectionName)
+    std::shared_ptr<::AdaptiveCards::Authentication> AdaptiveAuthentication::GetSharedModel()
     {
-        return m_connectionName.CopyTo(connectionName);
-    }
+        auto authentication = std::make_shared<::AdaptiveCards::Authentication>();
+        authentication->SetText(HStringToUTF8(Text));
+        authentication->SetConnectionName(HStringToUTF8(ConnectionName));
 
-    HRESULT AdaptiveAuthentication::put_ConnectionName(_In_ HSTRING connectionName)
-    {
-        return m_connectionName.Set(connectionName);
-    }
-
-    HRESULT AdaptiveAuthentication::get_TokenExchangeResource(
-        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTokenExchangeResource** tokenExchangeResource)
-    {
-        return m_tokenExchangeResource.CopyTo(tokenExchangeResource);
-    }
-
-    HRESULT AdaptiveAuthentication::put_TokenExchangeResource(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTokenExchangeResource* tokenExchangeResource)
-    {
-        m_tokenExchangeResource = tokenExchangeResource;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveAuthentication::get_Buttons(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton*>** buttons)
-    {
-        copy_to_abi(m_buttons, buttons);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveAuthentication::GetSharedModel(std::shared_ptr<AdaptiveCards::Authentication>& sharedModel)
-    {
-        std::shared_ptr<AdaptiveCards::Authentication> authentication = std::make_shared<AdaptiveCards::Authentication>();
-
-        std::string text;
-        RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));
-        authentication->SetText(text);
-
-        std::string connectionName;
-        RETURN_IF_FAILED(HStringToUTF8(m_connectionName.Get(), connectionName));
-        authentication->SetConnectionName(connectionName);
-
-        if (m_tokenExchangeResource)
+        if (auto resource = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTokenExchangeResource>(TokenExchangeResource.get()))
         {
-            ComPtr<AdaptiveTokenExchangeResource> tokenExchangeResourceImpl =
-                PeekInnards<AdaptiveTokenExchangeResource>(m_tokenExchangeResource);
-
-            std::shared_ptr<AdaptiveCards::TokenExchangeResource> sharedModelTokenExchangeResource;
-            RETURN_IF_FAILED(tokenExchangeResourceImpl->GetSharedModel(sharedModelTokenExchangeResource));
-            authentication->SetTokenExchangeResource(sharedModelTokenExchangeResource);
+            authentication->SetTokenExchangeResource(resource->GetSharedModel());
         }
 
-        if (m_buttons)
+        for (auto&& button : Buttons.get())
         {
-            for (auto&& button : m_buttons)
-            {
-                auto impl = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthCardButton>(button);
-                auto sharedAuthCardButton = impl->GetSharedModel();
-                authentication->GetButtons().emplace_back(std::AdaptivePointerCast<AdaptiveCards::AuthCardButton>(sharedAuthCardButton));
-            }
+            auto impl = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthCardButton>(button);
+            auto sharedAuthCardButton = impl->GetSharedModel();
+            authentication->GetButtons().emplace_back(std::AdaptivePointerCast<::AdaptiveCards::AuthCardButton>(sharedAuthCardButton));
         }
 
-        sharedModel = std::move(authentication);
-        return S_OK;
+        return authentication;
     }
 }

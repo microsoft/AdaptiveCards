@@ -165,10 +165,10 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             m_refresh = *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveRefresh>(refresh);
         }
 
-        auto authentication = sharedAdaptiveCard->GetAuthentication();
-        if (authentication != nullptr)
+        if (auto authentication = sharedAdaptiveCard->GetAuthentication())
         {
-            MakeAndInitialize<AdaptiveAuthentication>(m_authentication.GetAddressOf(), authentication);
+            m_authentication =
+                *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthentication>(authentication);
         }
 
         m_internalId = sharedAdaptiveCard->GetInternalId().Hash();
@@ -298,12 +298,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveCard::get_Authentication(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthentication** authentication)
     {
-        return m_authentication.CopyTo(authentication);
+        copy_to_abi(m_authentication, authentication);
+        return S_OK;
     }
 
     HRESULT AdaptiveCard::put_Authentication(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveAuthentication* authentication)
     {
-        m_authentication = authentication;
+        m_authentication = copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthentication>(authentication);
         return S_OK;
     }
 
@@ -354,11 +355,8 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         if (m_authentication)
         {
-            ComPtr<AdaptiveAuthentication> authenticationImpl = PeekInnards<AdaptiveAuthentication>(m_authentication);
-
-            std::shared_ptr<AdaptiveCards::Authentication> sharedModelAuthentication;
-            RETURN_IF_FAILED(authenticationImpl->GetSharedModel(sharedModelAuthentication));
-            adaptiveCard->SetAuthentication(sharedModelAuthentication);
+            auto authenticationImpl = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthentication>(m_authentication);
+            adaptiveCard->SetAuthentication(authenticationImpl->GetSharedModel());
         }
 
         sharedModel = std::move(adaptiveCard);
