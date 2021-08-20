@@ -18927,12 +18927,12 @@ HRESULT ( STDMETHODCALLTYPE *GetTrustLevel )(
         );
     HRESULT ( STDMETHODCALLTYPE *AddError )(
         __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveRenderContext * This,
-        /* [in] */__x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CErrorStatusCode statusCode,
+        /* [in] */enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CErrorStatusCode statusCode,
         /* [in] */HSTRING message
         );
     HRESULT ( STDMETHODCALLTYPE *AddWarning )(
         __x_ABI_CAdaptiveCards_CRendering_CWinUI3_CIAdaptiveRenderContext * This,
-        /* [in] */__x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CWarningStatusCode statusCode,
+        /* [in] */enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CWarningStatusCode statusCode,
         /* [in] */HSTRING message
         );
     END_INTERFACE

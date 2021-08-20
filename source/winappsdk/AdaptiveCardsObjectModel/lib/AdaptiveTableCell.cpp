@@ -6,6 +6,7 @@
 #include "ObjectModelUtil.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
+#include <windows.ui.xaml.h>
 #include <winrt/Windows.Foundation.h>
 
 using namespace Microsoft::WRL;

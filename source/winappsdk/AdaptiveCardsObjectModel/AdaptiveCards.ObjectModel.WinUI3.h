@@ -49,77 +49,9 @@
 
 //  API Contract Inclusion Definitions
 #if !defined(SPECIFIC_API_CONTRACT_DEFINITIONS)
-#if !defined(WINDOWS_APPLICATIONMODEL_ACTIVATION_ACTIVATEDEVENTSCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_ACTIVATION_ACTIVATEDEVENTSCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_ACTIVATION_ACTIVATEDEVENTSCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_ACTIVATION_ACTIVATIONCAMERASETTINGSCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_ACTIVATION_ACTIVATIONCAMERASETTINGSCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_ACTIVATION_ACTIVATIONCAMERASETTINGSCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_ACTIVATION_CONTACTACTIVATEDEVENTSCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_ACTIVATION_CONTACTACTIVATEDEVENTSCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_ACTIVATION_CONTACTACTIVATEDEVENTSCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_ACTIVATION_WEBUISEARCHACTIVATEDEVENTSCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_ACTIVATION_WEBUISEARCHACTIVATEDEVENTSCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_ACTIVATION_WEBUISEARCHACTIVATEDEVENTSCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_BACKGROUND_BACKGROUNDALARMAPPLICATIONCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_BACKGROUND_BACKGROUNDALARMAPPLICATIONCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_BACKGROUND_BACKGROUNDALARMAPPLICATIONCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_CALLS_BACKGROUND_CALLSBACKGROUNDCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_CALLS_BACKGROUND_CALLSBACKGROUNDCONTRACT_VERSION 0x20000
-#endif // defined(WINDOWS_APPLICATIONMODEL_CALLS_BACKGROUND_CALLSBACKGROUNDCONTRACT_VERSION)
-
 #if !defined(WINDOWS_APPLICATIONMODEL_CALLS_CALLSPHONECONTRACT_VERSION)
 #define WINDOWS_APPLICATIONMODEL_CALLS_CALLSPHONECONTRACT_VERSION 0x50000
 #endif // defined(WINDOWS_APPLICATIONMODEL_CALLS_CALLSPHONECONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_CALLS_CALLSVOIPCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_CALLS_CALLSVOIPCONTRACT_VERSION 0x40000
-#endif // defined(WINDOWS_APPLICATIONMODEL_CALLS_CALLSVOIPCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_CALLS_LOCKSCREENCALLCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_CALLS_LOCKSCREENCALLCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_CALLS_LOCKSCREENCALLCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_COMMUNICATIONBLOCKING_COMMUNICATIONBLOCKINGCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_COMMUNICATIONBLOCKING_COMMUNICATIONBLOCKINGCONTRACT_VERSION 0x20000
-#endif // defined(WINDOWS_APPLICATIONMODEL_COMMUNICATIONBLOCKING_COMMUNICATIONBLOCKINGCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_FULLTRUSTAPPCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_FULLTRUSTAPPCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_FULLTRUSTAPPCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_SEARCH_SEARCHCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_SEARCH_SEARCHCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_SEARCH_SEARCHCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_STARTUPTASKCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_STARTUPTASKCONTRACT_VERSION 0x30000
-#endif // defined(WINDOWS_APPLICATIONMODEL_STARTUPTASKCONTRACT_VERSION)
-
-#if !defined(WINDOWS_APPLICATIONMODEL_WALLET_WALLETCONTRACT_VERSION)
-#define WINDOWS_APPLICATIONMODEL_WALLET_WALLETCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_APPLICATIONMODEL_WALLET_WALLETCONTRACT_VERSION)
-
-#if !defined(WINDOWS_DEVICES_PRINTERS_EXTENSIONS_EXTENSIONSCONTRACT_VERSION)
-#define WINDOWS_DEVICES_PRINTERS_EXTENSIONS_EXTENSIONSCONTRACT_VERSION 0x20000
-#endif // defined(WINDOWS_DEVICES_PRINTERS_EXTENSIONS_EXTENSIONSCONTRACT_VERSION)
-
-#if !defined(WINDOWS_DEVICES_SMARTCARDS_SMARTCARDBACKGROUNDTRIGGERCONTRACT_VERSION)
-#define WINDOWS_DEVICES_SMARTCARDS_SMARTCARDBACKGROUNDTRIGGERCONTRACT_VERSION 0x30000
-#endif // defined(WINDOWS_DEVICES_SMARTCARDS_SMARTCARDBACKGROUNDTRIGGERCONTRACT_VERSION)
-
-#if !defined(WINDOWS_DEVICES_SMARTCARDS_SMARTCARDEMULATORCONTRACT_VERSION)
-#define WINDOWS_DEVICES_SMARTCARDS_SMARTCARDEMULATORCONTRACT_VERSION 0x60000
-#endif // defined(WINDOWS_DEVICES_SMARTCARDS_SMARTCARDEMULATORCONTRACT_VERSION)
-
-#if !defined(WINDOWS_DEVICES_SMS_LEGACYSMSAPICONTRACT_VERSION)
-#define WINDOWS_DEVICES_SMS_LEGACYSMSAPICONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_DEVICES_SMS_LEGACYSMSAPICONTRACT_VERSION)
 
 #if !defined(WINDOWS_FOUNDATION_FOUNDATIONCONTRACT_VERSION)
 #define WINDOWS_FOUNDATION_FOUNDATIONCONTRACT_VERSION 0x40000
@@ -128,50 +60,6 @@
 #if !defined(WINDOWS_FOUNDATION_UNIVERSALAPICONTRACT_VERSION)
 #define WINDOWS_FOUNDATION_UNIVERSALAPICONTRACT_VERSION 0xa0000
 #endif // defined(WINDOWS_FOUNDATION_UNIVERSALAPICONTRACT_VERSION)
-
-#if !defined(WINDOWS_GAMING_INPUT_GAMINGINPUTPREVIEWCONTRACT_VERSION)
-#define WINDOWS_GAMING_INPUT_GAMINGINPUTPREVIEWCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_GAMING_INPUT_GAMINGINPUTPREVIEWCONTRACT_VERSION)
-
-#if !defined(WINDOWS_GLOBALIZATION_GLOBALIZATIONJAPANESEPHONETICANALYZERCONTRACT_VERSION)
-#define WINDOWS_GLOBALIZATION_GLOBALIZATIONJAPANESEPHONETICANALYZERCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_GLOBALIZATION_GLOBALIZATIONJAPANESEPHONETICANALYZERCONTRACT_VERSION)
-
-#if !defined(WINDOWS_MEDIA_CAPTURE_APPBROADCASTCONTRACT_VERSION)
-#define WINDOWS_MEDIA_CAPTURE_APPBROADCASTCONTRACT_VERSION 0x20000
-#endif // defined(WINDOWS_MEDIA_CAPTURE_APPBROADCASTCONTRACT_VERSION)
-
-#if !defined(WINDOWS_MEDIA_CAPTURE_APPCAPTURECONTRACT_VERSION)
-#define WINDOWS_MEDIA_CAPTURE_APPCAPTURECONTRACT_VERSION 0x40000
-#endif // defined(WINDOWS_MEDIA_CAPTURE_APPCAPTURECONTRACT_VERSION)
-
-#if !defined(WINDOWS_MEDIA_CAPTURE_APPCAPTUREMETADATACONTRACT_VERSION)
-#define WINDOWS_MEDIA_CAPTURE_APPCAPTUREMETADATACONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_MEDIA_CAPTURE_APPCAPTUREMETADATACONTRACT_VERSION)
-
-#if !defined(WINDOWS_MEDIA_CAPTURE_CAMERACAPTUREUICONTRACT_VERSION)
-#define WINDOWS_MEDIA_CAPTURE_CAMERACAPTUREUICONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_MEDIA_CAPTURE_CAMERACAPTUREUICONTRACT_VERSION)
-
-#if !defined(WINDOWS_MEDIA_CAPTURE_GAMEBARCONTRACT_VERSION)
-#define WINDOWS_MEDIA_CAPTURE_GAMEBARCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_MEDIA_CAPTURE_GAMEBARCONTRACT_VERSION)
-
-#if !defined(WINDOWS_MEDIA_DEVICES_CALLCONTROLCONTRACT_VERSION)
-#define WINDOWS_MEDIA_DEVICES_CALLCONTROLCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_MEDIA_DEVICES_CALLCONTROLCONTRACT_VERSION)
-
-#if !defined(WINDOWS_MEDIA_MEDIACONTROLCONTRACT_VERSION)
-#define WINDOWS_MEDIA_MEDIACONTROLCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_MEDIA_MEDIACONTROLCONTRACT_VERSION)
-
-#if !defined(WINDOWS_MEDIA_PROTECTION_PROTECTIONRENEWALCONTRACT_VERSION)
-#define WINDOWS_MEDIA_PROTECTION_PROTECTIONRENEWALCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_MEDIA_PROTECTION_PROTECTIONRENEWALCONTRACT_VERSION)
-
-#if !defined(WINDOWS_NETWORKING_CONNECTIVITY_WWANCONTRACT_VERSION)
-#define WINDOWS_NETWORKING_CONNECTIVITY_WWANCONTRACT_VERSION 0x20000
-#endif // defined(WINDOWS_NETWORKING_CONNECTIVITY_WWANCONTRACT_VERSION)
 
 #if !defined(WINDOWS_NETWORKING_SOCKETS_CONTROLCHANNELTRIGGERCONTRACT_VERSION)
 #define WINDOWS_NETWORKING_SOCKETS_CONTROLCHANNELTRIGGERCONTRACT_VERSION 0x30000
@@ -185,26 +73,6 @@
 #define WINDOWS_PHONE_PHONEINTERNALCONTRACT_VERSION 0x10000
 #endif // defined(WINDOWS_PHONE_PHONEINTERNALCONTRACT_VERSION)
 
-#if !defined(WINDOWS_SECURITY_ENTERPRISEDATA_ENTERPRISEDATACONTRACT_VERSION)
-#define WINDOWS_SECURITY_ENTERPRISEDATA_ENTERPRISEDATACONTRACT_VERSION 0x50000
-#endif // defined(WINDOWS_SECURITY_ENTERPRISEDATA_ENTERPRISEDATACONTRACT_VERSION)
-
-#if !defined(WINDOWS_STORAGE_PROVIDER_CLOUDFILESCONTRACT_VERSION)
-#define WINDOWS_STORAGE_PROVIDER_CLOUDFILESCONTRACT_VERSION 0x40000
-#endif // defined(WINDOWS_STORAGE_PROVIDER_CLOUDFILESCONTRACT_VERSION)
-
-#if !defined(WINDOWS_SYSTEM_SYSTEMMANAGEMENTCONTRACT_VERSION)
-#define WINDOWS_SYSTEM_SYSTEMMANAGEMENTCONTRACT_VERSION 0x70000
-#endif // defined(WINDOWS_SYSTEM_SYSTEMMANAGEMENTCONTRACT_VERSION)
-
-#if !defined(WINDOWS_UI_CORE_COREWINDOWDIALOGSCONTRACT_VERSION)
-#define WINDOWS_UI_CORE_COREWINDOWDIALOGSCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_UI_CORE_COREWINDOWDIALOGSCONTRACT_VERSION)
-
-#if !defined(WINDOWS_UI_VIEWMANAGEMENT_VIEWMANAGEMENTVIEWSCALINGCONTRACT_VERSION)
-#define WINDOWS_UI_VIEWMANAGEMENT_VIEWMANAGEMENTVIEWSCALINGCONTRACT_VERSION 0x10000
-#endif // defined(WINDOWS_UI_VIEWMANAGEMENT_VIEWMANAGEMENTVIEWSCALINGCONTRACT_VERSION)
-
 #if !defined(WINDOWS_UI_WEBUI_CORE_WEBUICOMMANDBARCONTRACT_VERSION)
 #define WINDOWS_UI_WEBUI_CORE_WEBUICOMMANDBARCONTRACT_VERSION 0x10000
 #endif // defined(WINDOWS_UI_WEBUI_CORE_WEBUICOMMANDBARCONTRACT_VERSION)
@@ -213,9 +81,7 @@
 
 
 // Header files for imported files
-#include "inspectable.h"
 #include "Windows.Foundation.h"
-#include "Windows.UI.Xaml.h"
 #include "Windows.Data.Json.h"
 // Importing Collections header
 #include <windows.foundation.collections.h>
@@ -4308,14 +4174,6 @@ typedef IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilit
 
 
 
-
-#pragma external_header (push)
-#pragma warning (push)
-#pragma warning (disable:4668) 
-#pragma warning (disable:4001) 
-#pragma once 
-#pragma warning (pop)
-#pragma external_header (pop)
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -4330,15 +4188,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.TextSize
+ * Struct AdaptiveCards.ObjectModel.WinUI3.TextSize
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM TextSize : int
                 {
                     Small = 0,
@@ -4346,7 +4204,7 @@ namespace ABI {
                     Medium,
                     Large,
                     ExtraLarge,
-                } TextSize;
+                };
                 const TextSize TextSize_Small = TextSize::Small;
                 const TextSize TextSize_Default = TextSize::Default;
                 const TextSize TextSize_Medium = TextSize::Medium;
@@ -4361,21 +4219,21 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.TextWeight
+ * Struct AdaptiveCards.ObjectModel.WinUI3.TextWeight
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM TextWeight : int
                 {
                     Lighter = 0,
                     Default,
                     Bolder,
-                } TextWeight;
+                };
                 const TextWeight TextWeight_Lighter = TextWeight::Lighter;
                 const TextWeight TextWeight_Default = TextWeight::Default;
                 const TextWeight TextWeight_Bolder = TextWeight::Bolder;
@@ -4388,15 +4246,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ForegroundColor
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ForegroundColor
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ForegroundColor : int
                 {
                     Default = 0,
@@ -4406,7 +4264,7 @@ namespace ABI {
                     Good,
                     Warning,
                     Attention,
-                } ForegroundColor;
+                };
                 const ForegroundColor ForegroundColor_Default = ForegroundColor::Default;
                 const ForegroundColor ForegroundColor_Dark = ForegroundColor::Dark;
                 const ForegroundColor ForegroundColor_Light = ForegroundColor::Light;
@@ -4423,21 +4281,21 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.HAlignment
+ * Struct AdaptiveCards.ObjectModel.WinUI3.HAlignment
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM HAlignment : int
                 {
                     Left = 0,
                     Center,
                     Right,
-                } HAlignment;
+                };
                 const HAlignment HAlignment_Left = HAlignment::Left;
                 const HAlignment HAlignment_Center = HAlignment::Center;
                 const HAlignment HAlignment_Right = HAlignment::Right;
@@ -4450,21 +4308,21 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.VAlignment
+ * Struct AdaptiveCards.ObjectModel.WinUI3.VAlignment
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM VAlignment : int
                 {
                     Top = 0,
                     Center,
                     Bottom,
-                } VAlignment;
+                };
                 const VAlignment VAlignment_Top = VAlignment::Top;
                 const VAlignment VAlignment_Center = VAlignment::Center;
                 const VAlignment VAlignment_Bottom = VAlignment::Bottom;
@@ -4477,22 +4335,22 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.BackgroundImageFillMode
+ * Struct AdaptiveCards.ObjectModel.WinUI3.BackgroundImageFillMode
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM BackgroundImageFillMode : int
                 {
                     Cover = 0,
                     RepeatHorizontally,
                     RepeatVertically,
                     Repeat,
-                } BackgroundImageFillMode;
+                };
                 const BackgroundImageFillMode BackgroundImageFillMode_Cover = BackgroundImageFillMode::Cover;
                 const BackgroundImageFillMode BackgroundImageFillMode_RepeatHorizontally = BackgroundImageFillMode::RepeatHorizontally;
                 const BackgroundImageFillMode BackgroundImageFillMode_RepeatVertically = BackgroundImageFillMode::RepeatVertically;
@@ -4506,15 +4364,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ElementType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ElementType
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ElementType : int
                 {
                     Unsupported = 0,
@@ -4541,7 +4399,7 @@ namespace ABI {
                     TableCell,
                     TableRow,
                     Table,
-                } ElementType;
+                };
                 const ElementType ElementType_Unsupported = ElementType::Unsupported;
                 const ElementType ElementType_AdaptiveCard = ElementType::AdaptiveCard;
                 const ElementType ElementType_TextBlock = ElementType::TextBlock;
@@ -4575,15 +4433,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ActionType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ActionType
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ActionType : int
                 {
                     Unsupported = 0,
@@ -4593,7 +4451,7 @@ namespace ABI {
                     ToggleVisibility,
                     Execute,
                     Custom,
-                } ActionType;
+                };
                 const ActionType ActionType_Unsupported = ActionType::Unsupported;
                 const ActionType ActionType_ShowCard = ActionType::ShowCard;
                 const ActionType ActionType_Submit = ActionType::Submit;
@@ -4610,20 +4468,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ImageStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ImageStyle
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ImageStyle : int
                 {
                     Default = 0,
                     Person,
-                } ImageStyle;
+                };
                 const ImageStyle ImageStyle_Default = ImageStyle::Default;
                 const ImageStyle ImageStyle_Person = ImageStyle::Person;
                 
@@ -4635,15 +4493,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ImageSize
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ImageSize
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ImageSize : int
                 {
                     None = 0,
@@ -4652,7 +4510,7 @@ namespace ABI {
                     Small,
                     Medium,
                     Large,
-                } ImageSize;
+                };
                 const ImageSize ImageSize_None = ImageSize::None;
                 const ImageSize ImageSize_Auto = ImageSize::Auto;
                 const ImageSize ImageSize_Stretch = ImageSize::Stretch;
@@ -4668,20 +4526,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.SeparatorThickness
+ * Struct AdaptiveCards.ObjectModel.WinUI3.SeparatorThickness
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM SeparatorThickness : int
                 {
                     Default = 0,
                     Thick,
-                } SeparatorThickness;
+                };
                 const SeparatorThickness SeparatorThickness_Default = SeparatorThickness::Default;
                 const SeparatorThickness SeparatorThickness_Thick = SeparatorThickness::Thick;
                 
@@ -4693,15 +4551,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.Spacing
+ * Struct AdaptiveCards.ObjectModel.WinUI3.Spacing
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM Spacing : int
                 {
                     Default = 0,
@@ -4711,7 +4569,7 @@ namespace ABI {
                     Large,
                     ExtraLarge,
                     Padding,
-                } Spacing;
+                };
                 const Spacing Spacing_Default = Spacing::Default;
                 const Spacing Spacing_None = Spacing::None;
                 const Spacing Spacing_Small = Spacing::Small;
@@ -4728,21 +4586,21 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ChoiceSetStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ChoiceSetStyle
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ChoiceSetStyle : int
                 {
                     Compact = 0,
                     Expanded,
                     Filtered,
-                } ChoiceSetStyle;
+                };
                 const ChoiceSetStyle ChoiceSetStyle_Compact = ChoiceSetStyle::Compact;
                 const ChoiceSetStyle ChoiceSetStyle_Expanded = ChoiceSetStyle::Expanded;
                 const ChoiceSetStyle ChoiceSetStyle_Filtered = ChoiceSetStyle::Filtered;
@@ -4755,22 +4613,22 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.TextInputStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.TextInputStyle
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM TextInputStyle : int
                 {
                     Text = 0,
                     Tel,
                     Url,
                     Email,
-                } TextInputStyle;
+                };
                 const TextInputStyle TextInputStyle_Text = TextInputStyle::Text;
                 const TextInputStyle TextInputStyle_Tel = TextInputStyle::Tel;
                 const TextInputStyle TextInputStyle_Url = TextInputStyle::Url;
@@ -4784,15 +4642,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ContainerStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ContainerStyle
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ContainerStyle : int
                 {
                     None = 0,
@@ -4802,7 +4660,7 @@ namespace ABI {
                     Attention,
                     Warning,
                     Accent,
-                } ContainerStyle;
+                };
                 const ContainerStyle ContainerStyle_None = ContainerStyle::None;
                 const ContainerStyle ContainerStyle_Default = ContainerStyle::Default;
                 const ContainerStyle ContainerStyle_Emphasis = ContainerStyle::Emphasis;
@@ -4819,20 +4677,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.FontType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.FontType
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM FontType : int
                 {
                     Default = 0,
                     Monospace,
-                } FontType;
+                };
                 const FontType FontType_Default = FontType::Default;
                 const FontType FontType_Monospace = FontType::Monospace;
                 
@@ -4844,15 +4702,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ErrorStatusCode
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ErrorStatusCode
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ErrorStatusCode : int
                 {
                     InvalidJson = 0,
@@ -4861,7 +4719,7 @@ namespace ABI {
                     InvalidPropertyValue,
                     UnsupportedParserOverride,
                     CustomError,
-                } ErrorStatusCode;
+                };
                 const ErrorStatusCode ErrorStatusCode_InvalidJson = ErrorStatusCode::InvalidJson;
                 const ErrorStatusCode ErrorStatusCode_RenderFailed = ErrorStatusCode::RenderFailed;
                 const ErrorStatusCode ErrorStatusCode_RequiredPropertyMissing = ErrorStatusCode::RequiredPropertyMissing;
@@ -4877,15 +4735,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.WarningStatusCode
+ * Struct AdaptiveCards.ObjectModel.WinUI3.WarningStatusCode
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM WarningStatusCode : int
                 {
                     UnknownElementType = 0,
@@ -4906,7 +4764,7 @@ namespace ABI {
                     EmptyLabelInRequiredInput,
                     MissingValidationErrorMessage,
                     RequiredPropertyMissing,
-                } WarningStatusCode;
+                };
                 const WarningStatusCode WarningStatusCode_UnknownElementType = WarningStatusCode::UnknownElementType;
                 const WarningStatusCode WarningStatusCode_UnknownActionElementType = WarningStatusCode::UnknownActionElementType;
                 const WarningStatusCode WarningStatusCode_UnknownPropertyOnElement = WarningStatusCode::UnknownPropertyOnElement;
@@ -4934,21 +4792,21 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.VerticalContentAlignment
+ * Struct AdaptiveCards.ObjectModel.WinUI3.VerticalContentAlignment
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM VerticalContentAlignment : int
                 {
                     Top = 0,
                     Center,
                     Bottom,
-                } VerticalContentAlignment;
+                };
                 const VerticalContentAlignment VerticalContentAlignment_Top = VerticalContentAlignment::Top;
                 const VerticalContentAlignment VerticalContentAlignment_Center = VerticalContentAlignment::Center;
                 const VerticalContentAlignment VerticalContentAlignment_Bottom = VerticalContentAlignment::Bottom;
@@ -4961,20 +4819,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.HeightType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.HeightType
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM HeightType : int
                 {
                     Auto = 0,
                     Stretch,
-                } HeightType;
+                };
                 const HeightType HeightType_Auto = HeightType::Auto;
                 const HeightType HeightType_Stretch = HeightType::Stretch;
                 
@@ -4986,21 +4844,21 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.IsVisible
+ * Struct AdaptiveCards.ObjectModel.WinUI3.IsVisible
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM IsVisible : int
                 {
                     IsVisibleToggle = 0,
                     IsVisibleTrue,
                     IsVisibleFalse,
-                } IsVisible;
+                };
                 const IsVisible IsVisible_IsVisibleToggle = IsVisible::IsVisibleToggle;
                 const IsVisible IsVisible_IsVisibleTrue = IsVisible::IsVisibleTrue;
                 const IsVisible IsVisible_IsVisibleFalse = IsVisible::IsVisibleFalse;
@@ -5013,21 +4871,21 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.FallbackType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.FallbackType
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM FallbackType : int
                 {
                     None = 0,
                     Drop,
                     Content,
-                } FallbackType;
+                };
                 const FallbackType FallbackType_None = FallbackType::None;
                 const FallbackType FallbackType_Drop = FallbackType::Drop;
                 const FallbackType FallbackType_Content = FallbackType::Content;
@@ -5040,15 +4898,15 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.BleedDirection
+ * Struct AdaptiveCards.ObjectModel.WinUI3.BleedDirection
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
-                /* [flags, version, v1_enum] */
-                typedef 
+                /* [version, v1_enum, flags] */
                 MIDL_ENUM BleedDirection : unsigned int
                 {
                     None = 0,
@@ -5057,7 +4915,7 @@ namespace ABI {
                     Up = 0x100,
                     Down = 0x1000,
                     All = 0x1111,
-                } BleedDirection;
+                };
                 
                 DEFINE_ENUM_FLAG_OPERATORS(BleedDirection)
                 const BleedDirection BleedDirection_None = BleedDirection::None;
@@ -5075,20 +4933,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.AssociatedInputs
+ * Struct AdaptiveCards.ObjectModel.WinUI3.AssociatedInputs
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM AssociatedInputs : int
                 {
                     Auto = 0,
                     None,
-                } AssociatedInputs;
+                };
                 const AssociatedInputs AssociatedInputs_Auto = AssociatedInputs::Auto;
                 const AssociatedInputs AssociatedInputs_None = AssociatedInputs::None;
                 
@@ -5100,21 +4958,21 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.TextStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.TextStyle
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM TextStyle : int
                 {
                     Default = 0,
                     Heading,
                     ColumnHeader,
-                } TextStyle;
+                };
                 const TextStyle TextStyle_Default = TextStyle::Default;
                 const TextStyle TextStyle_Heading = TextStyle::Heading;
                 const TextStyle TextStyle_ColumnHeader = TextStyle::ColumnHeader;
@@ -5127,20 +4985,20 @@ namespace ABI {
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ActionMode
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ActionMode
  *
  */
+
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
             namespace WinUI3 {
                 /* [version, v1_enum] */
-                typedef 
                 MIDL_ENUM ActionMode : int
                 {
                     Primary = 0,
                     Secondary,
-                } ActionMode;
+                };
                 const ActionMode ActionMode_Primary = ActionMode::Primary;
                 const ActionMode ActionMode_Secondary = ActionMode::Secondary;
                 
@@ -11578,8 +11436,6 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWar
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinUI3_AdaptiveWarning_DEFINED
 extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinUI3.AdaptiveWarning";
 #endif
-
-
 
 
 #else // !defined(__cplusplus)
@@ -20400,22 +20256,14 @@ interface __FIVector_1_AdaptiveCards__CObjectModel__CWinUI3__CAdaptiveToggleVisi
 
 
 
-#pragma external_header (push)
-#pragma warning (push)
-#pragma warning (disable:4668) 
-#pragma warning (disable:4001) 
-#pragma once 
-#pragma warning (pop)
-#pragma external_header (pop)
-
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.TextSize
+ * Struct AdaptiveCards.ObjectModel.WinUI3.TextSize
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextSize
 {
     TextSize_Small = 0,
@@ -20423,31 +20271,31 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextSize
     TextSize_Medium,
     TextSize_Large,
     TextSize_ExtraLarge,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextSize;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.TextWeight
+ * Struct AdaptiveCards.ObjectModel.WinUI3.TextWeight
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextWeight
 {
     TextWeight_Lighter = 0,
     TextWeight_Default,
     TextWeight_Bolder,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextWeight;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ForegroundColor
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ForegroundColor
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CForegroundColor
 {
     ForegroundColor_Default = 0,
@@ -20457,62 +20305,62 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CForegroundColor
     ForegroundColor_Good,
     ForegroundColor_Warning,
     ForegroundColor_Attention,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CForegroundColor;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.HAlignment
+ * Struct AdaptiveCards.ObjectModel.WinUI3.HAlignment
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CHAlignment
 {
     HAlignment_Left = 0,
     HAlignment_Center,
     HAlignment_Right,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CHAlignment;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.VAlignment
+ * Struct AdaptiveCards.ObjectModel.WinUI3.VAlignment
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CVAlignment
 {
     VAlignment_Top = 0,
     VAlignment_Center,
     VAlignment_Bottom,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CVAlignment;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.BackgroundImageFillMode
+ * Struct AdaptiveCards.ObjectModel.WinUI3.BackgroundImageFillMode
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CBackgroundImageFillMode
 {
     BackgroundImageFillMode_Cover = 0,
     BackgroundImageFillMode_RepeatHorizontally,
     BackgroundImageFillMode_RepeatVertically,
     BackgroundImageFillMode_Repeat,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CBackgroundImageFillMode;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ElementType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ElementType
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CElementType
 {
     ElementType_Unsupported = 0,
@@ -20539,16 +20387,16 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CElementType
     ElementType_TableCell,
     ElementType_TableRow,
     ElementType_Table,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CElementType;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ActionType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ActionType
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CActionType
 {
     ActionType_Unsupported = 0,
@@ -20558,30 +20406,30 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CActionType
     ActionType_ToggleVisibility,
     ActionType_Execute,
     ActionType_Custom,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CActionType;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ImageStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ImageStyle
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CImageStyle
 {
     ImageStyle_Default = 0,
     ImageStyle_Person,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CImageStyle;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ImageSize
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ImageSize
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CImageSize
 {
     ImageSize_None = 0,
@@ -20590,30 +20438,30 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CImageSize
     ImageSize_Small,
     ImageSize_Medium,
     ImageSize_Large,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CImageSize;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.SeparatorThickness
+ * Struct AdaptiveCards.ObjectModel.WinUI3.SeparatorThickness
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CSeparatorThickness
 {
     SeparatorThickness_Default = 0,
     SeparatorThickness_Thick,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CSeparatorThickness;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.Spacing
+ * Struct AdaptiveCards.ObjectModel.WinUI3.Spacing
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CSpacing
 {
     Spacing_Default = 0,
@@ -20623,47 +20471,47 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CSpacing
     Spacing_Large,
     Spacing_ExtraLarge,
     Spacing_Padding,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CSpacing;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ChoiceSetStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ChoiceSetStyle
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CChoiceSetStyle
 {
     ChoiceSetStyle_Compact = 0,
     ChoiceSetStyle_Expanded,
     ChoiceSetStyle_Filtered,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CChoiceSetStyle;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.TextInputStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.TextInputStyle
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextInputStyle
 {
     TextInputStyle_Text = 0,
     TextInputStyle_Tel,
     TextInputStyle_Url,
     TextInputStyle_Email,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextInputStyle;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ContainerStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ContainerStyle
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CContainerStyle
 {
     ContainerStyle_None = 0,
@@ -20673,30 +20521,30 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CContainerStyle
     ContainerStyle_Attention,
     ContainerStyle_Warning,
     ContainerStyle_Accent,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CContainerStyle;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.FontType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.FontType
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CFontType
 {
     FontType_Default = 0,
     FontType_Monospace,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CFontType;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ErrorStatusCode
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ErrorStatusCode
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CErrorStatusCode
 {
     ErrorStatusCode_InvalidJson = 0,
@@ -20705,16 +20553,16 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CErrorStatusCode
     ErrorStatusCode_InvalidPropertyValue,
     ErrorStatusCode_UnsupportedParserOverride,
     ErrorStatusCode_CustomError,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CErrorStatusCode;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.WarningStatusCode
+ * Struct AdaptiveCards.ObjectModel.WinUI3.WarningStatusCode
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CWarningStatusCode
 {
     WarningStatusCode_UnknownElementType = 0,
@@ -20735,75 +20583,75 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CWarningStatusCode
     WarningStatusCode_EmptyLabelInRequiredInput,
     WarningStatusCode_MissingValidationErrorMessage,
     WarningStatusCode_RequiredPropertyMissing,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CWarningStatusCode;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.VerticalContentAlignment
+ * Struct AdaptiveCards.ObjectModel.WinUI3.VerticalContentAlignment
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CVerticalContentAlignment
 {
     VerticalContentAlignment_Top = 0,
     VerticalContentAlignment_Center,
     VerticalContentAlignment_Bottom,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CVerticalContentAlignment;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.HeightType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.HeightType
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CHeightType
 {
     HeightType_Auto = 0,
     HeightType_Stretch,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CHeightType;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.IsVisible
+ * Struct AdaptiveCards.ObjectModel.WinUI3.IsVisible
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIsVisible
 {
     IsVisible_IsVisibleToggle = 0,
     IsVisible_IsVisibleTrue,
     IsVisible_IsVisibleFalse,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIsVisible;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.FallbackType
+ * Struct AdaptiveCards.ObjectModel.WinUI3.FallbackType
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CFallbackType
 {
     FallbackType_None = 0,
     FallbackType_Drop,
     FallbackType_Content,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CFallbackType;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.BleedDirection
+ * Struct AdaptiveCards.ObjectModel.WinUI3.BleedDirection
  *
  */
-/* [flags, version, v1_enum] */
-typedef 
+
+/* [version, v1_enum, flags] */
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CBleedDirection
 {
     BleedDirection_None = 0,
@@ -20812,50 +20660,50 @@ enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CBleedDirection
     BleedDirection_Up = 0x100,
     BleedDirection_Down = 0x1000,
     BleedDirection_All = 0x1111,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CBleedDirection;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.AssociatedInputs
+ * Struct AdaptiveCards.ObjectModel.WinUI3.AssociatedInputs
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CAssociatedInputs
 {
     AssociatedInputs_Auto = 0,
     AssociatedInputs_None,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CAssociatedInputs;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.TextStyle
+ * Struct AdaptiveCards.ObjectModel.WinUI3.TextStyle
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextStyle
 {
     TextStyle_Default = 0,
     TextStyle_Heading,
     TextStyle_ColumnHeader,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CTextStyle;
+};
 
 
 /*
  *
- * Typedef of AdaptiveCards.ObjectModel.WinUI3.ActionMode
+ * Struct AdaptiveCards.ObjectModel.WinUI3.ActionMode
  *
  */
+
 /* [version, v1_enum] */
-typedef 
 enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CActionMode
 {
     ActionMode_Primary = 0,
     ActionMode_Secondary,
-} __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CActionMode;
+};
 
 
 
@@ -31847,7 +31695,7 @@ HRESULT ( STDMETHODCALLTYPE *GetTrustLevel )(
     );
 HRESULT ( STDMETHODCALLTYPE *CreateInstance )(
         __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveErrorFactory * This,
-        /* [in] */__x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CErrorStatusCode statusCode,
+        /* [in] */enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CErrorStatusCode statusCode,
         /* [in] */HSTRING message,
         /* [retval, out] */__x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveError * * value
         );
@@ -32077,7 +31925,7 @@ HRESULT ( STDMETHODCALLTYPE *GetTrustLevel )(
     );
 HRESULT ( STDMETHODCALLTYPE *CreateInstance )(
         __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWarningFactory * This,
-        /* [in] */__x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CWarningStatusCode statusCode,
+        /* [in] */enum __x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CWarningStatusCode statusCode,
         /* [in] */HSTRING message,
         /* [retval, out] */__x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWarning * * value
         );
@@ -32139,8 +31987,6 @@ EXTERN_C const IID IID___x_ABI_CAdaptiveCards_CObjectModel_CWinUI3_CIAdaptiveWar
 #define RUNTIMECLASS_AdaptiveCards_ObjectModel_WinUI3_AdaptiveWarning_DEFINED
 extern const __declspec(selectany) _Null_terminated_ WCHAR RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveWarning[] = L"AdaptiveCards.ObjectModel.WinUI3.AdaptiveWarning";
 #endif
-
-
 
 
 #endif // defined(__cplusplus)

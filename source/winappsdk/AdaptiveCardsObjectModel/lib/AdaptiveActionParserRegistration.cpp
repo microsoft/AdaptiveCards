@@ -11,6 +11,7 @@
 #include "AdaptiveOpenUrlActionParser.h"
 #include "AdaptiveToggleVisibilityActionParser.h"
 #include "AdaptiveExecuteActionParser.h"
+#include "windows.ui.xaml.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

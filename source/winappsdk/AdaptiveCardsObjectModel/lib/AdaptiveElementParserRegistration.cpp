@@ -23,6 +23,7 @@
 #include "CustomElementWrapper.h"
 #include "ObjectModelUtil.h"
 #include "Vector.h"
+#include "windows.ui.xaml.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
