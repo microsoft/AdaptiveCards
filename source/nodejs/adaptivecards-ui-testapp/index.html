@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Adaptive Cards UI TestApp</title>
+
+		<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
+
+		<script type="text/javascript">
+
+		window.onload = function(){
+			// Author a card
+			// In practice you'll probably get this from a service
+			// see http://adaptivecards.io/samples/ for inspiration
+			var card = {
+				"type": "AdaptiveCard",
+				"version": "1.0",
+				"body": [
+					{
+						"type": "Image",
+						"url": "http://adaptivecards.io/content/adaptive-card-50.png"
+					},
+					{
+						"type": "TextBlock",
+						"text": "Hello **Adaptive Cards!**"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.OpenUrl",
+						"title": "Learn more",
+						"url": "http://adaptivecards.io"
+					},
+					{
+						"type": "Action.OpenUrl",
+						"title": "GitHub",
+						"url": "http://github.com/Microsoft/AdaptiveCards"
+					}
+				]
+			};
+
+
+			var hosts = ACUITestApp.defaultMicrosoftHosts;
+
+			// Create an AdaptiveCard instance
+			var adaptiveCard = new ACUITestApp.AdaptiveCard();
+
+			// Set its hostConfig property unless you want to use the default Host Config
+			// Host Config defines the style and behavior of a card
+			adaptiveCard.hostConfig = new ACUITestApp.HostConfig({
+				fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
+				// More host config options
+			});
+
+			// Set the adaptive card's event handlers. onExecuteAction is invoked
+			// whenever an action is clicked in the card
+			adaptiveCard.onExecuteAction = function(action) { alert("Ow!"); }
+
+			// For markdown support you need a third-party library
+			// E.g., to use markdown-it, include in your HTML page:
+			//
+			// And add this code to replace the default markdown handler:
+			//     AdaptiveCards.AdaptiveCard.onProcessMarkdown = function (text, result) {
+			//         result.outputHtml = markdownit().render(text);
+			//         result.didProcess = true;
+			//     };
+
+			// Parse the card payload
+			adaptiveCard.parse(card);
+
+			// Render the card to an HTML element:
+			var renderedCard = adaptiveCard.render();
+
+			// And finally insert it somewhere in your page:
+			var bdy = document.body;
+
+			bdy.appendChild(renderedCard);
+		}
+
+		</script>
+
+    </head>
+    <body>
+        <h1>Adaptive Cards UI Test App</h1>
+		<p>To run tests see the <a href="./README.md">README file</a></p>
+
+		<div id="renderedCardDiv"></div>
+
+	</body>
+
+</html>

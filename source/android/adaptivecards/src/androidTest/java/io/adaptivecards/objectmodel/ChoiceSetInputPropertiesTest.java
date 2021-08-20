@@ -1,6 +1,6 @@
 package io.adaptivecards.objectmodel;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class ChoiceSetInputPropertiesTest
@@ -102,6 +102,22 @@ public class ChoiceSetInputPropertiesTest
             ChoiceSetInput parsedChoiceSetInput = TestUtil.castToChoiceSetInput(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals(ChoiceSetStyle.Expanded, parsedChoiceSetInput.GetChoiceSetStyle());
         }
+    }
+
+    @Test
+    public void ChoiceSetStyleFilteredTest() throws Exception
+    {
+        final String inputChoiceSetFilteredStyle =
+            "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+            "\"id\":\"id\",\"style\":\"Filtered\",\"type\":\"Input.ChoiceSet\"}\n";
+
+        ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
+        choiceSetInput.SetChoiceSetStyle(ChoiceSetStyle.Filtered);
+        Assert.assertEquals(inputChoiceSetFilteredStyle, choiceSetInput.Serialize());
+
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputChoiceSetFilteredStyle), "1.0");
+        ChoiceSetInput parsedChoiceSetInput = TestUtil.castToChoiceSetInput(result.GetAdaptiveCard().GetBody().get(0));
+        Assert.assertEquals("", parsedChoiceSetInput.GetValue());
     }
 
     @Test

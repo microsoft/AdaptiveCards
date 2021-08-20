@@ -11,7 +11,6 @@
 #include "AdaptiveFontTypeDefinition.h"
 #include "AdaptiveFontTypesDefinition.h"
 #include "AdaptiveFontWeightsConfig.h"
-#include "AdaptiveHeadingsConfig.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
@@ -21,6 +20,9 @@
 #include "AdaptiveMediaConfig.h"
 #include "AdaptiveSeparatorConfig.h"
 #include "AdaptiveSpacingConfig.h"
+#include "AdaptiveTableConfig.h"
+#include "AdaptiveTextBlockConfig.h"
+#include "AdaptiveTextStylesConfig.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
@@ -95,7 +97,13 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.GetImage()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaConfig>(m_media.GetAddressOf(), sharedHostConfig.GetMedia()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputsConfig>(m_inputs.GetAddressOf(), sharedHostConfig.GetInputs()));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHeadingsConfig>(m_headings.GetAddressOf(), sharedHostConfig.GetHeadings()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextBlockConfig>(m_textBlock.GetAddressOf(), sharedHostConfig.GetTextBlock()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTextStylesConfig>(m_textStyles.GetAddressOf(), sharedHostConfig.GetTextStyles()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveTableConfig>(m_table.GetAddressOf(), sharedHostConfig.GetTable()));
+
+        m_overflowMaxActions = false;
+        RETURN_IF_FAILED(m_overflowButtonText.Set(L"..."));
+        RETURN_IF_FAILED(m_overflowButtonAccessibilityText.Set(L"More Actions"));
 
         return S_OK;
     }
@@ -266,15 +274,58 @@ namespace AdaptiveCards::Rendering::Uwp
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_Headings(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHeadingsConfig** headingsConfig)
+    HRESULT AdaptiveHostConfig::get_TextBlock(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlockConfig** textBlockConfig)
     {
-        return m_headings.CopyTo(headingsConfig);
+        return m_textBlock.CopyTo(textBlockConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_Headings(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHeadingsConfig* headingsConfig)
+    HRESULT AdaptiveHostConfig::put_TextBlock(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextBlockConfig* textBlockConfig)
     {
-        m_headings = headingsConfig;
+        m_textBlock = textBlockConfig;
         return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_Table(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig** tableConfig)
+    {
+        return m_table.CopyTo(tableConfig);
+    }
+
+    HRESULT AdaptiveHostConfig::put_Table(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTableConfig* tableConfig)
+    {
+        m_table = tableConfig;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_OverflowMaxActions(_Out_ boolean* overflowMaxActions)
+    {
+        *overflowMaxActions = m_overflowMaxActions;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::put_OverflowMaxActions(boolean overflowMaxActions)
+    {
+        m_overflowMaxActions = overflowMaxActions;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_OverflowButtonText(_Outptr_ HSTRING* overflowButtonText)
+    {
+        return m_overflowButtonText.CopyTo(overflowButtonText);
+    }
+
+    HRESULT AdaptiveHostConfig::put_OverflowButtonText(_In_ HSTRING overflowButtonText)
+    {
+        return m_overflowButtonText.Set(overflowButtonText);
+    }
+
+    HRESULT AdaptiveHostConfig::get_OverflowButtonAccessibilityText(_Outptr_ HSTRING* overflowButtonAccessibilityText)
+    {
+        return m_overflowButtonAccessibilityText.CopyTo(overflowButtonAccessibilityText);
+    }
+
+    HRESULT AdaptiveHostConfig::put_OverflowButtonAccessibilityText(_In_ HSTRING overflowButtonAccessibilityText)
+    {
+        return m_overflowButtonAccessibilityText.Set(overflowButtonAccessibilityText);
     }
 
     HRESULT AdaptiveHostConfig::get_FontTypes(_COM_Outptr_ IAdaptiveFontTypesDefinition** value)
@@ -285,6 +336,17 @@ namespace AdaptiveCards::Rendering::Uwp
     HRESULT AdaptiveHostConfig::put_FontTypes(_In_ IAdaptiveFontTypesDefinition* value)
     {
         m_fontTypes = value;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_TextStyles(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStylesConfig** textStylesConfig)
+    {
+        return m_textStyles.CopyTo(textStylesConfig);
+    }
+
+    HRESULT AdaptiveHostConfig::put_TextStyles(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextStylesConfig* textStylesConfig)
+    {
+        m_textStyles = textStylesConfig;
         return S_OK;
     }
 }

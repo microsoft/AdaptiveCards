@@ -60,7 +60,7 @@ class PredictCard:
                     object_json["ymin"] = ymin
                     object_json["xmax"] = xmax
                     object_json["ymax"] = ymax
-                    object_json["coords"] = (xmin, ymin, xmax, ymax)
+                    object_json["coordinates"] = (xmin, ymin, xmax, ymax)
                     object_json["score"] = scores[i]
                     object_json["uuid"] = str(uuid.uuid4())
                     object_json["class"] = classes[i]
@@ -100,7 +100,7 @@ class PredictCard:
                 collect_prop, design_object.get("object")
             )
             property_element = property_object(
-                pil_image, design_object.get("coords")
+                pil_image, design_object.get("coordinates")
             )
             design_object.update(property_element)
         design_objects = classify_font_weights(design_objects)
@@ -108,6 +108,7 @@ class PredictCard:
         # queue in-order to retrieve the value after the process finishes.
         if queue:
             queue.put(design_objects)
+        return design_objects
 
     def main(self, image=None, card_format=None):
         """
@@ -186,11 +187,11 @@ class PredictCard:
 
         # Collect the objects along with its design properites
 
-        json_objects, detected_coords = self.collect_objects(
+        predicted_objects, detected_coords = self.collect_objects(
             output_dict=prediction, pil_image=image
         )
         # Remove overlapping rcnn objects
-        bbox_utils.remove_noise_objects(json_objects)
+        bbox_utils.remove_noise_objects(predicted_objects)
 
         # Arrange the design elements
         return_dict = {}.fromkeys(["card_json"], "")
@@ -201,9 +202,14 @@ class PredictCard:
             "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         }
 
-        card_layout = row_column_group.generate_card_layout(
-            json_objects, image, self
-        )
+        if config.MULTI_PROC:
+            card_layout = row_column_group.generate_card_layout_multi(
+                predicted_objects, image, self
+            )
+        else:
+            card_layout = row_column_group.generate_card_layout_seq(
+                predicted_objects, image, self
+            )
         body = adaptive_card_export.export_to_card(card_layout, image)
 
         # if format==template - generate template data json

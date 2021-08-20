@@ -3,7 +3,6 @@
 #include "pch.h"
 
 #include <cmath>
-#include "AdaptiveBackgroundImage.h"
 #include "TileControl.h"
 #include "XamlHelpers.h"
 
@@ -37,8 +36,8 @@ namespace AdaptiveCards::Rendering::Uwp
 
         // initialize members
         m_containerElement =
-            XamlHelpers::CreateXamlClass<ICanvas>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas));
-        m_brushXaml = XamlHelpers::CreateXamlClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
+            XamlHelpers::CreateABIClass<ICanvas>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Canvas));
+        m_brushXaml = XamlHelpers::CreateABIClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
 
         // Add m_containerElement to content of ContentControl
         ComPtr<IInspectable> content;
@@ -167,7 +166,7 @@ namespace AdaptiveCards::Rendering::Uwp
         rect->Width = m_containerSize.Width;
         rect->Height = m_containerSize.Height;
 
-        ComPtr<IRectangleGeometry> clip = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateXamlClass<IRectangleGeometry>(
+        ComPtr<IRectangleGeometry> clip = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateABIClass<IRectangleGeometry>(
             HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry));
         RETURN_IF_FAILED(clip->put_Rect(*rect));
 
@@ -263,7 +262,7 @@ namespace AdaptiveCards::Rendering::Uwp
             // instanciate all elements not created yet
             for (int x{}; x < (numberSpriteToInstanciate - count); x++)
             {
-                ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateXamlClass<IRectangle>(
+                ComPtr<IRectangle> rectangle = AdaptiveCards::Rendering::Uwp::XamlHelpers::CreateABIClass<IRectangle>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
 
                 ComPtr<IUIElement> rectangleAsUIElement;

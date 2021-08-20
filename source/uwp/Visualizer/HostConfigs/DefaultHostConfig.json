@@ -49,6 +49,7 @@
 	"containerStyles": {
 		"default": {
 			"backgroundColor": "#FFFFFF",
+			"borderColor": "#000000",
 			"foregroundColors": {
 				"default": {
 					"default": "#000000",
@@ -74,6 +75,7 @@
 		},
 		"emphasis": {
 			"backgroundColor": "#F9F9F9",
+			"borderColor": "#c6c6c6",
 			"foregroundColors": {
 				"default": {
 					"default": "#000000",
@@ -99,6 +101,7 @@
 		},
 		"accent": {
 			"backgroundColor": "#C7DEF9",
+			"borderColor": "#779ac4",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -132,6 +135,7 @@
 		},
 		"good": {
 			"backgroundColor": "#CCFFCC",
+			"borderColor": "#699469",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -165,6 +169,7 @@
 		},
 		"attention": {
 			"backgroundColor": "#FFC5B2",
+			"borderColor": "#98310f",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -198,6 +203,7 @@
 		},
 		"warning": {
 			"backgroundColor": "#FFE2B2",
+			"borderColor": "#a7731e",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -286,6 +292,25 @@
 			"spacing": "small",
 			"size": "small",
 			"weight": "lighter"
+		}
+	},
+	"textBlock": {
+		"headingLevel": 2
+	},
+	"textStyles": {
+		"heading": {
+			"size": "large",
+			"weight": "bolder",
+			"color": "default",
+			"isSubtle": false,
+			"fontType": "default"
+		},
+		"columnHeader": {
+			"size": "large",
+			"weight": "bolder",
+			"color": "default",
+			"isSubtle": false,
+			"fontType": "default"
 		}
 	}
 }

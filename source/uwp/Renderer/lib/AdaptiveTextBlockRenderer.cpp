@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveTextBlock.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveRenderContext.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "TextHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -46,13 +45,13 @@ namespace AdaptiveCards::Rendering::Uwp
         if (text.Get() == nullptr)
         {
             *textBlockControl = nullptr;
-            renderContext->AddError(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode::RequiredPropertyMissing,
+            renderContext->AddError(ABI::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode::RequiredPropertyMissing,
                                     HStringReference(L"Required property, \"text\", is missing from TextBlock").Get());
             return S_OK;
         }
 
         ComPtr<ITextBlock> xamlTextBlock =
-            XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
 
         ComPtr<IAdaptiveTextElement> adaptiveTextElement;
         RETURN_IF_FAILED(adaptiveTextBlock.As(&adaptiveTextElement));
@@ -62,7 +61,49 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(xamlTextBlock->get_Inlines(&inlines));
 
-        RETURN_IF_FAILED(SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, false, inlines.Get()));
+        // Check if this text block has a style and if so apply the appropriate styling from the host config
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle textStyle = ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle::Default;
+
+        ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle>> textStyleRef;
+        RETURN_IF_FAILED(adaptiveTextBlock->get_Style(&textStyleRef));
+
+        if (textStyleRef == nullptr)
+        {
+            // If there's no style on the text block, check the renderContext to see if we inherit one from our parent
+            RETURN_IF_FAILED(renderContext->get_TextStyle(&textStyleRef));
+        }
+
+        if (textStyleRef != nullptr)
+        {
+            RETURN_IF_FAILED(textStyleRef->get_Value(&textStyle));
+        }
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IAdaptiveTextStylesConfig> textStylesConfig;
+        RETURN_IF_FAILED(hostConfig->get_TextStyles(&textStylesConfig));
+
+        if (textStyle == ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle::Heading)
+        {
+            ComPtr<IAdaptiveTextStyleConfig> headingTextStyleConfig;
+            RETURN_IF_FAILED(textStylesConfig->get_Heading(&headingTextStyleConfig));
+
+            RETURN_IF_FAILED(SetXamlInlinesWithTextStyleConfig(
+                adaptiveTextElement.Get(), renderContext, renderArgs, headingTextStyleConfig.Get(), xamlTextBlock.Get()));
+        }
+        else if (textStyle == ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle::ColumnHeader)
+        {
+            ComPtr<IAdaptiveTextStyleConfig> columnHeaderTextStyleConfig;
+            RETURN_IF_FAILED(textStylesConfig->get_ColumnHeader(&columnHeaderTextStyleConfig));
+
+            RETURN_IF_FAILED(SetXamlInlinesWithTextStyleConfig(
+                adaptiveTextElement.Get(), renderContext, renderArgs, columnHeaderTextStyleConfig.Get(), xamlTextBlock.Get()));
+        }
+        else
+        {
+            RETURN_IF_FAILED(SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, false, inlines.Get()));
+        }
 
         // Ensure left edge of text is consistent regardless of font size, so both small and large fonts
         // are flush on the left edge of the card by enabling TrimSideBearings
@@ -76,10 +117,7 @@ namespace AdaptiveCards::Rendering::Uwp
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.TextBlock", frameworkElement.Get()));
 
         // If this text block has a heading style, set the corresponding automation property
-        ABI::AdaptiveCards::Rendering::Uwp::TextStyle textStyle;
-        RETURN_IF_FAILED(adaptiveTextBlock->get_Style(&textStyle));
-
-        if (textStyle == ABI::AdaptiveCards::Rendering::Uwp::TextStyle::Heading)
+        if (textStyle == ABI::AdaptiveCards::ObjectModel::Uwp::TextStyle::Heading)
         {
             ComPtr<IDependencyObject> textBlockAsDependencyObject;
             RETURN_IF_FAILED(xamlTextBlock.As(&textBlockAsDependencyObject));
@@ -103,30 +141,17 @@ namespace AdaptiveCards::Rendering::Uwp
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextBlockRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveTextBlock, AdaptiveCards::TextBlock, AdaptiveCards::TextBlockParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-    }
-    CATCH_RETURN;
-
     HRESULT AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                                                   ABI::Windows::UI::Xaml::Automation::Peers::AutomationHeadingLevel* headingLevel)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        ComPtr<IAdaptiveHeadingsConfig> headingConfig;
-        RETURN_IF_FAILED(hostConfig->get_Headings(&headingConfig));
+        ComPtr<IAdaptiveTextBlockConfig> textBlockConfig;
+        RETURN_IF_FAILED(hostConfig->get_TextBlock(&textBlockConfig));
 
         unsigned int levelInt;
-        RETURN_IF_FAILED(headingConfig->get_Level(&levelInt));
+        RETURN_IF_FAILED(textBlockConfig->get_HeadingLevel(&levelInt));
 
         switch (levelInt)
         {

@@ -37,8 +37,8 @@
 			]
 		},
 		"horizontalAlignment": {
-			"type": "HorizontalAlignment",
-			"description": "Controls the horizontal alignment of the ColumnSet."
+			"type": "HorizontalAlignment?",
+			"description": "Controls the horizontal alignment of the ColumnSet. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
 		}
 	}
 }

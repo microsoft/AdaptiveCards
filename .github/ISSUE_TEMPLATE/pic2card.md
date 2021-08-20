@@ -2,8 +2,9 @@
 name: Pic2Card bug report
 about: Create a bug report related to the pic2card functionality
 title: "[Pic2Card] <Bug Title>"
-labels: 'Bug, Pic2Card'
+labels: Bug, Pic2Card
 assignees: haridas
+
 ---
 
 ## Details

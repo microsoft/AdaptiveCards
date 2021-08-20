@@ -26,11 +26,11 @@ namespace AdaptiveCards
         const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& GetCells() const;
         void SetCells(const std::vector<std::shared_ptr<AdaptiveCards::TableCell>>& value);
 
-        VerticalAlignment GetVerticalCellContentAlignment() const;
-        void SetVerticalCellContentAlignment(VerticalAlignment value);
+        std::optional<VerticalContentAlignment> GetVerticalCellContentAlignment() const;
+        void SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value);
 
-        HorizontalAlignment GetHorizontalCellContentAlignment() const;
-        void SetHorizontalCellContentAlignment(HorizontalAlignment value);
+        std::optional<HorizontalAlignment> GetHorizontalCellContentAlignment() const;
+        void SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value);
 
         ContainerStyle GetStyle() const;
         void SetStyle(const ContainerStyle value);
@@ -40,8 +40,8 @@ namespace AdaptiveCards
 
         ContainerStyle m_style;
 
-        HorizontalAlignment m_horizontalCellContentAlignment;
-        VerticalAlignment m_verticalCellContentAlignment;
+        std::optional<HorizontalAlignment> m_horizontalCellContentAlignment;
+        std::optional<VerticalContentAlignment> m_verticalCellContentAlignment;
 
         std::vector<std::shared_ptr<AdaptiveCards::TableCell>> m_cells;
         std::optional<bool> m_rtl;

@@ -6,7 +6,9 @@
 
 using namespace AdaptiveCards;
 
-CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
+CollectionTypeElement::CollectionTypeElement(CardElementType type,
+                                             ContainerStyle style,
+                                             std::optional<VerticalContentAlignment> alignment) :
     BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment),
     m_bleedDirection(ContainerBleedDirection::BleedAll), m_minHeight(0), m_hasPadding(false), m_hasBleed(false), m_parentalId()
 {
@@ -22,12 +24,12 @@ void CollectionTypeElement::SetStyle(const ContainerStyle value)
     m_style = value;
 }
 
-VerticalContentAlignment CollectionTypeElement::GetVerticalContentAlignment() const
+std::optional<VerticalContentAlignment> CollectionTypeElement::GetVerticalContentAlignment() const
 {
     return m_verticalContentAlignment;
 }
 
-void CollectionTypeElement::SetVerticalContentAlignment(const VerticalContentAlignment value)
+void CollectionTypeElement::SetVerticalContentAlignment(const std::optional<VerticalContentAlignment> value)
 {
     m_verticalContentAlignment = value;
 }
@@ -145,10 +147,10 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
     }
 
-    if (GetVerticalContentAlignment() != VerticalContentAlignment::Top)
+    if (GetVerticalContentAlignment().has_value())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
-            VerticalContentAlignmentToString(GetVerticalContentAlignment());
+            VerticalContentAlignmentToString(GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top));
     }
 
     if (GetBleed())

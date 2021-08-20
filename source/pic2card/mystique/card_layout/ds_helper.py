@@ -4,7 +4,8 @@ the layout generation"""
 
 from typing import List, Tuple, Dict, Union
 
-from .objects_group import ImageGrouping
+import pandas as pd
+
 from .objects_group import ChoicesetGrouping
 
 
@@ -15,7 +16,7 @@ class DsHelper:
     """
 
     CONTAINERS = ["columnset", "imageset", "column", "choiceset"]
-    MERGING_CONTAINERS_LIST = ["imageset", "choiceset"]
+    MERGING_CONTAINERS_LIST = ["choiceset"]
 
     def __init__(self):
 
@@ -44,7 +45,7 @@ class DsHelper:
                 for prop in properties
                 if prop.get("uuid", "") == design_object.get("uuid")
             ][0]
-            extracted_properties.pop("coords")
+            extracted_properties.pop("coordinates")
             design_object.update(extracted_properties)
 
         elif isinstance(design_object, list):
@@ -112,11 +113,14 @@ class DsHelper:
         @param card_layout: adaptive card body
         @return: debugging data-structure format
         """
-        y_minimum_final = [c.get("coordinates")[1] for c in card_layout]
         card_layout = [
             value
             for _, value in sorted(
-                zip(y_minimum_final, card_layout), key=lambda value: value[0]
+                zip(
+                    list(zip(*pd.DataFrame(card_layout)["coordinates"]))[1],
+                    card_layout,
+                ),
+                key=lambda value: value[0],
             )
         ]
 
@@ -126,7 +130,7 @@ class DsHelper:
         return self.serialized_layout
 
     def add_element_to_ds(
-        self, element_type: str, card_layout: List, element=None
+        self, element_type: str, card_layout: List, element=None, coords=None
     ) -> None:
         """
         Adds the design element structure to the layout data structure.
@@ -140,6 +144,8 @@ class DsHelper:
         element_structre = element_structure_object(element)
         if element_structre not in card_layout:
             card_layout.append(element_structure_object(element))
+            if coords:
+                card_layout[-1].update({"coordinates": coords})
 
     # pylint: disable=no-self-use
     def build_container_coordinates(self, coordinates: List) -> Tuple:
@@ -271,7 +277,7 @@ class DsDesignTemplate:
             "data": design_element.get("data", ""),
             "class": design_element.get("class", ""),
             "uuid": design_element.get("uuid"),
-            "coordinates": design_element.get("coords", ()),
+            "coordinates": design_element.get("coordinates", ()),
         }
 
     # pylint: disable=no-self-use, unused-argument
@@ -313,6 +319,7 @@ class DsDesignTemplate:
         return {"choiceset": {"items": []}, "object": "choiceset"}
 
 
+# pylint: disable=too-few-public-methods
 class ContainerTemplate:
     """
     Class to handle different container groupings other than columnset and
@@ -320,27 +327,6 @@ class ContainerTemplate:
     - Handles the functionalies needed for different type of container
     groupings.
     """
-
-    def imageset(
-        self, card_layout: List[Dict], containers_group_object
-    ) -> List[Dict]:
-        """
-        Groups and returns the layout structure with the respective image-sets
-        @param card_layout: Un-grouped layout structure.
-        @param containers_group_object: ContainerGroup object
-        @return: Grouped layout structure
-        """
-        image_grouping = ImageGrouping(self)
-        condition = image_grouping.imageset_condition
-        containers_group_object.merge_column_items(
-            card_layout, 5, "imageset", image_grouping, condition, 0
-        )
-        items, _ = containers_group_object.collect_items_for_container(
-            card_layout, 5
-        )
-        return containers_group_object.add_merged_items(
-            items, card_layout, "imageset", image_grouping, condition
-        )
 
     def choiceset(
         self, card_layout: List[Dict], containers_group_object
@@ -353,14 +339,19 @@ class ContainerTemplate:
         """
         choice_grouping = ChoicesetGrouping(self)
         condition = choice_grouping.choiceset_condition
-        containers_group_object.merge_column_items(
-            card_layout, 2, "choiceset", choice_grouping, condition, 1
-        )
+        merging_payload = {
+            "object_class": 2,
+            "grouping_type": "choiceset",
+            "grouping_object": choice_grouping,
+            "grouping_condition": condition,
+            "order_key": 1,
+        }
+        containers_group_object.merge_column_items(card_layout, merging_payload)
         items, _ = containers_group_object.collect_items_for_container(
             card_layout, 2
         )
         return containers_group_object.add_merged_items(
-            items, card_layout, "choiceset", choice_grouping, condition
+            items, card_layout, merging_payload
         )
 
 

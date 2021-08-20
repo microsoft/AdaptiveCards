@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import androidx.fragment.app.FragmentManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -26,17 +25,25 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.widget.TooltipCompat;
+import androidx.fragment.app.FragmentManager;
+
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
-
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.SubmitAction;
+import io.adaptivecards.objectmodel.TextInput;
+import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -44,14 +51,9 @@ import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-
 import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.TextInput;
-import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.TextInputStyle;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.readonly.ContainerRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
@@ -194,6 +196,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             boolean hasSpecificValidation)
     {
         EditText editText = null;
+        TextInput textInput = Util.tryCastTo(baseInputElement, TextInput.class);
 
         if (baseInputElement.GetIsRequired() || hasSpecificValidation)
         {
@@ -202,7 +205,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
         else
         {
             editText = new EditText(context);
-            editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            // if the Input.Text element is multiline with height "Stretch" change height to match the parent container
+            int editTextHeight = (textInput != null && baseInputElement.GetHeight() == HeightType.Stretch && textInput.GetIsMultiline()) ?
+                ViewGroup.LayoutParams.MATCH_PARENT :
+                ViewGroup.LayoutParams.WRAP_CONTENT;
+
+            editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, editTextHeight));
             // editText.addTextChangedListener(new UnvalidatedTextWatcher(textInputHandler));
         }
 
@@ -242,10 +251,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         LinearLayout textInputViewGroup = null;
 
-        if (baseInputElement instanceof TextInput)
+        if (textInput != null)
         {
-            TextInput textInput = (TextInput) baseInputElement;
-
             BaseActionElement action = textInput.GetInlineAction();
 
             if (action != null)
@@ -281,6 +288,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
+                        inlineButton.setEnabled(action.GetIsEnabled());
+
+                        ContainerRenderer.applyTitleAndTooltip(action, inlineButton);
 
                         InlineActionIconImageLoaderAsync imageLoader = new InlineActionIconImageLoaderAsync(
                             renderedCard,
@@ -314,7 +324,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setTextColor(Color.BLACK);
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
+
                         inlineButton.setText(title);
+                        inlineButton.setEnabled(action.GetIsEnabled());
+
+                        if (!TextUtils.isEmpty(action.GetTooltip()))
+                        {
+                            TooltipCompat.setTooltipText(inlineButton, action.GetTooltip());
+                        }
 
                         if (Util.isOfType(action, ExecuteAction.class) || Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
                         {
@@ -382,7 +399,16 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         if (textInput.GetIsMultiline())
         {
-            editText.setLines(3);
+            // If the Input.Text has to stretch then don't limit the number of lines,
+            // otherwise default to 3 lines
+            if (textInput.GetHeight() == HeightType.Stretch)
+            {
+                editText.setMinLines(3);
+            }
+            else
+            {
+                editText.setLines(3);
+            }
 
             // Solution taken from here: https://stackoverflow.com/questions/6123973/android-edittext-vertical-scrolling-problem
             editText.setOnTouchListener(new EditTextTouchListener(editText));

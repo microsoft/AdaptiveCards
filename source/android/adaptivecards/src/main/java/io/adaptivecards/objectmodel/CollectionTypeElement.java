@@ -51,12 +51,16 @@ public class CollectionTypeElement extends BaseCardElement {
     AdaptiveCardObjectModelJNI.CollectionTypeElement_SetStyle(swigCPtr, this, value.swigValue());
   }
 
-  public VerticalContentAlignment GetVerticalContentAlignment() {
-    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.CollectionTypeElement_GetVerticalContentAlignment(swigCPtr, this));
+  public @androidx.annotation.Nullable VerticalContentAlignment GetVerticalContentAlignment() {
+    StdOptionalVerticalContentAlignment optvalue = new StdOptionalVerticalContentAlignment(AdaptiveCardObjectModelJNI.CollectionTypeElement_GetVerticalContentAlignment(swigCPtr, this), false);
+    return optvalue.has_value() ? optvalue.value() : null;
   }
 
-  public void SetVerticalContentAlignment(VerticalContentAlignment value) {
-    AdaptiveCardObjectModelJNI.CollectionTypeElement_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
+  public void SetVerticalContentAlignment(@androidx.annotation.Nullable VerticalContentAlignment value) {
+    StdOptionalVerticalContentAlignment optvalue = (value == null) ? new StdOptionalVerticalContentAlignment() : new StdOptionalVerticalContentAlignment(value);
+    {
+      AdaptiveCardObjectModelJNI.CollectionTypeElement_SetVerticalContentAlignment(swigCPtr, this, StdOptionalVerticalContentAlignment.getCPtr(optvalue), optvalue);
+    }
   }
 
   public boolean GetPadding() {

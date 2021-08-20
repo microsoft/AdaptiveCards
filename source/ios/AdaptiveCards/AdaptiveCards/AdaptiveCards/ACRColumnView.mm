@@ -6,8 +6,17 @@
 //
 
 #import "ACRColumnView.h"
+#import "ACOVisibilityManager.h"
 
-@implementation ACRColumnView
+@implementation ACRColumnView {
+    ACOVisibilityManager *_visibilityManager;
+}
+
+- (void)setColumnWidth:(NSString *)columnWidth
+{
+    _columnWidth = columnWidth;
+    _visibilityManager.columnWidth = columnWidth;
+}
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
@@ -15,6 +24,7 @@
     [super config:attributes];
     self.isLastColumn = NO;
     self.inputHandlers = [[NSMutableArray<ACRIBaseInputHandler> alloc] init];
+    _visibilityManager = [[ACOVisibilityManager alloc] init];
 }
 
 - (void)addArrangedSubview:(UIView *)view
@@ -102,5 +112,23 @@
         }
     }];
 }
+
+- (void)hideView:(UIView *)view
+{
+    [_visibilityManager hideView:view arrangedSubviews:[self getContentStackSubviews]];
+}
+
+- (void)unhideView:(UIView *)view
+{
+    [_visibilityManager unhideView:view arrangedSubviews:[self getContentStackSubviews]];
+}
+
+- (UIView *)addPaddingSpace
+{
+    UIView *padding = [super addPaddingSpace];
+    _visibilityManager.padding = padding;
+    return padding;
+}
+
 
 @end

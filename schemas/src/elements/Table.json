@@ -1,0 +1,39 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+    "extends": "Element",
+    "description": "Provides a way to display data in a tabular form.",
+    "version": "1.5",
+    "properties": {
+        "columns": {
+            "type": "TableColumnDefinition[]",
+            "description": "Defines the number of columns in the table, their sizes, and more."
+        },
+        "rows": {
+            "type": "TableRow[]",
+            "description": "Defines the rows of the table."
+        },
+        "firstRowAsHeader": {
+            "type": "boolean",
+            "description": "Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.",
+            "default": true
+        },
+        "showGridLines": {
+            "type": "boolean",
+            "description": "Specifies whether grid lines should be displayed.",
+            "default": true
+        },
+        "gridStyle": {
+            "type": "ContainerStyle?",
+            "description": "Defines the style of the grid. This property currently only controls the grid's color.",
+            "default": "default"
+        },
+        "horizontalCellContentAlignment": {
+            "type": "HorizontalAlignment?",
+            "description": "Controls how the content of all cells is horizontally aligned by default. When not specified, horizontal alignment is defined on a per-cell basis."
+        },
+        "verticalCellContentAlignment": {
+            "type": "VerticalAlignment?",
+            "description": "Controls how the content of all cells is vertically aligned by default. When not specified, vertical alignment is defined on a per-cell basis."
+        }
+    }
+}

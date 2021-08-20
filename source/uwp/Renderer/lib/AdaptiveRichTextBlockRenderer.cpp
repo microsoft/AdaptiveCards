@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveRichTextBlock.h"
 #include "AdaptiveRichTextBlockRenderer.h"
 #include "AdaptiveRenderContext.h"
-#include "AdaptiveElementParserRegistration.h"
 #include "TextHelpers.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -35,14 +34,14 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         // Create the top level rich text block and set it's properties
         ComPtr<IRichTextBlock> xamlRichTextBlock =
-            XamlHelpers::CreateXamlClass<IRichTextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RichTextBlock));
+            XamlHelpers::CreateABIClass<IRichTextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RichTextBlock));
 
         ComPtr<IAdaptiveCardElement> localAdaptiveCardElement(cardElement);
         ComPtr<IAdaptiveRichTextBlock> adaptiveRichTextBlock;
         RETURN_IF_FAILED(localAdaptiveCardElement.As(&adaptiveRichTextBlock));
 
         // Set the horizontal Alingment
-        RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveRichTextBlock.Get(), xamlRichTextBlock.Get()));
+        RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveRichTextBlock.Get(), renderContext, xamlRichTextBlock.Get()));
 
         // Get the highlighters
         ComPtr<IRichTextBlock5> xamlRichTextBlock5;
@@ -56,7 +55,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(xamlRichTextBlock->get_Blocks(&xamlBlocks));
 
         ComPtr<IParagraph> xamlParagraph =
-            XamlHelpers::CreateXamlClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
+            XamlHelpers::CreateABIClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
 
         ComPtr<IBlock> paragraphAsBlock;
         RETURN_IF_FAILED(xamlParagraph.As(&paragraphAsBlock));
@@ -70,7 +69,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(adaptiveRichTextBlock->get_Inlines(&adaptiveInlines));
 
         UINT currentOffset = 0;
-        XamlHelpers::IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [&](IAdaptiveInline* adaptiveInline) {
+        IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [&](IAdaptiveInline* adaptiveInline) {
             // We only support TextRun inlines for now
             ComPtr<IAdaptiveInline> localInline(adaptiveInline);
             ComPtr<IAdaptiveTextRun> adaptiveTextRun;
@@ -78,6 +77,13 @@ namespace AdaptiveCards::Rendering::Uwp
 
             ComPtr<IAdaptiveActionElement> selectAction;
             RETURN_IF_FAILED(adaptiveTextRun->get_SelectAction(&selectAction));
+
+            boolean selectActionIsEnabled = false;
+            if (selectAction != nullptr)
+            {
+                // If the select action is disabled we won't render this as a link
+                RETURN_IF_FAILED(selectAction->get_IsEnabled(&selectActionIsEnabled));
+            }
 
             ComPtr<IAdaptiveTextElement> adaptiveTextElement;
             RETURN_IF_FAILED(localInline.As(&adaptiveTextElement));
@@ -95,11 +101,11 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(adaptiveTextRun->get_Underline(&isUnderline));
 
             UINT inlineLength;
-            if (selectAction != nullptr)
+            if (selectAction != nullptr && selectActionIsEnabled)
             {
                 // If there's a select action, create a hyperlink that triggers the action
                 ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
-                    XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
+                    XamlHelpers::CreateABIClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
                         HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
 
                 ComPtr<IAdaptiveActionInvoker> actionInvoker;
@@ -181,19 +187,6 @@ namespace AdaptiveCards::Rendering::Uwp
         });
 
         return xamlRichTextBlock.CopyTo(result);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveRichTextBlockRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveRichTextBlock, AdaptiveCards::RichTextBlock, AdaptiveCards::RichTextBlockParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

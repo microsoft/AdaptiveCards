@@ -127,6 +127,13 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
         ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, false);
     choiceSet->m_choices = std::move(choices);
 
+    if (choiceSet->GetIsMultiSelect() && choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Filtered)
+    {
+        context.warnings.emplace_back(
+            std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidValue,
+                                                       "Input.ChoiceSet does not support filtering with multiselect"));
+    }
+
     return choiceSet;
 }
 

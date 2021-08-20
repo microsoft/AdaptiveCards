@@ -61,9 +61,9 @@
         NSDictionary *descriptor = nil;
         NSString *text = nil;
 
-        if (![textMap objectForKey:key]) {
+        if (![textMap objectForKey:key] || rootView.context.isFirstRowAsHeaders) {
             RichTextElementProperties textProp;
-            TextBlockToRichTextElementProperties(txtBlck, textProp);
+            TexStylesToRichTextElementProperties(txtBlck, [acoConfig getHostConfig]->GetTextStyles().columnHeader, textProp);
             buildIntermediateResultForText(rootView, acoConfig, textProp, key);
         }
 
@@ -78,6 +78,9 @@
             content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
+
+            UpdateFontWithDynamicType(content);
+
             lab.selectable = YES;
             lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
             lab.userInteractionEnabled = YES;
@@ -85,18 +88,22 @@
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
         }
-        
+
         lab.textContainer.lineFragmentPadding = 0;
         lab.textContainerInset = UIEdgeInsetsZero;
         lab.layoutManager.usesFontLeading = false;
 
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment() context:rootView.context];
+        paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left) context:rootView.context];
+
+        auto sharedStyle = txtBlck->GetStyle();
+        auto backUpColor = sharedStyle.has_value() ? txtBlck->GetTextColor().value_or(config->GetTextStyles().heading.color) : txtBlck->GetTextColor().value_or(ForegroundColor::Default);
+        auto backUpIsSubtle = sharedStyle.has_value() ? txtBlck->GetIsSubtle().value_or(config->GetTextStyles().heading.isSubtle) : txtBlck->GetIsSubtle().value_or(false);
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
-        auto foregroundColor = [acoConfig getTextBlockColor:style textColor:txtBlck->GetTextColor() subtleOption:txtBlck->GetIsSubtle()];
+        auto foregroundColor = [acoConfig getTextBlockColor:style textColor:backUpColor subtleOption:backUpIsSubtle];
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
 
@@ -122,7 +129,7 @@
         lab.textContainer.maximumNumberOfLines = 1;
     }
 
-    if (txtBlck->GetStyle() == TextStyle::Heading) {
+    if (txtBlck->GetStyle() == TextStyle::Heading || rootView.context.isFirstRowAsHeaders) {
         lab.accessibilityTraits |= UIAccessibilityTraitHeader;
     }
 

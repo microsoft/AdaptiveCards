@@ -90,6 +90,8 @@
                                                                              options:options
                                                                   documentAttributes:nil
                                                                                error:nil];
+                    UpdateFontWithDynamicType(textRunContent);
+
                     lab.selectable = YES;
                     lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
                     lab.userInteractionEnabled = YES;
@@ -100,28 +102,30 @@
                 // Set paragraph style such as line break mode and alignment
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
                 paragraphStyle.alignment =
-                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()
+                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left)
                                                  context:rootView.context];
 
                 // Obtain text color to apply to the attributed string
                 ACRContainerStyle style = lab.style;
+                auto textColor = textRun->GetTextColor().value_or(ForegroundColor::Default);
                 auto foregroundColor = [acoConfig getTextBlockColor:style
-                                                          textColor:textRun->GetTextColor()
-                                                       subtleOption:textRun->GetIsSubtle()];
+                                                          textColor:textColor
+                                                       subtleOption:textRun->GetIsSubtle().value_or(false)];
 
                 // Config and add Select Action
                 std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
                 ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:baseAction];
-                if (baseAction) {
+                if (baseAction && [acoAction isEnabled]) {
                     NSObject *target;
                     if (ACRRenderingStatus::ACROk ==
                         buildTarget([rootView getSelectActionsTargetBuilderDirector], acoAction,
                                     &target)) {
-                        NSRange selectActionRange = NSMakeRange(0, textRunContent.length - 1);
+                        NSRange selectActionRange = NSMakeRange(0, textRunContent.length);
 
                         [textRunContent addAttribute:@"SelectAction"
                                                value:target
                                                range:selectActionRange];
+
                         [ACRLongPressGestureRecognizerFactory
                             addTapGestureRecognizerToUITextView:lab
                                                          target:(NSObject<ACRSelectActionDelegate>
@@ -129,20 +133,20 @@
                                                        rootView:rootView
                                                      hostConfig:acoConfig];
 
-                        [textRunContent addAttribute:NSUnderlineStyleAttributeName
-                                               value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
-                                               range:selectActionRange];
-                        [textRunContent addAttribute:NSUnderlineColorAttributeName
-                                               value:foregroundColor
-                                               range:selectActionRange];
+                        if (@available(iOS 13.0, *)) {
+                            foregroundColor = UIColor.linkColor;
+                        } else {
+                            // Fallback on earlier versions
+                            foregroundColor = [ACOHostConfig convertHexColorCodeToUIColor:"#007affff"];
+                        }
                     }
                 }
 
                 // apply hightlight to textrun
                 if (textRun->GetHighlight()) {
                     UIColor *highlightColor = [acoConfig getHighlightColor:style
-                                                           foregroundColor:textRun->GetTextColor()
-                                                              subtleOption:textRun->GetIsSubtle()];
+                                                           foregroundColor:textRun->GetTextColor().value_or(ForegroundColor::Default)
+                                                              subtleOption:textRun->GetIsSubtle().value_or(false)];
                     [textRunContent addAttribute:NSBackgroundColorAttributeName
                                            value:highlightColor
                                            range:NSMakeRange(0, textRunContent.length)];
@@ -185,7 +189,7 @@
 
     [viewGroup addArrangedSubview:lab];
 
-    HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment();
+    HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left);
 
     if (adaptiveAlignment == HorizontalAlignment::Left) {
         lab.textAlignment = NSTextAlignmentLeft;

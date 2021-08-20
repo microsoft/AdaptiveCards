@@ -1,0 +1,1430 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "ColumnSet vs Table - width weights: 1, 1, 3",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 1.1",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 1.2",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 3,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 1.3",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 2.1",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 2.2",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 2.3",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						}
+					]
+				}
+			],
+			"firstRowAsHeaders": false,
+			"showGridLines": false
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 3.1",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 3.2",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 3,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 3.3",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				}
+			],
+			"style": "accent",
+			"bleed": true
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 4.1",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 4.2",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 4.3",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						}
+					],
+					"style": "accent"
+				}
+			],
+			"firstRowAsHeaders": false,
+			"showGridLines": false
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 5.1",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 5.2",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 3,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 5.3",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				}
+			],
+			"style": "accent"
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 6.1",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 6.2",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 6.3",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						}
+					],
+					"style": "accent"
+				}
+			],
+			"firstRowAsHeaders": false,
+			"gridStyle": "accent"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 7.1",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 7.2",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					],
+					"separator": true
+				},
+				{
+					"type": "Column",
+					"width": 3,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 7.3",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					],
+					"separator": true
+				}
+			],
+			"style": "accent"
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 8.1",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 8.2",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "warning"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 8.3",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "attention"
+						}
+					]
+				}
+			],
+			"firstRowAsHeaders": false,
+			"gridStyle": "accent",
+			"showGridLines": false
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 9.1",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					],
+					"style": "accent"
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 9.2",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					],
+					"style": "warning"
+				},
+				{
+					"type": "Column",
+					"width": 3,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 9.3",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					],
+					"style": "attention"
+				}
+			]
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 10.1",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "accent",
+							"bleed": true
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 10.2",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "warning",
+							"bleed": true
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 10.3",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "attention",
+							"bleed": true
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 10.4",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 10.5",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "warning",
+							"bleed": true
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 10.6",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							],
+							"style": "attention",
+							"bleed": true
+						}
+					]
+				}
+			],
+			"firstRowAsHeaders": false,
+			"gridStyle": "accent",
+			"showGridLines": false
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 11.1",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					],
+					"style": "accent",
+					"bleed": true
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 11.2",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					],
+					"style": "warning",
+					"bleed": true
+				},
+				{
+					"type": "Column",
+					"width": 3,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 11.3",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					],
+					"style": "attention",
+					"bleed": true
+				}
+			]
+		},
+		{
+			"type": "Table",
+			"gridStyle": "accent",
+			"columns": [
+				{
+					"width": 1
+				},
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Name",
+									"wrap": true,
+									"weight": "Bolder"
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Type",
+									"wrap": true,
+									"weight": "Bolder"
+								}
+							],
+							"style": "accent"
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Description",
+									"wrap": true,
+									"weight": "Bolder"
+								}
+							]
+						}
+					],
+					"style": "accent"
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "columns",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "ColumnDefinition[]",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Defines ddsdsdsdsdsdsdasdasdthe table's columns (number of columns, and column sizes).",
+									"wrap": true
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "rows",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "TableRow[]",
+									"wrap": true
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "Defines the rows of the Table, each being a collection of cells. Rows are not required, which allows empty Tables to be generated via templating without breaking the rendering of the whole card.",
+									"wrap": true
+								}
+							]
+						}
+					]
+				}
+			],
+			"showGridLines": false
+		},
+		{
+			"type": "TextBlock",
+			"text": "ColumnSet vs Table - widths: 50px, weight 1, weight 3",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "50px",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 1.1",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 1.2",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 3,
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "H left",
+							"wrap": true,
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Col 1.3",
+							"wrap": true,
+							"horizontalAlignment": "Center",
+							"spacing": "None"
+						},
+						{
+							"type": "TextBlock",
+							"text": "right H",
+							"wrap": true,
+							"spacing": "None",
+							"horizontalAlignment": "Right"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Table",
+			"columns": [
+				{
+					"width": "50px"
+				},
+				{
+					"width": 1
+				},
+				{
+					"width": 3
+				}
+			],
+			"rows": [
+				{
+					"type": "TableRow",
+					"cells": [
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 2.1",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 2.2",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						},
+						{
+							"type": "TableCell",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "H left",
+									"wrap": true,
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "Cell 2.3",
+									"wrap": true,
+									"horizontalAlignment": "Center",
+									"spacing": "None"
+								},
+								{
+									"type": "TextBlock",
+									"text": "right H",
+									"wrap": true,
+									"spacing": "None",
+									"horizontalAlignment": "Right"
+								}
+							]
+						}
+					]
+				}
+			],
+			"firstRowAsHeaders": true,
+			"showGridLines": false
+		}
+	]
+}

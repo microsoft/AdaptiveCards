@@ -87,8 +87,28 @@ a.ac-anchor:visited:active {
     -ms-user-select: none;
     user-select: none;
     border: 1px solid #DDDDDD;
-		background-color: #FFFFFF;
-		color: #0063B1;
+	background-color: #FFFFFF;
+	color: #0063B1;
+}
+
+.ac-pushButton-disabled {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 10px 5px 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 31px;
+    border: 1px solid #EEEEEE;
+	background-color: #EEEEEE;
+	color: #666666;
 }
 
 .ac-pushButton:focus {
@@ -166,13 +186,10 @@ a.ac-anchor:visited:active {
     height: 72px;
 }
 
-.ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput {
-    height: 31px;
-}
-
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
     border: 1px solid #dddddd;
     padding: 4px 8px 4px 8px;
+    height: 31px;
 }
 
 /* ac-inlineActionButton should set height to the same as ac-input.ac-textInput */
@@ -208,6 +225,23 @@ a.ac-anchor:visited:active {
 
 .ac-inlineActionButton:active {
     background-color: #CCCCCC;
+}
+
+.ac-inlineActionButton-disabled {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: none;
+    background-color: transparent;
+    height: 31px;
 }
 
 /* Popup menu */
@@ -286,6 +320,18 @@ a.ac-anchor:visited:active {
     padding: 0px 12px 0px 12px;
     line-height: 30px;
     cursor: pointer;
+}
+  
+.ac-ctrl-dropdown-item-disabled {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    padding: 0px 12px 0px 12px;
+    line-height: 30px;
+    cursor: pointer;
+    color: #666666;
 }
   
 .ac-ctrl-dropdown-item:hover {
