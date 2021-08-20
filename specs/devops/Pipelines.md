@@ -44,9 +44,9 @@ These pipelines are run on the latest commit of `main` every night.
 They should build and publish a new nightly version of each visualizer app.
 
 * Pipelines -> Apps -> Android Visualizer
-	* Publishes to App Center
+	* Publishes to App Center ([Adaptive Cards Android Visualizer](https://appcenter.ms/orgs/Adaptive-Cards/apps/Adaptive-Cards-Android-Visualizer))
 * Pipelines -> Apps -> AdaptiveCards-iOS-Publish-App
-	* Publishes to App Center
+	* Publishes to App Center ([Adaptive Cards iOS Visualizer](https://appcenter.ms/orgs/Adaptive-Cards/apps/Adaptive-Cards-iOS-Visualizer))
 * Pipelines -> Apps -> WPF Visualizer Prerelease
 	* (only publishes as a Pipeline artifact)
 * Pipelines -> Apps -> UWP Visualizer Nightly-x86
