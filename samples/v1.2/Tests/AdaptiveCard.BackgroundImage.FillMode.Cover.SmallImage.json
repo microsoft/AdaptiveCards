@@ -3,7 +3,37 @@
 	"type" : "AdaptiveCard",
 	"version" : "1.0",
 	"body" :
-		[ 
+		[
+            {
+                "columns": [
+                    {
+                        "items": [
+                            {
+                                "size": "ExtraLarge",
+                                "text": "Trip to UAE",
+                                "type": "TextBlock",
+                                "wrap": true
+                            },
+                            {
+                                "size": "Small",
+                                "spacing": "Small",
+                                "color": "Accent",
+                                "weight": "Bolder",
+                                "type": "TextBlock",
+                                "text": "ER-13052"
+                            }
+                        ],
+                        "width": "stretch",
+                        "backgroundImage": {
+                            "url": "https://i.ibb.co/dK8gNM6/375132.png",
+                            "verticalAlignment": "Center",
+                            "horizontalAlignment": "Center"
+                        },
+                        "type": "Column"
+                    }
+                ],
+                "type": "ColumnSet"
+            },
 			{
 				"type" : "Container",
 				"items" : [
