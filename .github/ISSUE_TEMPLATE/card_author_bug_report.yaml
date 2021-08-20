@@ -9,6 +9,18 @@ body:
     attributes:
       label: Target Application
       description: "Please list the application(s) that the card you are authoring is targeting (ex: Microsoft Teams, Outlook, etc)"
+  - type: dropdown
+    validations:
+      required: true
+    attributes:
+      label: Application Operating System
+      description: The OS platform the application is on
+      options:
+        - Windows
+        - iOS
+        - Android
+        - Linux
+        - Other
   - type: input
     validations:
       required: true
@@ -20,7 +32,7 @@ body:
       required: true
     attributes:
       label: Problem Description
-      description: Please enter a description of the issue. If you just have a question, please post [on StackOverflow instead](https://stackoverflow.com/questions/tagged/adaptive-cards)
+      description: Please enter a description of the issue. If you just have a question, please post [on GitHub Discussions](https://github.com/microsoft/AdaptiveCards/discussions)
   - type: textarea
     validations:
       required: true

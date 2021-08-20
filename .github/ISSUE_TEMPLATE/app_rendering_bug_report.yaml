@@ -16,6 +16,7 @@ body:
         - Android
         - WPF
         - UWP
+        - Other
   - type: input
     validations:
       required: true
@@ -34,7 +35,7 @@ body:
       required: true
     attributes:
       label: Problem Description
-      description: Please enter a description of the issue. If you just have a question, please post [on StackOverflow instead](https://stackoverflow.com/questions/tagged/adaptive-cards)
+      description: Please enter a description of the issue. If you just have a question, please post [on GitHub Discussions](https://github.com/microsoft/AdaptiveCards/discussions)
   - type: textarea
     validations:
       required: false

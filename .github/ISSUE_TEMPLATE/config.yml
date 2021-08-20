@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Question
-    about: Please ask and answer usage questions on Stack Overflow.
-    url: "https://stackoverflow.com/questions/tagged/adaptive-cards"
+    about: Please ask questions on GitHub Discussions
+    url: "https://github.com/microsoft/AdaptiveCards/discussions"
