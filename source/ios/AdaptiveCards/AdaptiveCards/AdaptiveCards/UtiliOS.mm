@@ -25,6 +25,9 @@
 
 using namespace AdaptiveCards;
 
+// tolerance value for computing scaler for background cover size
+const CGFloat kACRScalerTolerance = 0.025f;
+
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
     if (!visibilityInfo->GetIsVisible()) {
@@ -216,11 +219,12 @@ void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targ
     } else if (isDeficientInHeight) {
         configWidthAndHeightAnchors(targetView, imageView, true);
     } else {
-        // constraint the background image to the container's width according to the spec
-        [imageView.widthAnchor constraintEqualToAnchor:targetView.widthAnchor].active = YES;
-        if (imageView.image.size.width > 0) {
-            [imageView.widthAnchor constraintEqualToAnchor:imageView.heightAnchor multiplier:imageView.image.size.height / imageView.image.size.width].active = YES;
-        }
+        // scale background image view to the minimum size that can still cover all of the target view.
+        CGRect newCoverRect = FindClosestRectToCover(CGRectMake(0, 0, sourceSize.width, sourceSize.height), targetView.frame);
+        NSArray<NSLayoutConstraint *> *constraints = @[ [imageView.widthAnchor constraintEqualToConstant:newCoverRect.size.width],
+                                                        [imageView.heightAnchor constraintEqualToConstant:newCoverRect.size.height] ];
+
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 }
 
@@ -1016,4 +1020,22 @@ id traverseResponderChainForUIViewController(UIView *view)
     } else {
         return nil;
     }
+}
+
+/// returns CGRect that covers target rect while maintaining the aspect ratio of coverRect
+CGRect FindClosestRectToCover(CGRect coverRect, CGRect targetRectToCover)
+{
+    // do binary search upto the tolerance value
+    CGFloat scalerLowBound = 0.0f, scalerHighBound = 1.0f, scalerMidPoint = 0.0f;
+    while (abs(scalerLowBound - scalerHighBound) > kACRScalerTolerance) {
+        scalerMidPoint = (scalerLowBound + scalerHighBound) / 2.0f;
+        CGFloat scaledWidth = coverRect.size.width * scalerMidPoint;
+        CGFloat scaledHeight = coverRect.size.height * scalerMidPoint;
+        if (scaledWidth > targetRectToCover.size.width && scaledHeight > targetRectToCover.size.height) {
+            scalerHighBound = scalerMidPoint;
+        } else {
+            scalerLowBound = scalerMidPoint;
+        }
+    }
+    return CGRectMake(0, 0, coverRect.size.width * scalerMidPoint, coverRect.size.height * scalerMidPoint);
 }

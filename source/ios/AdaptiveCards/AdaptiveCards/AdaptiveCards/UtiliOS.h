@@ -20,6 +20,8 @@
 
 using namespace AdaptiveCards;
 
+extern const CGFloat kACRScalerTolerance;
+
 // configures tag and initial visibility of the given view. Toggle visibility action
 // will access the view by the tag to change the visibility.
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo);
@@ -127,3 +129,5 @@ UIImage *scaleImageToSize(UIImage *image, CGSize newSize);
 NSNumber *iOSInternalIdHash(const std::size_t internalIdHash);
 
 id traverseResponderChainForUIViewController(UIView *view);
+
+CGRect FindClosestRectToCover(CGRect coverRect, CGRect targetRectToCover);
