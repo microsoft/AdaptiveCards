@@ -3,25 +3,24 @@
 #pragma once
 
 #include "DateInput.h"
+#include "AdaptiveDateInputParser.g.h"
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class AdaptiveDateInputParser
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser>
+    struct AdaptiveDateInputParser : AdaptiveDateInputParserT<AdaptiveDateInputParser>
     {
-        AdaptiveRuntime(AdaptiveDateInputParser);
+        AdaptiveDateInputParser() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP FromJson(
-            _In_ ABI::Windows::Data::Json::IJsonObject*,
-            _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration* elementParsers,
-            _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration* actionParsers,
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings,
-            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** element) noexcept override;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement FromJson(
+            winrt::Windows::Data::Json::JsonObject const& inputJson,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
+            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings);
     };
-
-    ActivatableClass(AdaptiveDateInputParser);
+}
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveDateInputParser : AdaptiveDateInputParserT<AdaptiveDateInputParser, implementation::AdaptiveDateInputParser>
+    {
+    };
 }

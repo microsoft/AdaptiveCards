@@ -79,30 +79,25 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         return m_sharedParserRegistration;
     }
 
-    template<typename D> auto MakeParser()
-    {
-        return MakeOrThrow<D>().as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser>();
-    }
-
     void AdaptiveElementParserRegistration::RegisterDefaultElementParsers()
     {
-        Set(L"ActionSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSetParser>());
-        Set(L"Column", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnParser>());
-        Set(L"ColumnSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnSetParser>());
-        Set(L"Container", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveContainerParser>());
-        Set(L"FactSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFactSetParser>());
-        Set(L"Image", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageParser>());
-        Set(L"ImageSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageSetParser>());
-        Set(L"Input.ChoiceSet", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInputParser>());
-        Set(L"Input.Date", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveDateInputParser>());
-        Set(L"Input.Number", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveNumberInputParser>());
-        Set(L"Input.Text", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInputParser>());
-        Set(L"Input.Time", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTimeInputParser>());
-        Set(L"Input.Toggle", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInputParser>());
-        Set(L"Media", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaParser>());
-        Set(L"RichTextBlock", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRichTextBlockParser>());
-        Set(L"Table", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableParser>());
-        Set(L"TextBlock", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextBlockParser>());
+        Set(L"ActionSet", *winrt::make_self<implementation::AdaptiveActionSetParser>());
+        Set(L"Column", *winrt::make_self<implementation::AdaptiveColumnParser>());
+        Set(L"ColumnSet", *winrt::make_self<implementation::AdaptiveColumnSetParser>());
+        Set(L"Container", *winrt::make_self<implementation::AdaptiveContainerParser>());
+        Set(L"FactSet", *winrt::make_self<implementation::AdaptiveFactSetParser>());
+        Set(L"Image", *winrt::make_self<implementation::AdaptiveImageParser>());
+        Set(L"ImageSet", *winrt::make_self<implementation::AdaptiveImageSetParser>());
+        Set(L"Input.ChoiceSet", *winrt::make_self<implementation::AdaptiveChoiceSetInputParser>());
+        Set(L"Input.Date", *winrt::make_self<implementation::AdaptiveDateInputParser>());
+        Set(L"Input.Number", *winrt::make_self<implementation::AdaptiveNumberInputParser>());
+        Set(L"Input.Text", *winrt::make_self<implementation::AdaptiveTextInputParser>());
+        Set(L"Input.Time", *winrt::make_self<implementation::AdaptiveTimeInputParser>());
+        Set(L"Input.Toggle", *winrt::make_self<implementation::AdaptiveToggleInputParser>());
+        Set(L"Media", *winrt::make_self<implementation::AdaptiveMediaParser>());
+        Set(L"RichTextBlock", *winrt::make_self<implementation::AdaptiveRichTextBlockParser>());
+        Set(L"Table", *winrt::make_self<implementation::AdaptiveTableParser>());
+        Set(L"TextBlock", *winrt::make_self<implementation::AdaptiveTextBlockParser>());
     }
 }
 

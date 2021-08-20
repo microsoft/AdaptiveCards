@@ -214,7 +214,6 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         column->SetBleed(m_bleed);
 
         auto adaptiveBackgroundImage = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveBackgroundImage>(m_backgroundImage);
-        std::shared_ptr<AdaptiveCards::BackgroundImage> sharedBackgroundImage;
         if (adaptiveBackgroundImage)
         {
             if (auto sharedBackgroundImage = adaptiveBackgroundImage->GetSharedModel())

@@ -148,7 +148,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle m_style;
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> m_verticalContentAlignment;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage> m_backgroundImage;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveBackgroundImage m_backgroundImage;
         UINT32 m_minHeight;
         boolean m_bleed;
         ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection m_bleedDirection;

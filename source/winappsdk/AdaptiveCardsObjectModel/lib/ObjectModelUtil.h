@@ -192,8 +192,8 @@ CATCH_RETURN;
 
 template<typename D, typename... Args> auto MakeOrThrow(Args&&... args)
 {
-    ComPtr<D> tempD;
-    THROW_IF_FAILED(MakeAndInitialize<D>(&tempD, std::forward<Args>(args)...));
+    Microsoft::WRL::ComPtr<D> tempD;
+    THROW_IF_FAILED(Microsoft::WRL::MakeAndInitialize<D>(&tempD, std::forward<Args>(args)...));
     return winrt::com_ptr<D>{tempD.Detach(), winrt::take_ownership_from_abi};
 }
 
@@ -327,9 +327,9 @@ winrt::com_ptr<D> peek_innards(I* o)
 }
 
 
-HRESULT SharedWarningsToAdaptiveWarnings(
-    const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings);
+void SharedWarningsToAdaptiveWarnings(
+    const std::vector<std::shared_ptr<::AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& toAddTo);
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>
 SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);

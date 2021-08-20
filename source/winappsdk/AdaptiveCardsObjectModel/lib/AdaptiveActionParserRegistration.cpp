@@ -70,16 +70,16 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
     template<typename D> auto MakeParser()
     {
-        return MakeOrThrow<D>().as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser>();
+        return winrt::make<D>().as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser>();
     }
 
     void AdaptiveActionParserRegistration::RegisterDefaultActionParsers()
     {
-        Set(L"Action.OpenUrl", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveOpenUrlActionParser>());
-        Set(L"Action.ShowCard", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveShowCardActionParser>());
-        Set(L"Action.Submit", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveSubmitActionParser>());
-        Set(L"Action.ToggleVisibility", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityActionParser>());
-        Set(L"Action.Execute", MakeParser<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveExecuteActionParser>());
+        Set(L"Action.OpenUrl", MakeParser<implementation::AdaptiveOpenUrlActionParser>());
+        Set(L"Action.ShowCard", MakeParser<implementation::AdaptiveShowCardActionParser>());
+        Set(L"Action.Submit", MakeParser<implementation::AdaptiveSubmitActionParser>());
+        Set(L"Action.ToggleVisibility", MakeParser<implementation::AdaptiveToggleVisibilityActionParser>());
+        Set(L"Action.Execute", MakeParser<implementation::AdaptiveExecuteActionParser>());
     }
 }
 

@@ -7,30 +7,16 @@
 #include "AdaptiveTableParser.h"
 #include "ObjectModelUtil.h"
 
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace Microsoft::WRL;
-using namespace Windows::Foundation;
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveTableParser::RuntimeClassInitialize() noexcept
-    try
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement AdaptiveTableParser::FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings)
     {
-        return S_OK;
+        return ::AdaptiveCards::ObjectModel::WinUI3::FromJson<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTable, ::AdaptiveCards::Table, ::AdaptiveCards::TableParser>(
+                   inputJson, elementParsers, actionParsers, warnings)
+            .as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>();
     }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveTableParser::FromJson(_In_ IJsonObject* jsonObject,
-                                            _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
-                                            _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
-                                            _In_ IVector<AdaptiveWarning*>* adaptiveWarnings,
-                                            _COM_Outptr_ IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::ObjectModel::WinUI3::FromJson<AdaptiveCards::ObjectModel::WinUI3::AdaptiveTable, AdaptiveCards::Table, AdaptiveCards::TableParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-    }
-    CATCH_RETURN;
 }

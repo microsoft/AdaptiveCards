@@ -3,24 +3,24 @@
 #pragma once
 
 #include "Column.h"
+#include "AdaptiveColumnParser.g.h"
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class AdaptiveColumnParser
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser>
+    struct AdaptiveColumnParser : AdaptiveColumnParserT<AdaptiveColumnParser>
     {
-        AdaptiveRuntime(AdaptiveColumnParser);
+        AdaptiveColumnParser() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP FromJson(ABI::Windows::Data::Json::IJsonObject*,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration* elementParsers,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration* actionParsers,
-                                ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** element) noexcept override;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement FromJson(
+            winrt::Windows::Data::Json::JsonObject const& inputJson,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
+            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings);
     };
-
-    ActivatableClass(AdaptiveColumnParser);
+}
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveColumnParser : AdaptiveColumnParserT<AdaptiveColumnParser, implementation::AdaptiveColumnParser>
+    {
+    };
 }

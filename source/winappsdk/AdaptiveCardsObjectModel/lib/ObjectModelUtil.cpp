@@ -874,37 +874,24 @@ void RemoteResourceElementToRemoteResourceInformationVector(_In_ winrt::Adaptive
     }
 }
 
-HRESULT SharedWarningsToAdaptiveWarnings(
-    const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings)
-try
+
+void SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings, winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& toAddTo)
 {
     for (const auto& sharedWarning : sharedWarnings)
     {
         auto warning = winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveWarning>(
             static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode>(sharedWarning->GetStatusCode()),
             UTF8ToHString(sharedWarning->GetReason()));
-
-        RETURN_IF_FAILED(adaptiveWarnings->Append(warning.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveWarning>().get()));
+        toAddTo.Append(*warning);
     }
-
-    return S_OK;
 }
-CATCH_RETURN;
+
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>
 SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
 {
     auto result = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>();
-
-    for (const auto& sharedWarning : sharedWarnings)
-    {
-        auto warning = winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveWarning>(
-            static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode>(sharedWarning->GetStatusCode()),
-            UTF8ToHString(sharedWarning->GetReason()));
-        result.Append(*warning);
-    }
-
+    SharedWarningsToAdaptiveWarnings(sharedWarnings, result);
     return result;
 }
 
