@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 
 import {getTestCasesList} from "./file-retriever-utils";
-import { Action, AdaptiveCard, HostConfig, Input } from "adaptivecards";
+import { Action, AdaptiveCard, HostConfig, IMarkdownProcessingResult, Input } from "adaptivecards";
+import * as Remarkable from "remarkable";
+
 
 export function listAllFiles(): HTMLLIElement[] {
     const testCasesList: HTMLLIElement[] = [];
@@ -85,14 +87,13 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
         retrievedInputsDiv.innerHTML = inputsAsJson;
     };
 
-			// For markdown support you need a third-party library
-			// E.g., to use markdown-it, include in your HTML page:
-			//
-			// And add this code to replace the default markdown handler:
-			//     AdaptiveCards.AdaptiveCard.onProcessMarkdown = function (text, result) {
-			//         result.outputHtml = markdownit().render(text);
-			//         result.didProcess = true;
-			//     };
+    // For markdown support you need a third-party library
+    // E.g., to use markdown-it, include in your HTML page:
+
+    AdaptiveCard.onProcessMarkdown = function(text: string, result: IMarkdownProcessingResult) {
+        result.outputHtml = new Remarkable.Remarkable().render(text);
+        result.didProcess = true;
+    };
 
     // Parse the card payload
     adaptiveCard.parse(cardJson);
