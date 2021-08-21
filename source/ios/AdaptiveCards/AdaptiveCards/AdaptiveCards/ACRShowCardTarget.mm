@@ -119,7 +119,7 @@
     if (hidden) {
         if ([_adcView.subviews count] > 1) {
             NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
-            renderBackgroundCoverMode(_adcView.subviews[1], _adcView, constraints);
+            renderBackgroundCoverMode(_adcView.subviews[1], _adcView.backgroundView, constraints, _adcView);
             [NSLayoutConstraint activateConstraints:constraints];
         }
     }

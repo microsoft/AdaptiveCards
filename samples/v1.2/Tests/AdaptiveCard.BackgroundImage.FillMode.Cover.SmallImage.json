@@ -4,36 +4,36 @@
 	"version" : "1.0",
 	"body" :
 		[
-            {
-                "columns": [
-                    {
-                        "items": [
-                            {
-                                "size": "ExtraLarge",
-                                "text": "Trip to UAE",
-                                "type": "TextBlock",
-                                "wrap": true
-                            },
-                            {
-                                "size": "Small",
-                                "spacing": "Small",
-                                "color": "Accent",
-                                "weight": "Bolder",
-                                "type": "TextBlock",
-                                "text": "ER-13052"
-                            }
-                        ],
-                        "width": "stretch",
-                        "backgroundImage": {
-                            "url": "https://i.ibb.co/dK8gNM6/375132.png",
-                            "verticalAlignment": "Center",
-                            "horizontalAlignment": "Center"
-                        },
-                        "type": "Column"
-                    }
-                ],
-                "type": "ColumnSet"
-            },
+			{
+				"columns": [
+					{
+						"items": [
+							{
+								"size": "ExtraLarge",
+								"text": "Trip to UAE",
+								"type": "TextBlock",
+								"wrap": true
+							},
+							{
+								"size": "Small",
+								"spacing": "Small",
+								"color": "Accent",
+								"weight": "Bolder",
+								"type": "TextBlock",
+								"text": "ER-13052"
+							}
+						],
+						"width": "stretch",
+						"backgroundImage": {
+							"url": "https://i.ibb.co/dK8gNM6/375132.png",
+							"verticalAlignment": "Center",
+							"horizontalAlignment": "Center"
+						},
+						"type": "Column"
+					}
+				],
+				"type": "ColumnSet"
+			},
 			{
 				"type" : "Container",
 				"items" : [
@@ -137,7 +137,7 @@
 				"url": "https://picsum.photos/50",
 				"fillMode": "Cover"
 			},
-            "items": [
+			"items": [
 				{
 					"id": "txtid",
 					"text": "Test Card.",
@@ -164,14 +164,14 @@
 					"id": "idchoice",
 					"type": "Input.ChoiceSet",
 					"choices": [
-                        {
-                            "title": "Choice 1",
-                            "value": "Choice 1"
-                        },
-                        {
-                            "title": "Choice 2",
-                            "value": "Choice 2"
-                        }
+						{
+							"title": "Choice 1",
+							"value": "Choice 1"
+						},
+						{
+							"title": "Choice 2",
+							"value": "Choice 2"
+						}
 					]
 				},
 				{

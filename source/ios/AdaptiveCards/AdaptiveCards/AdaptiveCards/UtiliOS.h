@@ -50,7 +50,7 @@ void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundI
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
                                      UIImageView *imageView, UIImage *img);
 
-void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView, NSMutableArray<NSLayoutConstraint *> *constraints);
+void renderBackgroundCoverMode(UIView *backgroundView, UIView *targetView, NSMutableArray<NSLayoutConstraint *> *constraints, ACRContentStackView *parentView);
 
 void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView, NSMutableArray<NSLayoutConstraint *> *constraints);
 

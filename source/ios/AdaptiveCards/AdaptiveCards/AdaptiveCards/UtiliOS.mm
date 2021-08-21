@@ -163,9 +163,13 @@ void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundI
 
 // apply contraints for 'Cover' fill mode
 // the backgroundView is set on the targetView
-void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView, NSMutableArray<NSLayoutConstraint *> *constraints)
+void renderBackgroundCoverMode(UIView *backgroundView, UIView *targetView, NSMutableArray<NSLayoutConstraint *> *constraints, ACRContentStackView *parentView)
 {
-    if (!backgroundView || !targetView || ![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
+    if (!targetView) {
+        targetView = parentView;
+    }
+
+    if (!backgroundView || !targetView || ![backgroundView isKindOfClass:[UIImageView class]] || parentView.isBackgroundImageSet) {
         return;
     }
 
@@ -176,7 +180,7 @@ void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targ
         return;
     }
 
-    targetView.isBackgroundImageSet = YES;
+    parentView.isBackgroundImageSet = YES;
 
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     // Fill Mode Description
@@ -227,6 +231,17 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         return;
     }
 
+    UIView *backgroundView = nil;
+    if ([superView isKindOfClass:[ACRContentStackView class]]) {
+        backgroundView = ((ACRContentStackView *)superView).backgroundView;
+        if (backgroundView) {
+            [imageView removeFromSuperview];
+            [backgroundView addSubview:imageView];
+        }
+    }
+
+    UIView *targetView = backgroundView ? backgroundView : superView;
+
     NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
     switch (backgroundImageProperties->GetFillMode()) {
         case ImageFillMode::Repeat: {
@@ -234,28 +249,28 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 [NSLayoutConstraint constraintWithItem:imageView
                                              attribute:NSLayoutAttributeTop
                                              relatedBy:NSLayoutRelationEqual
-                                                toItem:superView
+                                                toItem:targetView
                                              attribute:NSLayoutAttributeTop
                                             multiplier:1.0
                                               constant:0],
                 [NSLayoutConstraint constraintWithItem:imageView
                                              attribute:NSLayoutAttributeBottom
                                              relatedBy:NSLayoutRelationEqual
-                                                toItem:superView
+                                                toItem:targetView
                                              attribute:NSLayoutAttributeBottom
                                             multiplier:1.0
                                               constant:0],
                 [NSLayoutConstraint constraintWithItem:imageView
                                              attribute:NSLayoutAttributeLeading
                                              relatedBy:NSLayoutRelationEqual
-                                                toItem:superView
+                                                toItem:targetView
                                              attribute:NSLayoutAttributeLeading
                                             multiplier:1.0
                                               constant:0],
                 [NSLayoutConstraint constraintWithItem:imageView
                                              attribute:NSLayoutAttributeTrailing
                                              relatedBy:NSLayoutRelationEqual
-                                                toItem:superView
+                                                toItem:targetView
                                              attribute:NSLayoutAttributeTrailing
                                             multiplier:1.0
                                               constant:0]
@@ -276,14 +291,14 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 [NSLayoutConstraint constraintWithItem:imageView
                                              attribute:NSLayoutAttributeLeading
                                              relatedBy:NSLayoutRelationEqual
-                                                toItem:superView
+                                                toItem:targetView
                                              attribute:NSLayoutAttributeLeading
                                             multiplier:1.0
                                               constant:0],
                 [NSLayoutConstraint constraintWithItem:imageView
                                              attribute:NSLayoutAttributeTrailing
                                              relatedBy:NSLayoutRelationEqual
-                                                toItem:superView
+                                                toItem:targetView
                                              attribute:NSLayoutAttributeTrailing
                                             multiplier:1.0
                                               constant:0]
@@ -304,19 +319,19 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 [NSLayoutConstraint constraintWithItem:imageView
                                              attribute:NSLayoutAttributeTop
                                              relatedBy:NSLayoutRelationEqual
-                                                toItem:superView
+                                                toItem:targetView
                                              attribute:NSLayoutAttributeTop
                                             multiplier:1.0
                                               constant:0],
                 [NSLayoutConstraint constraintWithItem:imageView
                                              attribute:NSLayoutAttributeBottom
                                              relatedBy:NSLayoutRelationEqual
-                                                toItem:superView
+                                                toItem:targetView
                                              attribute:NSLayoutAttributeBottom
                                             multiplier:1.0
                                               constant:0]
             ]];
-            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView, constraints);
+            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, targetView, imageView, constraints);
             break;
         }
         case ImageFillMode::Cover:
@@ -324,15 +339,14 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             // we should not apply the constraints if the superView's frame is not ready
             // check layoutSubview of ACRContentStackView to see the alternate case
             if (superView.frame.size.width != 0 && superView.frame.size.height != 0) {
-                renderBackgroundCoverMode(imageView, (ACRContentStackView *)superView, constraints);
+                renderBackgroundCoverMode(imageView, targetView, constraints, (ACRContentStackView *)superView);
             }
 
-            configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView, constraints);
+            configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, targetView, imageView, constraints);
 
-            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView, constraints);
+            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, targetView, imageView, constraints);
 
-            superView.clipsToBounds = YES;
-
+            targetView.clipsToBounds = YES;
             break;
         }
     }
