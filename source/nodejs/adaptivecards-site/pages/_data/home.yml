@@ -46,7 +46,7 @@ en:
     videoLoopDelay: 5000
     learnMoreLink: https://docs.microsoft.com/adaptive-cards/resources/partners
   extensibility_section:
-    title: Open your apps to extensbility
+    title: Open your apps to extensibility
     subtitle: There's an ecosystem of developers out there who want to integrate with your apps, but how can you do so safely and without their content sticking out like a sore thumb? Adaptive Cards are always native and blend seamlessly into the surrounding UI - and they work on every major platform!
     video: https://adaptivecardsblob.blob.core.windows.net/assets/Video-RenderingCards.mp4
     videoLoopDelay: 2000
