@@ -2,4 +2,3 @@
 // Licensed under the MIT License.
 export { AdaptiveCard, HostConfig } from "adaptivecards";
 export { listAllFiles, readAndRenderCard, renderCard } from "./rendering-utils";
-// export { getTestCasesList } from "./file-retriever-utils";

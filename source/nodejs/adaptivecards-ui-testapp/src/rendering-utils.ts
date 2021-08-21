@@ -17,7 +17,7 @@ export function listAllFiles(): HTMLLIElement[] {
 
         const itemLink: HTMLAnchorElement = document.createElement("a");
         itemLink.setAttribute("href", "#");
-        itemLink.setAttribute("onClick", "renderTestCase('" + testCase + "')");
+        itemLink.setAttribute("onClick", `renderTestCase('${testCase}')`);
         itemLink.setAttribute("id", testCaseName);
 
         const itemLinkText: Text = document.createTextNode(testCaseName);
@@ -34,7 +34,7 @@ export function listAllFiles(): HTMLLIElement[] {
 
 export function readAndRenderCard(fileName: string, callbackFunction: Function): void {
     const rawFile: XMLHttpRequest = new XMLHttpRequest();
-    rawFile.open("GET", "samples/" + fileName, true);
+    rawFile.open("GET", `samples/${fileName}`, true);
 
     rawFile.onreadystatechange = function() {
         if (rawFile.readyState === 4) {
@@ -79,7 +79,7 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
             inputsAsJson = inputsAsJson.concat("\"", inputId, "\":\"", inputValue, "\"");
         });
 
-        inputsAsJson = "{" + inputsAsJson + "}";
+        inputsAsJson = `{${inputsAsJson}}`;
 
         const retrievedInputsDiv: HTMLElement = document.getElementById("retrievedInputsDiv");
         retrievedInputsDiv.innerHTML = inputsAsJson;
