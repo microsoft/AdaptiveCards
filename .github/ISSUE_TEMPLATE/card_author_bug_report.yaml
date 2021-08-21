@@ -1,0 +1,60 @@
+name: Card Author Bug Report
+description: Create a bug report for problems creating Adaptive Cards from the JSON Schema
+title: "[Authoring] Bug Title Here"
+labels: [Area-Schema, Bug, Triage-Needed]
+body:
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: Target Application
+      description: "Please list the application(s) that the card you are authoring is targeting (ex: Microsoft Teams, Outlook, etc)"
+  - type: dropdown
+    validations:
+      required: true
+    attributes:
+      label: Application Operating System
+      description: The OS platform the application is on
+      options:
+        - Windows
+        - iOS
+        - Android
+        - Linux
+        - Other
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: Schema Version
+      description: The version of the JSON Schema Version you are targeting
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Problem Description
+      description: Please enter a description of the issue. If you just have a question, please post [on GitHub Discussions](https://github.com/microsoft/AdaptiveCards/discussions)
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Expected Outcome
+      description: Please describe what outcome you were expecting
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Actual Outcome
+      description: Please describe what was the actual outcome
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Card JSON
+      description: Please provide the JSON of the Card that is being rendered
+      render: JSON
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Repro Steps
+      description: Please enter the steps to reproduce the issue
