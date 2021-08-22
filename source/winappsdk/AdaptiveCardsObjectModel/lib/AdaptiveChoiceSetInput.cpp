@@ -13,21 +13,9 @@ using namespace ABI::Windows::Foundation::Collections;
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    template<typename TRtType, typename TSharedType>
-    winrt::Windows::Foundation::Collections::IVector<TRtType> GenerateVectorProjection(std::vector<std::shared_ptr<TSharedType>> const& items)
+    AdaptiveChoiceSetInput::AdaptiveChoiceSetInput(std::shared_ptr<::AdaptiveCards::ChoiceSetInput> const& sharedChoiceSetInput)
     {
-        std::vector<TRtType> results;
-        for (auto&& i : items)
-        {
-            results.emplace_back(winrt::make<TRtType>(i));
-        }
-        return winrt::single_threaded_vector<TRtType>(std::move(results));
-    }
-
-    AdaptiveChoiceSetInput::AdaptiveChoiceSetInput(std::shared_ptr<::AdaptiveCards::ChoiceSetInput> const& sharedChoiceSetInput) :
-        implementation::AdaptiveInputElementBase(ElementType::ChoiceSetInput)
-    {
-        Choices = GenerateVectorProjection<implementation::AdaptiveChoiceSetInput>(sharedChoiceSetInput);
+        Choices = GenerateVectorProjection<implementation::AdaptiveChoiceInput>(sharedChoiceSetInput->GetChoices());
         IsMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
         Wrap = sharedChoiceSetInput->GetWrap();
         ChoiceSetStyle =
@@ -48,7 +36,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         choiceSet->SetValue(HStringToUTF8(Value));
         choiceSet->SetWrap(Wrap);
         choiceSet->SetPlaceholder(HStringToUTF8(Placeholder));
-        choiceSet->GetChoices() = GenerateSharedVector<WinUI3::AdaptiveChoiceInput, ::AdaptiveCards::ChoiceInput>(Choices);
+        choiceSet->GetChoices() = GenerateSharedVector<implementation::AdaptiveChoiceInput, ::AdaptiveCards::ChoiceInput>(Choices);
 
         return choiceSet;
     }

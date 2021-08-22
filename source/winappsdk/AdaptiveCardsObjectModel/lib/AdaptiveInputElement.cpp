@@ -19,7 +19,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         Label = UTF8ToHString(sharedModel->GetLabel());
     }
 
-    void AdaptiveInputElementBase::CopySharedElementProperties(AdaptiveCards::BaseInputElement& sharedCardElement)
+    void AdaptiveInputElementBase::CopySharedElementProperties(::AdaptiveCards::BaseInputElement& sharedCardElement)
     {
         AdaptiveCardElementBase::CopySharedElementProperties(sharedCardElement);
         sharedCardElement.SetIsRequired(IsRequired);

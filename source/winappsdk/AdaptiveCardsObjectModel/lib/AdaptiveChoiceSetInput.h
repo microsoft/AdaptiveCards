@@ -14,13 +14,15 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         AdaptiveChoiceSetInput() : AdaptiveChoiceSetInput(std::make_shared<::AdaptiveCards::ChoiceSetInput>()) {}
         AdaptiveChoiceSetInput(std::shared_ptr<::AdaptiveCards::ChoiceSetInput> const& sharedChoiceSetInput);
 
+        auto ElementType() { return WinUI3::ElementType::ChoiceSetInput; }
+
         // IAdaptiveChoiceSetInput
         property<hstring> Placeholder;
         property<bool> IsMultiSelect;
         property<bool> Wrap;
         property<hstring> Value;
         property<winrt::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle> ChoiceSetStyle;
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput>> Choices;
+        property<winrt::Windows::Foundation::Collections::IVector<WinUI3::AdaptiveChoiceInput>> Choices;
 
         virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
