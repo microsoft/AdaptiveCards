@@ -114,7 +114,7 @@ try
         return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
     }
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 winrt::hstring UTF8ToHString(std::string_view in)
 {
@@ -130,7 +130,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 std::string HStringToUTF8(HSTRING in)
 {
@@ -529,7 +529,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
@@ -547,7 +547,7 @@ try
     }
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
@@ -637,7 +637,7 @@ try
     }
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> GenerateRequirementsProjection(
     const std::unordered_map<std::string, SemanticVersion>& sharedRequirements)

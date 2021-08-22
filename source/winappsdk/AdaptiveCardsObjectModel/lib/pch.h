@@ -13,6 +13,9 @@
 #define NOMINMAX
 #endif
 
+#include <wil/cppwinrt.h>
+#include <wil/result_macros.h>
+
 #define DISABLE_NS_PREFIX_CHECKS 1
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
@@ -47,7 +50,6 @@
 
 // Commonly-used AdaptiveCardRenderer headers
 #include "AdaptiveCards.ObjectModel.WinUI3.h"
-#include "AdaptiveCardElement.h"
-#include "ErrorHandling.h"
 #include "ObjectModelUtil.h"
 #include "Vector.h"
+#include "AdaptiveCardElement.h"

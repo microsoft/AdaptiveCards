@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveChoiceInput.h"
-#include "ObjectModelUtil.h"
 #include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
@@ -18,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         m_sharedChoiceInput = std::make_shared<ChoiceInput>();
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveChoiceInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedChoiceInput)
     {

@@ -23,7 +23,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::ImageSet> imageSet = std::make_shared<AdaptiveCards::ImageSet>();
         return RuntimeClassInitialize(imageSet);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ImageSet>& sharedImageSet)
     try
@@ -40,7 +40,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImageSet));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage*>** images)
     {

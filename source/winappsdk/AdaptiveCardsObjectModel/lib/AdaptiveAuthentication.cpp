@@ -6,8 +6,6 @@
 #include "AdaptiveTokenExchangeResource.h"
 #include "AdaptiveAuthCardButton.h"
 
-#include "ObjectModelUtil.h"
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     AdaptiveAuthentication::AdaptiveAuthentication(const std::shared_ptr<::AdaptiveCards::Authentication>& sharedAuthentication)

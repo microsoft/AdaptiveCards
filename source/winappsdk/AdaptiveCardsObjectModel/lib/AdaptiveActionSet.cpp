@@ -18,7 +18,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::ActionSet> ActionSet = std::make_shared<AdaptiveCards::ActionSet>();
         return RuntimeClassInitialize(ActionSet);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveActionSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet)
     try
@@ -32,7 +32,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedActionSet));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveActionSet::get_Actions(_COM_Outptr_ IVector<IAdaptiveActionElement*>** items)
     {

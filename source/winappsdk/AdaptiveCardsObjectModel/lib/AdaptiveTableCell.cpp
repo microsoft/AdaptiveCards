@@ -3,8 +3,6 @@
 #include "pch.h"
 #include "AdaptiveTableCell.h"
 
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 #include <windows.foundation.collections.h>
 #include <windows.ui.xaml.h>
 #include <winrt/Windows.Foundation.h>
@@ -29,7 +27,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::TableCell> tableCell = std::make_shared<AdaptiveCards::TableCell>();
         return RuntimeClassInitialize(tableCell);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTableCell::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TableCell>& sharedTableCell)
     try
@@ -70,7 +68,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTableCell));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTableCell::get_Items(_COM_Outptr_ IVector<IAdaptiveCardElement*>** items)
     {
@@ -176,7 +174,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
     std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveTableCell::GetSharedModel()
     {
         auto tableCell = std::make_shared<AdaptiveCards::TableCell>();
-        THROW_IF_FAILED(CopySharedElementProperties(*tableCell));
+        THROW_IF_FAILED((CopySharedElementProperties(*tableCell)));
 
         if (m_selectAction)
         {

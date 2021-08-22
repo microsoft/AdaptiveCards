@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveDateInput.h"
-#include "ObjectModelUtil.h"
 #include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
@@ -18,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
         return RuntimeClassInitialize(dateInput);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput)
     try
@@ -36,7 +35,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedDateInput));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveDateInput::get_Max(_Outptr_ HSTRING* max) { return m_max.CopyTo(max); }
 

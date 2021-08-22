@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
         return RuntimeClassInitialize(textBlock);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextBlock>& sharedTextBlock)
     try
@@ -51,7 +51,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTextBlock));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTextBlock::get_Wrap(_Out_ boolean* wrap)
     {

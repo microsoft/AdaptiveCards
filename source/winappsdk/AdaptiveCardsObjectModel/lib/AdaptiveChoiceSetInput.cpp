@@ -4,8 +4,6 @@
 #include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveChoiceInput.h"
 
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 #include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;

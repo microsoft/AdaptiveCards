@@ -197,7 +197,7 @@ try
     }
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 template<typename D, typename... Args> auto MakeOrThrow(Args&&... args)
 {

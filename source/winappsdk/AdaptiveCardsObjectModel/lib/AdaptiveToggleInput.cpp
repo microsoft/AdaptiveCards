@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
         return RuntimeClassInitialize(toggleInput);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleInput>& sharedToggleInput)
     try
@@ -36,7 +36,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedToggleInput));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveToggleInput::get_Title(_Outptr_ HSTRING* title) { return m_title.CopyTo(title); }
 

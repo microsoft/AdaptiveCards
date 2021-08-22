@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.WinUI3.h"
-#include "ObjectModelUtil.h"
-
 namespace AdaptiveCards::ObjectModel::WinUI3
 {
     class CustomActionWrapper : public AdaptiveCards::BaseActionElement

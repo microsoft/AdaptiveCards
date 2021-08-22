@@ -14,7 +14,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::UnknownAction> unknownAction = std::make_shared<AdaptiveCards::UnknownAction>();
         return RuntimeClassInitialize(unknownAction);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::UnknownAction>& sharedUnknown)
     try
@@ -27,7 +27,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseActionElement>(sharedUnknown));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveUnsupportedAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {

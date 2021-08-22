@@ -16,7 +16,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::ExecuteAction> executeAction = std::make_shared<AdaptiveCards::ExecuteAction>();
         return RuntimeClassInitialize(executeAction);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveExecuteAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ExecuteAction>& sharedExecuteAction)
     try
@@ -35,7 +35,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedExecuteAction));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveExecuteAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {

@@ -3,8 +3,6 @@
 #include "pch.h"
 #include "AdaptiveContainer.h"
 
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 #include <windows.foundation.collections.h>
 #include <winrt/Windows.Foundation.h>
 
@@ -27,7 +25,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
         return RuntimeClassInitialize(container);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Container>& sharedContainer)
     try
@@ -70,7 +68,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveContainer::get_Items(_COM_Outptr_ IVector<IAdaptiveCardElement*>** items)
     {

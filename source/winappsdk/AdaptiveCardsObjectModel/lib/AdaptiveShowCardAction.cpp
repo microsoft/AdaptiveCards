@@ -16,7 +16,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
         return RuntimeClassInitialize(showCardAction);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction)
     try
@@ -34,7 +34,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedShowCardAction));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard** card)
     {

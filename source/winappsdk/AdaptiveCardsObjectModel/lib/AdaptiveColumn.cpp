@@ -3,8 +3,6 @@
 #include "pch.h"
 #include "AdaptiveColumn.h"
 
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 #include <windows.foundation.collections.h>
 #include <winrt/Windows.Foundation.h>
 
@@ -26,7 +24,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
         return RuntimeClassInitialize(column);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn)
     try
@@ -68,7 +66,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveColumn::get_Width(_Outptr_ HSTRING* width) { return m_width.CopyTo(width); }
 

@@ -4,8 +4,6 @@
 #include "AdaptiveFactSet.h"
 #include "AdaptiveFact.h"
 
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 #include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
@@ -26,7 +24,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
         return RuntimeClassInitialize(factSet);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::FactSet>& sharedFactSet)
     try
@@ -41,7 +39,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedFactSet));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact*>** facts)
     {

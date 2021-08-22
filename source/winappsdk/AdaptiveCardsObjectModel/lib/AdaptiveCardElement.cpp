@@ -3,8 +3,6 @@
 #include "pch.h"
 #include "AdaptiveCardElement.h"
 #include "SemanticVersion.h"
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

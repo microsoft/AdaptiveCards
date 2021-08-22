@@ -16,7 +16,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::SubmitAction> submitAction = std::make_shared<AdaptiveCards::SubmitAction>();
         return RuntimeClassInitialize(submitAction);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::SubmitAction>& sharedSubmitAction)
     try
@@ -38,7 +38,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {

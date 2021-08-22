@@ -23,7 +23,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::TableRow> tableRow = std::make_shared<AdaptiveCards::TableRow>();
         return RuntimeClassInitialize(tableRow);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTableRow::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TableRow>& sharedTableRow)
     try
@@ -52,7 +52,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTableRow::get_ElementType(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType* elementType)
     {

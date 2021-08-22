@@ -11,8 +11,6 @@
 #include <BaseCardElement.h>
 
 #include <json.h>
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 #include <windows.foundation.collections.h>
 
 using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;

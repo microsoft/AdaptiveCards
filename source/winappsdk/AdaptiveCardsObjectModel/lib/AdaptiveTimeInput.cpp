@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
         return RuntimeClassInitialize(timeInput);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TimeInput>& sharedTimeInput)
     try
@@ -36,7 +36,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTimeInput::get_Max(_Outptr_ HSTRING* max) { return m_max.CopyTo(max); }
 

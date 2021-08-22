@@ -21,8 +21,6 @@
 #include "AdaptiveTimeInputParser.h"
 #include "AdaptiveToggleInputParser.h"
 #include "CustomElementWrapper.h"
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 #include "windows.ui.xaml.h"
 
 using namespace Microsoft::WRL;

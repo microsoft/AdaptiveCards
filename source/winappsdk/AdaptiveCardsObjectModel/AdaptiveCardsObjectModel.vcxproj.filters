@@ -85,7 +85,6 @@
     <ClInclude Include="lib\AdaptiveContainer.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
-    <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\ObjectModelUtil.h" />
     <ClInclude Include="lib\Vector.h" />

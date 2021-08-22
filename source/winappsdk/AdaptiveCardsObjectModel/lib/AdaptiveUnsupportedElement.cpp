@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::UnknownElement> unknownElement = std::make_shared<AdaptiveCards::UnknownElement>();
         return RuntimeClassInitialize(unknownElement);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveUnsupportedElement::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::UnknownElement>& sharedUnknown)
     try
@@ -31,7 +31,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         m_actualType = sharedUnknown->GetElementTypeString();
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveUnsupportedElement::get_ElementType(_Out_ ElementType* elementType)
     {

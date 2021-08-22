@@ -4,7 +4,6 @@
 
 #include "SemanticVersion.h"
 #include "BaseElement.h"
-#include "ObjectModelUtil.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         RuntimeClassInitialize(std::make_shared<Fact>());
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFact::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Fact>& sharedFact)
     {
@@ -68,5 +68,5 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         sharedModel = std::move(fact);
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

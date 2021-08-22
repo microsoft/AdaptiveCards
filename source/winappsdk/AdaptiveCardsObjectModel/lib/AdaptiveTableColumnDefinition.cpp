@@ -19,7 +19,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             std::make_shared<AdaptiveCards::TableColumnDefinition>();
         return RuntimeClassInitialize(tableColumnDefinition);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTableColumnDefinition::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TableColumnDefinition>& sharedTableColumnDefinition)
     try
@@ -56,7 +56,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTableColumnDefinition::get_VerticalCellContentAlignment(
         _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>** verticalCellContentAlignment)
@@ -151,5 +151,5 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         sharedModel = std::move(tableColumnDefinition);
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

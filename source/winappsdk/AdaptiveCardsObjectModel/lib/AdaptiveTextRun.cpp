@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         RuntimeClassInitialize(std::make_shared<TextRun>());
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTextRun::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextRun>& sharedTextRun) noexcept
     try
@@ -31,7 +31,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         RETURN_IF_FAILED(AdaptiveTextElement::InitializeTextElement(sharedTextRun));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTextRun::get_Highlight(boolean* highlight)
     {
@@ -112,5 +112,5 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         sharedModel = std::move(textRun);
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

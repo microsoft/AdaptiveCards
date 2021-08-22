@@ -17,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
         return RuntimeClassInitialize(openUrlAction);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
     try
@@ -40,7 +40,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedOpenUrlAction));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveOpenUrlAction::get_Url(_COM_Outptr_ IUriRuntimeClass** url) { return m_url.CopyTo(url); }
 
@@ -50,7 +50,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         m_url = url;
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
     {

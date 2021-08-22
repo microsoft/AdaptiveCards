@@ -4,8 +4,6 @@
 #include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "CustomActionWrapper.h"
-#include "ObjectModelUtil.h"
-#include "Vector.h"
 #include "AdaptiveShowCardActionParser.h"
 #include "AdaptiveSubmitActionParser.h"
 #include "AdaptiveOpenUrlActionParser.h"

@@ -11,7 +11,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::MediaSource> mediaSource = std::make_shared<AdaptiveCards::MediaSource>();
         return RuntimeClassInitialize(mediaSource);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveMediaSource::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::MediaSource>& sharedMediaSource)
     try
@@ -26,7 +26,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveMediaSource::get_MimeType(_Outptr_ HSTRING* value) { return m_mimeType.CopyTo(value); }
 
@@ -47,5 +47,5 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         sharedMediaSource = std::move(mediaSource);
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

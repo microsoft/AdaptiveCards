@@ -3,7 +3,6 @@
 #include "pch.h"
 #include "AdaptiveMedia.h"
 #include "AdaptiveMediaSource.h"
-#include "Vector.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
@@ -17,7 +16,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::Media> media = std::make_shared<AdaptiveCards::Media>();
         return RuntimeClassInitialize(media);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Media>& sharedMedia)
     try
@@ -37,7 +36,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedMedia));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveMedia::get_ElementType(_Out_ ElementType* elementType)
     {

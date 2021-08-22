@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.WinUI3.h"
-#include "ObjectModelUtil.h"
 #include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveElementParserRegistration.g.h"
 

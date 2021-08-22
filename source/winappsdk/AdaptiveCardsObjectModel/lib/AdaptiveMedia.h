@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.WinUI3.h"
 #include "AdaptiveCardElement.h"
 #include "Media.h"
 

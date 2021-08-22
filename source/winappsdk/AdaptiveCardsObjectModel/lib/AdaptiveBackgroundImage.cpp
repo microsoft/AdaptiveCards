@@ -3,8 +3,6 @@
 #include "pch.h"
 #include "AdaptiveBackgroundImage.h"
 
-#include "ObjectModelUtil.h"
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     AdaptiveBackgroundImage::AdaptiveBackgroundImage(const std::shared_ptr<::AdaptiveCards::BackgroundImage>& sharedImage)

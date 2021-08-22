@@ -16,7 +16,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         std::shared_ptr<AdaptiveCards::NumberInput> numberInput = std::make_shared<AdaptiveCards::NumberInput>();
         return RuntimeClassInitialize(numberInput);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::NumberInput>& sharedNumberInput)
     try
@@ -49,7 +49,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedNumberInput));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveNumberInput::get_Placeholder(_Outptr_ HSTRING* placeholder)
     {
