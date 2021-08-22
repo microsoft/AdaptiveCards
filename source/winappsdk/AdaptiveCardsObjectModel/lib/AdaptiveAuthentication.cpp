@@ -15,20 +15,17 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         if (auto tokenExchangeResource = sharedAuthentication->GetTokenExchangeResource())
         {
-            TokenExchangeResource =
-                *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTokenExchangeResource>(
-                    tokenExchangeResource);
+            TokenExchangeResource = *winrt::make_self<implementation::AdaptiveTokenExchangeResource>(tokenExchangeResource);
         }
 
         std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton> buttons;
         for (auto& button : sharedAuthentication->GetButtons())
         {
-            auto newShared =
-                winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthCardButton>(button);
+            auto newShared = winrt::make_self<implementation::AdaptiveAuthCardButton>(button);
             buttons.push_back(*newShared);
         }
 
-        Buttons = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>(std::move(buttons));
+        Buttons = winrt::single_threaded_vector<WinUI3::AdaptiveAuthCardButton>(std::move(buttons));
     }
 
     std::shared_ptr<::AdaptiveCards::Authentication> AdaptiveAuthentication::GetSharedModel()
@@ -37,14 +34,14 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         authentication->SetText(HStringToUTF8(Text));
         authentication->SetConnectionName(HStringToUTF8(ConnectionName));
 
-        if (auto resource = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTokenExchangeResource>(TokenExchangeResource.get()))
+        if (auto resource = peek_innards<implementation::AdaptiveTokenExchangeResource>(TokenExchangeResource.get()))
         {
             authentication->SetTokenExchangeResource(resource->GetSharedModel());
         }
 
         for (auto&& button : Buttons.get())
         {
-            auto impl = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveAuthCardButton>(button);
+            auto impl = peek_innards<implementation::AdaptiveAuthCardButton>(button);
             auto sharedAuthCardButton = impl->GetSharedModel();
             authentication->GetButtons().emplace_back(std::AdaptivePointerCast<::AdaptiveCards::AuthCardButton>(sharedAuthCardButton));
         }
