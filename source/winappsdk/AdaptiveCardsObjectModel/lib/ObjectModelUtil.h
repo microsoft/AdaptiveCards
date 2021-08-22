@@ -182,6 +182,17 @@ HRESULT GenerateInlinesProjection(
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>
     GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);
 
+template<typename TRtType, typename TSharedType>
+auto GenerateVectorProjection(std::vector<std::shared_ptr<TSharedType>> const& elements)
+{
+    std::vector<TRtType::class_type> converted;
+    for (auto&& e : elements)
+    {
+        converted.emplace_back(winrt::make<TRtType>(e));
+    }
+    return winrt::single_threaded_vector<TRtType::class_type>(std::move(converted));
+}
+
 template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass>
 HRESULT GenerateVectorProjection(const std::vector<std::shared_ptr<TSharedClass>>& containedElements,
                                  _In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* projectedParentContainer) noexcept
