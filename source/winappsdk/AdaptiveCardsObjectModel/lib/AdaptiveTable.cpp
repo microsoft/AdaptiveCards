@@ -6,169 +6,54 @@
 #include "AdaptiveTableColumnDefinition.h"
 #include <winrt/Windows.Foundation.h>
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    AdaptiveTable::AdaptiveTable()
+    AdaptiveTable::AdaptiveTable(std::shared_ptr<::AdaptiveCards::Table> const& sharedTable)
     {
-        m_rows = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*>>();
-        m_columnDefinitions =
-            Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*>>();
-    }
+        ShowGridLines = sharedTable->GetShowGridLines();
+        FirstRowAsHeaders = sharedTable->GetFirstRowAsHeaders();
 
-    HRESULT AdaptiveTable::RuntimeClassInitialize() noexcept
-    try
-    {
-        std::shared_ptr<AdaptiveCards::Table> table = std::make_shared<AdaptiveCards::Table>();
-        return RuntimeClassInitialize(table);
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveTable::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Table>& sharedTable)
-    try
-    {
-        m_showGridLines = sharedTable->GetShowGridLines();
-        m_firstRowAsHeaders = sharedTable->GetFirstRowAsHeaders();
-
-        if (sharedTable->GetVerticalCellContentAlignment().has_value())
+        if (sharedTable->GetVerticalCellContentAlignment())
         {
-            m_verticalCellContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>(
-                                     sharedTable->GetVerticalCellContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>>()
-                    .get();
+            VerticalCellContentAlignment =
+                static_cast<WinUI3::VerticalContentAlignment>(*sharedTable->GetVerticalCellContentAlignment());
         }
 
-        if (sharedTable->GetHorizontalCellContentAlignment().has_value())
+        if (sharedTable->GetHorizontalCellContentAlignment())
         {
-            m_horizontalCellContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment>(
-                                     sharedTable->GetHorizontalCellContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>>()
-                    .get();
+            HorizontalCellContentAlignment = static_cast<WinUI3::HAlignment>(*sharedTable->GetHorizontalCellContentAlignment());
         }
 
-        m_gridStyle = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedTable->GetGridStyle());
+        GridStyle = static_cast<WinUI3::ContainerStyle>(sharedTable->GetGridStyle());
+        Rows = GenerateVectorProjection<implementation::AdaptiveTableRow>(sharedTable->GetRows());
+        Columns = GenerateVectorProjection<implementation::AdaptiveTableColumnDefinition>(sharedTable->GetColumns());
 
-        GenerateTableRowsProjection(sharedTable->GetRows(), m_rows.Get());
-        GenerateTableColumnDefinitionsProjection(sharedTable->GetColumns(), m_columnDefinitions.Get());
-
-        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedTable));
-
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveTable::get_ElementType(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType* elementType)
-    {
-        *elementType = ElementType::Table;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTable::get_Rows(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow*>** rows)
-    {
-        return m_rows.CopyTo(rows);
-    }
-
-    HRESULT AdaptiveTable::get_Columns(
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition*>** columns)
-    {
-        return m_columnDefinitions.CopyTo(columns);
-    }
-
-    HRESULT AdaptiveTable::get_ShowGridLines(boolean* showGridLines)
-    {
-        *showGridLines = m_showGridLines;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTable::put_ShowGridLines(boolean showGridLines)
-    {
-        m_showGridLines = showGridLines;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTable::get_FirstRowAsHeaders(boolean* firstRowAsHeaders)
-    {
-        *firstRowAsHeaders = m_firstRowAsHeaders;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTable::put_FirstRowAsHeaders(boolean firstRowAsHeaders)
-    {
-        m_firstRowAsHeaders = firstRowAsHeaders;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTable::get_VerticalCellContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>** verticalCellContentAlignment)
-    {
-        return m_verticalCellContentAlignment.CopyTo(verticalCellContentAlignment);
-    }
-
-    HRESULT AdaptiveTable::put_VerticalCellContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>* verticalCellContentAlignment)
-    {
-        m_verticalCellContentAlignment = verticalCellContentAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTable::get_HorizontalCellContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>** horizontalCellContentAlignment)
-    {
-        return m_horizontalCellContentAlignment.CopyTo(horizontalCellContentAlignment);
-    }
-
-    HRESULT AdaptiveTable::put_HorizontalCellContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>* horizontalCellContentAlignment)
-    {
-        m_horizontalCellContentAlignment = horizontalCellContentAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTable::get_GridStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* gridStyle)
-    {
-        *gridStyle = m_gridStyle;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTable::put_GridStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle gridStyle)
-    {
-        m_gridStyle = gridStyle;
-        return S_OK;
+        InitializeBaseElement(sharedTable);
     }
 
     std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveTable::GetSharedModel()
     {
-        auto table = std::make_shared<AdaptiveCards::Table>();
+        auto table = std::make_shared<::AdaptiveCards::Table>();
+        CopySharedElementProperties(*table);
 
-        THROW_IF_FAILED(CopySharedElementProperties(*table));
+        table->SetShowGridLines(ShowGridLines);
+        table->SetFirstRowAsHeaders(FirstRowAsHeaders);
 
-        table->SetShowGridLines(m_showGridLines);
-        table->SetFirstRowAsHeaders(m_firstRowAsHeaders);
-
-        if (m_verticalCellContentAlignment != nullptr)
+        if (VerticalCellContentAlignment)
         {
-            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalCellContentAlignmentValue;
-            THROW_IF_FAILED(m_verticalCellContentAlignment->get_Value(&verticalCellContentAlignmentValue));
-            table->SetVerticalCellContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalCellContentAlignmentValue));
+            table->SetVerticalCellContentAlignment(VerticalCellContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
         }
 
-        if (m_horizontalCellContentAlignment != nullptr)
+        if (HorizontalCellContentAlignment)
         {
-            ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalCellContentAlignmentValue;
-            THROW_IF_FAILED(m_horizontalCellContentAlignment->get_Value(&horizontalCellContentAlignmentValue));
-            table->SetHorizontalCellContentAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalCellContentAlignmentValue));
+            table->SetHorizontalCellContentAlignment(HorizontalCellContentAlignment.get<::AdaptiveCards::HorizontalAlignment>());
         }
 
-        table->SetGridStyle(static_cast<AdaptiveCards::ContainerStyle>(m_gridStyle));
-
-        GenerateSharedTableRows(m_rows.Get(), table->GetRows());
-        GenerateSharedTableColumnDefinitions(m_columnDefinitions.Get(), table->GetColumns());
+        table->SetGridStyle(static_cast<::AdaptiveCards::ContainerStyle>(GridStyle.get()));
+        table->GetRows() = GenerateSharedVector<implementation::AdaptiveTableRow, ::AdaptiveCards::TableRow>(Rows.get());
+        table->GetColumns() =
+            GenerateSharedVector<implementation::AdaptiveTableColumnDefinition, ::AdaptiveCards::TableColumnDefinition>(
+                Columns.get());
 
         return table;
     }

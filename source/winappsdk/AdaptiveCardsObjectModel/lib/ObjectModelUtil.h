@@ -24,6 +24,71 @@ template<typename TStored> struct property
     operator TStored() { return m_stored; }
 
     TStored const& get() const { return m_stored; }
+    auto operator->() { return std::addressof(m_stored); }
+};
+
+template<typename TStored> struct property_opt
+{
+    winrt::Windows::Foundation::IReference<TStored> m_stored;
+
+    template<typename T> auto set(T const& t)
+    {
+        if constexpr (std::is_same_v<T, winrt::Windows::Foundation::IReference<TStored>>)
+        {
+            m_stored = t;
+        }
+        else if constexpr (std::is_same_v<T, std::optional<T>>)
+        {
+            if (t)
+            {
+                m_stored = winrt::box_value(*t);
+            }
+            else
+            {
+                m_stored = nullptr;
+            }
+        }
+        else if constexpr (std::is_null_pointer_v<T>)
+        {
+            m_stored = std::nullopt;
+        }
+        else
+        {
+            static_assert("unsupported");
+        }
+
+        return *this;
+    }
+
+    template<typename TOther = TStored> std::optional<TOther> get()
+    {
+        if constexpr (std::is_same_v<TOther, TStored>)
+        {
+            return m_stored.try_as<TStored>();
+        }
+        else
+        {
+            if (auto v = m_stored.try_as<TStored>())
+            {
+                return static_cast<TOther>(*v);
+            }
+            else
+            {
+                return std::nullopt;
+            }
+        }
+    };
+
+    // C++/WinRT adapters
+    auto operator()() { return m_stored; }
+    template<typename T> auto operator()(T&& t) { return set(std::forward<T>(t)); }
+
+    // Assignment helper
+    template<typename T> auto operator=(T&& t) { return set(std::forward<T>(t)); }
+
+    // Casting helpers "do you have a value" and "cast to your optional type"
+    operator bool() const { return static_cast<bool>(m_stored); }
+    operator std::optional<TStored>() { return get(); }
 };
 
 std::string WStringToString(std::wstring_view in);
@@ -102,12 +167,12 @@ HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector
 template<typename TImpl, typename TShared, typename TCollection>
 std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& cells)
 {
-    std::vector<TShared> shared;
+    std::vector<std::shared_ptr<TShared>> shared;
     for (auto&& c : cells)
     {
         if (auto adaptive = peek_innards<TImpl>(c))
         {
-            shared.emplace(adaptive->GetSharedModel());
+            shared.emplace_back(std::dynamic_pointer_cast<TShared>(adaptive->GetSharedModel()));
         }
         else
         {
