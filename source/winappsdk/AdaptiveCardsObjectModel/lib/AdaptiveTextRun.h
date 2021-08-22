@@ -101,7 +101,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_selectAction;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement m_selectAction;
         boolean m_highlight;
         boolean m_italic;
         boolean m_strikethrough;

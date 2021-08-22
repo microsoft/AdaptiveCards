@@ -34,7 +34,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         m_isMultiline = sharedTextInput->GetIsMultiline();
         m_textInputStyle =
             static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle>(sharedTextInput->GetTextInputStyle());
-        GenerateActionProjection(sharedTextInput->GetInlineAction(), &m_inlineAction);
+        m_inlineAction = GenerateActionProjection(sharedTextInput->GetInlineAction());
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedTextInput));
 
@@ -91,12 +91,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveTextInput::get_InlineAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
-        return m_inlineAction.CopyTo(action);
+        copy_to_abi(m_inlineAction, action);
+        return S_OK;
     }
 
     HRESULT AdaptiveTextInput::put_InlineAction(_In_ IAdaptiveActionElement* action)
     {
-        m_inlineAction = action;
+        winrt::copy_from_abi(m_inlineAction, action);
         return S_OK;
     }
 
@@ -110,12 +111,11 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveTextInput::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::TextInput> textInput = std::make_shared<AdaptiveCards::TextInput>();
+        auto textInput = std::make_shared<AdaptiveCards::TextInput>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*textInput));
+        THROW_IF_FAILED(CopySharedElementProperties(*textInput));
 
         textInput->SetMaxLength(m_maxLength);
         textInput->SetIsMultiline(m_isMultiline);
@@ -125,16 +125,11 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         textInput->SetValue(HStringToUTF8(m_value.Get()));
         textInput->SetRegex(HStringToUTF8(m_regex.Get()));
 
-        if (m_inlineAction != nullptr)
+        if (m_inlineAction)
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_inlineAction.Get(), sharedAction));
-            textInput->SetInlineAction(std::move(sharedAction));
+            textInput->SetInlineAction(GenerateSharedAction(m_inlineAction));
         }
 
-        sharedModel = std::move(textInput);
-
-        return S_OK;
+        return textInput;
     }
-    CATCH_RETURN;
 }

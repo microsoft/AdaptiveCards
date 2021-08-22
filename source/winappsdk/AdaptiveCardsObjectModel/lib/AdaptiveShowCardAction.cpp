@@ -54,17 +54,14 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveShowCardAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
-    try
+    std::shared_ptr<AdaptiveCards::BaseActionElement> AdaptiveShowCardAction::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*showCardAction));
+        auto showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
+        THROW_IF_FAILED(CopySharedElementProperties(*showCardAction));
 
         auto card = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveCard>(m_card);
         showCardAction->SetCard(card->GetSharedModel());
 
-        sharedModel = std::move(showCardAction);
-        return S_OK;
+        return showCardAction;
     }
-    CATCH_RETURN;
 }

@@ -107,13 +107,12 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedTextBlock)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveTextBlock::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::TextBlock> textBlock = std::make_shared<AdaptiveCards::TextBlock>();
+        auto textBlock = std::make_shared<AdaptiveCards::TextBlock>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*textBlock));
-        RETURN_IF_FAILED(CopyTextElementProperties(*textBlock));
+        THROW_IF_FAILED(CopySharedElementProperties(*textBlock));
+        THROW_IF_FAILED(CopyTextElementProperties(*textBlock));
 
         textBlock->SetWrap(m_wrap);
         textBlock->SetMaxLines(m_maxLines);
@@ -121,19 +120,17 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_horizontalAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalAlignmentValue;
-            RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
+            THROW_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
             textBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
         }
 
         if (m_style != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle styleValue;
-            RETURN_IF_FAILED(m_style->get_Value(&styleValue));
+            THROW_IF_FAILED(m_style->get_Value(&styleValue));
             textBlock->SetStyle(static_cast<AdaptiveCards::TextStyle>(styleValue));
         }
 
-        sharedTextBlock = std::move(textBlock);
-        return S_OK;
+        return textBlock;
     }
-    CATCH_RETURN;
 }

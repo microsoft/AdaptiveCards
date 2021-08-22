@@ -48,7 +48,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         }
 
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
-        GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
+        m_selectAction = GenerateActionProjection(sharedImage->GetSelectAction());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImage));
         return S_OK;
@@ -142,27 +142,25 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveImage::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
-        return m_selectAction.CopyTo(action);
+        copy_to_abi(m_selectAction, action);
+        return S_OK;
     }
 
     HRESULT AdaptiveImage::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
-        m_selectAction = action;
+        winrt::copy_from_abi(m_selectAction, action);
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedImage)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveImage::GetSharedModel()
     {
         std::shared_ptr<AdaptiveCards::Image> image = std::make_shared<AdaptiveCards::Image>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*image));
+        THROW_IF_FAILED(CopySharedElementProperties(*image));
 
-        if (m_selectAction != nullptr)
+        if (m_selectAction)
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            image->SetSelectAction(std::move(sharedAction));
+            image->SetSelectAction(GenerateSharedAction(m_selectAction));
         }
 
         image->SetUrl(HStringToUTF8(m_url.Get()));
@@ -171,7 +169,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_altText != nullptr)
         {
             std::string out;
-            RETURN_IF_FAILED(HStringToUTF8(m_altText.Get(), out));
+            THROW_IF_FAILED(HStringToUTF8(m_altText.Get(), out));
             image->SetAltText(out);
         }
 
@@ -183,12 +181,10 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_horizontalAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalAlignmentValue;
-            RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
+            THROW_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
             image->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
         }
 
-        sharedImage = std::move(image);
-        return S_OK;
+        return image;
     }
-    CATCH_RETURN;
 }

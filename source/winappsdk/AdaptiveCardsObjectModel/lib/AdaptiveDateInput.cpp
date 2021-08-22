@@ -63,20 +63,16 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveDateInput::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*dateInput));
+        auto dateInput = std::make_shared<AdaptiveCards::DateInput>();
+        THROW_IF_FAILED(CopySharedElementProperties(*dateInput));
 
         dateInput->SetMax(HStringToUTF8(m_max.Get()));
         dateInput->SetMin(HStringToUTF8(m_min.Get()));
         dateInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         dateInput->SetValue(HStringToUTF8(m_value.Get()));
 
-        sharedModel = std::move(dateInput);
-
-        return S_OK;
+        return dateInput;
     }
-    CATCH_RETURN;
 }

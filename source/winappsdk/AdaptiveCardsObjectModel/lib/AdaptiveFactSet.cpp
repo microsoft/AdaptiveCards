@@ -54,17 +54,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveFactSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveFactSet::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::FactSet> factSet = std::make_shared<AdaptiveCards::FactSet>();
+        auto factSet = std::make_shared<AdaptiveCards::FactSet>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*factSet));
-        RETURN_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));
+        THROW_IF_FAILED(CopySharedElementProperties(*factSet));
+        THROW_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));
 
-        sharedModel = std::move(factSet);
-
-        return S_OK;
+        return factSet;
     }
-    CATCH_RETURN;
 }

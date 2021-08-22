@@ -112,7 +112,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             return AdaptiveActionElementBase::ToJson(result);
         }
 
-        HRESULT GetSharedModel(std::shared_ptr<BaseActionElement>& sharedModel) override;
+        std::shared_ptr<BaseActionElement> GetSharedModel() override;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }

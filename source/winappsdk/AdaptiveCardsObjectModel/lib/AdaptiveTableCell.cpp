@@ -40,7 +40,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         }
 
         GenerateContainedElementsProjection(sharedTableCell->GetItems(), m_items.Get());
-        GenerateActionProjection(sharedTableCell->GetSelectAction(), &m_selectAction);
+        m_selectAction = GenerateActionProjection(sharedTableCell->GetSelectAction());
         m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedTableCell->GetStyle());
         if (sharedTableCell->GetVerticalContentAlignment().has_value())
         {
@@ -79,12 +79,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     IFACEMETHODIMP AdaptiveTableCell::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
-        return m_selectAction.CopyTo(action);
+        copy_to_abi(m_selectAction, action);
+        return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveTableCell::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
-        m_selectAction = action;
+        winrt::copy_from_abi(m_selectAction, action);
         return S_OK;
     }
 
@@ -172,17 +173,14 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveTableCell::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveTableCell::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::TableCell> tableCell = std::make_shared<AdaptiveCards::TableCell>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*tableCell));
+        auto tableCell = std::make_shared<AdaptiveCards::TableCell>();
+        THROW_IF_FAILED(CopySharedElementProperties(*tableCell));
 
-        if (m_selectAction != nullptr)
+        if (m_selectAction)
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            tableCell->SetSelectAction(std::move(sharedAction));
+            tableCell->SetSelectAction(GenerateSharedAction(m_selectAction));
         }
 
         tableCell->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
@@ -190,7 +188,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_verticalContentAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignmentValue;
-            RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
+            THROW_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
             tableCell->SetVerticalContentAlignment(
                 static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));
         }
@@ -210,15 +208,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_rtl)
         {
             boolean rtlValue;
-            RETURN_IF_FAILED(m_rtl->get_Value(&rtlValue));
+            THROW_IF_FAILED(m_rtl->get_Value(&rtlValue));
             rtl = rtlValue;
         }
         tableCell->SetRtl(rtl);
 
         GenerateSharedElements(m_items.Get(), tableCell->GetItems());
 
-        sharedModel = std::move(tableCell);
-        return S_OK;
+        return tableCell;
     }
-    CATCH_RETURN;
 }

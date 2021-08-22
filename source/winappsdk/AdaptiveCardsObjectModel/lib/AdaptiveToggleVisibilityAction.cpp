@@ -10,56 +10,51 @@ using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize() noexcept
-    try
+    template<typename TRtType, typename TRtImplType, typename TSharedClass>
+    auto project_vector(std::vector<std::shared_ptr<TSharedClass>> const& elements)
     {
-        std::shared_ptr<AdaptiveCards::ToggleVisibilityAction> toggleVisibilityAction =
-            std::make_shared<AdaptiveCards::ToggleVisibilityAction>();
-        return RuntimeClassInitialize(toggleVisibilityAction);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleVisibilityAction>& sharedToggleVisibilityAction)
-    try
-    {
-        if (sharedToggleVisibilityAction == nullptr)
+        std::vector<TRtType> converted;
+        for (auto&& e : elements)
         {
-            return E_INVALIDARG;
+            auto c = winrt::make<TRtImplType>(e);
+            converted.emplace_back(c);
         }
-
-        m_targetElements = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*>>();
-        GenerateToggleTargetProjection(sharedToggleVisibilityAction->GetTargetElements(), m_targetElements.Get());
-
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedToggleVisibilityAction));
-        return S_OK;
+        return winrt::single_threaded_vector(std::move(converted));
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
+    template<typename TShared, typename TRtImpl, typename TRtType>
+    auto project_vector(winrt::Windows::Foundation::Collections::IVector<TRtType> const& elements)
     {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ToggleVisibility;
-        return S_OK;
+        std::vector<std::shared_ptr<TShared>> converted;
+        for (auto&& e : elements)
+        {
+            auto impl = peek_innards<TRtImpl>(e);
+            converted.emplace_back(std::AdaptivePointerCast<TShared>(impl->GetSharedModel()));
+        }
+        return converted;
     }
 
-    HRESULT AdaptiveToggleVisibilityAction::get_TargetElements(
-        _COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget*>** targetElements)
+    AdaptiveToggleVisibilityAction::AdaptiveToggleVisibilityAction(const std::shared_ptr<::AdaptiveCards::ToggleVisibilityAction>& sharedToggleVisibilityAction)
     {
-        return m_targetElements.CopyTo(targetElements);
+        TargetElements = project_vector<WinUI3::AdaptiveToggleVisibilityTarget, implementation::AdaptiveToggleVisibilityTarget>(sharedToggleVisibilityAction->GetTargetElements());
+        InitializeBaseElement(sharedToggleVisibilityAction);
     }
 
-    HRESULT AdaptiveToggleVisibilityAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
-    try
+    WinUI3::ActionType AdaptiveToggleVisibilityAction::ActionType()
     {
-        std::shared_ptr<AdaptiveCards::ToggleVisibilityAction> toggleVisibilityAction =
-            std::make_shared<AdaptiveCards::ToggleVisibilityAction>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*toggleVisibilityAction));
-
-        RETURN_IF_FAILED(GenerateSharedToggleElements(m_targetElements.Get(), toggleVisibilityAction->GetTargetElements()));
-
-        sharedModel = std::move(toggleVisibilityAction);
-        return S_OK;
+        return winrt::AdaptiveCards::ObjectModel::WinUI3::ActionType::ToggleVisibility;
     }
-    CATCH_RETURN;
+
+    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveToggleVisibilityAction::GetSharedModel()
+    {
+        auto toggleVisibilityAction = std::make_shared<::AdaptiveCards::ToggleVisibilityAction>();
+        CopySharedElementProperties(*toggleVisibilityAction);
+        toggleVisibilityAction->GetTargetElements() =
+            project_vector<::AdaptiveCards::ToggleVisibilityTarget, implementation::AdaptiveToggleVisibilityTarget>(
+                TargetElements.get());
+
+        return toggleVisibilityAction;
+    }
 }

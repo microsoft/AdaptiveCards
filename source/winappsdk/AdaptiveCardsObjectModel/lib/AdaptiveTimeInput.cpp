@@ -63,21 +63,17 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveTimeInput::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::TimeInput> timeInput = std::make_shared<AdaptiveCards::TimeInput>();
+        auto timeInput = std::make_shared<AdaptiveCards::TimeInput>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*timeInput));
+        THROW_IF_FAILED(CopySharedElementProperties(*timeInput));
 
         timeInput->SetMax(HStringToUTF8(m_max.Get()));
         timeInput->SetMin(HStringToUTF8(m_min.Get()));
         timeInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         timeInput->SetValue(HStringToUTF8(m_value.Get()));
 
-        sharedModel = std::move(timeInput);
-
-        return S_OK;
+        return timeInput;
     }
-    CATCH_RETURN;
 }

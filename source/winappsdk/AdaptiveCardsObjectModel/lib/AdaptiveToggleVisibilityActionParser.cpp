@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
         winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings)
     {
-        return ::AdaptiveCards::ObjectModel::WinUI3::FromJson<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityAction, ::AdaptiveCards::ToggleVisibilityAction, ::AdaptiveCards::ToggleVisibilityActionParser>(
+        return ::AdaptiveCards::ObjectModel::WinUI3::FromJson<implementation::AdaptiveToggleVisibilityAction, ::AdaptiveCards::ToggleVisibilityAction, ::AdaptiveCards::ToggleVisibilityActionParser>(
                    inputJson, elementParsers, actionParsers, warnings)
             .as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>();
     }

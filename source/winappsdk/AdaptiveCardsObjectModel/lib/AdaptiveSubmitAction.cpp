@@ -66,23 +66,19 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveSubmitAction::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::SubmitAction> submitAction = std::make_shared<AdaptiveCards::SubmitAction>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*submitAction));
+        auto submitAction = std::make_shared<AdaptiveCards::SubmitAction>();
+        THROW_IF_FAILED(CopySharedElementProperties(*submitAction));
 
         std::string jsonAsString;
         if (m_dataJson != nullptr)
         {
-            RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
+            THROW_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
             submitAction->SetDataJson(std::move(jsonAsString));
         }
 
         submitAction->SetAssociatedInputs(static_cast<AdaptiveCards::AssociatedInputs>(m_associatedInputs));
-
-        sharedModel = std::move(submitAction);
-        return S_OK;
+        return submitAction;
     }
-    CATCH_RETURN;
 }

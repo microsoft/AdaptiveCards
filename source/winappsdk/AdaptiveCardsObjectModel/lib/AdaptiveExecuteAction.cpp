@@ -67,27 +67,21 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveExecuteAction::put_Verb(_In_ HSTRING verb) { return m_verb.Set(verb); }
 
-    HRESULT AdaptiveExecuteAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
-    try
+    std::shared_ptr<AdaptiveCards::BaseActionElement> AdaptiveExecuteAction::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::ExecuteAction> executeAction = std::make_shared<AdaptiveCards::ExecuteAction>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*executeAction));
+        auto executeAction = std::make_shared<AdaptiveCards::ExecuteAction>();
+        THROW_IF_FAILED(CopySharedElementProperties(*executeAction));
 
         std::string jsonAsString;
-        if (m_dataJson != nullptr)
+        if (m_dataJson)
         {
-            RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
+            THROW_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
             executeAction->SetDataJson(std::move(jsonAsString));
         }
 
         executeAction->SetAssociatedInputs(static_cast<AdaptiveCards::AssociatedInputs>(m_associatedInputs));
+        executeAction->SetVerb(HStringToUTF8(m_verb.Get()));
 
-        std::string verb;
-        RETURN_IF_FAILED(HStringToUTF8(m_verb.Get(), verb));
-        executeAction->SetVerb(verb);
-
-        sharedModel = std::move(executeAction);
-        return S_OK;
+        return executeAction;
     }
-    CATCH_RETURN;
 }

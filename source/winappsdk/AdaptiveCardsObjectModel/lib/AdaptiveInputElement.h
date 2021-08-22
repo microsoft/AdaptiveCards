@@ -4,27 +4,17 @@
 
 #include "BaseInputElement.h"
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class DECLSPEC_UUID("E2E42BA6-A0AE-4B01-B161-29AF2F2B302B") AdaptiveInputElementBase : public AdaptiveCardElementBase
+    struct AdaptiveInputElementBase : AdaptiveCardElementBase
     {
-    protected:
-        HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseInputElement>& sharedModel);
+        AdaptiveInputElementBase(ElementType element) : AdaptiveCardElementBase(element) {}
+        void InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseInputElement>& sharedModel);
 
-        IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
-        IFACEMETHODIMP put_IsRequired(boolean isRequired);
+        property<bool> IsRequired;
+        property<hstring> ErrorMessage;
+        property<hstring> Label;
 
-        IFACEMETHODIMP get_ErrorMessage(_Outptr_ HSTRING* title);
-        IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING title);
-
-        IFACEMETHODIMP get_Label(_Outptr_ HSTRING* label);
-        IFACEMETHODIMP put_Label(_In_ HSTRING label);
-
-        HRESULT CopySharedElementProperties(AdaptiveCards::BaseInputElement& sharedCardElement);
-
-    private:
-        boolean m_isRequired;
-        Microsoft::WRL::Wrappers::HString m_errorMessage;
-        Microsoft::WRL::Wrappers::HString m_label;
+        void CopySharedElementProperties(AdaptiveCards::BaseInputElement& sharedCardElement);
     };
 }

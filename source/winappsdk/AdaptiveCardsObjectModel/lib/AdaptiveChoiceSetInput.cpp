@@ -13,126 +13,45 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
+    template<typename TRtType, typename TSharedType>
+    winrt::Windows::Foundation::Collections::IVector<TRtType> GenerateVectorProjection(std::vector<std::shared_ptr<TSharedType>> const& items)
     {
-        m_choices = Microsoft::WRL::Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*>>();
-    }
-
-    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept
-    try
-    {
-        std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
-        return RuntimeClassInitialize(choiceSet);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceSetInput>& sharedChoiceSetInput)
-    try
-    {
-        if (sharedChoiceSetInput == nullptr)
+        std::vector<TRtType> results;
+        for (auto&& i : items)
         {
-            return E_INVALIDARG;
+            results.emplace_back(winrt::make<TRtType>(i));
         }
+        return winrt::single_threaded_vector<TRtType>(std::move(results));
+    }
 
-        GenerateInputChoicesProjection(sharedChoiceSetInput->GetChoices(), m_choices.Get());
-
-        m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
-        m_wrap = sharedChoiceSetInput->GetWrap();
-        m_choiceSetStyle =
+    AdaptiveChoiceSetInput::AdaptiveChoiceSetInput(std::shared_ptr<::AdaptiveCards::ChoiceSetInput> const& sharedChoiceSetInput) :
+        implementation::AdaptiveInputElementBase(ElementType::ChoiceSetInput)
+    {
+        Choices = GenerateVectorProjection<implementation::AdaptiveChoiceSetInput>(sharedChoiceSetInput);
+        IsMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
+        Wrap = sharedChoiceSetInput->GetWrap();
+        ChoiceSetStyle =
             static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
-        RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
+        Value = UTF8ToHString(sharedChoiceSetInput->GetValue());
+        Placeholder = UTF8ToHString(sharedChoiceSetInput->GetPlaceholder());
 
-        InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedChoiceSetInput));
-        return S_OK;
+        InitializeBaseElement(sharedChoiceSetInput);
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveChoiceSetInput::get_IsMultiSelect(_Out_ boolean* isMultiSelect)
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveChoiceSetInput::GetSharedModel()
     {
-        *isMultiSelect = m_isMultiSelect;
-        return S_OK;
+        auto choiceSet = std::make_shared<::AdaptiveCards::ChoiceSetInput>();
+        CopySharedElementProperties(*choiceSet);
+
+        choiceSet->SetChoiceSetStyle(static_cast<::AdaptiveCards::ChoiceSetStyle>(ChoiceSetStyle.get()));
+        choiceSet->SetIsMultiSelect(IsMultiSelect);
+        choiceSet->SetValue(HStringToUTF8(Value));
+        choiceSet->SetWrap(Wrap);
+        choiceSet->SetPlaceholder(HStringToUTF8(Placeholder));
+        choiceSet->GetChoices() = GenerateSharedVector<WinUI3::AdaptiveChoiceInput, ::AdaptiveCards::ChoiceInput>(Choices);
+
+        return choiceSet;
     }
-
-    HRESULT AdaptiveChoiceSetInput::put_IsMultiSelect(boolean isMultiSelect)
-    {
-        m_isMultiSelect = isMultiSelect;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceSetInput::get_Placeholder(_Outptr_ HSTRING* placeholder)
-    {
-        return m_placeholder.CopyTo(placeholder);
-    }
-
-    HRESULT AdaptiveChoiceSetInput::put_Placeholder(_In_ HSTRING placeholder) { return m_placeholder.Set(placeholder); }
-
-    HRESULT AdaptiveChoiceSetInput::get_Wrap(_Out_ boolean* wrap)
-    {
-        *wrap = m_wrap;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceSetInput::put_Wrap(boolean wrap)
-    {
-        m_wrap = wrap;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle* choiceSetStyle)
-    {
-        *choiceSetStyle = m_choiceSetStyle;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle choiceSetStyle)
-    {
-        m_choiceSetStyle = choiceSetStyle;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput*>** choices)
-    {
-        return m_choices.CopyTo(choices);
-    }
-
-    HRESULT AdaptiveChoiceSetInput::get_Value(_Outptr_ HSTRING* value)
-    {
-        m_value.CopyTo(value);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceSetInput::put_Value(_In_ HSTRING value)
-    {
-        m_value.Set(value);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceSetInput::get_ElementType(_Out_ ElementType* elementType)
-    {
-        *elementType = ElementType::ChoiceSetInput;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
-    {
-        std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveCards::ChoiceSetInput>();
-
-        RETURN_IF_FAILED(CopySharedElementProperties(*choiceSet));
-
-        choiceSet->SetChoiceSetStyle(static_cast<AdaptiveCards::ChoiceSetStyle>(m_choiceSetStyle));
-        choiceSet->SetIsMultiSelect(m_isMultiSelect);
-        choiceSet->SetValue(HStringToUTF8(m_value.Get()));
-        choiceSet->SetWrap(m_wrap);
-        choiceSet->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
-
-        RETURN_IF_FAILED(GenerateSharedChoices(m_choices.Get(), choiceSet->GetChoices()));
-
-        sharedModel = std::move(choiceSet);
-        return S_OK;
-    }
-    CATCH_RETURN;
 }

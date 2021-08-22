@@ -127,7 +127,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
         // AdaptiveCardElementBase
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
+        virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> m_verticalCellContentAlignment;

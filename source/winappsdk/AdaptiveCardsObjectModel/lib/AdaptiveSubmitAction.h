@@ -125,7 +125,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             return AdaptiveActionElementBase::ToJson(result);
         }
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel) override;
+        std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override

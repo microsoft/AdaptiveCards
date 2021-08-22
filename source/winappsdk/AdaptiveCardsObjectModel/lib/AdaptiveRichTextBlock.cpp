@@ -70,24 +70,21 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveRichTextBlock::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedRichTextBlock) noexcept
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveRichTextBlock::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::RichTextBlock> richTextBlock = std::make_shared<AdaptiveCards::RichTextBlock>();
+        auto richTextBlock = std::make_shared<AdaptiveCards::RichTextBlock>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*richTextBlock));
+        THROW_IF_FAILED(CopySharedElementProperties(*richTextBlock));
 
         if (m_horizontalAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalAlignmentValue;
-            RETURN_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
+            THROW_IF_FAILED(m_horizontalAlignment->get_Value(&horizontalAlignmentValue));
             richTextBlock->SetHorizontalAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalAlignmentValue));
         }
 
-        RETURN_IF_FAILED(GenerateSharedInlines(m_inlines.Get(), richTextBlock->GetInlines()));
+        THROW_IF_FAILED(GenerateSharedInlines(m_inlines.Get(), richTextBlock->GetInlines()));
 
-        sharedRichTextBlock = std::move(richTextBlock);
-        return S_OK;
+        return richTextBlock;
     }
-    CATCH_RETURN;
 }

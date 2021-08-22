@@ -10,52 +10,19 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation::Collections;
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveToggleVisibilityTarget::AdaptiveToggleVisibilityTarget(const std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget>& sharedToggleTarget)
     {
-        RuntimeClassInitialize(std::make_shared<ToggleVisibilityTarget>());
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget>& sharedToggleTarget)
-    {
-        RETURN_IF_FAILED(UTF8ToHString(sharedToggleTarget->GetElementId(), m_elementId.GetAddressOf()));
-        m_visibilityToggle = (ABI::AdaptiveCards::ObjectModel::WinUI3::IsVisible)sharedToggleTarget->GetIsVisible();
-        return S_OK;
+        ElementId = UTF8ToHString(sharedToggleTarget->GetElementId());
+        IsVisible = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::IsVisible>(sharedToggleTarget->GetIsVisible());
     }
 
-    HRESULT AdaptiveToggleVisibilityTarget::get_ElementId(_Outptr_ HSTRING* title) { return m_elementId.CopyTo(title); }
-
-    HRESULT AdaptiveToggleVisibilityTarget::put_ElementId(_In_ HSTRING title) { return m_elementId.Set(title); }
-
-    HRESULT AdaptiveToggleVisibilityTarget::get_IsVisible(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::IsVisible* value)
+    std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget> AdaptiveToggleVisibilityTarget::GetSharedModel()
     {
-        *value = m_visibilityToggle;
-        return S_OK;
+        auto toggleTarget = std::make_shared<::AdaptiveCards::ToggleVisibilityTarget>();
+        toggleTarget->SetElementId(HStringToUTF8(ElementId));
+        toggleTarget->SetIsVisible(static_cast<::AdaptiveCards::IsVisible>(IsVisible.get()));
+        return toggleTarget;
     }
-
-    HRESULT AdaptiveToggleVisibilityTarget::put_IsVisible(ABI::AdaptiveCards::ObjectModel::WinUI3::IsVisible value)
-    {
-        m_visibilityToggle = value;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveToggleVisibilityTarget::GetSharedModel(std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget>& sharedModel)
-    try
-    {
-        std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> toggleTarget =
-            std::make_shared<AdaptiveCards::ToggleVisibilityTarget>();
-
-        std::string id;
-        RETURN_IF_FAILED(HStringToUTF8(m_elementId.Get(), id));
-        toggleTarget->SetElementId(id);
-        toggleTarget->SetIsVisible((AdaptiveCards::IsVisible)m_visibilityToggle);
-
-        sharedModel = std::move(toggleTarget);
-        return S_OK;
-    }
-    CATCH_RETURN;
 }

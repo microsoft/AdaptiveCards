@@ -39,16 +39,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveUnsupportedElement::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedUnknown)
-    try
+    std::shared_ptr<AdaptiveCards::BaseCardElement> AdaptiveUnsupportedElement::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::UnknownElement> unknownElement = std::make_shared<AdaptiveCards::UnknownElement>();
+        auto unknownElement = std::make_shared<AdaptiveCards::UnknownElement>();
 
         unknownElement->SetElementTypeString(m_actualType);
-        RETURN_IF_FAILED(CopySharedElementProperties(*unknownElement));
+        THROW_IF_FAILED(CopySharedElementProperties(*unknownElement));
 
-        sharedUnknown = std::move(unknownElement);
-        return S_OK;
+        return unknownElement;
     }
-    CATCH_RETURN;
 }

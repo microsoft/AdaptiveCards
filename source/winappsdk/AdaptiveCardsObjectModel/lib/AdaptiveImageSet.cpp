@@ -65,19 +65,16 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveImageSet::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::ImageSet> imageSet = std::make_shared<AdaptiveCards::ImageSet>();
+        auto imageSet = std::make_shared<AdaptiveCards::ImageSet>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*imageSet));
+        THROW_IF_FAILED(CopySharedElementProperties(*imageSet));
 
         imageSet->SetImageSize(static_cast<AdaptiveCards::ImageSize>(m_imageSize));
 
-        RETURN_IF_FAILED(GenerateSharedImages(m_images.Get(), imageSet->GetImages()));
+        THROW_IF_FAILED(GenerateSharedImages(m_images.Get(), imageSet->GetImages()));
 
-        sharedModel = std::move(imageSet);
-        return S_OK;
+        return imageSet;
     }
-    CATCH_RETURN;
 }

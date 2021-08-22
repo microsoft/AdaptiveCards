@@ -27,7 +27,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         m_strikethrough = sharedTextRun->GetStrikethrough();
         m_underline = sharedTextRun->GetUnderline();
 
-        RETURN_IF_FAILED(GenerateActionProjection(sharedTextRun->GetSelectAction(), &m_selectAction));
+        m_selectAction = GenerateActionProjection(sharedTextRun->GetSelectAction());
         RETURN_IF_FAILED(AdaptiveTextElement::InitializeTextElement(sharedTextRun));
         return S_OK;
     }
@@ -47,12 +47,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveTextRun::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
-        return m_selectAction.CopyTo(action);
+        copy_to_abi(m_selectAction, action);
+        return S_OK;
     }
 
     HRESULT AdaptiveTextRun::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
-        m_selectAction = action;
+        m_selectAction = copy_from_abi<decltype(m_selectAction)>(action);
         return S_OK;
     }
 
@@ -105,9 +106,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         if (m_selectAction != nullptr)
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            textRun->SetSelectAction(std::move(sharedAction));
+            textRun->SetSelectAction(GenerateSharedAction(m_selectAction));
         }
 
         sharedModel = std::move(textRun);

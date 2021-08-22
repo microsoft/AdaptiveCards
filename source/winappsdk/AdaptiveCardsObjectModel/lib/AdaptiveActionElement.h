@@ -10,28 +10,18 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<hstring> Title;
         property<hstring> IconUrl;
         property<hstring> Style;
-        property<hstring> ToolTip;
-        property<winrt::Windows::Data::Json::IJsonObject> AdditionalProperties;
-
-        void FallbackType(WinUI3::FallbackType const& fallback)
-        {
-            if (fallback != WinUI3::FallbackType::Content)
-            {
-                FallbackContent = nullptr;
-            }
-
-            m_fallbackType = fallback;
-        }
-
-        auto FallbackType() { return m_fallbackType; }
+        property<hstring> Tooltip;
+        property<uint32_t> InternalId;
+        property<winrt::Windows::Data::Json::JsonObject> AdditionalProperties;
 
         property<IAdaptiveActionElement> FallbackContent;
         property<ActionMode> Mode;
         property<hstring> ActionTypeString;
+        property<bool> IsEnabled;
 
         virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() = 0;
 
-        winrt::Windows::Data::Json::IJsonObject ToJson() { return StringToJsonObject(GetSharedModel()->Serialize()); }
+        winrt::Windows::Data::Json::JsonObject ToJson() { return StringToJsonObject(GetSharedModel()->Serialize()); }
 
         void CopySharedElementProperties(::AdaptiveCards::BaseActionElement& sharedCardElement)
         {
@@ -39,9 +29,9 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
             sharedCardElement.SetTitle(HStringToUTF8(Title));
             sharedCardElement.SetIconUrl(HStringToUTF8(IconUrl));
             sharedCardElement.SetStyle(HStringToUTF8(Style));
-            sharedCardElement.SetTooltip(HStringToUTF8(ToolTip));
+            sharedCardElement.SetTooltip(HStringToUTF8(Tooltip));
             sharedCardElement.SetFallbackType(MapWinUI3FallbackTypeToShared(m_fallbackType));
-            sharedCardElement.SetIsEnabled(m_isEnabled);
+            sharedCardElement.SetIsEnabled(IsEnabled.get());
             sharedCardElement.SetMode(static_cast<::AdaptiveCards::Mode>(Mode.get()));
 
             if (m_fallbackType == FallbackType::Content)
@@ -50,7 +40,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
                 sharedCardElement.SetFallbackContent(std::static_pointer_cast<::AdaptiveCards::BaseElement>(fallbackSharedModel));
             }
 
-            if (AdditionalProperties != nullptr)
+            if (AdditionalProperties.get() != nullptr)
             {
                 sharedCardElement.SetAdditionalProperties(JsonObjectToJsonCpp(AdditionalProperties));
             }
@@ -60,28 +50,38 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         {
             Id = UTF8ToHString(sharedModel->GetId());
             Title = UTF8ToHString(sharedModel->GetTitle());
+
             AdditionalProperties = JsonCppToJsonObject(sharedModel->GetAdditionalProperties());
             ActionTypeString = UTF8ToHString(sharedModel->GetElementTypeString());
+
             IconUrl = UTF8ToHString(sharedModel->GetIconUrl());
             Style = UTF8ToHString(sharedModel->GetStyle());
-            ToolTip = UTF8ToHString(sharedModel->GetTooltip());
+            Tooltip = UTF8ToHString(sharedModel->GetTooltip());
             Mode = static_cast<WinUI3::ActionMode>(sharedModel->GetMode());
-            m_isEnabled = sharedModel->GetIsEnabled();
-            m_internalId = sharedModel->GetInternalId().Hash();
 
+            IsEnabled = sharedModel->GetIsEnabled();
+
+            InternalId = sharedModel->GetInternalId().Hash();
             m_fallbackType = static_cast<WinUI3::FallbackType>(MapSharedFallbackTypeToWinUI3(sharedModel->GetFallbackType()));
             if (m_fallbackType == WinUI3::FallbackType::Content)
             {
-                if (auto object = std::static_pointer_cast<::AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent()))
+                if (auto fallback = std::static_pointer_cast<::AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent()))
                 {
-                    FallbackContent = GenerateActionProjection(object);
+                    FallbackContent = GenerateActionProjection(fallback);
                 }
             }
         }
 
-    private:
-        bool m_isEnabled;
-        uint32_t m_internalId;
+        WinUI3::FallbackType FallbackType() { return m_fallbackType; }
+        void FallbackType(WinUI3::FallbackType const& fallback)
+        {
+            if (fallback != WinUI3::FallbackType::Content)
+            {
+                FallbackContent = nullptr;
+            }
+            m_fallbackType = fallback;
+        }
+
         WinUI3::FallbackType m_fallbackType;
     };
 }
@@ -130,7 +130,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         HRESULT CopySharedElementProperties(AdaptiveCards::BaseActionElement& sharedCardElement);
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<BaseActionElement>& sharedModel) = 0;
+        virtual std::shared_ptr<BaseActionElement> GetSharedModel() = 0;
 
     private:
         Microsoft::WRL::Wrappers::HString m_id;
@@ -143,7 +143,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         boolean m_isEnabled;
         UINT32 m_internalId;
         ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType m_fallbackType;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_fallbackContent;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement m_fallbackContent;
         ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode m_mode;
     };
 }

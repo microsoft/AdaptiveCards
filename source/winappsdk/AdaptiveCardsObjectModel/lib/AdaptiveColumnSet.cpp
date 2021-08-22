@@ -38,7 +38,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         }
 
         GenerateColumnsProjection(sharedColumnSet->GetColumns(), m_columns.Get());
-        GenerateActionProjection(sharedColumnSet->GetSelectAction(), &m_selectAction);
+        m_selectAction = GenerateActionProjection(sharedColumnSet->GetSelectAction());
 
         m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedColumnSet->GetStyle());
         m_minHeight = sharedColumnSet->GetMinHeight();
@@ -59,12 +59,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     IFACEMETHODIMP AdaptiveColumnSet::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
-        return m_selectAction.CopyTo(action);
+        copy_to_abi(m_selectAction, action);
+        return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveColumnSet::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
-        m_selectAction = action;
+        winrt::copy_from_abi(m_selectAction, action);
         return S_OK;
     }
 
@@ -118,17 +119,14 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) noexcept
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveColumnSet::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::ColumnSet> columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*columnSet));
+        auto columnSet = std::make_shared<AdaptiveCards::ColumnSet>();
+        THROW_IF_FAILED(CopySharedElementProperties(*columnSet));
 
-        if (m_selectAction != nullptr)
+        if (m_selectAction)
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            columnSet->SetSelectAction(std::move(sharedAction));
+            columnSet->SetSelectAction(GenerateSharedAction(m_selectAction));
         }
 
         GenerateSharedColumns(m_columns.Get(), columnSet->GetColumns());
@@ -137,8 +135,6 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         columnSet->SetMinHeight(m_minHeight);
         columnSet->SetBleed(m_bleed);
 
-        sharedModel = std::move(columnSet);
-        return S_OK;
+        return columnSet;
     }
-    CATCH_RETURN;
 }

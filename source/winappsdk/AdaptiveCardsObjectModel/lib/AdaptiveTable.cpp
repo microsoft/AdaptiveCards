@@ -142,12 +142,11 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveTable::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveTable::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::Table> table = std::make_shared<AdaptiveCards::Table>();
+        auto table = std::make_shared<AdaptiveCards::Table>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*table));
+        THROW_IF_FAILED(CopySharedElementProperties(*table));
 
         table->SetShowGridLines(m_showGridLines);
         table->SetFirstRowAsHeaders(m_firstRowAsHeaders);
@@ -155,14 +154,14 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_verticalCellContentAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalCellContentAlignmentValue;
-            RETURN_IF_FAILED(m_verticalCellContentAlignment->get_Value(&verticalCellContentAlignmentValue));
+            THROW_IF_FAILED(m_verticalCellContentAlignment->get_Value(&verticalCellContentAlignmentValue));
             table->SetVerticalCellContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalCellContentAlignmentValue));
         }
 
         if (m_horizontalCellContentAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalCellContentAlignmentValue;
-            RETURN_IF_FAILED(m_horizontalCellContentAlignment->get_Value(&horizontalCellContentAlignmentValue));
+            THROW_IF_FAILED(m_horizontalCellContentAlignment->get_Value(&horizontalCellContentAlignmentValue));
             table->SetHorizontalCellContentAlignment(static_cast<AdaptiveCards::HorizontalAlignment>(horizontalCellContentAlignmentValue));
         }
 
@@ -171,8 +170,6 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         GenerateSharedTableRows(m_rows.Get(), table->GetRows());
         GenerateSharedTableColumnDefinitions(m_columnDefinitions.Get(), table->GetColumns());
 
-        sharedModel = std::move(table);
-        return S_OK;
+        return table;
     }
-    CATCH_RETURN;
 }

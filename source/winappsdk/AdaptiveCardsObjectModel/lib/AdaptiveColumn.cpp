@@ -32,7 +32,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
     try
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
-        GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
+        m_selectAction = GenerateActionProjection(sharedColumn->GetSelectAction());
 
         m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedColumn->GetStyle());
 
@@ -151,12 +151,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveColumn::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
-        return m_selectAction.CopyTo(action);
+        copy_to_abi(m_selectAction, action);
+        return S_OK;
     }
 
     HRESULT AdaptiveColumn::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
-        m_selectAction = action;
+        winrt::copy_from_abi(m_selectAction, action);
         return S_OK;
     }
 
@@ -186,18 +187,17 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveColumn::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*column));
+        auto column = std::make_shared<AdaptiveCards::Column>();
+        THROW_IF_FAILED(CopySharedElementProperties(*column));
 
         column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
 
         if (m_verticalContentAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignmentValue;
-            RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
+            THROW_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
             column->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));
         }
 
@@ -222,26 +222,22 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             }
         }
 
-        if (m_selectAction != nullptr)
+        if (m_selectAction)
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            column->SetSelectAction(std::move(sharedAction));
+            column->SetSelectAction(GenerateSharedAction(m_selectAction));
         }
 
         std::optional<bool> rtl;
         if (m_rtl)
         {
             boolean rtlValue;
-            RETURN_IF_FAILED(m_rtl->get_Value(&rtlValue));
+            THROW_IF_FAILED(m_rtl->get_Value(&rtlValue));
             rtl = rtlValue;
         }
         column->SetRtl(rtl);
 
         GenerateSharedElements(m_items.Get(), column->GetItems());
 
-        sharedModel = std::move(column);
-        return S_OK;
+        return column;
     }
-    CATCH_RETURN;
 }

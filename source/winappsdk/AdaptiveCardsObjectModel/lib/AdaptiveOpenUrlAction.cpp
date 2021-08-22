@@ -58,11 +58,10 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
-    try
+    std::shared_ptr<AdaptiveCards::BaseActionElement> AdaptiveOpenUrlAction::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*openUrlAction));
+        auto openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
+        THROW_IF_FAILED(CopySharedElementProperties(*openUrlAction));
 
         if (m_url != nullptr)
         {
@@ -70,12 +69,10 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             m_url->get_AbsoluteUri(urlTemp.GetAddressOf());
 
             std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
+            THROW_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
             openUrlAction->SetUrl(urlString);
         }
 
-        sharedModel = std::move(openUrlAction);
-        return S_OK;
+        return openUrlAction;
     }
-    CATCH_RETURN;
 }

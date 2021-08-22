@@ -72,12 +72,11 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveToggleInput::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::ToggleInput> toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
+        auto toggleInput = std::make_shared<AdaptiveCards::ToggleInput>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*toggleInput));
+        THROW_IF_FAILED(CopySharedElementProperties(*toggleInput));
 
         toggleInput->SetTitle(HStringToUTF8(m_title.Get()));
         toggleInput->SetValue(HStringToUTF8(m_value.Get()));
@@ -85,9 +84,6 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         toggleInput->SetValueOff(HStringToUTF8(m_valueOff.Get()));
         toggleInput->SetWrap(m_wrap);
 
-        sharedModel = std::move(toggleInput);
-
-        return S_OK;
+        return toggleInput;
     }
-    CATCH_RETURN;
 }

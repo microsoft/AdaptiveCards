@@ -35,18 +35,15 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveUnsupportedAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedUnknown)
-    try
+    std::shared_ptr<BaseActionElement> AdaptiveUnsupportedAction::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::UnknownAction> unknownAction = std::make_shared<AdaptiveCards::UnknownAction>();
+        auto unknownAction = std::make_shared<AdaptiveCards::UnknownAction>();
 
         HString typeString;
-        RETURN_IF_FAILED(get_ActionTypeString(typeString.GetAddressOf()));
+        THROW_IF_FAILED(get_ActionTypeString(typeString.GetAddressOf()));
         unknownAction->SetElementTypeString(HStringToUTF8(typeString.Get()));
-        RETURN_IF_FAILED(CopySharedElementProperties(*unknownAction));
+        THROW_IF_FAILED(CopySharedElementProperties(*unknownAction));
 
-        sharedUnknown = std::move(unknownAction);
-        return S_OK;
+        return unknownAction;
     }
-    CATCH_RETURN;
 }

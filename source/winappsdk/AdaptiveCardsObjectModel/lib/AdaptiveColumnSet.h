@@ -117,7 +117,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             return AdaptiveCardElementBase::ToJson(result);
         }
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) noexcept override;
+        virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType* height) override
         {
@@ -133,7 +133,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn*>> m_columns;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_selectAction;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement m_selectAction;
         ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle m_style;
         UINT32 m_minHeight;
         boolean m_bleed;

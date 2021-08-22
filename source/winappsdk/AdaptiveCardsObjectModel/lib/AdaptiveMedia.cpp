@@ -58,20 +58,17 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return m_sources.CopyTo(sources);
     }
 
-    HRESULT AdaptiveMedia::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedMedia)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveMedia::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::Media> media = std::make_shared<AdaptiveCards::Media>();
+        auto media = std::make_shared<AdaptiveCards::Media>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*media));
+        THROW_IF_FAILED(CopySharedElementProperties(*media));
 
         media->SetPoster(HStringToUTF8(m_poster.Get()));
         media->SetAltText(HStringToUTF8(m_altText.Get()));
 
-        RETURN_IF_FAILED(GenerateSharedMediaSources(m_sources.Get(), media->GetSources()));
+        THROW_IF_FAILED(GenerateSharedMediaSources(m_sources.Get(), media->GetSources()));
 
-        sharedMedia = std::move(media);
-        return S_OK;
+        return media;
     }
-    CATCH_RETURN;
 }

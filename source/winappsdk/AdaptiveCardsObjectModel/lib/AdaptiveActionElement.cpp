@@ -32,10 +32,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         {
             const auto fallbackObject =
                 std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent());
-            if (fallbackObject)
-            {
-                RETURN_IF_FAILED(GenerateActionProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
-            }
+            m_fallbackContent = GenerateActionProjection(fallbackObject);
         }
 
         return S_OK;
@@ -63,14 +60,15 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** content)
     {
-        return m_fallbackContent.CopyTo(content);
+        copy_to_abi(m_fallbackContent, content);
+        return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType fallback)
     {
         if (fallback != ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content)
         {
-            m_fallbackContent.Reset();
+            m_fallbackContent = nullptr;            
         }
         m_fallbackType = fallback;
         return S_OK;
@@ -78,7 +76,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* content)
     {
-        m_fallbackContent = content;
+        winrt::copy_from_abi(m_fallbackContent, content);
         return S_OK;
     }
 
@@ -136,10 +134,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     IFACEMETHODIMP AdaptiveActionElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
-        std::shared_ptr<AdaptiveCards::BaseActionElement> sharedModel;
-        RETURN_IF_FAILED(GetSharedModel(sharedModel));
-
-        return StringToJsonObject(sharedModel->Serialize(), result);
+        return StringToJsonObject(GetSharedModel()->Serialize(), result);
     }
 
     HRESULT AdaptiveActionElementBase::CopySharedElementProperties(AdaptiveCards::BaseActionElement& sharedCardElement)
@@ -155,9 +150,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content)
         {
-            std::shared_ptr<AdaptiveCards::BaseActionElement> fallbackSharedModel;
-            RETURN_IF_FAILED(GenerateSharedAction(m_fallbackContent.Get(), fallbackSharedModel));
-            sharedCardElement.SetFallbackContent(std::static_pointer_cast<AdaptiveCards::BaseElement>(fallbackSharedModel));
+            sharedCardElement.SetFallbackContent(GenerateSharedAction(m_fallbackContent));
         }
 
         if (m_additionalProperties != nullptr)

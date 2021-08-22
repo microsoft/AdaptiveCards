@@ -97,7 +97,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             return AdaptiveCardElementBase::ToJson(result);
         }
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
+        std::shared_ptr<AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType* height) override
         {

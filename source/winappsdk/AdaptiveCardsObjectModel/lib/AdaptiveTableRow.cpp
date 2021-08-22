@@ -104,15 +104,14 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveTableRow::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveTableRow::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::TableRow> tableRow = std::make_shared<AdaptiveCards::TableRow>();
+        auto tableRow = std::make_shared<AdaptiveCards::TableRow>();
 
         if (m_verticalCellContentAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalCellContentAlignmentValue;
-            RETURN_IF_FAILED(m_verticalCellContentAlignment->get_Value(&verticalCellContentAlignmentValue));
+            THROW_IF_FAILED(m_verticalCellContentAlignment->get_Value(&verticalCellContentAlignmentValue));
             tableRow->SetVerticalCellContentAlignment(
                 static_cast<AdaptiveCards::VerticalContentAlignment>(verticalCellContentAlignmentValue));
         }
@@ -120,7 +119,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_horizontalCellContentAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment horizontalCellContentAlignmentValue;
-            RETURN_IF_FAILED(m_horizontalCellContentAlignment->get_Value(&horizontalCellContentAlignmentValue));
+            THROW_IF_FAILED(m_horizontalCellContentAlignment->get_Value(&horizontalCellContentAlignmentValue));
             tableRow->SetHorizontalCellContentAlignment(
                 static_cast<AdaptiveCards::HorizontalAlignment>(horizontalCellContentAlignmentValue));
         }
@@ -129,8 +128,6 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         GenerateSharedTableCells(m_cells.Get(), tableRow->GetCells());
 
-        sharedModel = std::move(tableRow);
-        return S_OK;
+        return tableRow;
     }
-    CATCH_RETURN;
 }

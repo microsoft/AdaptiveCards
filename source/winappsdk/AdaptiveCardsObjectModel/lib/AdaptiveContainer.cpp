@@ -47,7 +47,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         }
 
         GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
-        GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
+        m_selectAction = GenerateActionProjection(sharedContainer->GetSelectAction());
         m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedContainer->GetStyle());
         m_minHeight = sharedContainer->GetMinHeight();
         m_bleed = sharedContainer->GetBleed();
@@ -79,12 +79,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     IFACEMETHODIMP AdaptiveContainer::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
-        return m_selectAction.CopyTo(action);
+        copy_to_abi(m_selectAction, action);
+        return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveContainer::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
-        m_selectAction = action;
+        winrt::copy_from_abi(m_selectAction, action);
         return S_OK;
     }
 
@@ -174,23 +175,20 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveContainer::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::Container> container = std::make_shared<AdaptiveCards::Container>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*container));
+        auto container = std::make_shared<AdaptiveCards::Container>();
+        THROW_IF_FAILED(CopySharedElementProperties(*container));
 
         if (m_selectAction != nullptr)
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            container->SetSelectAction(std::move(sharedAction));
+            container->SetSelectAction(GenerateSharedAction(m_selectAction));
         }
 
         if (m_verticalContentAlignment != nullptr)
         {
             ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignmentValue;
-            RETURN_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
+            THROW_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
             container->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));
         }
 
@@ -212,15 +210,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_rtl)
         {
             boolean rtlValue;
-            RETURN_IF_FAILED(m_rtl->get_Value(&rtlValue));
+            THROW_IF_FAILED(m_rtl->get_Value(&rtlValue));
             rtl = rtlValue;
         }
         container->SetRtl(rtl);
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 
-        sharedModel = std::move(container);
-        return S_OK;
+        return container;
     }
-    CATCH_RETURN;
 }

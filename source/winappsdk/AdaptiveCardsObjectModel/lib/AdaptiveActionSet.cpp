@@ -10,7 +10,7 @@ using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveCards::ObjectModel::WinUI3
 {
-    AdaptiveActionSet::AdaptiveActionSet() { m_actions = Microsoft::WRL::Make<Vector<IAdaptiveActionElement*>>(); }
+    AdaptiveActionSet::AdaptiveActionSet() { m_actions = winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>(); }
 
     HRESULT AdaptiveActionSet::RuntimeClassInitialize() noexcept
     try
@@ -28,7 +28,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             return E_INVALIDARG;
         }
 
-        RETURN_IF_FAILED(GenerateActionsProjection(sharedActionSet->GetActions(), m_actions.Get()));
+        m_actions = GenerateActionsProjection(sharedActionSet->GetActions());
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedActionSet));
         return S_OK;
     }
@@ -36,7 +36,8 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
     HRESULT AdaptiveActionSet::get_Actions(_COM_Outptr_ IVector<IAdaptiveActionElement*>** items)
     {
-        return m_actions.CopyTo(items);
+        copy_to_abi(m_actions, items);
+        return S_OK;
     }
 
     HRESULT AdaptiveActionSet::get_ElementType(_Out_ ElementType* elementType)
@@ -45,16 +46,12 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveActionSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveActionSet::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::ActionSet> actionSet = std::make_shared<AdaptiveCards::ActionSet>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*actionSet));
+        auto actionSet = std::make_shared<AdaptiveCards::ActionSet>();
+        THROW_IF_FAILED(CopySharedElementProperties(*actionSet));
 
-        GenerateSharedActions(m_actions.Get(), actionSet->GetActions());
-
-        sharedModel = std::move(actionSet);
-        return S_OK;
+        actionSet->GetActions() = GenerateSharedActions(m_actions);
+        return actionSet;
     }
-    CATCH_RETURN;
 }

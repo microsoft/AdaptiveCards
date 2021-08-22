@@ -100,18 +100,17 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveNumberInput::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::NumberInput> numberInput = std::make_shared<AdaptiveCards::NumberInput>();
+        auto numberInput = std::make_shared<AdaptiveCards::NumberInput>();
 
-        RETURN_IF_FAILED(CopySharedElementProperties(*numberInput));
+        THROW_IF_FAILED(CopySharedElementProperties(*numberInput));
 
         std::optional<double> min;
         if (m_min)
         {
             double minValue;
-            RETURN_IF_FAILED(m_min->get_Value(&minValue));
+            THROW_IF_FAILED(m_min->get_Value(&minValue));
             min = minValue;
         }
         numberInput->SetMin(min);
@@ -120,7 +119,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_max)
         {
             double maxValue;
-            RETURN_IF_FAILED(m_max->get_Value(&maxValue));
+            THROW_IF_FAILED(m_max->get_Value(&maxValue));
             max = maxValue;
         }
         numberInput->SetMax(max);
@@ -129,15 +128,13 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         if (m_value)
         {
             double valueValue;
-            RETURN_IF_FAILED(m_value->get_Value(&valueValue));
+            THROW_IF_FAILED(m_value->get_Value(&valueValue));
             value = valueValue;
         }
         numberInput->SetValue(value);
 
         numberInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
 
-        sharedModel = std::move(numberInput);
-        return S_OK;
+        return numberInput;
     }
-    CATCH_RETURN;
 }

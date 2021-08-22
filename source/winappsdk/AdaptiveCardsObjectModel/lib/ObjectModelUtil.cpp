@@ -149,19 +149,14 @@ std::string HStringToUTF8(winrt::hstring const& in)
 }
 
 template<typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>
-std::shared_ptr<TSharedBaseType> GetSharedModel(_In_ TAdaptiveBaseType* item)
+std::shared_ptr<AdaptiveCards::BaseCardElement> GetSharedModel(_In_ TAdaptiveBaseType* item)
 {
-    ComPtr<TAdaptiveType> adaptiveElement = PeekInnards<TAdaptiveType>(item);
+    if (auto adaptiveElement = PeekInnards<TAdaptiveType>(item))
+    {
+        return adaptiveElement->GetSharedModel();
+    }
 
-    std::shared_ptr<TSharedBaseType> sharedModelElement;
-    if (adaptiveElement && SUCCEEDED(adaptiveElement->GetSharedModel(sharedModelElement)))
-    {
-        return sharedModelElement;
-    }
-    else
-    {
-        return nullptr;
-    }
+    return nullptr;
 }
 
 HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* item,
@@ -335,7 +330,7 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdap
         break;
     case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ToggleVisibility:
         sharedAction =
-            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityAction>(
+            GetSharedModel<AdaptiveCards::BaseActionElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement, winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveToggleVisibilityAction>(
                 action);
         break;
     case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute:
@@ -575,73 +570,6 @@ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectMod
     return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>(std::move(actions));
 }
 
-HRESULT GenerateActionsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedAction : containedActions)
-    {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> projectedContainedAction;
-        RETURN_IF_FAILED(GenerateActionProjection(containedAction, &projectedContainedAction));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedAction.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action,
-                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** projectedAction) noexcept
-try
-{
-    if (action == nullptr)
-    {
-        *projectedAction = nullptr;
-        return S_OK;
-    }
-
-    switch (action->GetElementType())
-    {
-    case ActionType::OpenUrl:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveOpenUrlAction>(
-            projectedAction, std::AdaptivePointerCast<AdaptiveCards::OpenUrlAction>(action)));
-        break;
-    case ActionType::ShowCard:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveShowCardAction>(
-            projectedAction, std::AdaptivePointerCast<AdaptiveCards::ShowCardAction>(action)));
-        break;
-    case ActionType::Submit:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveSubmitAction>(
-            projectedAction, std::AdaptivePointerCast<AdaptiveCards::SubmitAction>(action)));
-        break;
-    case ActionType::ToggleVisibility:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityAction>(
-            projectedAction, std::AdaptivePointerCast<AdaptiveCards::ToggleVisibilityAction>(action)));
-        break;
-    case ActionType::Execute:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveExecuteAction>(
-            projectedAction, std::AdaptivePointerCast<AdaptiveCards::ExecuteAction>(action)));
-        break;
-    case ActionType::Custom:
-        {
-            auto e = std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement();
-            *projectedAction = e.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>().detach();
-        }
-        break;
-    case ActionType::UnknownAction:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedAction>(
-            projectedAction, std::AdaptivePointerCast<AdaptiveCards::UnknownAction>(action)));
-        break;
-    default:
-        return E_UNEXPECTED;
-        break;
-    }
-
-    return S_OK;
-}
-CATCH_RETURN;
-
 winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateActionProjection(
     const std::shared_ptr<AdaptiveCards::BaseActionElement>& action)
 {
@@ -667,7 +595,7 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateAction
             std::AdaptivePointerCast<AdaptiveCards::SubmitAction>(action));
         break;
     case ActionType::ToggleVisibility:
-        abiElement = MakeOrThrow<::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityAction>(
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveToggleVisibilityAction>(
             std::AdaptivePointerCast<AdaptiveCards::ToggleVisibilityAction>(action));
         break;
     case ActionType::Execute:
@@ -686,9 +614,7 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateAction
         throw winrt::hresult_error(E_UNEXPECTED);
     }
 
-    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement element;
-    winrt::check_hresult(abiElement->QueryInterface(winrt::guid_of<decltype(element)>(), winrt::put_abi(element)));
-    return element;
+    return copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>(abiElement.get());
 }
 
 HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
@@ -944,24 +870,24 @@ void AdaptiveWarningsToSharedWarnings(
     }
 }
 
-ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type)
+winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type)
 {
     switch (type)
     {
     case FallbackType::Drop:
     {
-        return ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop;
+        return winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop;
     }
 
     case FallbackType::Content:
     {
-        return ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content;
+        return winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content;
     }
 
     case FallbackType::None:
     default:
     {
-        return ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None;
+        return winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None;
     }
     }
 }

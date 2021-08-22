@@ -92,13 +92,29 @@ HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector
             return E_INVALIDARG;
         }
 
-        std::shared_ptr<TReturnedSharedModelType> sharedTableCell;
-        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedTableCell));
-        containedElements.push_back(std::AdaptivePointerCast<TSharedClass>(sharedTableCell));
+        containedElements.push_back(std::AdaptivePointerCast<TSharedClass>(adaptiveElement->GetSharedModel()));
         return S_OK;
     });
 
     return S_OK;
+}
+
+template<typename TImpl, typename TShared, typename TCollection>
+std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& cells)
+{
+    std::vector<TShared> shared;
+    for (auto&& c : cells)
+    {
+        if (auto adaptive = peek_innards<TImpl>(c))
+        {
+            shared.emplace(adaptive->GetSharedModel());
+        }
+        else
+        {
+            throw winrt::hresult_invalid_argument();
+        }
+    }
+    return shared;
 }
 
 #define GenerateSharedToggleElements(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS) \
@@ -156,13 +172,6 @@ GenerateContainedElementsProjection(const std::vector<std::shared_ptr<AdaptiveCa
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>
 GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions);
 
-HRESULT GenerateActionsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
-
-HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action,
-                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** projectedAction) noexcept;
-
 winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement
 GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
 
@@ -192,9 +201,16 @@ CATCH_RETURN;
 
 template<typename D, typename... Args> auto MakeOrThrow(Args&&... args)
 {
-    Microsoft::WRL::ComPtr<D> tempD;
-    THROW_IF_FAILED(Microsoft::WRL::MakeAndInitialize<D>(&tempD, std::forward<Args>(args)...));
-    return winrt::com_ptr<D>{tempD.Detach(), winrt::take_ownership_from_abi};
+    if constexpr (std::is_base_of_v<Microsoft::WRL::Details::DontUseNewUseMake, D>)
+    {
+        Microsoft::WRL::ComPtr<D> tempD;
+        THROW_IF_FAILED(Microsoft::WRL::MakeAndInitialize<D>(&tempD, std::forward<Args>(args)...));
+        return winrt::com_ptr<D>{tempD.Detach(), winrt::take_ownership_from_abi};
+    }
+    else
+    {
+        return winrt::make_self<D>(std::forward<Args>(args)...);
+    }
 }
 
 template<typename I, typename Abi>
@@ -342,7 +358,7 @@ void AdaptiveWarningsToSharedWarnings(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
-ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type);
+winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type);
 AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type);
 
 AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType const& type);

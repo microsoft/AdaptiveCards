@@ -146,7 +146,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
             return AdaptiveCardElementBase::ToJson(result);
         }
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
+        virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType* height) override
         {
@@ -166,7 +166,7 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         UINT32 m_maxLength;
         boolean m_isMultiline;
         ABI::AdaptiveCards::ObjectModel::WinUI3::TextInputStyle m_textInputStyle;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_inlineAction;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement m_inlineAction;
         Microsoft::WRL::Wrappers::HString m_regex;
     };
 
