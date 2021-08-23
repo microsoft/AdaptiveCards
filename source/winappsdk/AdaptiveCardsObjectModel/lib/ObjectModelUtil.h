@@ -108,14 +108,7 @@ std::wstring StringToWString(std::string_view in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
-HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept;
 winrt::hstring UTF8ToHString(std::string_view in);
-
-// This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
-// (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
-HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept;
-
-std::string HStringToUTF8(HSTRING in);
 
 std::string HStringToUTF8(winrt::hstring const& in);
 
@@ -124,34 +117,19 @@ inline bool Boolify(const boolean value) noexcept
     return (value > 0);
 }
 
-HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* items,
-                              std::shared_ptr<AdaptiveCards::BaseCardElement>& containedElement);
-
 std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& item);
-
-HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
 
 std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> GenerateSharedElements(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& items);
 
-HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                             std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction);
-
 std::shared_ptr<AdaptiveCards::BaseActionElement>
 GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& action);
-
-HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* items,
-    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
 
 std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> GenerateSharedActions(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> const& actions);
 
 std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRequirements(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> const& adaptiveRequirements);
-
-HRESULT GenerateSharedInlines(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* items,
-                              std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
 
 std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> const& inlines);
@@ -165,16 +143,20 @@ HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector
 {
     containedElements.clear();
 
-    IterateOverVector<TWinrtClass, TWinrtInterface>(tableCells, [&](TWinrtInterface* tableCell) {
-        ComPtr<TImplementationClass> adaptiveElement = PeekInnards<TImplementationClass>(tableCell);
-        if (adaptiveElement == nullptr)
-        {
-            return E_INVALIDARG;
-        }
+    IterateOverVector<TWinrtClass, TWinrtInterface>(tableCells,
+                                                    [&](TWinrtInterface* tableCell)
+                                                    {
+                                                        ComPtr<TImplementationClass> adaptiveElement =
+                                                            PeekInnards<TImplementationClass>(tableCell);
+                                                        if (adaptiveElement == nullptr)
+                                                        {
+                                                            return E_INVALIDARG;
+                                                        }
 
-        containedElements.push_back(std::AdaptivePointerCast<TSharedClass>(adaptiveElement->GetSharedModel()));
-        return S_OK;
-    });
+                                                        containedElements.push_back(std::AdaptivePointerCast<TSharedClass>(
+                                                            adaptiveElement->GetSharedModel()));
+                                                        return S_OK;
+                                                    });
 
     return S_OK;
 }
@@ -196,48 +178,6 @@ std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& ce
     }
     return shared;
 }
-
-#define GenerateSharedToggleElements(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS) \
-    GenerateSharedVector<AdaptiveCards::ToggleVisibilityTarget, \
-                         ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleVisibilityTarget, \
-                         ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget, \
-                         AdaptiveToggleVisibilityTarget, \
-                         AdaptiveCards::ToggleVisibilityTarget>(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS);
-
-#define GenerateSharedImages(WINRTIMAGES, SHAREDIMAGES) \
-    GenerateSharedVector<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage, AdaptiveImage, AdaptiveCards::BaseCardElement>( \
-        WINRTIMAGES, SHAREDIMAGES);
-
-#define GenerateSharedFacts(WINRTFACTS, SHAREDFACTS) \
-    GenerateSharedVector<AdaptiveCards::Fact, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveFact, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact, AdaptiveFact, AdaptiveCards::Fact>( \
-        WINRTFACTS, SHAREDFACTS);
-
-#define GenerateSharedChoices(WINRTCHOICEINPUTS, SHAREDCHOICEINPUTS) \
-    GenerateSharedVector<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput, AdaptiveChoiceInput, AdaptiveCards::ChoiceInput>( \
-        WINRTCHOICEINPUTS, SHAREDCHOICEINPUTS);
-
-#define GenerateSharedMediaSources(WINRTMEDIASOURCES, SHAREDMEDIASOURCES) \
-    GenerateSharedVector<AdaptiveCards::MediaSource, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMediaSource, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource, AdaptiveMediaSource, AdaptiveCards::MediaSource>( \
-        WINRTMEDIASOURCES, SHAREDMEDIASOURCES);
-
-#define GenerateSharedColumns(WINRTCOLUMNS, SHAREDCOLUMNS) \
-    GenerateSharedVector<AdaptiveCards::Column, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn, AdaptiveColumn, AdaptiveCards::BaseCardElement>( \
-        WINRTCOLUMNS, SHAREDCOLUMNS);
-
-#define GenerateSharedTableCells(WINRTTABLECELLS, SHAREDTABLECELLS) \
-    GenerateSharedVector<AdaptiveCards::TableCell, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableCell, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell, AdaptiveTableCell, AdaptiveCards::BaseCardElement>( \
-        WINRTTABLECELLS, SHAREDTABLECELLS);
-
-#define GenerateSharedTableRows(WINRTTABLEROWS, SHAREDTABLEROWS) \
-    GenerateSharedVector<AdaptiveCards::TableRow, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableRow, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow, AdaptiveTableRow, AdaptiveCards::BaseCardElement>( \
-        WINRTTABLEROWS, SHAREDTABLEROWS);
-
-#define GenerateSharedTableColumnDefinitions(WINRTTABLECOLUMNS, SHAREDTABLECOLUMNS) \
-    GenerateSharedVector<AdaptiveCards::TableColumnDefinition, \
-                         ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableColumnDefinition, \
-                         ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition, \
-                         AdaptiveTableColumnDefinition, \
-                         AdaptiveCards::TableColumnDefinition>(WINRTTABLECOLUMNS, SHAREDTABLECOLUMNS);
 
 HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement,
                                   _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** projectedElement) noexcept;
@@ -263,7 +203,7 @@ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectMod
 GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>
-    GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);
+GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);
 
 template<typename TRtTypeImpl, typename TSharedType, typename TRtType = typename TRtTypeImpl::class_type>
 auto GenerateVectorProjection(std::vector<std::shared_ptr<TSharedType>> const& elements)
@@ -276,53 +216,19 @@ auto GenerateVectorProjection(std::vector<std::shared_ptr<TSharedType>> const& e
     return winrt::single_threaded_vector<TRtType>(std::move(converted));
 }
 
-template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass>
-HRESULT GenerateVectorProjection(const std::vector<std::shared_ptr<TSharedClass>>& containedElements,
-                                 _In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<TWinrtInterface> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<TImplementationClass>(&projectedContainedElement,
-                                                                 std::static_pointer_cast<TSharedClass>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN();
-
-template<typename D, typename... Args> auto MakeOrThrow(Args&&... args)
-{
-    if constexpr (std::is_base_of_v<Microsoft::WRL::Details::DontUseNewUseMake, D>)
-    {
-        Microsoft::WRL::ComPtr<D> tempD;
-        THROW_IF_FAILED(Microsoft::WRL::MakeAndInitialize<D>(&tempD, std::forward<Args>(args)...));
-        return winrt::com_ptr<D>{tempD.Detach(), winrt::take_ownership_from_abi};
-    }
-    else
-    {
-        return winrt::make_self<D>(std::forward<Args>(args)...);
-    }
-}
-
-template<typename I, typename Abi>
-auto copy_from_abi(Abi* abi)
+template<typename I, typename Abi> auto copy_from_abi(Abi* abi)
 {
     I returned{nullptr};
     winrt::copy_from_abi(returned, abi);
     return returned;
 }
 
-template<typename T, typename I>
-inline auto put_abi(T& i)
+template<typename T, typename I> inline auto put_abi(T& i)
 {
     return reinterpret_cast<T**>(winrt::put_abi(i));
 }
 
-template<typename I, typename Abi>
-void copy_to_abi(I const& i, Abi** abi)
+template<typename I, typename Abi> void copy_to_abi(I const& i, Abi** abi)
 {
     *abi = i.as<Abi>().detach();
 }
@@ -432,14 +338,12 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
     return out;
 }
 
-template<typename D, typename I>
-winrt::com_ptr<D> peek_innards(I* o)
+template<typename D, typename I> winrt::com_ptr<D> peek_innards(I* o)
 {
     winrt::com_ptr<I> i;
     i.copy_from(o);
     return peek_innards<D>(i);
 }
-
 
 void SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<::AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
