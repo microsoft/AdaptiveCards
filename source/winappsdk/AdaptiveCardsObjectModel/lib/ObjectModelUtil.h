@@ -91,6 +91,18 @@ template<typename TStored> struct property_opt
     operator std::optional<TStored>() { return get(); }
 };
 
+template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> const& src)
+{
+    if (src.has_value())
+    {
+        return static_cast<T>(src.value());
+    }
+    else
+    {
+        return std::nullopt;
+    }
+}
+
 std::string WStringToString(std::wstring_view in);
 std::wstring StringToWString(std::string_view in);
 
