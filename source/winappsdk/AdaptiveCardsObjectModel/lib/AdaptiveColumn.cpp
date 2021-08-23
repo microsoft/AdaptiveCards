@@ -3,238 +3,82 @@
 #include "pch.h"
 #include "AdaptiveColumn.h"
 
-#include <windows.foundation.collections.h>
-#include <winrt/Windows.Foundation.h>
-
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    AdaptiveColumn::AdaptiveColumn() : m_bleedDirection(ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection::None)
+    AdaptiveColumn::AdaptiveColumn(std::shared_ptr<::AdaptiveCards::Column> const& sharedColumn)
     {
-        m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
-    }
+        Items = GenerateContainedElementsProjection(sharedColumn->GetItems());
+        SelectAction = GenerateActionProjection(sharedColumn->GetSelectAction());
+        Style = static_cast<WinUI3::ContainerStyle>(sharedColumn->GetStyle());
 
-    HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept
-    try
-    {
-        std::shared_ptr<AdaptiveCards::Column> column = std::make_shared<AdaptiveCards::Column>();
-        return RuntimeClassInitialize(column);
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Column>& sharedColumn)
-    try
-    {
-        GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
-        m_selectAction = GenerateActionProjection(sharedColumn->GetSelectAction());
-
-        m_style = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle>(sharedColumn->GetStyle());
-
-        if (sharedColumn->GetVerticalContentAlignment().has_value())
+        if (sharedColumn->GetVerticalContentAlignment())
         {
-            m_verticalContentAlignment =
-                winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>(
-                                     sharedColumn->GetVerticalContentAlignment().value()))
-                    .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>>()
-                    .get();
+            VerticalContentAlignment =
+                static_cast<WinUI3::VerticalContentAlignment>(*sharedColumn->GetVerticalContentAlignment());
         }
 
-        m_bleed = sharedColumn->GetBleed();
-        m_bleedDirection = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection>(sharedColumn->GetBleedDirection());
-
-        RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
-        m_pixelWidth = sharedColumn->GetPixelWidth();
-        m_minHeight = sharedColumn->GetMinHeight();
+        Bleed = sharedColumn->GetBleed();
+        BleedDirection = static_cast<WinUI3::BleedDirection>(sharedColumn->GetBleedDirection());
+        m_width = UTF8ToHString(sharedColumn->GetWidth());
+        PixelWidth = sharedColumn->GetPixelWidth();
+        MinHeight = sharedColumn->GetMinHeight();
 
         auto backgroundImage = sharedColumn->GetBackgroundImage();
-        if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
+        if (backgroundImage && !backgroundImage->GetUrl().empty())
         {
-            m_backgroundImage =
-                *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveBackgroundImage>(backgroundImage);
+            BackgroundImage = winrt::make<implementation::AdaptiveBackgroundImage>(backgroundImage);
         }
 
-        const auto sharedRtl = sharedColumn->GetRtl();
-        if (sharedRtl)
-        {
-            m_rtl = winrt::box_value(sharedRtl.value()).as<ABI::Windows::Foundation::IReference<bool>>().get();
-        }
+        Rtl = sharedColumn->GetRtl();
 
-        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveColumn::get_Width(_Outptr_ HSTRING* width) { return m_width.CopyTo(width); }
-
-    HRESULT AdaptiveColumn::put_Width(_In_ HSTRING width)
-    {
-        RETURN_IF_FAILED(m_width.Set(width));
-
-        RETURN_IF_FAILED(put_PixelWidth(ParseSizeForPixelSize(HStringToUTF8(width), nullptr).value_or(0)));
-        return S_OK;
+        InitializeBaseElement(sharedColumn);
     }
 
-    HRESULT AdaptiveColumn::get_PixelWidth(_Out_ UINT32* pixelWidth) { return *pixelWidth = m_pixelWidth; }
-
-    HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth) { return m_pixelWidth = pixelWidth; }
-
-    HRESULT AdaptiveColumn::get_Style(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* style)
+    void AdaptiveColumn::Width(hstring const& width)
     {
-        *style = m_style;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style)
-    {
-        m_style = style;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_VerticalContentAlignment(
-        _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>** verticalAlignment)
-    {
-        return m_verticalContentAlignment.CopyTo(verticalAlignment);
-    }
-
-    HRESULT AdaptiveColumn::put_VerticalContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>* verticalAlignment)
-    {
-        m_verticalContentAlignment = verticalAlignment;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
-    {
-        copy_to_abi(m_backgroundImage, backgroundImage);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
-    {
-        m_backgroundImage = copy_from_abi<decltype(m_backgroundImage)>(backgroundImage);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_Rtl(_Out_ ABI::Windows::Foundation::IReference<bool>** rtl)
-    {
-        return m_rtl.CopyTo(rtl);
-    }
-
-    HRESULT AdaptiveColumn::put_Rtl(ABI::Windows::Foundation::IReference<bool>* rtl)
-    {
-        m_rtl = rtl;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_MinHeight(_Out_ UINT32* minHeight)
-    {
-        *minHeight = m_minHeight;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::put_MinHeight(UINT32 minHeight)
-    {
-        m_minHeight = minHeight;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_Items(_COM_Outptr_ IVector<IAdaptiveCardElement*>** items)
-    {
-        return m_items.CopyTo(items);
-    }
-
-    HRESULT AdaptiveColumn::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
-    {
-        copy_to_abi(m_selectAction, action);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::put_SelectAction(_In_ IAdaptiveActionElement* action)
-    {
-        winrt::copy_from_abi(m_selectAction, action);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_Bleed(_Out_ boolean* isBleed)
-    {
-        *isBleed = m_bleed;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::put_Bleed(boolean isBleed)
-    {
-        m_bleed = isBleed;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_BleedDirection(ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection* bleedDirection)
-    {
-        // TODO: Current behavior is broken because it doesn't update when bleed updates. Unfortunately, neither does
-        // the shared model logic.
-        *bleedDirection = m_bleedDirection;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveColumn::get_ElementType(_Out_ ElementType* elementType)
-    {
-        *elementType = ElementType::Column;
-        return S_OK;
+        m_width = width;
+        PixelWidth = ParseSizeForPixelSize(HStringToUTF8(width), nullptr).value_or(0);
     }
 
     std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveColumn::GetSharedModel()
     {
-        auto column = std::make_shared<AdaptiveCards::Column>();
-        THROW_IF_FAILED(CopySharedElementProperties(*column));
+        auto column = std::make_shared<::AdaptiveCards::Column>();
+        CopySharedElementProperties(*column);
 
-        column->SetStyle(static_cast<AdaptiveCards::ContainerStyle>(m_style));
+        column->SetStyle(static_cast<::AdaptiveCards::ContainerStyle>(Style.get()));
 
-        if (m_verticalContentAlignment != nullptr)
+        if (VerticalContentAlignment)
         {
-            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignmentValue;
-            THROW_IF_FAILED(m_verticalContentAlignment->get_Value(&verticalContentAlignmentValue));
-            column->SetVerticalContentAlignment(static_cast<AdaptiveCards::VerticalContentAlignment>(verticalContentAlignmentValue));
+            column->SetVerticalContentAlignment(VerticalContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
         }
 
-        if (m_pixelWidth)
+        if (PixelWidth)
         {
-            column->SetPixelWidth(m_pixelWidth);
+            column->SetPixelWidth(PixelWidth);
         }
         else
         {
-            column->SetWidth(HStringToUTF8(m_width.Get()));
+            column->SetWidth(HStringToUTF8(m_width));
         }
 
-        column->SetMinHeight(m_minHeight);
-        column->SetBleed(m_bleed);
+        column->SetMinHeight(MinHeight);
+        column->SetBleed(Bleed);
 
-        auto adaptiveBackgroundImage = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveBackgroundImage>(m_backgroundImage);
-        if (adaptiveBackgroundImage)
+        if (auto adaptiveBackgroundImage = peek_innards<implementation::AdaptiveBackgroundImage>(BackgroundImage.get()))
         {
             if (auto sharedBackgroundImage = adaptiveBackgroundImage->GetSharedModel())
             {
-                column->SetBackgroundImage(std::move(sharedBackgroundImage));
+                column->SetBackgroundImage(sharedBackgroundImage);
             }
         }
 
-        if (m_selectAction)
+        if (SelectAction != nullptr)
         {
-            column->SetSelectAction(GenerateSharedAction(m_selectAction));
+            column->SetSelectAction(GenerateSharedAction(SelectAction));
         }
 
-        std::optional<bool> rtl;
-        if (m_rtl)
-        {
-            boolean rtlValue;
-            THROW_IF_FAILED(m_rtl->get_Value(&rtlValue));
-            rtl = rtlValue;
-        }
-        column->SetRtl(rtl);
-
-        GenerateSharedElements(m_items.Get(), column->GetItems());
+        column->SetRtl(Rtl);
+        column->GetItems() = GenerateSharedElements(Items.get());
 
         return column;
     }
