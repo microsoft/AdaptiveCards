@@ -4,6 +4,7 @@
 
 #include "AdaptiveCard.h"
 #include "AdaptiveShowCardAction.h"
+#include "AdaptiveShowCardAction.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

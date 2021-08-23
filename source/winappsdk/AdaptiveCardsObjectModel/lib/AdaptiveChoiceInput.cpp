@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveChoiceInput.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveChoiceInput.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

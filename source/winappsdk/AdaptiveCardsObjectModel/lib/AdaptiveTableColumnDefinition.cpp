@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveTableColumnDefinition.h"
+#include "AdaptiveTableColumnDefinition.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

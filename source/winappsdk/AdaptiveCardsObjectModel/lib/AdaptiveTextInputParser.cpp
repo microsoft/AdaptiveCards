@@ -5,6 +5,7 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTextInputParser.h"
+#include "AdaptiveTextInputParser.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

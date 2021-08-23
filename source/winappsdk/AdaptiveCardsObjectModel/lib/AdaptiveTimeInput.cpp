@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveTimeInput.h"
+#include "AdaptiveTimeInput.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

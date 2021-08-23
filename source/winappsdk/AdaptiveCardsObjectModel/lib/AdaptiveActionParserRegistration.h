@@ -6,9 +6,11 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    struct DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration : AdaptiveActionParserRegistrationT<AdaptiveActionParserRegistration, ITypePeek>
+    struct DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
+        : AdaptiveActionParserRegistrationT<AdaptiveActionParserRegistration, ITypePeek>
     {
-        using RegistrationMap = std::unordered_map<std::string, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
+        using RegistrationMap =
+            std::unordered_map<std::string, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
     public:
         AdaptiveActionParserRegistration();
@@ -27,7 +29,16 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         bool m_isInitializing{true};
         std::shared_ptr<RegistrationMap> m_registration{std::make_shared<RegistrationMap>()};
-        std::shared_ptr<::AdaptiveCards::ActionParserRegistration> m_sharedParserRegistration{std::make_shared<::AdaptiveCards::ActionParserRegistration>()};
+        std::shared_ptr<::AdaptiveCards::ActionParserRegistration> m_sharedParserRegistration{
+            std::make_shared<::AdaptiveCards::ActionParserRegistration>()};
+    };
+}
+
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveActionParserRegistration
+        : AdaptiveActionParserRegistrationT<AdaptiveActionParserRegistration, implementation::AdaptiveActionParserRegistration>
+    {
     };
 }
 

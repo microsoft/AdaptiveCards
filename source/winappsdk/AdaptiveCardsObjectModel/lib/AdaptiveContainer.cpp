@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveContainer.h"
+#include "AdaptiveContainer.g.cpp"
 
 #include <windows.foundation.collections.h>
 #include <winrt/Windows.Foundation.h>

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveRefresh.h"
+#include "AdaptiveRefresh.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

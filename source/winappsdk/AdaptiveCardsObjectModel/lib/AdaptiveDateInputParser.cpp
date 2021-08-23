@@ -4,6 +4,7 @@
 
 #include "AdaptiveDateInput.h"
 #include "AdaptiveDateInputParser.h"
+#include "AdaptiveDateInputParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

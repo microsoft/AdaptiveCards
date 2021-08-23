@@ -257,6 +257,7 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
     };
 
+    /* This type is unused
     runtimeclass AdaptiveSeparator
     {
         AdaptiveSeparator();
@@ -264,6 +265,7 @@ namespace AdaptiveCards.ObjectModel.WinUI3
         ForegroundColor Color;
         SeparatorThickness Thickness;
     };
+    */
 
     interface IAdaptiveTextElement
     {

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #pragma once
 #include "AuthCardButton.h"
 #include "AdaptiveAuthCardButton.g.h"

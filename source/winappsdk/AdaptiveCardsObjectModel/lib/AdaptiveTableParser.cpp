@@ -5,6 +5,7 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveTable.h"
 #include "AdaptiveTableParser.h"
+#include "AdaptiveTableParser.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

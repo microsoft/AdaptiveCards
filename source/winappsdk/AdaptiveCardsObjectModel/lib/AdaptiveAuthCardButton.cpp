@@ -1,5 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveAuthCardButton.h"
+#include "AdaptiveAuthCardButton.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

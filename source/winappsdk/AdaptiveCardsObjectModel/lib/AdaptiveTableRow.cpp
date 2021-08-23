@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveTableRow.h"
+#include "AdaptiveTableRow.g.cpp"
 #include "AdaptiveTableCell.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

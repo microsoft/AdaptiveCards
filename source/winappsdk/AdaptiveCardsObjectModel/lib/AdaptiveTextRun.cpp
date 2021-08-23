@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveTextRun.h"
+#include "AdaptiveTextRun.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

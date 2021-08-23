@@ -4,6 +4,7 @@
 
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveShowCardActionParser.h"
+#include "AdaptiveShowCardActionParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

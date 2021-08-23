@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveSubmitAction.h"
+#include "AdaptiveSubmitAction.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

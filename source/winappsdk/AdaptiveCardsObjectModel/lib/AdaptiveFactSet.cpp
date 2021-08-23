@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveFactSet.h"
+#include "AdaptiveFactSet.g.cpp"
 #include "AdaptiveFact.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

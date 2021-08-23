@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveTokenExchangeResource.h"
+#include "AdaptiveTokenExchangeResource.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

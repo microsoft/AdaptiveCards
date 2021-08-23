@@ -5,6 +5,7 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveFactSet.h"
 #include "AdaptiveFactSetParser.h"
+#include "AdaptiveFactSetParser.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

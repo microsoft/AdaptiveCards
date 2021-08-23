@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveToggleVisibilityTarget.h"
+#include "AdaptiveToggleVisibilityTarget.g.cpp"
 #include "ToggleVisibilityTarget.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

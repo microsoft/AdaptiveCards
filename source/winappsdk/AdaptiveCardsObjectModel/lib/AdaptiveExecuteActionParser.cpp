@@ -4,6 +4,7 @@
 
 #include "AdaptiveExecuteAction.h"
 #include "AdaptiveExecuteActionParser.h"
+#include "AdaptiveExecuteActionParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

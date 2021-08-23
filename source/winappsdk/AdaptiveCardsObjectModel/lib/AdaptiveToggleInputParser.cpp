@@ -5,6 +5,7 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveToggleInput.h"
 #include "AdaptiveToggleInputParser.h"
+#include "AdaptiveToggleInputParser.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

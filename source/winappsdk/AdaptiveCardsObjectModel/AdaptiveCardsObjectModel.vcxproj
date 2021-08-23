@@ -134,6 +134,7 @@
     <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionParser.cpp" />
+    <ClCompile Include="lib\AdaptiveFactParser.cpp" />
     <ClCompile Include="lib\AdaptiveRefresh.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveElementParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveDateInputParser.h" />
+    <ClInclude Include="lib\AdaptiveFactParser.h" />
     <ClInclude Include="lib\AdaptiveFactSetParser.h" />
     <ClInclude Include="lib\AdaptiveImageParser.h" />
     <ClInclude Include="lib\AdaptiveImageSetParser.h" />

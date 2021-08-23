@@ -5,6 +5,7 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveImageSet.h"
 #include "AdaptiveImageSetParser.h"
+#include "AdaptiveImageSetParser.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

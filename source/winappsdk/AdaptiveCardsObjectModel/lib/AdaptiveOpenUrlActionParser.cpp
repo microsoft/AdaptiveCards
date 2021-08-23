@@ -4,6 +4,7 @@
 
 #include "AdaptiveOpenUrlAction.h"
 #include "AdaptiveOpenUrlActionParser.h"
+#include "AdaptiveOpenUrlActionParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

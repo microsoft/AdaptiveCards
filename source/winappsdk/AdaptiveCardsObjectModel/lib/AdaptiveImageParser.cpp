@@ -3,10 +3,10 @@
 #include "pch.h"
 
 #include "AdaptiveImageParser.h"
+#include "AdaptiveImageParser.g.cpp"
 
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveImage.h"
-#include "AdaptiveBase64Util.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

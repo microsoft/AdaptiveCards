@@ -4,6 +4,7 @@
 
 #include "AdaptiveToggleVisibilityAction.h"
 #include "AdaptiveToggleVisibilityActionParser.h"
+#include "AdaptiveToggleVisibilityActionParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

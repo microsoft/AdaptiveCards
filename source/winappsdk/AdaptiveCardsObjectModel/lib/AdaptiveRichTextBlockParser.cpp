@@ -4,6 +4,7 @@
 
 #include "AdaptiveRichTextBlock.h"
 #include "AdaptiveRichTextBlockParser.h"
+#include "AdaptiveRichTextBlockParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

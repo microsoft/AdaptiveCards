@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveActionSetParser.h"
+#include "AdaptiveActionSetParser.g.cpp"
 
 #include "AdaptiveActionSet.h"
 #include "AdaptiveElementParserRegistration.h"

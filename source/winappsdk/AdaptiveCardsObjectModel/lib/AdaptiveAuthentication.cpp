@@ -5,6 +5,7 @@
 #include "AdaptiveAuthentication.h"
 #include "AdaptiveTokenExchangeResource.h"
 #include "AdaptiveAuthCardButton.h"
+#include "AdaptiveAuthentication.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

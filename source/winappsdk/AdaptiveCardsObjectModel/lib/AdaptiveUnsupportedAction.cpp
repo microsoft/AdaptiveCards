@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveUnsupportedAction.h"
+#include "AdaptiveUnsupportedAction.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

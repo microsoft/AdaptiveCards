@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveRequirement.h"
+#include "AdaptiveRequirement.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

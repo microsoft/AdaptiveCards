@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveFact.h"
+#include "AdaptiveFact.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

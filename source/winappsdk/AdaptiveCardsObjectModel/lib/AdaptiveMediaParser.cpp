@@ -5,6 +5,7 @@
 #include "AdaptiveMedia.h"
 
 #include "AdaptiveMediaParser.h"
+#include "AdaptiveMediaParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

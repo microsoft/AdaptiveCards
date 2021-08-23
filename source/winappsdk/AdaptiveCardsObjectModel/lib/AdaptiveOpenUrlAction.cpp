@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveOpenUrlAction.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

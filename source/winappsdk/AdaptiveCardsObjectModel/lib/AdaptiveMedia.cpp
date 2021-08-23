@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveMedia.h"
+#include "AdaptiveMedia.g.cpp"
 #include "AdaptiveMediaSource.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation

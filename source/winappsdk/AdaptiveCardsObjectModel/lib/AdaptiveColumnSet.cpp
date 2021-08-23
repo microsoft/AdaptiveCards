@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveColumnSet.h"
+#include "AdaptiveColumnSet.g.cpp"
 
 #include <windows.foundation.collections.h>
 #include "AdaptiveColumn.h"

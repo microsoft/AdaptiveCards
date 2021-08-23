@@ -9,6 +9,7 @@
 #include "AdaptiveError.h"
 #include "AdaptiveWarning.h"
 #include <BaseCardElement.h>
+#include "AdaptiveCard.g.cpp"
 
 #include <json.h>
 

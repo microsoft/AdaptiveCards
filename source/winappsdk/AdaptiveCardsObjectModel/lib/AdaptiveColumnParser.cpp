@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveColumnParser.h"
+#include "AdaptiveColumnParser.g.cpp"
 
 #include "AdaptiveColumn.h"
 #include "AdaptiveElementParserRegistration.h"

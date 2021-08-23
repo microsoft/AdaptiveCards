@@ -21,7 +21,7 @@
 #include "AdaptiveTimeInputParser.h"
 #include "AdaptiveToggleInputParser.h"
 #include "CustomElementWrapper.h"
-#include "windows.ui.xaml.h"
+#include "AdaptiveElementParserRegistration.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

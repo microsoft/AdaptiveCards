@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveImage.h"
+#include "AdaptiveImage.g.cpp"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

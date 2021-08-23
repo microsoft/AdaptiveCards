@@ -4,6 +4,7 @@
 
 #include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveChoiceSetInputParser.h"
+#include "AdaptiveChoiceSetInputParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
