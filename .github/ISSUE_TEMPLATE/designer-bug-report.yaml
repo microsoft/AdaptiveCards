@@ -1,0 +1,24 @@
+name: Designer Bug Report
+description: Create a bug report for problems in the Adaptive Cards designer
+title: "[Designer] Bug Title Here"
+labels: [Bug, Triage-Needed, Area-Designer]
+body:
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Problem Description
+      description: Please enter a description of the issue. If you just have a question, please post [on GitHub Discussions](https://github.com/microsoft/AdaptiveCards/discussions)
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Card JSON
+      description: Please provide the JSON of the Card that is being rendered
+      render: JSON
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Screenshot
+      description: Please provide a screenshot of the problem (if possible)
