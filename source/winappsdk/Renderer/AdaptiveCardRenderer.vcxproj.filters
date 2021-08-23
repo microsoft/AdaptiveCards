@@ -84,7 +84,6 @@
     <ClCompile Include="lib\AdaptiveTableConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lib\AsyncOperations.h" />
     <ClInclude Include="lib\DefaultResourceDictionary.h" />
     <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\IImageLoadTrackerListener.h" />

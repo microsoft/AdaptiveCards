@@ -54,6 +54,8 @@
     <GenerateManifest>false</GenerateManifest>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
+    <CppWinRTFastAbi>true</CppWinRTFastAbi>
+    <CppWinRTOptimized>true</CppWinRTOptimized>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -244,7 +246,6 @@
     <ClInclude Include="lib\AdaptiveImageSetConfig.h" />
     <ClInclude Include="lib\AdaptiveActionEventArgs.h" />
     <ClInclude Include="lib\AdaptiveFactSetTextConfig.h" />
-    <ClInclude Include="lib\AsyncOperations.h" />
     <ClInclude Include="lib\DefaultResourceDictionary.h" />
     <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\IImageLoadTrackerListener.h" />
