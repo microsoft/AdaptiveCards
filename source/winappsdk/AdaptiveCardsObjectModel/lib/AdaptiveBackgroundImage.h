@@ -7,10 +7,11 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    struct DECLSPEC_UUID("60F8A683-A7A3-4E34-BE86-C809F61BD5B6") AdaptiveBackgroundImage : AdaptiveBackgroundImageT < AdaptiveBackgroundImage, ITypePeek>
+    struct DECLSPEC_UUID("60F8A683-A7A3-4E34-BE86-C809F61BD5B6") AdaptiveBackgroundImage
+        : AdaptiveBackgroundImageT<AdaptiveBackgroundImage, ITypePeek>
     {
-        AdaptiveBackgroundImage() : AdaptiveBackgroundImage(std::make_shared<::AdaptiveCards::BackgroundImage>()) {}
-        AdaptiveBackgroundImage(_In_ const std::shared_ptr<::AdaptiveCards::BackgroundImage>& sharedImage);
+        AdaptiveBackgroundImage(const std::shared_ptr<::AdaptiveCards::BackgroundImage>& sharedImage =
+                                    std::make_shared<::AdaptiveCards::BackgroundImage>());
 
         property<hstring> Url;
         property<WinUI3::BackgroundImageFillMode> FillMode;

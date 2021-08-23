@@ -20,7 +20,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         property<winrt::Windows::Foundation::Collections::IVector<WinUI3::IAdaptiveCardElement>> Items;
         property_opt<WinUI3::VerticalContentAlignment> VerticalContentAlignment;
-        property<WinUI3::AdaptiveBackgroundImage> BackgroundImage;
+        property<WinUI3::AdaptiveBackgroundImage> BackgroundImage{nullptr};
         property_opt<bool> Rtl;
         property<WinUI3::ContainerStyle> Style;
         property<WinUI3::IAdaptiveActionElement> SelectAction;

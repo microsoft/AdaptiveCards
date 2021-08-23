@@ -34,7 +34,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<uint32_t> InternalId;
         property<hstring> Version;
         property<hstring> FallbackText;
-        property<WinUI3::AdaptiveBackgroundImage> BackgroundImage;
+        property<WinUI3::AdaptiveBackgroundImage> BackgroundImage{nullptr};
         property<hstring> Language;
         property<hstring> Speak;
         property<WinUI3::ContainerStyle> Style;
@@ -42,8 +42,8 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<WinUI3::VerticalContentAlignment> VerticalContentAlignment;
         property<WinUI3::HeightType> Height;
         property<uint32_t> MinHeight;
-        property<WinUI3::AdaptiveRefresh> Refresh;
-        property<WinUI3::AdaptiveAuthentication> Authentication;
+        property<WinUI3::AdaptiveRefresh> Refresh{nullptr};
+        property<WinUI3::AdaptiveAuthentication> Authentication{nullptr};
 
         winrt::Windows::Data::Json::JsonObject ToJson();
         winrt::Windows::Foundation::Collections::IVectorView<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation>

@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<WinUI3::IAdaptiveActionElement> SelectAction;
         property<WinUI3::ContainerStyle> Style;
         property_opt<WinUI3::VerticalContentAlignment> VerticalContentAlignment;
-        property<WinUI3::AdaptiveBackgroundImage> BackgroundImage;
+        property<WinUI3::AdaptiveBackgroundImage> BackgroundImage{nullptr};
         property<uint32_t> MinHeight;
         property<bool> Bleed;
         property<WinUI3::BleedDirection> BleedDirection;

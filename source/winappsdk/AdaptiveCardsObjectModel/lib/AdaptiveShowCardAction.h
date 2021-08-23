@@ -13,7 +13,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         AdaptiveShowCardAction(const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction =
                                    std::make_shared<::AdaptiveCards::ShowCardAction>());
 
-        property<WinUI3::AdaptiveCard> Card;
+        property<WinUI3::AdaptiveCard> Card{nullptr};
 
         auto ActionType() { return ActionType::ShowCard; }
 
