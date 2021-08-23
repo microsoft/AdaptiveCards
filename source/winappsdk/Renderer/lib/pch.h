@@ -24,6 +24,25 @@
 #include <limits>
 #include <string>
 
+#define FACILITY_ADAPTIVECARDS 0xADA
+#define ERRORBASE_ADAPTIVECARDS 0x1000
+#define E_PERFORM_FALLBACK MAKE_HRESULT(1, FACILITY_ADAPTIVECARDS, ERRORBASE_ADAPTIVECARDS)
+
+#include <windows.foundation.h>
+#include <windows.foundation.collections.h>
+#include <windows.ui.xaml.shapes.h>
+#include <windows.ui.xaml.markup.h>
+
+#include <winrt/base.h>
+#include <winrt/Windows.UI.Xaml.Automation.h>
+#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
+#include <winrt/Windows.UI.Xaml.Controls.h>
+#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Foundation.Collections.h>
+#include <winrt/AdaptiveCards.Rendering.WinUI3.h>
+#include <winrt/AdaptiveCards.ObjectModel.WinUI3.h>
+
 // The #define of this in winbase.h windows.ui.xaml.media.animation.h's IStoryboard defintion
 // so we need to remove it
 #ifdef GetCurrentTime
@@ -46,19 +65,3 @@
     ((HRESULT)(((unsigned long)(sev) << 31) | ((unsigned long)(fac) << 16) | ((unsigned long)(code))))
 #endif
 
-#define FACILITY_ADAPTIVECARDS 0xADA
-#define ERRORBASE_ADAPTIVECARDS 0x1000
-#define E_PERFORM_FALLBACK MAKE_HRESULT(1, FACILITY_ADAPTIVECARDS, ERRORBASE_ADAPTIVECARDS)
-
-#include <windows.foundation.h>
-#include <windows.foundation.collections.h>
-#include <windows.ui.xaml.shapes.h>
-#include <windows.ui.xaml.markup.h>
-
-#include <winrt/base.h>
-#include <winrt/Windows.UI.Xaml.Automation.h>
-#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
-#include <winrt/Windows.UI.Xaml.Controls.h>
-#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
-#include <winrt/Windows.Foundation.h>
-#include <winrt/AdaptiveCards.Rendering.WinUI3.h>

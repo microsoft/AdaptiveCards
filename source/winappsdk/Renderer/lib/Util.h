@@ -31,6 +31,113 @@ private:
     DWORD _dwErr;
 };
 
+template<typename TStored> struct property
+{
+    TStored m_stored;
+
+    template<typename T> void operator()(T&& t) { m_stored = std::forward<T>(t); }
+    TStored operator()() { return m_stored; }
+
+    template<typename T> void operator=(T&& t) { m_stored = std::forward<T>(t); }
+    operator TStored() { return m_stored; }
+
+    TStored const& get() const { return m_stored; }
+    auto operator->() { return std::addressof(m_stored); }
+};
+
+template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> const& src)
+{
+    if (src.has_value())
+    {
+        return static_cast<T>(src.value());
+    }
+    else
+    {
+        return std::nullopt;
+    }
+}
+
+template<typename TStored> struct property_opt
+{
+    winrt::Windows::Foundation::IReference<TStored> m_stored;
+
+    template<typename T> auto set(T const& t)
+    {
+        if constexpr (std::is_same_v<T, winrt::Windows::Foundation::IReference<TStored>>)
+        {
+            m_stored = t;
+        }
+        else if constexpr (std::is_same_v<T, std::optional<T>>)
+        {
+            m_stored = t ? winrt::box_value(*t) : nullptr;
+        }
+        else if constexpr (std::is_null_pointer_v<T>)
+        {
+            m_stored = std::nullopt;
+        }
+        else
+        {
+            static_assert("unsupported");
+        }
+
+        return *this;
+    }
+
+    template<typename TOther = TStored> std::optional<TOther> get()
+    {
+        if constexpr (std::is_same_v<TOther, TStored>)
+        {
+            return m_stored.try_as<TStored>();
+        }
+        else
+        {
+            return opt_cast<TOther>(m_stored.try_as<TStored>());
+        }
+    };
+
+    // C++/WinRT adapters
+    auto operator()() { return m_stored; }
+    template<typename T> auto operator()(T&& t) { return set(std::forward<T>(t)); }
+
+    // Assignment helper
+    template<typename T> auto operator=(T&& t) { return set(std::forward<T>(t)); }
+
+    // Casting helpers "do you have a value" and "cast to your optional type"
+    operator bool() const { return static_cast<bool>(m_stored); }
+    operator std::optional<TStored>() { return get(); }
+};
+
+template<typename D, typename I, typename... Args>
+HRESULT MakeRt(Microsoft::WRL::ComPtr<I>& out, Args&&... args) noexcept
+try
+{
+    out.Attach(winrt::make<D>(std::forward<Args>(args)...).as<I>().detach());
+    return S_OK;
+}
+CATCH_RETURN();
+
+template<typename> struct winrt_to_abi;
+template<typename> struct abi_to_winrt;
+#define map_rt_to_abi_(rt, abi) \
+    template<> struct winrt_to_abi<winrt::rt> { using type = ::ABI::abi; }; \
+    template<> struct abi_to_winrt<ABI::abi> { using type  = ::winrt::rt; };
+
+#define map_rt_to_abi(x) map_rt_to_abi_(x, x)
+
+map_rt_to_abi(AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveInputs, AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs);
+
+template<typename I> auto to_winrt(I* src)
+{
+    return reinterpret_cast<abi_to_winrt<I>::type const&>(src);
+}
+
+template<typename I> auto to_winrt(Microsoft::WRL::ComPtr<I> const& src)
+{
+    return reinterpret_cast<abi_to_winrt<I>::type const&>(src);
+}
+
+
 HRESULT WStringToHString(std::wstring_view in, _Outptr_ HSTRING* out) noexcept;
 
 std::string WStringToString(std::wstring_view in);

@@ -412,7 +412,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             else
             {
                 ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, nullptr));
+                RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(eventArgs, to_winrt(actionElement), nullptr));
 
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
@@ -458,7 +458,8 @@ namespace AdaptiveCards::Rendering::WinUI3
             else
             {
                 ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
+                RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(
+                    eventArgs, to_winrt(actionElement), to_winrt(gatheredInputs)));
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
@@ -472,7 +473,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             ComPtr<IAdaptiveInputs> inputs;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&inputs));
 
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, inputs.Get()));
+            RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(eventArgs, to_winrt(actionElement), to_winrt(inputs)));
             return m_actionEvents->InvokeAll(this, eventArgs.Get());
         }
         }

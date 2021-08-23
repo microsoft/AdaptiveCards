@@ -1,27 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "AdaptiveCards.Rendering.WinUI3.h"
+#include "AdaptiveActionEventArgs.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace rtobjects = winrt::AdaptiveCards::ObjectModel::WinUI3;
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveActionEventArgs
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionEventArgs>
+    struct AdaptiveActionEventArgs : AdaptiveActionEventArgsT<AdaptiveActionEventArgs>
     {
-        AdaptiveRuntime(AdaptiveActionEventArgs);
+        AdaptiveActionEventArgs(rtobjects::IAdaptiveActionElement const& action, WinUI3::AdaptiveInputs const& inputs) :
+            Action{action},
+            Inputs{inputs}
+        {
 
-    public:
-        HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs* inputs);
+        }
 
-        // IAdaptiveActionEventArgs
-        IFACEMETHODIMP get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** action);
-        IFACEMETHODIMP get_Inputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs** inputs);
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> m_action;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs> m_inputs;
+        property<rtobjects::IAdaptiveActionElement> Action;
+        property<WinUI3::AdaptiveInputs> Inputs;
     };
 }

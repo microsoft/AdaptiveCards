@@ -1,31 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveActionEventArgs.h"
+#include "AdaptiveActionEventArgs.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Data::Json;
-
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize() { return S_OK; }
-
-    HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize(_In_ IAdaptiveActionElement* action, _In_ IAdaptiveInputs* inputs)
-    {
-        m_action = action;
-        m_inputs = inputs;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveActionEventArgs::get_Action(_COM_Outptr_ IAdaptiveActionElement** action)
-    {
-        return m_action.CopyTo(action);
-    }
-
-    IFACEMETHODIMP AdaptiveActionEventArgs::get_Inputs(_COM_Outptr_ IAdaptiveInputs** inputs)
-    {
-        return m_inputs.CopyTo(inputs);
-    }
 }
