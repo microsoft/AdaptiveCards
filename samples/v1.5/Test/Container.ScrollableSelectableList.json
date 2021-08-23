@@ -1,0 +1,569 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "size": "medium",
+          "maxLines": 1,
+          "type": "TextBlock",
+          "text": "Recent Files"
+        }
+      ],
+      "style": "default"
+    },
+    {
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "OneNote File 1"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Documents > Test"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "1"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "OneNote File 2"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Documents > Test"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "2"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "Lorem Ipsum"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Documents > Test 2"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "3"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "Dolor Sit Amet"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Projects > LoremIpsum"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "4"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_ppt_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "Consectetur Adipiscing Elit"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Projects > Presentations"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "5"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "Sed Do Eiusmod Tempor Incididunt"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Documents > Random"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "6"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "Ut Labore Et Dolore"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Shared > Skills"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "7"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_onenote_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "Magna Aliqua"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Documents > MagnaAliqua{aParameter=true&somethingElse=largeText&redirect=true&action=open}"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "8"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_word_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "UtEnimAdMinim"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Shared > Architecture"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "9"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    },
+    {
+      "separator": true,
+      "style": "default",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "type": "Image",
+                  "size": "small",
+                  "url": "https://statics.teams.microsoft.com/evergreen-assets/cortana/file_ppt_v2.png"
+                }
+              ],
+              "type": "Column",
+              "width": "auto",
+              "spacing": "none"
+            },
+            {
+              "verticalContentAlignment": "center",
+              "items": [
+                {
+                  "size": "medium",
+                  "maxLines": 1,
+                  "type": "TextBlock",
+                  "text": "Veniam Quis Nostrud"
+                },
+                {
+                  "spacing": "none",
+                  "maxLines": 1,
+                  "isSubtle": true,
+                  "type": "TextBlock",
+                  "text": "Documents > Design"
+                }
+              ],
+              "type": "Column",
+              "width": "stretch",
+              "spacing": "small"
+            }
+          ]
+        }
+      ],
+      "type": "Container",
+      "selectAction": {
+        "type": "Action.Submit",
+        "data": {
+          "ux:position_ref": "10"
+        },
+        "title": ""
+      },
+      "spacing": "extraLarge"
+    }
+  ],
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "data": {
+        "intent:select_more": "true"
+      },
+      "title": "Show More"
+    }
+  ]
+}
