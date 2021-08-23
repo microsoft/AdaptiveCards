@@ -3,163 +3,60 @@
 #include "pch.h"
 #include "AdaptiveActionElement.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveActionElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
+    winrt::Windows::Data::Json::JsonObject AdaptiveActionElementBase::ToJson()
     {
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetId(), m_id.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetTitle(), m_title.GetAddressOf()));
-
-        RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
-
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetStyle(), m_style.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetTooltip(), m_tooltip.GetAddressOf()));
-        m_mode = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode>(sharedModel->GetMode());
-
-        m_isEnabled = sharedModel->GetIsEnabled();
-
-        m_internalId = sharedModel->GetInternalId().Hash();
-        m_fallbackType = MapSharedFallbackTypeToWinUI3(sharedModel->GetFallbackType());
-        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content)
-        {
-            const auto fallbackObject =
-                std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent());
-            m_fallbackContent = GenerateActionProjection(fallbackObject);
-        }
-
-        return S_OK;
+        return StringToJsonObject(GetSharedModel()->Serialize());
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Title(_Outptr_ HSTRING* title) { return m_title.CopyTo(title); }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Title(_In_ HSTRING title) { return m_title.Set(title); }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Id(_Outptr_ HSTRING* id) { return m_id.CopyTo(id); }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Id(_In_ HSTRING id) { return m_id.Set(id); }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_InternalId(_Out_ UINT32* id)
+    void AdaptiveActionElementBase::CopySharedElementProperties(::AdaptiveCards::BaseActionElement& sharedCardElement)
     {
-        *id = m_internalId;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType* fallback)
-    {
-        *fallback = m_fallbackType;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement** content)
-    {
-        copy_to_abi(m_fallbackContent, content);
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackType(ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType fallback)
-    {
-        if (fallback != ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content)
-        {
-            m_fallbackContent = nullptr;            
-        }
-        m_fallbackType = fallback;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::put_FallbackContent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* content)
-    {
-        winrt::copy_from_abi(m_fallbackContent, content);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveActionElementBase::get_IconUrl(_Outptr_ HSTRING* iconUrl) { return m_iconUrl.CopyTo(iconUrl); }
-
-    HRESULT AdaptiveActionElementBase::put_IconUrl(_In_ HSTRING iconUrl) { return m_iconUrl.Set(iconUrl); }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Style(_Outptr_ HSTRING* style) { return m_style.CopyTo(style); }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Style(_In_ HSTRING style) { return m_style.Set(style); }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Tooltip(HSTRING* tooltip) { return m_tooltip.CopyTo(tooltip); }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Tooltip(HSTRING tooltip) { return m_tooltip.Set(tooltip); }
-
-    HRESULT AdaptiveActionElementBase::get_IsEnabled(boolean* isEnabled)
-    {
-        *isEnabled = m_isEnabled;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveActionElementBase::put_IsEnabled(boolean isEnabled)
-    {
-        m_isEnabled = isEnabled;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveActionElementBase::get_Mode(ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode* mode)
-    {
-        *mode = m_mode;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveActionElementBase::put_Mode(ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode mode)
-    {
-        m_mode = mode;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return m_additionalProperties.CopyTo(result);
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject)
-    {
-        m_additionalProperties = jsonObject;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_ActionTypeString(_Outptr_ HSTRING* type)
-    {
-        return m_typeString.CopyTo(type);
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
-    {
-        return StringToJsonObject(GetSharedModel()->Serialize(), result);
-    }
-
-    HRESULT AdaptiveActionElementBase::CopySharedElementProperties(AdaptiveCards::BaseActionElement& sharedCardElement)
-    {
-        sharedCardElement.SetId(HStringToUTF8(m_id.Get()));
-        sharedCardElement.SetTitle(HStringToUTF8(m_title.Get()));
-        sharedCardElement.SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
-        sharedCardElement.SetStyle(HStringToUTF8(m_style.Get()));
-        sharedCardElement.SetTooltip(HStringToUTF8(m_tooltip.Get()));
+        sharedCardElement.SetId(HStringToUTF8(Id));
+        sharedCardElement.SetTitle(HStringToUTF8(Title));
+        sharedCardElement.SetIconUrl(HStringToUTF8(IconUrl));
+        sharedCardElement.SetStyle(HStringToUTF8(Style));
+        sharedCardElement.SetTooltip(HStringToUTF8(Tooltip));
         sharedCardElement.SetFallbackType(MapWinUI3FallbackTypeToShared(m_fallbackType));
-        sharedCardElement.SetIsEnabled(m_isEnabled);
-        sharedCardElement.SetMode(static_cast<Mode>(m_mode));
+        sharedCardElement.SetIsEnabled(IsEnabled.get());
+        sharedCardElement.SetMode(static_cast<::AdaptiveCards::Mode>(Mode.get()));
 
-        if (m_fallbackType == ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content)
+        if (m_fallbackType == FallbackType::Content)
         {
-            sharedCardElement.SetFallbackContent(GenerateSharedAction(m_fallbackContent));
+            auto fallbackSharedModel = GenerateSharedAction(FallbackContent);
+            sharedCardElement.SetFallbackContent(std::static_pointer_cast<::AdaptiveCards::BaseElement>(fallbackSharedModel));
         }
 
-        if (m_additionalProperties != nullptr)
+        if (AdditionalProperties.get() != nullptr)
         {
-            Json::Value jsonCpp;
-            RETURN_IF_FAILED(JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonCpp));
-            sharedCardElement.SetAdditionalProperties(std::move(jsonCpp));
+            sharedCardElement.SetAdditionalProperties(JsonObjectToJsonCpp(AdditionalProperties));
         }
-
-        return S_OK;
     }
+
+    void AdaptiveActionElementBase::InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseActionElement>& sharedModel)
+    {
+        Id = UTF8ToHString(sharedModel->GetId());
+        Title = UTF8ToHString(sharedModel->GetTitle());
+
+        AdditionalProperties = JsonCppToJsonObject(sharedModel->GetAdditionalProperties());
+        ActionTypeString = UTF8ToHString(sharedModel->GetElementTypeString());
+
+        IconUrl = UTF8ToHString(sharedModel->GetIconUrl());
+        Style = UTF8ToHString(sharedModel->GetStyle());
+        Tooltip = UTF8ToHString(sharedModel->GetTooltip());
+        Mode = static_cast<WinUI3::ActionMode>(sharedModel->GetMode());
+
+        IsEnabled = sharedModel->GetIsEnabled();
+
+        InternalId = sharedModel->GetInternalId().Hash();
+        m_fallbackType = static_cast<WinUI3::FallbackType>(MapSharedFallbackTypeToWinUI3(sharedModel->GetFallbackType()));
+        if (m_fallbackType == WinUI3::FallbackType::Content)
+        {
+            if (auto fallback = std::static_pointer_cast<::AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent()))
+            {
+                FallbackContent = GenerateActionProjection(fallback);
+            }
+        }
+    }
+
 }

@@ -5,62 +5,24 @@
 #include "AdaptiveCard.h"
 #include "AdaptiveShowCardAction.h"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveShowCardAction::AdaptiveShowCardAction(const std::shared_ptr<::AdaptiveCards::ShowCardAction>& sharedShowCardAction)
     {
-        std::shared_ptr<AdaptiveCards::ShowCardAction> showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
-        return RuntimeClassInitialize(showCardAction);
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ShowCardAction>& sharedShowCardAction)
-    try
-    {
-        if (sharedShowCardAction == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
         if (auto card = sharedShowCardAction->GetCard())
         {
-            m_card = *winrt::make_self<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveCard>(card);
+            Card = winrt::make<implementation::AdaptiveCard>(card);
         }
 
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedShowCardAction));
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard** card)
-    {
-        copy_to_abi(m_card, card);
-        return S_OK;
+        InitializeBaseElement(sharedShowCardAction);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* card)
+    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveShowCardAction::GetSharedModel()
     {
-        m_card = copy_from_abi<decltype(m_card)>(card);
-        return S_OK;
-    }
+        auto showCardAction = std::make_shared<::AdaptiveCards::ShowCardAction>();
+        CopySharedElementProperties(*showCardAction);
 
-    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
-    {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ShowCard;
-        return S_OK;
-    }
-
-    std::shared_ptr<AdaptiveCards::BaseActionElement> AdaptiveShowCardAction::GetSharedModel()
-    {
-        auto showCardAction = std::make_shared<AdaptiveCards::ShowCardAction>();
-        THROW_IF_FAILED(CopySharedElementProperties(*showCardAction));
-
-        auto card = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveCard>(m_card);
-        showCardAction->SetCard(card->GetSharedModel());
+        showCardAction->SetCard(peek_innards<implementation::AdaptiveCard>(Card.get())->GetSharedModel());
 
         return showCardAction;
     }

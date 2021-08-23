@@ -88,6 +88,6 @@ namespace AdaptiveCards::ObjectModel::WinUI3
         TSharedModelParser parser;
         auto baseCardElement = parser.DeserializeFromString(context, JsonObjectToString(jsonObject));
         SharedWarningsToAdaptiveWarnings(context.warnings, adaptiveWarnings);
-        return MakeOrThrow<TAdaptiveCardElement>(std::AdaptivePointerCast<TSharedModelElement>(baseCardElement));
+        return winrt::make<TAdaptiveCardElement>(std::AdaptivePointerCast<TSharedModelElement>(baseCardElement));
     }
 }
