@@ -10,8 +10,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     class DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveMedia : AdaptiveMediaT<AdaptiveMedia, ITypePeek>, AdaptiveCardElementBase
     {
-        AdaptiveMedia() : AdaptiveMedia(std::make_shared<::AdaptiveCards::Media>()) {}
-        AdaptiveMedia(const std::shared_ptr<::AdaptiveCards::Media>& sharedMedia);
+        AdaptiveMedia(const std::shared_ptr<::AdaptiveCards::Media>& sharedMedia = std::make_shared<::AdaptiveCards::Media>());
 
         property<hstring> Poster;
         property<hstring> AltText;

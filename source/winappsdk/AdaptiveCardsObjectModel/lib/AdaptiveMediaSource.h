@@ -7,10 +7,11 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    struct DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveMediaSource : AdaptiveMediaSourceT < AdaptiveMediaSource, ITypePeek>
+    struct DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveMediaSource
+        : AdaptiveMediaSourceT<AdaptiveMediaSource, ITypePeek>
     {
-        AdaptiveMediaSource() : AdaptiveMediaSource(std::make_shared<::AdaptiveCards::MediaSource>()) {}
-        AdaptiveMediaSource(std::shared_ptr<::AdaptiveCards::MediaSource> const& sharedMediaSource);
+        AdaptiveMediaSource(std::shared_ptr<::AdaptiveCards::MediaSource> const& sharedMediaSource =
+                                std::make_shared<::AdaptiveCards::MediaSource>());
 
         property<hstring> MimeType;
         property<hstring> Url;
