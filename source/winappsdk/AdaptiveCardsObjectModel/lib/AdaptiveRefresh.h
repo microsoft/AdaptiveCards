@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         std::shared_ptr<::AdaptiveCards::Refresh> GetSharedModel();
 
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> Action;
+        property<WinUI3::IAdaptiveActionElement> Action;
         property<winrt::Windows::Foundation::Collections::IVector<hstring>> UserIds;
     };
 }

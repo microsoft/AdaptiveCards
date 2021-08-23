@@ -4,11 +4,6 @@
 #include "AdaptiveChoiceInput.h"
 #include <windows.foundation.collections.h>
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     AdaptiveChoiceInput::AdaptiveChoiceInput(const std::shared_ptr<::AdaptiveCards::ChoiceInput>& sharedChoiceInput) :

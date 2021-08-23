@@ -5,11 +5,6 @@
 #include "AdaptiveToggleVisibilityAction.h"
 #include "AdaptiveToggleVisibilityTarget.h"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation::Collections;
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     template<typename TRtType, typename TRtImplType, typename TSharedClass>

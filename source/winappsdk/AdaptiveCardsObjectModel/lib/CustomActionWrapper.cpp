@@ -3,9 +3,6 @@
 #include "pch.h"
 #include "CustomActionWrapper.h"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-
 namespace AdaptiveCards::ObjectModel::WinUI3
 {
     CustomActionWrapper::CustomActionWrapper(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement) :

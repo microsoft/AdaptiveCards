@@ -4,11 +4,6 @@
 
 #include "AdaptiveInputElement.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     void AdaptiveInputElementBase::InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseInputElement>& sharedModel)

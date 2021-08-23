@@ -17,8 +17,6 @@
 #include <wil/result_macros.h>
 
 #define DISABLE_NS_PREFIX_CHECKS 1
-#include <wrl.h>
-#include <wrl\wrappers\corewrappers.h>
 #include <unordered_map>
 #include <set>
 #include <ppltasks.h>

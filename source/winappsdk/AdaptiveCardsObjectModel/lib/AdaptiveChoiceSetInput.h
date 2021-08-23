@@ -21,7 +21,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<bool> IsMultiSelect;
         property<bool> Wrap;
         property<hstring> Value;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::ChoiceSetStyle> ChoiceSetStyle;
+        property<WinUI3::ChoiceSetStyle> ChoiceSetStyle;
         property<winrt::Windows::Foundation::Collections::IVector<WinUI3::AdaptiveChoiceInput>> Choices;
 
         virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;

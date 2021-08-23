@@ -3,11 +3,6 @@
 #include "pch.h"
 #include "AdaptiveActionSet.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     AdaptiveActionSet::AdaptiveActionSet(std::shared_ptr<::AdaptiveCards::ActionSet> const& sharedActionSet)

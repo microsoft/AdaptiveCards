@@ -13,9 +13,9 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         AdaptiveBackgroundImage(_In_ const std::shared_ptr<::AdaptiveCards::BackgroundImage>& sharedImage);
 
         property<hstring> Url;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode> FillMode;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment> HorizontalAlignment;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::VAlignment> VerticalAlignment;
+        property<WinUI3::BackgroundImageFillMode> FillMode;
+        property<WinUI3::HAlignment> HorizontalAlignment;
+        property<WinUI3::VAlignment> VerticalAlignment;
 
         std::shared_ptr<::AdaptiveCards::BackgroundImage> GetSharedModel();
 

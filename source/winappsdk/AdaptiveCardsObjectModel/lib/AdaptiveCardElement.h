@@ -11,14 +11,14 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     {
         void InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseCardElement>& sharedModel);
 
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing> Spacing;
+        property<WinUI3::Spacing> Spacing;
         property<bool> Separator;
         property<bool> IsVisible;
         property<hstring> Id;
         property<uint32_t> InternalId;
         property<hstring> ElementTypeString;
         property<winrt::Windows::Data::Json::JsonObject> AdditionalProperties;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::HeightType> Height;
+        property<WinUI3::HeightType> Height;
         property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>> Requirements;
 
         winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType FallbackType() { return m_fallbackType; }

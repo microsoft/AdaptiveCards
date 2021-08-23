@@ -11,14 +11,6 @@
 #include <BaseCardElement.h>
 
 #include <json.h>
-#include <windows.foundation.collections.h>
-
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
 
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {

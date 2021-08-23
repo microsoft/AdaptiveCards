@@ -18,7 +18,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         AdaptiveToggleVisibilityTarget(std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget> const& sharedToggleTarget);
 
         property<hstring> ElementId;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::IsVisible> IsVisible;
+        property<WinUI3::IsVisible> IsVisible;
 
         std::shared_ptr<::AdaptiveCards::ToggleVisibilityTarget> GetSharedModel();
 

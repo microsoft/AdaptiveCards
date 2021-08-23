@@ -30,20 +30,20 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>> Body;
         property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>> Actions;
 
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType> ElementType;
+        property<WinUI3::ElementType> ElementType;
         property<uint32_t> InternalId;
         property<hstring> Version;
         property<hstring> FallbackText;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveBackgroundImage> BackgroundImage;
+        property<WinUI3::AdaptiveBackgroundImage> BackgroundImage;
         property<hstring> Language;
         property<hstring> Speak;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle> Style;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> SelectAction;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment> VerticalContentAlignment;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::HeightType> Height;
+        property<WinUI3::ContainerStyle> Style;
+        property<WinUI3::IAdaptiveActionElement> SelectAction;
+        property<WinUI3::VerticalContentAlignment> VerticalContentAlignment;
+        property<WinUI3::HeightType> Height;
         property<uint32_t> MinHeight;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRefresh> Refresh;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthentication> Authentication;
+        property<WinUI3::AdaptiveRefresh> Refresh;
+        property<WinUI3::AdaptiveAuthentication> Authentication;
 
         winrt::Windows::Data::Json::JsonObject ToJson();
         winrt::Windows::Foundation::Collections::IVectorView<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRemoteResourceInformation>

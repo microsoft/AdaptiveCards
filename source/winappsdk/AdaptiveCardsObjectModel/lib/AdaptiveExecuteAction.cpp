@@ -4,10 +4,6 @@
 
 #include "AdaptiveExecuteAction.h"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Data::Json;
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     AdaptiveExecuteAction::AdaptiveExecuteAction(std::shared_ptr<::AdaptiveCards::ExecuteAction> const& sharedExecuteAction) :

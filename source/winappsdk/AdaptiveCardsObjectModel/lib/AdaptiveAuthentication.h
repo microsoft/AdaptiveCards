@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         property<hstring> Text;
         property<hstring> ConnectionName;
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTokenExchangeResource> TokenExchangeResource;
+        property<WinUI3::AdaptiveTokenExchangeResource> TokenExchangeResource{nullptr};
         property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>> Buttons;
 
         std::shared_ptr<::AdaptiveCards::Authentication> GetSharedModel();

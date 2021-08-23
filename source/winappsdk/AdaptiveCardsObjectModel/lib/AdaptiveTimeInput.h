@@ -24,12 +24,6 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-    private:
-        Microsoft::WRL::Wrappers::HString m_max;
-        Microsoft::WRL::Wrappers::HString m_min;
-        Microsoft::WRL::Wrappers::HString m_placeholder;
-        Microsoft::WRL::Wrappers::HString m_value;
     };
 }
 

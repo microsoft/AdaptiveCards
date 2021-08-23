@@ -40,12 +40,6 @@
 #include "winrt/Windows.Foundation.Collections.h"
 
 using namespace AdaptiveCards;
-using namespace Microsoft::WRL;
-using namespace ABI::Windows::Data::Json;
-using namespace Microsoft::WRL;
-using namespace AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
 
 std::string WStringToString(std::wstring_view in)
 {
@@ -148,133 +142,65 @@ std::string HStringToUTF8(winrt::hstring const& in)
     return WStringToString(static_cast<std::wstring_view>(in));
 }
 
-template<typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>
-std::shared_ptr<AdaptiveCards::BaseCardElement> GetSharedModel(_In_ TAdaptiveBaseType* item)
+template<typename TImpl, typename TSrc> auto GetSharedModel(_In_ TSrc const& item)
 {
-    if (auto adaptiveElement = PeekInnards<TAdaptiveType>(item))
+    if (auto adaptiveElement = peek_innards<TImpl>(item))
     {
         return adaptiveElement->GetSharedModel();
     }
-
-    return nullptr;
-}
-
-HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* item,
-                              std::shared_ptr<AdaptiveCards::BaseCardElement>& baseCardElement)
-{
-    ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType elementType;
-    RETURN_IF_FAILED(item->get_ElementType(&elementType));
-
-    switch (elementType)
+    else
     {
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ActionSet:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSet>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ChoiceSetInput:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInput>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Column:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ColumnSet:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumnSet>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Container:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveContainer>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::DateInput:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveDateInput>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::FactSet:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveFactSet>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Image:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ImageSet:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveImageSet>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::NumberInput:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveNumberInput>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Media:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::RichTextBlock:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveRichTextBlock>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::TextBlock:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextBlock>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::TextInput:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::TimeInput:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveTimeInput>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::ToggleInput:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInput>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Table:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveTable>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Unsupported:
-        baseCardElement =
-            GetSharedModel<AdaptiveCards::BaseCardElement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement, AdaptiveCards::ObjectModel::WinUI3::AdaptiveUnsupportedElement>(
-                item);
-        break;
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType::Custom:
-        baseCardElement = std::make_shared<CustomElementWrapper>(copy_from_abi<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>(item));
-        break;
+        return decltype(peek_innards<TImpl>(item)->GetSharedModel()){};
     }
-
-    if (baseCardElement == nullptr)
-    {
-        return E_INVALIDARG;
-    }
-
-    return S_OK;
 }
 
 std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& item)
 {
-    std::shared_ptr<AdaptiveCards::BaseCardElement> returned;
-    THROW_IF_FAILED(GenerateSharedElement(item.as<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>().get(), returned));
-    return returned;
+    namespace rtimpl = winrt::AdaptiveCards::ObjectModel::WinUI3::implementation;
+
+    switch (item.ElementType())
+    {
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::ActionSet:
+        return GetSharedModel<rtimpl::AdaptiveActionSet>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::ChoiceSetInput:
+        return GetSharedModel<rtimpl::AdaptiveChoiceSetInput>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::Column:
+        return GetSharedModel<rtimpl::AdaptiveColumn>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::ColumnSet:
+        return GetSharedModel<rtimpl::AdaptiveColumnSet>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::Container:
+        return GetSharedModel<rtimpl::AdaptiveContainer>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::DateInput:
+        return GetSharedModel<rtimpl::AdaptiveDateInput>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::FactSet:
+        return GetSharedModel<rtimpl::AdaptiveFactSet>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::Image:
+        return GetSharedModel<rtimpl::AdaptiveImage>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::ImageSet:
+        return GetSharedModel<rtimpl::AdaptiveImageSet>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::NumberInput:
+        return GetSharedModel<rtimpl::AdaptiveNumberInput>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::Media:
+        return GetSharedModel<rtimpl::AdaptiveMedia>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::RichTextBlock:
+        return GetSharedModel<rtimpl::AdaptiveRichTextBlock>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::TextBlock:
+        return GetSharedModel<rtimpl::AdaptiveTextBlock>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::TextInput:
+        return GetSharedModel<rtimpl::AdaptiveTextInput>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::TimeInput:
+        return GetSharedModel<rtimpl::AdaptiveTimeInput>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::ToggleInput:
+        return GetSharedModel<rtimpl::AdaptiveToggleInput>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::Table:
+        return GetSharedModel<rtimpl::AdaptiveTable>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::Unsupported:
+        return GetSharedModel<rtimpl::AdaptiveUnsupportedElement>(item);
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::ElementType::Custom:
+        return std::make_shared<::AdaptiveCards::ObjectModel::WinUI3::CustomElementWrapper>(item);
+    default:
+        throw winrt::hresult_invalid_argument();
+    }
 }
 
 std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> GenerateSharedElements(
@@ -324,7 +250,6 @@ std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> GenerateSharedAct
     return containedElements;
 }
 
-
 std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRequirements(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> const& adaptiveRequirements)
 {
@@ -346,7 +271,8 @@ std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRe
     return sharedRequirements;
 }
 
-std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> const& inlines)
+std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> const& inlines)
 {
     std::vector<std::shared_ptr<AdaptiveCards::Inline>> results;
     for (auto&& i : inlines)
@@ -363,20 +289,23 @@ std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(winrt:
     return results;
 }
 
-
 winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement
 GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement)
 {
     switch (baseElement->GetElementType())
     {
     case CardElementType::TextBlock:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTextBlock>(std::AdaptivePointerCast<AdaptiveCards::TextBlock>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTextBlock>(
+            std::AdaptivePointerCast<AdaptiveCards::TextBlock>(baseElement));
     case CardElementType::Image:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveImage>(std::AdaptivePointerCast<AdaptiveCards::Image>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveImage>(
+            std::AdaptivePointerCast<AdaptiveCards::Image>(baseElement));
     case CardElementType::Container:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveContainer>(std::AdaptivePointerCast<AdaptiveCards::Container>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveContainer>(
+            std::AdaptivePointerCast<AdaptiveCards::Container>(baseElement));
     case CardElementType::ColumnSet:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveColumnSet>(std::AdaptivePointerCast<AdaptiveCards::ColumnSet>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveColumnSet>(
+            std::AdaptivePointerCast<AdaptiveCards::ColumnSet>(baseElement));
     case CardElementType::FactSet:
         return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveFactSet>(
             std::AdaptivePointerCast<AdaptiveCards::FactSet>(baseElement));
@@ -384,11 +313,14 @@ GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>&
         return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveImageSet>(
             std::AdaptivePointerCast<AdaptiveCards::ImageSet>(baseElement));
     case CardElementType::ChoiceSetInput:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveChoiceSetInput>(std::AdaptivePointerCast<AdaptiveCards::ChoiceSetInput>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveChoiceSetInput>(
+            std::AdaptivePointerCast<AdaptiveCards::ChoiceSetInput>(baseElement));
     case CardElementType::DateInput:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveDateInput>(std::AdaptivePointerCast<AdaptiveCards::DateInput>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveDateInput>(
+            std::AdaptivePointerCast<AdaptiveCards::DateInput>(baseElement));
     case CardElementType::Media:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveMedia>(std::AdaptivePointerCast<AdaptiveCards::Media>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveMedia>(
+            std::AdaptivePointerCast<AdaptiveCards::Media>(baseElement));
     case CardElementType::NumberInput:
         return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveNumberInput>(
             std::AdaptivePointerCast<AdaptiveCards::NumberInput>(baseElement));
@@ -396,18 +328,23 @@ GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>&
         return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTextInput>(
             std::AdaptivePointerCast<AdaptiveCards::TextInput>(baseElement));
     case CardElementType::TimeInput:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTimeInput>(std::AdaptivePointerCast<AdaptiveCards::TimeInput>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTimeInput>(
+            std::AdaptivePointerCast<AdaptiveCards::TimeInput>(baseElement));
     case CardElementType::ToggleInput:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveToggleInput>(std::AdaptivePointerCast<AdaptiveCards::ToggleInput>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveToggleInput>(
+            std::AdaptivePointerCast<AdaptiveCards::ToggleInput>(baseElement));
     case CardElementType::ActionSet:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveActionSet>(std::AdaptivePointerCast<AdaptiveCards::ActionSet>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveActionSet>(
+            std::AdaptivePointerCast<AdaptiveCards::ActionSet>(baseElement));
     case CardElementType::RichTextBlock:
         return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveRichTextBlock>(
             std::AdaptivePointerCast<AdaptiveCards::RichTextBlock>(baseElement));
     case CardElementType::Column:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveColumn>(std::AdaptivePointerCast<AdaptiveCards::Column>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveColumn>(
+            std::AdaptivePointerCast<AdaptiveCards::Column>(baseElement));
     case CardElementType::Table:
-        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTable>(std::AdaptivePointerCast<AdaptiveCards::Table>(baseElement));
+        return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTable>(
+            std::AdaptivePointerCast<AdaptiveCards::Table>(baseElement));
         break;
     case CardElementType::Custom:
         return std::AdaptivePointerCast<::AdaptiveCards::ObjectModel::WinUI3::CustomElementWrapper>(baseElement)->GetWrappedElement();
@@ -418,8 +355,8 @@ GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>&
     }
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> GenerateContainedElementsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>
+GenerateContainedElementsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements)
 {
     std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> elements;
     for (auto&& containedElement : containedElements)
@@ -429,7 +366,8 @@ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectMod
     return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>(std::move(elements));
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions)
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>
+GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions)
 {
     std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> actions;
     for (auto&& containedAction : containedActions)
@@ -439,8 +377,8 @@ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectMod
     return winrt::single_threaded_vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>(std::move(actions));
 }
 
-winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateActionProjection(
-    const std::shared_ptr<AdaptiveCards::BaseActionElement>& action)
+winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement
+GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action)
 {
     if (!action)
     {
@@ -465,7 +403,7 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateAction
         return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveExecuteAction>(
             std::AdaptivePointerCast<AdaptiveCards::ExecuteAction>(action));
     case ActionType::Custom:
-        return std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement();
+        return std::AdaptivePointerCast<::AdaptiveCards::ObjectModel::WinUI3::CustomActionWrapper>(action)->GetWrappedElement();
     case ActionType::UnknownAction:
         return winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveUnsupportedAction>(
             std::AdaptivePointerCast<AdaptiveCards::UnknownAction>(action));
@@ -475,27 +413,28 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement GenerateAction
 }
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline>
-    GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements)
+GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements)
 {
     std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> results;
 
     for (auto&& containedElement : containedElements)
     {
-        // Only support text runs for now
-        if (containedElement->GetInlineType() != InlineElementType::TextRun)
+        switch (containedElement->GetInlineType())
         {
+        case InlineElementType::TextRun:
+            results.emplace_back(winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTextRun>(
+                std::dynamic_pointer_cast<::AdaptiveCards::TextRun>(containedElement)));
+            break;
+        default:
             throw winrt::hresult_not_implemented();
         }
-
-        results.emplace_back(winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTextRun>(containedElement));
     }
 
     return winrt::single_threaded_vector(std::move(results));
 }
 
-
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> GenerateRequirementsProjection(
-    const std::unordered_map<std::string, SemanticVersion>& sharedRequirements)
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>
+GenerateRequirementsProjection(const std::unordered_map<std::string, SemanticVersion>& sharedRequirements)
 {
     std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> results;
     for (const auto& sharedRequirement : sharedRequirements)
@@ -577,8 +516,9 @@ Json::Value JsonObjectToJsonCpp(_In_ winrt::Windows::Data::Json::IJsonObject con
     return ParseUtil::GetJsonValueFromString(JsonObjectToString(jsonObject));
 }
 
-void RemoteResourceElementToRemoteResourceInformationVector(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
-                                                            std::vector<RemoteResourceInformation>& resourceUris)
+void RemoteResourceElementToRemoteResourceInformationVector(
+    _In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
+    std::vector<RemoteResourceInformation>& resourceUris)
 {
     for (auto&& resourceInformation : remoteResourceElement.GetResourceInformation())
     {
@@ -589,8 +529,9 @@ void RemoteResourceElementToRemoteResourceInformationVector(_In_ winrt::Adaptive
     }
 }
 
-
-void SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings, winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& toAddTo)
+void SharedWarningsToAdaptiveWarnings(
+    const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings,
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& toAddTo)
 {
     for (const auto& sharedWarning : sharedWarnings)
     {
@@ -600,7 +541,6 @@ void SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<Adaptive
         toAddTo.Append(*warning);
     }
 }
-
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>
 SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings)
@@ -666,7 +606,6 @@ AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCar
     }
 }
 
-
 AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType const& type)
 {
     switch (type)
@@ -689,16 +628,18 @@ AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::
     }
 }
 
-winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration GetAdaptiveActionParserRegistrationFromSharedModel(
-    const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration)
+winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration
+GetAdaptiveActionParserRegistrationFromSharedModel(const std::shared_ptr<ActionParserRegistration>& sharedActionParserRegistration)
 {
     // Look up the well known action parser registration to see if we've got a custom action registration to pass
-    if (auto sharedActionParser = sharedActionParserRegistration->GetParser(c_upwActionParserRegistration))
+    if (auto sharedActionParser =
+            sharedActionParserRegistration->GetParser(::AdaptiveCards::ObjectModel::WinUI3::c_upwActionParserRegistration))
     {
         // The shared model wraps the passed in parsers. Get our SharedModelActionParser from it so we can retrieve the
         // IAdaptiveActionParserRegistration
         auto parserWrapper = std::static_pointer_cast<ActionElementParserWrapper>(sharedActionParser);
-        auto sharedModelParser = std::static_pointer_cast<SharedModelActionParser>(parserWrapper->GetActualParser());
+        auto sharedModelParser = std::static_pointer_cast<::AdaptiveCards::ObjectModel::WinUI3::SharedModelActionParser>(
+            parserWrapper->GetActualParser());
 
         return sharedModelParser->GetAdaptiveParserRegistration();
     }
@@ -712,12 +653,14 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration Get
     const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration)
 {
     // Look up the well known Element parser registration to see if we've got a custom Element registration to pass
-    if (auto sharedElementParser = sharedElementParserRegistration->GetParser(c_uwpElementParserRegistration))
+    if (auto sharedElementParser =
+            sharedElementParserRegistration->GetParser(::AdaptiveCards::ObjectModel::WinUI3::c_uwpElementParserRegistration))
     {
         // The shared model wraps the passed in parsers. Get our SharedModelElementParser from it so we can retrieve the
         // IAdaptiveElementParserRegistration
         auto parserWrapper = std::static_pointer_cast<BaseCardElementParserWrapper>(sharedElementParser);
-        auto sharedModelParser = std::static_pointer_cast<SharedModelElementParser>(parserWrapper->GetActualParser());
+        auto sharedModelParser = std::static_pointer_cast<::AdaptiveCards::ObjectModel::WinUI3::SharedModelElementParser>(
+            parserWrapper->GetActualParser());
 
         return sharedModelParser->GetAdaptiveParserRegistration();
     }

@@ -312,18 +312,6 @@ protected:
     virtual ~ITypePeek() {}
 };
 
-template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
-{
-    Microsoft::WRL::ComPtr<T> inner;
-    Microsoft::WRL::ComPtr<ITypePeek> peeker;
-
-    if (r && SUCCEEDED(r->QueryInterface(__uuidof(ITypePeek), &peeker)))
-    {
-        inner = reinterpret_cast<T*>(peeker->PeekAt(__uuidof(T)));
-    }
-    return inner;
-}
-
 template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
 {
     winrt::com_ptr<D> out;

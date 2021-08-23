@@ -6,7 +6,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     struct AdaptiveWarning : AdaptiveWarningT<AdaptiveWarning>
     {
         AdaptiveWarning(winrt::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode const& statusCode, hstring const& message);
-        property<winrt::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode> StatusCode;
+        property<WinUI3::WarningStatusCode> StatusCode;
         property<hstring> Message;
     };
 }

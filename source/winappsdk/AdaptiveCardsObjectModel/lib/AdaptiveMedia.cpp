@@ -4,10 +4,6 @@
 #include "AdaptiveMedia.h"
 #include "AdaptiveMediaSource.h"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     AdaptiveMedia::AdaptiveMedia(const std::shared_ptr<::AdaptiveCards::Media>& sharedMedia)

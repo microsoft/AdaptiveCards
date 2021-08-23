@@ -3,9 +3,6 @@
 #include "pch.h"
 #include "CustomElementWrapper.h"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-
 namespace AdaptiveCards::ObjectModel::WinUI3
 {
     CustomElementWrapper::CustomElementWrapper(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement) :

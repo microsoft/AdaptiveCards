@@ -4,11 +4,6 @@
 #include "AdaptiveCardElement.h"
 #include "SemanticVersion.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
 namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
     void AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseCardElement>& sharedModel)
@@ -26,7 +21,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         {
             if (auto fallbackObject = sharedModel->GetFallbackContent())
             {
-                m_fallbackContent = GenerateElementProjection(fallbackObject);
+                m_fallbackContent = GenerateElementProjection(std::static_pointer_cast<::AdaptiveCards::BaseCardElement>(fallbackObject));
             }
         }
         Requirements = GenerateRequirementsProjection(sharedModel->GetRequirements());
