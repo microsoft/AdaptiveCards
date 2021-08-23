@@ -8,20 +8,20 @@ describe("Mock function", function() {
     let driver: Webdriver.WebDriver;
     let testUtils: TestUtils.TestUtils;
 
-    beforeAll(async function() {
+    beforeAll(async() => {
         driver = new Webdriver.Builder().withCapabilities(Webdriver.Capabilities.edge()).build();
         await driver.get("http://127.0.0.1:8080/");
 
         testUtils = new TestUtils.TestUtils(driver);
     });
 
-    afterAll(async function() {
+    afterAll(async() => {
         if (driver) {
             await driver.quit();
         }
     });
 
-    test("Test ActivityUpdate submit", async function() {
+    test("Test ActivityUpdate submit", (async() => {
         await testUtils.goToTestCase("v1.0/ActivityUpdate");
 
         await testUtils.clickOnActionWithTitle("Set due date");
@@ -36,9 +36,9 @@ describe("Mock function", function() {
 
         const commentRetrievedValue: string = await testUtils.getInputFor("comment");
         Assert.strictEqual("A comment", commentRetrievedValue);
-    });
+    }));
 
-    test("Test TextInput get focus on invalid submit", async function() {
+    test("Test TextInput get focus on invalid submit", (async() => {
         await testUtils.goToTestCase("v1.3/Input.Text.ErrorMessage");
 
         await testUtils.clickOnActionWithTitle("Submit");
@@ -49,5 +49,5 @@ describe("Mock function", function() {
         const activeElementId: string = await driver.switchTo().activeElement().getAttribute("id");
 
         Assert.strictEqual(firstInputId, activeElementId);
-    });
+    }));
 });
