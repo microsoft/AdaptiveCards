@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         FontSizesConfig fontSizesConfig;
         return RuntimeClassInitialize(fontSizesConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize(FontSizesConfig fontSizesConfig) noexcept
     {

@@ -18,7 +18,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         std::shared_ptr<FeatureRegistration> sharedParserRegistration = std::make_shared<FeatureRegistration>();
         return RuntimeClassInitialize(sharedParserRegistration);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFeatureRegistration::RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::FeatureRegistration> sharedParserRegistration) noexcept
     try
@@ -26,7 +26,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         m_sharedFeatureRegistration = sharedParserRegistration;
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFeatureRegistration::Set(_In_ HSTRING name, _In_ HSTRING version) noexcept
     try
@@ -34,7 +34,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         m_sharedFeatureRegistration->AddFeature(HStringToUTF8(name), HStringToUTF8(version));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFeatureRegistration::Get(_In_ HSTRING name, _Outptr_ HSTRING* version) noexcept
     try
@@ -44,7 +44,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return UTF8ToHString(featureVersion, version);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFeatureRegistration::Remove(_In_ HSTRING name) noexcept
     try
@@ -53,7 +53,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     const std::shared_ptr<FeatureRegistration>& AdaptiveFeatureRegistration::GetSharedFeatureRegistration()
     {

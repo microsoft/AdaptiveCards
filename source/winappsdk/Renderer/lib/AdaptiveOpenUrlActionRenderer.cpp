@@ -17,7 +17,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveOpenUrlActionRenderer::Render(_In_ IAdaptiveActionElement* action,
                                                   _In_ IAdaptiveRenderContext* renderContext,
@@ -27,5 +27,5 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

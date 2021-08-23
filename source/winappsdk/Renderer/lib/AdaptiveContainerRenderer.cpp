@@ -170,5 +170,5 @@ namespace AdaptiveCards::Rendering::WinUI3
                                           containerControl);
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

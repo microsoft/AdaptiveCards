@@ -46,7 +46,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT TileControl::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* value)
     {

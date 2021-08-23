@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         TextBlockConfig textBlockConfig;
         return RuntimeClassInitialize(textBlockConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTextBlockConfig::RuntimeClassInitialize(TextBlockConfig textBlockConfig) noexcept
     {

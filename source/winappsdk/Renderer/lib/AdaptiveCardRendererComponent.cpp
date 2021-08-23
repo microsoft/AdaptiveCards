@@ -68,7 +68,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         UpdateActionSentimentResourceDictionary();
         return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveCardRenderer::put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
     {

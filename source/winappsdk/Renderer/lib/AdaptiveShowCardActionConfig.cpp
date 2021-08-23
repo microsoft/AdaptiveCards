@@ -16,7 +16,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         ShowCardActionConfig showCardActionConfig;
         return RuntimeClassInitialize(showCardActionConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveCards::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {

@@ -16,7 +16,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveSubmitActionRenderer::Render(_In_ IAdaptiveActionElement* action,
                                                  _In_ IAdaptiveRenderContext* renderContext,
@@ -27,5 +27,5 @@ namespace AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(action, renderArgs));
         return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

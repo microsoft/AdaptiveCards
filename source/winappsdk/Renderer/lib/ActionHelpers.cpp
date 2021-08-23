@@ -359,7 +359,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         {
             CreateAppropriateButton(action.Get(), button);
         }
-        CATCH_RETURN;
+        CATCH_RETURN();
 
         ComPtr<IFrameworkElement> buttonFrameworkElement;
         RETURN_IF_FAILED(button.As(&buttonFrameworkElement));

@@ -23,7 +23,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTableRenderer::RenderCell(
         _In_ IAdaptiveTableCell* cell,
@@ -340,5 +340,5 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return xamlGridAsUIElement.CopyTo(tableControl);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

@@ -17,7 +17,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         FontTypeDefinition typeDefinition;
         return RuntimeClassInitialize(typeDefinition);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFontTypeDefinition::RuntimeClassInitialize(FontTypeDefinition typeDefinition) noexcept
     {

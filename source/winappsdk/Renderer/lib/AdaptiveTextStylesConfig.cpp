@@ -16,7 +16,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         TextStylesConfig textStylesConfig;
         return RuntimeClassInitialize(textStylesConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTextStylesConfig::RuntimeClassInitialize(TextStylesConfig textStylesConfig) noexcept
     {

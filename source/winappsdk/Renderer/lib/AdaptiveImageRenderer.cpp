@@ -46,7 +46,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(MakeAndInitialize<XamlBuilder>(&m_xamlBuilder));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveImageRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
                                           _In_ IAdaptiveRenderContext* renderContext,
@@ -56,7 +56,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return m_xamlBuilder->BuildImage(cardElement, renderContext, renderArgs, result);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //

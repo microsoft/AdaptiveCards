@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         SeparatorConfig separatorConfig;
         return RuntimeClassInitialize(separatorConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize(SeparatorConfig sharedSeparatorConfig) noexcept
     try
@@ -24,7 +24,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         m_lineThickness = sharedSeparatorConfig.lineThickness;
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveSeparatorConfig::get_LineThickness(_Out_ UINT32* lineThickness)
     {

@@ -550,7 +550,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT ExpandedChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                                             _In_ IPanel* choiceSetPanelElement,
@@ -631,7 +631,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT ExpandedChoiceSetInputValue::SetFocus()
 {
@@ -683,7 +683,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT FilteredChoiceSetInputValue::IsValueValid(boolean* isInputValid)
 {

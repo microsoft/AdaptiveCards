@@ -16,7 +16,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         AdaptiveCards::AdaptiveCardConfig cardConfig;
         return RuntimeClassInitialize(cardConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize(AdaptiveCards::AdaptiveCardConfig adaptiveCardConfig) noexcept
     {

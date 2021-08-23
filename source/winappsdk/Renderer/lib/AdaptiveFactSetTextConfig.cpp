@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         FactSetTextConfig textConfig;
         return RuntimeClassInitialize(textConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFactSetTextConfig::RuntimeClassInitialize(FactSetTextConfig textConfig) noexcept
     {

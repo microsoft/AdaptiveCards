@@ -33,7 +33,7 @@ try
         return WindowsCreateString(in.data(), static_cast<UINT32>(in.length()), out);
     }
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 std::string WStringToString(std::wstring_view in)
 {
@@ -102,7 +102,7 @@ try
         return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
     }
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept
 try
@@ -113,7 +113,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 std::string HStringToUTF8(HSTRING in)
 {
@@ -182,7 +182,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetContainerStyleDefinition(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -216,7 +216,7 @@ try
     }
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor adaptiveColor,
@@ -272,7 +272,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
@@ -357,7 +357,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -370,7 +370,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
                                 _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -383,7 +383,7 @@ try
 
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                 ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
@@ -399,7 +399,7 @@ try
     RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig, fontType, desiredWeight, resultWeight));
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
@@ -432,7 +432,7 @@ try
     }
     return result.CopyTo(resultFontFamilyName);
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                 ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
@@ -490,7 +490,7 @@ try
     *resultSize = result;
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
@@ -542,7 +542,7 @@ try
     resultWeight->Weight = result;
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                     ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
@@ -564,7 +564,7 @@ try
     }
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetFontSize(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontSizesConfig* sizesConfig,
                     ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
@@ -592,7 +592,7 @@ try
     }
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontWeightsConfig* weightsConfig,
                       ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
@@ -614,7 +614,7 @@ try
     }
     return S_OK;
 }
-CATCH_RETURN;
+CATCH_RETURN();
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ IJsonObject** result)
 {

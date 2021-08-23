@@ -21,7 +21,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveImageSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                              _In_ IAdaptiveRenderContext* renderContext,
@@ -106,5 +106,5 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return xamlGrid.CopyTo(imageSetControl);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

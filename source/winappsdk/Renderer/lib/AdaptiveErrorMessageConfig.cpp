@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         ErrorMessageConfig errorMessageConfig;
         return RuntimeClassInitialize(errorMessageConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveErrorMessageConfig::RuntimeClassInitialize(ErrorMessageConfig errorMessageConfig) noexcept
     {

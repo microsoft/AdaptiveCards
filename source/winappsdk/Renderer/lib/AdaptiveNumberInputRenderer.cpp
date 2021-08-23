@@ -111,5 +111,5 @@ namespace AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(inputLayout.CopyTo(numberInputControl));
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

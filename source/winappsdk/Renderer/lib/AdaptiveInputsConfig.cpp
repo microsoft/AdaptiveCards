@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         InputsConfig inputsConfig;
         return RuntimeClassInitialize(inputsConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveInputsConfig::RuntimeClassInitialize(InputsConfig inputsConfig) noexcept
     {

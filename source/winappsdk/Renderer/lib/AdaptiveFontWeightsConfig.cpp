@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         FontWeightsConfig fontWeightsConfig;
         return RuntimeClassInitialize(fontWeightsConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFontWeightsConfig::RuntimeClassInitialize(FontWeightsConfig fontWeightsConfig) noexcept
     {

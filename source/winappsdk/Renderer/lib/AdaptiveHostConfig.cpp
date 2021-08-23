@@ -40,7 +40,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
         return _FromJsonString(adaptiveJsonString, parseResult);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveHostConfigStaticsImpl::FromJson(_In_ IJsonObject* adaptiveJson,
                                                     _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult) noexcept
@@ -53,7 +53,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return _FromJsonString(adaptiveJsonString, parseResult);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveHostConfigStaticsImpl::_FromJsonString(const std::string& jsonString,
                                                            _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult)
@@ -73,7 +73,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         HostConfig sharedHostConfig;
         return RuntimeClassInitialize(sharedHostConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveHostConfig::RuntimeClassInitialize(const HostConfig& sharedHostConfig)
     {

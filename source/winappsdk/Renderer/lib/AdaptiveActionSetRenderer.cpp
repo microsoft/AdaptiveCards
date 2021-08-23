@@ -47,5 +47,5 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return ActionHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

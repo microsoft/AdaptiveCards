@@ -21,7 +21,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveFactSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                             _In_ IAdaptiveRenderContext* renderContext,
@@ -165,5 +165,5 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return xamlGrid.CopyTo(factSetControl);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

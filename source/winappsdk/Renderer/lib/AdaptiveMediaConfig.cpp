@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         MediaConfig mediaConfig;
         return RuntimeClassInitialize(mediaConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveMediaConfig::RuntimeClassInitialize(MediaConfig mediaConfig) noexcept
     {

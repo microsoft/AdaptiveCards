@@ -24,7 +24,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveRichTextBlockRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
                                                   _In_ IAdaptiveRenderContext* renderContext,
@@ -188,5 +188,5 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return xamlRichTextBlock.CopyTo(result);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

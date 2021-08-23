@@ -370,7 +370,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             RETURN_IF_FAILED(AppendAltText(buffer));
             return WindowsCreateString(buffer.c_str(), static_cast<unsigned int>(buffer.length()), pResult);
         }
-        CATCH_RETURN;
+        CATCH_RETURN();
     }
 
     HRESULT WholeItemsPanel::IsAllContentClippedOut(__RPC__out boolean* pResult)

@@ -22,7 +22,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
         return strongRenderResult.AsWeak(&m_weakRenderResult);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveActionInvoker::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {

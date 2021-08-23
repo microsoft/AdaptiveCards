@@ -332,7 +332,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         return WarnFallbackString(renderContext, warning);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     inline HRESULT WarnForFallbackDrop(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                        _In_ HSTRING elementType)
@@ -344,7 +344,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         return WarnFallbackString(renderContext, warning);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     void AddSeparatorIfNeeded(int& currentElement,
                               _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,

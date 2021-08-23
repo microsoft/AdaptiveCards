@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         ImageSizesConfig imageSizesConfig;
         return RuntimeClassInitialize(imageSizesConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveImageSizesConfig::RuntimeClassInitialize(ImageSizesConfig imageSizesConfig) noexcept
     {

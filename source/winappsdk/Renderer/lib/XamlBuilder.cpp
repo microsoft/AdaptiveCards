@@ -35,7 +35,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         FireAllImagesLoaded();
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT XamlBuilder::ImagesLoadingHadError() noexcept
     try
@@ -43,7 +43,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         FireImagesLoadingHadError();
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT XamlBuilder::BuildXamlTreeFromAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard,
                                                        _Outptr_ IFrameworkElement** xamlTreeRoot,
@@ -178,7 +178,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         }
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT XamlBuilder::AddListener(_In_ IXamlBuilderListener* listener) noexcept
     try
@@ -193,7 +193,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         }
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT XamlBuilder::RemoveListener(_In_ IXamlBuilderListener* listener) noexcept
     try
@@ -208,7 +208,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         }
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     void XamlBuilder::SetFixedDimensions(UINT width, UINT height) noexcept
     {
@@ -311,7 +311,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         *rootElementResult = rootUIElement.Detach();
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     void XamlBuilder::FireAllImagesLoaded()
     {

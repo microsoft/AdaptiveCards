@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         ImageSetConfig imageSetConfig;
         return RuntimeClassInitialize(imageSetConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize(ImageSetConfig sharedImageSetConfig) noexcept
     {

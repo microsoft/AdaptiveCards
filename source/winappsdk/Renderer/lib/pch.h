@@ -14,6 +14,7 @@
 #endif
 
 #define DISABLE_NS_PREFIX_CHECKS 1
+#include <wil/cppwinrt.h>
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
 #include <unordered_map>
@@ -35,7 +36,6 @@
 
 // Commonly-used AdaptiveCardRenderer headers
 #include "AdaptiveCards.Rendering.WinUI3.h"
-#include "ErrorHandling.h"
 #include "Util.h"
 #include "Vector.h"
 #include "XamlBuilder.h"

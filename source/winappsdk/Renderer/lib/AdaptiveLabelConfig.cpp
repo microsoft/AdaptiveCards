@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         LabelConfig labelConfig;
         return RuntimeClassInitialize(labelConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveLabelConfig::RuntimeClassInitialize(LabelConfig labelConfig) noexcept
     {

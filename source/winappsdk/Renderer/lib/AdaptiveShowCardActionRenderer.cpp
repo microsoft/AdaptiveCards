@@ -19,7 +19,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveShowCardActionRenderer::Render(_In_ IAdaptiveActionElement* action,
                                                    _In_ IAdaptiveRenderContext* renderContext,
@@ -29,7 +29,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveShowCardActionRenderer::BuildShowCard(_In_ IAdaptiveCard* showCard,
                                                           _In_ IAdaptiveRenderContext* renderContext,
@@ -99,5 +99,5 @@ namespace AdaptiveCards::Rendering::WinUI3
         *uiShowCard = showCardUIElement.Detach();
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 }

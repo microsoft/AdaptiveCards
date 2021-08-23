@@ -17,7 +17,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         ContainerStylesDefinition stylesDefinition;
         return RuntimeClassInitialize(stylesDefinition);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize(ContainerStylesDefinition stylesDefinition) noexcept
     {

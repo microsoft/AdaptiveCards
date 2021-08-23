@@ -16,7 +16,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         HighlightColorConfig colorConfig;
         return RuntimeClassInitialize(colorConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveHighlightColorConfig::RuntimeClassInitialize(HighlightColorConfig colorConfig) noexcept
     {

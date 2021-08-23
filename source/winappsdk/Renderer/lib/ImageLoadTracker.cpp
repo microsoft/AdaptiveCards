@@ -82,7 +82,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         }
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT ImageLoadTracker::RemoveListener(_In_ IImageLoadTrackerListener* listener)
     try
@@ -97,7 +97,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         }
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 

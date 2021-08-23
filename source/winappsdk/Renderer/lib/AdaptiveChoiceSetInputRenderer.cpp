@@ -60,7 +60,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     std::vector<std::string> AdaptiveChoiceSetInputRenderer::GetChoiceSetValueVector(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput)
     {
@@ -270,8 +270,8 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         // Create the InputValue and add it to the context
         ComPtr<ExpandedChoiceSetInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<ExpandedChoiceSetInputValue>(&input, adaptiveChoiceSetInput, panel.Get(), nullptr);
-                         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs)));
+        RETURN_IF_FAILED(MakeAndInitialize<ExpandedChoiceSetInputValue>(&input, adaptiveChoiceSetInput, panel.Get(), nullptr));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         return inputLayout.CopyTo(choiceInputSet);
     }

@@ -24,7 +24,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTextBlockRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                               _In_ IAdaptiveRenderContext* renderContext,
@@ -139,7 +139,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return xamlTextBlock.CopyTo(textBlockControl);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTextBlockRenderer::GetHeadingLevelFromContext(ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                                                   ABI::Windows::UI::Xaml::Automation::Peers::AutomationHeadingLevel* headingLevel)

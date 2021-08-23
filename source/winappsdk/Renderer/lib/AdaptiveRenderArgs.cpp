@@ -32,7 +32,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
                                                        _In_opt_ IInspectable* parentElement,
@@ -51,7 +51,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveRenderArgs::get_ContainerStyle(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* value)
     {

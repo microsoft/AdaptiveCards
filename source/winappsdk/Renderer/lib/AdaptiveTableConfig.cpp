@@ -14,7 +14,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         TableConfig tableConfig;
         return RuntimeClassInitialize(tableConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveTableConfig::RuntimeClassInitialize(TableConfig tableConfig) noexcept
     {

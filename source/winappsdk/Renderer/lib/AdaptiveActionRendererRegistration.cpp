@@ -18,7 +18,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         m_registration = std::make_shared<RegistrationMap>();
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveActionRendererRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveActionRenderer* renderer)
     {

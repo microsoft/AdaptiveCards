@@ -16,7 +16,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         ActionsConfig actionsConfig;
         return RuntimeClassInitialize(actionsConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveActionsConfig::RuntimeClassInitialize(AdaptiveCards::ActionsConfig actionsConfig) noexcept
     {

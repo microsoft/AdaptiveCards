@@ -15,7 +15,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         SpacingConfig spacingConfig;
         return RuntimeClassInitialize(spacingConfig);
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize(SpacingConfig spacingConfig) noexcept
     try
@@ -28,7 +28,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         m_padding = spacingConfig.paddingSpacing;
         return S_OK;
     }
-    CATCH_RETURN;
+    CATCH_RETURN();
 
     HRESULT AdaptiveSpacingConfig::get_Small(_Out_ UINT32* smallSpacing)
     {
