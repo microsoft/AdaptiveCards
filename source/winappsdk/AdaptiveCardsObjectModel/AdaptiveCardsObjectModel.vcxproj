@@ -216,7 +216,6 @@
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\ObjectModelUtil.h" />
-    <ClInclude Include="lib\Vector.h" />
     <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>

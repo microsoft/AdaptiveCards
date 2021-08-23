@@ -39,9 +39,6 @@
 #define ERRORBASE_ADAPTIVECARDS 0x1000
 #define E_PERFORM_FALLBACK MAKE_HRESULT(1, FACILITY_ADAPTIVECARDS, ERRORBASE_ADAPTIVECARDS)
 
-#include <windows.foundation.h>
-#include <windows.foundation.collections.h>
-
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
@@ -51,5 +48,4 @@
 // Commonly-used AdaptiveCardRenderer headers
 #include "AdaptiveCards.ObjectModel.WinUI3.h"
 #include "ObjectModelUtil.h"
-#include "Vector.h"
 #include "AdaptiveCardElement.h"
