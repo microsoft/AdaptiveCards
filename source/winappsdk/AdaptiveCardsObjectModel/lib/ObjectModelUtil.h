@@ -153,6 +153,9 @@ std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRe
 HRESULT GenerateSharedInlines(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* items,
                               std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
 
+std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> const& inlines);
+
 winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement
 GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement);
 
@@ -255,6 +258,9 @@ GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>
 HRESULT GenerateInlinesProjection(
     const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* projectedParentContainer) noexcept;
+
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline>
+GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>
     GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);

@@ -4,113 +4,33 @@
 
 #include "AdaptiveTextRun.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveTextRun::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveTextRun::AdaptiveTextRun(const std::shared_ptr<::AdaptiveCards::TextRun>& sharedTextRun)
     {
-        RuntimeClassInitialize(std::make_shared<TextRun>());
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveTextRun::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::TextRun>& sharedTextRun) noexcept
-    try
-    {
-        m_highlight = sharedTextRun->GetHighlight();
-        m_italic = sharedTextRun->GetItalic();
-        m_strikethrough = sharedTextRun->GetStrikethrough();
-        m_underline = sharedTextRun->GetUnderline();
-
-        m_selectAction = GenerateActionProjection(sharedTextRun->GetSelectAction());
-        RETURN_IF_FAILED(AdaptiveTextElement::InitializeTextElement(sharedTextRun));
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveTextRun::get_Highlight(boolean* highlight)
-    {
-        *highlight = m_highlight;
-        return S_OK;
+        Highlight = sharedTextRun->GetHighlight();
+        Italic = sharedTextRun->GetItalic();
+        Strikethrough = sharedTextRun->GetStrikethrough();
+        Underline = sharedTextRun->GetUnderline();
+        SelectAction = GenerateActionProjection(sharedTextRun->GetSelectAction());
+        InitializeTextElement(sharedTextRun);
     }
 
-    HRESULT AdaptiveTextRun::put_Highlight(boolean highlight)
+    std::shared_ptr<::AdaptiveCards::TextRun> AdaptiveTextRun::GetSharedModel()
     {
-        m_highlight = highlight;
-        return S_OK;
-    }
+        auto textRun = std::make_shared<::AdaptiveCards::TextRun>();
+        CopyTextElementProperties(*textRun);
 
-    HRESULT AdaptiveTextRun::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
-    {
-        copy_to_abi(m_selectAction, action);
-        return S_OK;
-    }
+        textRun->SetItalic(Italic);
+        textRun->SetStrikethrough(Strikethrough);
+        textRun->SetHighlight(Highlight);
+        textRun->SetUnderline(Underline);
 
-    HRESULT AdaptiveTextRun::put_SelectAction(_In_ IAdaptiveActionElement* action)
-    {
-        m_selectAction = copy_from_abi<decltype(m_selectAction)>(action);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTextRun::get_Italic(boolean* italic)
-    {
-        *italic = m_italic;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTextRun::put_Italic(boolean italic)
-    {
-        m_italic = italic;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveTextRun::get_Strikethrough(boolean* strikethrough)
-    {
-        *strikethrough = m_strikethrough;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveTextRun::put_Strikethrough(boolean strikethrough)
-    {
-        m_strikethrough = strikethrough;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveTextRun::get_Underline(boolean* underline)
-    {
-        *underline = m_underline;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveTextRun::put_Underline(boolean underline)
-    {
-        m_underline = underline;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveTextRun::GetSharedModel(std::shared_ptr<AdaptiveCards::TextRun>& sharedModel) noexcept
-    try
-    {
-        std::shared_ptr<AdaptiveCards::TextRun> textRun = std::make_shared<AdaptiveCards::TextRun>();
-        RETURN_IF_FAILED(AdaptiveTextElement::CopyTextElementProperties(*textRun));
-
-        textRun->SetItalic(m_italic);
-        textRun->SetStrikethrough(m_strikethrough);
-        textRun->SetHighlight(m_highlight);
-        textRun->SetUnderline(m_underline);
-
-        if (m_selectAction != nullptr)
+        if (SelectAction.get())
         {
-            textRun->SetSelectAction(GenerateSharedAction(m_selectAction));
+            textRun->SetSelectAction(GenerateSharedAction(SelectAction));
         }
 
-        sharedModel = std::move(textRun);
-        return S_OK;
+        return textRun;
     }
-    CATCH_RETURN();
 }

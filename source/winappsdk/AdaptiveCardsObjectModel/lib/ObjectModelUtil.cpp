@@ -431,6 +431,25 @@ HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI
     return S_OK;
 }
 
+
+std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> const& inlines)
+{
+    std::vector<std::shared_ptr<AdaptiveCards::Inline>> results;
+    for (auto&& i : inlines)
+    {
+        if (auto run = peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTextRun>(i))
+        {
+            results.emplace_back(run->GetSharedModel());
+        }
+        else
+        {
+            throw winrt::hresult_not_implemented();
+        }
+    }
+    return results;
+}
+
+
 winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement
 GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement)
 {
@@ -638,6 +657,26 @@ try
     return S_OK;
 }
 CATCH_RETURN();
+
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline>
+    GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements)
+{
+    std::vector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> results;
+
+    for (auto&& containedElement : containedElements)
+    {
+        // Only support text runs for now
+        if (containedElement->GetInlineType() != InlineElementType::TextRun)
+        {
+            throw winrt::hresult_not_implemented();
+        }
+
+        results.emplace_back(winrt::make<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveTextRun>(containedElement));
+    }
+
+    return winrt::single_threaded_vector(std::move(results));
+}
+
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> GenerateRequirementsProjection(
     const std::unordered_map<std::string, SemanticVersion>& sharedRequirements)

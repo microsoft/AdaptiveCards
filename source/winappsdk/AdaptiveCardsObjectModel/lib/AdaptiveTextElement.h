@@ -2,135 +2,42 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class DECLSPEC_UUID("4BC6640A-8FBE-4DE0-81FD-119BC10877F1") AdaptiveTextElement : public IUnknown
+    struct AdaptiveTextElement
     {
-    public:
-        IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text);
-        IFACEMETHODIMP put_Text(_In_ HSTRING text);
-
-        IFACEMETHODIMP get_Size(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>** textSize);
-        IFACEMETHODIMP put_Size(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>* textSize);
-
-        IFACEMETHODIMP get_Weight(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>** textWeight);
-        IFACEMETHODIMP put_Weight(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>* textWeight);
-
-        IFACEMETHODIMP get_Color(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>** textColor);
-        IFACEMETHODIMP put_Color(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>* textColor);
-
-        IFACEMETHODIMP get_IsSubtle(_Outptr_ ABI::Windows::Foundation::IReference<bool>** isSubtle);
-        IFACEMETHODIMP put_IsSubtle(_In_ ABI::Windows::Foundation::IReference<bool>* isSubtle);
-
-        IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
-        IFACEMETHODIMP put_Language(_In_ HSTRING language);
-
-        IFACEMETHODIMP get_FontType(_Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>** fontType);
-        IFACEMETHODIMP put_FontType(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>* fontType);
+        property<hstring> Text;
+        property_opt<WinUI3::TextSize> Size;
+        property_opt<WinUI3::TextWeight> Weight;
+        property_opt<WinUI3::ForegroundColor> Color;
+        property_opt<bool> IsSubtle;
+        property<hstring> Language;
+        property_opt<WinUI3::FontType> FontType;
 
     protected:
-        template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
+        template<typename T> void InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
-            if (sharedModel->GetIsSubtle().has_value())
-            {
-                m_subtle = winrt::box_value(sharedModel->GetIsSubtle().value())
-                               .as<ABI::Windows::Foundation::IReference<bool>>()
-                               .get();
-            }
-
-            if (sharedModel->GetFontType().has_value())
-            {
-                m_fontType = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::FontType>(
-                                                  sharedModel->GetFontType().value()))
-                                 .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>>()
-                                 .get();
-            }
-
-            if (sharedModel->GetTextSize().has_value())
-            {
-                m_textSize = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::TextSize>(
-                                                  sharedModel->GetTextSize().value()))
-                                 .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>>()
-                                 .get();
-            }
-
-            if (sharedModel->GetTextWeight().has_value())
-            {
-                m_textWeight = winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::TextWeight>(
-                                                    sharedModel->GetTextWeight().value()))
-                                   .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>>()
-                                   .get();
-            }
-
-            if (sharedModel->GetTextColor().has_value())
-            {
-                m_foregroundColor =
-                    winrt::box_value(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>(
-                                         sharedModel->GetTextColor().value()))
-                        .as<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>>()
-                        .get();
-            }
-
-            RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetText(), m_text.GetAddressOf()));
-            RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetLanguage(), m_language.GetAddressOf()));
-            return S_OK;
+            IsSubtle = sharedModel->GetIsSubtle();
+            FontType = opt_cast<WinUI3::FontType>(sharedModel->GetFontType());
+            Size = opt_cast<WinUI3::TextSize>(sharedModel->GetTextSize());
+            Weight = opt_cast<WinUI3::TextWeight>(sharedModel->GetTextWeight());
+            Color = opt_cast<WinUI3::ForegroundColor>(sharedModel->GetTextColor());
+            Text = UTF8ToHString(sharedModel->GetText());
+            Language = UTF8ToHString(sharedModel->GetLanguage());
         }
 
-        template<typename T> HRESULT CopyTextElementProperties(T& sharedCardElement)
+        template<typename T> void CopyTextElementProperties(T& sharedCardElement)
         {
-            if (m_subtle != nullptr)
+            sharedCardElement.SetIsSubtle(IsSubtle);
+            sharedCardElement.SetFontType(FontType.get<::AdaptiveCards::FontType>());
+            sharedCardElement.SetTextSize(Size.get<::AdaptiveCards::TextSize>());
+            sharedCardElement.SetTextWeight(Weight.get<::AdaptiveCards::TextWeight>());
+            sharedCardElement.SetTextColor(Color.get<::AdaptiveCards::ForegroundColor>());
+            sharedCardElement.SetText(HStringToUTF8(Text));
+            if (!Language->empty())
             {
-                sharedCardElement.SetIsSubtle(m_subtle);
+                sharedCardElement.SetLanguage(HStringToUTF8(Language));
             }
-
-            if (m_fontType != nullptr)
-            {
-                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontTypeValue;
-                RETURN_IF_FAILED(m_fontType->get_Value(&fontTypeValue));
-                sharedCardElement.SetFontType(static_cast<AdaptiveCards::FontType>(fontTypeValue));
-            }
-
-            if (m_textSize != nullptr)
-            {
-                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize textSizeValue;
-                RETURN_IF_FAILED(m_textSize->get_Value(&textSizeValue));
-                sharedCardElement.SetTextSize(static_cast<AdaptiveCards::TextSize>(textSizeValue));
-            }
-
-            if (m_textWeight != nullptr)
-            {
-                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight textWeightValue;
-                RETURN_IF_FAILED(m_textWeight->get_Value(&textWeightValue));
-                sharedCardElement.SetTextWeight(static_cast<AdaptiveCards::TextWeight>(textWeightValue));
-            }
-
-            if (m_foregroundColor != nullptr)
-            {
-                ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor foregroundColorValue;
-                RETURN_IF_FAILED(m_foregroundColor->get_Value(&foregroundColorValue));
-                sharedCardElement.SetTextColor(static_cast<AdaptiveCards::ForegroundColor>(foregroundColorValue));
-            }
-
-            std::string text;
-            RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));
-            sharedCardElement.SetText(text);
-
-            if (!(WindowsIsStringEmpty(m_language.Get())))
-            {
-                std::string language;
-                RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
-                sharedCardElement.SetLanguage(language);
-            }
-            return S_OK;
         }
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<bool>> m_subtle;
-        Microsoft::WRL::Wrappers::HString m_text;
-        Microsoft::WRL::Wrappers::HString m_language;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::FontType>> m_fontType;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize>> m_textSize;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight>> m_textWeight;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor>> m_foregroundColor;
     };
 }
