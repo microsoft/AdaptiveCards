@@ -731,6 +731,24 @@ HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ IJsonValue
     return HStringToJsonValue(asHstring.Get(), result);
 }
 
+winrt::Windows::Data::Json::JsonValue StringToJsonValue(const std::string& inputString)
+{
+    return HStringToJsonValue(UTF8ToHString(inputString));
+}
+
+winrt::Windows::Data::Json::JsonValue HStringToJsonValue(winrt::hstring const& inputHString)
+{
+    winrt::Windows::Data::Json::JsonValue returned{nullptr};
+    if (!winrt::Windows::Data::Json::JsonValue::TryParse(inputHString, returned))
+    {
+        // NB: While Windows.Data.Json.JsonValue does not have an exposed constructor,
+        //      the activation factory does support calling ActivateInstance to get a fresh
+        //      "empty" value.
+        returned = winrt::get_activation_factory<decltype(returned)>().ActivateInstance<decltype(returned)>();
+    }
+    return returned;
+}
+
 HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ IJsonValue** result)
 {
     ComPtr<IJsonValueStatics> jValueStatics;
@@ -760,6 +778,16 @@ HRESULT JsonValueToHString(_In_ IJsonValue* inputJsonValue, _Outptr_ HSTRING* re
     }
     ComPtr<IJsonValue> localInputJsonValue(inputJsonValue);
     return (localInputJsonValue->Stringify(result));
+}
+
+std::string JsonValueToString(winrt::Windows::Data::Json::IJsonValue const& inputValue)
+{
+    return HStringToUTF8(JsonValueToHString(inputValue));
+}
+
+winrt::hstring JsonValueToHString(winrt::Windows::Data::Json::IJsonValue const& inputJsonValue)
+{
+    return inputJsonValue.Stringify();
 }
 
 HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ IJsonObject** result)

@@ -8,79 +8,35 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Data::Json;
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveExecuteAction::RuntimeClassInitialize() noexcept
-    try
-    {
-        std::shared_ptr<AdaptiveCards::ExecuteAction> executeAction = std::make_shared<AdaptiveCards::ExecuteAction>();
-        return RuntimeClassInitialize(executeAction);
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveExecuteAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ExecuteAction>& sharedExecuteAction)
-    try
+    AdaptiveExecuteAction::AdaptiveExecuteAction(std::shared_ptr<::AdaptiveCards::ExecuteAction> const& sharedExecuteAction) :
+        DataJson{nullptr}
     {
         auto sharedJson = sharedExecuteAction->GetDataJson();
         if (!sharedJson.empty())
         {
-            RETURN_IF_FAILED(StringToJsonValue(sharedExecuteAction->GetDataJson(), &m_dataJson));
+            DataJson = StringToJsonValue(sharedJson);
         }
 
-        m_associatedInputs =
-            static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
+        AssociatedInputs = static_cast<WinUI3::AssociatedInputs>(sharedExecuteAction->GetAssociatedInputs());
+        Verb = UTF8ToHString(sharedExecuteAction->GetVerb());
 
-        RETURN_IF_FAILED(UTF8ToHString(sharedExecuteAction->GetVerb(), m_verb.GetAddressOf()));
-
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedExecuteAction));
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveExecuteAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType* actionType)
-    {
-        *actionType = ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute;
-        return S_OK;
+        InitializeBaseElement(sharedExecuteAction);
     }
 
-    HRESULT AdaptiveExecuteAction::get_DataJson(_COM_Outptr_ IJsonValue** data) { return m_dataJson.CopyTo(data); }
-
-    HRESULT AdaptiveExecuteAction::put_DataJson(_In_ IJsonValue* data)
+    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveExecuteAction::GetSharedModel()
     {
-        m_dataJson = data;
-        return S_OK;
-    }
+        auto executeAction = std::make_shared<::AdaptiveCards::ExecuteAction>();
+        CopySharedElementProperties(*executeAction);
 
-    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs* associatedInputs)
-    {
-        *associatedInputs = m_associatedInputs;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveExecuteAction::put_AssociatedInputs(ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs associatedInputs)
-    {
-        m_associatedInputs = associatedInputs;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveExecuteAction::get_Verb(_Outptr_ HSTRING* verb) { return m_verb.CopyTo(verb); }
-
-    HRESULT AdaptiveExecuteAction::put_Verb(_In_ HSTRING verb) { return m_verb.Set(verb); }
-
-    std::shared_ptr<AdaptiveCards::BaseActionElement> AdaptiveExecuteAction::GetSharedModel()
-    {
-        auto executeAction = std::make_shared<AdaptiveCards::ExecuteAction>();
-        THROW_IF_FAILED(CopySharedElementProperties(*executeAction));
-
-        std::string jsonAsString;
-        if (m_dataJson)
+        if (DataJson.get())
         {
-            THROW_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
-            executeAction->SetDataJson(std::move(jsonAsString));
+            executeAction->SetDataJson(JsonValueToString(DataJson));
         }
 
-        executeAction->SetAssociatedInputs(static_cast<AdaptiveCards::AssociatedInputs>(m_associatedInputs));
-        executeAction->SetVerb(HStringToUTF8(m_verb.Get()));
+        executeAction->SetAssociatedInputs(static_cast<::AdaptiveCards::AssociatedInputs>(AssociatedInputs.get()));
+        executeAction->SetVerb(HStringToUTF8(Verb));
 
         return executeAction;
     }

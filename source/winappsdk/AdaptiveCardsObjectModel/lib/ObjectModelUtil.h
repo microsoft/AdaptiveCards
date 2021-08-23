@@ -360,8 +360,12 @@ HRESULT JsonObjectToString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson
 std::string JsonObjectToString(winrt::Windows::Data::Json::IJsonObject const& inputJson);
 
 HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
+winrt::Windows::Data::Json::JsonValue StringToJsonValue(const std::string& inputString);
+winrt::Windows::Data::Json::JsonValue HStringToJsonValue(winrt::hstring const& inputHString);
 HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
 HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
+std::string JsonValueToString(winrt::Windows::Data::Json::IJsonValue const& inputValue);
+winrt::hstring JsonValueToHString(winrt::Windows::Data::Json::IJsonValue const& inputJsonValue);
 HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
 
 HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
