@@ -1,0 +1,16 @@
+on:
+  issues:
+    types: opened
+
+jobs:
+  assign_issue_to_project:
+    runs-on: ubuntu-latest
+    name: Assign new issue to Triage Needed
+    steps:
+    - name: Create new project card with issue
+      id: list
+      uses: qmacro/action-add-issue-to-project-column@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        project: 'Triage'
+        column: 'Not Triaged'

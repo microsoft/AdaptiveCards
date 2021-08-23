@@ -18,5 +18,11 @@ extern NSString *identifier;
 - (void)insertCard:(NSString *)card;
 - (void)insertView:(UIView *)view;
 - (void)deleteAllRows:(UITableView *)tableView;
+- (void)prepareForRedraw;
 
+@end
+
+@interface ACRChatWindowCell : UITableViewCell
+
+@property (nonatomic) ACRView *adaptiveCardView;
 @end

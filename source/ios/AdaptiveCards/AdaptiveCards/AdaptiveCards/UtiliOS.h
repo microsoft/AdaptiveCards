@@ -5,6 +5,7 @@
 //
 
 #import "ACORenderContext.h"
+#import "ACOVisibilityManager.h"
 #import "ACRErrors.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRSeparator.h"
@@ -25,6 +26,8 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo);
+
+void configVisibilityWithVisibilityManager(ACRView *rootView, NSObject<ACOIVisibilityManagerFacade> *facade, ACRContentStackView *view);
 
 void configRtl(UIView *view, ACORenderContext *context);
 
@@ -83,6 +86,8 @@ void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun,
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId);
 
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties);
+
+void UpdateFontWithDynamicType(NSMutableAttributedString *content);
 
 ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_ptr<UnknownAction> action);
 
