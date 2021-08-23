@@ -570,9 +570,18 @@ static int kToggleVisibilityContext;
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if (self.selectActionTarget) {
-        [self.selectActionTarget doSelectAction];
+        return;
     } else {
         [self.nextResponder touchesBegan:touches withEvent:event];
+    }
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if (self.selectActionTarget) {
+        [self.selectActionTarget doSelectAction];
+    } else {
+        [self.nextResponder touchesEnded:touches withEvent:event];
     }
 }
 
