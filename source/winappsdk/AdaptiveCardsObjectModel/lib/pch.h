@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#define AdaptiveRuntime(cls) InspectableClass(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_##cls, BaseTrust)
-#define AdaptiveRuntimeStatic(cls) InspectableClassStatic(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_##cls, BaseTrust)
-#define AdaptiveRuntimeStringClass(cls) InspectableClass(L"AdaptiveCards.ObjectModel.WinUI3." L#cls, BaseTrust)
-#define AdaptiveRuntimeClass RuntimeClass_AdaptiveCards_ObjectModel_WinUI3
 #define AdaptivePointerCast dynamic_pointer_cast
 
 // don't want windows.h min()/max() definitions as they conflict with std::numeric_limits<T>::min()/max()
@@ -19,7 +15,6 @@
 #define DISABLE_NS_PREFIX_CHECKS 1
 #include <unordered_map>
 #include <set>
-#include <ppltasks.h>
 #include <sstream>
 #include <limits>
 #include <string>
@@ -44,6 +39,5 @@
 #include <winrt/Windows.Data.Json.h>
 
 // Commonly-used AdaptiveCardRenderer headers
-#include "AdaptiveCards.ObjectModel.WinUI3.h"
 #include "ObjectModelUtil.h"
 #include "AdaptiveCardElement.h"

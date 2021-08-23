@@ -62,7 +62,7 @@ std::string WStringToString(std::wstring_view in)
             }
         }
 
-        throw bad_string_conversion();
+        winrt::throw_last_error();
     }
 
     return {};
@@ -89,52 +89,16 @@ std::wstring StringToWString(std::string_view in)
             }
         }
 
-        throw bad_string_conversion();
+        winrt::throw_last_error();
     }
 
     return {};
 }
 
-HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept
-try
-{
-    if (out == nullptr)
-    {
-        return E_INVALIDARG;
-    }
-    else
-    {
-        std::wstring wide = StringToWString(in);
-        return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
-    }
-}
-CATCH_RETURN();
 
 winrt::hstring UTF8ToHString(std::string_view in)
 {
     return winrt::hstring{StringToWString(in)};
-}
-
-HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept
-try
-{
-    UINT32 length = 0U;
-    const auto* ptr_wide = WindowsGetStringRawBuffer(in, &length);
-    out = WStringToString(std::wstring_view(ptr_wide, length));
-
-    return S_OK;
-}
-CATCH_RETURN();
-
-std::string HStringToUTF8(HSTRING in)
-{
-    std::string typeAsKey;
-    if (SUCCEEDED(HStringToUTF8(in, typeAsKey)))
-    {
-        return typeAsKey;
-    }
-
-    return {};
 }
 
 std::string HStringToUTF8(winrt::hstring const& in)
@@ -580,28 +544,6 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToW
     default:
     {
         return winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None;
-    }
-    }
-}
-
-AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type)
-{
-    switch (type)
-    {
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop:
-    {
-        return FallbackType::Drop;
-    }
-
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content:
-    {
-        return FallbackType::Content;
-    }
-
-    case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None:
-    default:
-    {
-        return FallbackType::None;
     }
     }
 }

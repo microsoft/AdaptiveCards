@@ -4,15 +4,6 @@
 
 #include <Inline.h>
 
-class bad_string_conversion : public std::exception
-{
-public:
-    bad_string_conversion() : _dwErr(GetLastError()) {}
-
-private:
-    DWORD _dwErr;
-};
-
 template<typename TStored> struct property
 {
     TStored m_stored;
@@ -27,6 +18,19 @@ template<typename TStored> struct property
     auto operator->() { return std::addressof(m_stored); }
 };
 
+
+template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> const& src)
+{
+    if (src.has_value())
+    {
+        return static_cast<T>(src.value());
+    }
+    else
+    {
+        return std::nullopt;
+    }
+}
+
 template<typename TStored> struct property_opt
 {
     winrt::Windows::Foundation::IReference<TStored> m_stored;
@@ -39,14 +43,7 @@ template<typename TStored> struct property_opt
         }
         else if constexpr (std::is_same_v<T, std::optional<T>>)
         {
-            if (t)
-            {
-                m_stored = winrt::box_value(*t);
-            }
-            else
-            {
-                m_stored = nullptr;
-            }
+            m_stored = t ? winrt::box_value(*t) : nullptr;
         }
         else if constexpr (std::is_null_pointer_v<T>)
         {
@@ -68,14 +65,7 @@ template<typename TStored> struct property_opt
         }
         else
         {
-            if (auto v = m_stored.try_as<TStored>())
-            {
-                return static_cast<TOther>(*v);
-            }
-            else
-            {
-                return std::nullopt;
-            }
+            return opt_cast<TOther>(m_stored.try_as<TStored>());
         }
     };
 
@@ -91,17 +81,6 @@ template<typename TStored> struct property_opt
     operator std::optional<TStored>() { return get(); }
 };
 
-template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> const& src)
-{
-    if (src.has_value())
-    {
-        return static_cast<T>(src.value());
-    }
-    else
-    {
-        return std::nullopt;
-    }
-}
 
 std::string WStringToString(std::wstring_view in);
 std::wstring StringToWString(std::string_view in);
@@ -111,11 +90,6 @@ std::wstring StringToWString(std::string_view in);
 winrt::hstring UTF8ToHString(std::string_view in);
 
 std::string HStringToUTF8(winrt::hstring const& in);
-
-inline bool Boolify(const boolean value) noexcept
-{
-    return (value > 0);
-}
 
 std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& item);
 
@@ -137,30 +111,6 @@ std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(
 winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement
 GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement);
 
-template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass, class TReturnedSharedModelType>
-HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* tableCells,
-                             std::vector<std::shared_ptr<TSharedClass>>& containedElements)
-{
-    containedElements.clear();
-
-    IterateOverVector<TWinrtClass, TWinrtInterface>(tableCells,
-                                                    [&](TWinrtInterface* tableCell)
-                                                    {
-                                                        ComPtr<TImplementationClass> adaptiveElement =
-                                                            PeekInnards<TImplementationClass>(tableCell);
-                                                        if (adaptiveElement == nullptr)
-                                                        {
-                                                            return E_INVALIDARG;
-                                                        }
-
-                                                        containedElements.push_back(std::AdaptivePointerCast<TSharedClass>(
-                                                            adaptiveElement->GetSharedModel()));
-                                                        return S_OK;
-                                                    });
-
-    return S_OK;
-}
-
 template<typename TImpl, typename TShared, typename TCollection>
 std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& cells)
 {
@@ -179,13 +129,6 @@ std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& ce
     return shared;
 }
 
-HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement,
-                                  _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** projectedElement) noexcept;
-
-HRESULT GenerateContainedElementsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
-
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>
 GenerateContainedElementsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
 
@@ -194,10 +137,6 @@ GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseA
 
 winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement
 GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
-
-HRESULT GenerateInlinesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline*>* projectedParentContainer) noexcept;
 
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline>
 GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
@@ -216,85 +155,18 @@ auto GenerateVectorProjection(std::vector<std::shared_ptr<TSharedType>> const& e
     return winrt::single_threaded_vector<TRtType>(std::move(converted));
 }
 
-template<typename I, typename Abi> auto copy_from_abi(Abi* abi)
-{
-    I returned{nullptr};
-    winrt::copy_from_abi(returned, abi);
-    return returned;
-}
-
-template<typename T, typename I> inline auto put_abi(T& i)
-{
-    return reinterpret_cast<T**>(winrt::put_abi(i));
-}
-
-template<typename I, typename Abi> void copy_to_abi(I const& i, Abi** abi)
-{
-    *abi = i.as<Abi>().detach();
-}
-
-#define GenerateImagesProjection(SHAREDIMAGES, WINRTIMAGES) \
-    GenerateVectorProjection<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage, AdaptiveImage>( \
-        SHAREDIMAGES, WINRTIMAGES);
-
-#define GenerateFactsProjection(SHAREDFACTS, WINRTFACTS) \
-    GenerateVectorProjection<AdaptiveCards::Fact, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveFact, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveFact, AdaptiveFact>( \
-        SHAREDFACTS, WINRTFACTS);
-
-#define GenerateInputChoicesProjection(SHAREDCHOICES, WINRTCHOICES) \
-    GenerateVectorProjection<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput, AdaptiveChoiceInput>( \
-        SHAREDCHOICES, WINRTCHOICES);
-
-#define GenerateMediaSourcesProjection(SHAREDMEDIASOURCES, WINRTMEDIASOURCES) \
-    GenerateVectorProjection<AdaptiveCards::MediaSource, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMediaSource, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMediaSource, AdaptiveMediaSource>( \
-        SHAREDMEDIASOURCES, WINRTMEDIASOURCES);
-
-#define GenerateColumnsProjection(SHAREDCOLUMNS, WINRTCOLUMNS) \
-    GenerateVectorProjection<AdaptiveCards::Column, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn, AdaptiveColumn>( \
-        SHAREDCOLUMNS, WINRTCOLUMNS);
-
-#define GenerateToggleTargetProjection(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS) \
-    GenerateVectorProjection<AdaptiveCards::ToggleVisibilityTarget, \
-                             ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleVisibilityTarget, \
-                             ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget, \
-                             AdaptiveToggleVisibilityTarget>(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS);
-
-#define GenerateTableCellsProjection(SHAREDTABLECELLS, WINRTTABLECELLS) \
-    GenerateVectorProjection<AdaptiveCards::TableCell, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableCell, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableCell, AdaptiveTableCell>( \
-        SHAREDTABLECELLS, WINRTTABLECELLS);
-
-#define GenerateTableRowsProjection(SHAREDTABLEROWS, WINRTTABLEROWS) \
-    GenerateVectorProjection<AdaptiveCards::TableRow, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableRow, ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableRow, AdaptiveTableRow>( \
-        SHAREDTABLEROWS, WINRTTABLEROWS);
-
-#define GenerateTableColumnDefinitionsProjection(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS) \
-    GenerateVectorProjection<AdaptiveCards::TableColumnDefinition, \
-                             ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableColumnDefinition, \
-                             ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTableColumnDefinition, \
-                             AdaptiveTableColumnDefinition>(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS);
-
-HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString);
-HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
-HRESULT JsonObjectToHString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, _Outptr_ HSTRING* result);
 winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::IJsonObject const& inputJson);
-HRESULT JsonObjectToString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
 
 std::string JsonObjectToString(winrt::Windows::Data::Json::IJsonObject const& inputJson);
 
-HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
 winrt::Windows::Data::Json::JsonValue StringToJsonValue(const std::string& inputString);
 winrt::Windows::Data::Json::JsonValue HStringToJsonValue(winrt::hstring const& inputHString);
-HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
-HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
 std::string JsonValueToString(winrt::Windows::Data::Json::IJsonValue const& inputValue);
 winrt::hstring JsonValueToHString(winrt::Windows::Data::Json::IJsonValue const& inputJsonValue);
-HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
 
-HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 winrt::Windows::Data::Json::JsonObject JsonCppToJsonObject(const Json::Value& jsonCppValue);
-HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
 
 Json::Value JsonObjectToJsonCpp(winrt::Windows::Data::Json::IJsonObject const& jsonObject);
 
@@ -326,13 +198,6 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
     return out;
 }
 
-template<typename D, typename I> winrt::com_ptr<D> peek_innards(I* o)
-{
-    winrt::com_ptr<I> i;
-    i.copy_from(o);
-    return peek_innards<D>(i);
-}
-
 void SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<::AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& toAddTo);
@@ -340,16 +205,11 @@ void SharedWarningsToAdaptiveWarnings(
 winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>
 SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
-HRESULT AdaptiveWarningsToSharedWarnings(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* adaptiveWarnings,
-    std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
-
 void AdaptiveWarningsToSharedWarnings(
     winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
 winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type);
-AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType type);
 
 AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType const& type);
 
@@ -358,79 +218,3 @@ winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration GetA
 
 winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration GetAdaptiveElementParserRegistrationFromSharedModel(
     const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration);
-
-template<typename T, typename TInterface, typename C>
-HRESULT IterateOverVectorWithFailure(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)
-{
-    Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-    ComPtr<IIterable<T*>> vectorIterable;
-    HRESULT hr = localVector.As<IIterable<T*>>(&vectorIterable);
-
-    if (SUCCEEDED(hr))
-    {
-        Microsoft::WRL::ComPtr<IIterator<T*>> vectorIterator;
-        vectorIterable->First(&vectorIterator);
-
-        boolean hasCurrent = false;
-        hr = vectorIterator->get_HasCurrent(&hasCurrent);
-        while (SUCCEEDED(hr) && hasCurrent)
-        {
-            Microsoft::WRL::ComPtr<TInterface> current = nullptr;
-            if (FAILED(vectorIterator->get_Current(current.GetAddressOf())))
-            {
-                return S_OK;
-            }
-
-            hr = iterationCallback(current.Get());
-            if (stopOnFailure && FAILED(hr))
-            {
-                return hr;
-            }
-
-            hr = vectorIterator->MoveNext(&hasCurrent);
-        }
-    }
-
-    return hr;
-}
-
-template<typename T, typename C>
-HRESULT IterateOverVectorWithFailure(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)
-{
-    return IterateOverVectorWithFailure<T, T, C>(vector, stopOnFailure, iterationCallback);
-}
-
-template<typename T, typename TInterface, typename C>
-void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
-{
-    Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-    ComPtr<IIterable<T*>> vectorIterable;
-    THROW_IF_FAILED(localVector.As<IIterable<T*>>(&vectorIterable));
-
-    Microsoft::WRL::ComPtr<IIterator<T*>> vectorIterator;
-    if (FAILED(vectorIterable->First(&vectorIterator)))
-    {
-        return;
-    }
-
-    boolean hasCurrent = false;
-    HRESULT hr = vectorIterator->get_HasCurrent(&hasCurrent);
-    while (SUCCEEDED(hr) && hasCurrent)
-    {
-        Microsoft::WRL::ComPtr<TInterface> current = nullptr;
-        hr = vectorIterator->get_Current(current.GetAddressOf());
-        if (FAILED(hr))
-        {
-            break;
-        }
-
-        iterationCallback(current.Get());
-        hr = vectorIterator->MoveNext(&hasCurrent);
-    }
-}
-
-template<typename T, typename C>
-void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
-{
-    IterateOverVector<T, T, C>(vector, iterationCallback);
-}
