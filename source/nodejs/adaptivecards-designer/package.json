@@ -34,11 +34,11 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.10.0-beta.1",
 		"adaptivecards-controls": "^0.9.0-beta.1",
 		"clipboard": "^2.0.1"
 	},
 	"peerDependencies": {
+		"adaptivecards": "^2.10.0-beta.1",
 		"adaptive-expressions": "^4.11.0",
 		"adaptivecards-templating": "^2.2.0-beta.1",
 		"monaco-editor": "^0.20.0"
