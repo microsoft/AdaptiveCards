@@ -126,6 +126,13 @@ std::string HStringToUTF8(HSTRING in)
     return {};
 }
 
+winrt::Windows::UI::Color GetColorFromString(std::string const& colorString)
+{
+    ABI::Windows::UI::Color output;
+    THROW_IF_FAILED(GetColorFromString(colorString, &output));
+    return reinterpret_cast<winrt::Windows::UI::Color&>(output);
+}
+
 // Get a Color object from color string
 // Expected formats are "#AARRGGBB" (with alpha channel) and "#RRGGBB" (without alpha channel)
 HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::UI::Color* color) noexcept

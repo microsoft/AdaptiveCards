@@ -23,83 +23,21 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    RenderedAdaptiveCard::RenderedAdaptiveCard() {}
-
-    HRESULT RenderedAdaptiveCard::RuntimeClassInitialize()
+    RenderedAdaptiveCard::RenderedAdaptiveCard() :
+        RenderedAdaptiveCard(winrt::single_threaded_vector<ObjectModel::WinUI3::AdaptiveError>(),
+                             winrt::single_threaded_vector<ObjectModel::WinUI3::AdaptiveWarning>())
     {
-        RETURN_IF_FAILED(RenderedAdaptiveCard::RuntimeClassInitialize(
-            Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*>>().Get(),
-            Make<Vector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>>().Get()));
-        return S_OK;
     }
 
-    HRESULT RenderedAdaptiveCard::RuntimeClassInitialize(
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*>* errors,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>* warnings)
+    RenderedAdaptiveCard::RenderedAdaptiveCard(
+        winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveError> const& errors,
+        winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveWarning> const& warnings) :
+        Errors{errors},
+        Warnings{warnings}
     {
-        m_errors = errors;
-        m_warnings = warnings;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::WinUI3::AdaptiveInputs>(&m_inputs));
-        m_actionEvents = std::make_shared<ActionEventSource>();
-        m_mediaClickedEvents = std::make_shared<MediaEventSource>();
-        return S_OK;
-    }
-
-    HRESULT RenderedAdaptiveCard::get_OriginatingCard(_COM_Outptr_ IAdaptiveCard** value)
-    {
-        return m_originatingCard.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_OriginatingHostConfig(_COM_Outptr_ IAdaptiveHostConfig** value)
-    {
-        return m_originatingHostConfig.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_FrameworkElement(_COM_Outptr_ IFrameworkElement** value)
-    {
-        return m_frameworkElement.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs** value)
-    {
-        return m_inputs.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::add_Action(
-        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard*,
-                                                          ABI::AdaptiveCards::Rendering::WinUI3::AdaptiveActionEventArgs*>* handler,
-        _Out_ EventRegistrationToken* token)
-    {
-        return m_actionEvents->Add(handler, token);
-    }
-
-    HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token) { return m_actionEvents->Remove(token); }
-
-    HRESULT RenderedAdaptiveCard::add_MediaClicked(
-        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard*,
-                                                          ABI::AdaptiveCards::Rendering::WinUI3::AdaptiveMediaEventArgs*>* handler,
-        _Out_ EventRegistrationToken* token)
-    {
-        return m_mediaClickedEvents->Add(handler, token);
-    }
-
-    HRESULT RenderedAdaptiveCard::remove_MediaClicked(EventRegistrationToken token)
-    {
-        return m_mediaClickedEvents->Remove(token);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*>** value)
-    {
-        return m_errors.CopyTo(value);
-    }
-
-    HRESULT RenderedAdaptiveCard::get_Warnings(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>** value)
-    {
-        return m_warnings.CopyTo(value);
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::WinUI3::AdaptiveInputs>(&m_inputs));
     }
 
     HRESULT RenderedAdaptiveCard::HandleInlineShowCardEvent(_In_ IAdaptiveActionElement* actionElement)
@@ -131,47 +69,29 @@ namespace AdaptiveCards::Rendering::WinUI3
                 // visible in the action bar visible in the flyout menu and non-visible in the action bar.
 
                 auto overflowButtonPair = m_overflowButtons.find(showCardInfoToHandle->actionSetId);
-                ComPtr<IUIElement> overflowButton = overflowButtonPair->second;
+                auto overflowButton = overflowButtonPair->second;
+                auto buttonParent = overflowButton.as<winrt::Windows::UI::Xaml::FrameworkElement>().Parent();
+                auto actionPanel = buttonParent.as<winrt::Windows::UI::Xaml::Controls::Panel>();
+                auto actionButtons = actionPanel.Children();
 
-                ComPtr<IFrameworkElement> overflowButtonAsFrameworkElement;
-                RETURN_IF_FAILED(overflowButton.As(&overflowButtonAsFrameworkElement));
-
-                ComPtr<IDependencyObject> buttonParent;
-                RETURN_IF_FAILED(overflowButtonAsFrameworkElement->get_Parent(&buttonParent));
-
-                ComPtr<IPanel> actionPanel;
-                RETURN_IF_FAILED(buttonParent.As(&actionPanel));
-
-                ComPtr<IVector<UIElement*>> actionButtons;
-                RETURN_IF_FAILED(actionPanel->get_Children(&actionButtons));
-
-                // In some cases the action panel will be a grid with column definitions that will need to be updated so get those now
-                ComPtr<IGrid> actionPanelAsGrid;
-                buttonParent.As(&actionPanelAsGrid);
-
-                ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
-                if (actionPanelAsGrid != nullptr)
+                winrt::Windows::Foundation::Collections::IVector<winrt::Windows::UI::Xaml::Controls::ColumnDefinition> columnDefinitions;
+                if (auto actionPanelAsGrid = buttonParent.try_as<winrt::Windows::UI::Xaml::Controls::Grid>())
                 {
-                    RETURN_IF_FAILED(actionPanelAsGrid->get_ColumnDefinitions(&columnDefinitions));
+                    columnDefinitions = actionPanelAsGrid.ColumnDefinitions();
                 }
 
                 // Walk the buttons in the button bar. We're looking for the last visible action button (so we can hide
                 // it now that it's visible on the overflow menu). This will be the second to last visible button in the
                 // panel (the last being the overflow button itself)
-                UINT currentButtonIndex = 0;
-                UINT lastVisibleButtonIndex = 0;
-                UINT penultimateVisibleButtonIndex = 0;
-                ComPtr<IUIElement> lastVisibleButton;
-                ComPtr<IUIElement> penultimateVisibleButton;
-                IterateOverVector<UIElement, IUIElement>(actionButtons.Get(), [&](IUIElement* actionUIElement) {
-                    ComPtr<IUIElement> action(actionUIElement);
-
-                    Visibility visibility;
-                    RETURN_IF_FAILED(action->get_Visibility(&visibility));
-
-                    if (visibility == Visibility_Visible)
+                uint32_t currentButtonIndex = 0;
+                uint32_t lastVisibleButtonIndex = 0;
+                uint32_t penultimateVisibleButtonIndex = 0;
+                winrt::Windows::UI::Xaml::UIElement lastVisibleButton{nullptr};
+                winrt::Windows::UI::Xaml::UIElement penultimateVisibleButton{nullptr};
+                for (auto&& action : actionButtons)
+                {
+                    if (action.Visibility() == winrt::Windows::UI::Xaml::Visibility::Visible)
                     {
-                        // Keep track of the second to last visible button to collapse (and it's index to update column definitions)
                         penultimateVisibleButton = lastVisibleButton;
                         lastVisibleButton = action;
 
@@ -179,59 +99,38 @@ namespace AdaptiveCards::Rendering::WinUI3
                         lastVisibleButtonIndex = currentButtonIndex;
                     }
 
-                    currentButtonIndex++;
-                    return S_OK;
-                });
+                    ++currentButtonIndex;
+                }
 
                 // If there isn't a visible button available to swap this show card with, there's nothing to do here.
-                if (penultimateVisibleButton != nullptr)
+                if (penultimateVisibleButton)
                 {
-                    // Hide the last visible non-overflow button (that action will be shown in the overflow menu)
-                    RETURN_IF_FAILED(penultimateVisibleButton->put_Visibility(Visibility_Collapsed));
+                    penultimateVisibleButton.Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
 
                     // Set the column width to auto if we're using column definitions to allow the space allocated for this button to collapse
-                    if (columnDefinitions != nullptr)
+                    if (columnDefinitions)
                     {
-                        ComPtr<IColumnDefinition> columnDefinition;
-                        RETURN_IF_FAILED(columnDefinitions->GetAt(penultimateVisibleButtonIndex, &columnDefinition));
-                        RETURN_IF_FAILED(columnDefinition->put_Width({0, GridUnitType::GridUnitType_Auto}));
+                        columnDefinitions.GetAt(penultimateVisibleButtonIndex).Width({0, winrt::Windows::UI::Xaml::GridUnitType::Auto});
                     }
 
                     // Make the show card button visible
                     RETURN_IF_FAILED(showCardInfoToHandle->buttonUIElement->put_Visibility(Visibility_Visible));
 
                     // Set the column width to 1* if we're using column definitions to show equal width buttons
-                    if (columnDefinitions != nullptr)
+                    if (columnDefinitions)
                     {
-                        ComPtr<IColumnDefinition> columnDefinition;
-                        RETURN_IF_FAILED(columnDefinitions->GetAt(showCardInfoToHandle->primaryButtonIndex, &columnDefinition));
-                        RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
+                        columnDefinitions.GetAt(showCardInfoToHandle->primaryButtonIndex).Width({1.0, winrt::Windows::UI::Xaml::GridUnitType::Star});
                     }
 
                     // Next get the flyout menu so we can collapse this action from the flyout and show the one we hid from the action bar
-                    ComPtr<IButtonWithFlyout> overflowButtonAsButtonWithFlyout;
-                    RETURN_IF_FAILED(overflowButton.As(&overflowButtonAsButtonWithFlyout));
+                    auto overflowButtonAsButtonWithFlyout = overflowButton.as<winrt::Windows::UI::Xaml::Controls::IButtonWithFlyout>();
+                    auto flyoutBase = overflowButtonAsButtonWithFlyout.Flyout();
+                    auto flyout = flyoutBase.as<winrt::Windows::UI::Xaml::Controls::MenuFlyout>();
 
-                    ComPtr<IFlyoutBase> flyoutBase;
-                    RETURN_IF_FAILED(overflowButtonAsButtonWithFlyout->get_Flyout(&flyoutBase));
-
-                    ComPtr<IMenuFlyout> flyout;
-                    RETURN_IF_FAILED(flyoutBase.As(&flyout));
-
-                    // Get the menu flyout items
-                    ComPtr<IVector<MenuFlyoutItemBase*>> flyoutItems;
-                    RETURN_IF_FAILED(flyout->get_Items(&flyoutItems));
-
-                    // Make all items visible to ensure the action we removed from the button panel shows up in the overflow menu
-                    IterateOverVector<MenuFlyoutItemBase, IMenuFlyoutItemBase>(flyoutItems.Get(), [&](IMenuFlyoutItemBase* flyoutItem) {
-                        ComPtr<IMenuFlyoutItemBase> flyoutItemBase(flyoutItem);
-
-                        ComPtr<IUIElement> flyoutItemAsUIElement;
-                        RETURN_IF_FAILED(flyoutItemBase.As(&flyoutItemAsUIElement));
-                        RETURN_IF_FAILED(flyoutItemAsUIElement->put_Visibility(Visibility_Visible));
-
-                        return S_OK;
-                    });
+                    for (auto&& flyout : flyout.Items())
+                    {
+                        flyout.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
+                    }
 
                     // Make the the action we're handling collapsed in the overflow menu. It is now shown in the button bar and don't want it to show here.
                     RETURN_IF_FAILED(showCardInfoToHandle->overflowUIElement->put_Visibility(Visibility_Collapsed));
@@ -412,7 +311,8 @@ namespace AdaptiveCards::Rendering::WinUI3
             else
             {
                 ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(eventArgs, to_winrt(actionElement), nullptr));
+                RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(
+                    eventArgs, to_winrt(actionElement), nullptr));
 
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
@@ -473,7 +373,8 @@ namespace AdaptiveCards::Rendering::WinUI3
             ComPtr<IAdaptiveInputs> inputs;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&inputs));
 
-            RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(eventArgs, to_winrt(actionElement), to_winrt(inputs)));
+            RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(
+                eventArgs, to_winrt(actionElement), to_winrt(inputs)));
             return m_actionEvents->InvokeAll(this, eventArgs.Get());
         }
         }
@@ -598,7 +499,8 @@ namespace AdaptiveCards::Rendering::WinUI3
     }
     CATCH_RETURN();
 
-    HRESULT RenderedAdaptiveCard::AddInputValue(_In_ IAdaptiveInputValue* inputItem, _In_ IAdaptiveRenderArgs* renderArgs)
+    HRESULT RenderedAdaptiveCard::AddInputValue(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue* inputItem,
+                                                _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
     {
         return m_inputs->AddInputValue(inputItem, renderArgs);
     }

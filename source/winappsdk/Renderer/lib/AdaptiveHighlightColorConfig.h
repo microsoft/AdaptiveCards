@@ -2,28 +2,23 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinUI3
+#include "AdaptiveHighlightColorConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
+{
+    class AdaptiveHighlightColorConfig : AdaptiveHighlightColorConfigT<AdaptiveHighlightColorConfig>
+    {
+        AdaptiveHighlightColorConfig(::AdaptiveCards::HighlightColorConfig highlightColorConfig = {});
+
+        property<winrt::Windows::UI::Color> Default;
+        property<winrt::Windows::UI::Color> Subtle;
+    };
+}
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
 {
     class AdaptiveHighlightColorConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHighlightColorConfig>
+        : AdaptiveHighlightColorConfigT<AdaptiveHighlightColorConfig, implementation::AdaptiveHighlightColorConfig>
     {
-        AdaptiveRuntime(AdaptiveHighlightColorConfig);
-
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(HighlightColorConfig highlightColorConfig) noexcept;
-
-        IFACEMETHODIMP get_Default(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_Default(ABI::Windows::UI::Color value);
-
-        IFACEMETHODIMP get_Subtle(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_Subtle(ABI::Windows::UI::Color value);
-
-    private:
-        ABI::Windows::UI::Color m_defaultColor;
-        ABI::Windows::UI::Color m_subtleColor;
     };
-
-    ActivatableClass(AdaptiveHighlightColorConfig);
 }

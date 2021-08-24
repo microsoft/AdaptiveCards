@@ -6,21 +6,15 @@
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveActionInvoker.h"
 #include "AdaptiveMediaEventInvoker.h"
+#include "AdaptiveRenderContext.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class DECLSPEC_UUID("F29649FF-C718-4F94-8F39-2415C86BE77E") AdaptiveRenderContext
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<IWeakReferenceSource>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>>
+    class DECLSPEC_UUID("F29649FF-C718-4F94-8F39-2415C86BE77E") AdaptiveRenderContext : AdaptiveRenderContextT < AdaptiveRenderContext, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveRenderContext);
+        AdaptiveRenderContext() noexcept;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
+        AdaptiveRenderContext(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration* featureRegistration,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRendererRegistration* elementRendererRegistration,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRendererRegistration* actionRendererRegistration,
@@ -96,7 +90,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRendererRegistration> m_actionRendererRegistration;
         Microsoft::WRL::WeakRef m_weakRenderResult;
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveActionInvoker> m_actionInvoker;
+        winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionInvoker> m_actionInvoker;
         Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveMediaEventInvoker> m_mediaEventInvoker;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;

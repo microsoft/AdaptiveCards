@@ -12,30 +12,19 @@ using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
-    try
-    {
-        ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
-        return strongRenderResult.AsWeak(&m_weakRenderResult);
+    AdaptiveActionInvoker::AdaptiveActionInvoker(::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard* card) {
+        winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard> c;
+        winrt::copy_from_abi(c, card);
+        m_weakRenderResult = c.as<WinUI3::RenderedAdaptiveCard>();
     }
-    CATCH_RETURN();
 
-    HRESULT AdaptiveActionInvoker::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
+    void AdaptiveActionInvoker::SendActionEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement)
     {
-        ComPtr<IRenderedAdaptiveCard> strongRenderResult;
-        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
-        if (strongRenderResult != nullptr)
+        if (auto strong = PeekInnards<::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard>(m_weakRenderResult.get()))
         {
-            ComPtr<RenderedAdaptiveCard> renderResult = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
-            if (renderResult != nullptr)
-            {
-                RETURN_IF_FAILED(renderResult->SendActionEvent(actionElement));
-            }
+            strong->SendActionEvent(::to_abi(actionElement));
         }
-        return S_OK;
     }
 }

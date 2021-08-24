@@ -39,7 +39,9 @@ namespace AdaptiveCards::Rendering::WinUI3
         ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
         RETURN_IF_FAILED(strongRenderResult.AsWeak(&m_weakRenderResult));
 
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
+        m_actionInvoker =
+            winrt::make_self<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionInvoker>(renderResult);
+
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
 
         return S_OK;

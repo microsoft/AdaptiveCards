@@ -153,6 +153,8 @@ HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept;
 
 std::string HStringToUTF8(HSTRING in);
 
+winrt::Windows::UI::Color GetColorFromString(std::string const& colorString);
+
 inline bool Boolify(const boolean value) noexcept
 {
     return (value > 0);
