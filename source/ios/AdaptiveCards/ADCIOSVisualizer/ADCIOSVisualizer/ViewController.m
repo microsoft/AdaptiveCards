@@ -557,6 +557,8 @@ CGFloat kFileBrowserWidth = 0;
         // Initialize the input results label
         self.retrievedInputsTextView = [self buildLabel:@"" withIdentifier:@"SubmitActionRetrievedResults"];
         
+        [self.retrievedInputsTextView setText:@" "];
+        
         // Add the label to the container
         [layout addArrangedSubview:self.retrievedInputsTextView];
     }
