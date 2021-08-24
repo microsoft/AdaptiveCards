@@ -5,15 +5,15 @@
 ### Node
 
 ```console
-npm install react react-adaptivecards --save
+npm install react adaptivecards-react --save
 ```
 
 ```js
 // Import the module:
-import * as AdaptiveCard from "react-adaptivecards";
+import * as AdaptiveCard from "adaptivecards-react";
 
 // OR require it:
-var AdaptiveCard = require("react-adaptivecards");
+var AdaptiveCard = require("adaptivecards-react");
 ```
 
 ### Usage
