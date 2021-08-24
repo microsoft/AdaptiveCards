@@ -1,18 +1,43 @@
 {
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "TextBlock",
-			"text": "This card's action will open a URL"
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.OpenUrl",
-			"title": "Action.OpenUrl",
-			"url": "https://adaptivecards.io"
-		}
-	]
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "spacing": "Small",
+                    "selectAction": {
+                        "type": "Action.ToggleVisibility",
+                        "targetElements": [
+                            "cardContent1",
+                            "chevronDown1",
+                            "chevronUp1"
+                        ]
+                    },
+                    "verticalContentAlignment": "Center",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "id": "chevronDown1",
+                            "url": "https://adaptivecards.io/content/down.png",
+                            "width": "20px",
+                            "altText": "Air Travel Expense $300 collapsed"
+                        },
+                        {
+                            "type": "Image",
+                            "id": "chevronUp1",
+                            "url": "https://adaptivecards.io/content/up.png",
+                            "width": "20px",
+                            "altText": "Air Travel Expense $300 expanded",
+                            "isVisible": false
+                        }
+                    ],
+                    "width": "auto"
+                }
+            ]
+        }
+    ]
 }

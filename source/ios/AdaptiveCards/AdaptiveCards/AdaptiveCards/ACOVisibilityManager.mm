@@ -10,7 +10,17 @@
 #import "ACREnums.h"
 #import "ACRSeparator.h"
 
-@implementation ACOVisibilityManager
+@implementation ACOVisibilityManager {
+    NSHashTable<UIView *> *_paddingSet;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _paddingSet = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:2];
+    }
+    return self;
+}
 
 - (void)hideView:(UIView *)viewToBeHidden arrangedSubviews:(NSArray<UIView *> *)subviews
 {
@@ -50,16 +60,14 @@
     // only cares for tailing padding at the moment
     // if column width is "auto", and all of its children hidden,
     // hide column, if is "stretch", then don't hide it.
-    if (self.padding && [_columnWidth isEqualToString:@"auto"]) {
+    if (_paddingSet.count && [_columnWidth isEqualToString:@"auto"]) {
         for (UIView *subview in subviews) {
-            if (!subview.isHidden && ![subview isEqual:self.padding]) {
+            if (!subview.isHidden && ![self isPadding:subview]) {
                 return;
             }
         }
 
-        if (!self.padding.isHidden) {
-            self.padding.hidden = YES;
-        }
+        [self changeVisibilitOfPaddingsTo:YES];
     }
 }
 
@@ -73,19 +81,27 @@
     // if tail, check to left for separator else check to right
     // if trailing padding exists, the target view is tail and padding is hidden,
     // unhide the padding regardless
-    BOOL isViewFound = NO, isLastView = YES;
+    BOOL isViewFound = NO, isLastView = YES, isPadding = NO;
     NSInteger targetIndex = subviews.count;
+    NSUInteger visibleViewCounts = 0;
     for (NSInteger i = 0; i < subviews.count; i++) {
         UIView *subview = subviews[i];
+        isPadding = [self isPadding:subview];
+        if (!subview.isHidden && !isPadding) {
+            visibleViewCounts += 1;
+        }
         if ([subview isEqual:viewToBeUnhidden]) {
             targetIndex = i;
             isViewFound = YES;
-        } else if (!subview.isHidden && isViewFound && (!self.padding || (self.padding && ![subview isEqual:self.padding]))) {
+            if (subview.isHidden) {
+                visibleViewCounts += 1;
+            }
+        } else if (!subview.isHidden && isViewFound && (!_paddingSet.count || (!isPadding))) {
             isLastView = NO;
             break;
         }
-    }
-
+    }    
+    
     if (isViewFound) {
         UIView *separator = nil;
         NSInteger separatorIndex = targetIndex;
@@ -105,12 +121,35 @@
         if (targetView.isHidden) {
             targetView.hidden = NO;
         }
-        if (separator && separator.isHidden) {
+        
+        if (visibleViewCounts > 1 && separator && separator.isHidden) {
             separator.hidden = NO;
         }
 
-        if (isLastView && self.padding && self.padding.isHidden) {
-            self.padding.hidden = NO;
+        if (isLastView && _paddingSet.count) {
+            [self changeVisibilitOfPaddingsTo:NO];
+        }
+    }
+}
+
+- (void)addPadding:(UIView *)padding {
+    if (padding && _paddingSet) {
+        [_paddingSet addObject:padding];
+    }
+}
+
+- (BOOL)isPadding:(UIView *)padding {
+    if (padding && _paddingSet) {
+        return [_paddingSet containsObject:padding];
+    }
+    return NO;
+}
+
+- (void)changeVisibilitOfPaddingsTo:(BOOL)visiblity
+{
+    for (UIView *padding in _paddingSet) {
+        if (padding.isHidden != visiblity) {
+            padding.hidden = visiblity;
         }
     }
 }

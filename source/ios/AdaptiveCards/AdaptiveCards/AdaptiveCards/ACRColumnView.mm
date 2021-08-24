@@ -126,7 +126,7 @@
 - (UIView *)addPaddingSpace
 {
     UIView *padding = [super addPaddingSpace];
-    _visibilityManager.padding = padding;
+    [_visibilityManager addPadding:padding];
     return padding;
 }
 
