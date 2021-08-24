@@ -90,6 +90,8 @@
                                                                              options:options
                                                                   documentAttributes:nil
                                                                                error:nil];
+                    UpdateFontWithDynamicType(textRunContent);
+
                     lab.selectable = YES;
                     lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
                     lab.userInteractionEnabled = YES;

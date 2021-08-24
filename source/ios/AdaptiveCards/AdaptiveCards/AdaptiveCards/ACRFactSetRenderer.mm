@@ -65,6 +65,7 @@
             content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
+            UpdateFontWithDynamicType(content);
         } else {
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
         }

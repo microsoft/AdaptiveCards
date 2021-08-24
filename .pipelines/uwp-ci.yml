@@ -1,0 +1,82 @@
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/*
+
+trigger:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/*
+  batch: True
+
+variables:
+  solution: source/uwp/AdaptiveCards.sln
+  buildConfiguration: Release
+  buildPlatform: x64
+
+pool:
+  name: Azure Pipelines
+  vmImage: windows-2019
+
+steps:
+- task: NuGetToolInstaller@0
+  name: NuGetToolInstaller1
+  displayName: Use NuGet 5.x
+  inputs:
+    versionSpec: 5.x
+
+- task: NuGetRestore@1
+  name: NuGetCommand2
+  displayName: NuGet restore
+  inputs:
+    solution: $(solution)
+    selectOrConfig: config
+    verbosity: '-'
+
+- task: VSBuild@1
+  name: VSBuild3
+  displayName: Build solution
+  inputs:
+    solution: $(solution)
+    vsVersion: 16.0
+    platform: $(buildPlatform)
+    configuration: $(buildConfiguration)
+    maximumCpuCount: true
+    createLogFile: true
+    logFileVerbosity: detailed
+
+- task: VSTest@2
+  displayName: 'VsTest - Unit Tests'
+  inputs:
+    testAssemblyVer2: |
+     **\Release\UWPUnitTests.build.appxrecipe
+     !**\obj\**
+    otherConsoleOptions: '/Framework:FrameworkUap10'
+    runInParallel: true
+    runTestsInIsolation: true
+    codeCoverageEnabled: false
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    diagnosticsEnabled: True
+    collectDumpOn: always
+
+- task: VSTest@2
+  displayName: 'VsTest - UI Tests'
+  inputs:
+    testAssemblyVer2: |
+     **\Release\netcoreapp2.1\UWPUITests.dll
+     !**\obj\**
+    uiTests: true
+    runTestsInIsolation: true
+    codeCoverageEnabled: false
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    diagnosticsEnabled: True
+    collectDumpOn: always
+
