@@ -90,6 +90,16 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return SetStyleFromResourceDictionary(renderContext, HStringReference(resourceName).Get(), frameworkElement);
     }
 
+    void SetStyleFromResourceDictionary(winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext,
+                                        winrt::hstring resourceName,
+                                        winrt::Windows::UI::Xaml::IFrameworkElement frameworkElement)
+    {
+        THROW_IF_FAILED(SetStyleFromResourceDictionary(
+            renderContext.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext>().get(),
+            std::wstring_view(resourceName).data(),
+            frameworkElement.as<ABI::Windows::UI::Xaml::IFrameworkElement>().get()));
+    }
+
     HRESULT XamlHelpers::SetSeparatorVisibility(_In_ IPanel* parentPanel)
     {
         // Iterate over the elements in a container and ensure that the correct separators are marked as visible
@@ -97,52 +107,69 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         RETURN_IF_FAILED(parentPanel->get_Children(&children));
 
         bool foundPreviousVisibleElement = false;
-        IterateOverVector<UIElement, IUIElement>(children.Get(), [&](IUIElement* child) {
-            ComPtr<IUIElement> localChild(child);
+        IterateOverVector<UIElement, IUIElement>(children.Get(),
+                                                 [&](IUIElement* child)
+                                                 {
+                                                     ComPtr<IUIElement> localChild(child);
 
-            ComPtr<IFrameworkElement> childAsFrameworkElement;
-            RETURN_IF_FAILED(localChild.As(&childAsFrameworkElement));
+                                                     ComPtr<IFrameworkElement> childAsFrameworkElement;
+                                                     RETURN_IF_FAILED(localChild.As(&childAsFrameworkElement));
 
-            // Get the tag for the element. The separators themselves will not have tags.
-            ComPtr<IInspectable> tag;
-            RETURN_IF_FAILED(childAsFrameworkElement->get_Tag(&tag));
+                                                     // Get the tag for the element. The separators themselves will not have tags.
+                                                     ComPtr<IInspectable> tag;
+                                                     RETURN_IF_FAILED(childAsFrameworkElement->get_Tag(&tag));
 
-            if (tag)
-            {
-                ComPtr<IElementTagContent> elementTagContent;
-                RETURN_IF_FAILED(tag.As(&elementTagContent));
+                                                     if (tag)
+                                                     {
+                                                         ComPtr<IElementTagContent> elementTagContent;
+                                                         RETURN_IF_FAILED(tag.As(&elementTagContent));
 
-                ComPtr<IUIElement> separator;
-                RETURN_IF_FAILED(elementTagContent->get_Separator(&separator));
+                                                         ComPtr<IUIElement> separator;
+                                                         RETURN_IF_FAILED(elementTagContent->get_Separator(&separator));
 
-                Visibility visibility;
-                RETURN_IF_FAILED(child->get_Visibility(&visibility));
+                                                         Visibility visibility;
+                                                         RETURN_IF_FAILED(child->get_Visibility(&visibility));
 
-                boolean expectedVisibility{};
-                RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&expectedVisibility));
+                                                         boolean expectedVisibility{};
+                                                         RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&expectedVisibility));
 
-                if (separator)
-                {
-                    if (!expectedVisibility || !foundPreviousVisibleElement)
-                    {
-                        // If the element is collapsed, or if it's the first visible element, collapse the separator
-                        // Images are hidden while they are retrieved, we shouldn't hide the separator
-                        RETURN_IF_FAILED(separator->put_Visibility(Visibility_Collapsed));
-                    }
-                    else
-                    {
-                        // Otherwise show the separator
-                        RETURN_IF_FAILED(separator->put_Visibility(Visibility_Visible));
-                    }
-                }
+                                                         if (separator)
+                                                         {
+                                                             if (!expectedVisibility || !foundPreviousVisibleElement)
+                                                             {
+                                                                 // If the element is collapsed, or if it's the first
+                                                                 // visible element, collapse the separator Images are
+                                                                 // hidden while they are retrieved, we shouldn't hide
+                                                                 // the separator
+                                                                 RETURN_IF_FAILED(separator->put_Visibility(Visibility_Collapsed));
+                                                             }
+                                                             else
+                                                             {
+                                                                 // Otherwise show the separator
+                                                                 RETURN_IF_FAILED(separator->put_Visibility(Visibility_Visible));
+                                                             }
+                                                         }
 
-                foundPreviousVisibleElement |= (visibility == Visibility_Visible);
-            }
+                                                         foundPreviousVisibleElement |= (visibility == Visibility_Visible);
+                                                     }
 
-            return S_OK;
-        });
+                                                     return S_OK;
+                                                 });
 
         return S_OK;
+    }
+
+    void SetContent(winrt::Windows::UI::Xaml::Controls::IContentControl contentControl, winrt::param::hstring contentString, boolean wrap)
+    {
+        winrt::Windows::UI::Xaml::Controls::TextBlock textBlock{};
+        textBlock.Text(contentString);
+
+        if (wrap)
+        {
+            textBlock.TextWrapping(winrt::Windows::UI::Xaml::TextWrapping::WrapWholeWords);
+        }
+
+        contentControl.Content(textBlock);
     }
 
     HRESULT HandleStylingAndPadding(_In_ IAdaptiveContainerBase* adaptiveContainer,
@@ -601,9 +628,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
 
         EventRegistrationToken clickToken;
         // Add Tap handler that sets the event as handled so that it doesn't propagate to the parent containers.
-        return uiElement->add_Tapped(Callback<ITappedEventHandler>([](IInspectable* /*sender*/, ITappedRoutedEventArgs* args) -> HRESULT {
-                                         return args->put_Handled(TRUE);
-                                     }).Get(),
+        return uiElement->add_Tapped(Callback<ITappedEventHandler>([](IInspectable* /*sender*/, ITappedRoutedEventArgs* args) -> HRESULT
+                                                                   { return args->put_Handled(TRUE); })
+                                         .Get(),
                                      &clickToken);
     }
 
@@ -1228,5 +1255,25 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
 
         return S_OK;
+    }
+
+    winrt::Windows::UI::Xaml::UIElement HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement adaptiveInput,
+                                                                       winrt::Windows::UI::Xaml::UIElement inputUIElement,
+                                                                       boolean hasTypeSpecificValidation,
+                                                                       winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext)
+    {
+        ComPtr<IUIElement> inputLayout;
+        THROW_IF_FAILED(HandleInputLayoutAndValidation(
+            adaptiveInput.as<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement>().get(),
+            inputUIElement.as<ABI::Windows::UI::Xaml::IUIElement>().get(),
+            hasTypeSpecificValidation,
+            renderContext.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext>().get(),
+            &inputLayout,
+            nullptr));
+
+        winrt::com_ptr<ABI::Windows::UI::Xaml::IUIElement> abiInputLayout;
+        *abiInputLayout.put() = inputLayout.Detach();
+
+        return abiInputLayout.as<winrt::Windows::UI::Xaml::UIElement>();
     }
 }
