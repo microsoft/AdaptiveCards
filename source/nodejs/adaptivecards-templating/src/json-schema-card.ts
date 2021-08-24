@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import { IAdaptiveCard, ICardElement, IChoiceSetInput, IContainer, INumberInput, ITextInput, ITimeInput, IToggleInput } from 'adaptivecards/src/schema';
 import { JSONSchema7, JSONSchema7Definition, JSONSchema7Type } from 'json-schema';
 
