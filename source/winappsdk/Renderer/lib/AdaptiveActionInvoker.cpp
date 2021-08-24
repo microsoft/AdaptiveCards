@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "AdaptiveActionInvoker.h"
+#include "AdaptiveActionInvoker.g.cpp"
 #include "Util.h"
 
 using namespace Microsoft::WRL;
@@ -14,17 +15,11 @@ using namespace ABI::Windows::UI::Xaml;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    AdaptiveActionInvoker::AdaptiveActionInvoker(::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard* card) {
-        winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard> c;
-        winrt::copy_from_abi(c, card);
-        m_weakRenderResult = c.as<WinUI3::RenderedAdaptiveCard>();
-    }
-
     void AdaptiveActionInvoker::SendActionEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement)
     {
-        if (auto strong = PeekInnards<::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard>(m_weakRenderResult.get()))
+        if (auto strong = peek_innards<implementation::RenderedAdaptiveCard>(m_weakRenderResult.get()))
         {
-            strong->SendActionEvent(::to_abi(actionElement));
+            strong->SendActionEvent(actionElement);
         }
     }
 }

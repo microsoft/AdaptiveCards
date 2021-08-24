@@ -14,8 +14,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         {
         }
 
-        AdaptiveActionInvoker(winrt::AdaptiveCards::Rendering::WinUI3::implementation::RenderedAdaptiveCard* card);
-
         void SendActionEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement);
 
     private:
