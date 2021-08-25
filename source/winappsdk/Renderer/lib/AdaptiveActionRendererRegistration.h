@@ -2,29 +2,28 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinUI3.h"
-#include "Util.h"
+#include "AdaptiveActionRendererRegistration.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveActionRendererRegistration
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRendererRegistration>,
-                                              Microsoft::WRL::FtmBase>
+    struct AdaptiveActionRendererRegistration : AdaptiveActionRendererRegistrationT<AdaptiveActionRendererRegistration>
     {
-        AdaptiveRuntime(AdaptiveActionRendererRegistration);
+        using RegistrationMap =
+            std::unordered_map<hstring, WinUI3::IAdaptiveActionRenderer, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
-        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRenderer>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
+        AdaptiveActionRendererRegistration() = default;
 
-    public:
-        AdaptiveActionRendererRegistration();
-        HRESULT RuntimeClassInitialize() noexcept;
+        WinUI3::IAdaptiveActionRenderer Get(hstring const& type);
+        void Set(hstring const& type, WinUI3::IAdaptiveActionRenderer const& renderer);
+        void Remove(hstring const& type);
 
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRenderer* renderer);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRenderer** result);
-        IFACEMETHODIMP Remove(_In_ HSTRING type);
-
-    private:
-        std::shared_ptr<RegistrationMap> m_registration;
+        RegistrationMap m_registration;
+    };
+}
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveActionRendererRegistration
+        : AdaptiveActionRendererRegistrationT<AdaptiveActionRendererRegistration, implementation::AdaptiveActionRendererRegistration>
+    {
     };
 }

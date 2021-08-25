@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveHighlightColorConfig : AdaptiveHighlightColorConfigT<AdaptiveHighlightColorConfig>
+    struct AdaptiveHighlightColorConfig : AdaptiveHighlightColorConfigT<AdaptiveHighlightColorConfig>
     {
         AdaptiveHighlightColorConfig(::AdaptiveCards::HighlightColorConfig highlightColorConfig = {});
 
@@ -17,7 +17,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
 {
-    class AdaptiveHighlightColorConfig
+    struct AdaptiveHighlightColorConfig
         : AdaptiveHighlightColorConfigT<AdaptiveHighlightColorConfig, implementation::AdaptiveHighlightColorConfig>
     {
     };

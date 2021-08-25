@@ -1,26 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #pragma once
-#include "AdaptiveCards.Rendering.WinUI3.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+#include "AdaptiveCardResourceResolvers.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveCardResourceResolvers
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers>
+    struct AdaptiveCardResourceResolvers : AdaptiveCardResourceResolversT < AdaptiveCardResourceResolvers>
     {
-        AdaptiveRuntime(AdaptiveCardResourceResolvers);
+        AdaptiveCardResourceResolvers() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        void Set(hstring const& scheme, WinUI3::IAdaptiveCardResourceResolver const& resolver);
+        WinUI3::IAdaptiveCardResourceResolver Get(hstring const& scheme);
 
-        IFACEMETHODIMP Set(_In_ HSTRING scheme, _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolver* resolver);
-        IFACEMETHODIMP Get(_In_ HSTRING scheme,
-                           _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolver** resolver);
-
-    private:
-        std::map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolver>> m_resourceResolvers;
+        std::map<hstring, Rendering::WinUI3::IAdaptiveCardResourceResolver> m_resourceResolvers;
     };
+}
 
-    ActivatableClass(AdaptiveCardResourceResolvers);
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveCardResourceResolvers
+        : AdaptiveCardResourceResolversT<AdaptiveCardResourceResolvers, implementation::AdaptiveCardResourceResolvers>
+    {
+    };
 }

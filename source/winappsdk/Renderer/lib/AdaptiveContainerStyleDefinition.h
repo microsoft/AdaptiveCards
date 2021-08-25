@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveContainerStyleDefinition : AdaptiveContainerStyleDefinitionT<AdaptiveContainerStyleDefinition>
+    struct AdaptiveContainerStyleDefinition : AdaptiveContainerStyleDefinitionT<AdaptiveContainerStyleDefinition>
     {
         AdaptiveContainerStyleDefinition(::AdaptiveCards::ContainerStyleDefinition styleDefinition = {});
 
@@ -19,7 +19,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
 {
-    class AdaptiveContainerStyleDefinition
+    struct AdaptiveContainerStyleDefinition
         : AdaptiveContainerStyleDefinitionT<AdaptiveContainerStyleDefinition, implementation::AdaptiveContainerStyleDefinition>
     {
     };

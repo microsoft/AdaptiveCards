@@ -7,10 +7,10 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    AdaptiveContainerStyleDefinition::AdaptiveContainerStyleDefinition(::AdaptiveCards::ContainerStyleDefinition styleDefinition)
+    AdaptiveContainerStyleDefinition::AdaptiveContainerStyleDefinition(::AdaptiveCards::ContainerStyleDefinition styleDefinition) :
+        ForegroundColors{winrt::make<implementation::AdaptiveColorsConfig>(styleDefinition.foregroundColors)},
+        BackgroundColor{GetColorFromString(styleDefinition.backgroundColor)}, BorderColor{GetColorFromString(
+                                                                                  styleDefinition.borderColor)}
     {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveColorsConfig>(m_foregroundColors.GetAddressOf(), styleDefinition.foregroundColors));
-        BackgroundColor = GetColorFromString(styleDefinition.backgroundColor);
-        BorderColor = GetColorFromString(styleDefinition.borderColor);
     }
 }
