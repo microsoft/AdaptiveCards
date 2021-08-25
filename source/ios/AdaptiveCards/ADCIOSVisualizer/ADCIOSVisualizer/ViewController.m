@@ -170,6 +170,12 @@ CGFloat kFileBrowserWidth = 0;
 - (IBAction)deleteAllRows:(id)sender
 {
     [(ACRChatWindow *)self.chatWindow.dataSource deleteAllRows:self.chatWindow];
+    
+    // clean the retrieved inputs
+    if ([self appIsBeingTested])
+    {
+        [self.retrievedInputsTextView setText:@" "];
+    }
 }
 
 - (void)viewDidLoad
