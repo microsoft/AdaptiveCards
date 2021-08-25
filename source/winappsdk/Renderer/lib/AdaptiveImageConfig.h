@@ -2,24 +2,20 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinUI3
+#include "AdaptiveImageConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveImageConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveImageConfig>
+    struct AdaptiveImageConfig : AdaptiveImageConfigT < AdaptiveImageConfig>
     {
-        AdaptiveRuntime(AdaptiveImageConfig);
+        AdaptiveImageConfig(::AdaptiveCards::ImageConfig ImageConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(ImageConfig ImageConfig) noexcept;
-
-        IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize* imageSize);
-        IFACEMETHODIMP put_ImageSize(ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize imageSize);
-
-    private:
-        ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize m_imageSize;
+        property<ObjectModel::WinUI3::ImageSize> ImageSize;
     };
-
-    ActivatableClass(AdaptiveImageConfig);
+}
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveImageConfig : AdaptiveImageConfigT<AdaptiveImageConfig, implementation::AdaptiveImageConfig>
+    {
+    };
 }

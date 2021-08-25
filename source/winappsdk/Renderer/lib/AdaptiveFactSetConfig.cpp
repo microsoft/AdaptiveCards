@@ -3,28 +3,16 @@
 #include "pch.h"
 
 #include "AdaptiveFactSetConfig.h"
+#include "AdaptiveFactSetConfig.g.cpp"
 #include "AdaptiveFactSetTextConfig.h"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveFactSetConfig::AdaptiveFactSetConfig(::AdaptiveCards::FactSetConfig factSetConfig) :
+        Title{winrt::make<implementation::AdaptiveFactSetTextConfig>(factSetConfig.title)},
+        Value{winrt::make<implementation::AdaptiveFactSetTextConfig>(factSetConfig.value)},
+        Spacing{factSetConfig.spacing}
     {
-        FactSetConfig factSetConfig;
-        return RuntimeClassInitialize(factSetConfig);
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize(FactSetConfig factSetConfig) noexcept
-    {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFactSetTextConfig>(m_title.GetAddressOf(), factSetConfig.title));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFactSetTextConfig>(m_value.GetAddressOf(), factSetConfig.value));
-        m_spacing = factSetConfig.spacing;
-
-        return S_OK;
     }
 
     HRESULT AdaptiveFactSetConfig::get_Title(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFactSetTextConfig** titleTextConfig)

@@ -3,35 +3,12 @@
 #include "pch.h"
 
 #include "AdaptiveImageConfig.h"
+#include "AdaptiveImageConfig.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveImageConfig::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveImageConfig::AdaptiveImageConfig(::AdaptiveCards::ImageConfig sharedImageConfig)
     {
-        ImageConfig imageConfig;
-        return RuntimeClassInitialize(imageConfig);
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveImageConfig::RuntimeClassInitialize(ImageConfig sharedImageConfig) noexcept
-    {
-        m_imageSize = static_cast<ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize>(sharedImageConfig.imageSize);
-        return S_OK;
-    }
-
-    HRESULT AdaptiveImageConfig::get_ImageSize(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize* imageSize)
-    {
-        *imageSize = m_imageSize;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize imageSize)
-    {
-        m_imageSize = imageSize;
-        return S_OK;
+        ImageSize = static_cast<ObjectModel::WinUI3::ImageSize>(sharedImageConfig.imageSize);
     }
 }

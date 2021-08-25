@@ -2,23 +2,8 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
+#include "AdaptiveCardGetResourceStreamArgs.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::Windows::Foundation;
-
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveCardGetResourceStreamArgs::RuntimeClassInitialize(_In_ IUriRuntimeClass* url)
-    {
-        m_url = url;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCardGetResourceStreamArgs::get_Url(_COM_Outptr_ IUriRuntimeClass** url)
-    {
-        ComPtr<IUriRuntimeClass> localUrl(m_url);
-        *url = localUrl.Detach();
-        return S_OK;
-    }
 }

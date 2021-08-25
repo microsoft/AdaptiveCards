@@ -2,32 +2,23 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinUI3
+#include "AdaptiveFontWeightsConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveFontWeightsConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontWeightsConfig>
+    struct AdaptiveFontWeightsConfig : AdaptiveFontWeightsConfigT < AdaptiveFontWeightsConfig>
     {
-        AdaptiveRuntime(AdaptiveFontWeightsConfig);
+        AdaptiveFontWeightsConfig(::AdaptiveCards::FontWeightsConfig fontWeightsConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(FontWeightsConfig fontWeightsConfig) noexcept;
-
-        IFACEMETHODIMP get_Lighter(_Out_ UINT16* value);
-        IFACEMETHODIMP put_Lighter(UINT16 value);
-
-        IFACEMETHODIMP get_Default(_Out_ UINT16* value);
-        IFACEMETHODIMP put_Default(UINT16 value);
-
-        IFACEMETHODIMP get_Bolder(_Out_ UINT16* value);
-        IFACEMETHODIMP put_Bolder(UINT16 value);
-
-    private:
-        UINT16 m_default;
-        UINT16 m_lighter;
-        UINT16 m_bolder;
+        property<uint16_t> Lighter;
+        property<uint16_t> Default;
+        property<uint16_t> Bolder;
     };
-
-    ActivatableClass(AdaptiveFontWeightsConfig);
 }
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveFontWeightsConfig : AdaptiveFontWeightsConfigT<AdaptiveFontWeightsConfig, implementation::AdaptiveFontWeightsConfig>
+    {
+    };
+}
+

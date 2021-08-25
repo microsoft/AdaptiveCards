@@ -89,6 +89,11 @@ std::wstring StringToWString(std::string_view in)
     return {};
 }
 
+winrt::hstring UTF8ToHString(std::string_view in)
+{
+    return winrt::hstring{StringToWString(in)};
+}
+
 HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept
 try
 {
