@@ -31,6 +31,8 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             // Check if has extra properties else add column view
             columnViews.append(columnView)
             guard index > 0, (column.getSpacing() != .none || column.getSeparator()), !column.getItems().isEmpty else {
+                columnView.isHidden = !column.getIsVisible()
+                columnView.identifier = NSUserInterfaceItemIdentifier(column.getId() ?? "")
                 columnSetView.addView(columnView, in: gravityArea)
                 BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column, parentElement: columnSet)
                 continue
@@ -40,6 +42,8 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             wrappingView.orientation = .horizontal
             wrappingView.addSpacing(column.getSpacing())
             wrappingView.addSeperator(column.getSeparator())
+            wrappingView.isHidden = !column.getIsVisible()
+            wrappingView.identifier = NSUserInterfaceItemIdentifier(column.getId() ?? "")
             
             wrappingView.addArrangedSubview(columnView)
             columnView.trailingAnchor.constraint(equalTo: wrappingView.trailingAnchor).isActive = true

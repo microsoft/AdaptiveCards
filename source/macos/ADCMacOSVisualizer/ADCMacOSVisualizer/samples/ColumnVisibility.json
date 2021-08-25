@@ -1,0 +1,493 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Input.Text",
+            "id": "card_id",
+            "value": "InstanceList",
+            "isVisible": false
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "style": "Person",
+                            "url": "https://i.ibb.co/1ZYV8sD/OCP.png",
+                            "size": "Medium",
+                            "height": "50px"
+                        }
+                    ],
+                    "width": "auto"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "OCP One Search",
+                            "weight": "Lighter",
+                            "color": "Accent"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "weight": "Bolder",
+                            "text": "Found Instances",
+                            "wrap": true,
+                            "color": "Light",
+                            "size": "Large",
+                            "spacing": "Small"
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "separator": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Deployment",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Project",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Instance",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "IP",
+                            "spacing": "Small"
+                        }
+                    ],
+                    "isVisible": false
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "separator": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "ci22am",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "ocp_test",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "rain-ocp-exporter",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "${ip}",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ],
+                    "isVisible": false,
+                    "id": "col1"
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "data": {
+                    "uuid": "5b574941-1e5b-44ca-8804-54e57f6321c9",
+                    "name": "rain-ocp-exporter",
+                    "deployment": "ci22am",
+                    "datacenter": "AMS01",
+                    "aggregate": "general_local",
+                    "domain": "instance-000550ca",
+                    "hypervisor": "ci22amcmp077.webex.com"
+                },
+                "title": "Detail"
+            }
+        },
+        {
+            "type": "ColumnSet",
+            "separator": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "ci32am",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "admin",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "test-rain",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "${ip}",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ],
+                    "isVisible": false,
+                    "id": "col2"
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "data": {
+                    "uuid": "d57bd771-9d84-4ba7-b499-5aa7ed096fe2",
+                    "name": "test-rain",
+                    "deployment": "ci32am",
+                    "datacenter": "AMS01",
+                    "aggregate": "general_local",
+                    "domain": "instance-0001232c",
+                    "hypervisor": "ci32amcmp002.webex.com"
+                },
+                "title": "Detail"
+            }
+        },
+        {
+            "type": "ColumnSet",
+            "separator": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "ci32am",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "admin",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "test-rain",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "${ip}",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ],
+                    "isVisible": false
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "data": {
+                    "uuid": "b3b90e7c-9273-4612-ba0b-27e921cb8a67",
+                    "name": "test-rain",
+                    "deployment": "ci32am",
+                    "datacenter": "AMS01",
+                    "aggregate": "general_local",
+                    "domain": "instance-0006373b",
+                    "hypervisor": "ci32amcmp021.webex.com"
+                },
+                "title": "Detail"
+            }
+        },
+        {
+            "type": "ColumnSet",
+            "separator": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "ci32am",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "admin",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "test-rain",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "${ip}",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ],
+                    "isVisible": false
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "data": {
+                    "uuid": "1bb6e508-3d17-4ccc-80f2-b748eb729422",
+                    "name": "test-rain",
+                    "deployment": "ci32am",
+                    "datacenter": "AMS01",
+                    "aggregate": "general_local",
+                    "domain": "instance-00063744",
+                    "hypervisor": "ci32amcmp023.webex.com"
+                },
+                "title": "Detail"
+            }
+        },
+        {
+            "type": "ColumnSet",
+            "separator": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "ci22ta1",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "WAP_Webex_POC",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "tidb-ta1-drainer",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "${ip}",
+                            "wrap": true,
+                            "size": "Small",
+                            "color": "Accent",
+                            "spacing": "Small"
+                        }
+                    ],
+                    "isVisible": false
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "data": {
+                    "uuid": "1d4801c6-e48f-4b39-8418-6bbb33231ee1",
+                    "name": "tidb-ta1-drainer",
+                    "deployment": "ci22ta1",
+                    "datacenter": "DFW02",
+                    "aggregate": "general_local",
+                    "domain": "instance-0000231c",
+                    "hypervisor": "ci22ta1cmp100.webex.com"
+                },
+                "title": "Detail"
+            }
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "actions": [
+        {
+            "type": "Action.ToggleVisibility",
+            "title": "Action.ToggleVisibility",
+            "id": "test",
+            "targetElements": [ "col1", "col2" ]
+        }
+    ]
+}

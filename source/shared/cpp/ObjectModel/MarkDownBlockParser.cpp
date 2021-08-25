@@ -39,6 +39,7 @@ void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
         char streamChar{};
         stream.get(streamChar);
         m_parsedResult.AddNewLineTokenToParsedResult(streamChar);
+        m_parsedResult.FoundHtmlTags();
         break;
     }
     // handles list block

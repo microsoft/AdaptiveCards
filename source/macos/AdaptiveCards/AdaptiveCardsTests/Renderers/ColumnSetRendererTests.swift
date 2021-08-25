@@ -43,6 +43,21 @@ class ColumnSetRendererTests: XCTestCase {
         XCTAssertEqual(columnStackView.orientation, .horizontal)
     }
     
+    func testHiddenAndIdPropertiesSet() {
+        let columns: [FakeColumn] = [.make(id: "id1", isVisible: false), .make(id: "id2", isVisible: true)]
+        columnSet = .make(columns: columns)
+        
+        let columnSetView = renderColumnSetView()
+        let columnViews = columnSetView.arrangedSubviews
+        XCTAssertEqual(columnViews.count, columns.count)
+        
+        XCTAssertEqual(columnViews[0].identifier?.rawValue, "id1")
+        XCTAssertEqual(columnViews[1].identifier?.rawValue, "id2")
+        
+        XCTAssertTrue(columnViews[0].isHidden)
+        XCTAssertFalse(columnViews[1].isHidden)
+    }
+    
     func testSelectActionTargetIsSet() {
         var columnSetView: ACRContentStackView!
         

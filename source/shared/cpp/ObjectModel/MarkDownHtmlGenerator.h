@@ -93,6 +93,7 @@ namespace AdaptiveSharedNamespace
 
         MarkDownNewLineHtmlGenerator(std::string& token) : MarkDownStringHtmlGenerator(token){};
         bool IsNewLine() override { return true; }
+        std::string GenerateHtmlString() override;
     };
 
     // - MarkDownEmphasisHtmlGenerator

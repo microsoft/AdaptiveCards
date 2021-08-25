@@ -11,6 +11,7 @@ class FakeColumn: ACSColumn {
     var spacing: ACSSpacing = .default
     var separator: Bool = false
     var id: String? = ""
+    var isVisible: Bool = true
     var backgroundImage: ACSBackgroundImage?
     var selectAction: ACSBaseActionElement?
     var padding: Bool = false
@@ -95,14 +96,20 @@ class FakeColumn: ACSColumn {
         return id
     }
     
+    override func getIsVisible() -> Bool {
+        return isVisible
+    }
+    
     override func getPadding() -> Bool {
         return padding
     }
 }
 
 extension FakeColumn {
-    static func make(width: String? = "", pixelWidth: NSNumber? = 0, items: [ACSBaseCardElement] = [], style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, minHeight: NSNumber? = nil, bleed: Bool = false, spacing: ACSSpacing = .default, separator: Bool = false, backgroundImage: ACSBackgroundImage? = nil, selectAction: ACSBaseActionElement? = nil, padding: Bool = false) -> FakeColumn {
+    static func make(id: String? = "", isVisible: Bool = true, width: String? = "", pixelWidth: NSNumber? = 0, items: [ACSBaseCardElement] = [], style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, minHeight: NSNumber? = nil, bleed: Bool = false, spacing: ACSSpacing = .default, separator: Bool = false, backgroundImage: ACSBackgroundImage? = nil, selectAction: ACSBaseActionElement? = nil, padding: Bool = false) -> FakeColumn {
         let fakeColumn = FakeColumn()
+        fakeColumn.id = id
+        fakeColumn.isVisible = isVisible
         fakeColumn.width = width
         fakeColumn.pixelWidth = pixelWidth
         fakeColumn.items = items
