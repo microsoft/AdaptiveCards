@@ -38,6 +38,7 @@
 #include <winrt/Windows.UI.Xaml.Automation.Peers.h>
 #include <winrt/Windows.UI.Xaml.Controls.h>
 #include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Windows.Data.Json.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/AdaptiveCards.Rendering.WinUI3.h>
