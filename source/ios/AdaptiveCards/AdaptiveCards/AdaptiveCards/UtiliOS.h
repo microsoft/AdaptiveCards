@@ -20,6 +20,8 @@
 
 using namespace AdaptiveCards;
 
+extern const CGFloat kACRScalerTolerance;
+
 // configures tag and initial visibility of the given view. Toggle visibility action
 // will access the view by the tag to change the visibility.
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo);
@@ -48,7 +50,11 @@ void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundI
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
                                      UIImageView *imageView, UIImage *img);
 
-void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView);
+void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView, NSMutableArray<NSLayoutConstraint *> *constraints);
+
+void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView, NSMutableArray<NSLayoutConstraint *> *constraints);
+
+void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView, NSMutableArray<NSLayoutConstraint *> *constraints);
 
 ObserverActionBlock generateBackgroundImageObserverAction(
     std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer,
@@ -95,12 +101,6 @@ UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> c
 
 unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &config);
 
-void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView);
-
-void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView);
-
-void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool isComplimentaryAxisHorizontal);
-
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
 
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
@@ -127,3 +127,5 @@ UIImage *scaleImageToSize(UIImage *image, CGSize newSize);
 NSNumber *iOSInternalIdHash(const std::size_t internalIdHash);
 
 id traverseResponderChainForUIViewController(UIView *view);
+
+CGRect FindClosestRectToCover(CGRect coverRect, CGRect targetRectToCover);

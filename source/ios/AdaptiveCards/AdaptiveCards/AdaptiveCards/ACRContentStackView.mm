@@ -476,7 +476,9 @@ static int kToggleVisibilityContext;
 
     if ([self.subviews count]) {
         // configures background when this view contains a background image, and does only once
-        renderBackgroundCoverMode(self.subviews[0], self);
+        NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
+        renderBackgroundCoverMode(self.subviews[0], self, constraints);
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 
     if (_isActionSet) {
