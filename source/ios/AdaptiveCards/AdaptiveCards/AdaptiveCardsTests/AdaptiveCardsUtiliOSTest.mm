@@ -45,6 +45,5 @@ using namespace AdaptiveCards;
     XCTAssertTrue(abs(rrect.size.height - 150) / rect2.size.height <= kACRScalerTolerance);
 }
 
-
 @end
 
