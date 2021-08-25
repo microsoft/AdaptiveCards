@@ -40,15 +40,17 @@
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
 		"concurrently": "^5.2.0",
+		"dts-generator": "^3.0.0",
 		"eslint": "^7.3.1",
+		"html-webpack-plugin": "^5.3.2",
 		"jest": "^26.1.0",
 		"rimraf": "^3.0.2",
 		"typedoc": "^0.20.28",
 		"typedoc-plugin-markdown": "^3.5.0",
-		"typescript": "^3.9.5",
-		"webpack": "^4.46.0",
-		"webpack-cli": "^3.3.12",
-		"webpack-dev-server": "^3.11.0"
+		"typescript": "^4.2.3",
+		"webpack": "^5.47.0",
+		"webpack-cli": "^4.7.2",
+		"webpack-dev-server": "^3.11.2"
 	},
 	"jest": {
 		"rootDir": "src",

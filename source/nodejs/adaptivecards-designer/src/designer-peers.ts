@@ -1383,17 +1383,17 @@ export class ActionPeer extends DesignerPeer {
         "mode",
         "Mode",
         [
-            { targetVersion: Adaptive.Versions.v1_5, name: "Primary", value: Adaptive.ActionMode.Primary },
-            { targetVersion: Adaptive.Versions.v1_5, name: "Secondary", value: Adaptive.ActionMode.Secondary }
+            { targetVersion: Adaptive.Versions.v1_5, name: "Primary", value: Adaptive.ActionMode?.Primary },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Secondary", value: Adaptive.ActionMode?.Secondary }
         ]);
     static readonly styleProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_2,
         "style",
         "Style",
         [
-            { targetVersion: Adaptive.Versions.v1_2, name: "Default", value: Adaptive.ActionStyle.Default },
-            { targetVersion: Adaptive.Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle.Positive },
-            { targetVersion: Adaptive.Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle.Destructive }
+            { targetVersion: Adaptive.Versions.v1_2, name: "Default", value: Adaptive.ActionStyle?.Default },
+            { targetVersion: Adaptive.Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle?.Positive },
+            { targetVersion: Adaptive.Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle?.Destructive }
         ]);
     static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
     static readonly tooltipProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "tooltip", "Tooltip");
