@@ -1018,5 +1018,11 @@ CGRect FindClosestRectToCover(CGRect coverRect, CGRect targetRectToCover)
             scalerLowBound = scalerMidPoint;
         }
     }
+
+    if (coverRect.size.width * scalerMidPoint < targetRectToCover.size.width ||
+        coverRect.size.height * scalerMidPoint < targetRectToCover.size.height) {
+        scalerMidPoint = scalerHighBound;
+    }
+
     return CGRectMake(0, 0, coverRect.size.width * scalerMidPoint, coverRect.size.height * scalerMidPoint);
 }

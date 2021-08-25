@@ -26,9 +26,9 @@ parameters:
 steps:
 - task: NodeTool@0
   name: NodeTool1
-  displayName: Use Node 12.x
+  displayName: Use Node 14.x
   inputs:
-    versionSpec: 12.x
+    versionSpec: 14.x
 
 - bash: |
    npm ci 

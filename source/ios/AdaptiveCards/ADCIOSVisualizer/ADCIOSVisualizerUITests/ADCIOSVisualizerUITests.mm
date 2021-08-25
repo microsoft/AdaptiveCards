@@ -95,6 +95,11 @@
     return resultsTextView.label;
 }
 
+- (bool)verifyInputsAreEmpty
+{
+    return [@" " isEqualToString:[self getInputsString]];
+}
+
 - (void)tapOnButtonWithText:(NSString*)buttonText
 {
     XCUIElementQuery* buttons = testApp.buttons;
@@ -186,6 +191,25 @@
     XCUIElement* firstInput = [chatWindow.textFields elementMatchingType:XCUIElementTypeAny identifier:@"Required Input.Text *, This is a required input,"];
     
     XCTAssertTrue([firstInput valueForKey:@"hasKeyboardFocus"], "First input is not selected");
+}
+
+- (void)testLongPressAndDragRaiseNoEventInContainers
+{
+    [self resetTestEnvironment];
+    
+    [self openCardForVersion:@"v1.5" forCardType:@"Test" withCardName:@"Container.ScrollableSelectableList.json"];
+    
+    XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
+    
+    XCUIElement *container1 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:3];
+    
+    XCUIElement *container2 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:1];
+    
+    // Execute a drag from the 4th element to the 2nd element
+    [container1 pressForDuration:1 thenDragToElement:container2];
+    
+    // assert the submit textview has a blank space, thus the submit event was not raised
+    XCTAssert([self verifyInputsAreEmpty]);
 }
 
 - (void)verifyChoiceSetInput:(NSDictionary<NSString *, NSString *> *)expectedValue application:(XCUIApplication *)app

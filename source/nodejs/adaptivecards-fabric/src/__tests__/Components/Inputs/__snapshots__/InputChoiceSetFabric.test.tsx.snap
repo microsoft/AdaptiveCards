@@ -19,12 +19,12 @@ exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered cor
           aria-label="Red"
           checked=""
           class="input-69"
-          id="checkbox-11"
+          id="checkbox-10"
           type="checkbox"
         />
         <label
           class="ms-Checkbox-label label-70"
-          for="checkbox-11"
+          for="checkbox-10"
         >
           <div
             class="ms-Checkbox-checkbox checkbox-71"
@@ -52,12 +52,12 @@ exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered cor
           aria-checked="false"
           aria-label="Green"
           class="input-69"
-          id="checkbox-12"
+          id="checkbox-11"
           type="checkbox"
         />
         <label
           class="ms-Checkbox-label label-70"
-          for="checkbox-12"
+          for="checkbox-11"
         >
           <div
             class="ms-Checkbox-checkbox checkbox-76"
@@ -86,12 +86,12 @@ exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered cor
           aria-label="Blue"
           checked=""
           class="input-69"
-          id="checkbox-13"
+          id="checkbox-12"
           type="checkbox"
         />
         <label
           class="ms-Checkbox-label label-70"
-          for="checkbox-13"
+          for="checkbox-12"
         >
           <div
             class="ms-Checkbox-checkbox checkbox-71"
@@ -147,17 +147,17 @@ exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1
                 <input
                   checked=""
                   class="ms-ChoiceField-input input-59"
-                  id="ChoiceGroup5-1"
-                  name="ChoiceGroup5"
+                  id="ChoiceGroup4-1"
+                  name="ChoiceGroup4"
                   type="radio"
                 />
                 <label
                   class="ms-ChoiceField-field is-checked field-60"
-                  for="ChoiceGroup5-1"
+                  for="ChoiceGroup4-1"
                 >
                   <span
                     class="ms-ChoiceFieldLabel"
-                    id="ChoiceGroupLabel6-1"
+                    id="ChoiceGroupLabel5-1"
                   >
                     Red
                   </span>
@@ -172,17 +172,17 @@ exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1
               >
                 <input
                   class="ms-ChoiceField-input input-59"
-                  id="ChoiceGroup5-2"
-                  name="ChoiceGroup5"
+                  id="ChoiceGroup4-2"
+                  name="ChoiceGroup4"
                   type="radio"
                 />
                 <label
                   class="ms-ChoiceField-field field-65"
-                  for="ChoiceGroup5-2"
+                  for="ChoiceGroup4-2"
                 >
                   <span
                     class="ms-ChoiceFieldLabel"
-                    id="ChoiceGroupLabel6-2"
+                    id="ChoiceGroupLabel5-2"
                   >
                     Green
                   </span>
@@ -197,17 +197,17 @@ exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1
               >
                 <input
                   class="ms-ChoiceField-input input-59"
-                  id="ChoiceGroup5-3"
-                  name="ChoiceGroup5"
+                  id="ChoiceGroup4-3"
+                  name="ChoiceGroup4"
                   type="radio"
                 />
                 <label
                   class="ms-ChoiceField-field field-65"
-                  for="ChoiceGroup5-3"
+                  for="ChoiceGroup4-3"
                 >
                   <span
                     class="ms-ChoiceFieldLabel"
-                    id="ChoiceGroupLabel6-3"
+                    id="ChoiceGroupLabel5-3"
                   >
                     Blue
                   </span>
@@ -238,7 +238,7 @@ exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] 
       >
         <div
           class="ms-ComboBox css-40"
-          id="ComboBox1wrapper"
+          id="ComboBox0wrapper"
         >
           <input
             aria-autocomplete="both"
@@ -248,8 +248,7 @@ exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] 
             class="ms-ComboBox-Input css-41"
             data-is-interactable="true"
             data-lpignore="true"
-            id="ComboBox1-input"
-            readonly=""
+            id="ComboBox0-input"
             role="combobox"
             spellcheck="false"
             type="text"
@@ -283,7 +282,7 @@ exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] 
           aria-atomic="true"
           aria-live="polite"
           class=""
-          id="ComboBox1-error"
+          id="ComboBox0-error"
           role="region"
         />
       </div>
@@ -308,7 +307,7 @@ exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered cor
       >
         <div
           class="ms-ComboBox css-40"
-          id="ComboBox7wrapper"
+          id="ComboBox6wrapper"
         >
           <input
             aria-autocomplete="both"
@@ -318,8 +317,7 @@ exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered cor
             class="ms-ComboBox-Input css-41"
             data-is-interactable="true"
             data-lpignore="true"
-            id="ComboBox7-input"
-            readonly=""
+            id="ComboBox6-input"
             role="combobox"
             spellcheck="false"
             type="text"
@@ -353,7 +351,7 @@ exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered cor
           aria-atomic="true"
           aria-live="polite"
           class=""
-          id="ComboBox7-error"
+          id="ComboBox6-error"
           role="region"
         />
       </div>
