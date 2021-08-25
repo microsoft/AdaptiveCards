@@ -126,6 +126,11 @@ std::string HStringToUTF8(HSTRING in)
     return {};
 }
 
+std::string HStringToUTF8(winrt::hstring const& in)
+{
+    return WStringToString(in);
+}
+
 winrt::Windows::UI::Color GetColorFromString(std::string const& colorString)
 {
     ABI::Windows::UI::Color output;
@@ -622,6 +627,33 @@ try
     return S_OK;
 }
 CATCH_RETURN();
+
+winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString)
+{
+    return HStringToJsonObject(UTF8ToHString(inputString));
+}
+
+winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString)
+{
+    winrt::Windows::Data::Json::JsonObject obj{nullptr};
+
+    if (!winrt::Windows::Data::Json::JsonObject::TryParse(inputHString, obj))
+    {
+        obj = {};
+    }
+
+    return obj;
+}
+
+std::string JsonObjectToString(winrt::Windows::Data::Json::JsonObject const& inputJson)
+{
+    return HStringToUTF8(JsonObjectToHString(inputJson));
+}
+
+winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::JsonObject const& inputJson)
+{
+    return inputJson.Stringify();
+}
 
 HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ IJsonObject** result)
 {

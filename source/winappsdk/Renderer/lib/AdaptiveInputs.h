@@ -14,32 +14,26 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         // IAdaptiveInputs
         winrt::Windows::Data::Json::JsonObject AsJson();
-        winrt::Windows::Foundation::Collections::PropertySet AsValueSet();
+        winrt::Windows::Foundation::Collections::ValueSet AsValueSet();
 
         bool ValidateInputs(ObjectModel::WinUI3::IAdaptiveActionElement const& submitAction);
 
-        HRESULT AddInputValue(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue* inputValue,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs);
-        HRESULT LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* submitAction,
-                                       _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs);
-        HRESULT LinkCardToParent(UINT32 cardId, UINT32 parentCardId);
+        void AddInputValue(WinUI3::IAdaptiveInputValue const& inputValue, _In_ WinUI3::AdaptiveRenderArgs const& renderArgs);
+        void LinkSubmitActionToCard(ObjectModel::WinUI3::IAdaptiveActionElement const& action,
+                                    WinUI3::AdaptiveRenderArgs const& renderArgs);
+        void LinkCardToParent(uint32_t cardId, uint32_t parentCardId);
 
-        HRESULT GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* inputElement,
-                              _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue** inputValue);
+        WinUI3::IAdaptiveInputValue GetInputValue(ObjectModel::WinUI3::IAdaptiveInputElement const& inputElement);
 
     private:
         std::string GetInputItemsAsJsonString();
         std::vector<WinUI3::IAdaptiveInputValue> GetInputsToValidate(ObjectModel::WinUI3::IAdaptiveActionElement const& submitAction);
-        void GetInputsToValidate(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* submitAction,
-                                 _Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue>>& inputs);
-        void GetAllInputs(_Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue>>& inputs);
-        HRESULT AdaptiveInputs::GetInternalIdFromAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                                                        _Out_ UINT32* actionInternalId);
+        uint32_t GetInternalIdFromAction(ObjectModel::WinUI3::IAdaptiveActionElement const& action);
 
         // Map with key: input id, value: input value class
         // This one has the collection of all input element values, this was introduced to be able to set the error
         // message to the input value and at the same time, being able to respect custom inputs having error messages
-        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue>> m_inputValues;
+        std::unordered_map<std::string, WinUI3::IAdaptiveInputValue> m_inputValues;
 
         // This is cache of the last inputs that were retrieved for validation (and succeeded)
         // This is needed as the AsJson and AsValueSet methods are called after validating but we don't get an action reference to rebuild the list
@@ -57,6 +51,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         // the card This is needed to retrieve inputs once we know what cards to look into
         std::unordered_map<std::size_t, std::vector<std::string>> m_inputsPerCard;
     };
+}
 
-    ActivatableClass(AdaptiveInputs);
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveInputs : AdaptiveInputsT<AdaptiveInputs, implementation::AdaptiveInputs>
+    {
+    };
 }

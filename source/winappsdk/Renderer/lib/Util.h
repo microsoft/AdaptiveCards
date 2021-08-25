@@ -163,6 +163,7 @@ HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept;
 HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept;
 
 std::string HStringToUTF8(HSTRING in);
+std::string HStringToUTF8(winrt::hstring const& in);
 
 winrt::Windows::UI::Color GetColorFromString(std::string const& colorString);
 
@@ -311,6 +312,11 @@ HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Win
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT JsonObjectToHString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, _Outptr_ HSTRING* result);
 HRESULT JsonObjectToString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
+
+winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString);
+winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
+winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::JsonObject const& inputJson);
+std::string JsonObjectToString(winrt::Windows::Data::Json::JsonObject const& inputJson);
 
 HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
 HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);

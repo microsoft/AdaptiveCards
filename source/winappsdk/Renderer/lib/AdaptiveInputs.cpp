@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveInputs.h"
+#include "AdaptiveInputs.g.cpp"
 #include "AdaptiveRenderArgs.h"
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
@@ -11,99 +12,54 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         return StringToJsonObject(GetInputItemsAsJsonString());
     }
 
-    HRESULT AdaptiveInputs::AddInputValue(_In_ IAdaptiveInputValue* inputValue, _In_ IAdaptiveRenderArgs* renderArgs)
+    void AdaptiveInputs::AddInputValue(WinUI3::IAdaptiveInputValue const& inputValue, _In_ WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
-
-        ComPtr<IAdaptiveCard> parentCard;
-        RETURN_IF_FAILED(localRenderArgs->get_ParentCard(parentCard.GetAddressOf()));
-
-        UINT32 cardId;
-        RETURN_IF_FAILED(parentCard->get_InternalId(&cardId));
-
-        ComPtr<IAdaptiveInputElement> inputElement;
-        RETURN_IF_FAILED(inputValue->get_InputElement(inputElement.GetAddressOf()));
-
-        ComPtr<IAdaptiveCardElement> inputElementAsCardElement;
-        RETURN_IF_FAILED(inputElement.As(&inputElementAsCardElement));
-
-        HString inputId;
-        RETURN_IF_FAILED(inputElementAsCardElement->get_Id(inputId.GetAddressOf()));
-
-        std::string id;
-        RETURN_IF_FAILED(HStringToUTF8(inputId.Get(), id));
+        auto parentCard = renderArgs.ParentCard();
+        auto cardId = parentCard.InternalId();
+        auto inputElement = inputValue.InputElement().as<ObjectModel::WinUI3::IAdaptiveInputElement>();
+        auto inputElementAsCardElement = inputElement.as<ObjectModel::WinUI3::IAdaptiveCardElement>();
+        auto inputId = inputElementAsCardElement.Id();
+        auto id = HStringToUTF8(inputId);
 
         m_inputsPerCard[cardId].push_back(id);
         m_inputValues[id] = inputValue;
-        return S_OK;
     }
 
-    HRESULT AdaptiveInputs::GetInternalIdFromAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                                                    _Out_ UINT32* actionInternalId)
+    uint32_t AdaptiveInputs::GetInternalIdFromAction(ObjectModel::WinUI3::IAdaptiveActionElement const& action)
     {
-        ComPtr<IAdaptiveActionElement> localAction(action);
-        ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
-        RETURN_IF_FAILED(localAction->get_ActionType(&actionType));
+        auto actionType = action.ActionType();
 
-        if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute)
+        if (actionType == ObjectModel::WinUI3::ActionType::Execute)
         {
-            ComPtr<IAdaptiveExecuteAction> executeAction;
-            localAction.As(&executeAction);
-            RETURN_IF_FAILED(executeAction->get_InternalId(actionInternalId));
+            return action.as<ObjectModel::WinUI3::AdaptiveExecuteAction>().InternalId();
         }
-        else if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Submit)
+        else if (actionType == ObjectModel::WinUI3::ActionType::Submit)
         {
-            ComPtr<IAdaptiveSubmitAction> submitAction;
-            localAction.As(&submitAction);
-            RETURN_IF_FAILED(submitAction->get_InternalId(actionInternalId));
+            return action.as<ObjectModel::WinUI3::AdaptiveSubmitAction>().InternalId();
         }
         else
         {
-            return E_NOTIMPL;
+            return 0;
         }
-
-        return S_OK;
     }
 
-    HRESULT AdaptiveInputs::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                                                   _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
+    void AdaptiveInputs::LinkSubmitActionToCard(ObjectModel::WinUI3::IAdaptiveActionElement const& action,
+                                                WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        UINT32 actionId;
-        RETURN_IF_FAILED(GetInternalIdFromAction(action, &actionId));
-
-        ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
-        ComPtr<IAdaptiveCard> adaptiveCard;
-        RETURN_IF_FAILED(localRenderArgs->get_ParentCard(adaptiveCard.GetAddressOf()));
-
-        UINT32 cardId;
-        RETURN_IF_FAILED(adaptiveCard->get_InternalId(&cardId));
-
+        uint32_t actionId = GetInternalIdFromAction(action);
+        uint32_t cardId = renderArgs.ParentCard().InternalId();
         m_containerCardForAction[actionId] = cardId;
-        return S_OK;
     }
 
-    HRESULT AdaptiveInputs::LinkCardToParent(UINT32 cardId, UINT32 parentCardId)
+    void AdaptiveInputs::LinkCardToParent(uint32_t cardId, uint32_t parentCardId)
     {
         m_parentCard[cardId] = parentCardId;
-        return S_OK;
     }
 
-    HRESULT AdaptiveInputs::GetInputValue(_In_ IAdaptiveInputElement* inputElement, IAdaptiveInputValue** inputValue)
+    WinUI3::IAdaptiveInputValue AdaptiveInputs::GetInputValue(ObjectModel::WinUI3::IAdaptiveInputElement const& inputElement)
     {
-        ComPtr<IAdaptiveInputElement> localInputElement(inputElement);
-
-        ComPtr<IAdaptiveCardElement> cardElement;
-        RETURN_IF_FAILED(localInputElement.As(&cardElement));
-
-        HString elementId;
-        RETURN_IF_FAILED(cardElement->get_Id(elementId.GetAddressOf()));
-
-        std::string utf8Id;
-        RETURN_IF_FAILED(HStringToUTF8(elementId.Get(), utf8Id));
-
-        RETURN_IF_FAILED(m_inputValues[utf8Id].CopyTo(inputValue));
-
-        return S_OK;
+        hstring elementId = inputElement.as<ObjectModel::WinUI3::IAdaptiveCardElement>().Id();
+        return m_inputValues[HStringToUTF8(elementId)];
     }
 
     std::string AdaptiveInputs::GetInputItemsAsJsonString()
@@ -112,20 +68,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         for (auto& inputValue : m_lastRetrievedValues)
         {
-            ComPtr<IAdaptiveCardElement> cardElement;
-            ComPtr<IAdaptiveInputElement> inputElement;
-            THROW_IF_FAILED(inputValue->get_InputElement(&inputElement));
-            THROW_IF_FAILED(inputElement.As(&cardElement));
-
-            HString idString;
-            THROW_IF_FAILED(cardElement->get_Id(idString.GetAddressOf()));
-            std::string key = HStringToUTF8(idString.Get());
-
-            HString inputStringValue;
-            THROW_IF_FAILED(inputValue->get_CurrentValue(inputStringValue.GetAddressOf()));
-            std::string value = HStringToUTF8(inputStringValue.Get());
-
-            jsonValue[key] = value;
+            auto cardElement = inputValue.InputElement().as<ObjectModel::WinUI3::IAdaptiveCardElement>();
+            std::string key = HStringToUTF8(cardElement.Id());
+            jsonValue[key] = HStringToUTF8(inputValue.CurrentValue());
         }
 
         Json::StreamWriterBuilder writerBuilder;
@@ -135,9 +80,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         return outStream.str();
     }
 
-    winrt::Windows::Foundation::Collections::PropertySet AdaptiveInputs::AsValueSet()
+    winrt::Windows::Foundation::Collections::ValueSet AdaptiveInputs::AsValueSet()
     {
-        winrt::Windows::Foundation::Collections::PropertySet valueSet;
+        winrt::Windows::Foundation::Collections::ValueSet valueSet;
         auto propertySetMap =
             valueSet.as<winrt::Windows::Foundation::Collections::IMap<hstring, winrt::Windows::Foundation::IInspectable>>();
 
@@ -152,7 +97,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     bool AdaptiveInputs::ValidateInputs(ObjectModel::WinUI3::IAdaptiveActionElement const& submitAction)
     {
-        boolean allInputsValid = true;
+        bool allInputsValid = true;
         auto inputsToValidate = GetInputsToValidate(submitAction);
 
         for (auto& inputValue : inputsToValidate)
@@ -181,15 +126,14 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         return allInputsValid;
     }
 
-    void AdaptiveInputs::GetInputsToValidate(_In_ IAdaptiveActionElement* action,
-                                             _Out_ std::vector<ComPtr<IAdaptiveInputValue>>& inputsToValidate)
+    std::vector<WinUI3::IAdaptiveInputValue> AdaptiveInputs::GetInputsToValidate(ObjectModel::WinUI3::IAdaptiveActionElement const& action)
     {
-        ComPtr<IAdaptiveActionElement> localAction(action);
-        UINT32 actionId;
-        GetInternalIdFromAction(action, &actionId);
+        std::vector<WinUI3::IAdaptiveInputValue> inputsToValidate;
 
+        uint32_t actionId = GetInternalIdFromAction(action);
         std::size_t card = m_containerCardForAction[actionId];
-        while (card != InternalId().Hash())
+        // TODO: This is equivalent to "is the card id 0" - InternalId() inits to zero, Hash returns that
+        while (card != ::AdaptiveCards::InternalId().Hash())
         {
             const auto& inputsInCard = m_inputsPerCard[card];
 
@@ -207,13 +151,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 break;
             }
         }
-    }
 
-    void AdaptiveInputs::GetAllInputs(_Out_ std::vector<ComPtr<IAdaptiveInputValue>>& inputs)
-    {
-        for (const auto& input : m_inputValues)
-        {
-            inputs.emplace_back(input.second);
-        }
+        return inputsToValidate;
     }
 }
