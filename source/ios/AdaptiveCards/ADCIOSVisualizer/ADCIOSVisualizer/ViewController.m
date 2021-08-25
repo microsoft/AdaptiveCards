@@ -728,8 +728,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (BOOL)appIsBeingTested
 {
-    // Uncomment this line for test recording
-    return YES;
+    // Add this line for test recording: return YES;
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
     return [arguments containsObject:@"ui-testing"];
 }
