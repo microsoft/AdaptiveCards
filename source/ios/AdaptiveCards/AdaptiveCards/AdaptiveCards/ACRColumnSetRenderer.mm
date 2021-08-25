@@ -60,7 +60,7 @@
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]];
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
 
-    NSMutableArray *constraints = [[NSMutableArray alloc] init];
+    NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
 
     if (columnSetElem->GetMinHeight() > 0) {
         [constraints addObject:
@@ -71,6 +71,7 @@
                                                       attribute:NSLayoutAttributeNotAnAttribute
                                                      multiplier:1
                                                        constant:columnSetElem->GetMinHeight()]];
+        constraints.lastObject.priority = 999;
     }
 
     ACRColumnRenderer *castedRenderer = (ACRColumnRenderer *)columnRenderer;

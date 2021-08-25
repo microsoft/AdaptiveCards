@@ -93,14 +93,16 @@
     }
 
     if (columnElem->GetMinHeight() > 0) {
-        [NSLayoutConstraint constraintWithItem:column
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1
-                                      constant:columnElem->GetMinHeight()]
-            .active = YES;
+        NSLayoutConstraint *constraint =
+            [NSLayoutConstraint constraintWithItem:column
+                                         attribute:NSLayoutAttributeHeight
+                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1
+                                          constant:columnElem->GetMinHeight()];
+        constraint.priority = 999;
+        constraint.active = YES;
     }
 
     [column setClipsToBounds:NO];

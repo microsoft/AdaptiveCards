@@ -44,8 +44,9 @@
 		6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9426B8AE72007E9641 /* MockContext.mm */; };
 		6B124C9826B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */; };
 		6B124C9B26B9F7AD007E9641 /* ACOVisibilityManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9A26B9F7AD007E9641 /* ACOVisibilityManager.mm */; };
-		6B124C9D26B9FA64007E9641 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B124C9C26B9FA64007E9641 /* UIKit.framework */; };
 		6B124C9F26BCB2FE007E9641 /* ACOVisibilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B124C9926B9F6B1007E9641 /* ACOVisibilityManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B124CA426D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */; };
+		6B124CA826D050DB007E9641 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B124CA726D050DB007E9641 /* CoreGraphics.framework */; };
 		6B22425D21E80647000ACDA1 /* ACOParseContextPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B22425E21E80647000ACDA1 /* ACOParseContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B22425B21E80647000ACDA1 /* ACOParseContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B22425F21E80647000ACDA1 /* ACOParseContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22425C21E80647000ACDA1 /* ACOParseContext.mm */; };
@@ -471,7 +472,9 @@
 		6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsColumnTests.mm; sourceTree = "<group>"; };
 		6B124C9926B9F6B1007E9641 /* ACOVisibilityManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACOVisibilityManager.h; sourceTree = "<group>"; };
 		6B124C9A26B9F7AD007E9641 /* ACOVisibilityManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOVisibilityManager.mm; sourceTree = "<group>"; };
-		6B124C9C26B9FA64007E9641 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsUtiliOSTest.mm; sourceTree = "<group>"; };
+		6B124CA526D050C9007E9641 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		6B124CA726D050DB007E9641 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOParseContextPrivate.h; sourceTree = "<group>"; };
 		6B22425B21E80647000ACDA1 /* ACOParseContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOParseContext.h; sourceTree = "<group>"; };
 		6B22425C21E80647000ACDA1 /* ACOParseContext.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOParseContext.mm; sourceTree = "<group>"; };
@@ -864,6 +867,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B124CA826D050DB007E9641 /* CoreGraphics.framework in Frameworks */,
 				6B124C8E26B4B3CD007E9641 /* UIKit.framework in Frameworks */,
 				F423C0BF1EE1FBAA00905679 /* AdaptiveCards.framework in Frameworks */,
 			);
@@ -893,7 +897,7 @@
 			);
 			name = Columns;
 			sourceTree = "<group>";
-		};		
+		};
 		6B124C9E26BA0D49007E9641 /* Action.ToggleVisibility */ = {
 			isa = PBXGroup;
 			children = (
@@ -1134,6 +1138,7 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
+				6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */,
 				6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */,
 				6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */,
 				30D56DEE2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm */,
@@ -1435,6 +1440,8 @@
 		F45A07191EF4BC44007C6503 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B124CA726D050DB007E9641 /* CoreGraphics.framework */,
+				6B124CA526D050C9007E9641 /* Foundation.framework */,
 				6B124C8D26B4B3CD007E9641 /* UIKit.framework */,
 				6BB2121721001596009EA1BA /* AVFoundation.framework */,
 				6BB2120F210013AA009EA1BA /* AVKit.framework */,
@@ -1971,6 +1978,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B124C8C26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm in Sources */,
+				6B124CA426D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm in Sources */,
 				30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */,
 				6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */,
 				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,

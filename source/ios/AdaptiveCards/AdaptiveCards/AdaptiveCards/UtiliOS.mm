@@ -25,6 +25,9 @@
 
 using namespace AdaptiveCards;
 
+// tolerance value for computing scaler for background cover size
+const CGFloat kACRScalerTolerance = 0.025f;
+
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
     if (!visibilityInfo->GetIsVisible()) {
@@ -160,7 +163,7 @@ void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundI
 
 // apply contraints for 'Cover' fill mode
 // the backgroundView is set on the targetView
-void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView)
+void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView, NSMutableArray<NSLayoutConstraint *> *constraints)
 {
     if (!backgroundView || !targetView || ![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
         return;
@@ -197,30 +200,18 @@ void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targ
         isDeficientInHeight = YES;
     }
 
-    if (isDeficientInWidth and isDeficientInHeight) {
-        CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
-        CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
-        // m * a >= x
-        // m * b >= y
-        // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
-        // then m is max of (a/x, b/y)
-        // we applies m to image view's corresponding axis.
-        // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
-        if (widthDeficiencyRaito >= heightDifficiencyRaito) {
-            configWidthAndHeightAnchors(targetView, imageView, false);
-        } else {
-            configWidthAndHeightAnchors(targetView, imageView, true);
-        }
-    } else if (isDeficientInWidth) {
-        configWidthAndHeightAnchors(targetView, imageView, false);
-    } else if (isDeficientInHeight) {
-        configWidthAndHeightAnchors(targetView, imageView, true);
+    if (isDeficientInWidth || isDeficientInHeight) {
+        [constraints addObjectsFromArray:@[
+            [imageView.widthAnchor constraintGreaterThanOrEqualToAnchor:targetView.widthAnchor],
+            [imageView.heightAnchor constraintGreaterThanOrEqualToAnchor:targetView.heightAnchor]
+        ]];
     } else {
-        // constraint the background image to the container's width according to the spec
-        [imageView.widthAnchor constraintEqualToAnchor:targetView.widthAnchor].active = YES;
-        if (imageView.image.size.width > 0) {
-            [imageView.widthAnchor constraintEqualToAnchor:imageView.heightAnchor multiplier:imageView.image.size.height / imageView.image.size.width].active = YES;
-        }
+        // scale background image view to the minimum size that can still cover all of the target view.
+        CGRect newCoverRect = FindClosestRectToCover(CGRectMake(0, 0, sourceSize.width, sourceSize.height), targetView.frame);
+        [constraints addObjectsFromArray:@[
+            [imageView.widthAnchor constraintEqualToConstant:newCoverRect.size.width],
+            [imageView.heightAnchor constraintEqualToConstant:newCoverRect.size.height]
+        ]];
     }
 }
 
@@ -236,99 +227,96 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         return;
     }
 
+    NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
     switch (backgroundImageProperties->GetFillMode()) {
         case ImageFillMode::Repeat: {
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeTop
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:superView
-                                         attribute:NSLayoutAttributeTop
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeBottom
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:superView
-                                         attribute:NSLayoutAttributeBottom
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeLeading
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:superView
-                                         attribute:NSLayoutAttributeLeading
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeTrailing
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:superView
-                                         attribute:NSLayoutAttributeTrailing
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
+            [constraints addObjectsFromArray:@[
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeTop
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:superView
+                                             attribute:NSLayoutAttributeTop
+                                            multiplier:1.0
+                                              constant:0],
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeBottom
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:superView
+                                             attribute:NSLayoutAttributeBottom
+                                            multiplier:1.0
+                                              constant:0],
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeLeading
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:superView
+                                             attribute:NSLayoutAttributeLeading
+                                            multiplier:1.0
+                                              constant:0],
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeTrailing
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:superView
+                                             attribute:NSLayoutAttributeTrailing
+                                            multiplier:1.0
+                                              constant:0]
+            ]];
 
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             break;
         }
         case ImageFillMode::RepeatHorizontally: {
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeHeight
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:nil
-                                         attribute:NSLayoutAttributeNotAnAttribute
-                                        multiplier:1.0
-                                          constant:image.size.height]
-                .active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeLeading
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:superView
-                                         attribute:NSLayoutAttributeLeading
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeTrailing
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:superView
-                                         attribute:NSLayoutAttributeTrailing
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
+            [constraints addObjectsFromArray:@[
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeHeight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:nil
+                                             attribute:NSLayoutAttributeNotAnAttribute
+                                            multiplier:1.0
+                                              constant:image.size.height],
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeLeading
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:superView
+                                             attribute:NSLayoutAttributeLeading
+                                            multiplier:1.0
+                                              constant:0],
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeTrailing
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:superView
+                                             attribute:NSLayoutAttributeTrailing
+                                            multiplier:1.0
+                                              constant:0]
+            ]];
 
-            configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
+            configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView, constraints);
             break;
         }
         case ImageFillMode::RepeatVertically: {
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeWidth
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:nil
-                                         attribute:NSLayoutAttributeNotAnAttribute
-                                        multiplier:1.0
-                                          constant:image.size.width]
-                .active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeTop
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:superView
-                                         attribute:NSLayoutAttributeTop
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeBottom
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:superView
-                                         attribute:NSLayoutAttributeBottom
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
-            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
+            [constraints addObjectsFromArray:@[
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeWidth
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:nil
+                                             attribute:NSLayoutAttributeNotAnAttribute
+                                            multiplier:1.0
+                                              constant:image.size.width],
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeTop
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:superView
+                                             attribute:NSLayoutAttributeTop
+                                            multiplier:1.0
+                                              constant:0],
+                [NSLayoutConstraint constraintWithItem:imageView
+                                             attribute:NSLayoutAttributeBottom
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:superView
+                                             attribute:NSLayoutAttributeBottom
+                                            multiplier:1.0
+                                              constant:0]
+            ]];
+            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView, constraints);
             break;
         }
         case ImageFillMode::Cover:
@@ -336,18 +324,19 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             // we should not apply the constraints if the superView's frame is not ready
             // check layoutSubview of ACRContentStackView to see the alternate case
             if (superView.frame.size.width != 0 && superView.frame.size.height != 0) {
-                renderBackgroundCoverMode(imageView, (ACRContentStackView *)superView);
+                renderBackgroundCoverMode(imageView, (ACRContentStackView *)superView, constraints);
             }
 
-            configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
+            configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView, constraints);
 
-            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
+            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView, constraints);
 
             superView.clipsToBounds = YES;
 
             break;
         }
     }
+    [NSLayoutConstraint activateConstraints:constraints];
 }
 
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
@@ -796,7 +785,7 @@ unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &conf
     return 0;
 }
 
-void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView)
+void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView, NSMutableArray<NSLayoutConstraint *> *constraints)
 {
     if (!backgroundImageProperties || !superView || !imageView) {
         return;
@@ -804,19 +793,19 @@ void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundIm
 
     switch (backgroundImageProperties->GetVerticalAlignment()) {
         case VerticalAlignment::Bottom:
-            [imageView.bottomAnchor constraintEqualToAnchor:superView.bottomAnchor].active = YES;
+            [constraints addObject:[imageView.bottomAnchor constraintEqualToAnchor:superView.bottomAnchor]];
             break;
         case VerticalAlignment::Center:
-            [imageView.centerYAnchor constraintEqualToAnchor:superView.centerYAnchor].active = YES;
+            [constraints addObject:[imageView.centerYAnchor constraintEqualToAnchor:superView.centerYAnchor]];
             break;
         case VerticalAlignment::Top:
         default:
-            [imageView.topAnchor constraintEqualToAnchor:superView.topAnchor].active = YES;
+            [constraints addObject:[imageView.topAnchor constraintEqualToAnchor:superView.topAnchor]];
             break;
     }
 }
 
-void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView)
+void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView, NSMutableArray<NSLayoutConstraint *> *constraints)
 {
     if (!backgroundImageProperties || !superView || !imageView) {
         return;
@@ -824,33 +813,15 @@ void configHorizontalAlignmentConstraintsForBackgroundImageView(const Background
 
     switch (backgroundImageProperties->GetHorizontalAlignment()) {
         case HorizontalAlignment::Right:
-            [imageView.trailingAnchor constraintEqualToAnchor:superView.trailingAnchor].active = YES;
+            [constraints addObject:[imageView.trailingAnchor constraintEqualToAnchor:superView.trailingAnchor]];
             break;
         case HorizontalAlignment::Center:
-            [imageView.centerXAnchor constraintEqualToAnchor:superView.centerXAnchor].active = YES;
+            [constraints addObject:[imageView.centerXAnchor constraintEqualToAnchor:superView.centerXAnchor]];
             break;
         case HorizontalAlignment::Left:
         default:
-            [imageView.leadingAnchor constraintEqualToAnchor:superView.leadingAnchor].active = YES;
+            [constraints addObject:[imageView.leadingAnchor constraintEqualToAnchor:superView.leadingAnchor]];
             break;
-    }
-}
-
-void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool isComplimentaryAxisHorizontal)
-{
-    if (!imageView || !imageView.image || !superView) {
-        return;
-    }
-    CGSize targetViewSize = superView.frame.size;
-    CGSize sourceSize = imageView.image.size;
-    if (isComplimentaryAxisHorizontal) {
-        CGFloat complementaryWidth = sourceSize.height ? sourceSize.width * targetViewSize.height / sourceSize.height : 1;
-        [imageView.widthAnchor constraintEqualToConstant:complementaryWidth].active = YES;
-        [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
-    } else {
-        CGFloat complementaryHeight = sourceSize.width ? sourceSize.height * targetViewSize.width / sourceSize.width : 1;
-        [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
-        [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
     }
 }
 
@@ -1016,4 +987,28 @@ id traverseResponderChainForUIViewController(UIView *view)
     } else {
         return nil;
     }
+}
+
+/// returns CGRect that covers target rect while maintaining the aspect ratio of coverRect
+CGRect FindClosestRectToCover(CGRect coverRect, CGRect targetRectToCover)
+{
+    // do binary search upto the tolerance value
+    CGFloat scalerLowBound = 0.0f, scalerHighBound = 1.0f, scalerMidPoint = 0.0f;
+    while (abs(scalerLowBound - scalerHighBound) > kACRScalerTolerance) {
+        scalerMidPoint = (scalerLowBound + scalerHighBound) / 2.0f;
+        CGFloat scaledWidth = coverRect.size.width * scalerMidPoint;
+        CGFloat scaledHeight = coverRect.size.height * scalerMidPoint;
+        if (scaledWidth > targetRectToCover.size.width && scaledHeight > targetRectToCover.size.height) {
+            scalerHighBound = scalerMidPoint;
+        } else {
+            scalerLowBound = scalerMidPoint;
+        }
+    }
+
+    if (coverRect.size.width * scalerMidPoint < targetRectToCover.size.width ||
+        coverRect.size.height * scalerMidPoint < targetRectToCover.size.height) {
+        scalerMidPoint = scalerHighBound;
+    }
+
+    return CGRectMake(0, 0, coverRect.size.width * scalerMidPoint, coverRect.size.height * scalerMidPoint);
 }
