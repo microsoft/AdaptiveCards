@@ -2,7 +2,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ConcatPlugin = require('webpack-concat-plugin');
+const ConcatPlugin = require('webpack-concat-files-plugin');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = (env, argv) => {
@@ -20,14 +20,13 @@ module.exports = (env, argv) => {
 		output: {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
-			library: "ACDesigner",
 			libraryTarget: "umd",
-			globalObject: "this",
-			// umdNamedDefine: true
+			library: "ACDesigner",
+			globalObject: "this"
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
-			contentBase: './dist'
+			static: './dist'
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"]
@@ -78,11 +77,12 @@ module.exports = (env, argv) => {
 				filename: '[name].css'
 			}),
 			new ConcatPlugin({
-				uglify: false,
-				sourceMap: false,
-				fileName: 'adaptivecards-designer.css',
-				injectType: 'none',
-				filesToConcat: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
+				bundles: [
+					{
+						dest: 'dist/adaptivecards-designer.css',
+						src: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
+					}
+				],
 			}),
 			new CopyWebpackPlugin({
 				patterns: [{

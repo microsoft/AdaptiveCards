@@ -1,0 +1,23 @@
+name: Feature Request
+description: Suggest a feature you'd like to enable using AdaptiveCards
+title: "[Feature Request] Feature Title Here"
+labels: [Request, Triage-Needed]
+body:
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label:  Problem Statement
+      description: "A clear and concise description of what problem you are trying to solve (ex: I'm always frustrated when...)"
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Proposed solution
+      description: Please provide a description of your proposed solution; please provide as much detail as you can
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Alternatives or Workarounds
+      description: What alternatives or workarounds have you considered (if any)

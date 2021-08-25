@@ -22,11 +22,12 @@
 		"release": "npm run clean && npm run build && webpack --mode=production && npm run dts"
 	},
 	"devDependencies": {
+		"dts-generator": "^3.0.0",
 		"rimraf": "^3.0.2",
 		"ts-loader": "^7.0.5",
-		"typescript": "^3.9.5",
-		"webpack": "^4.46.0",
-		"webpack-cli": "^3.3.12",
-		"webpack-dev-server": "^3.11.0"
+		"typescript": "^4.2.3",
+		"webpack": "^5.47.0",
+		"webpack-cli": "^4.7.2",
+		"webpack-dev-server": "^3.11.2"
 	}
 }

@@ -48,7 +48,7 @@ module.exports = (env, argv) => {
 			//new CleanWebpackPlugin(['dist']),
 			new CopyWebpackPlugin({
 				patterns: [{
-					from: 'node_modules/adaptivecards-designer/dist/containers/*',
+					from: 'node_modules/adaptivecards-designer/src/containers/*',
 					to: 'containers/',
 					flatten: true
 				}]
