@@ -4,25 +4,19 @@
 
 #include "AdaptiveCards.Rendering.WinUI3.h"
 #include "InputValue.h"
+#include "AdaptiveInputs.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveInputs
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs>
+    struct AdaptiveInputs : AdaptiveInputsT<AdaptiveInputs>
     {
-        AdaptiveRuntime(AdaptiveInputs);
-
-    public:
-        AdaptiveInputs();
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveInputs() = default;
 
         // IAdaptiveInputs
-        IFACEMETHODIMP AsJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** value);
-        IFACEMETHODIMP AsValueSet(_COM_Outptr_ ABI::Windows::Foundation::Collections::IPropertySet** value);
+        winrt::Windows::Data::Json::JsonObject AsJson();
+        winrt::Windows::Foundation::Collections::PropertySet AsValueSet();
 
-        IFACEMETHODIMP ValidateInputs(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* submitAction,
-                                      boolean* inputsAreValid);
+        bool ValidateInputs(ObjectModel::WinUI3::IAdaptiveActionElement const& submitAction);
 
         HRESULT AddInputValue(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue* inputValue,
                               _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs);
@@ -35,6 +29,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
     private:
         std::string GetInputItemsAsJsonString();
+        std::vector<WinUI3::IAdaptiveInputValue> GetInputsToValidate(ObjectModel::WinUI3::IAdaptiveActionElement const& submitAction);
         void GetInputsToValidate(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* submitAction,
                                  _Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue>>& inputs);
         void GetAllInputs(_Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue>>& inputs);
@@ -48,7 +43,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         // This is cache of the last inputs that were retrieved for validation (and succeeded)
         // This is needed as the AsJson and AsValueSet methods are called after validating but we don't get an action reference to rebuild the list
-        std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue>> m_lastRetrievedValues;
+        std::vector<WinUI3::IAdaptiveInputValue> m_lastRetrievedValues;
 
         // Map with key: internal id of card, value: internal id of parent card
         // This map allows us to move vertically accross the cards to retrieve the inputs

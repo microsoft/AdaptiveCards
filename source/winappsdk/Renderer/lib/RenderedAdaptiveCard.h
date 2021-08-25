@@ -12,7 +12,7 @@ template<typename TSrc, typename TPayload> struct auto_event
 {
     using handler = winrt::Windows::Foundation::TypedEventHandler<TSrc, TPayload>;
     winrt::event<handler> m_event;
-    template<typename T> auto operator()(handler const& t) { return m_event.add(t); }
+    auto operator()(handler const& t) { return m_event.add(t); }
     void operator()(winrt::event_token const& t) { return m_event.remove(t); }
     auto operator()(TSrc const& src, TPayload const& p) { return m_event(src, p); }
 };
@@ -32,8 +32,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         auto FrameworkElement() { return m_frameworkElement; }
         auto UserInputs() { return m_inputs; }
 
-        auto_event<winrt::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard, winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveActionEventArgs> m_actionEvent;
-        auto_event<winrt::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard, winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveMediaEventArgs> m_mediaClickedEvent;
+        auto_event<WinUI3::RenderedAdaptiveCard, WinUI3::AdaptiveActionEventArgs> Action;
+        auto_event<WinUI3::RenderedAdaptiveCard, WinUI3::AdaptiveMediaEventArgs> MediaClicked;
         property<winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveError>> Errors;
         property<winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveWarning>> Warnings;
 
@@ -71,14 +71,14 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         HRESULT GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* inputElement,
                               _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue** inputValue);
 
-        void SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
-        void SetOriginatingCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* value);
-        void SetOriginatingHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* value);
-        HRESULT SendActionEvent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* eventArgs);
-        HRESULT SendMediaClickedEvent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMedia* eventArgs);
+        void SetFrameworkElement(winrt::Windows::UI::Xaml::FrameworkElement const& value);
+        void SetOriginatingCard(ObjectModel::WinUI3::AdaptiveCard const& value);
+        void SetOriginatingHostConfig(Rendering::WinUI3::AdaptiveHostConfig const& value);
+        void SendActionEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& eventArgs);
+        void SendMediaClickedEvent(ObjectModel::WinUI3::AdaptiveMedia const& eventArgs);
 
     private:
-        HRESULT HandleInlineShowCardEvent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* actionElement);
+        void HandleInlineShowCardEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement);
 
         HRESULT AddInlineShowCardHelper(UINT32 internalId,
                                         _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveShowCardAction* showCardAction,
@@ -88,17 +88,17 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                         UINT32 primaryButtonIndex,
                                         _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs);
 
-        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard m_originatingCard;
-        winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig m_originatingHostConfig;
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveInputs> m_inputs;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_frameworkElement;
+        ObjectModel::WinUI3::AdaptiveCard m_originatingCard;
+        Rendering::WinUI3::AdaptiveHostConfig m_originatingHostConfig;
+        WinUI3::AdaptiveInputs m_inputs;
+        winrt::Windows::UI::Xaml::FrameworkElement m_frameworkElement;
 
         // Map of rendered show cards. The key is the id of the show card action, and the value is the ShowCardInfo structure for that show card
         std::unordered_map<uint32_t, std::shared_ptr<ShowCardInfo>> m_showCards;
 
         // Map of the rendered overflow buttons keyed on action set Id. This is needed to move buttons around when a
         // show card from an overflow menu needs to be moved to a primary button in the action set
-        std::unordered_map<uint32_t, winrt::Windows::UI::Xaml::IUIElement> m_overflowButtons;
+        std::unordered_map<uint32_t, winrt::Windows::UI::Xaml::UIElement> m_overflowButtons;
     };
 }
 

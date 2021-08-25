@@ -126,6 +126,7 @@ template<typename> struct abi_to_winrt;
 
 map_rt_to_abi(AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveInputs, AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs);
+map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMedia);
 
 template<typename I> auto to_winrt(I* src)
 {
@@ -135,6 +136,16 @@ template<typename I> auto to_winrt(I* src)
 template<typename I> auto to_winrt(Microsoft::WRL::ComPtr<I> const& src)
 {
     return reinterpret_cast<abi_to_winrt<I>::type const&>(src);
+}
+
+template<typename I> auto to_wrl(I const& i)
+{
+    return reinterpret_cast<Microsoft::WRL::ComPtr<const winrt_to_abi<I>::type>&>(i);
+}
+
+template<typename I> auto to_wrl(I&& i)
+{
+    return reinterpret_cast<Microsoft::WRL::ComPtr<winrt_to_abi<I>::type>&>(i);
 }
 
 
@@ -357,6 +368,21 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     }
     return inner;
 }
+
+template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
+{
+    winrt::com_ptr<D> out;
+    if (auto p = o.try_as<ITypePeek>())
+    {
+        if (p->PeekAt(__uuidof(D)))
+        {
+            out.copy_from(winrt::get_self<D>(o));
+        }
+    }
+
+    return out;
+}
+
 void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                       _In_ HSTRING urlString,
                       _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url);

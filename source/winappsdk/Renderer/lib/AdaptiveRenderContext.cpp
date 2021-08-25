@@ -3,258 +3,124 @@
 #include "pch.h"
 
 #include "AdaptiveRenderContext.h"
+#include "AdaptiveRenderContext.g.cpp"
 #include "InputValue.h"
 #include "Util.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveRenderContext::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveRenderContext::RuntimeClassInitialize(_In_ IAdaptiveHostConfig* hostConfig,
-                                                          _In_ IAdaptiveFeatureRegistration* featureRegistration,
-                                                          _In_ IAdaptiveElementRendererRegistration* elementRendererRegistration,
-                                                          _In_ IAdaptiveActionRendererRegistration* actionRendererRegistration,
-                                                          _In_ IAdaptiveCardResourceResolvers* resourceResolvers,
-                                                          _In_ IResourceDictionary* overrideDictionary,
-                                                          _In_ IResourceDictionary* defaultActionSentimentStyles,
-                                                          _In_ RenderedAdaptiveCard* renderResult) noexcept
-    try
+    AdaptiveRenderContext::AdaptiveRenderContext() :
+        HostConfig{nullptr}, FeatureRegistration{nullptr}, ElementRenderers{nullptr}, ActionRenderers{nullptr},
+        ResourceResolvers{nullptr}, OverrideStyles{nullptr}, ActionInvoker{nullptr}, MediaEventInvoker{nullptr},
+        m_weakRenderResult{nullptr}, m_actionSentimentDefaultDictionary{nullptr}
     {
-        m_hostConfig = hostConfig;
-        m_featureRegistration = featureRegistration;
-        m_elementRendererRegistration = elementRendererRegistration;
-        m_actionRendererRegistration = actionRendererRegistration;
-        m_resourceResolvers = resourceResolvers;
-        m_overrideDictionary = overrideDictionary;
-        m_actionSentimentDefaultDictionary = defaultActionSentimentStyles;
-
-        ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
-        RETURN_IF_FAILED(strongRenderResult.AsWeak(&m_weakRenderResult));
-
-        m_actionInvoker =
-            winrt::make_self<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionInvoker>(renderResult);
-
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
-
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveRenderContext::get_HostConfig(_COM_Outptr_ IAdaptiveHostConfig** value)
-    {
-        return m_hostConfig.CopyTo(value);
     }
 
-    HRESULT AdaptiveRenderContext::get_FeatureRegistration(_COM_Outptr_ IAdaptiveFeatureRegistration** value)
+    AdaptiveRenderContext::AdaptiveRenderContext(Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
+                                                 Rendering::WinUI3::AdaptiveFeatureRegistration const& featureRegistration,
+                                                 Rendering::WinUI3::AdaptiveElementRendererRegistration const& elementRendererRegistration,
+                                                 Rendering::WinUI3::AdaptiveActionRendererRegistration const& actionRendererRegistration,
+                                                 Rendering::WinUI3::AdaptiveCardResourceResolvers const& resourceResolvers,
+                                                 winrt::Windows::UI::Xaml::ResourceDictionary const& overrideStyles,
+                                                 winrt::Windows::UI::Xaml::ResourceDictionary const& defaultActionSentimentStyles,
+                                                 winrt::com_ptr<implementation::RenderedAdaptiveCard> const& renderResult) :
+        HostConfig{hostConfig},
+        FeatureRegistration{featureRegistration}, ElementRenderers{elementRendererRegistration},
+        ActionRenderers{actionRendererRegistration}, ResourceResolvers{resourceResolvers},
+        OverrideStyles{overrideStyles}, ActionInvoker{winrt::make<implementation::AdaptiveActionInvoker>(*renderResult)},
+        MediaEventInvoker{winrt::make<implementation::AdaptiveMediaEventInvoker>(*renderResult)},
+        m_weakRenderResult{*renderResult}, m_actionSentimentDefaultDictionary{defaultActionSentimentStyles}
     {
-        return m_featureRegistration.CopyTo(value);
     }
 
-    HRESULT AdaptiveRenderContext::get_ElementRenderers(_COM_Outptr_ IAdaptiveElementRendererRegistration** value)
+    WinUI3::AdaptiveInputs AdaptiveRenderContext::UserInputs() { return GetRenderResult()->UserInputs(); }
+
+    void AdaptiveRenderContext::AddError(ObjectModel::WinUI3::ErrorStatusCode statusCode, hstring const& message)
     {
-        return m_elementRendererRegistration.CopyTo(value);
+        GetRenderResult()->Errors().Append({statusCode, message});
     }
 
-    HRESULT AdaptiveRenderContext::get_ActionRenderers(_COM_Outptr_ IAdaptiveActionRendererRegistration** value)
+    void AdaptiveRenderContext::AddWarning(ObjectModel::WinUI3::WarningStatusCode statusCode, hstring const& message)
     {
-        return m_actionRendererRegistration.CopyTo(value);
+        GetRenderResult()->Warnings().Append({statusCode, message});
     }
 
-    HRESULT AdaptiveRenderContext::get_ActionInvoker(_COM_Outptr_ IAdaptiveActionInvoker** value)
+    void AdaptiveRenderContext::AddInlineShowCard(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
+                                                  ObjectModel::WinUI3::AdaptiveShowCardAction const& showCardAction,
+                                                  winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
+                                                  winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
+                                                  winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                                  uint32_t primaryButtonIndex,
+                                                  WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        return m_actionInvoker.CopyTo(value);
-    }
-
-    HRESULT AdaptiveRenderContext::get_MediaEventInvoker(_COM_Outptr_ IAdaptiveMediaEventInvoker** value)
-    {
-        return m_mediaEventInvoker.CopyTo(value);
-    }
-
-    HRESULT AdaptiveRenderContext::get_ResourceResolvers(_COM_Outptr_ IAdaptiveCardResourceResolvers** value)
-    {
-        return m_resourceResolvers.CopyTo(value);
-    }
-
-    HRESULT AdaptiveRenderContext::get_OverrideStyles(_COM_Outptr_ IResourceDictionary** overrideDictionary)
-    {
-        return m_overrideDictionary.CopyTo(overrideDictionary);
-    }
-
-    HRESULT AdaptiveRenderContext::get_UserInputs(_COM_Outptr_ IAdaptiveInputs** value)
-    {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        return renderResult->get_UserInputs(value);
-    }
-
-    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode statusCode, _In_ HSTRING message)
-    {
-        ComPtr<IAdaptiveErrorFactory> errorActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveError).Get(),
-                                              &errorActivationFactory));
-
-        ComPtr<IAdaptiveError> error;
-        RETURN_IF_FAILED(errorActivationFactory->CreateInstance(statusCode, message, &error));
-
-        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*>> errors;
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        RETURN_IF_FAILED(renderResult->get_Errors(&errors));
-        return (errors->Append(error.Detach()));
-    }
-
-    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode statusCode, _In_ HSTRING message)
-    {
-        ComPtr<IAdaptiveWarningFactory> warningActivationFactory;
-        RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveWarning).Get(),
-                                 &warningActivationFactory));
-
-        ComPtr<IAdaptiveWarning> warning;
-        RETURN_IF_FAILED(warningActivationFactory->CreateInstance(statusCode, message, &warning));
-
-        ComPtr<IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning*>> warnings;
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        RETURN_IF_FAILED(renderResult->get_Warnings(&warnings));
-        return (warnings->Append(warning.Detach()));
-    }
-
-    HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
-                                                     ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveShowCardAction* showCardAction,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
-                                                     ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                     UINT32 primaryButtonIndex,
-                                                     ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
-    {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        return renderResult->AddInlineShowCard(
-            adaptiveCard, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
-    }
-
-    HRESULT AdaptiveRenderContext::AddInlineShowCard(_In_opt_ IAdaptiveActionSet* actionSet,
-                                                     _In_ IAdaptiveShowCardAction* showCardAction,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                     UINT32 primaryButtonIndex,
-                                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
-    {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        return renderResult->AddInlineShowCard(
+        return GetRenderResult()->AddInlineShowCard(
             actionSet, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionSet* actionSet,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
+    void AdaptiveRenderContext::AddInlineShowCard(ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
+                                                  ObjectModel::WinUI3::AdaptiveShowCardAction const& showCardAction,
+                                                  winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
+                                                  winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
+                                                  winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                                  uint32_t primaryButtonIndex,
+                                                  WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        return renderResult->AddOverflowButton(actionSet, actionUIElement);
+        GetRenderResult()->AddInlineShowCard(
+            adaptiveCard, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* actionCard,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
+    void AdaptiveRenderContext::AddOverflowButton(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
+                                                  winrt::Windows::UI::Xaml::UIElement const& actionUIElement)
     {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        return renderResult->AddOverflowButton(actionCard, actionUIElement);
+        GetRenderResult()->AddOverflowButton(actionSet, actionUIElement);
     }
 
-    HRESULT AdaptiveRenderContext::AddInputValue(_In_ IAdaptiveInputValue* inputValue, _In_ IAdaptiveRenderArgs* renderArgs)
+    void AdaptiveRenderContext::AddOverflowButton(ObjectModel::WinUI3::AdaptiveCard const& actionCard,
+                                                  winrt::Windows::UI::Xaml::UIElement const& actionUIElement)
     {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
-        return renderResult->AddInputValue(inputValue, renderArgs);
+        GetRenderResult()->AddOverflowButton(actionCard, actionUIElement);
     }
 
-    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                                                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
+    void AdaptiveRenderContext::AddInputValue(WinUI3::IAdaptiveInputValue const& inputValue, WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
-        return renderResult->LinkActionToCard(action, renderArgs);
+        if (auto renderResult = GetRenderResult())
+        {
+            renderResult->AddInputValue(inputValue, renderArgs);
+        }
     }
 
-    HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* card,
-                                                    _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
+    void AdaptiveRenderContext::LinkSubmitActionToCard(ObjectModel::WinUI3::IAdaptiveActionElement const& submitAction,
+                                                       WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
-        return renderResult->LinkCardToParent(card, renderArgs);
+        if (auto renderResult = GetRenderResult())
+        {
+            renderResult->LinkActionToCard(submitAction, renderArgs);
+        }
     }
 
-    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* inputElement,
-                                                 _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue** inputValue)
+    void AdaptiveRenderContext::LinkCardToParent(ObjectModel::WinUI3::AdaptiveCard const& card, WinUI3::AdaptiveRenderArgs const& args)
     {
-        ComPtr<RenderedAdaptiveCard> renderResult;
-        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
-        return renderResult->GetInputValue(inputElement, inputValue);
+        if (auto renderResult = GetRenderResult())
+        {
+            renderResult->LinkCardToParent(card, args);
+        }
     }
 
-    HRESULT AdaptiveRenderContext::get_Rtl(_Out_ ABI::Windows::Foundation::IReference<bool>** rtl)
+    WinUI3::IAdaptiveInputValue AdaptiveRenderContext::GetInputValue(ObjectModel::WinUI3::IAdaptiveInputElement const& inputElement)
     {
-        return m_rtl.CopyTo(rtl);
+        if (auto renderResult = GetRenderResult())
+        {
+            return renderResult->GetInputValue(inputElement);
+        }
     }
 
-    HRESULT AdaptiveRenderContext::put_Rtl(ABI::Windows::Foundation::IReference<bool>* rtl)
-    {
-        m_rtl = rtl;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveRenderContext::get_TextStyle(
-        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>** textStyle)
-    {
-        return m_textStyle.CopyTo(textStyle);
-    }
-
-    HRESULT AdaptiveRenderContext::put_TextStyle(_In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::TextStyle>* textStyle)
-    {
-        m_textStyle = textStyle;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveRenderContext::get_HorizontalContentAlignment(
-        _Outptr_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>** horizontalAlignment)
-    {
-        return m_horizontalAlignment.CopyTo(horizontalAlignment);
-    }
-
-    HRESULT AdaptiveRenderContext::put_HorizontalContentAlignment(
-        _In_ ABI::Windows::Foundation::IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment>* horizontalAlignment)
-    {
-        m_horizontalAlignment = horizontalAlignment;
-        return S_OK;
-    }
-
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
+    winrt::Windows::UI::Xaml::ResourceDictionary AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {
         return m_actionSentimentDefaultDictionary;
     }
 
-    HRESULT AdaptiveRenderContext::GetRenderResult(AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard** renderResult)
+    winrt::com_ptr<implementation::RenderedAdaptiveCard> AdaptiveRenderContext::GetRenderResult()
     {
-        ComPtr<IRenderedAdaptiveCard> strongRenderResult;
-        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
-        RETURN_IF_FAILED(strongRenderResult == nullptr ? E_FAIL : S_OK);
-        ComPtr<RenderedAdaptiveCard> renderResultObject = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
-        RETURN_IF_FAILED(renderResultObject == nullptr ? E_FAIL : S_OK);
-        return renderResultObject.CopyTo(renderResult);
+        return peek_innards<implementation::RenderedAdaptiveCard>(m_weakRenderResult.get());
     }
 }

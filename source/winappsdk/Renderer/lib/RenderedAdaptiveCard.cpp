@@ -35,29 +35,23 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveError> const& errors,
         winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveWarning> const& warnings) :
         Errors{errors},
-        Warnings{warnings}
+        Warnings{warnings}, m_inputs{winrt::make<implementation::AdaptiveInputs>()}
     {
-        THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::WinUI3::AdaptiveInputs>(&m_inputs));
     }
 
-    HRESULT RenderedAdaptiveCard::HandleInlineShowCardEvent(_In_ IAdaptiveActionElement* actionElement)
+    void RenderedAdaptiveCard::HandleInlineShowCardEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement)
     {
-        ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
-        ComPtr<IAdaptiveShowCardAction> showCardAction;
-        RETURN_IF_FAILED(localActionElement.As(&showCardAction));
-
-        UINT32 showCardToToggle;
-        RETURN_IF_FAILED(showCardAction->get_InternalId(&showCardToToggle));
-        auto found = m_showCards.find(showCardToToggle);
+        auto showCardAction = actionElement.as<ObjectModel::WinUI3::AdaptiveShowCardAction>();
+        auto found = m_showCards.find(showCardAction.InternalId());
 
         if (found != m_showCards.end())
         {
             std::shared_ptr<ShowCardInfo> showCardInfoToHandle = found->second;
 
             Visibility overflowButtonVisibility = Visibility_Collapsed;
-            if (showCardInfoToHandle->overflowUIElement != nullptr)
+            if (showCardInfoToHandle->overflowUIElement)
             {
-                RETURN_IF_FAILED(showCardInfoToHandle->overflowUIElement->get_Visibility(&overflowButtonVisibility));
+                THROW_IF_FAILED(showCardInfoToHandle->overflowUIElement->get_Visibility(&overflowButtonVisibility));
             }
 
             // Check if the action is being invoked from the overflow menu
@@ -114,7 +108,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     }
 
                     // Make the show card button visible
-                    RETURN_IF_FAILED(showCardInfoToHandle->buttonUIElement->put_Visibility(Visibility_Visible));
+                    THROW_IF_FAILED(showCardInfoToHandle->buttonUIElement->put_Visibility(Visibility_Visible));
 
                     // Set the column width to 1* if we're using column definitions to show equal width buttons
                     if (columnDefinitions)
@@ -123,7 +117,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     }
 
                     // Next get the flyout menu so we can collapse this action from the flyout and show the one we hid from the action bar
-                    auto overflowButtonAsButtonWithFlyout = overflowButton.as<winrt::Windows::UI::Xaml::Controls::IButtonWithFlyout>();
+                    auto overflowButtonAsButtonWithFlyout =
+                        overflowButton.as<winrt::Windows::UI::Xaml::Controls::IButtonWithFlyout>();
                     auto flyoutBase = overflowButtonAsButtonWithFlyout.Flyout();
                     auto flyout = flyoutBase.as<winrt::Windows::UI::Xaml::Controls::MenuFlyout>();
 
@@ -133,7 +128,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     }
 
                     // Make the the action we're handling collapsed in the overflow menu. It is now shown in the button bar and don't want it to show here.
-                    RETURN_IF_FAILED(showCardInfoToHandle->overflowUIElement->put_Visibility(Visibility_Collapsed));
+                    THROW_IF_FAILED(showCardInfoToHandle->overflowUIElement->put_Visibility(Visibility_Collapsed));
                 }
             }
 
@@ -158,150 +153,99 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     if ((showCardInfoToHandle->actionSetId == currentShowCardInfo->actionSetId) && (showCardToToggle != showCardId))
                     {
                         ComPtr<IUIElement> showCardUIElementCurrent = currentShowCardInfo->cardUIElement;
-                        RETURN_IF_FAILED(showCardUIElementCurrent->put_Visibility(Visibility_Collapsed));
+                        THROW_IF_FAILED(showCardUIElementCurrent->put_Visibility(Visibility_Collapsed));
                     }
                 }
             }
         }
-        return S_OK;
     }
 
-    static HRESULT HandleToggleVisibilityClick(_In_ IFrameworkElement* cardFrameworkElement, _In_ IAdaptiveActionElement* action)
+    void HandleToggleVisibilityClick(winrt::Windows::UI::Xaml::FrameworkElement const& cardFrameworkElement,
+                                     ObjectModel::WinUI3::IAdaptiveActionElement const& action)
     {
-        ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<IAdaptiveToggleVisibilityAction> toggleAction;
-        RETURN_IF_FAILED(localAction.As(&toggleAction));
-
-        ComPtr<IVector<AdaptiveToggleVisibilityTarget*>> targets;
-        RETURN_IF_FAILED(toggleAction->get_TargetElements(&targets));
-
-        ComPtr<IIterable<AdaptiveToggleVisibilityTarget*>> targetsIterable;
-        RETURN_IF_FAILED(targets.As<IIterable<AdaptiveToggleVisibilityTarget*>>(&targetsIterable));
-
-        boolean hasCurrent;
-        ComPtr<IIterator<AdaptiveToggleVisibilityTarget*>> targetIterator;
-        HRESULT hr = targetsIterable->First(&targetIterator);
-        RETURN_IF_FAILED(targetIterator->get_HasCurrent(&hasCurrent));
-
-        std::unordered_set<IPanel*> parentPanels;
-        while (SUCCEEDED(hr) && hasCurrent)
+        auto toggleAction = action.as<ObjectModel::WinUI3::AdaptiveToggleVisibilityAction>();
+        std::vector<winrt::com_ptr<ABI::Windows::UI::Xaml::Controls::IPanel>> parentPanels;
+        for (auto&& currentTarget : toggleAction.TargetElements())
         {
-            ComPtr<IAdaptiveToggleVisibilityTarget> currentTarget;
-            RETURN_IF_FAILED(targetIterator->get_Current(&currentTarget));
+            auto toggleId = currentTarget.ElementId();
+            auto toggle = currentTarget.IsVisible();
 
-            HString toggleId;
-            RETURN_IF_FAILED(currentTarget->get_ElementId(toggleId.GetAddressOf()));
-
-            ABI::AdaptiveCards::ObjectModel::WinUI3::IsVisible toggle;
-            RETURN_IF_FAILED(currentTarget->get_IsVisible(&toggle));
-
-            ComPtr<IInspectable> toggleElement;
-            RETURN_IF_FAILED(cardFrameworkElement->FindName(toggleId.Get(), &toggleElement));
-
-            if (toggleElement != nullptr)
+            if (auto toggleObject = cardFrameworkElement.FindName(toggleId))
             {
-                ComPtr<IUIElement> toggleElementAsUIElement;
-                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsUIElement));
+                auto toggleElementAsUIElement = toggleObject.as<winrt::Windows::UI::Xaml::UIElement>();
+                auto toggleElementAsFrameworkElement = toggleObject.as<winrt::Windows::UI::Xaml::FrameworkElement>();
+                auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<::AdaptiveCards::Rendering::WinUI3::IElementTagContent>();
+                winrt::Windows::UI::Xaml::Visibility visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
 
-                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
-                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
-
-                ComPtr<IInspectable> tag;
-                RETURN_IF_FAILED(toggleElementAsFrameworkElement->get_Tag(&tag));
-
-                ComPtr<IElementTagContent> elementTagContent;
-                RETURN_IF_FAILED(tag.As(&elementTagContent));
-
-                Visibility visibilityToSet = Visibility_Visible;
-                if (toggle == ABI::AdaptiveCards::ObjectModel::WinUI3::IsVisible_IsVisibleTrue)
+                if (toggle == ObjectModel::WinUI3::IsVisible::IsVisibleTrue)
                 {
-                    visibilityToSet = Visibility_Visible;
+                    visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
                 }
-                else if (toggle == ABI::AdaptiveCards::ObjectModel::WinUI3::IsVisible_IsVisibleFalse)
+                else if (toggle == ObjectModel::WinUI3::IsVisible::IsVisibleFalse)
                 {
-                    visibilityToSet = Visibility_Collapsed;
+                    visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Collapsed;
                 }
-                else if (toggle == ABI::AdaptiveCards::ObjectModel::WinUI3::IsVisible_IsVisibleToggle)
+                else if (toggle == ObjectModel::WinUI3::IsVisible::IsVisibleToggle)
                 {
-                    boolean currentVisibility{};
-                    RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));
-                    visibilityToSet = (currentVisibility) ? Visibility_Collapsed : Visibility_Visible;
+                    boolean currentVisibility;
+                    THROW_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));
+                    visibilityToSet = currentVisibility ? winrt::Windows::UI::Xaml::Visibility::Collapsed :
+                                                          winrt::Windows::UI::Xaml::Visibility::Visible;
                 }
 
-                RETURN_IF_FAILED(toggleElementAsUIElement->put_Visibility(visibilityToSet));
-                RETURN_IF_FAILED(elementTagContent->set_ExpectedVisibility(visibilityToSet == Visibility_Visible));
+                toggleElementAsUIElement.Visibility(visibilityToSet);
+                elementTagContent->set_ExpectedVisibility(visibilityToSet == winrt::Windows::UI::Xaml::Visibility::Visible);
 
-                ComPtr<IPanel> parentPanel;
-                RETURN_IF_FAILED(elementTagContent->get_ParentPanel(&parentPanel));
-                parentPanels.insert(parentPanel.Get());
+                winrt::com_ptr<ABI::Windows::UI::Xaml::Controls::IPanel> parentPanel;
+                THROW_IF_FAILED(elementTagContent->get_ParentPanel(parentPanel.put()));
+                parentPanels.emplace_back(std::move(parentPanel));
 
-                ComPtr<IAdaptiveCardElement> cardElement;
-                RETURN_IF_FAILED(elementTagContent->get_AdaptiveCardElement(&cardElement));
+                winrt::com_ptr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> cardElement;
+                THROW_IF_FAILED(elementTagContent->get_AdaptiveCardElement(cardElement.put()));
 
-                // If the element we're toggling is a column, we'll need to change the width on the column definition
-                ComPtr<IAdaptiveColumn> cardElementAsColumn;
-                if (SUCCEEDED(cardElement.As(&cardElementAsColumn)))
+                if (auto cardElementAsColumn = cardElement.try_as<ObjectModel::WinUI3::AdaptiveColumn>())
                 {
-                    ComPtr<IColumnDefinition> columnDefinition;
-                    RETURN_IF_FAILED(elementTagContent->get_ColumnDefinition(&columnDefinition));
-                    RETURN_IF_FAILED(XamlHelpers::HandleColumnWidth(cardElementAsColumn.Get(),
-                                                                    (visibilityToSet == Visibility_Visible),
-                                                                    columnDefinition.Get()));
+                    winrt::com_ptr<ABI::Windows::UI::Xaml::Controls::IColumnDefinition> columnDefinition;
+                    THROW_IF_FAILED(elementTagContent->get_ColumnDefinition(columnDefinition.put()));
+                    THROW_IF_FAILED(::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleColumnWidth(
+                        cardElementAsColumn,
+                        (visibilityToSet == winrt::Windows::UI::Xaml::Visibility::Visible),
+                        columnDefinition.get()));
                 }
             }
-
-            hr = targetIterator->MoveNext(&hasCurrent);
         }
 
-        for (auto parentPanel : parentPanels)
+        for (auto&& parentPanel : parentPanels)
         {
             if (parentPanel)
             {
-                XamlHelpers::SetSeparatorVisibility(parentPanel);
+                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetSeparatorVisibility(parentPanel.get());
             }
         }
-
-        return S_OK;
     }
 
-    HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
+    
+    void RenderedAdaptiveCard::SendActionEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement)
     {
-        ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
-        RETURN_IF_FAILED(actionElement->get_ActionType(&actionType));
-
+        auto actionType = actionElement.ActionType();
         switch (actionType)
         {
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType_ToggleVisibility:
+        case ObjectModel::WinUI3::ActionType::ToggleVisibility:
+            return HandleToggleVisibilityClick(m_frameworkElement, actionElement);
+
+        case ObjectModel::WinUI3::ActionType::ShowCard:
         {
-            return HandleToggleVisibilityClick(m_frameworkElement.Get(), actionElement);
-        }
-
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType_ShowCard:
-        {
-            ComPtr<IAdaptiveActionsConfig> actionConfig;
-            RETURN_IF_FAILED(m_originatingHostConfig->get_Actions(&actionConfig));
-
-            ComPtr<IAdaptiveShowCardActionConfig> showCardConfig;
-            RETURN_IF_FAILED(actionConfig->get_ShowCard(&showCardConfig));
-
-            ABI::AdaptiveCards::Rendering::WinUI3::ActionMode actionMode;
-            RETURN_IF_FAILED(showCardConfig->get_ActionMode(&actionMode));
-
-            bool handleInlineShowCard = (actionMode == ABI::AdaptiveCards::Rendering::WinUI3::ActionMode_Inline);
+            auto actionConfig = m_originatingHostConfig.Actions();
+            auto showCardConfig = actionConfig.ShowCard();
+            auto actionMode = showCardConfig.ActionMode();
+            bool handleInlineShowCard = (actionMode == WinUI3::ActionMode::Inline);
 
             if (handleInlineShowCard)
             {
                 // If the host is custom rendering ActionSets, they are responsible for showing and hiding the cards therein.
                 // Check if the action being invoked is one we registered, otherwise we'll send the action to the host.
-                ComPtr<IAdaptiveActionElement> action(actionElement);
-                ComPtr<IAdaptiveShowCardAction> showCardAction;
-                RETURN_IF_FAILED(action.As(&showCardAction));
-
-                UINT32 internalId;
-                RETURN_IF_FAILED(showCardAction->get_InternalId(&internalId));
-
-                auto found = m_showCards.find(internalId);
-                handleInlineShowCard &= (found != m_showCards.end());
+                auto showCardAction = actionElement.as<ObjectModel::WinUI3::AdaptiveShowCardAction>();
+                handleInlineShowCard &= (m_showCards.find(showCardAction.InternalId()) != m_showCards.end());
             }
 
             if (handleInlineShowCard)
@@ -310,95 +254,72 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             }
             else
             {
-                ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(
-                    eventArgs, to_winrt(actionElement), nullptr));
-
-                return m_actionEvents->InvokeAll(this, eventArgs.Get());
+                Action(*this, winrt::make<implementation::AdaptiveActionEventArgs>(actionElement, nullptr));
             }
         }
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType_Submit:
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType_Execute:
+        case ObjectModel::WinUI3::ActionType::Submit:
+        case ObjectModel::WinUI3::ActionType::Execute:
         {
-            ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
-            ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs associatedInputs;
+            ObjectModel::WinUI3::AssociatedInputs associatedInputs;
 
-            if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType_Submit)
+            if (actionType == ObjectModel::WinUI3::ActionType::Submit)
             {
-                ComPtr<IAdaptiveSubmitAction> submitAction;
-                RETURN_IF_FAILED(localActionElement.As(&submitAction));
-                RETURN_IF_FAILED(submitAction->get_AssociatedInputs(&associatedInputs));
+                associatedInputs = actionElement.as<ObjectModel::WinUI3::AdaptiveSubmitAction>().AssociatedInputs();
             }
             else
             {
-                ComPtr<IAdaptiveExecuteAction> executeAction;
-                RETURN_IF_FAILED(localActionElement.As(&executeAction));
-                RETURN_IF_FAILED(executeAction->get_AssociatedInputs(&associatedInputs));
+                associatedInputs = actionElement.as<ObjectModel::WinUI3::AdaptiveExecuteAction>().AssociatedInputs();
             }
 
-            ComPtr<IAdaptiveInputs> gatheredInputs;
-            boolean inputsAreValid;
-            if (associatedInputs == ABI::AdaptiveCards::ObjectModel::WinUI3::AssociatedInputs::None)
+            WinUI3::AdaptiveInputs gatheredInputs;
+            bool inputsAreValid;
+            if (associatedInputs == ObjectModel::WinUI3::AssociatedInputs::None)
             {
-                // Create an empty inputs object
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&gatheredInputs));
+                gatheredInputs = winrt::make<implementation::AdaptiveInputs>();
                 inputsAreValid = true;
             }
             else
             {
-                // get the inputElements in Json form.
-                RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
-                RETURN_IF_FAILED(gatheredInputs->ValidateInputs(localActionElement.Get(), &inputsAreValid));
+                gatheredInputs = UserInputs();
+                inputsAreValid = gatheredInputs.ValidateInputs(actionElement);
             }
 
-            if (!inputsAreValid)
+            if (inputsAreValid)
             {
-                return S_OK;
+                Action(*this, winrt::make<implementation::AdaptiveActionEventArgs>(actionElement, gatheredInputs));
             }
             else
             {
-                ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(
-                    eventArgs, to_winrt(actionElement), to_winrt(gatheredInputs)));
-                return m_actionEvents->InvokeAll(this, eventArgs.Get());
+                return;
             }
         }
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType_OpenUrl:
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType_Custom:
+        case ObjectModel::WinUI3::ActionType::OpenUrl:
+        case ObjectModel::WinUI3::ActionType::Custom:
         default:
         {
-            ComPtr<IAdaptiveActionEventArgs> eventArgs;
-
-            // Create an empty inputs object
-            ComPtr<IAdaptiveInputs> inputs;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&inputs));
-
-            RETURN_IF_FAILED(MakeRt<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveActionEventArgs>(
-                eventArgs, to_winrt(actionElement), to_winrt(inputs)));
-            return m_actionEvents->InvokeAll(this, eventArgs.Get());
+            Action(*this,
+                   winrt::make<implementation::AdaptiveActionEventArgs>(actionElement,
+                                                                        winrt::make<implementation::AdaptiveInputs>()));
         }
         }
     }
 
-    HRESULT RenderedAdaptiveCard::SendMediaClickedEvent(_In_ IAdaptiveMedia* mediaElement)
+    void RenderedAdaptiveCard::SendMediaClickedEvent(ObjectModel::WinUI3::AdaptiveMedia const& mediaElement)
     {
-        ComPtr<IAdaptiveMediaEventArgs> eventArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventArgs>(&eventArgs, mediaElement));
-
-        return m_mediaClickedEvents->InvokeAll(this, eventArgs.Get());
+        MediaClicked(*this, winrt::make<implementation::AdaptiveMediaEventArgs>(mediaElement));
     }
 
-    void RenderedAdaptiveCard::SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value)
+    void RenderedAdaptiveCard::SetFrameworkElement(winrt::Windows::UI::Xaml::FrameworkElement const& value)
     {
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* value)
+    void RenderedAdaptiveCard::SetOriginatingCard(ObjectModel::WinUI3::AdaptiveCard const& value)
     {
         m_originatingCard = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingHostConfig(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* value)
+    void RenderedAdaptiveCard::SetOriginatingHostConfig(Rendering::WinUI3::AdaptiveHostConfig const& value)
     {
         m_originatingHostConfig = value;
     }

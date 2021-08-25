@@ -4,27 +4,11 @@
 #include "AdaptiveInputs.h"
 #include "AdaptiveRenderArgs.h"
 
-using namespace concurrency;
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::UI;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    AdaptiveInputs::AdaptiveInputs() {}
-
-    HRESULT AdaptiveInputs::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveInputs::AsJson(_COM_Outptr_ IJsonObject** value)
+    winrt::Windows::Data::Json::JsonObject AdaptiveInputs::AsJson()
     {
-        return StringToJsonObject(GetInputItemsAsJsonString(), value);
+        return StringToJsonObject(GetInputItemsAsJsonString());
     }
 
     HRESULT AdaptiveInputs::AddInputValue(_In_ IAdaptiveInputValue* inputValue, _In_ IAdaptiveRenderArgs* renderArgs)
@@ -151,57 +135,34 @@ namespace AdaptiveCards::Rendering::WinUI3
         return outStream.str();
     }
 
-    HRESULT AdaptiveInputs::AsValueSet(_COM_Outptr_ IPropertySet** valueSetOut)
+    winrt::Windows::Foundation::Collections::PropertySet AdaptiveInputs::AsValueSet()
     {
-        *valueSetOut = nullptr;
-        ComPtr<IPropertySet> valueSet;
-        RETURN_IF_FAILED(ActivateInstance(HStringReference(RuntimeClass_Windows_Foundation_Collections_ValueSet).Get(), &valueSet));
-        ComPtr<IMap<HSTRING, IInspectable*>> propertySetMap;
-        RETURN_IF_FAILED(valueSet.As(&propertySetMap));
+        winrt::Windows::Foundation::Collections::PropertySet valueSet;
+        auto propertySetMap =
+            valueSet.as<winrt::Windows::Foundation::Collections::IMap<hstring, winrt::Windows::Foundation::IInspectable>>();
 
-        ComPtr<IPropertyValueStatics> propertyValueFactory;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
-                                              &propertyValueFactory));
-
-        for (auto& inputValue : m_lastRetrievedValues)
+        for (auto&& inputValue : m_lastRetrievedValues)
         {
-            ComPtr<IAdaptiveCardElement> cardElement;
-            ComPtr<IAdaptiveInputElement> inputElement;
-            THROW_IF_FAILED(inputValue->get_InputElement(&inputElement));
-            THROW_IF_FAILED(inputElement.As(&cardElement));
-
-            HString key;
-            THROW_IF_FAILED(cardElement->get_Id(key.GetAddressOf()));
-
-            HString value;
-            RETURN_IF_FAILED(inputValue->get_CurrentValue(value.GetAddressOf()));
-
-            ComPtr<IInspectable> propVal;
-            RETURN_IF_FAILED(propertyValueFactory->CreateString(value.Get(), propVal.GetAddressOf()));
-
-            boolean replaced;
-            RETURN_IF_FAILED(propertySetMap->Insert(key.Get(), propVal.Get(), &replaced));
+            auto cardElement = inputValue.InputElement().as<ObjectModel::WinUI3::IAdaptiveCardElement>();
+            propertySetMap.Insert(cardElement.Id(), winrt::box_value(inputValue.CurrentValue()));
         }
-        return valueSet.CopyTo(valueSetOut);
+
+        return valueSet;
     }
 
-    HRESULT AdaptiveInputs::ValidateInputs(_In_ IAdaptiveActionElement* submitAction, boolean* inputsAreValid)
+    bool AdaptiveInputs::ValidateInputs(ObjectModel::WinUI3::IAdaptiveActionElement const& submitAction)
     {
         boolean allInputsValid = true;
-
-        std::vector<ComPtr<IAdaptiveInputValue>> inputsToValidate;
-        GetInputsToValidate(submitAction, inputsToValidate);
-        m_lastRetrievedValues.clear();
+        auto inputsToValidate = GetInputsToValidate(submitAction);
 
         for (auto& inputValue : inputsToValidate)
         {
-            boolean currentInputValid;
-            RETURN_IF_FAILED(inputValue->Validate(&currentInputValid));
+            bool currentInputValid = inputValue.Validate();
 
             // If this is the first invalid input, set focus here
             if (allInputsValid && !currentInputValid)
             {
-                RETURN_IF_FAILED(inputValue->SetFocus());
+                inputValue.SetFocus();
             }
 
             allInputsValid &= currentInputValid;
@@ -210,11 +171,14 @@ namespace AdaptiveCards::Rendering::WinUI3
         // If validation succeeded, then cache the validated inputs
         if (allInputsValid)
         {
-            m_lastRetrievedValues = inputsToValidate;
+            m_lastRetrievedValues = std::move(inputsToValidate);
+        }
+        else
+        {
+            m_lastRetrievedValues.clear();
         }
 
-        *inputsAreValid = allInputsValid;
-        return S_OK;
+        return allInputsValid;
     }
 
     void AdaptiveInputs::GetInputsToValidate(_In_ IAdaptiveActionElement* action,
