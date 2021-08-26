@@ -94,7 +94,7 @@
                                                                       attribute:NSLayoutAttributeNotAnAttribute
                                                                      multiplier:1
                                                                        constant:containerElem->GetMinHeight()];
-        constraint.priority = UILayoutPriorityDefaultHigh;
+        constraint.priority = 999;
         constraint.active = YES;
     }
 
