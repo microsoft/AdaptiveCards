@@ -7,9 +7,12 @@
 
 #import "ACORenderContext.h"
 #import "ACOVisibilityManager.h"
+#import "ACOPaddingHandler.h"
 #import "ACRColumnView.h"
 #import "ACRSeparator.h"
 #import "Column.h"
+#import "TextBlock.h"
+#import "ACOBaseCardElementPrivate.h"
 #import "Enums.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -112,7 +115,7 @@
     // if column width is 'auto' and there isn't a view, padding disapears
     ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
     manager.columnWidth = @"auto";
-    manager.padding = padding;
+    [manager addPadding:padding];
     [manager hideView:viewToBeHidden arrangedSubviews:arrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
     XCTAssert(arrangedSubviews[1].hidden == YES);
@@ -130,7 +133,7 @@
     [arrangedSubviews addObject:padding];
     ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
     manager.columnWidth = @"stretch";
-    manager.padding = padding;
+    [manager addPadding:padding];
     [manager hideView:viewToBeHidden arrangedSubviews:arrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
     XCTAssert(arrangedSubviews[1].hidden == NO);
@@ -153,7 +156,7 @@
     // even if column width is 'auto', if there is a view padding doesn't disapear
     ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
     manager.columnWidth = @"auto";
-    manager.padding = padding;
+    [manager addPadding:padding];
     [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
     XCTAssert(arrangedSubviews[1].hidden == YES);
@@ -180,7 +183,7 @@
     // even if column width is 'auto', if there is a view padding doesn't disapear
     ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
     manager.columnWidth = @"auto";
-    manager.padding = padding;
+    [manager addPadding:padding];
     [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
     [manager hideView:viewToBeHidden1 arrangedSubviews:arrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
@@ -234,5 +237,60 @@
     [context registerVisibilityManager:columnView targetViewTag:view1.tag];
     XCTAssertEqual(columnView, [context retrieveVisiblityManagerWithTag:view1.tag]);
 }
+
+- (void)testPaddingInitialization
+{
+    ACOPaddingHandler *paddingHandler = [[ACOPaddingHandler alloc] init];
+    XCTAssertNotNil(paddingHandler);
+}
+
+- (void)testPaddingConfigurePadding
+{
+    ACOPaddingHandler *paddingHandler = [[ACOPaddingHandler alloc] init];
+    auto elem = std::make_shared<TextBlock>();
+    ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem];
+    UIView *view = [[UIView alloc] init];
+    UIView *padding0 = [paddingHandler configurePaddingFor:view correspondingElement:acoElem];
+    XCTAssertNil(padding0);
+    
+    elem->SetHeight(HeightType::Stretch);
+    UIView *padding1 = [paddingHandler configurePaddingFor:view correspondingElement:acoElem];
+    
+    XCTAssertNotNil(padding1);
+}
+
+NSArray<ACOBaseCardElement *> *buildTextBlocksWithHeightStretch(uint n) {
+    NSMutableArray<ACOBaseCardElement *> *textBlocks = [[NSMutableArray alloc] init];
+    for (uint i = 0; i < n; i++) {
+        auto elem0 = std::make_shared<TextBlock>();
+        elem0->SetHeight(HeightType::Stretch);
+        ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem0];
+        [textBlocks addObject:acoElem];
+    }
+    
+    return textBlocks;
+}
+
+- (void)testPaddingActivateConstraints
+{
+    NSArray<ACOBaseCardElement *> *textBlocks = buildTextBlocksWithHeightStretch(3);
+    ACOPaddingHandler *paddingHandler = [[ACOPaddingHandler alloc] init];
+    UIView *superView = [[UIView alloc] init];
+    for (ACOBaseCardElement *acoElem in textBlocks) {
+        UIView *view = [[UIView alloc] init];
+        [superView addSubview:view];
+        UIView *padding = [paddingHandler configurePaddingFor:view correspondingElement:acoElem];
+        if (padding) {
+            [superView addSubview:padding];
+        }
+        XCTAssertTrue([paddingHandler isPadding:padding]);
+        XCTAssertFalse([paddingHandler isPadding:view]);
+    }
+    
+    NSArray<NSLayoutConstraint *> *constraints = [paddingHandler activateConstraintsForPadding];
+    XCTAssertNotNil(constraints);
+    XCTAssertTrue(constraints.count == 2);
+}
+
 
 @end

@@ -66,7 +66,8 @@
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
-        leadingBlankSpace = [column addPaddingSpace];
+        leadingBlankSpace = [column configurePaddingFor:column];
+        [column addArrangedSubview:leadingBlankSpace];
     }
 
     ACRColumnSetView *columnsetView = (ACRColumnSetView *)viewGroup;
@@ -80,15 +81,12 @@
           andHostConfig:acoConfig];
 
     if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)) {
-        trailingBlankSpace = [column addPaddingSpace];
-    }
-
-    if (leadingBlankSpace || trailingBlankSpace) {
-        column.hasStretchableView = YES;
+        trailingBlankSpace = [column configurePaddingFor:column];
+        [column addArrangedSubview:trailingBlankSpace];
     }
 
     if (!column.hasStretchableView) {
-        [column addPaddingSpace];
+        [column addArrangedSubview:[column configurePaddingFor:column]];
         column.hasPaddingView = YES;
     }
 
@@ -112,16 +110,7 @@
 
     column.shouldGroupAccessibilityChildren = YES;
 
-    if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
-        [NSLayoutConstraint constraintWithItem:leadingBlankSpace
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:trailingBlankSpace
-                                     attribute:NSLayoutAttributeHeight
-                                    multiplier:1.0
-                                      constant:0]
-            .active = YES;
-    }
+    [column activatePaddingConstraints];
 
     // config visibility for column view followed by configuring visibility of the items of column
     configVisibility(column, elem);

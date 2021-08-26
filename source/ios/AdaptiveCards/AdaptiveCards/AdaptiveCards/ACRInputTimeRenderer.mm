@@ -41,19 +41,7 @@
     UIView *renderedview = inputLabelView;
 
     if (viewGroup) {
-        if (elem->GetHeight() == HeightType::Stretch) {
-            ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
-            [inputContainer addArrangedSubview:renderedview];
-
-            // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-            UIView *blankTrailingSpace = [[UIView alloc] init];
-            [inputContainer addArrangedSubview:blankTrailingSpace];
-            [inputContainer adjustHuggingForLastElement];
-            [viewGroup addArrangedSubview:inputContainer];
-            renderedview = inputContainer;
-        } else {
-            [viewGroup addArrangedSubview:renderedview];
-        }
+        [viewGroup addArrangedSubview:renderedview];        
     }
 
     [inputs addObject:renderedview];

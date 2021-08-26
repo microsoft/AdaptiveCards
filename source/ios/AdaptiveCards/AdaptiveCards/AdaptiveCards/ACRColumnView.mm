@@ -7,9 +7,11 @@
 
 #import "ACRColumnView.h"
 #import "ACOVisibilityManager.h"
+#import "ACOPaddingHandler.h"
 
 @implementation ACRColumnView {
     ACOVisibilityManager *_visibilityManager;
+    ACOPaddingHandler *_paddingHandler;
 }
 
 - (void)setColumnWidth:(NSString *)columnWidth
@@ -25,6 +27,7 @@
     self.isLastColumn = NO;
     self.inputHandlers = [[NSMutableArray<ACRIBaseInputHandler> alloc] init];
     _visibilityManager = [[ACOVisibilityManager alloc] init];
+    _paddingHandler = [[ACOPaddingHandler alloc] init];
 }
 
 - (void)addArrangedSubview:(UIView *)view
@@ -123,11 +126,30 @@
     [_visibilityManager unhideView:view arrangedSubviews:[self getContentStackSubviews]];
 }
 
+- (BOOL)hasStretchableView {
+    return _paddingHandler.hasPadding;
+}
+
 - (UIView *)addPaddingSpace
 {
     UIView *padding = [super addPaddingSpace];
     [_visibilityManager addPadding:padding];
     return padding;
+}
+
+- (UIView *)configurePaddingFor:(UIView *)view
+{
+    return [_paddingHandler configurePaddingFor:view];
+}
+
+- (UIView *)configPadding:(UIView *)view acoElement:(ACOBaseCardElement *)element
+{
+    return [_paddingHandler configurePaddingFor:view correspondingElement:element];
+}
+
+- (void)activatePaddingConstraints
+{
+    [_paddingHandler activateConstraintsForPadding];
 }
 
 

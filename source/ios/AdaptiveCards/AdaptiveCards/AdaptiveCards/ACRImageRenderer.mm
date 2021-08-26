@@ -115,13 +115,7 @@
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
     }
-
-//    if (imgElem->GetHeight() == HeightType::Stretch && imgElem->GetPixelHeight() == 0) {
-//        if ([viewGroup isKindOfClass:[ACRColumnView class]]) {
-//            [(ACRColumnView *)viewGroup addPaddingSpace];
-//        }
-//    }
-
+    
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     // instantiate and add tap gesture recognizer

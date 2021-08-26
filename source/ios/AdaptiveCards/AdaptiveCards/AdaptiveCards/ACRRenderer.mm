@@ -178,14 +178,18 @@ using namespace AdaptiveCards;
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
-
-    UIView *prevStretchableElem = nil, *curStretchableElem = nil;
+    ACRColumnView *columnView = nil;
+    
+    if ([view isKindOfClass:[ACRColumnView class]]) {
+        columnView = (ACRColumnView *)view;
+    }
+    UIView *renderedView = nil;
 
     auto firstelem = elems.begin();
 
     for (const auto &elem : elems) {
         ACRSeparator *separator = nil;
-        if (*firstelem != elem && curStretchableElem) {
+        if (*firstelem != elem && renderedView) {
             separator = [ACRSeparator renderSeparation:elem
                                           forSuperview:view
                                         withHostConfig:[config getHostConfig]];
@@ -207,40 +211,17 @@ using namespace AdaptiveCards;
                 @throw [ACOFallbackException fallbackException];
             }
 
-            curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
-
-            if (separator && !curStretchableElem) {
-                [(ACRContentStackView *)view removeViewFromContentStackView:separator];
+            renderedView = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+            
+            if (columnView) {
+                UIView *padding = [columnView configPadding:renderedView acoElement:acoElem];
+                if (padding) {
+                    [view addArrangedSubview:padding];
+                }
             }
 
-            if (elem->GetHeight() == HeightType::Stretch && curStretchableElem) {
-                // vertical stretch works in the following way:
-                // an ui element that will be stretched will be contained in a new superview.
-                // additional trailing view is added to the superview at the bottom
-                // uistackview for ColumnSet will have distribution set to fill
-                // this ensures all columns will have same height, thus making the space available for
-                // stretch.
-                // when a smaller column is expanded, the trailing views in its subviews will fill up the
-                // space, by setting the heights of the superviews of the trailing views same as below,
-                // filler space occupies the same space.
-                if (prevStretchableElem) {
-                    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
-                                                                                        attribute:NSLayoutAttributeHeight
-                                                                                        relatedBy:NSLayoutRelationEqual
-                                                                                           toItem:prevStretchableElem
-                                                                                        attribute:NSLayoutAttributeHeight
-                                                                                       multiplier:1
-                                                                                         constant:0];
-                    heightConstraint.priority = UILayoutPriorityDefaultLow;
-                    heightConstraint.active = YES;
-                }
-
-                if ([view isKindOfClass:[ACRColumnView class]]) {
-                    ACRColumnView *columnView = (ACRColumnView *)view;
-                    columnView.hasStretchableView = YES;
-                }
-
-                prevStretchableElem = curStretchableElem;
+            if (separator && !renderedView) {
+                [(ACRContentStackView *)view removeViewFromContentStackView:separator];
             }
         } @catch (ACOFallbackException *e) {
             handleFallbackException(e, view, rootView, inputs, elem, config);

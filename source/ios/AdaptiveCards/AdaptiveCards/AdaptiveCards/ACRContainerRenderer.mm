@@ -65,7 +65,8 @@
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
-        leadingBlankSpace = [container addPaddingSpace];
+        leadingBlankSpace = [container configurePaddingFor:container];
+        [container addArrangedSubview:leadingBlankSpace];
     }
 
     container.frame = viewGroup.frame;
@@ -79,7 +80,8 @@
     const VerticalContentAlignment adaptiveVAlignment = containerElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top);
     // Dont add the trailing space if the vertical content alignment is top/default
     if (adaptiveVAlignment == VerticalContentAlignment::Center || (adaptiveVAlignment == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
-        trailingBlankSpace = [container addPaddingSpace];
+        trailingBlankSpace = [container configurePaddingFor:container];
+        [container addArrangedSubview:trailingBlankSpace];
     }
 
     [container setClipsToBounds:NO];
@@ -96,23 +98,14 @@
         constraint.active = YES;
     }
 
-    if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
-        [NSLayoutConstraint constraintWithItem:leadingBlankSpace
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:trailingBlankSpace
-                                     attribute:NSLayoutAttributeHeight
-                                    multiplier:1.0
-                                      constant:0]
-            .active = YES;
-    }
-
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     [container configureForSelectAction:acoSelectAction rootView:rootView];
     configVisibility(container, elem);
 
     [container hideIfSubviewsAreAllHidden];
+
+    [container activatePaddingConstraints];
 
     [rootView.context popBaseCardElementContext:acoElem];
 

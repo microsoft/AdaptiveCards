@@ -1,43 +1,163 @@
 {
     "type": "AdaptiveCard",
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.3",
     "body": [
         {
-            "type": "ColumnSet",
             "columns": [
                 {
-                    "type": "Column",
-                    "spacing": "Small",
-                    "selectAction": {
-                        "type": "Action.ToggleVisibility",
-                        "targetElements": [
-                            "cardContent1",
-                            "chevronDown1",
-                            "chevronUp1"
-                        ]
-                    },
-                    "verticalContentAlignment": "Center",
+                    "width": "40",
                     "items": [
                         {
-                            "type": "Image",
-                            "id": "chevronDown1",
-                            "url": "https://adaptivecards.io/content/down.png",
-                            "width": "20px",
-                            "altText": "Air Travel Expense $300 collapsed"
-                        },
-                        {
-                            "type": "Image",
-                            "id": "chevronUp1",
-                            "url": "https://adaptivecards.io/content/up.png",
-                            "width": "20px",
-                            "altText": "Air Travel Expense $300 expanded",
-                            "isVisible": false
+                            "columns": [
+                                {
+                                    "width": "auto",
+                                    "items": [
+                                        {
+                                            "color": "accent",
+                                            "text": "Requested",
+                                            "id": "approvalStatus",
+                                            "spacing": "padding",
+                                            "type": "TextBlock"
+                                        }
+                                    ],
+                                    "backgroundImage": {
+                                        "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAcCAYAAABRVo5BAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAAhSURBVDiNY3z69e1/BjIAEzmaRjWOahzVOKpxVONw0AgAMwoD/kUfY7QAAAAASUVORK5CYII=",
+                                        "fillMode": "repeatHorizontally",
+                                        "verticalAlignment": "center"
+                                    },
+                                    "verticalContentAlignment": "center",
+                                    "minHeight": "28px",
+                                    "spacing": "padding",
+                                    "bleed": false,
+                                    "type": "Column"
+                                },
+                                {
+                                    "width": "auto",
+                                    "items": [
+                                        
+                                    ],
+                                    "type": "Column"
+                                }
+                            ],
+                            "type": "ColumnSet"
                         }
                     ],
-                    "width": "auto"
+                    "verticalContentAlignment": "center",
+                    "type": "Column"
                 }
-            ]
+            ],
+            "id": "infoTag",
+            "type": "ColumnSet"
+        },
+        {
+            "maxLines": 2,
+            "size": "large",
+            "text": "Test",
+            "weight": "bolder",
+            "wrap": true,
+            "id": "approvalTitle",
+            "spacing": "none",
+            "type": "TextBlock"
+        },
+        {
+            "items": [
+                {
+                    "columns": [
+                        {
+                            "width": "120px",
+                            "items": [
+                                {
+                                    "maxLines": 5,
+                                    "text": "Requested by",
+                                    "weight": "bolder",
+                                    "wrap": true,
+                                    "type": "TextBlock"
+                                }
+                            ],
+                            "type": "Column"
+                        },
+                        {
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "maxLines": 5,
+                                    "text": "Isaiah Langer",
+                                    "wrap": true,
+                                    "type": "TextBlock"
+                                }
+                            ],
+                            "type": "Column"
+                        }
+                    ],
+                    "spacing": "none",
+                    "type": "ColumnSet"
+                },
+                {
+                    "columns": [
+                        {
+                            "width": "120px",
+                            "items": [
+                                {
+                                    "maxLines": 5,
+                                    "text": "Pending response",
+                                    "weight": "bolder",
+                                    "wrap": true,
+                                    "type": "TextBlock"
+                                }
+                            ],
+                            "type": "Column"
+                        },
+                        {
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "maxLines": 5,
+                                    "text": "Isaiah Langer",
+                                    "wrap": true,
+                                    "type": "TextBlock"
+                                }
+                            ],
+                            "type": "Column"
+                        }
+                    ],
+                    "spacing": "none",
+                    "type": "ColumnSet"
+                }
+            ],
+            "id": "aggregatedActions",
+            "type": "Container"
+        },
+        {
+            "actions": [
+                {
+                    "data": {
+                        "msteams": {
+                            "type": "task/fetch",
+                            "title": "View Details Click"
+                        },
+                        "approvalId": "611de48c-63c0-409a-8736-366d0b777b1a",
+                        "approvalType": "Basic"
+                    },
+                    "title": "View details",
+                    "type": "Action.Submit"
+                }
+            ],
+            "spacing": "Large",
+            "type": "ActionSet"
         }
-    ]
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2",
+    "refresh": {
+        "userIds": [
+            "8:orgid:ddb1414c-0459-4dcf-9d2c-b8fd5f0f84c9"
+        ],
+        "action": {
+            "verb": "AutoRefresh",
+            "data": {
+                "approvalId": "611de48c-63c0-409a-8736-366d0b777b1a"
+            },
+            "title": "AutoRefresh",
+            "type": "Action.Execute"
+        }
+    }
 }
