@@ -12,10 +12,7 @@
 				"${workspaceRoot}/source/dotnet/Test/AdaptiveCards.Html.Test/AdaptiveCards.Html.Test.csproj"
 			],
 			"problemMatcher": "$msCompile",
-			"group": {
-				"_id": "build",
-				"isDefault": false
-			}
+			"group": "build"
 		}
 	]
 }

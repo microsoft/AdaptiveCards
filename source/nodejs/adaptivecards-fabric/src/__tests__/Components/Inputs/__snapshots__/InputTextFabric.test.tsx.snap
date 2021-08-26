@@ -18,11 +18,11 @@ exports[`InputTextExtended renders int text multiline correctly 1`] = `
           class="ms-TextField-wrapper"
         >
           <div
-            class="ms-TextField-fieldGroup fieldGroup-49"
+            class="ms-TextField-fieldGroup fieldGroup-52"
           >
             <textarea
               aria-invalid="false"
-              class="ms-TextField-field field-50"
+              class="ms-TextField-field field-53"
               id="input3"
               maxlength="500"
               placeholder="enter comment"

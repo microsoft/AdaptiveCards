@@ -242,6 +242,23 @@
     font-weight: bold;
 }
 
+.acd-open-code-dialog-container {
+    display: flex;
+}
+
+.acd-open-code-dialog-preview-container {
+    flex: 1;
+}
+
+.acd-open-code-dialog-editor-container {
+    flex: 1;
+}
+
+.acd-open-code-dialog-editor {
+    width: 100%;
+    height: 90%;
+}
+
 @keyframes acd-spinner-rotate {
     from { transform: rotate(0) }
     to { transform: rotate(360deg) }
