@@ -4,30 +4,22 @@
 
 #include "util.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+#include "AdaptiveHostConfigParseResult.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveHostConfigParseResult
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfigParseResult>>
+    struct AdaptiveHostConfigParseResult : AdaptiveHostConfigParseResultT<AdaptiveHostConfigParseResult>
     {
-        AdaptiveRuntime(AdaptiveHostConfigParseResult);
+        AdaptiveHostConfigParseResult(WinUI3::AdaptiveHostConfig const& hostConfig = nullptr);
 
-    public:
-        AdaptiveHostConfigParseResult();
-
-        HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig);
-
-        // IAdaptiveHostConfigParseResult
-        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig** value);
-
-        IFACEMETHODIMP get_Errors(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*>** value);
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig> m_hostConfig;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveError*>> m_errors;
+        property<WinUI3::AdaptiveHostConfig> HostConfig;
+        property<winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveError>> Errors;
     };
-
-    ActivatableClass(AdaptiveHostConfigParseResult);
+}
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveHostConfigParseResult
+        : AdaptiveHostConfigParseResultT<AdaptiveHostConfigParseResult, implementation::AdaptiveHostConfigParseResult>
+    {
+    };
 }

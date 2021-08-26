@@ -2,23 +2,20 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinUI3
+#include "AdaptiveTableConfig.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveTableConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveTableConfig>
+    struct AdaptiveTableConfig : AdaptiveTableConfigT < AdaptiveTableConfig>
     {
-        AdaptiveRuntime(AdaptiveTableConfig);
+        AdaptiveTableConfig(::AdaptiveCards::TableConfig const& tableConfig = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(TableConfig tableConfig) noexcept;
-
-        IFACEMETHODIMP get_CellSpacing(UINT32* value) override;
-        IFACEMETHODIMP put_CellSpacing(UINT32 value) override;
-
-    private:
-        UINT32 m_cellSpacing;
+        property<uint32_t> CellSpacing;
     };
-    ActivatableClass(AdaptiveTableConfig);
+}
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveTableConfig : AdaptiveTableConfigT<AdaptiveTableConfig, implementation::AdaptiveTableConfig>
+    {
+    };
 }

@@ -3,50 +3,13 @@
 #include "pch.h"
 
 #include "AdaptiveSeparatorConfig.h"
+#include "AdaptiveSeparatorConfig.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveSeparatorConfig::AdaptiveSeparatorConfig(::AdaptiveCards::SeparatorConfig const& sharedSeparatorConfig)
     {
-        SeparatorConfig separatorConfig;
-        return RuntimeClassInitialize(separatorConfig);
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize(SeparatorConfig sharedSeparatorConfig) noexcept
-    try
-    {
-        RETURN_IF_FAILED(GetColorFromString(sharedSeparatorConfig.lineColor, &m_lineColor));
-        m_lineThickness = sharedSeparatorConfig.lineThickness;
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveSeparatorConfig::get_LineThickness(_Out_ UINT32* lineThickness)
-    {
-        *lineThickness = m_lineThickness;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveSeparatorConfig::put_LineThickness(UINT32 lineThickness)
-    {
-        m_lineThickness = lineThickness;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveSeparatorConfig::get_LineColor(_Out_ ABI::Windows::UI::Color* value)
-    {
-        *value = m_lineColor;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveSeparatorConfig::put_LineColor(ABI::Windows::UI::Color color)
-    {
-        m_lineColor = color;
-        return S_OK;
+        LineColor = GetColorFromString(sharedSeparatorConfig.lineColor);
+        LineThickness = sharedSeparatorConfig.lineThickness;
     }
 }

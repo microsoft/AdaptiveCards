@@ -35,7 +35,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveError> const& errors,
         winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveWarning> const& warnings) :
         Errors{errors},
-        Warnings{warnings}, m_inputs{winrt::make<implementation::AdaptiveInputs>()}
+        Warnings{warnings}, m_inputs{winrt::make<implementation::AdaptiveInputs>()}, m_frameworkElement{nullptr}
     {
     }
 

@@ -2,44 +2,26 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::Rendering::WinUI3
+#include "AdaptiveContainerStylesDefinition.g.h"
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveContainerStylesDefinition
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStylesDefinition>
+    struct AdaptiveContainerStylesDefinition : AdaptiveContainerStylesDefinitionT < AdaptiveContainerStylesDefinition>
     {
-        AdaptiveRuntime(AdaptiveContainerStylesDefinition);
+        AdaptiveContainerStylesDefinition(::AdaptiveCards::ContainerStylesDefinition const& stylesDefinition = {});
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(ContainerStylesDefinition stylesDefinition) noexcept;
-
-        IFACEMETHODIMP get_Default(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Default(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition* value);
-
-        IFACEMETHODIMP get_Emphasis(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Emphasis(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition* value);
-
-        IFACEMETHODIMP get_Good(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Good(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition* value);
-
-        IFACEMETHODIMP get_Attention(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Attention(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition* value);
-
-        IFACEMETHODIMP get_Warning(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Warning(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition* value);
-
-        IFACEMETHODIMP get_Accent(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition** value);
-        IFACEMETHODIMP put_Accent(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition* value);
-
-    private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition> m_default;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition> m_emphasis;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition> m_good;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition> m_attention;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition> m_warning;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStyleDefinition> m_accent;
+        property<WinUI3::AdaptiveContainerStyleDefinition> Default;
+        property<WinUI3::AdaptiveContainerStyleDefinition> Emphasis;
+        property<WinUI3::AdaptiveContainerStyleDefinition> Good;
+        property<WinUI3::AdaptiveContainerStyleDefinition> Attention;
+        property<WinUI3::AdaptiveContainerStyleDefinition> Warning;
+        property<WinUI3::AdaptiveContainerStyleDefinition> Accent;
     };
-
-    ActivatableClass(AdaptiveContainerStylesDefinition);
+}
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveContainerStylesDefinition
+        : AdaptiveContainerStylesDefinitionT<AdaptiveContainerStylesDefinition, implementation::AdaptiveContainerStylesDefinition>
+    {
+    };
 }
