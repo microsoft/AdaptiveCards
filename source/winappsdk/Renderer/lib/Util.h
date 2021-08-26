@@ -119,14 +119,27 @@ CATCH_RETURN();
 template<typename> struct winrt_to_abi;
 template<typename> struct abi_to_winrt;
 #define map_rt_to_abi_(rt, abi) \
-    template<> struct winrt_to_abi<winrt::rt> { using type = ::ABI::abi; }; \
-    template<> struct abi_to_winrt<ABI::abi> { using type  = ::winrt::rt; };
+    template<> struct winrt_to_abi<winrt::rt> \
+    { \
+        using type = ::ABI::abi; \
+    }; \
+    template<> struct abi_to_winrt<ABI::abi> \
+    { \
+        using type = ::winrt::rt; \
+    };
 
 #define map_rt_to_abi(x) map_rt_to_abi_(x, x)
 
 map_rt_to_abi(AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveInputs, AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext, AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionsConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionsConfig);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionInvoker, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionInvoker);
 map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMedia);
+map_rt_to_abi_(Windows::Foundation::Uri, Windows::Foundation::IUriRuntimeClass);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig);
+map_rt_to_abi_(Windows::UI::Xaml::DependencyObject, Windows::UI::Xaml::IDependencyObject);
+map_rt_to_abi_(Windows::UI::Xaml::Controls::TextBox, Windows::UI::Xaml::Controls::ITextBox);
 
 template<typename I> auto to_winrt(I* src)
 {
@@ -138,6 +151,16 @@ template<typename I> auto to_winrt(Microsoft::WRL::ComPtr<I> const& src)
     return reinterpret_cast<abi_to_winrt<I>::type const&>(src);
 }
 
+inline auto to_winrt(_In_opt_ HSTRING abi)
+{
+    return reinterpret_cast<winrt::hstring const&>(abi);
+}
+
+inline auto to_winrt(Microsoft::WRL::Wrappers::HString const& abi)
+{
+    return to_winrt(abi.Get());
+}
+
 template<typename I> auto to_wrl(I const& i)
 {
     return reinterpret_cast<Microsoft::WRL::ComPtr<const winrt_to_abi<I>::type>&>(i);
@@ -147,7 +170,6 @@ template<typename I> auto to_wrl(I&& i)
 {
     return reinterpret_cast<Microsoft::WRL::ComPtr<winrt_to_abi<I>::type>&>(i);
 }
-
 
 HRESULT WStringToHString(std::wstring_view in, _Outptr_ HSTRING* out) noexcept;
 
@@ -327,7 +349,8 @@ HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonVa
 HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
 
-HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType projectedActionType, _Outptr_ HSTRING* result);
+HRESULT ProjectedActionTypeToHString(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType projectedActionType,
+                                     _Outptr_ HSTRING* result);
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::WinUI3::ElementType projectedElementType,
                                       _Outptr_ HSTRING* result);
 
@@ -459,8 +482,9 @@ namespace AdaptiveCards::Rendering::WinUI3
                                            Make<AdaptiveCards::Rendering::WinUI3::AdaptiveShowCardActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
                                            Make<AdaptiveCards::Rendering::WinUI3::AdaptiveSubmitActionRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveToggleVisibilityActionRenderer>().Get()));
+        RETURN_IF_FAILED(
+            registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
+                              Make<AdaptiveCards::Rendering::WinUI3::AdaptiveToggleVisibilityActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Execute").Get(),
                                            Make<AdaptiveCards::Rendering::WinUI3::AdaptiveExecuteActionRenderer>().Get()));
         return S_OK;

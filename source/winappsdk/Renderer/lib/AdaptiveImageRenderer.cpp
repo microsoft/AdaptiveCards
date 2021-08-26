@@ -414,12 +414,13 @@ namespace AdaptiveCards::Rendering::WinUI3
                 bitmapImage.As(&bitmapSource);
 
                 // Create the arguments to pass to the resolver
-                ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-                THROW_IF_FAILED(MakeAndInitialize<AdaptiveCardGetResourceStreamArgs>(&args, imageUrl));
+                auto args = winrt::make<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveCardGetResourceStreamArgs>(
+                                to_winrt(imageUrl))
+                                .as<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardGetResourceStreamArgs>();
 
                 // And call the resolver to get the image stream
                 ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
-                THROW_IF_FAILED(resolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
+                THROW_IF_FAILED(resolver->GetResourceStreamAsync(args.get(), &getResourceStreamOperation));
 
                 ComPtr<T> strongImageControl(uiElement);
                 ComPtr<XamlBuilder> strongThis(this);

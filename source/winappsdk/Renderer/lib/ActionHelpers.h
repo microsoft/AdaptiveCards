@@ -4,14 +4,34 @@
 
 namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 {
+    namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
+    namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
+    namespace rtom = winrt::Windows::UI::Xaml;
+
     HRESULT BuildAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* adaptiveActionElement,
                         _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                         _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                         bool isOverflowActionButton,
                         _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionControl);
 
-    HRESULT GetButtonMargin(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionsConfig* actionsConfig,
-                            ABI::Windows::UI::Xaml::Thickness& buttonMargin) noexcept;
+    winrt::Windows::UI::Xaml::Thickness GetButtonMargin(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveActionsConfig const& actionsConfig);
+
+    void SetTooltip(winrt::hstring const& toolTipText, winrt::Windows::UI::Xaml::DependencyObject const& tooltipTarget);
+
+    void SetAutomationNameAndDescription(winrt::Windows::UI::Xaml::DependencyObject const& dependencyObject,
+                                         winrt::hstring const& name,
+                                         winrt::hstring const& description);
+
+    void ArrangeButtonContent(winrt::hstring const& actionTitle,
+                              winrt::hstring const& actionIconUrl,
+                              winrt::hstring const& actionTooltip,
+                              winrt::hstring const& actionAccessibilityText,
+                              rtrender::AdaptiveActionsConfig const& actionsConfig,
+                              rtrender::AdaptiveRenderContext const& renderContext,
+                              rtom::ContainerStyle containerStyle,
+                              rtrender::AdaptiveHostConfig const& hostConfig,
+                              bool allActionsHaveIcons,
+                              rtxaml::Controls::Button const& button);
 
     void ArrangeButtonContent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
                               _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionsConfig* actionsConfig,
@@ -24,6 +44,9 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
     HRESULT SetMatchingHeight(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* elementToChange,
                               _In_ ABI::Windows::UI::Xaml::IFrameworkElement* elementToMatch);
 
+    void SetMatchingHeight(winrt::Windows::UI::Xaml::FrameworkElement const& elementToChange,
+                           winrt::Windows::UI::Xaml::FrameworkElement const& elementToMatch);
+
     HRESULT HandleActionStyling(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* adaptiveActionElement,
                                 _In_ ABI::Windows::UI::Xaml::IFrameworkElement* buttonFrameworkElement,
                                 bool isOverflowActionButton,
@@ -32,6 +55,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
     bool WarnForInlineShowCard(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
                                const std::wstring& warning);
+
+    void HandleKeydownForInlineAction(winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs const& args,
+                                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveActionInvoker const& actionInvoker,
+                                      winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& inlineAction);
 
     void HandleInlineAction(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,

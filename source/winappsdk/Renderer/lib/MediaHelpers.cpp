@@ -341,12 +341,12 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
         else
         {
             // Create the arguments to pass to the resolver
-            ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::WinUI3::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
+            auto args = winrt::make<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveCardGetResourceStreamArgs>(to_winrt(mediaSourceUrl))
+                            .as<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardGetResourceStreamArgs>();
 
             // Call the resolver to get the media stream
             ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
-            RETURN_IF_FAILED(resourceResolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
+            RETURN_IF_FAILED(resourceResolver->GetResourceStreamAsync(args.get(), &getResourceStreamOperation));
 
             // Take a reference to the mime type string for the lambda (lifetime dictated by localMimeType in the below
             // lambda)
