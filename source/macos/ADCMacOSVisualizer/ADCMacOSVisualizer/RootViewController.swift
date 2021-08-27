@@ -13,6 +13,8 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     private let webexConfig: String = "webex_light_config.json"
     private var darkTheme = false
     private var buttonConfig: ButtonConfig = .default
+    private var checkButtonConfig: ChoiceSetButtonConfig?
+    private var radioButtonConfig: ChoiceSetButtonConfig?
     private var inputFieldConfig: InputFieldConfig = .default
     
     override func viewDidLoad() {
@@ -62,9 +64,11 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         }
         setupButtonConfig()
         setupInputFieldConfig()
+        setupRadioButton()
+        setupCheckButton()
         switch AdaptiveCard.parseHostConfig(from: hostConfigString) {
         case .success(let config):
-            let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme, buttonConfig: buttonConfig, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: inputFieldConfig))
+            let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme, buttonConfig: buttonConfig, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: inputFieldConfig, checkBoxButtonConfig: checkButtonConfig, radioButtonConfig: radioButtonConfig))
             
             if let renderedView = stackView.arrangedSubviews.first {
                 renderedView.removeFromSuperview()
@@ -134,6 +138,24 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             inputFieldConfig = InputFieldConfig(height: 26, leftPadding: 8, rightPadding: 8, yPadding: 0, focusRingCornerRadius: 8, borderWidth: 0.3, wantsClearButton: true, clearButtonImage: image, font: .systemFont(ofSize: 14), highlightedColor: NSColor(red: 0, green: 0, blue: 0, alpha: 0.11), backgroundColor: NSColor(red: 1, green: 1, blue: 1, alpha: 1), borderColor: NSColor(red: 0, green: 0, blue: 0, alpha: 0.3))
         }
     }
+    
+    private func setupRadioButton() {
+            let onHoverIcon = NSImage(named: "radioHoverOn") ?? NSImage()
+            let offHoverIcon = NSImage(named: "radioHoverOff") ?? NSImage()
+            let onIcon = NSImage(named: "radioOn") ?? NSImage()
+            let offIcon = NSImage(named: "radioOff") ?? NSImage()
+
+            self.radioButtonConfig = ChoiceSetButtonConfig(selectedIcon: onIcon, normalIcon: offIcon, selectedHighlightedIcon: onHoverIcon, highlightedIcon: offHoverIcon, elementSpacing: 8)
+        }
+
+    private func setupCheckButton() {
+            let onHoverIcon = NSImage(named: "checkHoverOn") ?? NSImage()
+            let offHoverIcon = NSImage(named: "checkHoverOff") ?? NSImage()
+            let onIcon = NSImage(named: "checkOn") ?? NSImage()
+            let offIcon = NSImage(named: "checkOff") ?? NSImage()
+
+            self.checkButtonConfig = ChoiceSetButtonConfig(selectedIcon: onIcon, normalIcon: offIcon, selectedHighlightedIcon: onHoverIcon, highlightedIcon: offHoverIcon, elementSpacing: 8)
+        }
     // MARK: TableView Datasource
     func numberOfRows(in tableView: NSTableView) -> Int {
         return items.count

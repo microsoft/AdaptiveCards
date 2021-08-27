@@ -16,8 +16,11 @@ class ACRChoiceSetView: NSView, InputHandlingViewProtocol {
     public var wrap = false
     public var idString: String?
     
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
+    private let renderConfig: RenderConfig
+    
+    init(renderConfig: RenderConfig) {
+        self.renderConfig = renderConfig
+        super.init(frame: .zero)
         addSubview(stackview)
         setupConstraints()
     }
@@ -47,7 +50,7 @@ class ACRChoiceSetView: NSView, InputHandlingViewProtocol {
     }
     
     public func setupButton(attributedString: NSMutableAttributedString, value: String?) -> ACRChoiceButton {
-        let newButton = ACRChoiceButton()
+        let newButton = ACRChoiceButton(renderConfig: renderConfig, buttonType: isRadioGroup ? .radio : .switch)
         newButton.labelAttributedString = attributedString
         newButton.wrap = self.wrap
         newButton.buttonValue = value

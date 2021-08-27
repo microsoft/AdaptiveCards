@@ -1,5 +1,10 @@
 import AppKit
 
+enum ChoiceSetButtonType {
+    case radio
+    case `switch`
+}
+
 protocol ACRChoiceButtonDelegate: NSObjectProtocol {
     func acrChoiceButtonDidSelect(_ button: ACRChoiceButton)
 }
@@ -7,16 +12,22 @@ protocol ACRChoiceButtonDelegate: NSObjectProtocol {
 class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
     weak var delegate: ACRChoiceButtonDelegate?
     public var buttonValue: String?
-    public var buttonType: NSButton.ButtonType = .switch
     public var idString: String?
     public var valueOn: String?
     public var valueOff: String?
     
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
+    private let buttonConfig: ChoiceSetButtonConfig?
+    private let buttonType: ChoiceSetButtonType
+    
+    init(renderConfig: RenderConfig, buttonType: ChoiceSetButtonType) {
+        self.buttonType = buttonType
+        self.buttonConfig = buttonType == .switch ? renderConfig.checkBoxButtonConfig : renderConfig.radioButtonConfig
+        super.init(frame: .zero)
+        button.setButtonType(buttonType == .switch ? .switch : .radio)
         setupViews()
         setupConstraints()
         setupActions()
+        updateButtonImage()
         setupTrackingArea()
     }
     
@@ -25,7 +36,7 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
     }
     
     // Label
-    private lazy var label: NSTextField = {
+    private (set) lazy var label: NSTextField = {
         let view = NSTextField()
         view.isEditable = false
         view.delegate = self
@@ -37,7 +48,7 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
     }()
     
     // Button
-    private lazy var button: NSButton = {
+    private (set) lazy var button: NSButton = {
         let view = NSButton()
         view.title = ""
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +61,7 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
         if  state == .on {
             handleButtonAction()
         }
+        updateButtonImage()
     }
     
     private func setupViews() {
@@ -67,7 +79,7 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
         button.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         button.topAnchor.constraint(equalTo: topAnchor).isActive = true
         button.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: button.trailingAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: buttonConfig?.elementSpacing ?? 0).isActive = true
         label.topAnchor.constraint(equalTo: topAnchor).isActive = true
         label.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         label.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
@@ -79,16 +91,31 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
     }
     
     override func mouseEntered(with event: NSEvent) {
-        guard let contentView = event.trackingArea?.owner as? ACRChoiceButton else { return }
-        contentView.button.isHighlighted = true
+        button.isHighlighted = true
     }
     override func mouseExited(with event: NSEvent) {
-        guard let contentView = event.trackingArea?.owner as? ACRChoiceButton else { return }
-        contentView.button.isHighlighted = false
+        button.isHighlighted = false
+    }
+    
+    private func updateButtonImage() {
+        switch state {
+        case .on:
+            button.image = buttonConfig?.selectedHighlightedIcon
+            button.alternateImage = buttonConfig?.selectedIcon
+        case .off:
+            button.alternateImage = buttonConfig?.highlightedIcon
+            button.image = buttonConfig?.normalIcon
+        default:
+            break
+        }
+        button.image?.size = NSSize(width: 16, height: 16)
+        button.alternateImage?.size = NSSize(width: 16, height: 16)
+        button.imageScaling = .scaleProportionallyUpOrDown
     }
     
     @objc private func handleButtonAction() {
         delegate?.acrChoiceButtonDidSelect(self)
+        updateButtonImage()
     }
     
     var value: String {
@@ -127,6 +154,7 @@ extension ACRChoiceButton {
         get { button.state }
         set {
             button.state = newValue
+            updateButtonImage()
         }
     }
     
@@ -134,14 +162,6 @@ extension ACRChoiceButton {
         get { ((label.cell?.wraps) ) }
         set {
             label.cell?.wraps = newValue ?? false
-        }
-    }
-    
-    var type: NSButton.ButtonType {
-        get { buttonType }
-        set {
-            button.setButtonType(newValue)
-            buttonType = newValue
         }
     }
     

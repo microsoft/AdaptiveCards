@@ -15,18 +15,18 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
                 return choiceSetCompactRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
             } else {
                 // radio button renderer
-                return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
+                return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView, renderConfig: config)
             }
         }
         // display multi-select check-boxes
-        return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
+        return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView, renderConfig: config)
     }
     
-    private func choiceSetRenderInternal(choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView) -> NSView {
+    private func choiceSetRenderInternal(choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, renderConfig: RenderConfig) -> NSView {
         // Parse input default values for multi-select
         let defaultParsedValues = parseChoiceSetInputDefaultValues(value: choiceSetInput.getValue() ?? "")
         let isMultiSelect = choiceSetInput.getIsMultiSelect()
-        let view = ACRChoiceSetView()
+        let view = ACRChoiceSetView(renderConfig: renderConfig)
         view.isRadioGroup = !isMultiSelect
         view.wrap = choiceSetInput.getWrap()
         view.idString = choiceSetInput.getId()
@@ -34,7 +34,6 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
             let title = choice.getTitle() ?? ""
             let attributedString = getAttributedString(title: title, with: hostConfig, style: style)
             let choiceButton = view.setupButton(attributedString: attributedString, value: choice.getValue())
-            choiceButton.type = isMultiSelect ? .switch : .radio
             if defaultParsedValues.contains(choice.getValue() ?? "") {
                 choiceButton.state = .on
                 choiceButton.buttonValue = choice.getValue()
