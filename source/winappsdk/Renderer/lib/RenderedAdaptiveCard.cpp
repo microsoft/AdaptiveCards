@@ -35,27 +35,28 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveError> const& errors,
         winrt::Windows::Foundation::Collections::IVector<ObjectModel::WinUI3::AdaptiveWarning> const& warnings) :
         Errors{errors},
-        Warnings{warnings}, m_inputs{winrt::make<implementation::AdaptiveInputs>()}, m_frameworkElement{nullptr}
+        Warnings{warnings}, m_inputs{winrt::make_self<implementation::AdaptiveInputs>()}, m_frameworkElement{nullptr}
     {
     }
 
     void RenderedAdaptiveCard::HandleInlineShowCardEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement)
     {
         auto showCardAction = actionElement.as<ObjectModel::WinUI3::AdaptiveShowCardAction>();
-        auto found = m_showCards.find(showCardAction.InternalId());
+        auto showCardToToggle = showCardAction.InternalId();
+        auto found = m_showCards.find(showCardToToggle);
 
         if (found != m_showCards.end())
         {
             std::shared_ptr<ShowCardInfo> showCardInfoToHandle = found->second;
 
-            Visibility overflowButtonVisibility = Visibility_Collapsed;
+            winrt::Windows::UI::Xaml::Visibility overflowButtonVisibility = winrt::Windows::UI::Xaml::Visibility::Collapsed;
             if (showCardInfoToHandle->overflowUIElement)
             {
-                THROW_IF_FAILED(showCardInfoToHandle->overflowUIElement->get_Visibility(&overflowButtonVisibility));
+                overflowButtonVisibility = showCardInfoToHandle->overflowUIElement.Visibility();
             }
 
             // Check if the action is being invoked from the overflow menu
-            if (overflowButtonVisibility == Visibility_Visible)
+            if (overflowButtonVisibility == winrt::Windows::UI::Xaml::Visibility::Visible)
             {
                 // When a show card action is selected from the overflow menu, we need to move it from the overflow menu
                 // to the action bar by swapping it with the last item currently there. In order to do this we make this
@@ -108,7 +109,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     }
 
                     // Make the show card button visible
-                    THROW_IF_FAILED(showCardInfoToHandle->buttonUIElement->put_Visibility(Visibility_Visible));
+                    showCardInfoToHandle->buttonUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
 
                     // Set the column width to 1* if we're using column definitions to show equal width buttons
                     if (columnDefinitions)
@@ -122,29 +123,28 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     auto flyoutBase = overflowButtonAsButtonWithFlyout.Flyout();
                     auto flyout = flyoutBase.as<winrt::Windows::UI::Xaml::Controls::MenuFlyout>();
 
-                    for (auto&& flyout : flyout.Items())
+                    for (auto&& flyouts : flyout.Items())
                     {
-                        flyout.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
+                        flyouts.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
                     }
 
                     // Make the the action we're handling collapsed in the overflow menu. It is now shown in the button bar and don't want it to show here.
-                    THROW_IF_FAILED(showCardInfoToHandle->overflowUIElement->put_Visibility(Visibility_Collapsed));
+                    showCardInfoToHandle->overflowUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
                 }
             }
 
             // Determine if the card is currently being shown
-            ABI::Windows::UI::Xaml::Visibility currentVisibility;
-            showCardInfoToHandle->cardUIElement->get_Visibility(&currentVisibility);
+            winrt::Windows::UI::Xaml::Visibility currentVisibility = showCardInfoToHandle->cardUIElement.Visibility();
 
-            if (currentVisibility == Visibility_Visible)
+            if (currentVisibility == winrt::Windows::UI::Xaml::Visibility::Visible)
             {
                 // If it was shown, hide it
-                showCardInfoToHandle->cardUIElement->put_Visibility(Visibility_Collapsed);
+                showCardInfoToHandle->cardUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
             }
             else
             {
                 // If it was hidden, show it, and hide all other cards in this action set
-                showCardInfoToHandle->cardUIElement->put_Visibility(Visibility_Visible);
+                showCardInfoToHandle->cardUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Visible);
 
                 for (auto& showCardEntry : m_showCards)
                 {
@@ -152,8 +152,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                     auto currentShowCardInfo = showCardEntry.second;
                     if ((showCardInfoToHandle->actionSetId == currentShowCardInfo->actionSetId) && (showCardToToggle != showCardId))
                     {
-                        ComPtr<IUIElement> showCardUIElementCurrent = currentShowCardInfo->cardUIElement;
-                        THROW_IF_FAILED(showCardUIElementCurrent->put_Visibility(Visibility_Collapsed));
+                        currentShowCardInfo->cardUIElement.Visibility(winrt::Windows::UI::Xaml::Visibility::Collapsed);
                     }
                 }
             }
@@ -174,7 +173,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             {
                 auto toggleElementAsUIElement = toggleObject.as<winrt::Windows::UI::Xaml::UIElement>();
                 auto toggleElementAsFrameworkElement = toggleObject.as<winrt::Windows::UI::Xaml::FrameworkElement>();
-                auto elementTagContent = toggleElementAsFrameworkElement.Tag().as<::AdaptiveCards::Rendering::WinUI3::IElementTagContent>();
+                auto elementTagContent =
+                    toggleElementAsFrameworkElement.Tag().as<::AdaptiveCards::Rendering::WinUI3::IElementTagContent>();
                 winrt::Windows::UI::Xaml::Visibility visibilityToSet = winrt::Windows::UI::Xaml::Visibility::Visible;
 
                 if (toggle == ObjectModel::WinUI3::IsVisible::IsVisibleTrue)
@@ -207,10 +207,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 {
                     winrt::com_ptr<ABI::Windows::UI::Xaml::Controls::IColumnDefinition> columnDefinition;
                     THROW_IF_FAILED(elementTagContent->get_ColumnDefinition(columnDefinition.put()));
-                    THROW_IF_FAILED(::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleColumnWidth(
-                        cardElementAsColumn,
-                        (visibilityToSet == winrt::Windows::UI::Xaml::Visibility::Visible),
-                        columnDefinition.get()));
+                    ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleColumnWidth(cardElementAsColumn,
+                                                                                       (visibilityToSet ==
+                                                                                        winrt::Windows::UI::Xaml::Visibility::Visible),
+                                                                                       to_winrt(columnDefinition.get()));
                 }
             }
         }
@@ -224,7 +224,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
     }
 
-    
     void RenderedAdaptiveCard::SendActionEvent(ObjectModel::WinUI3::IAdaptiveActionElement const& actionElement)
     {
         auto actionType = actionElement.ActionType();
@@ -324,142 +323,98 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         m_originatingHostConfig = value;
     }
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCard(_In_ IAdaptiveActionSet* actionSet,
-                                                    _In_ IAdaptiveShowCardAction* showCardAction,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                    UINT32 primaryButtonIndex,
-                                                    ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
-    try
+    void RenderedAdaptiveCard::AddInlineShowCard(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
+                                                 ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
+                                                 winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
+                                                 winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
+                                                 winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                                 uint32_t primaryButtonIndex,
+                                                 Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        UINT32 actionSetId;
-        RETURN_IF_FAILED(actionSet->get_InternalId(&actionSetId));
-
-        RETURN_IF_FAILED(AddInlineShowCardHelper(
-            actionSetId, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs));
-
-        return S_OK;
+        AddInlineShowCardHelper(actionSet.InternalId(), showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
     }
-    CATCH_RETURN();
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
-                                                    ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveShowCardAction* showCardAction,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                    UINT32 primaryButtonIndex,
-                                                    _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
-    try
+    void RenderedAdaptiveCard::AddInlineShowCard(ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
+                                                 ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
+                                                 winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
+                                                 winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
+                                                 winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                                 uint32_t primaryButtonIndex,
+                                                 WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        UINT32 actionSetId;
-        RETURN_IF_FAILED(adaptiveCard->get_InternalId(&actionSetId));
-
-        RETURN_IF_FAILED(AddInlineShowCardHelper(
-            actionSetId, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs));
-
-        return S_OK;
+        AddInlineShowCardHelper(adaptiveCard.InternalId(),
+                                showCardAction,
+                                actionButtonUIElement,
+                                actionOverflowUIElement,
+                                showCardUIElement,
+                                primaryButtonIndex,
+                                renderArgs);
     }
-    CATCH_RETURN();
 
-    HRESULT RenderedAdaptiveCard::AddInlineShowCardHelper(UINT32 actionSetId,
-                                                          _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveShowCardAction* showCardAction,
-                                                          _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                          _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
-                                                          _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                          UINT32 primaryButtonIndex,
-                                                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
-    try
+    void RenderedAdaptiveCard::AddInlineShowCardHelper(uint32_t actionSetId,
+                                                       ObjectModel::WinUI3::IAdaptiveShowCardAction const& showCardAction,
+                                                       winrt::Windows::UI::Xaml::UIElement const& actionButtonUIElement,
+                                                       winrt::Windows::UI::Xaml::UIElement const& actionOverflowUIElement,
+                                                       winrt::Windows::UI::Xaml::UIElement const& showCardUIElement,
+                                                       uint32_t primaryButtonIndex,
+                                                       WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        UINT32 showCardActionId;
-        RETURN_IF_FAILED(showCardAction->get_InternalId(&showCardActionId));
-
-        std::shared_ptr<ShowCardInfo> showCardInfo = std::make_shared<ShowCardInfo>();
+        auto showCardInfo = std::make_shared<ShowCardInfo>();
         showCardInfo->actionSetId = actionSetId;
         showCardInfo->buttonUIElement = actionButtonUIElement;
         showCardInfo->overflowUIElement = actionOverflowUIElement;
         showCardInfo->cardUIElement = showCardUIElement;
         showCardInfo->primaryButtonIndex = primaryButtonIndex;
 
-        m_showCards.emplace(std::make_pair(showCardActionId, showCardInfo));
+        m_showCards.emplace(std::make_pair(showCardAction.InternalId(), showCardInfo));
 
         // We also add the parent card relationship here
-        ComPtr<IAdaptiveShowCardAction> localShowCardAction(showCardAction);
-        ComPtr<IAdaptiveCard> card;
-        RETURN_IF_FAILED(localShowCardAction->get_Card(card.GetAddressOf()));
-
-        RETURN_IF_FAILED(LinkCardToParent(card.Get(), renderArgs));
-
-        return S_OK;
+        LinkCardToParent(showCardAction.Card(), renderArgs);
     }
-    CATCH_RETURN();
 
-    HRESULT RenderedAdaptiveCard::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionSet* actionSet,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
-    try
+    void RenderedAdaptiveCard::AddOverflowButton(ObjectModel::WinUI3::AdaptiveActionSet const& actionSet,
+                                                 winrt::Windows::UI::Xaml::UIElement const& actionUIElement)
     {
-        UINT32 actionSetId;
-        RETURN_IF_FAILED(actionSet->get_InternalId(&actionSetId));
-
-        m_overflowButtons.emplace(std::make_pair(actionSetId, actionUIElement));
-
-        return S_OK;
+        m_overflowButtons.emplace(std::make_pair(actionSet.InternalId(), actionUIElement));
     }
-    CATCH_RETURN();
 
-    HRESULT RenderedAdaptiveCard::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* actionCard,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionUIElement)
-    try
+    void RenderedAdaptiveCard::AddOverflowButton(ObjectModel::WinUI3::AdaptiveCard const& actionCard,
+                                                 winrt::Windows::UI::Xaml::UIElement const& actionUIElement)
     {
-        UINT32 adaptiveCardId;
-        RETURN_IF_FAILED(actionCard->get_InternalId(&adaptiveCardId));
-
-        m_overflowButtons.emplace(std::make_pair(adaptiveCardId, actionUIElement));
-
-        return S_OK;
+        m_overflowButtons.emplace(std::make_pair(actionCard.InternalId(), actionUIElement));
     }
-    CATCH_RETURN();
 
-    HRESULT RenderedAdaptiveCard::AddInputValue(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue* inputItem,
-                                                _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
+    void RenderedAdaptiveCard::AddInputValue(WinUI3::IAdaptiveInputValue const& inputValue, WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        return m_inputs->AddInputValue(inputItem, renderArgs);
+        m_inputs->AddInputValue(inputValue, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkActionToCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
-                                                   _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
+    void RenderedAdaptiveCard::LinkActionToCard(ObjectModel::WinUI3::IAdaptiveActionElement const& submitAction,
+                                                WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        return m_inputs->LinkSubmitActionToCard(action, renderArgs);
+        return m_inputs->LinkSubmitActionToCard(submitAction, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkCardToParent(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* card,
-                                                   _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
+    void RenderedAdaptiveCard::LinkCardToParent(ObjectModel::WinUI3::AdaptiveCard const& card, WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
         // We get the card internal id from the showcard action
-        UINT32 cardId;
-        RETURN_IF_FAILED(card->get_InternalId(&cardId));
+        uint32_t cardId = card.InternalId();
 
         // Then we get the parent card internal id from the renderArgs
-        ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
-        UINT32 parentCardId = InternalId().Hash();
+        uint32_t parentCardId = ::AdaptiveCards::InternalId().Hash();
         if (renderArgs)
         {
-            ComPtr<IAdaptiveCard> parentCard;
-            RETURN_IF_FAILED(localRenderArgs->get_ParentCard(parentCard.GetAddressOf()));
-
-            if (parentCard)
+            if (auto parentCard = renderArgs.ParentCard())
             {
-                parentCard->get_InternalId(&parentCardId);
+                parentCardId = parentCard.InternalId();
             }
         }
 
-        return m_inputs->LinkCardToParent(cardId, parentCardId);
+        m_inputs->LinkCardToParent(cardId, parentCardId);
     }
 
-    HRESULT RenderedAdaptiveCard::GetInputValue(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* inputElement,
-                                                _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue** inputValue)
+    Rendering::WinUI3::IAdaptiveInputValue RenderedAdaptiveCard::GetInputValue(ObjectModel::WinUI3::IAdaptiveInputElement const& inputElement)
     {
-        return m_inputs->GetInputValue(inputElement, inputValue);
+        return m_inputs->GetInputValue(inputElement);
     }
-
 }

@@ -36,11 +36,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                            const wchar_t* resourceName,
                                            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
 
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                                                                               UINT spacing,
-                                                                               UINT separatorThickness,
-                                                                               ABI::Windows::UI::Color separatorColor,
-                                                                               bool isHorizontal = true);
+    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>
+    CreateSeparator(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                    UINT spacing,
+                    UINT separatorThickness,
+                    ABI::Windows::UI::Color separatorColor,
+                    bool isHorizontal = true);
 
     template<typename T>
     HRESULT TryGetResourceFromResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
@@ -100,13 +101,18 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                               boolean isVisible,
                               _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
 
+    void HandleColumnWidth(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveColumn const& column,
+                           bool isVisible,
+                           winrt::Windows::UI::Xaml::Controls::ColumnDefinition const& columnDefinition);
+
     HRESULT HandleTableColumnWidth(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableColumnDefinition* column,
                                    _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
 
     template<typename T>
     void AppendXamlElementToPanel(_In_ T* xamlElement,
                                   _In_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
-                                  ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType = ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType::Auto)
+                                  ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType =
+                                      ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType::Auto)
     {
         if (!xamlElement)
         {

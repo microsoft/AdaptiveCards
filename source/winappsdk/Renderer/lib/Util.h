@@ -140,6 +140,7 @@ map_rt_to_abi_(Windows::Foundation::Uri, Windows::Foundation::IUriRuntimeClass);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig);
 map_rt_to_abi_(Windows::UI::Xaml::DependencyObject, Windows::UI::Xaml::IDependencyObject);
 map_rt_to_abi_(Windows::UI::Xaml::Controls::TextBox, Windows::UI::Xaml::Controls::ITextBox);
+map_rt_to_abi_(Windows::UI::Xaml::Controls::ColumnDefinition, Windows::UI::Xaml::Controls::IColumnDefinition);
 
 template<typename I> auto to_winrt(I* src)
 {
@@ -370,11 +371,11 @@ typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler
 
 struct ShowCardInfo
 {
-    UINT32 actionSetId;
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> buttonUIElement;
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> overflowUIElement;
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> cardUIElement;
-    UINT primaryButtonIndex;
+    uint32_t actionSetId;
+    winrt::Windows::UI::Xaml::UIElement buttonUIElement{nullptr};
+    winrt::Windows::UI::Xaml::UIElement overflowUIElement{nullptr};
+    winrt::Windows::UI::Xaml::UIElement cardUIElement{nullptr};
+    uint32_t primaryButtonIndex;
 };
 
 // Peek interface to help get implementation types from winrt interfaces

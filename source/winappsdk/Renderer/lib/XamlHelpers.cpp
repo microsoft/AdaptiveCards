@@ -22,6 +22,10 @@ using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
+namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
+namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
+namespace rtxaml = winrt::Windows::UI::Xaml;
+
 namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 {
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
@@ -302,6 +306,22 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         return S_OK;
     }
+
+    void HandleColumnWidth(rtom::AdaptiveColumn const& column, bool isVisible, _In_ rtxaml::Controls::ColumnDefinition const& columnDefinition)
+    {
+        auto adaptiveColumnWidth = column.Width();
+        const bool isStretch = adaptiveColumnWidth == L"stretch";
+        const bool isAuto = adaptiveColumnWidth == L"auto";
+        double widthAsDouble = _wtof(adaptiveColumnWidth.data());
+        uint32_t pixelWidth = column.PixelWidth();
+
+        rtxaml::GridLength columnWidth = reinterpret_cast<const rtxaml::GridLength&>(
+            CalculateColumnWidth(isVisible, isAuto, isStretch, adaptiveColumnWidth.empty(), pixelWidth, widthAsDouble));
+
+        columnDefinition.Width(columnWidth);
+    }
+
+
 
     HRESULT HandleTableColumnWidth(_In_ IAdaptiveTableColumnDefinition* column, _In_ IColumnDefinition* columnDefinition)
     {
