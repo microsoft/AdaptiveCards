@@ -29,9 +29,14 @@
     // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
     // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     
-    testApp = [[XCUIApplication alloc] init];
-    testApp.launchArguments = [NSArray arrayWithObject:@"ui-testing"];
-    [testApp launch];
+    if (testApp == nil)
+    {
+        testApp = [[XCUIApplication alloc] init];
+        testApp.launchArguments = [NSArray arrayWithObject:@"ui-testing"];
+        [testApp launch];
+    }
+    
+    [self resetTestEnvironment];
 }
 
 - (void)tearDown
@@ -133,12 +138,9 @@
 
 - (void)testSmokeTestActivityUpdateDate
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
     
     [self tapOnButtonWithText:@"Set due date"];
-
-    XCUIElementQuery* tables = testApp.tables;
     
     [self setDateOnInputDateWithId:@"dueDate"
                           andLabel:@"Enter the due date"
@@ -157,7 +159,6 @@
 
 - (void)testSmokeTestActivityUpdateComment
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
     
     XCUIElementQuery* buttons = testApp.buttons;
@@ -182,7 +183,6 @@
 
 - (void)testFocusOnValidationFailure
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.3" forCardType:@"Elements" withCardName:@"Input.Text.ErrorMessage.json"];
     
     [self tapOnButtonWithText:@"Submit"];
@@ -195,8 +195,6 @@
 
 - (void)testLongPressAndDragRaiseNoEventInContainers
 {
-    [self resetTestEnvironment];
-    
     [self openCardForVersion:@"v1.5" forCardType:@"Test" withCardName:@"Container.ScrollableSelectableList.json"];
     
     XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
@@ -204,6 +202,11 @@
     XCUIElement *container1 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:3];
     
     XCUIElement *container2 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:1];
+    
+    // For some unknown reason this test succeeds on a mackbook but not in
+    // a mac mini (xcode and emulator versions match), so we have to add a
+    // small wait time to avoid the long press behaving as a tap
+    [NSThread sleepForTimeInterval:1];
     
     // Execute a drag from the 4th element to the 2nd element
     [container1 pressForDuration:1 thenDragToElement:container2];
@@ -226,7 +229,6 @@
 
 - (void)testCanGatherDefaultValuesFromChoiceInputSet
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
         
     XCUIElementQuery* buttons = testApp.buttons;
@@ -244,7 +246,6 @@
 
 - (void)testCanGatherCorrectValuesFromCompactChoiceSet
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
     
     XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
@@ -268,7 +269,6 @@
 
 - (void)testCanGatherCorrectValuesFromExpandedRadioButton
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
     
     XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
@@ -291,7 +291,6 @@
 
 - (void)testCanGatherCorrectValuesFromChoiceset
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
     
     XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
