@@ -249,33 +249,33 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return Boolify(supportsInteractivity);
     }
 
-    GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
+    rtxaml::GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
     {
         const boolean isValidWidth = isAuto || isStretch || pixelWidth || isUnsetWidth || (ratioWidth > 0);
 
-        GridLength columnWidth;
+        rtxaml::GridLength columnWidth;
         if (!isVisible || isAuto || !isValidWidth)
         {
             // If the column isn't visible, or is set to "auto" or an invalid value ("-1", "foo"), set it to Auto
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
+            columnWidth.GridUnitType = rtxaml::GridUnitType::Auto;
             columnWidth.Value = 0;
         }
         else if (pixelWidth)
         {
             // If it's visible and pixel width is specified, use pixel width
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
+            columnWidth.GridUnitType = rtxaml::GridUnitType::Pixel;
             columnWidth.Value = pixelWidth;
         }
         else if (isStretch || isUnsetWidth)
         {
             // If it's visible and stretch is specified, or width is unset, use stretch with default of 1
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.GridUnitType = rtxaml::GridUnitType::Star;
             columnWidth.Value = 1;
         }
         else
         {
             // If it's visible and the user specified a valid non-pixel width, use that as a star width
-            columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
+            columnWidth.GridUnitType = rtxaml::GridUnitType::Star;
             columnWidth.Value = ratioWidth;
         }
 
@@ -299,10 +299,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         UINT32 pixelWidth = 0;
         RETURN_IF_FAILED(column->get_PixelWidth(&pixelWidth));
 
-        GridLength columnWidth =
-            CalculateColumnWidth(isVisible, isAuto, isStretch, !adaptiveColumnWidth.IsValid(), pixelWidth, widthAsDouble);
-
-        RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
+        to_winrt(columnDefinition).Width(CalculateColumnWidth(isVisible, isAuto, isStretch, !adaptiveColumnWidth.IsValid(), pixelWidth, widthAsDouble));
 
         return S_OK;
     }
@@ -315,10 +312,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         double widthAsDouble = _wtof(adaptiveColumnWidth.data());
         uint32_t pixelWidth = column.PixelWidth();
 
-        rtxaml::GridLength columnWidth = reinterpret_cast<const rtxaml::GridLength&>(
-            CalculateColumnWidth(isVisible, isAuto, isStretch, adaptiveColumnWidth.empty(), pixelWidth, widthAsDouble));
-
-        columnDefinition.Width(columnWidth);
+        columnDefinition.Width(CalculateColumnWidth(isVisible, isAuto, isStretch, adaptiveColumnWidth.empty(), pixelWidth, widthAsDouble));
     }
 
 
@@ -345,9 +339,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         bool isWidthUnset = (width == nullptr) && (pixelWidth == nullptr);
 
-        GridLength columnWidth = CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidthValue, widthValue);
-
-        RETURN_IF_FAILED(columnDefinition->put_Width(columnWidth));
+        to_winrt(columnDefinition).Width(CalculateColumnWidth(true, false, false, isWidthUnset, pixelWidthValue, widthValue));
 
         return S_OK;
     }

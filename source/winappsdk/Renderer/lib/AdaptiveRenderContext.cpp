@@ -112,6 +112,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         {
             return renderResult->GetInputValue(inputElement);
         }
+        else
+        {
+            return nullptr;
+        }
     }
 
     winrt::Windows::UI::Xaml::ResourceDictionary AdaptiveRenderContext::GetDefaultActionSentimentDictionary()

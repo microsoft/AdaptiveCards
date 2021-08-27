@@ -6,7 +6,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 {
     namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
     namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
-    namespace rtom = winrt::Windows::UI::Xaml;
+    namespace rtxaml = winrt::Windows::UI::Xaml;
 
     HRESULT BuildAction(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* adaptiveActionElement,
                         _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
