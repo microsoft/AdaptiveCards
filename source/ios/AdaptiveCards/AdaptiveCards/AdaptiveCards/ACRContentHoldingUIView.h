@@ -19,6 +19,7 @@ const extern NSInteger eACRUIImageTag;
 @property BOOL isPersonStyle;
 @property BOOL hidePlayIcon;
 @property BOOL isMediaType;
+@property (weak, readonly) UIView *contentView;
 
 - (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView viewGroup:(ACRContentStackView *)viewGroup;
 - (void)update:(ACRImageProperties *)imageProperties;

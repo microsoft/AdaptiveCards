@@ -46,8 +46,6 @@
 
     column.rtl = rootView.context.rtl;
 
-    renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
-
     column.pixelWidth = columnElem->GetPixelWidth();
     auto width = columnElem->GetWidth();
     if (width.empty() || width == "stretch") {
@@ -93,14 +91,16 @@
     }
 
     if (columnElem->GetMinHeight() > 0) {
-        [NSLayoutConstraint constraintWithItem:column
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1
-                                      constant:columnElem->GetMinHeight()]
-            .active = YES;
+        NSLayoutConstraint *constraint =
+            [NSLayoutConstraint constraintWithItem:column
+                                         attribute:NSLayoutAttributeHeight
+                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1
+                                          constant:columnElem->GetMinHeight()];
+        constraint.priority = 999;
+        constraint.active = YES;
     }
 
     [column setClipsToBounds:NO];
@@ -133,6 +133,8 @@
 
     // viewGroup and column has to be in view hierarchy before configBleed is called
     configBleed(rootView, elem, column, acoConfig, viewGroup);
+
+    renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
 
     [rootView.context popBaseCardElementContext:acoElem];
 

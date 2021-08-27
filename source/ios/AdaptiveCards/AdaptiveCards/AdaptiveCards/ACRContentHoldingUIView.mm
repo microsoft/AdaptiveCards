@@ -41,6 +41,7 @@ using namespace AdaptiveCards;
         _imageView = imageView;
         _viewGroup = viewGroup;
         [self addSubview:imageView];
+        _contentView = imageView;
     }
 
     return self;
