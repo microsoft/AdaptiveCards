@@ -161,6 +161,10 @@ const CGFloat padding = 2.0f;
     }
     cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
     cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _accessibilityString, title];
+    
+    NSString *elementId = [NSString stringWithCString:_choiceSetDataSource->GetId().c_str()
+                                         encoding:NSUTF8StringEncoding];
+    cell.textLabel.accessibilityIdentifier = [NSString stringWithFormat:@"%@, %@", elementId, title];
 
     return cell;
 }
