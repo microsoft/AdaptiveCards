@@ -46,8 +46,6 @@
 
     column.rtl = rootView.context.rtl;
 
-    renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
-
     column.pixelWidth = columnElem->GetPixelWidth();
     auto width = columnElem->GetWidth();
     if (width.empty() || width == "stretch") {
@@ -135,6 +133,8 @@
 
     // viewGroup and column has to be in view hierarchy before configBleed is called
     configBleed(rootView, elem, column, acoConfig, viewGroup);
+
+    renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
 
     [rootView.context popBaseCardElementContext:acoElem];
 
