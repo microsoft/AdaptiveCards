@@ -26,60 +26,44 @@ export const createActionDiv = (
 
 export class OpenUrlActionFabric extends AC.OpenUrlAction {
 
-    private internalRenderedElement: any;
-
-    get renderedElement(): HTMLElement {
-        return this.internalRenderedElement;
-    }
+    renderedElement: HTMLElement;
 
     public render(baseCssClass?: string) {
         let actionsConfig = this.parent.hostConfig.actions;
         const div = createActionDiv(this.title, this.iconUrl, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
-        this.internalRenderedElement = div;
+        this.renderedElement = div;
     }
 }
 
 export class SubmitActionFabric extends AC.SubmitAction {
 
-    private internalRenderedElement: HTMLElement;
-
-    get renderedElement(): HTMLElement {
-        return this.internalRenderedElement;
-    }
+    renderedElement: HTMLElement;
 
     public render(baseCssClass?: string): void {
         let actionsConfig = this.parent.hostConfig.actions;
         const div = createActionDiv(this.title, this.iconUrl, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
-        this.internalRenderedElement = div;
+        this.renderedElement = div;
     }
 }
 
 export class ShowCardActionFabric extends AC.ShowCardAction {
 
-    private internalRenderedElement: HTMLElement;
-
-    get renderedElement(): HTMLElement {
-        return this.internalRenderedElement;
-    }
+    renderedElement: HTMLElement;
 
     public render(baseCssClass?: string): void {
         let actionsConfig = this.parent.hostConfig.actions;
         const div = createActionDiv(this.title, this.iconUrl, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
-        this.internalRenderedElement = div;
+        this.renderedElement = div;
     }
 }
 
 export class ToggleVisibilityActionFabric extends AC.ToggleVisibilityAction {
 
-    private internalRenderedElement: HTMLElement;
-
-    get renderedElement(): HTMLElement {
-        return this.internalRenderedElement;
-    }
+    renderedElement: HTMLElement;
 
     public render(baseCssClass?: string): void {
         const div = Shared.getDiv();
         ReactDOM.render(<ActionButton text={this.title} className={baseCssClass} />, div);
-        this.internalRenderedElement = div;
+        this.renderedElement = div;
     }
 }

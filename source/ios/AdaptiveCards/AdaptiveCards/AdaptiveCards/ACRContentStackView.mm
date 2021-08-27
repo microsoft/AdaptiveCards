@@ -30,12 +30,12 @@ static int kToggleVisibilityContext;
                    hostConfig:(ACOHostConfig *)acoConfig
                     superview:(UIView *)superview
 {
-    self = [self initWithFrame:superview.frame];
+    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+    self = [self initWithFrame:superview.frame attributes:nil];
     if (self) {
         _style = style;
         if (style != ACRNone &&
             style != parentStyle) {
-            std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
             self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_style];
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
@@ -201,6 +201,11 @@ static int kToggleVisibilityContext;
             _stackView.spacing = [spacingAttrib floatValue];
         }
 
+        NSNumber *paddingSpacing = attributes[@"padding-spacing"];
+        if ([paddingSpacing boolValue]) {
+            top = left = bottom = right = [paddingSpacing floatValue];
+        }
+
         NSNumber *topPaddingAttrib = attributes[@"padding-top"];
         if ([topPaddingAttrib boolValue]) {
             top = [topPaddingAttrib floatValue];
@@ -227,6 +232,16 @@ static int kToggleVisibilityContext;
 - (void)updateIntrinsicContentSize:(void (^)(UIView *view, NSUInteger idx, BOOL *stop))block
 {
     [_stackView.arrangedSubviews enumerateObjectsUsingBlock:block];
+}
+
+- (NSArray<UIView *> *)getArrangedSubviews
+{
+    return _stackView.arrangedSubviews;
+}
+
+- (NSArray<UIView *> *_Nonnull)getContentStackSubviews
+{
+    return _stackView.subviews;
 }
 
 - (void)addArrangedSubview:(UIView *)view
@@ -461,7 +476,9 @@ static int kToggleVisibilityContext;
 
     if ([self.subviews count]) {
         // configures background when this view contains a background image, and does only once
-        renderBackgroundCoverMode(self.subviews[0], self);
+        NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
+        renderBackgroundCoverMode(self.subviews[0], self.backgroundView, constraints, self);
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 
     if (_isActionSet) {
@@ -555,9 +572,18 @@ static int kToggleVisibilityContext;
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if (self.selectActionTarget) {
-        [self.selectActionTarget doSelectAction];
+        return;
     } else {
         [self.nextResponder touchesBegan:touches withEvent:event];
+    }
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if (self.selectActionTarget) {
+        [self.selectActionTarget doSelectAction];
+    } else {
+        [self.nextResponder touchesEnded:touches withEvent:event];
     }
 }
 

@@ -28,6 +28,7 @@ FROM python:3.7.9-slim-buster as frozen_graph
 # Fill in both, as in this case we need both dependencies.
 ADD requirements/requirements-frozen_graph.txt /app/
 ADD requirements/requirements.txt /app/
+RUN printf "\n" >> /app/requirements.txt
 RUN cat /app/requirements-frozen_graph.txt >> /app/requirements.txt
 COPY model/frozen_inference_graph.pb /app/model/
 

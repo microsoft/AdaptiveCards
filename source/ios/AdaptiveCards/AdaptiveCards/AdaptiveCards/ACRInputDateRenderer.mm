@@ -39,7 +39,7 @@
 
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:dateInput inputView:dateField accessibilityItem:dateField.inputView viewGroup:viewGroup dataSource:nil];
     dateField.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
-    
+
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
         [inputContainer addArrangedSubview:inputLabelView];

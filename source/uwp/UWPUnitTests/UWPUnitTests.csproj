@@ -121,7 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FallbackTests.cs" />
-    <Compile Include="ObjectModelTests.cs" />
     <Compile Include="ParserRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App.xaml.cs">
@@ -228,6 +227,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCardsObjectModel\AdaptiveCardsObjectModel.vcxproj">
+      <Project>{29129512-a203-4718-bbed-edaf7f4a02cd}</Project>
+      <Name>AdaptiveCardsObjectModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Renderer\AdaptiveCardRenderer.vcxproj">
       <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
       <Name>AdaptiveCardRenderer</Name>

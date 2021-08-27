@@ -3,12 +3,12 @@
 #include "pch.h"
 #include "XamlHelpers.h"
 #include "XamlBuilder.h"
-#include "AdaptiveImage.h"
 #include "AdaptiveCardGetResourceStreamArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace AdaptiveCards::Rendering::Uwp;
@@ -50,8 +50,9 @@ void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
         }
     }
 
-    ComPtr<IAdaptiveImage> adaptiveImage;
-    THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveImage>(&adaptiveImage));
+    ComPtr<IAdaptiveImage> adaptiveImage =
+        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
 
     HString altText;
@@ -78,7 +79,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
 {
     // Create a rectangle
     ComPtr<IRectangle> rectangle =
-        XamlHelpers::CreateXamlClass<IRectangle>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
+        XamlHelpers::CreateABIClass<IRectangle>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
 
     // Set the size
     ComPtr<IFrameworkElement> rectangleAsFrameworkElement;
@@ -103,7 +104,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(rectangleAsUIElement->put_Opacity(c_playIconOpacity));
 
     // Outline it in the Dark color
-    ABI::AdaptiveCards::Rendering::Uwp::ContainerStyle containerStyle;
+    ABI::AdaptiveCards::ObjectModel::Uwp::ContainerStyle containerStyle;
     THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
     ComPtr<IColorsStatics> colorsStatics;
@@ -117,7 +118,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
 
     // Create a play symbol icon
     ComPtr<ISymbolIcon> playIcon =
-        XamlHelpers::CreateXamlClass<ISymbolIcon>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_SymbolIcon));
+        XamlHelpers::CreateABIClass<ISymbolIcon>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_SymbolIcon));
     THROW_IF_FAILED(playIcon->put_Symbol(Symbol::Symbol_Play));
 
     // Set it's color
@@ -144,8 +145,9 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
 void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
 {
     // Render the custom play icon using the image renderer
-    ComPtr<IAdaptiveImage> playIconAdaptiveImage;
-    THROW_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveImage>(&playIconAdaptiveImage));
+    ComPtr<IAdaptiveImage> playIconAdaptiveImage =
+        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+
     THROW_IF_FAILED(playIconAdaptiveImage->put_Url(playIconString));
 
     ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
@@ -200,7 +202,7 @@ void CreatePosterContainerWithPlayButton(_In_ IImage* posterImage,
                                          _Outptr_ IUIElement** posterContainer)
 {
     ComPtr<IRelativePanel> posterRelativePanel =
-        XamlHelpers::CreateXamlClass<IRelativePanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel));
+        XamlHelpers::CreateABIClass<IRelativePanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel));
 
     ComPtr<IPanel> posterPanel;
     THROW_IF_FAILED(posterRelativePanel.As(&posterPanel));
@@ -365,7 +367,7 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
 
         EventRegistrationToken mediaOpenedToken;
         THROW_IF_FAILED(
-            mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+            mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
                                               boolean audioOnly;
                                               RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
 

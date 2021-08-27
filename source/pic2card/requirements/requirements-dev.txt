@@ -4,3 +4,4 @@ nltk
 scikit-learn
 black
 pylint
+coverage

@@ -43,9 +43,8 @@
                                                      parentStyle:[viewGroup style]
                                                       hostConfig:acoConfig
                                                        superview:viewGroup];
-    column.rtl = rootView.context.rtl;
 
-    renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
+    column.rtl = rootView.context.rtl;
 
     column.pixelWidth = columnElem->GetPixelWidth();
     auto width = columnElem->GetWidth();
@@ -92,14 +91,16 @@
     }
 
     if (columnElem->GetMinHeight() > 0) {
-        [NSLayoutConstraint constraintWithItem:column
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1
-                                      constant:columnElem->GetMinHeight()]
-            .active = YES;
+        NSLayoutConstraint *constraint =
+            [NSLayoutConstraint constraintWithItem:column
+                                         attribute:NSLayoutAttributeHeight
+                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1
+                                          constant:columnElem->GetMinHeight()];
+        constraint.priority = 999;
+        constraint.active = YES;
     }
 
     [column setClipsToBounds:NO];
@@ -122,7 +123,9 @@
             .active = YES;
     }
 
+    // config visibility for column view followed by configuring visibility of the items of column
     configVisibility(column, elem);
+    configVisibilityWithVisibilityManager(rootView, column, column);
 
     [column hideIfSubviewsAreAllHidden];
 
@@ -131,7 +134,11 @@
     // viewGroup and column has to be in view hierarchy before configBleed is called
     configBleed(rootView, elem, column, acoConfig, viewGroup);
 
+    renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
+
     [rootView.context popBaseCardElementContext:acoElem];
+
+    column.accessibilityElements = [column getArrangedSubviews];
 
     return column;
 }

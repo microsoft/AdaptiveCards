@@ -1383,17 +1383,17 @@ export class ActionPeer extends DesignerPeer {
         "mode",
         "Mode",
         [
-            { targetVersion: Adaptive.Versions.v1_5, name: "Primary", value: Adaptive.ActionMode.Primary },
-            { targetVersion: Adaptive.Versions.v1_5, name: "Secondary", value: Adaptive.ActionMode.Secondary }
+            { targetVersion: Adaptive.Versions.v1_5, name: "Primary", value: Adaptive.ActionMode?.Primary },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Secondary", value: Adaptive.ActionMode?.Secondary }
         ]);
     static readonly styleProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_2,
         "style",
         "Style",
         [
-            { targetVersion: Adaptive.Versions.v1_2, name: "Default", value: Adaptive.ActionStyle.Default },
-            { targetVersion: Adaptive.Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle.Positive },
-            { targetVersion: Adaptive.Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle.Destructive }
+            { targetVersion: Adaptive.Versions.v1_2, name: "Default", value: Adaptive.ActionStyle?.Default },
+            { targetVersion: Adaptive.Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle?.Positive },
+            { targetVersion: Adaptive.Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle?.Destructive }
         ]);
     static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
     static readonly tooltipProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "tooltip", "Tooltip");
@@ -2684,7 +2684,16 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
     static readonly defaultValueProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "defaultValue", "Default value");
     static readonly placeholderProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "placeholder", "Placeholder");
     static readonly isMultiselectProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isMultiSelect", "Allow multi selection");
-    static readonly isCompactProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isCompact", "Compact style");
+    static readonly styleProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_0,
+        "style",
+        "Style",
+        [
+            { targetVersion: Adaptive.Versions.v1_0, name: "Compact", value: "compact" },
+            { targetVersion: Adaptive.Versions.v1_0, name: "Expanded", value: "expanded" },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Filtered", value: "filtered" }
+        ],
+        true);
     static readonly wrapProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_2, "wrap", "Wrap");
     static readonly choicesProperty = new NameValuePairPropertyEditor(
         Adaptive.Versions.v1_0,
@@ -2704,7 +2713,7 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
             defaultCategory,
             ChoiceSetInputPeer.placeholderProperty,
             ChoiceSetInputPeer.isMultiselectProperty,
-            ChoiceSetInputPeer.isCompactProperty,
+            ChoiceSetInputPeer.styleProperty,
             ChoiceSetInputPeer.defaultValueProperty);
 
         propertySheet.add(

@@ -61,9 +61,9 @@
         NSDictionary *descriptor = nil;
         NSString *text = nil;
 
-        if (![textMap objectForKey:key]) {
+        if (![textMap objectForKey:key] || rootView.context.isFirstRowAsHeaders) {
             RichTextElementProperties textProp;
-            TextBlockToRichTextElementProperties(txtBlck, [acoConfig getHostConfig], textProp);
+            TexStylesToRichTextElementProperties(txtBlck, [acoConfig getHostConfig]->GetTextStyles().columnHeader, textProp);
             buildIntermediateResultForText(rootView, acoConfig, textProp, key);
         }
 
@@ -78,6 +78,9 @@
             content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
+
+            UpdateFontWithDynamicType(content);
+
             lab.selectable = YES;
             lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
             lab.userInteractionEnabled = YES;
@@ -126,7 +129,7 @@
         lab.textContainer.maximumNumberOfLines = 1;
     }
 
-    if (txtBlck->GetStyle() == TextStyle::Heading) {
+    if (txtBlck->GetStyle() == TextStyle::Heading || rootView.context.isFirstRowAsHeaders) {
         lab.accessibilityTraits |= UIAccessibilityTraitHeader;
     }
 

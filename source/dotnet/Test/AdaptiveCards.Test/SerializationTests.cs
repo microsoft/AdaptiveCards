@@ -256,6 +256,95 @@ namespace AdaptiveCards.Test
             Assert.IsNotNull(result.Card);
         }
 
+        [TestMethod]
+        public void Test_TypeHandling()
+        {
+            AdaptiveCard card = new AdaptiveCard("1.0")
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock("Hello world"),
+                    new AdaptiveImage("http://adaptivecards.io/content/cats/1.png"),
+                    new AdaptiveColumnSet()
+                    {
+                        Columns = new List<AdaptiveColumn>()
+                        {
+                            new AdaptiveColumn()
+                            {
+                                Width = "32px",
+                                Items = new List<AdaptiveElement>()
+                                {
+                                    new AdaptiveTextBlock("1")
+                                    {
+                                        Wrap = true,
+                                        Size = AdaptiveTextSize.Large,
+                                        HorizontalAlignment = AdaptiveHorizontalAlignment.Center,
+                                        Color = AdaptiveTextColor.Accent
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+
+            // make card into JObject with types included
+            JObject cardObject = JObject.FromObject(card, new Newtonsoft.Json.JsonSerializer()
+            {
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All
+            });
+
+            // now bring it back
+            AdaptiveCard card2 = cardObject.ToObject<AdaptiveCard>();
+
+            // card2 will now have AdditionalProperties because $type is not known and it seems $type is not ignored by Newtonsoft JsonExtensionData
+            // so we cannot easily compare the strings. We must remove $type additional property for each element we expect and nothing more
+            String typeProperty = "$type";
+
+            card2.AdditionalProperties.Remove(typeProperty);
+
+            Assert.IsTrue(card2.Body.Count == 3);
+                        
+            AdaptiveTextBlock textBlock = card2.Body[0] as AdaptiveTextBlock;
+
+            Assert.IsNotNull(textBlock);
+
+            textBlock.AdditionalProperties.Remove(typeProperty);
+
+            AdaptiveImage imageElement = card2.Body[1] as AdaptiveImage;
+
+            Assert.IsNotNull(imageElement);
+
+            imageElement.AdditionalProperties.Remove(typeProperty);
+
+            AdaptiveColumnSet columnSet = card2.Body[2] as AdaptiveColumnSet;
+
+            Assert.IsNotNull(columnSet);
+
+            columnSet.AdditionalProperties.Remove(typeProperty);
+
+            Assert.IsTrue(columnSet.Columns.Count == 1);
+
+            AdaptiveColumn column = columnSet.Columns[0];
+
+            column.AdditionalProperties.Remove(typeProperty);
+
+            Assert.IsTrue(column.Items.Count == 1);
+
+            AdaptiveTextBlock columnTextBlock = column.Items[0] as AdaptiveTextBlock;
+
+            Assert.IsNotNull(columnTextBlock);
+
+            columnTextBlock.AdditionalProperties.Remove(typeProperty);
+
+            String cardJson = card.ToJson();
+            String card2Json = card2.ToJson();
+
+            // we have cleaned the additional properties for $type that we expect and nothing more
+            // we should now have same json.
+            Assert.AreEqual(cardJson, card2Json);
+        }
 
         [TestMethod]
         public void Test_MissingTypePropertyThrowsException()
