@@ -13,6 +13,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     private let webexConfig: String = "webex_light_config.json"
     private var darkTheme = false
     private var buttonConfig: ButtonConfig = .default
+    private var inputFieldConfig: InputFieldConfig = .default
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,9 +61,10 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             return
         }
         setupButtonConfig()
+        setupInputFieldConfig()
         switch AdaptiveCard.parseHostConfig(from: hostConfigString) {
         case .success(let config):
-            let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme, buttonConfig: buttonConfig, supportsSchemeV1_3: false, hyperlinkColorConfig: .default ))
+            let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme, buttonConfig: buttonConfig, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: inputFieldConfig))
             
             if let renderedView = stackView.arrangedSubviews.first {
                 renderedView.removeFromSuperview()
@@ -123,6 +125,15 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         self.buttonConfig = buttonConfig
     }
     
+    private func setupInputFieldConfig() {
+        if darkTheme {
+            let image = NSImage(named: "cancel_16_w")
+            inputFieldConfig = InputFieldConfig(height: 26, leftPadding: 8, rightPadding: 8, yPadding: 0, focusRingCornerRadius: 8, borderWidth: 0.3, wantsClearButton: true, clearButtonImage: image, font: .systemFont(ofSize: 14), highlightedColor: NSColor(red: 1, green: 1, blue: 1, alpha: 0.11), backgroundColor: NSColor(red: 0.148, green: 0.148, blue: 0.148, alpha: 1), borderColor: NSColor(red: 1, green: 1, blue: 1, alpha: 0.9))
+        } else {
+            let image = NSImage(named: "cancel_16")
+            inputFieldConfig = InputFieldConfig(height: 26, leftPadding: 8, rightPadding: 8, yPadding: 0, focusRingCornerRadius: 8, borderWidth: 0.3, wantsClearButton: true, clearButtonImage: image, font: .systemFont(ofSize: 14), highlightedColor: NSColor(red: 0, green: 0, blue: 0, alpha: 0.11), backgroundColor: NSColor(red: 1, green: 1, blue: 1, alpha: 1), borderColor: NSColor(red: 0, green: 0, blue: 0, alpha: 0.3))
+        }
+    }
     // MARK: TableView Datasource
     func numberOfRows(in tableView: NSTableView) -> Int {
         return items.count

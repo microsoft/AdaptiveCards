@@ -39,18 +39,20 @@ open class AdaptiveCard {
 }
 
 public struct RenderConfig {
-    public static let `default` = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default)
+    public static let `default` = RenderConfig(isDarkMode: false, buttonConfig: .default, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: .default)
     let isDarkMode: Bool
     let buttonConfig: ButtonConfig
     // swiftlint:disable identifier_name
     let supportsSchemeV1_3: Bool
     let hyperlinkColorConfig: HyperlinkColorConfig
+    let inputFieldConfig: InputFieldConfig
     
-    public init(isDarkMode: Bool, buttonConfig: ButtonConfig, supportsSchemeV1_3: Bool, hyperlinkColorConfig: HyperlinkColorConfig) {
+    public init(isDarkMode: Bool, buttonConfig: ButtonConfig, supportsSchemeV1_3: Bool, hyperlinkColorConfig: HyperlinkColorConfig, inputFieldConfig: InputFieldConfig) {
         self.isDarkMode = isDarkMode
         self.buttonConfig = buttonConfig
 		self.supportsSchemeV1_3 = supportsSchemeV1_3
         self.hyperlinkColorConfig = hyperlinkColorConfig
+        self.inputFieldConfig = inputFieldConfig
     }
 }
 
@@ -108,5 +110,37 @@ public struct HyperlinkColorConfig {
         self.isUnderlined = isUnderlined
         self.underlineColor = isUnderlined ? underlineColor : .clear
         self.underlineStyle = underlineStyle
+    }
+}
+
+public struct InputFieldConfig {
+    public static let `default` = InputFieldConfig(height: 20, leftPadding: 0, rightPadding: -16, yPadding: 0, focusRingCornerRadius: 0, borderWidth: 0.1, wantsClearButton: false, clearButtonImage: nil, font: .systemFont(ofSize: 12), highlightedColor: .lightGray, backgroundColor: .white, borderColor: .black)
+    
+    let height: CGFloat
+    let leftPadding: CGFloat
+    let rightPadding: CGFloat
+    let yPadding: CGFloat
+    let focusRingCornerRadius: CGFloat
+    let borderWidth: CGFloat
+    let wantsClearButton: Bool
+    let clearButtonImage: NSImage?
+    let font: NSFont
+    let highlightedColor: NSColor
+    let backgroundColor: NSColor
+    let borderColor: NSColor
+    
+    public init(height: CGFloat, leftPadding: CGFloat, rightPadding: CGFloat, yPadding: CGFloat, focusRingCornerRadius: CGFloat, borderWidth: CGFloat, wantsClearButton: Bool, clearButtonImage: NSImage?, font: NSFont, highlightedColor: NSColor, backgroundColor: NSColor, borderColor: NSColor) {
+        self.height = height
+        self.leftPadding = leftPadding
+        self.rightPadding = rightPadding
+        self.yPadding = yPadding
+        self.focusRingCornerRadius = focusRingCornerRadius
+        self.borderWidth = borderWidth
+        self.wantsClearButton = wantsClearButton
+        self.clearButtonImage = clearButtonImage
+        self.font = font
+        self.highlightedColor = highlightedColor
+        self.backgroundColor = backgroundColor
+        self.borderColor = borderColor
     }
 }

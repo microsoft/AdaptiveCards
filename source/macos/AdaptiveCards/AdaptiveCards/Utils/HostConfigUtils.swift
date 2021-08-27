@@ -126,6 +126,7 @@ class ColorUtils {
         }
     }
     
+    // TODO: Discard these from here
     static func hoverColorOnMouseEnter() -> NSColor {
         if #available(OSX 10.14, *) {
             return .unemphasizedSelectedTextBackgroundColor

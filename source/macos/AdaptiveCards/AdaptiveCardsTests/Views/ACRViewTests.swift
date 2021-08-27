@@ -6,6 +6,7 @@ class ACRViewTests: XCTestCase {
     private var view: ACRView!
     private var fakeResourceResolver: FakeResourceResolver!
     private var actionDelegate: FakeAdaptiveCardActionDelegate!
+    private var config: RenderConfig!
     
     override func setUp() {
         super.setUp()
@@ -13,6 +14,7 @@ class ACRViewTests: XCTestCase {
         fakeResourceResolver = FakeResourceResolver()
         actionDelegate = FakeAdaptiveCardActionDelegate()
         
+        config = RenderConfig.default
         view.resolverDelegate = fakeResourceResolver
         view.delegate = actionDelegate
     }
@@ -210,8 +212,8 @@ class ACRViewTests: XCTestCase {
     }
     
     func testInputHandlers_WithHiddenViews() {
-        let inputView1 = ACRTextInputView()
-        let inputView2 = ACRTextInputView()
+        let inputView1 = ACRTextInputView(config: config)
+        let inputView2 = ACRTextInputView(config: config)
         
         inputView1.idString = "id-1"
         inputView1.stringValue = "hello"
