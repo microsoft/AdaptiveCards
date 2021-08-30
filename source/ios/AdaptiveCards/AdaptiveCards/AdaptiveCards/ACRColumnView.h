@@ -7,8 +7,9 @@
 #import "ACRContentStackView.h"
 #import "ACRColumnSetView.h"
 #import "ACRIBaseInputHandler.h"
+#import "ACOVisibilityManager.h"
 
-@interface ACRColumnView : ACRContentStackView
+@interface ACRColumnView : ACRContentStackView<ACOIVisibilityManagerFacade>
 
 typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
     ACRColumnWidthPriorityStretch = 249,
@@ -16,7 +17,7 @@ typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
     ACRColumnWidthPriorityAuto,
 };
 
-@property NSString *columnWidth;
+@property (nonatomic) NSString *columnWidth;
 @property CGFloat pixelWidth;
 @property CGFloat relativeWidth;
 @property BOOL hasMoreThanOneRelativeWidth;

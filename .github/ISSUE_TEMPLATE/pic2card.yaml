@@ -1,0 +1,18 @@
+name: Pic2Card bug report
+description: Create a bug report related to the pic2card functionality
+title: "[Pic2Card] <Bug Title>"
+labels: [Bug, Pic2Card, Triage-Reviewed]
+assignees: haridas
+body:
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Details
+      description: To help improve Pic2card please provide the image you used and the expected outcome.
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Expected output
+      description: Describe the expectations you had with this image

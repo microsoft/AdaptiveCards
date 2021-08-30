@@ -33,7 +33,7 @@ class DateFormatter extends AbstractTextFormatter {
         let format = matches[2] != undefined ? matches[2].toLowerCase() : "compact";
 
         if (format != "compact") {
-            return date.toLocaleDateString(lang, { day: "numeric", weekday: format, month: format, year: "numeric" });
+            return date.toLocaleDateString(lang, { day: "numeric", weekday: format, month: format, year: "numeric" } as Intl.DateTimeFormatOptions);
         }
         else {
             return date.toLocaleDateString();
