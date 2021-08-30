@@ -64,8 +64,8 @@
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
-        leadingBlankSpace = [column configurePaddingFor:column];
-        [column addArrangedSubview:leadingBlankSpace];
+//        leadingBlankSpace = [column configurePaddingFor:column];
+//        [column addArrangedSubview:leadingBlankSpace];
     }
 
     ACRColumnSetView *columnsetView = (ACRColumnSetView *)viewGroup;
@@ -79,13 +79,13 @@
           andHostConfig:acoConfig];
 
     if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)) {
-        trailingBlankSpace = [column configurePaddingFor:column];
-        [column addArrangedSubview:trailingBlankSpace];
+//        trailingBlankSpace = [column configurePaddingFor:column];
+//        [column addArrangedSubview:trailingBlankSpace];
     }
 
     if (!column.hasStretchableView) {
-        [column addArrangedSubview:[column configurePaddingFor:column]];
-        column.hasPaddingView = YES;
+//        [column addArrangedSubview:[column configurePaddingFor:column]];
+//        column.hasPaddingView = YES;
     }
 
     if (columnElem->GetMinHeight() > 0) {

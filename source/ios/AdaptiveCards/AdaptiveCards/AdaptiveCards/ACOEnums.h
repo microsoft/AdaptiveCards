@@ -86,3 +86,8 @@ typedef NS_ENUM(NSUInteger, ACRVerticalAlignment) {
     ACRVerticalCenter,
     ACRVerticalBottom
 };
+
+typedef NS_ENUM(NSUInteger, ACRHeightType) {
+    ACRHeightAuto = 0,
+    ACRHeightStretch
+};

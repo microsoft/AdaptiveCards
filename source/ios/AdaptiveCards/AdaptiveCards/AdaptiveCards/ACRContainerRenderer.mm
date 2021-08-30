@@ -65,8 +65,8 @@
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
-        leadingBlankSpace = [container configurePaddingFor:container];
-        [container addArrangedSubview:leadingBlankSpace];
+//        leadingBlankSpace = [container configurePaddingFor:container];
+//        [container addArrangedSubview:leadingBlankSpace];
     }
 
     container.frame = viewGroup.frame;
@@ -80,8 +80,8 @@
     const VerticalContentAlignment adaptiveVAlignment = containerElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top);
     // Dont add the trailing space if the vertical content alignment is top/default
     if (adaptiveVAlignment == VerticalContentAlignment::Center || (adaptiveVAlignment == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
-        trailingBlankSpace = [container configurePaddingFor:container];
-        [container addArrangedSubview:trailingBlankSpace];
+//        trailingBlankSpace = [container configurePaddingFor:container];
+//        [container addArrangedSubview:trailingBlankSpace];
     }
 
     [container setClipsToBounds:NO];

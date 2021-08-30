@@ -137,9 +137,9 @@
     return padding;
 }
 
-- (UIView *)configurePaddingFor:(UIView *)view
+- (void)configurePaddingFor:(UIView *)view
 {
-    return [_paddingHandler configurePaddingFor:view];
+    [_paddingHandler configurePaddingFor:view];
 }
 
 - (UIView *)configPadding:(UIView *)view acoElement:(ACOBaseCardElement *)element

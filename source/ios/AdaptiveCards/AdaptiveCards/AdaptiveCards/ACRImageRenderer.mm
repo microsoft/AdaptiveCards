@@ -95,8 +95,12 @@
         default:
             break;
     }
-
-    [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
+    
+    if (imgElem->GetHeight() == HeightType::Auto) {
+        [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
+    } else {
+        [wrappingView.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
+    }
 
     [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 

@@ -32,9 +32,9 @@
     return NO;
 }
 
-- (UIView *)configurePaddingFor:(UIView *)view
+- (void)configurePaddingFor:(UIView *)view
 {
-    UIView *blankTrailingSpace = [[UIView alloc] init];
+    UIView *blankTrailingSpace = view; //[[UIView alloc] init];
     blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
     [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
     NSMutableArray<NSValue *> *values = [_paddingMap objectForKey:view];
@@ -45,7 +45,7 @@
 
     [values addObject:[NSValue valueWithNonretainedObject:blankTrailingSpace]];
     [_paddingSet addObject:blankTrailingSpace];
-    return blankTrailingSpace;
+    //return blankTrailingSpace;
 }
 
 - (UIView *)configurePaddingFor:(UIView *)view correspondingElement:(ACOBaseCardElement *)correspondingElement
@@ -53,7 +53,8 @@
     UIView *blankTrailingSpace = nil;
 
     if (HeightType::Stretch == correspondingElement.element->GetHeight()) {
-        blankTrailingSpace = [self configurePaddingFor:view];
+        [self configurePaddingFor:view];
+        [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
     }
 
     return blankTrailingSpace;
@@ -63,7 +64,7 @@
 {
     if (_paddingSet.count > 1) {
         NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
-        UIView *prevPadding = nil;        
+        UIView *prevPadding = nil;
         for (NSArray<NSValue *> *values in _paddingMap.objectEnumerator) {
             for (NSValue *value in values) {
                 UIView *padding = [value nonretainedObjectValue];

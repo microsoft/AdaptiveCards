@@ -921,6 +921,20 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
     }
 }
 
+ACRHeightType GetACRHeight(HeightType adaptiveHeight)
+{
+    ACRHeightType height = ACRHeightAuto;
+    switch (adaptiveHeight) {
+        case AdaptiveCards::HeightType::Auto:
+            height = ACRHeightAuto;
+            break;
+        case AdaptiveCards::HeightType::Stretch:
+            height = ACRHeightStretch;
+            break;
+    }
+    return height;
+}
+
 void printSize(NSString *msg, CGSize size)
 {
     NSLog(@"%@, size = %f x %f", msg, size.width, size.height);
