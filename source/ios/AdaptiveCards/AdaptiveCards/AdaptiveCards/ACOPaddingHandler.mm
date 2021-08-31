@@ -11,7 +11,7 @@
 
 @implementation ACOPaddingHandler {
     NSMapTable<UIView *, NSMutableArray<NSValue *> *> *_paddingMap;
-    NSHashTable<UIView *> *_paddingSet;
+    NSHashTable<UIView *> *_stretchableViewSet;
 }
 
 - (instancetype)init
@@ -19,64 +19,73 @@
     self = [super init];
     if (self) {
         _paddingMap = [NSMapTable mapTableWithKeyOptions:NSMapTableWeakMemory valueOptions:NSMapTableStrongMemory];
-        _paddingSet = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
+        _stretchableViewSet = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
     }
     return self;
 }
 
 - (BOOL)hasPadding
 {
-    if (_paddingSet) {
-        return _paddingSet.count != 0;
+    if (_stretchableViewSet) {
+        return _stretchableViewSet.count != 0;
     }
     return NO;
 }
 
-- (void)configurePaddingFor:(UIView *)view
-{
-    UIView *blankTrailingSpace = view; //[[UIView alloc] init];
-    blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
-    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+- (void)addPaddingFor:(UIView *)view {
+    if (!view) {
+        return;
+    }
+    
+    UIView *padding = [[UIView alloc] init];
+    
+    [self configureHugging:padding];
+    
     NSMutableArray<NSValue *> *values = [_paddingMap objectForKey:view];
     if (!values) {
         values = [[NSMutableArray alloc] init];
         [_paddingMap setObject:values forKey:view];
     }
 
-    [values addObject:[NSValue valueWithNonretainedObject:blankTrailingSpace]];
-    [_paddingSet addObject:blankTrailingSpace];
-    //return blankTrailingSpace;
+    [values addObject:[NSValue valueWithNonretainedObject:padding]];
 }
 
-- (UIView *)configurePaddingFor:(UIView *)view correspondingElement:(ACOBaseCardElement *)correspondingElement
+- (void)configureHugging:(UIView *)view {
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+}
+
+- (void)configureHeight:(UIView *)view correspondingElement:(ACOBaseCardElement *)correspondingElement
 {
-    UIView *blankTrailingSpace = nil;
-
-    if (HeightType::Stretch == correspondingElement.element->GetHeight()) {
-        [self configurePaddingFor:view];
-        [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+    if (!view || !correspondingElement || !correspondingElement.element) {
+        return;
     }
-
-    return blankTrailingSpace;
+    
+    if ((HeightType::Stretch == correspondingElement.element->GetHeight()) &&
+        (correspondingElement.type != ACRImage)) {
+        [self configureHugging:view];
+        [_stretchableViewSet addObject:view];
+    }
 }
 
 - (NSArray<NSLayoutConstraint *> *)activateConstraintsForPadding
 {
-    if (_paddingSet.count > 1) {
+    if (_stretchableViewSet.count > 1) {
         NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
         UIView *prevPadding = nil;
-        for (NSArray<NSValue *> *values in _paddingMap.objectEnumerator) {
-            for (NSValue *value in values) {
-                UIView *padding = [value nonretainedObjectValue];
-                if (prevPadding && padding) {
-                    [constraints addObject:[prevPadding.heightAnchor constraintEqualToAnchor:padding.heightAnchor]];
-                    constraints.lastObject.priority = UILayoutPriorityDefaultLow;
-                }
-
-                prevPadding = padding;
+        for (UIView *padding in _stretchableViewSet.objectEnumerator) {
+            if (prevPadding) {
+                [constraints addObject:[prevPadding.heightAnchor constraintEqualToAnchor:padding.heightAnchor]];
+                constraints.lastObject.priority = UILayoutPriorityDefaultLow;
+                
             }
+            prevPadding = padding;
         }
-        [NSLayoutConstraint activateConstraints:constraints];
+        
+        if (constraints && constraints.count) {
+            [NSLayoutConstraint activateConstraints:constraints];
+        }
+        
         return constraints;
     }
     return nil;
@@ -84,7 +93,7 @@
 
 - (BOOL)isPadding:(UIView *)padding
 {
-    return [_paddingSet containsObject:padding];
+    return [_stretchableViewSet containsObject:padding];
 }
 
 @end

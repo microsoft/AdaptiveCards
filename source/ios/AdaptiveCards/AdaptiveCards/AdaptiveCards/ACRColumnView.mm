@@ -5,9 +5,10 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRColumnView.h"
-#import "ACOVisibilityManager.h"
 #import "ACOPaddingHandler.h"
+#import "ACOVisibilityManager.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACRView.h"
 
 @implementation ACRColumnView {
     ACOVisibilityManager *_visibilityManager;
@@ -126,7 +127,8 @@
     [_visibilityManager unhideView:view arrangedSubviews:[self getContentStackSubviews]];
 }
 
-- (BOOL)hasStretchableView {
+- (BOOL)hasStretchableView
+{
     return _paddingHandler.hasPadding;
 }
 
@@ -139,18 +141,49 @@
 
 - (void)configurePaddingFor:(UIView *)view
 {
-    [_paddingHandler configurePaddingFor:view];
+//    [_paddingHandler configureHeight:view];
 }
 
-- (UIView *)configPadding:(UIView *)view acoElement:(ACOBaseCardElement *)element
+- (void)configureHeightFor:(UIView *)view acoElement:(ACOBaseCardElement *)element
 {
-    return [_paddingHandler configurePaddingFor:view correspondingElement:element];
+    [_paddingHandler configureHeight:view correspondingElement:element];
 }
 
-- (void)activatePaddingConstraints
-{
+- (void)configureHeight:(ACRVerticalContentAlignment)verticalContentAlignment
+              minHeight:(NSInteger)minHeight
+             heightType:(ACRHeightType)heightType
+             type:(ACRCardElementType)type
+{    
+    if (!self.hasStretchableView) {
+        if (verticalContentAlignment == ACRVerticalContentAlignmentCenter ||
+            verticalContentAlignment == ACRVerticalContentAlignmentBottom) {
+            UIView *padding = [[UIView alloc] init];
+            [self configurePaddingFor:padding];
+            [self insertArrangedSubview:padding atIndex:0];
+        }
+
+        if (verticalContentAlignment == ACRVerticalContentAlignmentCenter ||
+            (verticalContentAlignment == ACRVerticalContentAlignmentTop &&
+             self.distribution == UIStackViewDistributionFill)) {
+            UIView *padding = [[UIView alloc] init];
+            [self configurePaddingFor:padding];
+            [self addArrangedSubview:padding];
+        }
+    }
+    if (minHeight > 0) {
+        NSLayoutConstraint *constraint =
+            [NSLayoutConstraint constraintWithItem:self
+                                         attribute:NSLayoutAttributeHeight
+                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1
+                                          constant:minHeight];
+        constraint.priority = 999;
+        constraint.active = YES;
+    }
+    
     [_paddingHandler activateConstraintsForPadding];
 }
-
 
 @end

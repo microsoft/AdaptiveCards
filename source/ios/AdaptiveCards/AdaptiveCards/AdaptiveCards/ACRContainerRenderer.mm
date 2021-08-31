@@ -63,12 +63,6 @@
 
     renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
 
-    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
-//        leadingBlankSpace = [container configurePaddingFor:container];
-//        [container addArrangedSubview:leadingBlankSpace];
-    }
-
     container.frame = viewGroup.frame;
 
     [ACRRenderer render:container
@@ -77,26 +71,7 @@
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
 
-    const VerticalContentAlignment adaptiveVAlignment = containerElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top);
-    // Dont add the trailing space if the vertical content alignment is top/default
-    if (adaptiveVAlignment == VerticalContentAlignment::Center || (adaptiveVAlignment == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
-//        trailingBlankSpace = [container configurePaddingFor:container];
-//        [container addArrangedSubview:trailingBlankSpace];
-    }
-
     [container setClipsToBounds:NO];
-
-    if (containerElem->GetMinHeight() > 0) {
-        NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:container
-                                                                      attribute:NSLayoutAttributeHeight
-                                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                         toItem:nil
-                                                                      attribute:NSLayoutAttributeNotAnAttribute
-                                                                     multiplier:1
-                                                                       constant:containerElem->GetMinHeight()];
-        constraint.priority = 999;
-        constraint.active = YES;
-    }
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
@@ -104,12 +79,15 @@
     configVisibility(container, elem);
 
     [container hideIfSubviewsAreAllHidden];
-
-    [container activatePaddingConstraints];
+    
+    [container configureHeight:GetACRVerticalContentAlignment(containerElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top))
+                     minHeight:containerElem->GetMinHeight()
+                    heightType:GetACRHeight(containerElem->GetHeight())
+                          type:ACRContainer];
 
     [rootView.context popBaseCardElementContext:acoElem];
 
-    return viewGroup;
+    return container;
 }
 
 - (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView

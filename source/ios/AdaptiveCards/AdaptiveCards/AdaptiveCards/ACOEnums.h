@@ -81,10 +81,10 @@ typedef NS_ENUM(NSUInteger, ACRHorizontalAlignment) {
 };
 
 
-typedef NS_ENUM(NSUInteger, ACRVerticalAlignment) {
-    ACRVerticalTop = 0,
-    ACRVerticalCenter,
-    ACRVerticalBottom
+typedef NS_ENUM(NSUInteger, ACRVerticalContentAlignment) {
+    ACRVerticalContentAlignmentTop = 0,
+    ACRVerticalContentAlignmentCenter,
+    ACRVerticalContentAlignmentBottom
 };
 
 typedef NS_ENUM(NSUInteger, ACRHeightType) {

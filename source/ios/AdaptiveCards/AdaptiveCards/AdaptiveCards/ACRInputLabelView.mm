@@ -10,6 +10,7 @@
 #import "ACRIContentHoldingView.h"
 #import "ACRInputLabelViewPrivate.h"
 #import "UtiliOS.h"
+#import "ACRQuickReplyView.h"
 
 @implementation ACRInputLabelView
 
@@ -119,6 +120,13 @@
 
         self.inputAccessibilityItem.isAccessibilityElement = YES;
         self.labelText = self.inputAccessibilityItem.accessibilityLabel;
+        
+        if (HeightType::Stretch == inputBlck->GetHeight() && [inputView isKindOfClass:[ACRQuickReplyView class]]) {
+            UIView *padding = [[UIView alloc] init];
+            padding.translatesAutoresizingMaskIntoConstraints = NO;
+            [padding setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+            [self.stack addArrangedSubview:padding];
+        }
 
         self.shouldGroupAccessibilityChildren = NO;
 

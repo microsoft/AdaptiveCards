@@ -113,6 +113,8 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
 
 ACRHeightType GetACRHeight(HeightType adaptiveHeight);
 
+ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment);
+
 void printSize(NSString *msg, CGSize size);
 
 NSData *JsonToNSData(const Json::Value &blob);

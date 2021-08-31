@@ -96,12 +96,15 @@
             break;
     }
     
-    if (imgElem->GetHeight() == HeightType::Auto) {
-        [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
-    } else {
-        [wrappingView.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
+    [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
+    
+    if (imgElem->GetHeight() == HeightType::Stretch) {
+        UIView *padding = [[UIView alloc] init];
+        padding.translatesAutoresizingMaskIntoConstraints = NO;
+        [padding setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+        [viewGroup addArrangedSubview:padding];
     }
-
+   
     [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingView.topAnchor].active = YES;
@@ -119,7 +122,7 @@
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
     }
-    
+
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     // instantiate and add tap gesture recognizer
@@ -146,7 +149,7 @@
     if (view && view.image) {
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
         [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:view.image imageView:view];
-    }   
+    }
     return wrappingView;
 }
 

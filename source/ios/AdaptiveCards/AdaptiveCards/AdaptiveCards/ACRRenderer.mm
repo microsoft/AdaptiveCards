@@ -97,19 +97,6 @@ using namespace AdaptiveCards;
         [verticalView configureForSelectAction:acoSelectAction rootView:rootView];
     }
 
-    if (adaptiveCard->GetMinHeight() > 0) {
-        NSLayoutConstraint *constraint =
-            [NSLayoutConstraint constraintWithItem:rootView
-                                         attribute:NSLayoutAttributeHeight
-                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                            toItem:nil
-                                         attribute:NSLayoutAttributeNotAnAttribute
-                                        multiplier:1
-                                          constant:adaptiveCard->GetMinHeight()];
-        constraint.priority = 999;
-        constraint.active = YES;
-    }
-
     auto backgroundImageProperties = adaptiveCard->GetBackgroundImage();
     if ((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         ObserverActionBlock observerAction =
@@ -134,13 +121,13 @@ using namespace AdaptiveCards;
 
     [rootView addBaseCardElementListToConcurrentQueue:body registration:[ACRRegistration getInstance]];
 
-    UIView *leadingBlankSpace = nil;
-    if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
-        adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
-        leadingBlankSpace = [verticalView addPaddingSpace];
-    }
-
     [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
+    
+    [verticalView configureHeight:GetACRVerticalContentAlignment(adaptiveCard->GetVerticalContentAlignment())
+                        minHeight:adaptiveCard->GetMinHeight()
+                       heightType:GetACRHeight(adaptiveCard->GetHeight())
+                             type:ACRColumn
+     ];
 
     [[rootView card] setInputs:inputs];
 
@@ -214,12 +201,8 @@ using namespace AdaptiveCards;
             }
 
             renderedView = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
-            
             if (columnView) {
-                UIView *padding = [columnView configPadding:renderedView acoElement:acoElem];
-                if (padding) {
-                    [view addArrangedSubview:padding];
-                }
+                [columnView configureHeightFor:renderedView acoElement:acoElem];                
             }
 
             if (separator && !renderedView) {

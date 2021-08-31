@@ -935,6 +935,23 @@ ACRHeightType GetACRHeight(HeightType adaptiveHeight)
     return height;
 }
 
+ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment)
+{
+    ACRVerticalContentAlignment contentAlignment = ACRVerticalContentAlignmentTop;
+    switch (adaptiveVerticalContentAlignment){
+        case AdaptiveCards::VerticalContentAlignment::Top:
+            contentAlignment = ACRVerticalContentAlignmentTop;
+            break;
+        case AdaptiveCards::VerticalContentAlignment::Center:
+            contentAlignment = ACRVerticalContentAlignmentCenter;
+            break;
+        case AdaptiveCards::VerticalContentAlignment::Bottom:
+            contentAlignment = ACRVerticalContentAlignmentBottom;
+            break;
+    }
+    return contentAlignment;
+}
+
 void printSize(NSString *msg, CGSize size)
 {
     NSLog(@"%@, size = %f x %f", msg, size.width, size.height);

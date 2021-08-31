@@ -20,17 +20,21 @@ typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
 @property (nonatomic) NSString *columnWidth;
 @property CGFloat pixelWidth;
 @property CGFloat relativeWidth;
+@property ACRHeightType heightType;
 @property BOOL hasMoreThanOneRelativeWidth;
 @property (nonatomic) BOOL hasStretchableView;
-@property BOOL hasPaddingView;
 @property BOOL isLastColumn;
 @property NSMutableArray<ACRIBaseInputHandler> *inputHandlers;
 @property (weak) ACRColumnSetView *columnsetView;
 
 - (void)configurePaddingFor:(UIView *)view;
 
-- (UIView *)configPadding:(UIView *)view acoElement:(ACOBaseCardElement *)element;
+- (void)configureHeightFor:(UIView *)view acoElement:(ACOBaseCardElement *)element;
 
-- (void)activatePaddingConstraints;
+- (void)configureHeight:(ACRVerticalContentAlignment)verticalContentAlignment
+              minHeight:(NSInteger)minHeight
+             heightType:(ACRHeightType)heightType
+                   type:(ACRCardElementType)type;
+
 
 @end

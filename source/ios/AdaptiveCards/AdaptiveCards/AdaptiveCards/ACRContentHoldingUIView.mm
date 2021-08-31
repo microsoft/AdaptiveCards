@@ -203,9 +203,8 @@ using namespace AdaptiveCards;
 - (void)setHeightConstraint
 {
     [self updateIntrinsicContentSizeOfSelfAndViewGroup];
-    if (self.imageProperties.height != ACRHeightStretch) {
-        heightConstraint = [self setHeightConstraintUtil:self.heightAnchor];
-    }
+    heightConstraint = [self setHeightConstraintUtil:self.heightAnchor];
+    
 }
 
 - (void)setImageViewHeightConstraint

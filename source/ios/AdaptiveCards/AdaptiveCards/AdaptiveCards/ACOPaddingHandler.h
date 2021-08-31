@@ -14,9 +14,9 @@
 
 @property (nonatomic) BOOL hasPadding;
 
-- (void)configurePaddingFor:(UIView *)view;
+- (void)addPaddingFor:(UIView *)view;
 
-- (UIView *)configurePaddingFor:(UIView *)view correspondingElement:(ACOBaseCardElement *)correspondingElement;
+- (void)configureHeight:(UIView *)view correspondingElement:(ACOBaseCardElement *)correspondingElement;
 
 - (NSArray<NSLayoutConstraint *> *)activateConstraintsForPadding;
 

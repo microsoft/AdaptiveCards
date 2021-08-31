@@ -250,11 +250,11 @@
     auto elem = std::make_shared<TextBlock>();
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem];
     UIView *view = [[UIView alloc] init];
-    UIView *padding0 = [paddingHandler configurePaddingFor:view correspondingElement:acoElem];
+    UIView *padding0 = [paddingHandler configureHeight:view correspondingElement:acoElem];
     XCTAssertNil(padding0);
     
     elem->SetHeight(HeightType::Stretch);
-    UIView *padding1 = [paddingHandler configurePaddingFor:view correspondingElement:acoElem];
+    UIView *padding1 = [paddingHandler configureHeight:view correspondingElement:acoElem];
     
     XCTAssertNotNil(padding1);
 }
@@ -279,7 +279,7 @@ NSArray<ACOBaseCardElement *> *buildTextBlocksWithHeightStretch(uint n) {
     for (ACOBaseCardElement *acoElem in textBlocks) {
         UIView *view = [[UIView alloc] init];
         [superView addSubview:view];
-        UIView *padding = [paddingHandler configurePaddingFor:view correspondingElement:acoElem];
+        UIView *padding = [paddingHandler configureHeight:view correspondingElement:acoElem];
         if (padding) {
             [superView addSubview:padding];
         }

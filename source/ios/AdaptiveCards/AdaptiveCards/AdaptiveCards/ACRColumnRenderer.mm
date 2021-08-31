@@ -62,12 +62,6 @@
         }
     }
 
-    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
-//        leadingBlankSpace = [column configurePaddingFor:column];
-//        [column addArrangedSubview:leadingBlankSpace];
-    }
-
     ACRColumnSetView *columnsetView = (ACRColumnSetView *)viewGroup;
     column.isLastColumn = columnsetView.isLastColumn;
     column.columnsetView = columnsetView;
@@ -78,28 +72,10 @@
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
 
-    if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)) {
-//        trailingBlankSpace = [column configurePaddingFor:column];
-//        [column addArrangedSubview:trailingBlankSpace];
-    }
-
-    if (!column.hasStretchableView) {
-//        [column addArrangedSubview:[column configurePaddingFor:column]];
-//        column.hasPaddingView = YES;
-    }
-
-    if (columnElem->GetMinHeight() > 0) {
-        NSLayoutConstraint *constraint =
-            [NSLayoutConstraint constraintWithItem:column
-                                         attribute:NSLayoutAttributeHeight
-                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                            toItem:nil
-                                         attribute:NSLayoutAttributeNotAnAttribute
-                                        multiplier:1
-                                          constant:columnElem->GetMinHeight()];
-        constraint.priority = 999;
-        constraint.active = YES;
-    }
+    [column configureHeight:GetACRVerticalContentAlignment(columnElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top))
+                  minHeight:columnElem->GetMinHeight()
+                 heightType:GetACRHeight(columnElem->GetHeight())
+                       type:ACRColumn];
 
     [column setClipsToBounds:NO];
 
@@ -109,8 +85,6 @@
     [column configureForSelectAction:acoSelectAction rootView:rootView];
 
     column.shouldGroupAccessibilityChildren = YES;
-
-    [column activatePaddingConstraints];
 
     // config visibility for column view followed by configuring visibility of the items of column
     configVisibility(column, elem);

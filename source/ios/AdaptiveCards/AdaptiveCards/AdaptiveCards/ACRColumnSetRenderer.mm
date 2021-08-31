@@ -190,9 +190,9 @@
             [columnSetView setAlignmentForColumnStretch];
         }
 
-        if (curView.hasPaddingView) {
-            [viewsWithPaddingView addObject:curView];
-        }
+//        if (curView.hasPaddingView) {
+//            [viewsWithPaddingView addObject:curView];
+//        }
 
         CGSize size = [curView intrinsicContentSize];
         if (size.width * size.height > maxIntrinsicSize) {
@@ -203,10 +203,10 @@
         prevColumn = column;
     }
 
-    if (columns.size() > 1 && [viewsWithPaddingView containsObject:viewWithMaxSize]) {
-        viewWithMaxSize.hasPaddingView = NO;
-        [viewWithMaxSize removeLastViewFromArrangedSubview];
-    }
+//    if (columns.size() > 1 && [viewsWithPaddingView containsObject:viewWithMaxSize]) {
+//        viewWithMaxSize.hasPaddingView = NO;
+//        [viewWithMaxSize removeLastViewFromArrangedSubview];
+//    }
 
     for (ACRColumnView *view in viewsWithRelativeWidth) {
         if (view != viewWithMinWidth && view.relativeWidth) {
