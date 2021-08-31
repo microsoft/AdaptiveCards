@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
 
 	return {
 		mode: mode,
-		target: 'node',
+		target: 'web',
 		entry: {
 			"adaptivecards-ui-testapp": "./src/adaptivecards-ui-testapp.ts"
 		},
@@ -29,7 +29,10 @@ module.exports = (env, argv) => {
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
-			contentBase: './dist'
+			static: {
+				directory: path.resolve(__dirname, "./dist"),
+			},
+			liveReload: false,
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"]
