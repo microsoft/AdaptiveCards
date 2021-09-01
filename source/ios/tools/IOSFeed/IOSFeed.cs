@@ -157,6 +157,9 @@ namespace AdaptiveCards.Tools.IOSFeed
                 }
 
                 File.WriteAllText(targetFile, output.ToString());
+
+                Console.WriteLine(targetFile);
+                Console.WriteLine(output.ToString());
             }
         }
     }
