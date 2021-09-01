@@ -170,6 +170,12 @@ CGFloat kFileBrowserWidth = 0;
 - (IBAction)deleteAllRows:(id)sender
 {
     [(ACRChatWindow *)self.chatWindow.dataSource deleteAllRows:self.chatWindow];
+    
+    // clean the retrieved inputs
+    if ([self appIsBeingTested])
+    {
+        [self.retrievedInputsTextView setText:@" "];
+    }
 }
 
 - (void)viewDidLoad
@@ -728,8 +734,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (BOOL)appIsBeingTested
 {
-    // Uncomment this line for test recording
-    // return YES;
+    // Add this line for test recording: return YES;
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
     return [arguments containsObject:@"ui-testing"];
 }
