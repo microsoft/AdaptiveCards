@@ -7,8 +7,14 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import java.lang.reflect.Field;
+import java.util.ArrayDeque;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -127,6 +133,42 @@ public class RendererUtil
         private int tagNumber = 0;
         private boolean orderedList = false;
 
+        private String findAttribute(XMLReader xmlReader, String attribute)
+        {
+            try {
+                Field elementField = xmlReader.getClass().getDeclaredField("theNewElement");
+                elementField.setAccessible(true);
+                Object element = elementField.get(xmlReader);
+                Field attsField = element.getClass().getDeclaredField("theAtts");
+                attsField.setAccessible(true);
+                Object atts = attsField.get(element);
+                Field dataField = atts.getClass().getDeclaredField("data");
+                dataField.setAccessible(true);
+                String[] data = (String[])dataField.get(atts);
+                Field lengthField = atts.getClass().getDeclaredField("length");
+                lengthField.setAccessible(true);
+                int len = (Integer)lengthField.get(atts);
+
+                /**
+                 * MSH: Look for supported attributes and add to hash map.
+                 * This is as tight as things can get :)
+                 * The data index is "just" where the keys and values are stored.
+                 */
+                for(int i = 0; i < len; i++)
+                {
+                    if (data[i * 5 + 1].compareToIgnoreCase(attribute) == 0)
+                    {
+                        return data[i * 5 + 4];
+                    }
+                }
+            }
+            catch (Exception e) {
+                return null;
+            }
+
+            return null;
+        }
+
         @Override
         public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader)
         {
@@ -153,7 +195,15 @@ public class RendererUtil
             if (tag.equals("ol") && opening)
             {
                 orderedList = true;
-                tagNumber = 1;
+                String tagNumberString = findAttribute(xmlReader, "start");
+
+                int retrievedTagNumber = 1;
+                if (tagNumberString != null)
+                {
+                    retrievedTagNumber = Integer.parseInt(tagNumberString);
+                }
+
+                tagNumber = retrievedTagNumber;
             }
         }
     }
