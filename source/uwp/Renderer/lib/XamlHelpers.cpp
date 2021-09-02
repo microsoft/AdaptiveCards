@@ -1262,17 +1262,14 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                                                        boolean hasTypeSpecificValidation,
                                                                        winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext)
     {
-        ComPtr<IUIElement> inputLayout;
+        winrt::com_ptr<ABI::Windows::UI::Xaml::IUIElement> abiInputLayout;
         THROW_IF_FAILED(HandleInputLayoutAndValidation(
             adaptiveInput.as<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement>().get(),
             inputUIElement.as<ABI::Windows::UI::Xaml::IUIElement>().get(),
             hasTypeSpecificValidation,
             renderContext.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext>().get(),
-            &inputLayout,
+            abiInputLayout.put(),
             nullptr));
-
-        winrt::com_ptr<ABI::Windows::UI::Xaml::IUIElement> abiInputLayout;
-        *abiInputLayout.put() = inputLayout.Detach();
 
         return abiInputLayout.as<winrt::Windows::UI::Xaml::UIElement>();
     }
