@@ -58,6 +58,6 @@ steps:
   displayName: Push To cocoapods
   inputs:
     targetType: inline
-    script: "# Write your commands here\n\n\nif type brew >/dev/null 2>&1;\nthen \n   brew upgrade cocoapods >/dev/null 2>&1; \n   brew install cocoapods >/dev/null 2>&1; \nfi\n\npod trunk push  ./source/ios/AdaptiveCards.podspec\n"
+    script: "cat ./source/ios/AdaptiveCards.podspec\nif type brew >/dev/null 2>&1;\nthen \n   brew upgrade cocoapods >/dev/null 2>&1; \n   brew install cocoapods >/dev/null 2>&1; \nfi\n\npod trunk push  ./source/ios/AdaptiveCards.podspec\n"
   env:
-    COCOAPOD_TRUNK_TOKEN: $(cocoapod-trunk-token)
+    COCOAPODS_TRUNK_TOKEN: $(cocoapod-trunk-token)
