@@ -13,7 +13,6 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
-import java.lang.reflect.Field;
 import java.util.ArrayDeque;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -128,49 +127,20 @@ public class RendererUtil
     }
 
     // Class to replace ul and li tags
-    public static class UlTagHandler implements Html.TagHandler
+    public static class UlTagHandler implements Html.TagHandler, ContentHandler
     {
         private int tagNumber = 0;
         private boolean orderedList = false;
+        private ContentHandler defaultContentHandler = null;
+        private Editable text = null;
+        private ArrayDeque<Boolean> tagStatusQueue = new ArrayDeque<>();
 
-        private String findAttribute(XMLReader xmlReader, String attribute)
+        private String getAttribute(String attributeName, Attributes attributes)
         {
-            try {
-                Field elementField = xmlReader.getClass().getDeclaredField("theNewElement");
-                elementField.setAccessible(true);
-                Object element = elementField.get(xmlReader);
-                Field attsField = element.getClass().getDeclaredField("theAtts");
-                attsField.setAccessible(true);
-                Object atts = attsField.get(element);
-                Field dataField = atts.getClass().getDeclaredField("data");
-                dataField.setAccessible(true);
-                String[] data = (String[])dataField.get(atts);
-                Field lengthField = atts.getClass().getDeclaredField("length");
-                lengthField.setAccessible(true);
-                int len = (Integer)lengthField.get(atts);
-
-                /**
-                 * MSH: Look for supported attributes and add to hash map.
-                 * This is as tight as things can get :)
-                 * The data index is "just" where the keys and values are stored.
-                 */
-                for(int i = 0; i < len; i++)
-                {
-                    if (data[i * 5 + 1].compareToIgnoreCase(attribute) == 0)
-                    {
-                        return data[i * 5 + 4];
-                    }
-                }
-            }
-            catch (Exception e) {
-                return null;
-            }
-
-            return null;
+            return attributes.getValue(attributeName);
         }
 
-        @Override
-        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader)
+        public boolean handleTag(boolean opening, String tag, Editable output, Attributes attributes)
         {
             if (tag.equals("ul") && !opening)
             {
@@ -195,7 +165,7 @@ public class RendererUtil
             if (tag.equals("ol") && opening)
             {
                 orderedList = true;
-                String tagNumberString = findAttribute(xmlReader, "start");
+                String tagNumberString = getAttribute("start", attributes);
 
                 int retrievedTagNumber = 1;
                 if (tagNumberString != null)
@@ -205,6 +175,104 @@ public class RendererUtil
 
                 tagNumber = retrievedTagNumber;
             }
+
+            return true;
+        }
+
+        @Override
+        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader)
+        {
+            if (defaultContentHandler == null)
+            {
+                // save input text
+                text = output;
+
+                // store default XMLReader object
+                defaultContentHandler = xmlReader.getContentHandler();
+
+                // replace content handler with our own that forwards to calls to default when needed
+                xmlReader.setContentHandler(this);
+
+                // handle endElement() callback for <inject/> tag
+                tagStatusQueue.addLast(Boolean.FALSE);
+            }
+        }
+
+        // ContentHandler override methods
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
+        {
+            boolean isHandled = handleTag(true, localName, text, attributes);
+            tagStatusQueue.addLast(isHandled);
+
+            if (!isHandled)
+            {
+                defaultContentHandler.startElement(uri, localName, qName, attributes);
+            }
+        }
+
+        @Override
+        public void endElement(String uri, String localName, String qName) throws SAXException
+        {
+            if (!tagStatusQueue.removeLast())
+            {
+                defaultContentHandler.endElement(uri, localName, qName);
+            }
+
+            handleTag(false, localName, text, (Attributes)null);
+        }
+
+        @Override
+        public void setDocumentLocator(Locator locator)
+        {
+            defaultContentHandler.setDocumentLocator(locator);
+        }
+
+        @Override
+        public void startDocument() throws SAXException
+        {
+            defaultContentHandler.startDocument();
+        }
+
+        @Override
+        public void endDocument() throws SAXException
+        {
+            defaultContentHandler.endDocument();
+        }
+
+        @Override
+        public void startPrefixMapping(String prefix, String uri) throws SAXException
+        {
+            defaultContentHandler.startPrefixMapping(prefix, uri);
+        }
+
+        @Override
+        public void endPrefixMapping(String prefix) throws SAXException
+        {
+            defaultContentHandler.endPrefixMapping(prefix);
+        }
+
+        @Override
+        public void characters(char[] chars, int start, int length) throws SAXException {
+            defaultContentHandler.characters(chars, start, length);
+        }
+
+        @Override
+        public void ignorableWhitespace(char[] chars, int start, int length) throws SAXException
+        {
+            defaultContentHandler.ignorableWhitespace(chars, start, length);
+        }
+
+        @Override
+        public void processingInstruction(String target, String data) throws SAXException
+        {
+            defaultContentHandler.processingInstruction(target, data);
+        }
+
+        @Override
+        public void skippedEntity(String name) throws SAXException
+        {
+            defaultContentHandler.skippedEntity(name);
         }
     }
 
