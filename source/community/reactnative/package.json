@@ -10,8 +10,8 @@
     "reactnative cards"
   ],
   "author": {
-    "name": "Imaginea",
-    "url": "https://www.imaginea.com/"
+    "name": "BigThinkCode",
+    "url": "https://github.com/BigThinkcode"
   },
   "private": false,
   "license": "MIT",
@@ -23,7 +23,7 @@
     "lint": "eslint ."
   },
   "repository": {
-    "url": "https://github.com/Microsoft/AdaptiveCards/tree/main/source/community/reactnative",
+    "url": "https://github.com/Bigthinkcode/AdaptiveCards/tree/main/source/community/reactnative",
     "type": "git"
   },
   "files": [
