@@ -14,6 +14,11 @@
 	{
 	  "type": "TextBlock",
 	  "text": "3. Third item in the list;"
+	},
+	{
+		"type": "TextBlock",
+		"text": "10. The tenth thing\r10. The list is still going!\r10. Should be 12!",
+		"wrap": true
 	}
   ]
 }
