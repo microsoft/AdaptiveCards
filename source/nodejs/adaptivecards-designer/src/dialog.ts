@@ -67,6 +67,7 @@ export abstract class Dialog {
             dialogFrameElement.className = "acd-dialog-frame";
             dialogFrameElement.style.width = this.width;
             dialogFrameElement.style.height = this.height;
+            dialogFrameElement.style.minHeight = "200px";
             dialogFrameElement.style.justifyContent = "space-between";
             dialogFrameElement.setAttribute("aria-modal", "true");
             dialogFrameElement.setAttribute("role", "dialog");
