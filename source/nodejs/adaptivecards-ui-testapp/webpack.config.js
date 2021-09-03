@@ -15,6 +15,7 @@ module.exports = (env, argv) => {
 
 	return {
 		mode: mode,
+		target: 'web',
 		entry: {
 			"adaptivecards-ui-testapp": "./src/adaptivecards-ui-testapp.ts"
 		},
@@ -28,7 +29,10 @@ module.exports = (env, argv) => {
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
-			contentBase: './dist'
+			static: {
+				directory: path.resolve(__dirname, "./dist"),
+			},
+			liveReload: false,
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"]
@@ -74,6 +78,12 @@ module.exports = (env, argv) => {
 					from: 'src/adaptivecards-ui-testapp.css',
 					to: '.',
 					flatten: true
+				},
+				{
+					from: '../../../samples/',
+					to: './samples/',
+					context: '.',
+					flatten: false
 				}],
 				options: {
 					concurrency: 8
