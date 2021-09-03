@@ -161,10 +161,8 @@
             inputview = inputLabelView;
         }
         txtInput.delegate = textInputHandler;
-
-//        [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
-    
+
     [viewGroup addArrangedSubview:inputview];
 
     inputview.translatesAutoresizingMaskIntoConstraints = false;

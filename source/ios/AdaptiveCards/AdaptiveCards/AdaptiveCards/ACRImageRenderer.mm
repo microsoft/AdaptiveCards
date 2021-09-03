@@ -95,16 +95,14 @@
         default:
             break;
     }
-    
+
     [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
-    
+
+    // added padding to strech for image view because stretching ImageView is not desirable
     if (imgElem->GetHeight() == HeightType::Stretch) {
-        UIView *padding = [[UIView alloc] init];
-        padding.translatesAutoresizingMaskIntoConstraints = NO;
-        [padding setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
-        [viewGroup addArrangedSubview:padding];
+        [viewGroup addArrangedSubview:[(ACRColumnView *)viewGroup addPaddingFor:wrappingView]];
     }
-   
+
     [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingView.topAnchor].active = YES;

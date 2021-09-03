@@ -5,15 +5,17 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
+#import "ACOAdaptiveCardPrivate.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOPaddingHandler.h"
 #import "ACORenderContext.h"
 #import "ACOVisibilityManager.h"
-#import "ACOPaddingHandler.h"
-#import "ACRColumnView.h"
+#import "ACRRenderer.h"
 #import "ACRSeparator.h"
+#import "ACRView.h"
 #import "Column.h"
-#import "TextBlock.h"
-#import "ACOBaseCardElementPrivate.h"
 #import "Enums.h"
+#import "TextBlock.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
@@ -21,16 +23,31 @@
 
 @end
 
-@implementation AdaptiveCardsColumnTests
+@implementation AdaptiveCardsColumnTests {
+    NSBundle *_mainBundle;
+}
 
 - (void)setUp
 {
+    _mainBundle = [NSBundle bundleForClass:[self class]];
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
+}
+
+- (NSArray<ACOAdaptiveCard *> *)prepCards:(NSArray<NSString *> *)fileNames
+{
+    NSMutableArray<ACOAdaptiveCard *> *cards = [[NSMutableArray alloc] init];
+    for (NSString *fileName in fileNames) {
+        NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:fileName ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+        ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+        XCTAssertTrue(cardParseResult.isValid);
+        [cards addObject:cardParseResult.card];
+    }
+    return cards;
 }
 
 - (void)testVisibilityManagerSimple
@@ -244,6 +261,7 @@
     XCTAssertNotNil(paddingHandler);
 }
 
+#if 0
 - (void)testPaddingConfigurePadding
 {
     ACOPaddingHandler *paddingHandler = [[ACOPaddingHandler alloc] init];
@@ -258,8 +276,10 @@
     
     XCTAssertNotNil(padding1);
 }
+#endif
 
-NSArray<ACOBaseCardElement *> *buildTextBlocksWithHeightStretch(uint n) {
+NSArray<ACOBaseCardElement *> *buildTextBlocksWithHeightStretch(uint n)
+{
     NSMutableArray<ACOBaseCardElement *> *textBlocks = [[NSMutableArray alloc] init];
     for (uint i = 0; i < n; i++) {
         auto elem0 = std::make_shared<TextBlock>();
@@ -267,10 +287,11 @@ NSArray<ACOBaseCardElement *> *buildTextBlocksWithHeightStretch(uint n) {
         ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem0];
         [textBlocks addObject:acoElem];
     }
-    
+
     return textBlocks;
 }
 
+#if 0
 - (void)testPaddingActivateConstraints
 {
     NSArray<ACOBaseCardElement *> *textBlocks = buildTextBlocksWithHeightStretch(3);
@@ -291,6 +312,58 @@ NSArray<ACOBaseCardElement *> *buildTextBlocksWithHeightStretch(uint n) {
     XCTAssertNotNil(constraints);
     XCTAssertTrue(constraints.count == 2);
 }
+#endif
 
+- (void)testPaddingOnSampleCards0
+{
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:@[ @"Column.VerticalAlignment" ]];
+    XCTAssertNotNil(cards);
+    XCTAssertEqual(cards.count, 1);
+    ACRRenderResult *renderResult = [ACRRenderer render:cards[0] config:nil widthConstraint:320.0];
+    XCTAssertEqual(renderResult.succeeded, YES);
+    [self dfsAt:renderResult.view
+          depth:1
+           test:^(UIView *testView) {
+               if ([testView isKindOfClass:[ACRColumnSetView class]]) {
+                   ACRColumnSetView *columnSetView = (ACRColumnSetView *)testView;
+                   ACRColumnView *left = (ACRColumnView *)[columnSetView getArrangedSubviews][2];
+                   ACRColumnView *center = (ACRColumnView *)[columnSetView getArrangedSubviews][4];
+                   ACRColumnView *right = (ACRColumnView *)[columnSetView getArrangedSubviews][6];
+                   XCTAssertEqual(2, [left getArrangedSubviews].count);
+                   XCTAssertEqual(3, [center getArrangedSubviews].count);
+                   XCTAssertEqual(2, [right getArrangedSubviews].count);
+               }
+           }];
+}
+
+- (void)testPaddingOnSampleCards1
+{
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:@[ @"Container.VerticalContentAlignment" ]];
+
+    ACRRenderResult *renderResult = [ACRRenderer render:cards[0] config:nil widthConstraint:320.0];
+    XCTAssertEqual(renderResult.succeeded, YES);
+    [self dfsAt:renderResult.view
+          depth:0
+           test:^(UIView *testView) {
+               ACRColumnView *superView = (ACRColumnView *)testView;
+               ACRColumnView *center = (ACRColumnView *)[superView getArrangedSubviews][2];
+               ACRColumnView *bottom = (ACRColumnView *)[superView getArrangedSubviews][4];
+               XCTAssertEqual(3, [center getArrangedSubviews].count);
+               XCTAssertEqual(2, [bottom getArrangedSubviews].count);
+           }];
+}
+
+- (void)dfsAt:(UIView *)view depth:(NSUInteger)depth test:(void (^)(UIView *testView))test
+{
+    if (depth == 0) {
+        test(view);
+    }
+
+    if ([view isKindOfClass:[ACRContentStackView class]]) {
+        for (UIView *subView in [((ACRContentStackView *)view) getArrangedSubviews]) {
+            [self dfsAt:subView depth:depth - 1 test:test];
+        }
+    }
+}
 
 @end

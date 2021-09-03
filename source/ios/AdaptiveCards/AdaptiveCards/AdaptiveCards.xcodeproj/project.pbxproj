@@ -177,8 +177,11 @@
 		6BD025ED254784670009B019 /* ACOInputResults.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD025EB254784660009B019 /* ACOInputResults.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BD025EE254784670009B019 /* ACOInputResults.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BD025EC254784670009B019 /* ACOInputResults.mm */; };
 		6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6BDD085426D5727C00969B41 /* ACOPaddingHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BDD085226D5727C00969B41 /* ACOPaddingHandler.h */; };
+		6BDD085426D5727C00969B41 /* ACOPaddingHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BDD085226D5727C00969B41 /* ACOPaddingHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BDD085526D5727C00969B41 /* ACOPaddingHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BDD085326D5727C00969B41 /* ACOPaddingHandler.mm */; };
+		6BE6C7A526E17132009E9171 /* ColumnSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7A426E17132009E9171 /* ColumnSet.VerticalStretch.json */; };
+		6BE6C7A926E191AB009E9171 /* Column.VerticalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7A826E191AB009E9171 /* Column.VerticalAlignment.json */; };
+		6BE6C7AB26E19651009E9171 /* Container.VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7AA26E19651009E9171 /* Container.VerticalContentAlignment.json */; };
 		6BE8DFD4249C4C1B005EFE66 /* ACRToggleInputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
 		6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -606,6 +609,9 @@
 		6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputLabelViewPrivate.h; sourceTree = "<group>"; };
 		6BDD085226D5727C00969B41 /* ACOPaddingHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOPaddingHandler.h; sourceTree = "<group>"; };
 		6BDD085326D5727C00969B41 /* ACOPaddingHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOPaddingHandler.mm; sourceTree = "<group>"; };
+		6BE6C7A426E17132009E9171 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.VerticalStretch.json; path = ../../../../../../samples/v1.1/Tests/ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
+		6BE6C7A826E191AB009E9171 /* Column.VerticalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.VerticalAlignment.json; path = ../../../../../../samples/v1.1/Tests/Column.VerticalAlignment.json; sourceTree = "<group>"; };
+		6BE6C7AA26E19651009E9171 /* Container.VerticalContentAlignment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Container.VerticalContentAlignment.json; path = ../../../../../../samples/v1.1/Elements/Container.VerticalContentAlignment.json; sourceTree = "<group>"; };
 		6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRToggleInputView.mm; sourceTree = "<group>"; };
 		6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRToggleInputView.h; sourceTree = "<group>"; };
 		6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRQuickReplyView.h; sourceTree = "<group>"; };
@@ -1057,6 +1063,23 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
+		6BE6C79426E1560A009E9171 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6BE6C79F26E17077009E9171 /* TestFiles */ = {
+			isa = PBXGroup;
+			children = (
+				6BE6C7AA26E19651009E9171 /* Container.VerticalContentAlignment.json */,
+				6BE6C7A826E191AB009E9171 /* Column.VerticalAlignment.json */,
+				6BE6C7A426E17132009E9171 /* ColumnSet.VerticalStretch.json */,
+			);
+			path = TestFiles;
+			sourceTree = "<group>";
+		};
 		6BFCA139264F548600195CA7 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1143,6 +1166,8 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
+				6BE6C79F26E17077009E9171 /* TestFiles */,
+				6BE6C79426E1560A009E9171 /* Helpers */,
 				6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */,
 				6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */,
 				6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */,
@@ -1518,7 +1543,6 @@
 				F4D0694B205B27EA003645E4 /* ACRViewController.h in Headers */,
 				F4FE45661F196E7B0071D9E5 /* ACRColumnView.h in Headers */,
 				F4F6BA36204F200F003741B6 /* ACRParseWarning.h in Headers */,
-				6BDD085426D5727C00969B41 /* ACOPaddingHandler.h in Headers */,
 				F4F44B9D204A16BC00A2F24C /* ACRTextBlockRenderer.h in Headers */,
 				F4F44B9C204A169D00A2F24C /* ACRErrors.h in Headers */,
 				F4F44B9A204A164100A2F24C /* ACRInputToggleRenderer.h in Headers */,
@@ -1660,6 +1684,7 @@
 				6B124C9F26BCB2FE007E9641 /* ACOVisibilityManager.h in Headers */,
 				6B92A7E62677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h in Headers */,
 				0D3485FD26193BA500614EB9 /* ACROverflowTarget.h in Headers */,
+				6BDD085426D5727C00969B41 /* ACOPaddingHandler.h in Headers */,
 				0D45F5A7261731E400EF03C5 /* ACRActionOverflowRenderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1789,6 +1814,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BE6C7AB26E19651009E9171 /* Container.VerticalContentAlignment.json in Resources */,
+				6BE6C7A926E191AB009E9171 /* Column.VerticalAlignment.json in Resources */,
+				6BE6C7A526E17132009E9171 /* ColumnSet.VerticalStretch.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

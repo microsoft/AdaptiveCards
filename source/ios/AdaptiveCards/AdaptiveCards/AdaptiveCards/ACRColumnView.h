@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
 @property NSMutableArray<ACRIBaseInputHandler> *inputHandlers;
 @property (weak) ACRColumnSetView *columnsetView;
 
-- (void)configurePaddingFor:(UIView *)view;
+- (UIView *)addPaddingFor:(UIView *)view;
 
 - (void)configureHeightFor:(UIView *)view acoElement:(ACOBaseCardElement *)element;
 

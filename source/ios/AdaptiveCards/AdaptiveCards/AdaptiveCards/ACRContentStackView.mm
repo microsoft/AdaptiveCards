@@ -246,14 +246,18 @@ static int kToggleVisibilityContext;
 
 - (void)addArrangedSubview:(UIView *)view
 {
-    [_stackView addArrangedSubview:view];
-    [self configureVisibilityOfView:view];
+    if (view) {
+        [_stackView addArrangedSubview:view];
+        [self configureVisibilityOfView:view];
+    }
 }
 
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)insertionIndex
 {
-    [_stackView insertArrangedSubview:view atIndex:insertionIndex];
-    [self configureVisibilityOfView:view];
+    if (view) {
+        [_stackView insertArrangedSubview:view atIndex:insertionIndex];
+        [self configureVisibilityOfView:view];
+    }
 }
 
 - (void)configureVisibilityOfView:(UIView *)view

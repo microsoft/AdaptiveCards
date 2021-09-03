@@ -122,12 +122,11 @@ using namespace AdaptiveCards;
     [rootView addBaseCardElementListToConcurrentQueue:body registration:[ACRRegistration getInstance]];
 
     [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
-    
+
     [verticalView configureHeight:GetACRVerticalContentAlignment(adaptiveCard->GetVerticalContentAlignment())
                         minHeight:adaptiveCard->GetMinHeight()
                        heightType:GetACRHeight(adaptiveCard->GetHeight())
-                             type:ACRColumn
-     ];
+                             type:ACRColumn];
 
     [[rootView card] setInputs:inputs];
 
@@ -167,11 +166,7 @@ using namespace AdaptiveCards;
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
-    ACRColumnView *columnView = nil;
-    
-    if ([view isKindOfClass:[ACRColumnView class]]) {
-        columnView = (ACRColumnView *)view;
-    }
+
     UIView *renderedView = nil;
 
     auto firstelem = elems.begin();
@@ -201,8 +196,10 @@ using namespace AdaptiveCards;
             }
 
             renderedView = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
-            if (columnView) {
-                [columnView configureHeightFor:renderedView acoElement:acoElem];                
+
+            if ([view isKindOfClass:[ACRColumnView class]]) {
+                ACRColumnView *columnView = (ACRColumnView *)view;
+                [columnView configureHeightFor:renderedView acoElement:acoElem];
             }
 
             if (separator && !renderedView) {

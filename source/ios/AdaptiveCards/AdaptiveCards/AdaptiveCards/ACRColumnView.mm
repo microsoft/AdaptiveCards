@@ -5,9 +5,8 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACOPaddingHandler.h"
-#import "ACOVisibilityManager.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOPaddingHandler.h"
 #import "ACRView.h"
 
 @implementation ACRColumnView {
@@ -139,9 +138,9 @@
     return padding;
 }
 
-- (void)configurePaddingFor:(UIView *)view
+- (UIView *)addPaddingFor:(UIView *)view
 {
-//    [_paddingHandler configureHeight:view];
+    return [_paddingHandler addPaddingFor:view];
 }
 
 - (void)configureHeightFor:(UIView *)view acoElement:(ACOBaseCardElement *)element
@@ -152,22 +151,18 @@
 - (void)configureHeight:(ACRVerticalContentAlignment)verticalContentAlignment
               minHeight:(NSInteger)minHeight
              heightType:(ACRHeightType)heightType
-             type:(ACRCardElementType)type
-{    
+                   type:(ACRCardElementType)type
+{
     if (!self.hasStretchableView) {
         if (verticalContentAlignment == ACRVerticalContentAlignmentCenter ||
             verticalContentAlignment == ACRVerticalContentAlignmentBottom) {
-            UIView *padding = [[UIView alloc] init];
-            [self configurePaddingFor:padding];
-            [self insertArrangedSubview:padding atIndex:0];
+            [self insertArrangedSubview:[self addPaddingFor:self] atIndex:0];
         }
 
         if (verticalContentAlignment == ACRVerticalContentAlignmentCenter ||
             (verticalContentAlignment == ACRVerticalContentAlignmentTop &&
              self.distribution == UIStackViewDistributionFill)) {
-            UIView *padding = [[UIView alloc] init];
-            [self configurePaddingFor:padding];
-            [self addArrangedSubview:padding];
+            [self addArrangedSubview:[self addPaddingFor:self]];
         }
     }
     if (minHeight > 0) {
@@ -182,7 +177,7 @@
         constraint.priority = 999;
         constraint.active = YES;
     }
-    
+
     [_paddingHandler activateConstraintsForPadding];
 }
 

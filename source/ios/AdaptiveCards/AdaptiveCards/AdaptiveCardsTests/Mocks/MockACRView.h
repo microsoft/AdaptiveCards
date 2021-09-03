@@ -10,7 +10,7 @@
 
 @interface MockACRView : ACRView
 
-@property MockContext *mockContext;
+@property (nonatomic) MockContext *mockContext;
 
 @end
 

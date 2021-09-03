@@ -32,25 +32,30 @@
     return NO;
 }
 
-- (void)addPaddingFor:(UIView *)view {
+- (UIView *)addPaddingFor:(UIView *)view
+{
     if (!view) {
-        return;
+        return nil;
     }
-    
+
     UIView *padding = [[UIView alloc] init];
-    
+
     [self configureHugging:padding];
-    
+
     NSMutableArray<NSValue *> *values = [_paddingMap objectForKey:view];
     if (!values) {
         values = [[NSMutableArray alloc] init];
         [_paddingMap setObject:values forKey:view];
     }
 
+    [_stretchableViewSet addObject:padding];
     [values addObject:[NSValue valueWithNonretainedObject:padding]];
+
+    return padding;
 }
 
-- (void)configureHugging:(UIView *)view {
+- (void)configureHugging:(UIView *)view
+{
     view.translatesAutoresizingMaskIntoConstraints = NO;
     [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
 }
@@ -60,7 +65,7 @@
     if (!view || !correspondingElement || !correspondingElement.element) {
         return;
     }
-    
+
     if ((HeightType::Stretch == correspondingElement.element->GetHeight()) &&
         (correspondingElement.type != ACRImage)) {
         [self configureHugging:view];
@@ -77,15 +82,14 @@
             if (prevPadding) {
                 [constraints addObject:[prevPadding.heightAnchor constraintEqualToAnchor:padding.heightAnchor]];
                 constraints.lastObject.priority = UILayoutPriorityDefaultLow;
-                
             }
             prevPadding = padding;
         }
-        
+
         if (constraints && constraints.count) {
             [NSLayoutConstraint activateConstraints:constraints];
         }
-        
+
         return constraints;
     }
     return nil;
