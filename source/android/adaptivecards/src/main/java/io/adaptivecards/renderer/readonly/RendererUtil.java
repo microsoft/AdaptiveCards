@@ -142,9 +142,12 @@ public class RendererUtil
 
         public boolean handleTag(boolean opening, String tag, Editable output, Attributes attributes)
         {
+            boolean tagWasHandled = false;
+
             if (tag.equals("ul") && !opening)
             {
                 output.append("\n");
+                tagWasHandled = true;
             }
 
             if (tag.equals("listItem") && opening)
@@ -160,6 +163,7 @@ public class RendererUtil
                 {
                     output.append("\n• ");
                 }
+                tagWasHandled = true;
             }
 
             if (tag.equals("ol") && opening)
@@ -174,9 +178,10 @@ public class RendererUtil
                 }
 
                 tagNumber = retrievedTagNumber;
+                tagWasHandled = true;
             }
 
-            return true;
+            return tagWasHandled;
         }
 
         @Override
