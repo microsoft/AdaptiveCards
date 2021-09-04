@@ -135,12 +135,17 @@ map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveInputs, AdaptiveCards::
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext, AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionsConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionsConfig);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionInvoker, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionInvoker);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveElementRendererRegistration,
+               AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRendererRegistration);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionRendererRegistration,
+               AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRendererRegistration);
 map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMedia);
 map_rt_to_abi_(Windows::Foundation::Uri, Windows::Foundation::IUriRuntimeClass);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig);
 map_rt_to_abi_(Windows::UI::Xaml::DependencyObject, Windows::UI::Xaml::IDependencyObject);
 map_rt_to_abi_(Windows::UI::Xaml::Controls::TextBox, Windows::UI::Xaml::Controls::ITextBox);
 map_rt_to_abi_(Windows::UI::Xaml::Controls::ColumnDefinition, Windows::UI::Xaml::Controls::IColumnDefinition);
+map_rt_to_abi_(Windows::UI::Xaml::Media::Brush, Windows::UI::Xaml::Media::IBrush);
 
 template<typename I> auto to_winrt(I* src)
 {
@@ -164,12 +169,12 @@ inline auto to_winrt(Microsoft::WRL::Wrappers::HString const& abi)
 
 template<typename I> auto to_wrl(I const& i)
 {
-    return reinterpret_cast<Microsoft::WRL::ComPtr<const winrt_to_abi<I>::type>&>(i);
+    return reinterpret_cast<Microsoft::WRL::ComPtr<const winrt_to_abi<std::decay_t<I>>::type>&>(i);
 }
 
 template<typename I> auto to_wrl(I&& i)
 {
-    return reinterpret_cast<Microsoft::WRL::ComPtr<winrt_to_abi<I>::type>&>(i);
+    return reinterpret_cast<Microsoft::WRL::ComPtr<winrt_to_abi<std::decay_t<I>>::type>&>(i);
 }
 
 HRESULT WStringToHString(std::wstring_view in, _Outptr_ HSTRING* out) noexcept;
@@ -432,10 +437,10 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveT
 
 namespace AdaptiveCards::Rendering::WinUI3
 {
-    class XamlBuilder;
+    struct XamlBuilder;
 
     template<class TRegistration>
-    HRESULT RegisterDefaultElementRenderers(TRegistration registration, Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder)
+    HRESULT RegisterDefaultElementRenderers(TRegistration registration, XamlBuilder* xamlBuilder)
     {
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ActionSet").Get(),
                                            Make<AdaptiveCards::Rendering::WinUI3::AdaptiveActionSetRenderer>().Get()));

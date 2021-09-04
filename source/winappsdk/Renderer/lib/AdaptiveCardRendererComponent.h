@@ -2,84 +2,110 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinUI3.h"
 #include "XamlBuilder.h"
+#include "AdaptiveCardRenderer.g.h"
+#include "AdaptiveHostConfig.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class XamlBuilder;
+    namespace rtxaml = ::winrt::Windows::UI::Xaml;
 
     // This class is effectively a singleton, and stays around between subsequent renders.
-    class AdaptiveCardRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardRenderer>,
-                                              Microsoft::WRL::FtmBase>
+    struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer>
     {
-        AdaptiveRuntime(AdaptiveCardRenderer);
+    private:
+        rtxaml::ResourceDictionary m_overrideDictionary;
+        WinUI3::AdaptiveHostConfig m_hostConfig;
+        WinUI3::AdaptiveFeatureRegistration m_featureRegistration;
+        winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> m_xamlBuilder;
+        bool m_explicitDimensions = false;
+        uint32_t m_desiredWidth = 0;
+        uint32_t m_desiredHeight = 0;
+
+        winrt::com_ptr<implementation::AdaptiveHostConfig> GetHostConfig()
+        {
+            return peek_innards<implementation::AdaptiveHostConfig>(m_hostConfig);
+        }
 
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveCardRenderer();
 
         // IAdaptiveCardRenderer
-        IFACEMETHODIMP put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary) override;
-        IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary) override;
-        IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig) override;
-        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig** hostConfig) override;
-        IFACEMETHODIMP put_FeatureRegistration(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration* featureRegistration) override;
-        IFACEMETHODIMP get_FeatureRegistration(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration** featureRegistration) override;
-        IFACEMETHODIMP SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight) override;
-        IFACEMETHODIMP ResetFixedDimensions() override;
+        void OverrideStyles(rtxaml::ResourceDictionary const& overrideDictionary)
+        {
+            m_overrideDictionary = overrideDictionary;
+            SetMergedDictionary();
+        }
 
-        IFACEMETHODIMP get_OverflowMaxActions(_Out_ boolean* overflowMaxActions) override;
-        IFACEMETHODIMP put_OverflowMaxActions(boolean overflowMaxActions) override;
+        rtxaml::ResourceDictionary OverrideStyles() { return m_overrideDictionary; }
 
-        IFACEMETHODIMP get_OverflowButtonText(_Outptr_ HSTRING* overflowButtonText) override;
-        IFACEMETHODIMP put_OverflowButtonText(_In_ HSTRING overflowButtonText) override;
+        void HostConfig(WinUI3::AdaptiveHostConfig const& hostConfig)
+        {
+            m_hostConfig = hostConfig;
+            UpdateActionSentimentResourceDictionary();
+        }
 
-        IFACEMETHODIMP get_OverflowButtonAccessibilityText(_Outptr_ HSTRING* overflowButtonAccessibilityText) override;
-        IFACEMETHODIMP put_OverflowButtonAccessibilityText(_In_ HSTRING overflowButtonAccessibilityText) override;
+        WinUI3::AdaptiveHostConfig HostConfig() { return m_hostConfig; }
 
-        IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
-                                          _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IRenderedAdaptiveCard** result) override;
+        void FeatureRegistration(WinUI3::AdaptiveFeatureRegistration const& featureRegistration)
+        {
+            m_featureRegistration = featureRegistration;
+        }
 
-        IFACEMETHODIMP RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                        _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IRenderedAdaptiveCard** result) override;
+        WinUI3::AdaptiveFeatureRegistration FeatureRegistration();
 
-        IFACEMETHODIMP RenderAdaptiveCardFromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
-                                                  _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IRenderedAdaptiveCard** result) override;
+        void SetFixedDimensions(uint32_t desiredWidth, uint32_t desiredHeight);
+        void ResetFixedDimensions();
 
-        IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRendererRegistration** result) override;
-        IFACEMETHODIMP get_ActionRenderers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRendererRegistration** result) override;
+        void OverflowMaxActions(bool overflowMaxActions);
+        bool OverflowMaxActions();
 
-        ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* GetHostConfig();
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetMergedDictionary();
-        bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::WinUI3::XamlBuilder> GetXamlBuilder();
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetActionSentimentResourceDictionary();
+        hstring OverflowButtonText() { return GetHostConfig()->OverflowButtonText; }
+        void OverflowButtonText(hstring const& overflowButtonText)
+        {
+            return GetHostConfig()->OverflowButtonText = overflowButtonText;
+        }
 
-        IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers** value);
+        hstring OverflowButtonAccessibilityText() { return GetHostConfig()->OverflowButtonAccessibilityText; }
+        void OverflowButtonAccessibilityText(hstring const& text)
+        {
+            return GetHostConfig()->OverflowButtonAccessibilityText = text;
+        }
+
+        WinUI3::RenderedAdaptiveCard RenderAdaptiveCard(ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard);
+        WinUI3::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
+        WinUI3::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson);
+
+        auto ElementRenderers() { return m_elementRendererRegistration; }
+        auto ActionRenderers() { return m_actionRendererRegistration; }
+
+        rtxaml::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
+        bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
+        winrt::com_ptr<::AdaptiveCards::Rendering::WinUI3::XamlBuilder> GetXamlBuilder() { return m_xamlBuilder; }
+        rtxaml::ResourceDictionary GetActionSentimentResourceDictionary()
+        {
+            return m_actionSentimentResourceDictionary;
+        }
+
+        auto ResourceResolvers() { return m_resourceResolvers; }
 
     private:
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
-        HRESULT TryInsertResourceToSentimentResourceDictionary(const std::wstring& resourceName, _In_ IInspectable* value);
-        HRESULT SetMergedDictionary();
+        void TryInsertResourceToSentimentResourceDictionary(std::wstring_view const& resourceName, winrt::Windows::Foundation::IInspectable const& value);
+        void SetMergedDictionary();
 
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_actionSentimentResourceDictionary;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig> m_hostConfig;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration> m_featureRegistration;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardResourceResolvers> m_resourceResolvers;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRendererRegistration> m_actionRendererRegistration;
-
-        Microsoft::WRL::ComPtr<AdaptiveCards::Rendering::WinUI3::XamlBuilder> m_xamlBuilder;
-        bool m_explicitDimensions = false;
-        UINT32 m_desiredWidth = 0;
-        UINT32 m_desiredHeight = 0;
+        rtxaml::ResourceDictionary m_defaultResourceDictionary;
+        rtxaml::ResourceDictionary m_mergedResourceDictionary;
+        rtxaml::ResourceDictionary m_actionSentimentResourceDictionary;
+        WinUI3::AdaptiveCardResourceResolvers m_resourceResolvers;
+        WinUI3::AdaptiveElementRendererRegistration m_elementRendererRegistration;
+        WinUI3::AdaptiveActionRendererRegistration m_actionRendererRegistration;
     };
-
-    ActivatableClass(AdaptiveCardRenderer);
+}
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveCardRenderer : AdaptiveCardRendererT<AdaptiveCardRenderer, implementation::AdaptiveCardRenderer>
+    {
+    };
 }

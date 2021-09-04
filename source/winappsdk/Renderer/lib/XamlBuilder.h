@@ -11,19 +11,11 @@
 
 namespace AdaptiveCards::Rendering::WinUI3
 {
-    class AdaptiveCardRenderer;
-
-    class XamlBuilder
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::FtmBase,
-                                              AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener>
+    struct XamlBuilder : winrt::implements<XamlBuilder, ::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener>
     {
-        friend HRESULT Microsoft::WRL::Details::MakeAndInitialize<AdaptiveCards::Rendering::WinUI3::XamlBuilder, AdaptiveCards::Rendering::WinUI3::XamlBuilder>(
-            AdaptiveCards::Rendering::WinUI3::XamlBuilder**);
-
-        AdaptiveRuntimeStringClass(XamlBuilder);
-
     public:
+        XamlBuilder();
+
         // IImageLoadTrackerListener
         STDMETHODIMP AllImagesLoaded() noexcept;
         STDMETHODIMP ImagesLoadingHadError() noexcept;
@@ -34,8 +26,16 @@ namespace AdaptiveCards::Rendering::WinUI3
                                                      Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
                                                      ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle defaultContainerStyle =
                                                          ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle::Default) noexcept;
-        HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
-        HRESULT RemoveListener(_In_ IXamlBuilderListener* listener) noexcept;
+
+        static winrt::Windows::UI::Xaml::FrameworkElement
+        BuildXamlTreeFromAdaptiveCard(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
+                                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext renderContext,
+                                      XamlBuilder* xamlBuilder,
+                                      winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle defaultContainerStyle =
+                                          winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle::Default);
+
+        HRESULT AddListener(_In_ ::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener) noexcept;
+        HRESULT RemoveListener(_In_ ::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener* listener) noexcept;
         void SetFixedDimensions(UINT width, UINT height) noexcept;
         void SetEnableXamlImageHandling(bool enableXamlImageHandling) noexcept;
 
@@ -52,10 +52,8 @@ namespace AdaptiveCards::Rendering::WinUI3
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
 
     private:
-        XamlBuilder();
-
-        ImageLoadTracker m_imageLoadTracker;
-        std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
+        ::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker m_imageLoadTracker;
+        std::set<Microsoft::WRL::ComPtr<::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener>> m_listeners;
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT64, UINT64>>> m_copyStreamOperations;
