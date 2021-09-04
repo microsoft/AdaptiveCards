@@ -1048,7 +1048,7 @@ a.default-ac-anchor:visited:active {
 /* PIC2CARD css changes*/
 .acd-pic2card-container {
     display: flex;
-    overflow: hidden;
+    overflow: auto;
     background-color: #f9f9f9;
     margin: 10px;
     position: relative;
@@ -1088,6 +1088,7 @@ a.default-ac-anchor:visited:active {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    min-width: 200px;
     height: 100%;
 }
 
@@ -1095,11 +1096,10 @@ a.default-ac-anchor:visited:active {
     display: flex;
     flex: 1;
     flex-direction: column;
-    border-right: solid 1px #dddbdb;
 }
 
 .acd-image-title {
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
     margin-top: 20px;
     font-family: Helvetica;
@@ -1108,7 +1108,7 @@ a.default-ac-anchor:visited:active {
 }
 
 .acd-image-title-content {
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
     margin-top: 10px;
     font-family: Helvetica;
@@ -1119,7 +1119,7 @@ a.default-ac-anchor:visited:active {
 
 .acd-image-file-container {
     width: 394px;
-    min-height: 394px;
+    min-height: 300px;
     margin-top: 30px;
     display: flex;
     align-self: center;
@@ -1337,6 +1337,7 @@ a.default-ac-anchor:visited:active {
 
 .acd-sample-container {
     display: flex;
+    flex-wrap: wrap;
     height: calc(100% - 21px);
 }
 
@@ -1350,7 +1351,7 @@ a.default-ac-anchor:visited:active {
 }
 
 .acd-sample-image {
-    max-width: 40%;
+    max-width: 90%;
     margin: 12px;
     cursor: pointer;
 }
