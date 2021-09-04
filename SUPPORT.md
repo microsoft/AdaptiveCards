@@ -76,8 +76,8 @@ The following SDKs are not developed or maintained by Microsoft. They are develo
 
 | **SDK** | **Maintainer** | **Support Level** |
 | --- | --- | --- |
-| ReactNative | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/Contributors.md) | Community |
-| Pic2Card | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/Contributors.md) | Community |
+| ReactNative | [BigThinkCode](https://github.com/BigThinkcode) | Community |
+| Pic2Card | [BigThinkCode](https://github.com/BigThinkcode) | Community |
 | Vue.js | [Tim Cadenbach](https://github.com/DeeJayTC) | Community |
 
 ## Release Types
