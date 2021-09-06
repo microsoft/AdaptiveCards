@@ -20,7 +20,6 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         var attributedInitialValue: NSMutableAttributedString
         
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.isBordered = true
         textView.isEditable = true
 
         if let maxLen = inputBlock.getMaxLength(), Int(truncating: maxLen) > 0 {
@@ -40,7 +39,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         
         if inputBlock.getIsMultiline() {
-            let multilineView = ACRMultilineInputTextView()
+            let multilineView = ACRMultilineInputTextView(config: config.inputFieldConfig)
             multilineView.setId(inputBlock.getId())
             multilineView.setVisibilty(to: inputBlock.getIsVisible())
             if let placeholderString = inputBlock.getPlaceholder() {

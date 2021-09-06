@@ -7,10 +7,12 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     @IBOutlet var textView: ACRTextView!
     
     private var placeholderAttrString: NSAttributedString?
+    private let config: InputFieldConfig
     var maxLen: Int = 0
     var id: String?
     
-    init() {
+    init(config: InputFieldConfig) {
+        self.config = config
         super.init(frame: .zero)
         BundleUtils.loadNibNamed("ACRMultilineInputTextView", owner: self)
         textView.allowsUndo = true
@@ -37,8 +39,9 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        scrollView.wantsLayer = true
+        scrollView.focusRingCornerRadius = config.focusRingCornerRadius
         scrollView.focusRingType = .exterior
-        scrollView.borderType = NSBorderType.bezelBorder
         scrollView.autohidesScrollers = true
         scrollView.disableScroll = true
         textView.delegate = self
@@ -47,6 +50,14 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         textView.isAutomaticDashSubstitutionEnabled = false
         textView.isAutomaticTextReplacementEnabled = false
         textView.smartInsertDeleteEnabled = false
+        textView.font = config.font
+        textView.textContainer?.lineFragmentPadding = config.leftPadding
+        textView.wantsLayer = true
+        textView.layer?.borderColor = config.borderColor.cgColor
+        textView.layer?.borderWidth = config.borderWidth
+        textView.layer?.cornerRadius = config.focusRingCornerRadius
+        textView.backgroundColor = config.backgroundColor
+        
         // For hover need tracking area
         let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
         addTrackingArea(trackingArea)
@@ -54,7 +65,8 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     
     func setPlaceholder(placeholder: String) {
         let placeholderValue = NSMutableAttributedString(string: placeholder)
-        placeholderValue.addAttributes([.foregroundColor: NSColor.placeholderTextColor], range: NSRange(location: 0, length: placeholderValue.length))
+        placeholderValue.addAttributes([.foregroundColor: NSColor.placeholderTextColor, .font: config.font], range: NSRange(location: 0, length: placeholderValue.length))
+        textView.placeholderLeftPadding = config.leftPadding
         textView.placeholderAttrString = placeholderValue
     }
     
@@ -88,11 +100,11 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     }
     
     override func mouseEntered(with event: NSEvent) {
-        textView.backgroundColor = ColorUtils.hoverColorOnMouseEnter()
+        textView.backgroundColor = config.highlightedColor
     }
     
     override func mouseExited(with event: NSEvent) {
-        textView.backgroundColor = ColorUtils.hoverColorOnMouseExit()
+        textView.backgroundColor = config.backgroundColor
     }
 }
 

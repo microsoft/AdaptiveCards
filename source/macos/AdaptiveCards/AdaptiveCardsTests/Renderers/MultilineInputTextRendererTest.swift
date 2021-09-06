@@ -19,7 +19,7 @@ class MultilineInputTextRendererTest: XCTestCase {
         inputText = .make(placeholderString: placeholderString, isMultiline: true)
         
         let inputTextField = renderTextInput()
-        XCTAssertEqual(inputTextField.textView.placeholderAttrString , NSMutableAttributedString(string: placeholderString, attributes: [.foregroundColor: NSColor.placeholderTextColor]))
+        XCTAssertEqual(inputTextField.textView.placeholderAttrString , NSMutableAttributedString(string: placeholderString, attributes: [.foregroundColor: NSColor.placeholderTextColor, .font: RenderConfig.default.inputFieldConfig.font]))
     }
     
     func testRendersValue() throws {
