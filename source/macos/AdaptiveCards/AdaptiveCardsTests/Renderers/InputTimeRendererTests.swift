@@ -51,10 +51,10 @@ class InputTimeRendererTest: XCTestCase {
         inputTime = .make(value: val)
 
         let inputTimeField = renderTimeInput()
-        inputTimeField.clearButton.performClick()
+        inputTimeField.textField.clearButton.performClick()
         XCTAssertNil(inputTimeField.dateValue)
         XCTAssertEqual(inputTimeField.textField.stringValue, "")
-        XCTAssertTrue(inputTimeField.clearButton.isHidden)
+        XCTAssertTrue(inputTimeField.textField.clearButton.isHidden)
     }
     
     func testClearButtonHiddenWithPlaceholder() {
@@ -62,14 +62,14 @@ class InputTimeRendererTest: XCTestCase {
         inputTime = .make(placeholder: placeholderString)
 
         let inputTimeField = renderTimeInput()
-        XCTAssertTrue(inputTimeField.clearButton.isHidden)
+        XCTAssertTrue(inputTimeField.textField.clearButton.isHidden)
     }
 
     func testClearButtonHiddenWithNoText() {
         inputTime = .make()
 
         let inputTimeField = renderTimeInput()
-        XCTAssertTrue(inputTimeField.clearButton.isHidden)
+        XCTAssertTrue(inputTimeField.textField.clearButton.isHidden)
     }
 
     func testClearButtonVisibleWithText() {
@@ -77,7 +77,7 @@ class InputTimeRendererTest: XCTestCase {
         inputTime = .make(value: val)
 
         let inputTimeField = renderTimeInput()
-        XCTAssertFalse(inputTimeField.clearButton.isHidden)
+        XCTAssertFalse(inputTimeField.textField.clearButton.isHidden)
     }
     
     func testValueShownOnlyForRightInputFormat() {

@@ -1,12 +1,30 @@
 import AdaptiveCards_bridge
 import AppKit
 
+protocol ACRTextFieldDelegate: AnyObject {
+    func acrTextFieldDidSelectClear(_ textField: ACRTextField)
+}
+
 class ACRTextField: NSTextField {
+    weak var textFieldDelegate: ACRTextFieldDelegate?
     private let config: InputFieldConfig
+    private let isDarkMode: Bool?
+    private let isDateTimeMode: Bool
     
-    init(frame frameRect: NSRect, config: RenderConfig) {
+    init(dateTimeFieldWith config: RenderConfig) {
         self.config = config.inputFieldConfig
-        super.init(frame: frameRect)
+        self.isDateTimeMode = true
+        isDarkMode = config.isDarkMode
+        super.init(frame: .zero)
+        initialise()
+        setupConstraints()
+    }
+    
+    init(config: InputFieldConfig) {
+        self.config = config
+        self.isDateTimeMode = false
+        self.isDarkMode = nil
+        super.init(frame: .zero)
         initialise()
         setupConstraints()
     }
@@ -17,10 +35,22 @@ class ACRTextField: NSTextField {
 
     private func initialise() {
         let customCell = VerticallyCenteredTextFieldCell()
-        customCell.setupSpacing(rightPadding: config.rightPadding, leftPadding: config.leftPadding, focusRingCornerRadius: config.focusRingCornerRadius, borderWidth: config.borderWidth, borderColor: config.borderColor)
+        // 20 points extra padding for calendar/clock icons
+        var leftPadding: CGFloat = 0
+        if isDateTimeMode {
+            // 20 is image width and 12 is the spacing after image to text
+            leftPadding += 32
+            if config.clearButtonImage == nil {
+                // Implies old date field, so clear button hugs edge
+                leftPadding -= 12
+            }
+        } else {
+            leftPadding += config.leftPadding
+        }
+        customCell.setupSpacing(rightPadding: config.rightPadding, leftPadding: leftPadding, focusRingCornerRadius: config.focusRingCornerRadius, borderWidth: config.borderWidth, borderColor: config.borderColor, wantsClearButton: wantsClearButton)
         cell = customCell
         font = config.font
-        if config.wantsClearButton {
+        if wantsClearButton {
             addSubview(clearButton)
             clearButton.isHidden = true
         }
@@ -31,15 +61,24 @@ class ACRTextField: NSTextField {
     }
     
     private func setupConstraints() {
+        translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: config.height).isActive = true
-        if config.wantsClearButton {
+        if wantsClearButton {
             clearButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -config.rightPadding).isActive = true
             clearButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         }
     }
     
     private (set) lazy var clearButton: NSButtonWithImageSpacing = {
-        let view = NSButtonWithImageSpacing(image: config.clearButtonImage ?? NSImage(), target: self, action: #selector(handleClearAction))
+        let clearImage: NSImage?
+        if let isDarkMode = isDarkMode, config.clearButtonImage == nil, wantsClearButton {
+            // displaying old clear button
+            let resourceName = isDarkMode ? "clear_18_w" : "clear_18"
+            clearImage = BundleUtils.getImage(resourceName, ofType: "png")
+        } else {
+            clearImage = config.clearButtonImage
+        }
+        let view = NSButtonWithImageSpacing(image: clearImage ?? NSImage(), target: self, action: #selector(handleClearAction))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.clear.cgColor
@@ -53,6 +92,7 @@ class ACRTextField: NSTextField {
     
     @objc private func handleClearAction() {
         self.stringValue = ""
+        textFieldDelegate?.acrTextFieldDidSelectClear(self)
         updateClearButton()
     }
 
@@ -62,6 +102,12 @@ class ACRTextField: NSTextField {
     }
     
     override var attributedStringValue: NSAttributedString {
+        didSet {
+            updateClearButton()
+        }
+    }
+    
+    override var stringValue: String {
         didSet {
             updateClearButton()
         }
@@ -85,6 +131,10 @@ class ACRTextField: NSTextField {
     private func updateClearButton() {
         clearButton.isHidden = isEmpty
     }
+    
+    private var wantsClearButton: Bool {
+        return config.wantsClearButton || isDateTimeMode
+    }
 }
 
  class VerticallyCenteredTextFieldCell: NSTextFieldCell {
@@ -94,14 +144,16 @@ class ACRTextField: NSTextField {
     private var focusRingCornerRadius: CGFloat = 0
     private var borderWidth: CGFloat = 0.1
     private var borderColor: NSColor = .black
+    private var wantsClearButton: Bool = false
 
-    func setupSpacing(rightPadding: CGFloat = 0, leftPadding: CGFloat = 0, yPadding: CGFloat = 0, focusRingCornerRadius: CGFloat = 0, borderWidth: CGFloat = 0.1, borderColor: NSColor = .black) {
+    func setupSpacing(rightPadding: CGFloat = 0, leftPadding: CGFloat = 0, yPadding: CGFloat = 0, focusRingCornerRadius: CGFloat = 0, borderWidth: CGFloat = 0.1, borderColor: NSColor = .black, wantsClearButton: Bool) {
         self.leftPadding = leftPadding
         self.rightPadding = rightPadding
         self.yPadding = yPadding
         self.focusRingCornerRadius = focusRingCornerRadius
         self.borderWidth = borderWidth
         self.borderColor = borderColor
+        self.wantsClearButton = wantsClearButton
     }
 
     override func titleRect(forBounds rect: NSRect) -> NSRect {
@@ -112,7 +164,7 @@ class ACRTextField: NSTextField {
         titleRect.size.height = minimumHeight
         titleRect.origin.x += leftPadding
         // 16px is the image size(clear button)
-        titleRect.size.width -= rightPadding + leftPadding + 16
+        titleRect.size.width -= rightPadding + leftPadding + (wantsClearButton ? 16 : 0)
         return titleRect
     }
 

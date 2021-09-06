@@ -18,29 +18,24 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         return formatter
     }()
     
-    private (set) lazy var textField: NSTextField = {
-        let view = NSTextField()
+    private (set) lazy var textField: ACRTextField = {
+        let view = ACRTextField(dateTimeFieldWith: config)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isEditable = true
         view.isSelectable = false
-        view.isBordered = true
+        view.cell?.lineBreakMode = .byTruncatingTail
+        view.stringValue = ""
+        view.textFieldDelegate = self
        return view
-    }()
-    
-    private (set) lazy var clearButton: NSButtonWithImageSpacing = {
-        let resourceName = isDarkMode ? "clear_18_w" : "clear_18"
-        let view = NSButtonWithImageSpacing(image: BundleUtils.getImage(resourceName, ofType: "png") ?? NSImage(), target: self, action: #selector(handleClearAction))
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.clear.cgColor
-        view.isBordered = false
-        return view
     }()
 
     private lazy var iconButton: NSButtonWithImageSpacing = {
         let calendarResourceName = isDarkMode ? "calendar-month-dark" : "calendar-month-light"
         let clockResourceName = isDarkMode ? "recents_20_w" : "recents_20"
-        let view = NSButtonWithImageSpacing(image: (isTimeMode ? BundleUtils.getImage(clockResourceName, ofType: "png") ?? NSImage() : BundleUtils.getImage(calendarResourceName, ofType: "png") ?? NSImage()), target: self, action: #selector(mouseDown(with:)))
+        let calendarImage = BundleUtils.getImage(calendarResourceName, ofType: "png")
+        let clockImage = BundleUtils.getImage(clockResourceName, ofType: "png")
+        let inputFieldConfig = config.inputFieldConfig
+        let view = NSButtonWithImageSpacing(image: (isTimeMode ? inputFieldConfig.clockImage ?? clockImage : inputFieldConfig.calendarImage ?? calendarImage) ?? NSImage(), target: self, action: #selector(handleOpenPickerAction))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.clear.cgColor
@@ -61,6 +56,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     private var popover: NSPopover?
     let isTimeMode: Bool
     let isDarkMode: Bool
+    let config: RenderConfig
 
     var selectedDate: Date? {
         didSet {
@@ -68,10 +64,6 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
                 textField.stringValue = dateFormatterOut.string(from: selectedDate)
                 datePickerCalendar.dateValue = selectedDate
                 datePickerTextfield.dateValue = selectedDate
-                clearButton.isHidden = false
-            } else {
-                textField.stringValue = ""
-                clearButton.isHidden = true
             }
         }
     }
@@ -121,13 +113,13 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         return true
     }
     
-    init(isTimeMode: Bool, isDarkMode: Bool) {
+    init(isTimeMode: Bool, config: RenderConfig) {
         self.isTimeMode = isTimeMode
-        self.isDarkMode = isDarkMode
+        self.isDarkMode = config.isDarkMode
+        self.config = config
         super.init(frame: .zero)
         setupViews()
         setupConstraints()
-        setupTrackingArea()
     }
     
     required init?(coder: NSCoder) {
@@ -136,39 +128,25 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     
     private func setupViews() {
         addSubview(textField)
-        addSubview(clearButton)
         addSubview(iconButton)
     }
     
     private func setupConstraints() {
-        textField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        // To display the curved border which is drawn in ACRTextField, 2px additional space is needed
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2).isActive = true
         textField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         textField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        textField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        clearButton.trailingAnchor.constraint(equalTo: iconButton.leadingAnchor).isActive = true
-        clearButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        iconButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -2).isActive = true
+        iconButton.leadingAnchor.constraint(equalTo: textField.leadingAnchor, constant: config.inputFieldConfig.leftPadding).isActive = true
         iconButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
-    private func setupTrackingArea() {
-        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
-        addTrackingArea(trackingArea)
-    }
-    
-    @objc private func handleClearAction() {
-        selectedDate = nil
-    }
-    
-    override func mouseEntered(with event: NSEvent) {
-        guard let contentView = event.trackingArea?.owner as? ACRDateField else { return }
-        contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseEnter()
-    }
-    override func mouseExited(with event: NSEvent) {
-        guard let contentView = event.trackingArea?.owner as? ACRDateField else { return }
-        contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseExit()
-    }
     override func mouseDown(with event: NSEvent) {
+        handleOpenPickerAction()
+        super.mouseDown(with: event)
+    }
+    
+    @objc private func handleOpenPickerAction() {
         let frame = isTimeMode ? NSRect(x: 0, y: 0, width: 122, height: 122) : NSRect(x: 0, y: 0, width: 138, height: 147)
         if let dateValue = selectedDate {
             datePickerCalendar.dateValue = dateValue
@@ -259,5 +237,11 @@ extension NSPopover {
 
         // Draw the button content with padding
         super.draw(drawRect)
+    }
+}
+
+extension ACRDateField: ACRTextFieldDelegate {
+    func acrTextFieldDidSelectClear(_ textField: ACRTextField) {
+        selectedDate = nil
     }
 }

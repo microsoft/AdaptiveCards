@@ -15,7 +15,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             view.translatesAutoresizingMaskIntoConstraints = false
             return view
         }()
-        let textView = ACRTextInputView(config: config)
+        let textView = ACRTextInputView(config: config.inputFieldConfig)
         textView.idString = inputBlock.getId()
         var attributedInitialValue: NSMutableAttributedString
         
@@ -160,14 +160,6 @@ class ACRTextInputView: ACRTextField, InputHandlingViewProtocol {
     
     var maxLen: Int = 0
     var idString: String?
-    
-    init(config: RenderConfig) {
-        super.init(frame: .zero, config: config)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func textDidChange(_ notification: Notification) {
         super.textDidChange(notification)
