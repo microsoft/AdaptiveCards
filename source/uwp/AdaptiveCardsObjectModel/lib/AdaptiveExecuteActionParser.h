@@ -2,26 +2,25 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.Uwp.h"
+#include "AdaptiveExecuteActionParser.g.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class AdaptiveExecuteActionParser
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser>
+    struct AdaptiveExecuteActionParser : AdaptiveExecuteActionParserT<AdaptiveExecuteActionParser>
     {
-        AdaptiveRuntime(AdaptiveExecuteActionParser);
+        AdaptiveExecuteActionParser() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP FromJson(
-            _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** element) noexcept override;
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement FromJson(
+            winrt::Windows::Data::Json::JsonObject const& inputJson,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
+            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings);
     };
-
-    ActivatableClass(AdaptiveExecuteActionParser);
+}
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveExecuteActionParser
+        : AdaptiveExecuteActionParserT<AdaptiveExecuteActionParser, implementation::AdaptiveExecuteActionParser>
+    {
+    };
 }

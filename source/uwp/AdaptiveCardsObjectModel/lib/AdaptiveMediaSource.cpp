@@ -2,50 +2,21 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveMediaSource.h"
+#include "AdaptiveMediaSource.g.cpp"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveMediaSource::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveMediaSource::AdaptiveMediaSource(const std::shared_ptr<::AdaptiveCards::MediaSource>& sharedMediaSource)
     {
-        std::shared_ptr<AdaptiveCards::MediaSource> mediaSource = std::make_shared<AdaptiveCards::MediaSource>();
-        return RuntimeClassInitialize(mediaSource);
+        MimeType = UTF8ToHString(sharedMediaSource->GetMimeType());
+        Url = UTF8ToHString(sharedMediaSource->GetUrl());
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveMediaSource::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::MediaSource>& sharedMediaSource)
-    try
+    std::shared_ptr<::AdaptiveCards::MediaSource> AdaptiveMediaSource::GetSharedModel()
     {
-        if (sharedMediaSource == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        RETURN_IF_FAILED(UTF8ToHString(sharedMediaSource->GetMimeType(), m_mimeType.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedMediaSource->GetUrl(), m_url.GetAddressOf()));
-
-        return S_OK;
+        auto mediaSource = std::make_shared<::AdaptiveCards::MediaSource>();
+        mediaSource->SetMimeType(HStringToUTF8(MimeType));
+        mediaSource->SetUrl(HStringToUTF8(Url));
+        return mediaSource;
     }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveMediaSource::get_MimeType(_Outptr_ HSTRING* value) { return m_mimeType.CopyTo(value); }
-
-    HRESULT AdaptiveMediaSource::put_MimeType(_In_ HSTRING value) { return m_mimeType.Set(value); }
-
-    HRESULT AdaptiveMediaSource::get_Url(_Outptr_ HSTRING* value) { return m_url.CopyTo(value); }
-
-    HRESULT AdaptiveMediaSource::put_Url(_In_ HSTRING value) { return m_url.Set(value); }
-
-    HRESULT AdaptiveMediaSource::GetSharedModel(std::shared_ptr<AdaptiveCards::MediaSource>& sharedMediaSource)
-    try
-    {
-        std::shared_ptr<AdaptiveCards::MediaSource> mediaSource = std::make_shared<AdaptiveCards::MediaSource>();
-
-        mediaSource->SetMimeType(HStringToUTF8(m_mimeType.Get()));
-        mediaSource->SetUrl(HStringToUTF8(m_url.Get()));
-
-        sharedMediaSource = std::move(mediaSource);
-        return S_OK;
-    }
-    CATCH_RETURN;
 }

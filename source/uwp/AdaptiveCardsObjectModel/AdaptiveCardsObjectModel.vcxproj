@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="..\packages\Microsoft.ProjectReunion.0.8.2\build\native\Microsoft.ProjectReunion.props" Condition="Exists('..\packages\Microsoft.ProjectReunion.0.8.2\build\native\Microsoft.ProjectReunion.props')" />
+  <Import Project="..\packages\Microsoft.ProjectReunion.WinUI.0.8.2\build\native\Microsoft.ProjectReunion.WinUI.props" Condition="Exists('..\packages\Microsoft.ProjectReunion.WinUI.0.8.2\build\native\Microsoft.ProjectReunion.WinUI.props')" />
+  <Import Project="..\packages\Microsoft.ProjectReunion.Foundation.0.8.2\build\native\Microsoft.ProjectReunion.Foundation.props" Condition="Exists('..\packages\Microsoft.ProjectReunion.Foundation.0.8.2\build\native\Microsoft.ProjectReunion.Foundation.props')" />
+  <Import Project="..\packages\Microsoft.ProjectReunion.DWrite.0.8.2\build\Microsoft.ProjectReunion.DWrite.props" Condition="Exists('..\packages\Microsoft.ProjectReunion.DWrite.0.8.2\build\Microsoft.ProjectReunion.DWrite.props')" />
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210806.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210806.1\build\native\Microsoft.Windows.CppWinRT.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|ARM">
       <Configuration>Debug</Configuration>
@@ -38,18 +42,20 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{29129512-A203-4718-BBED-EDAF7F4A02CD}</ProjectGuid>
     <Keyword>AdaptiveCards</Keyword>
-    <RootNamespace>AdaptiveCards.ObjectModel.Uwp</RootNamespace>
+    <RootNamespace>AdaptiveCards.ObjectModel.WinUI3</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
-    <TargetName>AdaptiveCards.ObjectModel.Uwp</TargetName>
+    <TargetName>AdaptiveCards.ObjectModel.WinUI3</TargetName>
     <GenerateManifest>false</GenerateManifest>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
+    <CppWinRTFastAbi>true</CppWinRTFastAbi>
+    <CppWinRTOptimized>true</CppWinRTOptimized>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
@@ -89,7 +95,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ModuleDefinitionFile>.\dll\AdaptiveCards.ObjectModel.Uwp.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>.\dll\AdaptiveCards.ObjectModel.WinUI3.def</ModuleDefinitionFile>
       <AdditionalDependencies>
         user32.lib;
         %(AdditionalDependencies);
@@ -128,6 +134,7 @@
     <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionParser.cpp" />
+    <ClCompile Include="lib\AdaptiveFactParser.cpp" />
     <ClCompile Include="lib\AdaptiveRefresh.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
@@ -155,6 +162,7 @@
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveElementParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveDateInputParser.h" />
+    <ClInclude Include="lib\AdaptiveFactParser.h" />
     <ClInclude Include="lib\AdaptiveFactSetParser.h" />
     <ClInclude Include="lib\AdaptiveImageParser.h" />
     <ClInclude Include="lib\AdaptiveImageSetParser.h" />
@@ -210,10 +218,8 @@
     <ClInclude Include="lib\AdaptiveShowCardAction.h" />
     <ClInclude Include="lib\AdaptiveSubmitAction.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
-    <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\ObjectModelUtil.h" />
-    <ClInclude Include="lib\Vector.h" />
     <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp">
       <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
@@ -295,7 +301,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl">
+    <Midl Include="idl\AdaptiveCards.ObjectModel.WinUI3.idl">
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <!-- Enable Windows Runtime ABI header files. when /reference is passed to midl.exe, the ABI head includes headers
            like Windows.AI.MachineLearning.MachineLearningContract.h which doesn't exist actually in SDK. To workaround
@@ -309,13 +315,27 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.210806.1\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210806.1\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="..\packages\Microsoft.ProjectReunion.DWrite.0.8.2\build\Microsoft.ProjectReunion.DWrite.targets" Condition="Exists('..\packages\Microsoft.ProjectReunion.DWrite.0.8.2\build\Microsoft.ProjectReunion.DWrite.targets')" />
+    <Import Project="..\packages\Microsoft.ProjectReunion.Foundation.0.8.2\build\native\Microsoft.ProjectReunion.Foundation.targets" Condition="Exists('..\packages\Microsoft.ProjectReunion.Foundation.0.8.2\build\native\Microsoft.ProjectReunion.Foundation.targets')" />
+    <Import Project="..\packages\Microsoft.ProjectReunion.InteractiveExperiences.0.8.2\build\native\Microsoft.ProjectReunion.InteractiveExperiences.targets" Condition="Exists('..\packages\Microsoft.ProjectReunion.InteractiveExperiences.0.8.2\build\native\Microsoft.ProjectReunion.InteractiveExperiences.targets')" />
+    <Import Project="..\packages\Microsoft.ProjectReunion.WinUI.0.8.2\build\native\Microsoft.ProjectReunion.WinUI.targets" Condition="Exists('..\packages\Microsoft.ProjectReunion.WinUI.0.8.2\build\native\Microsoft.ProjectReunion.WinUI.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.ImplementationLibrary.1.0.210803.1\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.210803.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.200630.5\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210806.1\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210806.1\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.210806.1\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.210806.1\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ProjectReunion.DWrite.0.8.2\build\Microsoft.ProjectReunion.DWrite.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ProjectReunion.DWrite.0.8.2\build\Microsoft.ProjectReunion.DWrite.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ProjectReunion.DWrite.0.8.2\build\Microsoft.ProjectReunion.DWrite.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ProjectReunion.DWrite.0.8.2\build\Microsoft.ProjectReunion.DWrite.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ProjectReunion.Foundation.0.8.2\build\native\Microsoft.ProjectReunion.Foundation.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ProjectReunion.Foundation.0.8.2\build\native\Microsoft.ProjectReunion.Foundation.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ProjectReunion.Foundation.0.8.2\build\native\Microsoft.ProjectReunion.Foundation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ProjectReunion.Foundation.0.8.2\build\native\Microsoft.ProjectReunion.Foundation.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ProjectReunion.InteractiveExperiences.0.8.2\build\native\Microsoft.ProjectReunion.InteractiveExperiences.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ProjectReunion.InteractiveExperiences.0.8.2\build\native\Microsoft.ProjectReunion.InteractiveExperiences.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ProjectReunion.WinUI.0.8.2\build\native\Microsoft.ProjectReunion.WinUI.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ProjectReunion.WinUI.0.8.2\build\native\Microsoft.ProjectReunion.WinUI.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ProjectReunion.WinUI.0.8.2\build\native\Microsoft.ProjectReunion.WinUI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ProjectReunion.WinUI.0.8.2\build\native\Microsoft.ProjectReunion.WinUI.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ProjectReunion.0.8.2\build\native\Microsoft.ProjectReunion.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ProjectReunion.0.8.2\build\native\Microsoft.ProjectReunion.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.210803.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.ImplementationLibrary.1.0.210803.1\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
   </Target>
 </Project>

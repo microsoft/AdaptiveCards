@@ -3,37 +3,43 @@
 #pragma once
 
 #include "ChoiceInput.h"
+#include "AdaptiveChoiceInput.g.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>>
-    {
-        AdaptiveRuntime(AdaptiveChoiceInput);
+    // TODO: This is an interesting pattern; the RT type just wraps the shared type and stores the data into
+    // the shared type directly instead of having its own values. Is it possible to make a generic translator
+    // between the two using some property<hstring, &::AdaptiveCards::ChoiceInput::SetTitle,
+    // &::AdaptiveCards::ChoiceInput::GetTitle>(this) which routes the calls between the two?
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedChoiceInput);
+    struct DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput
+        : AdaptiveChoiceInputT<AdaptiveChoiceInput, ITypePeek>
+    {
+        AdaptiveChoiceInput() : AdaptiveChoiceInput(std::make_shared<::AdaptiveCards::ChoiceInput>()) {}
+        AdaptiveChoiceInput(const std::shared_ptr<::AdaptiveCards::ChoiceInput>& sharedChoiceInput);
 
         // IAdaptiveChoiceInput
-        IFACEMETHODIMP get_Title(_Outptr_ HSTRING* title);
-        IFACEMETHODIMP put_Title(_In_ HSTRING title);
+        hstring Title();
+        void Title(hstring const& title);
 
-        IFACEMETHODIMP get_Value(_Outptr_ HSTRING* value);
-        IFACEMETHODIMP put_Value(_In_ HSTRING value);
+        hstring Value();
+        void Value(hstring const& value);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ElementType* elementType);
+        auto ElementType() { return WinUI3::ElementType::ChoiceInput; }
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
+        std::shared_ptr<::AdaptiveCards::ChoiceInput> GetSharedModel();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        std::shared_ptr<AdaptiveCards::ChoiceInput> m_sharedChoiceInput;
+        std::shared_ptr<::AdaptiveCards::ChoiceInput> m_sharedChoiceInput;
     };
+}
 
-    ActivatableClass(AdaptiveChoiceInput);
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveChoiceInput : AdaptiveChoiceInputT<AdaptiveChoiceInput, implementation::AdaptiveChoiceInput>
+    {
+    };
 }

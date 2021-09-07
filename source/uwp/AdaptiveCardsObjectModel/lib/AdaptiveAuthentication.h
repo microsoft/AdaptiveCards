@@ -3,43 +3,30 @@
 #pragma once
 
 #include "Authentication.h"
+#include "AdaptiveAuthentication.g.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class DECLSPEC_UUID("8074FA48-AF80-4295-9BB3-D4827FA81CBE") AdaptiveAuthentication
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveAuthentication,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>>
+    struct DECLSPEC_UUID("8074FA48-AF80-4295-9BB3-D4827FA81CBE") AdaptiveAuthentication : AdaptiveAuthenticationT < AdaptiveAuthentication, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveAuthentication);
+        AdaptiveAuthentication() : AdaptiveAuthentication(std::make_shared<::AdaptiveCards::Authentication>()) {}
+        AdaptiveAuthentication(std::shared_ptr<::AdaptiveCards::Authentication> const& sharedRefresh);
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Authentication>& sharedRefresh);
+        property<hstring> Text;
+        property<hstring> ConnectionName;
+        property<WinUI3::AdaptiveTokenExchangeResource> TokenExchangeResource{nullptr};
+        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveAuthCardButton>> Buttons;
 
-        IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text);
-        IFACEMETHODIMP put_Text(_In_ HSTRING text);
-
-        IFACEMETHODIMP get_ConnectionName(_Outptr_ HSTRING* connectionName);
-        IFACEMETHODIMP put_ConnectionName(_In_ HSTRING connectionName);
-
-        IFACEMETHODIMP get_TokenExchangeResource(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTokenExchangeResource** tokenExchangeResource);
-        IFACEMETHODIMP put_TokenExchangeResource(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTokenExchangeResource* tokenExchangeResource);
-
-        IFACEMETHODIMP get_Buttons(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*>** buttons);
-
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::Authentication>& sharedModel);
+        std::shared_ptr<::AdaptiveCards::Authentication> GetSharedModel();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-    private:
-        Microsoft::WRL::Wrappers::HString m_text;
-        Microsoft::WRL::Wrappers::HString m_connectionName;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTokenExchangeResource> m_tokenExchangeResource;
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveAuthCardButton*>> m_buttons;
     };
+}
 
-    ActivatableClass(AdaptiveAuthentication);
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveAuthentication : AdaptiveAuthenticationT<AdaptiveAuthentication, implementation::AdaptiveAuthentication>
+    {
+    };
 }

@@ -4,30 +4,19 @@
 
 #include "AdaptiveExecuteAction.h"
 #include "AdaptiveExecuteActionParser.h"
+#include "AdaptiveExecuteActionParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace Microsoft::WRL;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveExecuteActionParser::RuntimeClassInitialize() noexcept
-    try
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement AdaptiveExecuteActionParser::FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings)
     {
-        return S_OK;
+        return ::AdaptiveCards::ObjectModel::WinUI3::FromJson<implementation::AdaptiveExecuteAction, ::AdaptiveCards::ExecuteAction, ::AdaptiveCards::ExecuteActionParser>(
+                   inputJson, elementParsers, actionParsers, warnings)
+            .as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>();
     }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveExecuteActionParser::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::ObjectModel::Uwp::FromJson<AdaptiveCards::ObjectModel::Uwp::AdaptiveExecuteAction, AdaptiveCards::ExecuteAction, AdaptiveCards::ExecuteActionParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-    }
-    CATCH_RETURN;
 }

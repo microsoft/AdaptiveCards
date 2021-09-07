@@ -3,12 +3,9 @@
 #include "pch.h"
 #include "CustomElementWrapper.h"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace AdaptiveCards::ObjectModel::WinUI3
 {
-    CustomElementWrapper::CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement) :
+    CustomElementWrapper::CustomElementWrapper(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement) :
         BaseCardElement(AdaptiveCards::CardElementType::Custom), m_cardElement(cardElement)
     {
         BaseElement::SetId(GetCardElementId());
@@ -16,24 +13,19 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     bool CustomElementWrapper::GetSeparator() const
     {
-        boolean hasSeparator;
-        THROW_IF_FAILED(m_cardElement->get_Separator(&hasSeparator));
-        return hasSeparator;
+        return m_cardElement.Separator();
     }
 
-    void CustomElementWrapper::SetSeparator(bool value) { THROW_IF_FAILED(m_cardElement->put_Separator(value)); }
+    void CustomElementWrapper::SetSeparator(bool value) { m_cardElement.Separator(value); }
 
     Spacing CustomElementWrapper::GetSpacing() const
     {
-        ABI::AdaptiveCards::ObjectModel::Uwp::Spacing spacing;
-        THROW_IF_FAILED(m_cardElement->get_Spacing(&spacing));
-
-        return static_cast<Spacing>(spacing);
+        return static_cast<Spacing>(m_cardElement.Spacing());
     }
 
     void CustomElementWrapper::SetSpacing(Spacing value)
     {
-        THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveCards::ObjectModel::Uwp::Spacing>(value)));
+        m_cardElement.Spacing(static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing>(value));
     }
 
     void CustomElementWrapper::SetId(std::string&& value)
@@ -50,40 +42,30 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
     Json::Value CustomElementWrapper::SerializeToJsonValue() const
     {
-        ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
-        THROW_IF_FAILED(m_cardElement->ToJson(&jsonObject));
-
-        Json::Value jsonCppValue;
-        JsonObjectToJsonCpp(jsonObject.Get(), &jsonCppValue);
-
-        return jsonCppValue;
+        return JsonObjectToJsonCpp(m_cardElement.ToJson());
     }
 
     void CustomElementWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
     {
-        ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources> remoteResources;
-        if (SUCCEEDED(m_cardElement.As(&remoteResources)))
+        if (auto remoteResources =
+                m_cardElement.as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources>())
         {
-            RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
+            RemoteResourceElementToRemoteResourceInformationVector(remoteResources, resourceInfo);
         }
     }
 
-    HRESULT CustomElementWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** cardElement)
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement CustomElementWrapper::GetWrappedElement()
     {
-        return m_cardElement.CopyTo(cardElement);
+        return m_cardElement;
     }
 
     std::string CustomElementWrapper::GetCardElementId() const
     {
-        Wrappers::HString id;
-        THROW_IF_FAILED(m_cardElement->get_Id(id.GetAddressOf()));
-        return HStringToUTF8(id.Get());
+        return HStringToUTF8(m_cardElement.Id());
     }
 
     void CustomElementWrapper::SetCardElementId(const std::string& value)
     {
-        Wrappers::HString id;
-        THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
-        THROW_IF_FAILED(m_cardElement->put_Id(id.Get()));
+        m_cardElement.Id(UTF8ToHString(value));
     }
 }

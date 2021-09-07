@@ -3,27 +3,25 @@
 #pragma once
 
 #include "ChoiceSetInput.h"
+#include "AdaptiveChoiceSetInputParser.g.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    class AdaptiveChoiceSetInputParser
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser>
+    struct AdaptiveChoiceSetInputParser : AdaptiveChoiceSetInputParserT<AdaptiveChoiceSetInputParser>
     {
-        AdaptiveRuntime(AdaptiveChoiceSetInputParser);
+        AdaptiveChoiceSetInputParser() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP FromJson(
-            _In_ ABI::Windows::Data::Json::IJsonObject*,
-            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParsers,
-            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParsers,
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** element) noexcept override;
-
-    private:
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement FromJson(
+            winrt::Windows::Data::Json::JsonObject const& inputJson,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
+            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings);
     };
-
-    ActivatableClass(AdaptiveChoiceSetInputParser);
+}
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveChoiceSetInputParser
+        : AdaptiveChoiceSetInputParserT<AdaptiveChoiceSetInputParser, implementation::AdaptiveChoiceSetInputParser>
+    {
+    };
 }

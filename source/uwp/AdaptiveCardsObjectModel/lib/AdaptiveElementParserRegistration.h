@@ -2,58 +2,62 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.Uwp.h"
-#include "ObjectModelUtil.h"
 #include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveElementParserRegistration.g.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    constexpr char* c_uwpElementParserRegistration = "447C3D76-CAAD-405F-B929-E3201F1537AB";
-
-    class DECLSPEC_UUID("fdf8457d-639f-4bbd-9e32-26c14bac3813") AdaptiveElementParserRegistration
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration>,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::FtmBase>
+    struct DECLSPEC_UUID("fdf8457d-639f-4bbd-9e32-26c14bac3813") AdaptiveElementParserRegistration
+        : AdaptiveElementParserRegistrationT<AdaptiveElementParserRegistration, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveElementParserRegistration);
+        using RegistrationMap =
+            std::unordered_map<std::string, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
-        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
-
-    public:
         AdaptiveElementParserRegistration();
-        HRESULT RuntimeClassInitialize() noexcept;
 
-        // IAdaptiveElementParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser* Parser) noexcept;
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser** result) noexcept;
-        IFACEMETHODIMP Remove(_In_ HSTRING type) noexcept;
+        void Set(hstring const& type, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser const& Parser);
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParser Get(hstring const& type);
+        void Remove(hstring const& type);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        std::shared_ptr<ElementParserRegistration> GetSharedParserRegistration();
+        std::shared_ptr<::AdaptiveCards::ElementParserRegistration> GetSharedParserRegistration();
 
     private:
-        HRESULT RegisterDefaultElementParsers(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* registration);
+        void RegisterDefaultElementParsers();
 
-        bool m_isInitializing;
-        std::shared_ptr<RegistrationMap> m_registration;
-        std::shared_ptr<ElementParserRegistration> m_sharedParserRegistration;
+        bool m_isInitializing{true};
+        std::shared_ptr<RegistrationMap> m_registration{std::make_shared<RegistrationMap>()};
+        std::shared_ptr<::AdaptiveCards::ElementParserRegistration> m_sharedParserRegistration{
+            std::make_shared<::AdaptiveCards::ElementParserRegistration>()};
     };
+}
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveElementParserRegistration
+        : AdaptiveElementParserRegistrationT<AdaptiveElementParserRegistration, implementation::AdaptiveElementParserRegistration>
+    {
+    };
+}
 
-    ActivatableClass(AdaptiveElementParserRegistration);
+namespace AdaptiveCards::ObjectModel::WinUI3
+{
+    constexpr char* c_uwpElementParserRegistration = "447C3D76-CAAD-405F-B929-E3201F1537AB";
 
-    class SharedModelElementParser : public AdaptiveCards::BaseCardElementParser
+    class SharedModelElementParser : public ::AdaptiveCards::BaseCardElementParser
     {
     public:
-        SharedModelElementParser(_In_ AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration* parserRegistration);
+        SharedModelElementParser(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& parserRegistration);
 
         // AdaptiveCards::BaseCardElementParser
-        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
-        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
+        std::shared_ptr<::AdaptiveCards::BaseCardElement> Deserialize(::AdaptiveCards::ParseContext& context,
+                                                                      const Json::Value& value) override;
 
-        HRESULT GetAdaptiveParserRegistration(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration** elementParserRegistration);
+        std::shared_ptr<::AdaptiveCards::BaseCardElement> DeserializeFromString(::AdaptiveCards::ParseContext& context,
+                                                                                const std::string& jsonString) override;
+
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration GetAdaptiveParserRegistration();
 
     private:
         // This a a weak reference to the UWP level AdaptiveElementParserRegistration for this parse. Store as a weak
@@ -63,36 +67,27 @@ namespace AdaptiveCards::ObjectModel::Uwp
         //      m_parserRegistration(AdaptiveElementParserRegistration)->
         //          m_sharedParserRegistration(ElementParserRegistration)->
         //              m_cardElementParsers (Contains this object)
-        Microsoft::WRL::WeakRef m_parserRegistration;
+        winrt::weak_ref<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration> m_parserRegistration;
     };
 
-    template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser, typename TAdaptiveElementInterface>
-    HRESULT FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-                     _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-                     _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-                     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-                     _COM_Outptr_ TAdaptiveElementInterface** element)
+    template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser>
+    auto FromJson(_In_ winrt::Windows::Data::Json::JsonObject const& jsonObject,
+                  _In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementParserRegistration const& elementParserRegistration,
+                  _In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParserRegistration const& actionParserRegistration,
+                  _In_ winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& adaptiveWarnings)
     {
-        std::string jsonString;
-        JsonObjectToString(jsonObject, jsonString);
-
-        ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl =
-            PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
-
-        ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl =
-            PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
+        auto elementParserRegistrationImpl =
+            peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveElementParserRegistration>(
+                elementParserRegistration);
+        auto actionParserRegistrationImpl =
+            peek_innards<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveActionParserRegistration>(actionParserRegistration);
 
         ParseContext context(elementParserRegistrationImpl->GetSharedParserRegistration(),
                              actionParserRegistrationImpl->GetSharedParserRegistration());
 
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
-        std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
-        auto baseCardElement = parser->DeserializeFromString(context, jsonString);
-
-        RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(context.warnings, adaptiveWarnings));
-
-        THROW_IF_FAILED(MakeAndInitialize<TAdaptiveCardElement>(element, std::AdaptivePointerCast<TSharedModelElement>(baseCardElement)));
-
-        return S_OK;
+        TSharedModelParser parser;
+        auto baseCardElement = parser.DeserializeFromString(context, JsonObjectToString(jsonObject));
+        SharedWarningsToAdaptiveWarnings(context.warnings, adaptiveWarnings);
+        return winrt::make<TAdaptiveCardElement>(std::AdaptivePointerCast<TSharedModelElement>(baseCardElement));
     }
 }

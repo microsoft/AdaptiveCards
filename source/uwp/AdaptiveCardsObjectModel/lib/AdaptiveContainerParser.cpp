@@ -5,28 +5,20 @@
 #include "AdaptiveContainer.h"
 
 #include "AdaptiveContainerParser.h"
+#include "AdaptiveContainerParser.g.cpp"
+
 #include "AdaptiveElementParserRegistration.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveContainerParser::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveContainerParser::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** element) noexcept
-    try
+    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement AdaptiveContainerParser::FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings)
     {
-        return AdaptiveCards::ObjectModel::Uwp::FromJson<AdaptiveCards::ObjectModel::Uwp::AdaptiveContainer, AdaptiveCards::Container, AdaptiveCards::ContainerParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+        return ::AdaptiveCards::ObjectModel::WinUI3::FromJson<implementation::AdaptiveContainer, ::AdaptiveCards::Container, ::AdaptiveCards::ContainerParser>(
+                   inputJson, elementParsers, actionParsers, warnings)
+            .as<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>();
     }
-    CATCH_RETURN;
 }

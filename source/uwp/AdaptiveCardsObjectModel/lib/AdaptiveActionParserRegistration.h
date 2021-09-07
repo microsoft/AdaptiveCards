@@ -2,57 +2,60 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.Uwp.h"
+#include "AdaptiveActionParserRegistration.g.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    constexpr char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";
-
-    class DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              Microsoft::WRL::Implements<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration>,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::FtmBase>
+    struct DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
+        : AdaptiveActionParserRegistrationT<AdaptiveActionParserRegistration, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveActionParserRegistration);
-
-        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
+        using RegistrationMap =
+            std::unordered_map<std::string, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser, ::AdaptiveCards::CaseInsensitiveHash, ::AdaptiveCards::CaseInsensitiveEqualTo>;
 
     public:
         AdaptiveActionParserRegistration();
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept;
 
-        // IAdaptiveActionParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser* Parser) noexcept;
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParser** result) noexcept;
-        IFACEMETHODIMP Remove(_In_ HSTRING type) noexcept;
+        void Set(hstring const& type, winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser const& Parser);
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionParser Get(hstring const& type);
+        void Remove(hstring const& type);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        std::shared_ptr<ActionParserRegistration> GetSharedParserRegistration();
+        std::shared_ptr<::AdaptiveCards::ActionParserRegistration> GetSharedParserRegistration();
 
     private:
-        HRESULT RegisterDefaultActionParsers(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* registration);
+        void RegisterDefaultActionParsers();
 
-        bool m_isInitializing;
-        std::shared_ptr<RegistrationMap> m_registration;
-        std::shared_ptr<ActionParserRegistration> m_sharedParserRegistration;
+        bool m_isInitializing{true};
+        std::shared_ptr<RegistrationMap> m_registration{std::make_shared<RegistrationMap>()};
+        std::shared_ptr<::AdaptiveCards::ActionParserRegistration> m_sharedParserRegistration{
+            std::make_shared<::AdaptiveCards::ActionParserRegistration>()};
     };
+}
 
-    ActivatableClass(AdaptiveActionParserRegistration);
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+{
+    struct AdaptiveActionParserRegistration
+        : AdaptiveActionParserRegistrationT<AdaptiveActionParserRegistration, implementation::AdaptiveActionParserRegistration>
+    {
+    };
+}
+
+namespace AdaptiveCards::ObjectModel::WinUI3
+{
+    constexpr char* c_upwActionParserRegistration = "AB3CC8B0-FF27-4859-A2AA-BCE2E729805";
 
     class SharedModelActionParser : public AdaptiveCards::ActionElementParser
     {
     public:
-        SharedModelActionParser(_In_ AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration* parserRegistration);
+        SharedModelActionParser(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& parserRegistration);
 
         // AdaptiveCards::ActionElementParser
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
 
-        HRESULT GetAdaptiveParserRegistration(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration** actionParserRegistration);
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration GetAdaptiveParserRegistration();
 
     private:
         // This a a weak reference to the UWP level AdaptiveActionParserRegistration for this parse. Store as a weak
@@ -62,6 +65,6 @@ namespace AdaptiveCards::ObjectModel::Uwp
         //      m_parserRegistration(AdaptiveActionParserRegistration)->
         //          m_sharedParserRegistration(ActionParserRegistration)->
         //              m_cardElementParsers (Contains this object)
-        Microsoft::WRL::WeakRef m_parserRegistration;
+        winrt::weak_ref<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration> m_parserRegistration;
     };
 }

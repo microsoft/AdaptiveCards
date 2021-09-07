@@ -77,6 +77,7 @@
     <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveTableParser.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
+    <ClCompile Include="lib\AdaptiveFactParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -85,10 +86,8 @@
     <ClInclude Include="lib\AdaptiveContainer.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
-    <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\ObjectModelUtil.h" />
-    <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\AdaptiveFactSet.h" />
     <ClInclude Include="lib\AdaptiveFact.h" />
     <ClInclude Include="lib\AdaptiveImageSet.h" />
@@ -156,9 +155,10 @@
     <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
     <ClInclude Include="lib\AdaptiveTableParser.h" />
     <ClInclude Include="lib\AdaptiveTableRow.h" />
+    <ClInclude Include="lib\AdaptiveFactParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl" />
+    <Midl Include="idl\AdaptiveCards.ObjectModel.WinUI3.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

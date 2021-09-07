@@ -1,82 +1,32 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveDateInput.h"
-#include "ObjectModelUtil.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveDateInput.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 {
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveDateInput::AdaptiveDateInput(const std::shared_ptr<::AdaptiveCards::DateInput>& sharedDateInput)
     {
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
-        return RuntimeClassInitialize(dateInput);
-    }
-    CATCH_RETURN;
+        Max = UTF8ToHString(sharedDateInput->GetMax());
+        Min = UTF8ToHString(sharedDateInput->GetMin());
+        Placeholder = UTF8ToHString(sharedDateInput->GetPlaceholder());
+        Value = UTF8ToHString(sharedDateInput->GetValue());
 
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::DateInput>& sharedDateInput)
-    try
-    {
-        if (sharedDateInput == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetMax(), m_max.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetMin(), m_min.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedDateInput->GetValue(), m_value.GetAddressOf()));
-
-        InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedDateInput));
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveDateInput::get_Max(_Outptr_ HSTRING* max) { return m_max.CopyTo(max); }
-
-    HRESULT AdaptiveDateInput::put_Max(_In_ HSTRING max) { return m_max.Set(max); }
-
-    HRESULT AdaptiveDateInput::get_Min(_Outptr_ HSTRING* min) { return m_min.CopyTo(min); }
-
-    HRESULT AdaptiveDateInput::put_Min(_In_ HSTRING min) { return m_min.Set(min); }
-
-    HRESULT AdaptiveDateInput::get_Placeholder(_Outptr_ HSTRING* placeholder)
-    {
-        return m_placeholder.CopyTo(placeholder);
+        InitializeBaseElement(sharedDateInput);
     }
 
-    HRESULT AdaptiveDateInput::put_Placeholder(_In_ HSTRING placeholder) { return m_placeholder.Set(placeholder); }
-
-    HRESULT AdaptiveDateInput::get_Value(_Outptr_ HSTRING* value) { return m_value.CopyTo(value); }
-
-    HRESULT AdaptiveDateInput::put_Value(_In_ HSTRING value) { return m_value.Set(value); }
-
-    HRESULT AdaptiveDateInput::get_ElementType(_Out_ ElementType* elementType)
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveDateInput::GetSharedModel()
     {
-        *elementType = ElementType::DateInput;
-        return S_OK;
+        auto dateInput = std::make_shared<::AdaptiveCards::DateInput>();
+        CopySharedElementProperties(*dateInput);
+
+        dateInput->SetMax(HStringToUTF8(Max));
+        dateInput->SetMin(HStringToUTF8(Min));
+        dateInput->SetPlaceholder(HStringToUTF8(Placeholder));
+        dateInput->SetValue(HStringToUTF8(Value));
+
+        return dateInput;
     }
-
-    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
-    {
-        std::shared_ptr<AdaptiveCards::DateInput> dateInput = std::make_shared<AdaptiveCards::DateInput>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*dateInput));
-
-        dateInput->SetMax(HStringToUTF8(m_max.Get()));
-        dateInput->SetMin(HStringToUTF8(m_min.Get()));
-        dateInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
-        dateInput->SetValue(HStringToUTF8(m_value.Get()));
-
-        sharedModel = std::move(dateInput);
-
-        return S_OK;
-    }
-    CATCH_RETURN;
 }
