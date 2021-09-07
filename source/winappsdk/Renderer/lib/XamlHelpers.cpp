@@ -30,6 +30,38 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 {
     constexpr PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
+    rtxaml::UIElement CreateSeparator(rtrender::AdaptiveRenderContext const& renderContext,
+                                      uint32_t spacing,
+                                      uint32_t separatorThickness,
+                                      winrt::Windows::UI::Color const& separatorColor,
+                                      bool isHorizontal)
+    {
+        rtxaml::Controls::Grid separator;
+        auto separatorAsFrameworkElement = separator.as<rtxaml::FrameworkElement>();
+        auto seperatorPanel = separator.as<rtxaml::Controls::IPanel>();
+        seperatorPanel.Background(XamlHelpers::GetSolidColorBrush(separatorColor));
+
+        const uint32_t separatorMarginValue = spacing > separatorThickness ? (spacing - separatorThickness) / 2 : 0;
+        rtxaml::Thickness margin{};
+
+        if (isHorizontal)
+        {
+            margin.Top = margin.Bottom = separatorMarginValue;
+            separatorAsFrameworkElement.Height(separatorThickness);
+        }
+        else
+        {
+            margin.Left = margin.Right = separatorMarginValue;
+            separatorAsFrameworkElement.Width(separatorThickness);
+        }
+
+        separatorAsFrameworkElement.Margin(margin);
+
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Separator", separatorAsFrameworkElement);
+
+        return separator;
+    }
+
     ComPtr<IUIElement> CreateSeparator(_In_ IAdaptiveRenderContext* renderContext,
                                        UINT spacing,
                                        UINT separatorThickness,
@@ -94,6 +126,17 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return SetStyleFromResourceDictionary(renderContext, HStringReference(resourceName).Get(), frameworkElement);
     }
 
+    void SetStyleFromResourceDictionary(rtrender::AdaptiveRenderContext const& renderContext,
+                                        winrt::hstring const& resourceName,
+                                        rtxaml::FrameworkElement frameworkElement)
+    {
+        auto resourceDictionary = renderContext.OverrideStyles();
+        if (auto style = TryGetResourceFromResourceDictionaries<rtxaml::Style>(resourceDictionary, resourceName))
+        {
+            frameworkElement.Style(style);
+        }
+    }
+
     HRESULT XamlHelpers::SetSeparatorVisibility(_In_ IPanel* parentPanel)
     {
         // Iterate over the elements in a container and ensure that the correct separators are marked as visible
@@ -101,50 +144,54 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         RETURN_IF_FAILED(parentPanel->get_Children(&children));
 
         bool foundPreviousVisibleElement = false;
-        IterateOverVector<UIElement, IUIElement>(children.Get(), [&](IUIElement* child) {
-            ComPtr<IUIElement> localChild(child);
+        IterateOverVector<UIElement, IUIElement>(children.Get(),
+                                                 [&](IUIElement* child)
+                                                 {
+                                                     ComPtr<IUIElement> localChild(child);
 
-            ComPtr<IFrameworkElement> childAsFrameworkElement;
-            RETURN_IF_FAILED(localChild.As(&childAsFrameworkElement));
+                                                     ComPtr<IFrameworkElement> childAsFrameworkElement;
+                                                     RETURN_IF_FAILED(localChild.As(&childAsFrameworkElement));
 
-            // Get the tag for the element. The separators themselves will not have tags.
-            ComPtr<IInspectable> tag;
-            RETURN_IF_FAILED(childAsFrameworkElement->get_Tag(&tag));
+                                                     // Get the tag for the element. The separators themselves will not have tags.
+                                                     ComPtr<IInspectable> tag;
+                                                     RETURN_IF_FAILED(childAsFrameworkElement->get_Tag(&tag));
 
-            if (tag)
-            {
-                ComPtr<IElementTagContent> elementTagContent;
-                RETURN_IF_FAILED(tag.As(&elementTagContent));
+                                                     if (tag)
+                                                     {
+                                                         ComPtr<IElementTagContent> elementTagContent;
+                                                         RETURN_IF_FAILED(tag.As(&elementTagContent));
 
-                ComPtr<IUIElement> separator;
-                RETURN_IF_FAILED(elementTagContent->get_Separator(&separator));
+                                                         ComPtr<IUIElement> separator;
+                                                         RETURN_IF_FAILED(elementTagContent->get_Separator(&separator));
 
-                Visibility visibility;
-                RETURN_IF_FAILED(child->get_Visibility(&visibility));
+                                                         Visibility visibility;
+                                                         RETURN_IF_FAILED(child->get_Visibility(&visibility));
 
-                boolean expectedVisibility{};
-                RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&expectedVisibility));
+                                                         boolean expectedVisibility{};
+                                                         RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&expectedVisibility));
 
-                if (separator)
-                {
-                    if (!expectedVisibility || !foundPreviousVisibleElement)
-                    {
-                        // If the element is collapsed, or if it's the first visible element, collapse the separator
-                        // Images are hidden while they are retrieved, we shouldn't hide the separator
-                        RETURN_IF_FAILED(separator->put_Visibility(Visibility_Collapsed));
-                    }
-                    else
-                    {
-                        // Otherwise show the separator
-                        RETURN_IF_FAILED(separator->put_Visibility(Visibility_Visible));
-                    }
-                }
+                                                         if (separator)
+                                                         {
+                                                             if (!expectedVisibility || !foundPreviousVisibleElement)
+                                                             {
+                                                                 // If the element is collapsed, or if it's the first
+                                                                 // visible element, collapse the separator Images are
+                                                                 // hidden while they are retrieved, we shouldn't hide
+                                                                 // the separator
+                                                                 RETURN_IF_FAILED(separator->put_Visibility(Visibility_Collapsed));
+                                                             }
+                                                             else
+                                                             {
+                                                                 // Otherwise show the separator
+                                                                 RETURN_IF_FAILED(separator->put_Visibility(Visibility_Visible));
+                                                             }
+                                                         }
 
-                foundPreviousVisibleElement |= (visibility == Visibility_Visible);
-            }
+                                                         foundPreviousVisibleElement |= (visibility == Visibility_Visible);
+                                                     }
 
-            return S_OK;
-        });
+                                                     return S_OK;
+                                                 });
 
         return S_OK;
     }
@@ -249,6 +296,11 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return Boolify(supportsInteractivity);
     }
 
+    bool SupportsInteractivity(_In_ rtrender::AdaptiveHostConfig const& hostConfig)
+    {
+        return hostConfig.SupportsInteractivity();
+    }
+
     rtxaml::GridLength CalculateColumnWidth(bool isVisible, bool isAuto, bool isStretch, bool isUnsetWidth, UINT32 pixelWidth, double ratioWidth)
     {
         const boolean isValidWidth = isAuto || isStretch || pixelWidth || isUnsetWidth || (ratioWidth > 0);
@@ -314,8 +366,6 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         columnDefinition.Width(CalculateColumnWidth(isVisible, isAuto, isStretch, adaptiveColumnWidth.empty(), pixelWidth, widthAsDouble));
     }
-
-
 
     HRESULT HandleTableColumnWidth(_In_ IAdaptiveTableColumnDefinition* column, _In_ IColumnDefinition* columnDefinition)
     {
@@ -613,9 +663,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         EventRegistrationToken clickToken;
         // Add Tap handler that sets the event as handled so that it doesn't propagate to the parent containers.
-        return uiElement->add_Tapped(Callback<ITappedEventHandler>([](IInspectable* /*sender*/, ITappedRoutedEventArgs* args) -> HRESULT {
-                                         return args->put_Handled(TRUE);
-                                     }).Get(),
+        return uiElement->add_Tapped(Callback<ITappedEventHandler>([](IInspectable* /*sender*/, ITappedRoutedEventArgs* args) -> HRESULT
+                                                                   { return args->put_Handled(TRUE); })
+                                         .Get(),
                                      &clickToken);
     }
 
@@ -742,7 +792,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
-        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::WinUI3::FontType_Default, textSize, &resultSize));
+        RETURN_IF_FAILED(
+            GetFontSizeFromFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::WinUI3::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
 

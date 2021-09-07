@@ -3,49 +3,42 @@
 #include "pch.h"
 
 #include "AdaptiveActionSetRenderer.h"
+#include "AdaptiveActionSetRenderer.g.cpp"
 
 #include "ActionHelpers.h"
 #include "AdaptiveRenderArgs.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
+using namespace winrt;
+using namespace winrt::AdaptiveCards::Rendering::WinUI3;
+using namespace winrt::AdaptiveCards::ObjectModel::WinUI3;
+using namespace winrt::Windows::Foundation;
+using namespace winrt::Windows::Foundation::Collections;
+using namespace winrt::Windows::UI::Xaml;
+using namespace winrt::Windows::UI::Xaml::Controls;
+using namespace winrt::Windows::UI::Xaml::Controls::Primitives;
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveActionSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                              _In_ IAdaptiveRenderContext* renderContext,
-                                              _In_ IAdaptiveRenderArgs* renderArgs,
-                                              _COM_Outptr_ IUIElement** actionSetControl) noexcept
-    try
+    winrt::Windows::UI::Xaml::UIElement AdaptiveActionSetRenderer::Render(ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement,
+                                               WinUI3::AdaptiveRenderContext const& renderContext,
+                                               WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        auto hostConfig = renderContext.HostConfig();
 
-        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
+        if (!::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
         {
-            renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"ActionSet was stripped from card because interactivity is not supported").Get());
-            return S_OK;
+            renderContext.AddWarning(ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
+                                     L"ActionSet was stripped from card because interactivity is not supported");
+
+            return nullptr;
         }
+        else
+        {
+            auto adaptiveActionSet = cardElement.as<ObjectModel::WinUI3::AdaptiveActionSet>();
+            auto actions = adaptiveActionSet.Actions();
 
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveActionSet> adaptiveActionSet;
-        RETURN_IF_FAILED(cardElement.As(&adaptiveActionSet));
-
-        ComPtr<IVector<IAdaptiveActionElement*>> actions;
-        RETURN_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
-
-        return ActionHelpers::BuildActionSetHelper(nullptr, adaptiveActionSet.Get(), actions.Get(), renderContext, renderArgs, actionSetControl);
+            return ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::BuildActionSetHelper(
+                nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
+        }
     }
-    CATCH_RETURN();
 }

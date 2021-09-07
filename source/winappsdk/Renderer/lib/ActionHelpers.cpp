@@ -276,8 +276,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         RETURN_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
         ComPtr<IStyle> styleToApply;
 
-        ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext> contextImpl =
-            PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext>(renderContext);
+        auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
 
         // If we have an overflow style apply it, otherwise we'll fall back on the default button styling
         if (isOverflowActionButton)
@@ -308,9 +307,9 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             else
             {
                 // By default, set the action background color to accent color
-                ComPtr<IResourceDictionary> actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
+                auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
 
-                if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
+                if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(to_wrl(actionSentimentDictionary).Get(),
                                                                                   L"PositiveActionDefaultStyle",
                                                                                   styleToApply.GetAddressOf())))
                 {
@@ -330,9 +329,9 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             else
             {
                 // By default, set the action text color to attention color
-                ComPtr<IResourceDictionary> actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
+                auto actionSentimentDictionary = contextImpl->GetDefaultActionSentimentDictionary();
 
-                if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
+                if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries(to_wrl(actionSentimentDictionary).Get(),
                                                                                   L"DestructiveActionDefaultStyle",
                                                                                   styleToApply.GetAddressOf())))
                 {
@@ -651,7 +650,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             auto localTextBox = to_winrt(textBox);
             auto keyDownEventToken = localTextBox.KeyDown(
                 [actionInvoker, localInlineAction](auto&, rtxaml::Input::KeyRoutedEventArgs const& args)
-                { HandleKeydownForInlineAction(args, to_winrt(actionInvoker), to_winrt(localInlineAction); });
+                { HandleKeydownForInlineAction(args, to_winrt(actionInvoker), to_winrt(localInlineAction)); });
         }
 
         THROW_IF_FAILED(xamlGrid.CopyTo(textBoxWithInlineAction));
@@ -864,6 +863,26 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         return S_OK;
     }
 
+    void BuildActions(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
+                      winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> const& children,
+                      winrt::Windows::UI::Xaml::Controls::Panel const& bodyPanel,
+                      bool insertSeparator,
+                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs)
+    {
+        auto hostConfig = renderContext.HostConfig();
+        auto actionsConfig = hostConfig.Actions();
+        if (insertSeparator)
+        {
+            auto spacingSize = GetSpacingSizeFromSpacing(hostConfig, actionsConfig.Spacing());
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0u, winrt::Windows::UI::Color{}, false);
+            XamlHelpers::AppendXamlElementToPanel(separator, bodyPanel);
+        }
+
+        auto actionSetControl = BuildActionSetHelper(adaptiveCard, nullptr, children, renderContext, renderArgs);
+        XamlHelpers::AppendXamlElementToPanel(actionSetControl, bodyPanel);
+    }
+
     HRESULT CreateFlyoutButton(_In_ IAdaptiveRenderContext* renderContext,
                                _In_ IAdaptiveRenderArgs* renderArgs,
                                _COM_Outptr_ IButton** overflowButton)
@@ -882,9 +901,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         ComPtr<IFlyoutBase> overflowFlyoutAsFlyoutBase;
         RETURN_IF_FAILED(overflowFlyout.As(&overflowFlyoutAsFlyoutBase));
         RETURN_IF_FAILED(overflowButtonAsButtonWithFlyout->put_Flyout(overflowFlyoutAsFlyoutBase.Get()));
-
-        ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext> contextImpl =
-            PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext>(renderContext);
 
         // Return overflow button
         ComPtr<IButton> overFlowButtonAsButton;
@@ -954,171 +970,114 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         return S_OK;
     }
 
-    HRESULT BuildInlineShowCard(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
-                                _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
-                                _In_ IAdaptiveActionElement* showCardAction,
-                                _In_ IPanel* showCardsPanel,
-                                _In_ IUIElement* actionButton,
-                                _In_ IUIElement* actionOverflowItem,
-                                UINT buttonIndex,
-                                _In_ IAdaptiveRenderContext* renderContext,
-                                _In_ IAdaptiveRenderArgs* renderArgs)
+    void BuildInlineShowCard(rtom::AdaptiveCard const& adaptiveCard,
+                             rtom::AdaptiveActionSet const& adaptiveActionSet,
+                             rtom::IAdaptiveActionElement const& action,
+                             rtxaml::Controls::Panel const& showCardsPanel,
+                             rtxaml::UIElement actionButton,
+                             rtxaml::UIElement actionOverflowItem,
+                             uint32_t buttonIndex,
+                             rtrender::AdaptiveRenderContext const& renderContext,
+                             rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveActionElement> action(showCardAction);
-
-        // Check the host config to see if we need to build inline show cards
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        ComPtr<IAdaptiveActionsConfig> actionsConfig;
-        RETURN_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-
-        ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
-        RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-
-        ABI::AdaptiveCards::Rendering::WinUI3::ActionMode showCardActionMode;
-        RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-
-        if (showCardActionMode == ABI::AdaptiveCards::Rendering::WinUI3::ActionMode::Inline)
+        auto hostConfig = renderContext.HostConfig();
+        auto actionsConfig = hostConfig.Actions();
+        auto showCardActionConfig = actionsConfig.ShowCard();
+        rtrender::ActionMode showCardActionMode = showCardActionConfig.ActionMode();
+        if (showCardActionMode == rtrender::ActionMode::Inline)
         {
-            // Get the card to be shown
-            ComPtr<IAdaptiveShowCardAction> actionAsShowCardAction;
-            RETURN_IF_FAILED(action.As(&actionAsShowCardAction));
+            auto actionAsShowCardAction = action.as<rtom::AdaptiveShowCardAction>();
+            auto showCard = actionAsShowCardAction.Card();
+            auto uiShowCard =
+                AdaptiveShowCardActionRenderer::BuildShowCard(showCard, renderContext, renderArgs, (adaptiveActionSet == nullptr));
+            XamlHelpers::AppendXamlElementToPanel(uiShowCard, showCardsPanel);
 
-            ComPtr<IAdaptiveCard> showCard;
-            RETURN_IF_FAILED(actionAsShowCardAction->get_Card(&showCard));
-
-            // Render the card and add it to the show card panel
-            ComPtr<IUIElement> uiShowCard;
-            RETURN_IF_FAILED(AdaptiveShowCardActionRenderer::BuildShowCard(
-                showCard.Get(), renderContext, renderArgs, (adaptiveActionSet == nullptr), uiShowCard.GetAddressOf()));
-
-            XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel);
-
-            // Register the show card with the render context
-            ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext> contextImpl =
-                PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext>(renderContext);
-
+            auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
             if (adaptiveActionSet)
             {
-                RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
-                    adaptiveActionSet, actionAsShowCardAction.Get(), actionButton, actionOverflowItem, uiShowCard.Get(), buttonIndex, renderArgs));
+                contextImpl->AddInlineShowCard(
+                    adaptiveActionSet, actionAsShowCardAction, actionButton, actionOverflowItem, uiShowCard, buttonIndex, renderArgs);
             }
             else
             {
-                RETURN_IF_FAILED(contextImpl->AddInlineShowCard(
-                    adaptiveCard, actionAsShowCardAction.Get(), actionButton, actionOverflowItem, uiShowCard.Get(), buttonIndex, renderArgs));
+                contextImpl->AddInlineShowCard(adaptiveCard, actionAsShowCardAction, actionButton, actionOverflowItem, uiShowCard, buttonIndex, renderArgs);
             }
         }
-
-        return S_OK;
     }
 
-    HRESULT CreateActionButtonInActionSet(_In_opt_ IAdaptiveCard* adaptiveCard,
-                                          _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
-                                          _In_ IAdaptiveActionElement* actionToCreate,
-                                          bool buttonVisible,
-                                          UINT columnIndex,
-                                          _In_ IPanel* actionsPanel,
-                                          _In_ IPanel* showCardPanel,
-                                          _In_ IVector<ColumnDefinition*>* columnDefinitions,
-                                          _In_opt_ IUIElement* overflowItem,
-                                          _In_ IAdaptiveRenderContext* renderContext,
-                                          _In_ IAdaptiveRenderArgs* renderArgs,
-                                          _COM_Outptr_ IUIElement** returnedActionControl)
+    rtxaml::UIElement CreateActionButtonInActionSet(
+        rtom::AdaptiveCard const& adaptiveCard,
+        rtom::AdaptiveActionSet const& adaptiveActionSet,
+        rtom::IAdaptiveActionElement const& actionToCreate,
+        bool buttonVisible,
+        uint32_t columnIndex,
+        rtxaml::Controls::Panel const& actionsPanel,
+        rtxaml::Controls::Panel const& showCardPanel,
+        winrt::Windows::Foundation::Collections::IVector<rtxaml::Controls::ColumnDefinition> const& columnDefinitions,
+        rtxaml::UIElement const& overflowItem,
+        rtrender::AdaptiveRenderContext const& renderContext,
+        rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        ComPtr<IAdaptiveActionElement> action(actionToCreate);
-
-        ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
-        RETURN_IF_FAILED(action->get_ActionType(&actionType));
-
         // Render each action using the registered renderer
-        ComPtr<IAdaptiveActionRendererRegistration> actionRegistration;
-        RETURN_IF_FAILED(renderContext->get_ActionRenderers(&actionRegistration));
+        rtom::IAdaptiveActionElement action = actionToCreate;
+        auto actionType = action.ActionType();
+        auto actionRegistration = renderContext.ActionRenderers();
 
-        ComPtr<IUIElement> actionControl;
-        ComPtr<IAdaptiveActionRenderer> renderer;
+        rtrender::IAdaptiveActionRenderer renderer;
         while (!renderer)
         {
-            HString actionTypeString;
-            RETURN_IF_FAILED(action->get_ActionTypeString(actionTypeString.GetAddressOf()));
-            RETURN_IF_FAILED(actionRegistration->Get(actionTypeString.Get(), &renderer));
+            auto actionTypeString = action.ActionTypeString();
+            renderer = actionRegistration.Get(actionTypeString);
             if (!renderer)
             {
-                ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType actionFallbackType;
-                RETURN_IF_FAILED(action->get_FallbackType(&actionFallbackType));
-                switch (actionFallbackType)
+                switch (action.FallbackType())
                 {
-                case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Drop:
-                {
-                    RETURN_IF_FAILED(XamlHelpers::WarnForFallbackDrop(renderContext, actionTypeString.Get()));
-                    return S_OK;
-                }
+                case rtom::FallbackType::Drop:
+                    XamlHelpers::WarnForFallbackDrop(renderContext, actionTypeString);
+                    return nullptr;
 
-                case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::Content:
-                {
-                    ComPtr<IAdaptiveActionElement> actionFallback;
-                    RETURN_IF_FAILED(action->get_FallbackContent(&actionFallback));
+                case rtom::FallbackType::Content:
+                    action = action.FallbackContent();
+                    XamlHelpers::WarnForFallbackContentElement(renderContext, actionTypeString, action.ActionTypeString());
+                    break; // Go again
 
-                    HString fallbackTypeString;
-                    RETURN_IF_FAILED(actionFallback->get_ActionTypeString(fallbackTypeString.GetAddressOf()));
-                    RETURN_IF_FAILED(XamlHelpers::WarnForFallbackContentElement(renderContext,
-                                                                                actionTypeString.Get(),
-                                                                                fallbackTypeString.Get()));
-
-                    action = actionFallback;
-                    break;
-                }
-
-                case ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None:
-                default:
-                    return E_FAIL;
+                case rtom::FallbackType::None:
+                    throw winrt::hresult_error(E_FAIL); // TODO: Really?
                 }
             }
         }
 
-        RETURN_IF_FAILED(renderer->Render(action.Get(), renderContext, renderArgs, &actionControl));
+        rtxaml::UIElement actionControl = renderer.Render(action, renderContext, renderArgs);
 
         if (!buttonVisible)
         {
-            RETURN_IF_FAILED(actionControl->put_Visibility(Visibility_Collapsed));
+            actionControl.Visibility(rtxaml::Visibility::Collapsed);
         }
 
-        XamlHelpers::AppendXamlElementToPanel(actionControl.Get(), actionsPanel);
+        XamlHelpers::AppendXamlElementToPanel(actionControl, actionsPanel);
 
-        if (columnDefinitions != nullptr)
+        if (columnDefinitions)
         {
             // If using the equal width columns, we'll add a column and assign the column
-            ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-                HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-            RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
-
+            rtxaml::Controls::ColumnDefinition columnDefinition;
             if (buttonVisible)
             {
-                RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
+                columnDefinition.Width({1.0, rtxaml::GridUnitType::Star});
             }
             else
             {
-                RETURN_IF_FAILED(columnDefinition->put_Width({0, GridUnitType::GridUnitType_Auto}));
+                columnDefinition.Width({0, rtxaml::GridUnitType::Auto});
             }
-
-            ComPtr<IGridStatics> gridStatics;
-            RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
-
-            ComPtr<IFrameworkElement> actionFrameworkElement;
-            RETURN_IF_FAILED(actionControl.As(&actionFrameworkElement));
-            RETURN_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), columnIndex));
+            rtxaml::Controls::Grid::SetColumn(actionControl.as<rtxaml::FrameworkElement>(), columnIndex);
         }
 
-        if (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::ShowCard)
+        if (actionType == rtom::ActionType::ShowCard)
         {
             // Build the inline show card.
-            RETURN_IF_FAILED(BuildInlineShowCard(
-                adaptiveCard, adaptiveActionSet, action.Get(), showCardPanel, actionControl.Get(), overflowItem, columnIndex, renderContext, renderArgs));
+            BuildInlineShowCard(adaptiveCard, adaptiveActionSet, action, showCardPanel, actionControl, overflowItem, columnIndex, renderContext, renderArgs);
         }
 
-        RETURN_IF_FAILED(actionControl.CopyTo(returnedActionControl));
-
-        return S_OK;
+        return actionControl;
     }
 
     HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
@@ -1413,16 +1372,15 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             ComPtr<IUIElement> overflowButtonAsUIElement;
             overflowButton.As(&overflowButtonAsUIElement);
 
-            ComPtr<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext> contextImpl =
-                PeekInnards<AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext>(renderContext);
+            auto contextImpl = PeekInnards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
 
             if (adaptiveActionSet != nullptr)
             {
-                RETURN_IF_FAILED(contextImpl->AddOverflowButton(adaptiveActionSet, overflowButtonAsUIElement.Get()));
+                contextImpl->AddOverflowButton(to_winrt(adaptiveActionSet), to_winrt(overflowButtonAsUIElement));
             }
             else
             {
-                RETURN_IF_FAILED(contextImpl->AddOverflowButton(adaptiveCard, overflowButtonAsUIElement.Get()));
+                contextImpl->AddOverflowButton(to_winrt(adaptiveCard), to_winrt(overflowButtonAsUIElement));
             }
         }
 

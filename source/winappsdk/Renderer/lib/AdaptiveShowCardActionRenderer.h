@@ -25,6 +25,12 @@ namespace AdaptiveCards::Rendering::WinUI3
                                      _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                                      bool isBottomActionBar,
                                      _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard) noexcept;
+
+        static winrt::Windows::UI::Xaml::UIElement
+        BuildShowCard(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& showCard,
+                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+                      bool isBottomActionBar);
     };
 
     ActivatableClass(AdaptiveShowCardActionRenderer);

@@ -56,15 +56,15 @@ using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     AdaptiveCardRenderer::AdaptiveCardRenderer() :
-        m_elementRendererRegistration(winrt::make<implementation::AdaptiveElementRendererRegistration>()),
-        m_actionRendererRegistration(winrt::make<implementation::AdaptiveActionRendererRegistration>()),
+        m_elementRendererRegistration(winrt::make_self<implementation::AdaptiveElementRendererRegistration>()),
+        m_actionRendererRegistration(winrt::make_self<implementation::AdaptiveActionRendererRegistration>()),
         m_featureRegistration(winrt::make<implementation::AdaptiveFeatureRegistration>()),
         m_hostConfig(winrt::make<implementation::AdaptiveHostConfig>()),
         m_resourceResolvers(winrt::make<implementation::AdaptiveCardResourceResolvers>()),
         m_xamlBuilder(winrt::make_self<::AdaptiveCards::Rendering::WinUI3::XamlBuilder>())
     {
-        ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultElementRenderers(to_wrl(m_elementRendererRegistration), m_xamlBuilder.get());
-        ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultActionRenderers(to_wrl(m_actionRendererRegistration));
+        ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultElementRenderers(m_elementRendererRegistration.get(), m_xamlBuilder.get());
+        ::AdaptiveCards::Rendering::WinUI3::RegisterDefaultActionRenderers(m_actionRendererRegistration.get());
         InitializeDefaultResourceDictionary();
         UpdateActionSentimentResourceDictionary();
     }
@@ -107,8 +107,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
             auto renderContext = winrt::make_self<implementation::AdaptiveRenderContext>(m_hostConfig,
                                                                                          m_featureRegistration,
-                                                                                         m_elementRendererRegistration,
-                                                                                         m_actionRendererRegistration,
+                                                                                         *m_elementRendererRegistration,
+                                                                                         *m_actionRendererRegistration,
                                                                                          m_resourceResolvers,
                                                                                          m_mergedResourceDictionary,
                                                                                          m_actionSentimentResourceDictionary,

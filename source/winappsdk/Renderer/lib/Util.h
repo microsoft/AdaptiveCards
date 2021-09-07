@@ -21,6 +21,8 @@
 #include "AdaptiveCardParseWarning.h"
 #include "RemoteResourceInformation.h"
 #include "TableCell.h"
+#include "AdaptiveElementRendererRegistration.h"
+#include "AdaptiveActionRendererRegistration.h"
 
 class bad_string_conversion : public std::exception
 {
@@ -107,6 +109,10 @@ template<typename TStored> struct property_opt
     operator std::optional<TStored>() { return get(); }
 };
 
+namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
+namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
+namespace rtxaml = winrt::Windows::UI::Xaml;
+
 template<typename D, typename I, typename... Args>
 HRESULT MakeRt(Microsoft::WRL::ComPtr<I>& out, Args&&... args) noexcept
 try
@@ -131,21 +137,25 @@ template<typename> struct abi_to_winrt;
 #define map_rt_to_abi(x) map_rt_to_abi_(x, x)
 
 map_rt_to_abi(AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveInputs, AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext, AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionsConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionsConfig);
+map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard);
+map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMedia);
+map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionSet, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionSet);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionInvoker, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionInvoker);
-map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveElementRendererRegistration,
-               AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRendererRegistration);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionRendererRegistration,
                AdaptiveCards::Rendering::WinUI3::IAdaptiveActionRendererRegistration);
-map_rt_to_abi_(AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia, AdaptiveCards::ObjectModel::WinUI3::IAdaptiveMedia);
-map_rt_to_abi_(Windows::Foundation::Uri, Windows::Foundation::IUriRuntimeClass);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveActionsConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveActionsConfig);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveElementRendererRegistration,
+               AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRendererRegistration);
 map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig, AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig);
-map_rt_to_abi_(Windows::UI::Xaml::DependencyObject, Windows::UI::Xaml::IDependencyObject);
-map_rt_to_abi_(Windows::UI::Xaml::Controls::TextBox, Windows::UI::Xaml::Controls::ITextBox);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveInputs, AdaptiveCards::Rendering::WinUI3::IAdaptiveInputs);
+map_rt_to_abi_(AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext, AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext);
+map_rt_to_abi_(Windows::Foundation::Uri, Windows::Foundation::IUriRuntimeClass);
 map_rt_to_abi_(Windows::UI::Xaml::Controls::ColumnDefinition, Windows::UI::Xaml::Controls::IColumnDefinition);
+map_rt_to_abi_(Windows::UI::Xaml::Controls::TextBox, Windows::UI::Xaml::Controls::ITextBox);
+map_rt_to_abi_(Windows::UI::Xaml::DependencyObject, Windows::UI::Xaml::IDependencyObject);
 map_rt_to_abi_(Windows::UI::Xaml::Media::Brush, Windows::UI::Xaml::Media::IBrush);
+map_rt_to_abi_(Windows::UI::Xaml::ResourceDictionary, Windows::UI::Xaml::IResourceDictionary);
+map_rt_to_abi_(Windows::UI::Xaml::UIElement, Windows::UI::Xaml::IUIElement);
 
 template<typename I> auto to_winrt(I* src)
 {
@@ -169,7 +179,7 @@ inline auto to_winrt(Microsoft::WRL::Wrappers::HString const& abi)
 
 template<typename I> auto to_wrl(I const& i)
 {
-    return reinterpret_cast<Microsoft::WRL::ComPtr<const winrt_to_abi<std::decay_t<I>>::type>&>(i);
+    return reinterpret_cast<Microsoft::WRL::ComPtr<winrt_to_abi<std::decay_t<I>>::type>&>(i);
 }
 
 template<typename I> auto to_wrl(I&& i)
@@ -333,6 +343,8 @@ HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontW
                       ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
                       _Out_ UINT16* resultWeight) noexcept;
 
+uint32_t GetSpacingSizeFromSpacing(rtrender::AdaptiveHostConfig const& hostConfig, rtom::Spacing const& spacing);
+
 HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing spacing,
                                   _Out_ UINT* spacingSize) noexcept;
@@ -439,60 +451,8 @@ namespace AdaptiveCards::Rendering::WinUI3
 {
     struct XamlBuilder;
 
-    template<class TRegistration>
-    HRESULT RegisterDefaultElementRenderers(TRegistration registration, XamlBuilder* xamlBuilder)
-    {
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"ActionSet").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveActionSetRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Column").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveColumnRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"ColumnSet").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveColumnSetRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Container").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveContainerRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"FactSet").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveFactSetRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Image").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveImageRenderer>(xamlBuilder).Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"ImageSet").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveImageSetRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.ChoiceSet").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveChoiceSetInputRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Date").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveDateInputRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Number").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveNumberInputRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Text").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveTextInputRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Time").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveTimeInputRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Toggle").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveToggleInputRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Media").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveMediaRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"RichTextBlock").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveRichTextBlockRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Table").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveTableRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"TextBlock").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveTextBlockRenderer>().Get()));
+    void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration,
+                                         XamlBuilder* xamlBuilder);
 
-        return S_OK;
-    }
-
-    template<class TRegistration> HRESULT RegisterDefaultActionRenderers(TRegistration registration)
-    {
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveOpenUrlActionRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ShowCard").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveShowCardActionRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveSubmitActionRenderer>().Get()));
-        RETURN_IF_FAILED(
-            registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
-                              Make<AdaptiveCards::Rendering::WinUI3::AdaptiveToggleVisibilityActionRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Execute").Get(),
-                                           Make<AdaptiveCards::Rendering::WinUI3::AdaptiveExecuteActionRenderer>().Get()));
-        return S_OK;
-    }
+    void RegisterDefaultActionRenderers(rtrender::implementation::AdaptiveActionRendererRegistration* registration);
 }

@@ -76,8 +76,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         WinUI3::RenderedAdaptiveCard RenderAdaptiveCardFromJsonString(hstring const& adaptiveJson);
         WinUI3::RenderedAdaptiveCard RenderAdaptiveCardFromJson(winrt::Windows::Data::Json::JsonObject const& adaptiveJson);
 
-        auto ElementRenderers() { return m_elementRendererRegistration; }
-        auto ActionRenderers() { return m_actionRendererRegistration; }
+        WinUI3::AdaptiveElementRendererRegistration ElementRenderers() { return *m_elementRendererRegistration; }
+        WinUI3::AdaptiveActionRendererRegistration ActionRenderers() { return *m_actionRendererRegistration; }
 
         rtxaml::ResourceDictionary GetMergedDictionary() { return m_mergedResourceDictionary; }
         bool GetFixedDimensions(_Out_ uint32_t* width, _Out_ uint32_t* height);
@@ -99,8 +99,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         rtxaml::ResourceDictionary m_mergedResourceDictionary;
         rtxaml::ResourceDictionary m_actionSentimentResourceDictionary;
         WinUI3::AdaptiveCardResourceResolvers m_resourceResolvers;
-        WinUI3::AdaptiveElementRendererRegistration m_elementRendererRegistration;
-        WinUI3::AdaptiveActionRendererRegistration m_actionRendererRegistration;
+        winrt::com_ptr<implementation::AdaptiveElementRendererRegistration> m_elementRendererRegistration;
+        winrt::com_ptr<implementation::AdaptiveActionRendererRegistration> m_actionRendererRegistration;
     };
 }
 namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation

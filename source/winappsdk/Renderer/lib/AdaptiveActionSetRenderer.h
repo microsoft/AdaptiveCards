@@ -3,23 +3,22 @@
 #pragma once
 
 #include "ActionSet.h"
+#include "AdaptiveActionSetRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveActionSetRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRenderer>
+    struct AdaptiveActionSetRenderer : AdaptiveActionSetRendererT<AdaptiveActionSetRenderer>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_WinUI3_AdaptiveActionSetRenderer, BaseTrust);
+        AdaptiveActionSetRenderer() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept;
+        winrt::Windows::UI::Xaml::UIElement Render(ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement,
+                                                   WinUI3::AdaptiveRenderContext const& renderContext,
+                                                   WinUI3::AdaptiveRenderArgs const& renderArgs);
     };
-
-    ActivatableClass(AdaptiveActionSetRenderer);
+}
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveActionSetRenderer : AdaptiveActionSetRendererT<AdaptiveActionSetRenderer, implementation::AdaptiveActionSetRenderer>
+    {
+    };
 }

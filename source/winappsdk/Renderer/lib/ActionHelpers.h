@@ -96,13 +96,39 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs);
 
-    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
-                                 _In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionSet* adaptiveActionSet,
-                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* children,
-                                 _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                                 _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                                 _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionSetControl);
+    HRESULT BuildActionSetHelper(
+        _In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
+        _In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionSet* adaptiveActionSet,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* children,
+        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
+        _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionSetControl);
+
+    void BuildActions(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
+                      winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> const& children,
+                      winrt::Windows::UI::Xaml::Controls::Panel const& bodyPanel,
+                      bool insertSeparator,
+                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
+
+    void BuildInlineShowCard(rtom::AdaptiveCard const& adaptiveCard,
+                             rtom::AdaptiveActionSet const& adaptiveActionSet,
+                             rtom::IAdaptiveActionElement const& action,
+                             rtxaml::Controls::Panel const& showCardsPanel,
+                             rtxaml::UIElement actionButton,
+                             rtxaml::UIElement actionOverflowItem,
+                             uint32_t buttonIndex,
+                             rtrender::AdaptiveRenderContext const& renderContext,
+                             rtrender::AdaptiveRenderArgs const& renderArgs);
+
+    rtxaml::UIElement BuildActionSetHelper(
+        rtom::AdaptiveCard const& adaptiveCard,
+        rtom::AdaptiveActionSet const& adaptiveActionSet,
+        winrt::Windows::Foundation::Collections::IVector<rtom::IAdaptiveActionElement> const& children,
+        rtrender::AdaptiveRenderContext const& renderContext,
+        rtrender::AdaptiveRenderArgs const& renderArgs);
 
     void CreateAppropriateButton(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action,
                                  Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IButton>& button);
+    rtxaml::Controls::Button CreateAppropriateButton(rtom::IAdaptiveActionElement const& action);
 }

@@ -5,6 +5,9 @@
 #include <regex>
 
 #include "XamlHelpers.h"
+#include "AdaptiveActionSetRenderer.h"
+#include "AdaptiveColumnRenderer.h"
+#include "AdaptiveColumnSetRenderer.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -336,6 +339,33 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTe
 
     localTextHighlighter.CopyTo(textHighlighter);
     return S_OK;
+}
+
+namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
+namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
+
+uint32_t GetSpacingSizeFromSpacing(rtrender::AdaptiveHostConfig const& hostConfig, rtom::Spacing const& spacing)
+{
+    auto spacingConfig = hostConfig.Spacing();
+
+    switch (spacing)
+    {
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing::None:
+        return 0;
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing::Small:
+        return spacingConfig.Small();
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing::Medium:
+        return spacingConfig.Medium();
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing::Large:
+        return spacingConfig.Large();
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing::ExtraLarge:
+        return spacingConfig.ExtraLarge();
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing::Padding:
+        return spacingConfig.Padding();
+    case winrt::AdaptiveCards::ObjectModel::WinUI3::Spacing::Default:
+    default:
+        return spacingConfig.Default();
+    }
 }
 
 HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -779,7 +809,10 @@ HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiv
     {
         HRESULT hr =
             IterateOverVectorWithFailure<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement>(
-                requirements.Get(), true, [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement* requirement) {
+                requirements.Get(),
+                true,
+                [&](ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveRequirement* requirement)
+                {
                     HString name;
                     RETURN_IF_FAILED(requirement->get_Name(name.GetAddressOf()));
 
@@ -860,7 +893,6 @@ void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostC
 
     THROW_IF_FAILED(localUrl.CopyTo(url));
 }
-
 
 Color GenerateLHoverColor(const Color& originalColor)
 {
@@ -948,5 +980,41 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveT
     RETURN_IF_FAILED(localCopiedTextElement->put_Text(text.Get()));
 
     RETURN_IF_FAILED(localCopiedTextElement.CopyTo(copiedTextElement));
+    return S_OK;
+}
+
+void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration, XamlBuilder* xamlBuilder)
+{
+    registration->Set(L"ActionSet", winrt::make<rtrender::implementation::AdaptiveActionSetRenderer>());
+    registration->Set(L"Column", winrt::make<rtrender::implementation::AdaptiveColumnRenderer>());
+    registration->Set(L"ColumnSet", winrt::make<rtrender::implementation::AdaptiveColumnSetRenderer>());
+    registration->Set(L"Container", winrt::make<rtrender::implementation::AdaptiveContainerRenderer>());
+    registration->Set(L"FactSet", winrt::make<rtrender::implementation::AdaptiveFactSetRenderer>());
+    registration->Set(L"Image", winrt::make<rtrender::implementation::AdaptiveImageRenderer>(xamlBuilder));
+    registration->Set(L"ImageSet", winrt::make<rtrender::implementation::AdaptiveImageSetRenderer>());
+    registration->Set(L"Input.ChoiceSet", winrt::make<rtrender::implementation::AdaptiveChoiceSetInputRenderer>());
+    registration->Set(L"Input.Date", winrt::make<rtrender::implementation::AdaptiveDateInputRenderer>());
+    registration->Set(L"Input.Number", winrt::make<rtrender::implementation::AdaptiveNumberInputRenderer>());
+    registration->Set(L"Input.Text", winrt::make<rtrender::implementation::AdaptiveTextInputRenderer>());
+    registration->Set(L"Input.Time", winrt::make<rtrender::implementation::AdaptiveTimeInputRenderer>());
+    registration->Set(L"Input.Toggle", winrt::make<rtrender::implementation::AdaptiveToggleInputRenderer>());
+    registration->Set(L"Media", winrt::make<rtrender::implementation::AdaptiveMediaRenderer>());
+    registration->Set(L"RichTextBlock", winrt::make<rtrender::implementation::AdaptiveRichTextBlockRenderer>());
+    registration->Set(L"Table", winrt::make<rtrender::implementation::AdaptiveTableRenderer>());
+    registration->Set(L"TextBlock", winrt::make<rtrender::implementation::AdaptiveTextBlockRenderer>());
+}
+
+void RegisterDefaultActionRenderers(rtrender::implementation::AdaptiveActionRendererRegistration* registration)
+{
+    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
+                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveOpenUrlActionRenderer>().Get()));
+    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ShowCard").Get(),
+                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveShowCardActionRenderer>().Get()));
+    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
+                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveSubmitActionRenderer>().Get()));
+    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
+                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveToggleVisibilityActionRenderer>().Get()));
+    RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Execute").Get(),
+                                       Make<AdaptiveCards::Rendering::WinUI3::AdaptiveExecuteActionRenderer>().Get()));
     return S_OK;
 }

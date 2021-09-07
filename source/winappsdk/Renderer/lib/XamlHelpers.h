@@ -7,6 +7,10 @@
 
 namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 {
+    namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
+    namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
+    namespace rtxaml = winrt::Windows::UI::Xaml;
+
     template<typename T> Microsoft::WRL::ComPtr<T> CreateABIClass(Microsoft::WRL::Wrappers::HStringReference className)
     {
         Microsoft::WRL::ComPtr<IInspectable> inspectableClass;
@@ -28,6 +32,13 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return solidColorBrushAsBrush;
     }
 
+    inline rtxaml::Media::Brush GetSolidColorBrush(winrt::Windows::UI::Color const& color)
+    {
+        rtxaml::Media::SolidColorBrush solidColorBrush;
+        solidColorBrush.Color(color);
+        return solidColorBrush;
+    }
+
     HRESULT SetStyleFromResourceDictionary(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                            HSTRING resourceName,
                                            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
@@ -36,12 +47,37 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                            const wchar_t* resourceName,
                                            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
 
+    void SetStyleFromResourceDictionary(rtrender::AdaptiveRenderContext const& renderContext,
+                                        winrt::hstring const& resourceName,
+                                        rtxaml::FrameworkElement frameworkElement);
+
+    rtxaml::UIElement CreateSeparator(rtrender::AdaptiveRenderContext const& renderContext,
+                                      uint32_t spacing,
+                                      uint32_t separatorThickness,
+                                      winrt::Windows::UI::Color const& separatorColor,
+                                      bool isHorizontal);
+
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>
     CreateSeparator(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                     UINT spacing,
                     UINT separatorThickness,
                     ABI::Windows::UI::Color separatorColor,
                     bool isHorizontal = true);
+
+    template<typename T>
+    auto TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary, winrt::hstring const& resourceName)
+    {
+        T toReturn{nullptr};
+        try
+        {
+            auto resourceKey = winrt::box_value(resourceName);
+            toReturn = resourceDictionary.TryLookup(resourceKey).try_as<T>();
+        }
+        catch (...)
+        {
+        }
+        return toReturn;
+    }
 
     template<typename T>
     HRESULT TryGetResourceFromResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
@@ -141,6 +177,28 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
+    template<typename T>
+    void AppendXamlElementToPanel(T const& xamlElement,
+                                  rtxaml::Controls::Panel const& panel,
+                                  rtom::HeightType heightType = rtom::HeightType::Auto)
+    {
+        if (!xamlElement)
+        {
+            return;
+        }
+
+        auto elementToAppend = xamlElement.as<rtxaml::UIElement>();
+        panel.Children().Append(elementToAppend);
+
+        if (heightType == rtom::HeightType::Stretch)
+        {
+            if (auto wholeItemsPanel = PeekInnards<WholeItemsPanel>(panel))
+            {
+                wholeItemsPanel->AddElementToStretchablesList(elementToAppend);
+            }
+        }
+    }
+
     template<typename T> void SetToggleValue(_In_ T* item, boolean isChecked)
     {
         ComPtr<IPropertyValueStatics> propertyValueStatics;
@@ -231,6 +289,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                     _Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* containerStyle);
 
     bool SupportsInteractivity(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig);
+
+    bool SupportsInteractivity(rtrender::AdaptiveHostConfig const& hostConfig);
 
     template<typename T>
     void SetVerticalContentAlignmentToChildren(_In_ T* container, _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment)
@@ -325,6 +385,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
+    inline void WarnFallbackString(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& warning)
+    {
+        renderContext.AddWarning(rtom::WarningStatusCode::PerformingFallback, warning);
+    }
+
+
     inline HRESULT WarnForFallbackContentElement(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                                  _In_ HSTRING parentElementType,
                                                  _In_ HSTRING fallbackElementType)
@@ -351,6 +417,19 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return WarnFallbackString(renderContext, warning);
     }
     CATCH_RETURN();
+
+    inline void WarnForFallbackContentElement(rtrender::AdaptiveRenderContext const& renderContext,
+                                              winrt::hstring const& parentElementType,
+                                              winrt::hstring const& fallbackElementType)
+    {
+        auto warning = L"Performing fallback for element of type \"" + parentElementType + L"\" (fallback element type \"" + fallbackElementType + L"\")";
+        WarnFallbackString(renderContext, warning);
+    }
+
+    inline void WarnForFallbackDrop(rtrender::AdaptiveRenderContext const& renderContext, winrt::hstring const& elementType)
+    {
+        WarnFallbackString(renderContext, L"Dropping element of type \"" + elementType + L"\" for fallback");
+    }
 
     void AddSeparatorIfNeeded(int& currentElement,
                               _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,
