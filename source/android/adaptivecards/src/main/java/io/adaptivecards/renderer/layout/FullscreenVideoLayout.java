@@ -23,38 +23,16 @@ package io.adaptivecards.renderer.layout;
  */
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.MediaController;
 
-import java.util.Locale;
-
-public class FullscreenVideoLayout extends FullscreenVideoView implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, MediaPlayer.OnPreparedListener, View.OnTouchListener
+public class FullscreenVideoLayout extends FullscreenVideoView implements MediaPlayer.OnPreparedListener, View.OnClickListener
 {
-    // Handler and Runnable to keep tracking on elapsed time
-    protected static Handler TIME_THREAD = null;
-    protected Runnable updateTimeRunnable = new Runnable()
-    {
-        public void run()
-        {
-            updateCounter();
-            autoHideControls();
-            TIME_THREAD.postDelayed(this, 200);
-        }
-    };
-
     public FullscreenVideoLayout(Context context)
     {
         super(context);
@@ -77,90 +55,63 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
         super.setOnTouchListener(null);
     }
 
-    private void arrangeControlBar()
-    {
-        LinearLayout controlsAndSeekBarLayout = new LinearLayout(m_context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        params.gravity = Gravity.BOTTOM;
-        controlsAndSeekBarLayout.setLayoutParams(params);
-        controlsAndSeekBarLayout.setOrientation(LinearLayout.VERTICAL);
-        m_videoControlsView.addView(controlsAndSeekBarLayout);
-
-        m_seekBar = new SeekBar(m_context);
-        m_seekBar.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        controlsAndSeekBarLayout.addView(m_seekBar);
-
-        LinearLayout controlsBarLayout = new LinearLayout(m_context);
-        controlsBarLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        controlsBarLayout.setOrientation(LinearLayout.HORIZONTAL);
-        controlsAndSeekBarLayout.addView(controlsBarLayout);
-
-        LinearLayout elapsedTimeViewLayout = new LinearLayout(m_context);
-        elapsedTimeViewLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        elapsedTimeViewLayout.setOrientation(LinearLayout.HORIZONTAL);
-        m_elapsedTimeView = new TextView(m_context);
-        LinearLayout.LayoutParams elapsedTimeViewLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        elapsedTimeViewLayoutParams.gravity = Gravity.CENTER_VERTICAL;
-        m_elapsedTimeView.setLayoutParams(elapsedTimeViewLayoutParams);
-        m_elapsedTimeView.setTextColor(Color.WHITE);
-        elapsedTimeViewLayout.addView(m_elapsedTimeView);
-        controlsBarLayout.addView(elapsedTimeViewLayout);
-
-        m_playButton = new ImageButton(m_context);
-        controlsBarLayout.addView(m_playButton);
-
-        LinearLayout totalTimeViewLayout = new LinearLayout(m_context);
-        totalTimeViewLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        m_totalTimeView = new TextView(m_context);
-        LinearLayout.LayoutParams totalTimeViewLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        totalTimeViewLayoutParams.gravity = Gravity.CENTER_VERTICAL;
-        m_totalTimeView.setLayoutParams(totalTimeViewLayoutParams);
-        m_totalTimeView.setTextAlignment(TEXT_ALIGNMENT_TEXT_END);
-        m_totalTimeView.setTextColor(Color.WHITE);
-        totalTimeViewLayout.addView(m_totalTimeView);
-        controlsBarLayout.addView(totalTimeViewLayout);
-    }
-
     @Override
     protected void initObjects()
     {
         super.initObjects();
 
         // We need to add it to show/hide the controls
-        super.setOnTouchListener(this);
+        super.setOnClickListener(this);
 
-        if (m_videoControlsView == null)
+        if (m_mediaControlView == null)
         {
-            m_videoControlsView = new FrameLayout(m_context);
-            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity = Gravity.BOTTOM;
-            m_videoControlsView.setLayoutParams(layoutParams);
+            // TODO: Switch to androidx.media2.widget.MediaControlView after AndroidX upgrade
+            // Existing "floating" MediaController doesn't scroll with anchorView, and creates a keyboard focus trap.
+            // So, we override to add the view as a child of the given anchorView instead.
+            m_mediaControlView = new MediaController(m_context)
+            {
+                private View m_anchorView;
+                private ViewGroup.LayoutParams m_layoutParams;
 
-            // Apply black color so elapsed time and total time are visible
-            m_videoControlsView.setBackgroundColor(0x44000000);
+                @Override
+                public void setAnchorView(View view) {
+                    m_anchorView = view;
+                    m_layoutParams = view.getLayoutParams();
+                    super.setAnchorView(view);
 
-            addView(m_videoControlsView);
-        }
+                    if (view instanceof ViewGroup)
+                    {
+                        ((ViewGroup) getParent()).removeView(this);
+                        setLayoutDirection(LAYOUT_DIRECTION_LTR);
+                        ((ViewGroup) view).addView(this);
+                    }
+                }
 
-        if (m_videoControlsView != null)
-        {
-            arrangeControlBar();
-        }
+                @Override
+                public void show() {
+                    super.show();
+                    if(isShowing() && getVisibility() == INVISIBLE)
+                    {
+                        setVisibility(VISIBLE);
+                        requestFocus();
+                        requestFocusFromTouch();
+                    }
+                }
 
-        if (m_playButton != null)
-        {
-            m_playButton.setOnClickListener(this);
-        }
-
-        if (m_seekBar != null)
-        {
-            m_seekBar.setOnSeekBarChangeListener(this);
-        }
-
-        // Start controls invisible. Make it visible when it is prepared
-        if (m_videoControlsView != null)
-        {
-            m_videoControlsView.setVisibility(View.INVISIBLE);
+                @Override
+                public void hide() {
+                    super.hide();
+                    if(!isShowing() && getVisibility() == VISIBLE)
+                    {
+                        setVisibility(INVISIBLE);
+                        m_anchorView.requestFocus();
+                        m_anchorView.requestFocusFromTouch();
+                    }
+                }
+            };
+            m_mediaControlView.setMediaPlayer(this);
+            m_mediaControlView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
+            m_mediaControlView.setAnchorView(this);
         }
     }
 
@@ -168,95 +119,30 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
     protected void releaseObjects()
     {
         super.releaseObjects();
-        if (m_videoControlsView != null)
+        if (m_mediaControlView != null)
         {
-            removeView(m_videoControlsView);
-        }
-    }
-
-    protected void startCounter()
-    {
-        if(TIME_THREAD == null)
-        {
-            TIME_THREAD = new Handler();
-        }
-        TIME_THREAD.postDelayed(updateTimeRunnable, 200);
-    }
-
-    protected void stopCounter()
-    {
-        TIME_THREAD.removeCallbacks(updateTimeRunnable);
-    }
-
-    protected void updateCounter()
-    {
-        if (m_elapsedTimeView == null)
-        {
-            return;
-        }
-
-        int elapsed = getCurrentPosition();
-        // getCurrentPosition is a little bit buggy :(
-        if (elapsed > 0 && elapsed < getDuration())
-        {
-            m_seekBar.setProgress(elapsed);
-
-            elapsed = Math.round(elapsed / 1000.f);
-            long s = elapsed % 60;
-            long m = (elapsed / 60) % 60;
-            long h = (elapsed / (60 * 60)) % 24;
-
-            if (h > 0)
-            {
-                m_elapsedTimeView.setText(String.format(Locale.US, "%d:%02d:%02d", h, m, s));
-            }
-            else
-            {
-                m_elapsedTimeView.setText(String.format(Locale.US, "%02d:%02d", m, s));
-            }
-        }
-    }
-
-    protected void autoHideControls()
-    {
-        if (m_elapsedTimeView == null)
-        {
-            return;
-        }
-
-        // We add one tick every 200 miliseconds and if the ticks have surpassed the 3 seconds ticks,
-        // we hide the controls
-        m_currentTicksForAutoHide++;
-
-        if (m_currentTicksForAutoHide > c_ticksBeforeAutohide)
-        {
-            hideControls();
+            m_mediaControlView.hide();
+            m_mediaControlView.setAnchorView(null);
         }
     }
 
     @Override
-    public void setOnTouchListener(View.OnTouchListener l)
+    public void setOnClickListener(View.OnClickListener l)
     {
-        m_touchListener = l;
+        m_clickListener = l;
     }
 
     @Override
     public void onCompletion(MediaPlayer mp)
     {
         super.onCompletion(mp);
-        stopCounter();
         updateControls();
-        if (m_currentState != State.ERROR)
-        {
-            updateCounter();
-        }
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra)
     {
         boolean result = super.onError(mp, what, extra);
-        stopCounter();
         updateControls();
         return result;
     }
@@ -265,49 +151,7 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        if (getCurrentState() == State.END)
-        {
-            stopCounter();
-        }
-    }
-
-    @Override
-    protected void tryToPrepare()
-    {
-        super.tryToPrepare();
-
-        if (getCurrentState() == State.PREPARED || getCurrentState() == State.STARTED)
-        {
-            if (m_elapsedTimeView != null && m_totalTimeView != null)
-            {
-                int total = getDuration();
-                if (total > 0)
-                {
-                    m_seekBar.setMax(total);
-                    m_seekBar.setProgress(0);
-
-                    total = total / 1000;
-                    long s = total % 60;
-                    long m = (total / 60) % 60;
-                    long h = (total / (60 * 60)) % 24;
-                    if (h > 0)
-                    {
-                        m_elapsedTimeView.setText("00:00:00");
-                        m_totalTimeView.setText(String.format(Locale.US, "%d:%02d:%02d", h, m, s));
-                    }
-                    else
-                    {
-                        m_elapsedTimeView.setText("00:00");
-                        m_totalTimeView.setText(String.format(Locale.US, "%02d:%02d", m, s));
-                    }
-                }
-            }
-
-            if (m_videoControlsView != null)
-            {
-                m_videoControlsView.setVisibility(View.VISIBLE);
-            }
-        }
+        m_mediaControlView.hide();
     }
 
     @Override
@@ -315,99 +159,85 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
         if (!isPlaying())
         {
             super.start();
-            startCounter();
-            updateControls();
         }
+        updateControls();
     }
 
     @Override
     public void pause() throws IllegalStateException {
         if (isPlaying())
         {
-            stopCounter();
             super.pause();
-            updateControls();
         }
+        updateControls();
     }
 
     @Override
     public void reset()
     {
         super.reset();
-        stopCounter();
-        updateControls();
     }
 
     @Override
     public void stop() throws IllegalStateException
     {
         super.stop();
-        stopCounter();
         updateControls();
     }
 
     protected void updateControls()
     {
-        if (m_playButton == null) return;
-
-        Drawable icon;
-        if (getCurrentState() == State.STARTED)
+        if (m_currentState == State.STARTED)
         {
-            icon = m_context.getResources().getDrawable(android.R.drawable.ic_media_pause);
+            showControls();
         }
         else
         {
-            icon = m_context.getResources().getDrawable(android.R.drawable.ic_media_play);
-        }
-
-        m_playButton.setBackground(icon);
-    }
-
-    public void hideControls() {
-        if (m_videoControlsView != null)
-        {
-            m_videoControlsView.setVisibility(View.INVISIBLE);
+            showControlsForever();
         }
     }
 
-    public void showControls() {
-        if (m_videoControlsView != null)
-        {
-            m_videoControlsView.setVisibility(View.VISIBLE);
-            m_currentTicksForAutoHide = 0;
-        }
+    public void hideControls()
+    {
+        m_mediaControlView.hide();
+        // return focus to player after hiding control view
+        requestFocus();
+    }
+
+    public void showControls()
+    {
+        m_mediaControlView.show();
+    }
+
+    private void showControlsForever()
+    {
+        m_mediaControlView.show(0);
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event)
+    public void onClick(View v)
     {
-        if (event.getAction() == MotionEvent.ACTION_DOWN)
+        if (m_mediaControlView != null)
         {
-            if (m_videoControlsView != null)
+            if(m_mediaControlView.isShowing())
             {
-                if (m_videoControlsView.getVisibility() == View.VISIBLE)
-                {
-                    hideControls();
-                }
-                else
-                {
-                    showControls();
-                }
+                hideControls();
+            }
+            else
+            {
+                showControls();
             }
         }
 
-        if (m_touchListener != null)
+        if (m_clickListener != null)
         {
-            return m_touchListener.onTouch(FullscreenVideoLayout.this, event);
+            m_clickListener.onClick(v);
         }
-
-        return false;
     }
 
-    // Onclick action Controls play button
-    @Override
-    public void onClick(View v) {
-        if (isPlaying())
+    private void togglePlaying()
+    {
+        if (m_currentState == State.STARTED)
         {
             pause();
         }
@@ -417,34 +247,7 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
         }
     }
 
-    // SeekBar Listener
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-    {
-    }
+    protected OnClickListener m_clickListener;
+    private MediaController m_mediaControlView;
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar)
-    {
-        stopCounter();
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar)
-    {
-        int progress = seekBar.getProgress();
-        seekTo(progress);
-    }
-
-    protected OnTouchListener m_touchListener;
-    protected ViewGroup m_videoControlsView;
-    protected SeekBar m_seekBar;
-    protected ImageButton m_playButton;
-    protected TextView m_elapsedTimeView, m_totalTimeView;
-
-    // We update the play counter every 200 miliseconds so we keep this count to hide the separator
-    protected int m_currentTicksForAutoHide = 0;
-
-    // The controls will autohide after 3 seconds
-    private final int c_ticksBeforeAutohide = 15;
 }

@@ -1,7 +1,7 @@
 """Tests that run for a list of sample images
 for predict_json api.
 """
-
+# pylint: disable=no-member
 import json
 from tests.utils import get_response  # pylint: disable=no-name-in-module
 

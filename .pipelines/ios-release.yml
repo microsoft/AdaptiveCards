@@ -1,0 +1,63 @@
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
+
+pr: none
+trigger: none
+
+pool:
+  name: Azure Pipelines
+  vmImage: internal-macos-10.15
+
+variables:
+- group: AdaptiveCards-KVLink
+
+steps:
+- task: Xcode@5
+  displayName: Xcode build
+  inputs:
+    configuration: Release
+    scheme: AdaptiveCards-Universal
+    sdk: iphoneos
+    xcWorkspacePath: source/ios/AdaptiveCards/AdaptiveCards.xcworkspace
+
+- task: DownloadSecureFile@1
+  name: ConnectString
+  displayName: Download secure file
+  inputs:
+    secureFile: 8bf566e4-a21c-48b4-90e5-368f3adaef68
+    retryCount: 5
+
+- task: Bash@3
+  displayName: Bash Script
+  inputs:
+    targetType: inline
+    script: >-
+      # Use the environment variables input below to pass secret variables to this script
+
+      cp -f $(ConnectString.secureFilePath)  ./source/ios/tools/IOSFeed
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet custom
+  inputs:
+    command: custom
+    projects: source/ios/tools/IOSFeed/IOSFeed.csproj
+    custom: add
+    arguments: package Microsoft.Azure.Storage.Blob
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet build
+  inputs:
+    projects: source/ios/tools/IOSFeed/IOSFeed.csproj
+
+- task: DotNetCoreCLI@2
+  displayName: Push To Azure
+  inputs:
+    command: run
+    projects: source/ios/tools/IOSFeed/IOSFeed.csproj
+
+- task: Bash@3
+  displayName: Push To cocoapods
+  inputs:
+    targetType: inline
+    script: "cat ./source/ios/AdaptiveCards.podspec\nif type brew >/dev/null 2>&1;\nthen \n   brew upgrade cocoapods >/dev/null 2>&1; \n   brew install cocoapods >/dev/null 2>&1; \nfi\n\npod trunk push  ./source/ios/AdaptiveCards.podspec\n"
+  env:
+    COCOAPODS_TRUNK_TOKEN: $(cocoapod-trunk-token)

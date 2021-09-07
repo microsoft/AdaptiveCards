@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
   spec.name             = 'AdaptiveCards'
 
-  spec.version          = '1.0.3'
+  spec.version          = '2.8.0-beta.3'
   
   spec.license          = { :type => 'Adaptive Cards Binary EULA', :file => 'EULA-Non-Windows.txt' } 
   
@@ -15,6 +15,10 @@ Pod::Spec.new do |spec|
   spec.source           = { :http => 'https://adaptivecardsblob.blob.core.windows.net/adaptivecardsiosblobs/AdaptiveCards.framework.zip' }
 
   spec.vendored_frameworks = 'AdaptiveCards.xcframework'
+
+  spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+
+  spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   
-  spec.platform         = :ios, '10'
+  spec.platform         = :ios, '11'
 end

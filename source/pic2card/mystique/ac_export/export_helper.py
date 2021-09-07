@@ -1,6 +1,5 @@
 """Module maintains the needed design and exporting templates and utilities
  for target rendering"""
-# pylint: disable=relative-beyond-top-level
 from .adaptive_card_templates import AdaptiveCardTemplate
 
 

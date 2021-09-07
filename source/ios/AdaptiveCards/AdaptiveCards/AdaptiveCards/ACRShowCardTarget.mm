@@ -118,7 +118,9 @@
     // AdatpiveCard will configure the backgroun
     if (hidden) {
         if ([_adcView.subviews count] > 1) {
-            renderBackgroundCoverMode(_adcView.subviews[1], _adcView);
+            NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
+            renderBackgroundCoverMode(_adcView.subviews[1], _adcView.backgroundView, constraints, _adcView);
+            [NSLayoutConstraint activateConstraints:constraints];
         }
     }
     _button.selected = !isSelected;

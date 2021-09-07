@@ -3130,7 +3130,8 @@ export class ChoiceSetInput extends Input {
         "style",
         [
             { value: "compact" },
-            { value: "expanded" }
+            { value: "expanded" },
+            { value: "filtered", targetVersion: Versions.v1_5 }
         ],
         "compact");
     static readonly isMultiSelectProperty = new BoolProperty(Versions.v1_0, "isMultiSelect", false);
@@ -3141,10 +3142,10 @@ export class ChoiceSetInput extends Input {
     defaultValue?: string;
 
     @property(ChoiceSetInput.styleProperty)
-    style?: "compact" | "expanded";
+    style?: "compact" | "expanded" | "filtered";
 
     get isCompact(): boolean {
-        return this.style !== "expanded";
+        return !this.style || this.style === "compact";
     }
 
     set isCompact(value: boolean) {
@@ -3176,21 +3177,24 @@ export class ChoiceSetInput extends Input {
     }
 
     private _uniqueCategoryName: string;
-    private _selectElement: HTMLSelectElement;
+    private _selectElement: HTMLSelectElement | undefined;
+    private _textInput: HTMLInputElement | undefined;
     private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
 
     // Make sure `aria-current` is applied to the currently-selected item
     private internalApplyAriaCurrent(): void {
-        const options = this._selectElement.options;
+        if (this._selectElement) {
+            const options = this._selectElement.options;
 
-        if (options) {
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].selected) {
-                    options[i].setAttribute("aria-current", "true");
-                }
-                else {
-                    options[i].removeAttribute("aria-current");
+            if (options) {
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].selected) {
+                        options[i].setAttribute("aria-current", "true");
+                    }
+                    else {
+                        options[i].removeAttribute("aria-current");
+                    }
                 }
             }
         }
@@ -3317,6 +3321,59 @@ export class ChoiceSetInput extends Input {
                     "radio",
                     this.defaultValue ? [ this.defaultValue ] : undefined);
             }
+            else if (this.style === "filtered") {
+                // Render as a text input coupled with a datalist
+                let inputContainer = document.createElement("div");
+                inputContainer.style.width = "100%";
+
+                this._textInput = document.createElement("input");
+                this._textInput.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput", "ac-choiceSetInput-filtered");
+                this._textInput.type = "text";
+                this._textInput.style.width = "100%";
+                this._textInput.oninput = () => {
+                    this.valueChanged();
+
+                    if (this._textInput) {
+                        // Remove aria-label when value is not empty so narration software doesn't
+                        // read the placeholder
+                        if (this.value) {
+                            this._textInput.removeAttribute("placeholder");
+                            this._textInput.removeAttribute("aria-label");
+                        }
+                        else if (this.placeholder) {
+                            this._textInput.placeholder = this.placeholder;
+                            this._textInput.setAttribute("aria-label", this.placeholder);
+                        }
+                    }
+                }
+
+                if (this.defaultValue) {
+                    this._textInput.value = this.defaultValue;
+                }
+
+                if (this.placeholder && !this._textInput.value) {
+                    this._textInput.placeholder = this.placeholder;
+                    this._textInput.setAttribute("aria-label", this.placeholder);
+                }
+        
+                let dataList = document.createElement("datalist");
+                dataList.id = Utils.generateUniqueId();
+
+                for (let choice of this.choices) {
+                    let option = document.createElement("option");
+                    option.value = <string>choice.value;
+                    option.text = <string>choice.title;
+                    option.setAttribute("aria-label", <string>choice.title);
+
+                    dataList.appendChild(option);
+                }
+
+                this._textInput.setAttribute("list", dataList.id);
+
+                inputContainer.append(this._textInput, dataList);
+
+                return inputContainer;
+            }
             else {
                 // Render as a combo box
                 this._selectElement = document.createElement("select");
@@ -3370,6 +3427,9 @@ export class ChoiceSetInput extends Input {
                 this._toggleInputs[0].focus();
             }
         }
+        else if (this._textInput) {
+            this._textInput.focus();
+        }
         else {
             super.focus();
         }
@@ -3399,28 +3459,37 @@ export class ChoiceSetInput extends Input {
         return this.value ? true : false;
     }
 
+    isValid(): boolean {
+        if (this._textInput) {
+            for (let choice of this.choices) {
+                if (this.value === choice.value) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return super.isValid();
+    }
+
     get value(): string | undefined {
         if (!this.isMultiSelect) {
-            if (this.isCompact) {
-                if (this._selectElement) {
-                    return this._selectElement.selectedIndex > 0 ? this._selectElement.value : undefined;
-                }
-
-                return undefined;
+            if (this._selectElement) {
+                return this._selectElement.selectedIndex > 0 ? this._selectElement.value : undefined;
             }
-            else {
-                if (!this._toggleInputs || this._toggleInputs.length == 0) {
-                    return undefined;
-                }
-
+            else if (this._textInput) {
+                return this._textInput.value;
+            }
+            else if (this._toggleInputs && this._toggleInputs.length > 0) {
                 for (let toggleInput of this._toggleInputs) {
                     if (toggleInput.checked) {
                         return toggleInput.value;
                     }
                 }
-
-                return undefined;
             }
+
+            return undefined;
         }
         else {
             if (!this._toggleInputs || this._toggleInputs.length == 0) {

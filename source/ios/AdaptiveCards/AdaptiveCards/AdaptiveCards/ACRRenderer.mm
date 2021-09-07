@@ -98,14 +98,16 @@ using namespace AdaptiveCards;
     }
 
     if (adaptiveCard->GetMinHeight() > 0) {
-        [NSLayoutConstraint constraintWithItem:rootView
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1
-                                      constant:adaptiveCard->GetMinHeight()]
-            .active = YES;
+        NSLayoutConstraint *constraint =
+            [NSLayoutConstraint constraintWithItem:rootView
+                                         attribute:NSLayoutAttributeHeight
+                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1
+                                          constant:adaptiveCard->GetMinHeight()];
+        constraint.priority = 999;
+        constraint.active = YES;
     }
 
     auto backgroundImageProperties = adaptiveCard->GetBackgroundImage();

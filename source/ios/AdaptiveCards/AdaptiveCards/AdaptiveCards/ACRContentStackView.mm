@@ -239,6 +239,11 @@ static int kToggleVisibilityContext;
     return _stackView.arrangedSubviews;
 }
 
+- (NSArray<UIView *> *_Nonnull)getContentStackSubviews
+{
+    return _stackView.subviews;
+}
+
 - (void)addArrangedSubview:(UIView *)view
 {
     [_stackView addArrangedSubview:view];
@@ -471,7 +476,9 @@ static int kToggleVisibilityContext;
 
     if ([self.subviews count]) {
         // configures background when this view contains a background image, and does only once
-        renderBackgroundCoverMode(self.subviews[0], self);
+        NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
+        renderBackgroundCoverMode(self.subviews[0], self.backgroundView, constraints, self);
+        [NSLayoutConstraint activateConstraints:constraints];
     }
 
     if (_isActionSet) {
@@ -565,9 +572,18 @@ static int kToggleVisibilityContext;
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if (self.selectActionTarget) {
-        [self.selectActionTarget doSelectAction];
+        return;
     } else {
         [self.nextResponder touchesBegan:touches withEvent:event];
+    }
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if (self.selectActionTarget) {
+        [self.selectActionTarget doSelectAction];
+    } else {
+        [self.nextResponder touchesEnded:touches withEvent:event];
     }
 }
 
