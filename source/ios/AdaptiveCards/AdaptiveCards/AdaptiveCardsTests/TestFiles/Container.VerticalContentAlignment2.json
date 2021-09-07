@@ -11,9 +11,10 @@
         {
             "type": "Container",
             "height": "stretch",
+            "spacing": "none",
             "verticalContentAlignment": "center",
             "expected": {
-                "numberOfPaddings" : "3"
+                "numberOfViews" : "3"
             },
             "items": [
                 {
@@ -24,9 +25,11 @@
         },
         {
             "type": "Container",
-            "verticalContentAlignment": "bottom",
+            "height": "stretch",
+            "spacing": "none",
+            "verticalContentAlignment": "center",
             "expected": {
-                "numberOfPaddings" : "2"
+                "numberOfViews" : "3"
             },
             "items": [
                 {

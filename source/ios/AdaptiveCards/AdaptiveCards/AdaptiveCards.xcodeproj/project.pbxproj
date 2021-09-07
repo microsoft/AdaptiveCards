@@ -179,9 +179,16 @@
 		6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BDD085426D5727C00969B41 /* ACOPaddingHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BDD085226D5727C00969B41 /* ACOPaddingHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BDD085526D5727C00969B41 /* ACOPaddingHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BDD085326D5727C00969B41 /* ACOPaddingHandler.mm */; };
-		6BE6C7A526E17132009E9171 /* ColumnSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7A426E17132009E9171 /* ColumnSet.VerticalStretch.json */; };
-		6BE6C7A926E191AB009E9171 /* Column.VerticalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7A826E191AB009E9171 /* Column.VerticalAlignment.json */; };
-		6BE6C7AB26E19651009E9171 /* Container.VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7AA26E19651009E9171 /* Container.VerticalContentAlignment.json */; };
+		6BE6C7B026E2C9A3009E9171 /* ACRCustomRenderers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6C7AF26E2C9A3009E9171 /* ACRCustomRenderers.mm */; };
+		6BE6C7B226E2DF29009E9171 /* Container.VerticalContentAlignment2.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B126E2DF29009E9171 /* Container.VerticalContentAlignment2.json */; };
+		6BE6C7B626E2E140009E9171 /* Column.VerticalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B526E2E140009E9171 /* Column.VerticalAlignment.json */; };
+		6BE6C7BA26E2E30A009E9171 /* Container.VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B726E2E30A009E9171 /* Container.VerticalContentAlignment.json */; };
+		6BE6C7BB26E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B826E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json */; };
+		6BE6C7BC26E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B926E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json */; };
+		6BE6C7BE26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7BD26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json */; };
+		6BE6C7C126E2ECEA009E9171 /* ADCMockResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6C7BF26E2ECEA009E9171 /* ADCMockResolver.m */; };
+		6BE6C7C326E2F07C009E9171 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7C226E2F07C009E9171 /* sample.json */; };
+		6BE6C7C526E7CDD0009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7C426E7CDCF009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */; };
 		6BE8DFD4249C4C1B005EFE66 /* ACRToggleInputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
 		6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -610,8 +617,18 @@
 		6BDD085226D5727C00969B41 /* ACOPaddingHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOPaddingHandler.h; sourceTree = "<group>"; };
 		6BDD085326D5727C00969B41 /* ACOPaddingHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOPaddingHandler.mm; sourceTree = "<group>"; };
 		6BE6C7A426E17132009E9171 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.VerticalStretch.json; path = ../../../../../../samples/v1.1/Tests/ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
-		6BE6C7A826E191AB009E9171 /* Column.VerticalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.VerticalAlignment.json; path = ../../../../../../samples/v1.1/Tests/Column.VerticalAlignment.json; sourceTree = "<group>"; };
-		6BE6C7AA26E19651009E9171 /* Container.VerticalContentAlignment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Container.VerticalContentAlignment.json; path = ../../../../../../samples/v1.1/Elements/Container.VerticalContentAlignment.json; sourceTree = "<group>"; };
+		6BE6C7AE26E2C969009E9171 /* ACRCustomRenderers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRCustomRenderers.h; sourceTree = "<group>"; };
+		6BE6C7AF26E2C9A3009E9171 /* ACRCustomRenderers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRCustomRenderers.mm; sourceTree = "<group>"; };
+		6BE6C7B126E2DF29009E9171 /* Container.VerticalContentAlignment2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Container.VerticalContentAlignment2.json; sourceTree = "<group>"; };
+		6BE6C7B526E2E140009E9171 /* Column.VerticalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.VerticalAlignment.json; sourceTree = "<group>"; };
+		6BE6C7B726E2E30A009E9171 /* Container.VerticalContentAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Container.VerticalContentAlignment.json; sourceTree = "<group>"; };
+		6BE6C7B826E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.Image.VerticalStretch.json; sourceTree = "<group>"; };
+		6BE6C7B926E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.FactSet.VerticalStretch.json; sourceTree = "<group>"; };
+		6BE6C7BD26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
+		6BE6C7BF26E2ECEA009E9171 /* ADCMockResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADCMockResolver.m; sourceTree = "<group>"; };
+		6BE6C7C026E2ECEA009E9171 /* ADCMockResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCMockResolver.h; sourceTree = "<group>"; };
+		6BE6C7C226E2F07C009E9171 /* sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sample.json; path = ../../../ADCIOSVisualizer/resources/sample.json; sourceTree = "<group>"; };
+		6BE6C7C426E7CDCF009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.Input.ChoiceSet.VerticalStretch.json; sourceTree = "<group>"; };
 		6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRToggleInputView.mm; sourceTree = "<group>"; };
 		6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRToggleInputView.h; sourceTree = "<group>"; };
 		6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRQuickReplyView.h; sourceTree = "<group>"; };
@@ -889,6 +906,8 @@
 		6B124C9226B8AE3B007E9641 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				6BE6C7C026E2ECEA009E9171 /* ADCMockResolver.h */,
+				6BE6C7BF26E2ECEA009E9171 /* ADCMockResolver.m */,
 				6B124C8F26B8AC37007E9641 /* MockACRView.mm */,
 				6B124C9126B8AC58007E9641 /* MockACRView.h */,
 				6B124C9326B8AE59007E9641 /* MockContext.h */,
@@ -1066,6 +1085,8 @@
 		6BE6C79426E1560A009E9171 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				6BE6C7AE26E2C969009E9171 /* ACRCustomRenderers.h */,
+				6BE6C7AF26E2C9A3009E9171 /* ACRCustomRenderers.mm */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1073,9 +1094,15 @@
 		6BE6C79F26E17077009E9171 /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
-				6BE6C7AA26E19651009E9171 /* Container.VerticalContentAlignment.json */,
-				6BE6C7A826E191AB009E9171 /* Column.VerticalAlignment.json */,
+				6BE6C7B526E2E140009E9171 /* Column.VerticalAlignment.json */,
+				6BE6C7B926E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json */,
+				6BE6C7B826E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json */,
+				6BE6C7C426E7CDCF009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */,
+				6BE6C7BD26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json */,
 				6BE6C7A426E17132009E9171 /* ColumnSet.VerticalStretch.json */,
+				6BE6C7B726E2E30A009E9171 /* Container.VerticalContentAlignment.json */,
+				6BE6C7B126E2DF29009E9171 /* Container.VerticalContentAlignment2.json */,
+				6BE6C7C226E2F07C009E9171 /* sample.json */,
 			);
 			path = TestFiles;
 			sourceTree = "<group>";
@@ -1814,9 +1841,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BE6C7AB26E19651009E9171 /* Container.VerticalContentAlignment.json in Resources */,
-				6BE6C7A926E191AB009E9171 /* Column.VerticalAlignment.json in Resources */,
-				6BE6C7A526E17132009E9171 /* ColumnSet.VerticalStretch.json in Resources */,
+				6BE6C7C526E7CDD0009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */,
+				6BE6C7BA26E2E30A009E9171 /* Container.VerticalContentAlignment.json in Resources */,
+				6BE6C7BE26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json in Resources */,
+				6BE6C7BB26E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json in Resources */,
+				6BE6C7C326E2F07C009E9171 /* sample.json in Resources */,
+				6BE6C7BC26E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json in Resources */,
+				6BE6C7B626E2E140009E9171 /* Column.VerticalAlignment.json in Resources */,
+				6BE6C7B226E2DF29009E9171 /* Container.VerticalContentAlignment2.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2014,7 +2046,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B124C8C26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm in Sources */,
+				6BE6C7C126E2ECEA009E9171 /* ADCMockResolver.m in Sources */,
 				6B124CA426D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm in Sources */,
+				6BE6C7B026E2C9A3009E9171 /* ACRCustomRenderers.mm in Sources */,
 				30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */,
 				6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */,
 				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,

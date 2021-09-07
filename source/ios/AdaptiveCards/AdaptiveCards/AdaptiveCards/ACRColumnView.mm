@@ -11,6 +11,7 @@
 
 @implementation ACRColumnView {
     ACOVisibilityManager *_visibilityManager;
+@protected
     ACOPaddingHandler *_paddingHandler;
 }
 
