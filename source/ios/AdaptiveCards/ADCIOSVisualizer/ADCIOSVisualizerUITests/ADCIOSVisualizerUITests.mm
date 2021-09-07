@@ -29,9 +29,14 @@
     // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
     // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     
-    testApp = [[XCUIApplication alloc] init];
-    testApp.launchArguments = [NSArray arrayWithObject:@"ui-testing"];
-    [testApp launch];
+    if (testApp == nil)
+    {
+        testApp = [[XCUIApplication alloc] init];
+        testApp.launchArguments = [NSArray arrayWithObject:@"ui-testing"];
+        [testApp launch];
+    }
+    
+    [self resetTestEnvironment];
 }
 
 - (void)tearDown
@@ -133,12 +138,9 @@
 
 - (void)testSmokeTestActivityUpdateDate
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
     
     [self tapOnButtonWithText:@"Set due date"];
-
-    XCUIElementQuery* tables = testApp.tables;
     
     [self setDateOnInputDateWithId:@"dueDate"
                           andLabel:@"Enter the due date"
@@ -157,7 +159,6 @@
 
 - (void)testSmokeTestActivityUpdateComment
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.3" forCardType:@"Scenarios" withCardName:@"ActivityUpdateWithLabels.json"];
     
     XCUIElementQuery* buttons = testApp.buttons;
@@ -182,7 +183,6 @@
 
 - (void)testFocusOnValidationFailure
 {
-    [self resetTestEnvironment];
     [self openCardForVersion:@"v1.3" forCardType:@"Elements" withCardName:@"Input.Text.ErrorMessage.json"];
     
     [self tapOnButtonWithText:@"Submit"];
@@ -195,8 +195,6 @@
 
 - (void)testLongPressAndDragRaiseNoEventInContainers
 {
-    [self resetTestEnvironment];
-    
     [self openCardForVersion:@"v1.5" forCardType:@"Test" withCardName:@"Container.ScrollableSelectableList.json"];
     
     XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
@@ -204,6 +202,11 @@
     XCUIElement *container1 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:3];
     
     XCUIElement *container2 = [[chatWindow.cells childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:1];
+    
+    // For some unknown reason this test succeeds on a mackbook but not in
+    // a mac mini (xcode and emulator versions match), so we have to add a
+    // small wait time to avoid the long press behaving as a tap
+    [NSThread sleepForTimeInterval:1];
     
     // Execute a drag from the 4th element to the 2nd element
     [container1 pressForDuration:1 thenDragToElement:container2];
@@ -226,85 +229,85 @@
 
 - (void)testCanGatherDefaultValuesFromChoiceInputSet
 {
-    XCUIApplication *app = [[XCUIApplication alloc] init];
-    [app launch];
-    XCUIElementQuery *tablesQuery = app.tables;
-    [tablesQuery /*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"] /*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
-    [/*@START_MENU_TOKEN@*/ [[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"] /*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Red\"]",".staticTexts[@\"Red\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ swipeUp];
-    [/*@START_MENU_TOKEN@*/ [[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Blue"] /*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Blue\"]",".staticTexts[@\"Blue\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ swipeUp];
-    [app /*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"] /*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.scrollViews.otherElements.buttons[@"OK"] tap];
+    [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
+        
+    XCUIElementQuery* buttons = testApp.buttons;
+    [buttons[@"OK"] tap];
 
-    NSDictionary<NSString *, NSString *> *expectedValue = @{
-        @"myColor" : @"1",
-        @"myColor3" : @"1,3",
-        @"myColor2" : @"1",
-        @"myColor4" : @"1"
-    };
-    [self verifyChoiceSetInput:expectedValue application:app];
+    NSString* resultsString = [self getInputsString];
+    NSDictionary* resultsDictionary = [self parseJsonToDictionary:resultsString];
+    NSDictionary* inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    
+    [self verifyInput:@"myColor" matchesExpectedValue:@"1" inInputSet:inputs];
+    [self verifyInput:@"myColor2" matchesExpectedValue:@"1" inInputSet:inputs];
+    [self verifyInput:@"myColor3" matchesExpectedValue:@"1,3" inInputSet:inputs];
+    [self verifyInput:@"myColor4" matchesExpectedValue:@"1" inInputSet:inputs];
 }
 
-- (void)testCanGatherCorrectValuesFromCompactRadioButton
+- (void)testCanGatherCorrectValuesFromCompactChoiceSet
 {
-    XCUIApplication *app = [[XCUIApplication alloc] init];
-    [app launch];
-    XCUIElementQuery *tablesQuery = app.tables;
-    [tablesQuery /*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"] /*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
+    [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
+    
+    XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
+    [chatWindow/*@START_MENU_TOKEN@*/.buttons[@"myColor"]/*[[".cells.buttons[@\"myColor\"]",".buttons[@\"myColor\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
+    
+    XCUIElementQuery *tablesQuery = testApp.tables;
+    [tablesQuery.cells[@"(null), Blue"].staticTexts[@"Blue"] tap];
+    
+    XCUIElementQuery* buttons = testApp.buttons;
+    [buttons[@"OK"] tap];
 
-    XCUIElement *acrRootViewElement = app /*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"] /*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/;
-    XCUIElement *redStaticText = [[[acrRootViewElement childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:0].staticTexts[@"Red"];
-
-    [redStaticText tap];
-    [app /*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"].tables.pickerWheels[@"Red"] /*[[".scrollViews.otherElements[@\"ACR Root View\"].tables",".cells",".pickers.pickerWheels[@\"Red\"]",".pickerWheels[@\"Red\"]",".otherElements[@\"ACR Root View\"].tables"],[[[-1,4,1],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0,0]]@END_MENU_TOKEN@*/ swipeUp];
-    [app.otherElements[@"ACR Root View"].tables.pickerWheels[@"Blue"] tap];
-    [redStaticText tap];
-    [acrRootViewElement.scrollViews.otherElements.buttons[@"OK"] tap];
-
-    NSDictionary<NSString *, NSString *> *expectedValue = @{
-        @"myColor" : @"3",
-        @"myColor3" : @"1,3",
-        @"myColor2" : @"1",
-        @"myColor4" : @"1"
-    };
-    [self verifyChoiceSetInput:expectedValue application:app];
+    NSString* resultsString = [self getInputsString];
+    NSDictionary* resultsDictionary = [self parseJsonToDictionary:resultsString];
+    NSDictionary* inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    
+    [self verifyInput:@"myColor" matchesExpectedValue:@"3" inInputSet:inputs];
+    [self verifyInput:@"myColor2" matchesExpectedValue:@"1" inInputSet:inputs];
+    [self verifyInput:@"myColor3" matchesExpectedValue:@"1,3" inInputSet:inputs];
+    [self verifyInput:@"myColor4" matchesExpectedValue:@"1" inInputSet:inputs];
 }
 
 - (void)testCanGatherCorrectValuesFromExpandedRadioButton
 {
-    XCUIApplication *app = [[XCUIApplication alloc] init];
-    [app launch];
+    [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
+    
+    XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
+    [chatWindow.tables[@"myColor2"].staticTexts[@"myColor2, Blue"] tap];
+    [chatWindow.tables[@"myColor2"].staticTexts[@"myColor2, Green"] tap];
+    [chatWindow/*@START_MENU_TOKEN@*/.tables[@"myColor3"].staticTexts[@"myColor3, Red"]/*[[".cells.tables[@\"myColor3\"]",".cells[@\"Empty list, Red\"]",".staticTexts[@\"Red\"]",".staticTexts[@\"myColor3, Red\"]",".tables[@\"myColor3\"]"],[[[-1,4,1],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0,0]]@END_MENU_TOKEN@*/ tap];
+    
+    XCUIElementQuery* buttons = testApp.buttons;
+    [buttons[@"OK"] tap];
 
-    XCUIElementQuery *tablesQuery = app.tables;
-    [tablesQuery /*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"] /*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
-
-    XCUIElement *greenStaticText = /*@START_MENU_TOKEN@*/ [[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1].staticTexts[@"Green"] /*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1]",".cells.staticTexts[@\"Green\"]",".staticTexts[@\"Green\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/;
-    [greenStaticText tap];
-    [/*@START_MENU_TOKEN@*/ [[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1].staticTexts[@"Blue"] /*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1]",".cells.staticTexts[@\"Blue\"]",".staticTexts[@\"Blue\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ tap];
-    [greenStaticText tap];
-    /*@START_MENU_TOKEN@*/ [[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"] swipeLeft]; /*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Red\"]","["," swipeUp];"," swipeLeft];",".staticTexts[@\"Red\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,8,2],[1,2,2]],[[-1,7,3],[-1,3,3]],[[4,6],[4,5]]],[0,0,0,0]]@END_MENU_TOKEN@*/
-    [app /*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"] /*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.scrollViews.otherElements.buttons[@"OK"] tap];
-
-    NSDictionary<NSString *, NSString *> *expectedValue = @{@"myColor" : @"1", @"myColor3" : @"3", @"myColor2" : @"2", @"myColor4" : @"1"};
-    [self verifyChoiceSetInput:expectedValue application:app];
+    NSString* resultsString = [self getInputsString];
+    NSDictionary* resultsDictionary = [self parseJsonToDictionary:resultsString];
+    NSDictionary* inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    
+    [self verifyInput:@"myColor" matchesExpectedValue:@"1" inInputSet:inputs];
+    [self verifyInput:@"myColor2" matchesExpectedValue:@"2" inInputSet:inputs];
+    [self verifyInput:@"myColor3" matchesExpectedValue:@"3" inInputSet:inputs];
+    [self verifyInput:@"myColor4" matchesExpectedValue:@"1" inInputSet:inputs];
 }
 
 - (void)testCanGatherCorrectValuesFromChoiceset
 {
-    // XCUIApplication *app = [[XCUIApplication alloc] init];
-    // [app launch];
+    [self openCardForVersion:@"v1.0" forCardType:@"Elements" withCardName:@"Input.ChoiceSet.json"];
+    
+    XCUIElement* chatWindow = testApp.tables[@"ChatWindow"];
+    [chatWindow.tables[@"myColor3"].staticTexts[@"myColor3, Blue"] tap];
+    [chatWindow/*@START_MENU_TOKEN@*/.tables[@"myColor3"].staticTexts[@"myColor3, Red"]/*[[".cells.tables[@\"myColor3\"]",".cells[@\"Empty list, Red\"]",".staticTexts[@\"Red\"]",".staticTexts[@\"myColor3, Red\"]",".tables[@\"myColor3\"]"],[[[-1,4,1],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0,0]]@END_MENU_TOKEN@*/ tap];
+    
+    XCUIElementQuery* buttons = testApp.buttons;
+    [buttons[@"OK"] tap];
 
-    XCUIElementQuery *tablesQuery = testApp.tables;
-    [tablesQuery /*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"] /*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
-
-    XCUIElement *acrRootViewElement = testApp /*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"] /*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/;
-    //[[[[acrRootViewElement childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:4] swipeUp];
-    [ [[[testApp.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"]  tap];
-    [ [[[testApp.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Blue"]  tap];
-
-    XCUIElementQuery *scrollViewsQuery = acrRootViewElement.scrollViews;
-    [scrollViewsQuery.otherElements.buttons[@"OK"] tap];
-
-    NSDictionary<NSString *, NSString *> *expectedValue = @{@"myColor" : @"1", @"myColor3" : @"", @"myColor2" : @"1", @"myColor4" : @"1"};
-    [self verifyChoiceSetInput:expectedValue application:testApp];
+    NSString* resultsString = [self getInputsString];
+    NSDictionary* resultsDictionary = [self parseJsonToDictionary:resultsString];
+    NSDictionary* inputs = [self getInputsFromResultsDictionary:resultsDictionary];
+    
+    [self verifyInput:@"myColor" matchesExpectedValue:@"1" inInputSet:inputs];
+    [self verifyInput:@"myColor2" matchesExpectedValue:@"1" inInputSet:inputs];
+    [self verifyInput:@"myColor3" matchesExpectedValue:@"" inInputSet:inputs];
+    [self verifyInput:@"myColor4" matchesExpectedValue:@"1" inInputSet:inputs];
 }
 
 - (void)testHexColorCodeConversion
