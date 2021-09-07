@@ -1107,6 +1107,17 @@
 			path = TestFiles;
 			sourceTree = "<group>";
 		};
+		6BE6C7C626E7E2A6009E9171 /* ImageSet */ = {
+			isa = PBXGroup;
+			children = (
+				F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */,
+				F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */,
+				F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */,
+				F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */,
+			);
+			name = ImageSet;
+			sourceTree = "<group>";
+		};
 		6BFCA139264F548600195CA7 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1440,7 +1451,6 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
-				F42741061EF8624F00399FBB /* ACRIBaseCardElementRenderer.h */,
 				F42741081EF864A900399FBB /* ACRBaseCardElementRenderer.h */,
 				F42741091EF864A900399FBB /* ACRBaseCardElementRenderer.mm */,
 				F42741261EFB374A00399FBB /* ACRColumnSetRenderer.h */,
@@ -1451,14 +1461,11 @@
 				F4F44B9E204CED2300A2F24C /* ACRCustomRenderer.mm */,
 				F43A940E1F1D60E30001920B /* ACRFactSetRenderer.h */,
 				F43A940F1F1D60E30001920B /* ACRFactSetRenderer.mm */,
+				F42741061EF8624F00399FBB /* ACRIBaseCardElementRenderer.h */,
 				6B74403725BA71B60051F2A1 /* ACRImageProperties.h */,
 				6B74403825BA71B60051F2A1 /* ACRImageProperties.mm */,
 				F42741101EF873A600399FBB /* ACRImageRenderer.h */,
 				F42741111EF873A600399FBB /* ACRImageRenderer.mm */,
-				F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */,
-				F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */,
-				F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */,
-				F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */,
 				6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */,
 				6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */,
 				F42741141EF895AB00399FBB /* ACRTextBlockRenderer.h */,
@@ -1468,6 +1475,7 @@
 				F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */,
 				F4F44B6D203FAF9300A2F24C /* ACRUILabel.mm */,
 				6B124C9626B9F519007E9641 /* Columns */,
+				6BE6C7C626E7E2A6009E9171 /* ImageSet */,
 				6BB2120621000024009EA1BA /* Media */,
 			);
 			name = ReadOnlyObjects;

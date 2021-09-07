@@ -22,4 +22,6 @@
 
 - (BOOL)isPadding:(UIView *)padding;
 
++ (void)configureHugging:(UIView *)view;
+
 @end
