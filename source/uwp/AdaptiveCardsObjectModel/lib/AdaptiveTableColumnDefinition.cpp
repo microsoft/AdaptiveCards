@@ -4,20 +4,20 @@
 #include "AdaptiveTableColumnDefinition.h"
 #include "AdaptiveTableColumnDefinition.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition(std::shared_ptr<::AdaptiveCards::TableColumnDefinition> const& sharedTableColumnDefinition)
     {
         if (sharedTableColumnDefinition->GetVerticalCellContentAlignment())
         {
             VerticalCellContentAlignment =
-                static_cast<WinUI3::VerticalContentAlignment>(*sharedTableColumnDefinition->GetVerticalCellContentAlignment());
+                static_cast<Uwp::VerticalContentAlignment>(*sharedTableColumnDefinition->GetVerticalCellContentAlignment());
         }
 
         if (sharedTableColumnDefinition->GetHorizontalCellContentAlignment())
         {
             HorizontalCellContentAlignment =
-                static_cast<WinUI3::HAlignment>(*sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
+                static_cast<Uwp::HAlignment>(*sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
         }
 
         Width = sharedTableColumnDefinition->GetWidth();

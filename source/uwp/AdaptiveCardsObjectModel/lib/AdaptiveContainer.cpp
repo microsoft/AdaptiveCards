@@ -7,22 +7,22 @@
 #include <windows.foundation.collections.h>
 #include <winrt/Windows.Foundation.h>
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveContainer::AdaptiveContainer(const std::shared_ptr<::AdaptiveCards::Container>& sharedContainer)
     {
         if (sharedContainer->GetVerticalContentAlignment())
         {
             VerticalContentAlignment =
-                static_cast<WinUI3::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment().value());
+                static_cast<Uwp::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment().value());
         }
 
         Items = GenerateContainedElementsProjection(sharedContainer->GetItems());
         SelectAction = GenerateActionProjection(sharedContainer->GetSelectAction());
-        Style = static_cast<WinUI3::ContainerStyle>(sharedContainer->GetStyle());
+        Style = static_cast<Uwp::ContainerStyle>(sharedContainer->GetStyle());
         MinHeight = sharedContainer->GetMinHeight();
         Bleed = sharedContainer->GetBleed();
-        BleedDirection = static_cast<WinUI3::BleedDirection>(sharedContainer->GetBleedDirection());
+        BleedDirection = static_cast<Uwp::BleedDirection>(sharedContainer->GetBleedDirection());
         Rtl = sharedContainer->GetRtl();
 
         auto backgroundImage = sharedContainer->GetBackgroundImage();

@@ -1,17 +1,17 @@
 #pragma once
 #include "AdaptiveError.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct AdaptiveError : AdaptiveErrorT<AdaptiveError>
     {
-        AdaptiveError(winrt::AdaptiveCards::ObjectModel::WinUI3::ErrorStatusCode const& statusCode, hstring const& message);
+        AdaptiveError(winrt::AdaptiveCards::ObjectModel::Uwp::ErrorStatusCode const& statusCode, hstring const& message);
 
         property<hstring> Message;
-        property<WinUI3::ErrorStatusCode> StatusCode;
+        property<Uwp::ErrorStatusCode> StatusCode;
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveError : AdaptiveErrorT<AdaptiveError, implementation::AdaptiveError>
     {

@@ -6,7 +6,7 @@
 #include "AdaptiveTextElement.h"
 #include "AdaptiveTextBlock.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveTextBlock : AdaptiveTextBlockT<AdaptiveTextBlock, ITypePeek>, AdaptiveCardElementBase, AdaptiveTextElement
     {
@@ -14,8 +14,8 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         property<bool> Wrap;
         property<uint32_t> MaxLines;
-        property_opt<WinUI3::HAlignment> HorizontalAlignment;
-        property_opt<WinUI3::TextStyle> Style;
+        property_opt<Uwp::HAlignment> HorizontalAlignment;
+        property_opt<Uwp::TextStyle> Style;
 
         auto ElementType() { return ElementType::TextBlock; }
 
@@ -26,7 +26,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveTextBlock : AdaptiveTextBlockT<AdaptiveTextBlock, implementation::AdaptiveTextBlock>
     {

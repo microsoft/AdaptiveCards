@@ -4,14 +4,14 @@
 #include "AdaptiveBackgroundImage.h"
 #include "AdaptiveBackgroundImage.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveBackgroundImage::AdaptiveBackgroundImage(const std::shared_ptr<::AdaptiveCards::BackgroundImage>& sharedImage)
     {
         Url = UTF8ToHString(sharedImage->GetUrl());
-        FillMode = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode>(sharedImage->GetFillMode());
-        HorizontalAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::HAlignment>(sharedImage->GetHorizontalAlignment());
-        VerticalAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::WinUI3::VAlignment>(sharedImage->GetVerticalAlignment());
+        FillMode = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode>(sharedImage->GetFillMode());
+        HorizontalAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
+        VerticalAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::VAlignment>(sharedImage->GetVerticalAlignment());
     }
 
     std::shared_ptr<::AdaptiveCards::BackgroundImage> AdaptiveBackgroundImage::GetSharedModel()

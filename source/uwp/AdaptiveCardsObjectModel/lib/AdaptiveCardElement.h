@@ -5,26 +5,26 @@
 #include "SemanticVersion.h"
 #include "BaseElement.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct AdaptiveCardElementBase
     {
         void InitializeBaseElement(const std::shared_ptr<::AdaptiveCards::BaseCardElement>& sharedModel);
 
-        property<WinUI3::Spacing> Spacing;
+        property<Uwp::Spacing> Spacing;
         property<bool> Separator;
         property<bool> IsVisible;
         property<hstring> Id;
         property<uint32_t> InternalId;
         property<hstring> ElementTypeString;
         property<winrt::Windows::Data::Json::JsonObject> AdditionalProperties;
-        property<WinUI3::HeightType> Height;
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>> Requirements;
+        property<Uwp::HeightType> Height;
+        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement>> Requirements;
 
-        winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType FallbackType() { return m_fallbackType; }
-        void FallbackType(winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType const& fallback);
-        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement FallbackContent() { return m_fallbackContent; }
-        void FallbackContent(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& content);
+        winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType FallbackType() { return m_fallbackType; }
+        void FallbackType(winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType const& fallback);
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FallbackContent() { return m_fallbackContent; }
+        void FallbackContent(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& content);
 
         winrt::Windows::Data::Json::JsonObject ToJson();
 
@@ -33,7 +33,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() = 0;
 
     private:
-        winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType m_fallbackType;
-        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement m_fallbackContent;
+        winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType m_fallbackType;
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement m_fallbackContent;
     };
 }

@@ -4,7 +4,7 @@
 #include "AdaptiveRemoteResourceInformation.h"
 #include "AdaptiveRemoteResourceInformation.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveRemoteResourceInformation::AdaptiveRemoteResourceInformation(::AdaptiveCards::RemoteResourceInformation const& info)
     {

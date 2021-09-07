@@ -6,7 +6,7 @@
 #include "AdaptiveActionElement.h"
 #include "AdaptiveToggleVisibilityAction.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("32114ce2-7e10-4f7f-8225-bfd661c6794c") AdaptiveToggleVisibilityAction
         : AdaptiveToggleVisibilityActionT<AdaptiveToggleVisibilityAction, ITypePeek>,
@@ -20,10 +20,10 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         AdaptiveToggleVisibilityAction(std::shared_ptr<::AdaptiveCards::ToggleVisibilityAction> const& sharedToggleVisibilityAction);
 
         // IAdaptiveToggleVisibilityAction
-        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleVisibilityTarget>> TargetElements;
+        property<winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget>> TargetElements;
 
         // IAdaptiveActionElement
-        winrt::AdaptiveCards::ObjectModel::WinUI3::ActionType ActionType();
+        winrt::AdaptiveCards::ObjectModel::Uwp::ActionType ActionType();
 
         virtual std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
 
@@ -32,7 +32,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveToggleVisibilityAction : AdaptiveToggleVisibilityActionT<AdaptiveToggleVisibilityAction, implementation::AdaptiveToggleVisibilityAction>
     {

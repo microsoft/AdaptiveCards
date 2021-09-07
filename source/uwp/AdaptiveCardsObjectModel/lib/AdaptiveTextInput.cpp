@@ -5,7 +5,7 @@
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTextInput.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveTextInput::AdaptiveTextInput(const std::shared_ptr<::AdaptiveCards::TextInput>& sharedTextInput)
     {
@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         Regex = UTF8ToHString(sharedTextInput->GetRegex());
         MaxLength = sharedTextInput->GetMaxLength();
         IsMultiline = sharedTextInput->GetIsMultiline();
-        TextInputStyle = static_cast<WinUI3::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+        TextInputStyle = static_cast<Uwp::TextInputStyle>(sharedTextInput->GetTextInputStyle());
         InlineAction = GenerateActionProjection(sharedTextInput->GetInlineAction());
 
         InitializeBaseElement(sharedTextInput);

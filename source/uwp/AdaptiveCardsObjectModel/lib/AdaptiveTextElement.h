@@ -2,26 +2,26 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct AdaptiveTextElement
     {
         property<hstring> Text;
-        property_opt<WinUI3::TextSize> Size;
-        property_opt<WinUI3::TextWeight> Weight;
-        property_opt<WinUI3::ForegroundColor> Color;
+        property_opt<Uwp::TextSize> Size;
+        property_opt<Uwp::TextWeight> Weight;
+        property_opt<Uwp::ForegroundColor> Color;
         property_opt<bool> IsSubtle;
         property<hstring> Language;
-        property_opt<WinUI3::FontType> FontType;
+        property_opt<Uwp::FontType> FontType;
 
     protected:
         template<typename T> void InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
             IsSubtle = sharedModel->GetIsSubtle();
-            FontType = opt_cast<WinUI3::FontType>(sharedModel->GetFontType());
-            Size = opt_cast<WinUI3::TextSize>(sharedModel->GetTextSize());
-            Weight = opt_cast<WinUI3::TextWeight>(sharedModel->GetTextWeight());
-            Color = opt_cast<WinUI3::ForegroundColor>(sharedModel->GetTextColor());
+            FontType = opt_cast<Uwp::FontType>(sharedModel->GetFontType());
+            Size = opt_cast<Uwp::TextSize>(sharedModel->GetTextSize());
+            Weight = opt_cast<Uwp::TextWeight>(sharedModel->GetTextWeight());
+            Color = opt_cast<Uwp::ForegroundColor>(sharedModel->GetTextColor());
             Text = UTF8ToHString(sharedModel->GetText());
             Language = UTF8ToHString(sharedModel->GetLanguage());
         }

@@ -5,7 +5,7 @@
 #include "MediaSource.h"
 #include "AdaptiveMediaSource.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveMediaSource
         : AdaptiveMediaSourceT<AdaptiveMediaSource, ITypePeek>
@@ -22,7 +22,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveMediaSource : AdaptiveMediaSourceT<AdaptiveMediaSource, implementation::AdaptiveMediaSource>
     {

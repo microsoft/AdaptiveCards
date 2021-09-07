@@ -1,4 +1,4 @@
-LIBRARY "AdaptiveCards.ObjectModel.WinUI3.dll"
+LIBRARY "AdaptiveCards.ObjectModel.Uwp.dll"
 
 EXPORTS
     DllGetClassObject           PRIVATE

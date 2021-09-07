@@ -158,7 +158,7 @@
     <ClInclude Include="lib\AdaptiveFactParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="idl\AdaptiveCards.ObjectModel.WinUI3.idl" />
+    <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -5,7 +5,7 @@
 #include "ActionSet.h"
 #include "AdaptiveActionSet.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("d6031009-7039-4735-bd07-ab6d99b29f03") AdaptiveActionSet : AdaptiveActionSetT < AdaptiveActionSet, ITypePeek>,
         AdaptiveCardElementBase
@@ -13,9 +13,9 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         AdaptiveActionSet() : AdaptiveActionSet(std::make_shared<::AdaptiveCards::ActionSet>()) {}
         AdaptiveActionSet(std::shared_ptr<::AdaptiveCards::ActionSet> const& sharedActionSet);
 
-        property < winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>> Actions;
+        property < winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>> Actions;
 
-        auto ElementType() { return WinUI3::ElementType::ActionSet; }
+        auto ElementType() { return Uwp::ElementType::ActionSet; }
 
         virtual std::shared_ptr<::AdaptiveCards::BaseCardElement> GetSharedModel() override;
 
@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveActionSet : AdaptiveActionSetT<AdaptiveActionSet, implementation::AdaptiveActionSet>
     {

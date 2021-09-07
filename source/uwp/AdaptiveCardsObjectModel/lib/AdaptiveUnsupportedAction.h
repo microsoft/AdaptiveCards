@@ -6,7 +6,7 @@
 #include "AdaptiveActionElement.h"
 #include "AdaptiveUnsupportedAction.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("D5018CF5-97D9-4FC4-88E8-9415D51431B6") AdaptiveUnsupportedAction
         : AdaptiveUnsupportedActionT<AdaptiveUnsupportedAction, ITypePeek>,
@@ -15,7 +15,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         AdaptiveUnsupportedAction(const std::shared_ptr<::AdaptiveCards::UnknownAction>& sharedUnknownAction =
                                       std::make_shared<::AdaptiveCards::UnknownAction>());
 
-        auto ActionType() { return WinUI3::ActionType::Unsupported; }
+        auto ActionType() { return Uwp::ActionType::Unsupported; }
 
         std::shared_ptr<::AdaptiveCards::BaseActionElement> GetSharedModel() override;
 
@@ -24,7 +24,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveUnsupportedAction : AdaptiveUnsupportedActionT<AdaptiveUnsupportedAction, implementation::AdaptiveUnsupportedAction>
     {

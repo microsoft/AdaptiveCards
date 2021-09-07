@@ -4,7 +4,7 @@
 
 #include "BaseInputElement.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct AdaptiveInputElementBase : AdaptiveCardElementBase
     {

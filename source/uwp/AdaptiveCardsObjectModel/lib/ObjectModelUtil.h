@@ -91,24 +91,24 @@ winrt::hstring UTF8ToHString(std::string_view in);
 
 std::string HStringToUTF8(winrt::hstring const& in);
 
-std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& item);
+std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& item);
 
 std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> GenerateSharedElements(
-    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& items);
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> const& items);
 
 std::shared_ptr<AdaptiveCards::BaseActionElement>
-GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement const& action);
+GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& action);
 
 std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> GenerateSharedActions(
-    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> const& actions);
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> const& actions);
 
 std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRequirements(
-    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement> const& adaptiveRequirements);
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement> const& adaptiveRequirements);
 
 std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(
-    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline> const& inlines);
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline> const& inlines);
 
-winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement
 GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement);
 
 template<typename TImpl, typename TShared, typename TCollection>
@@ -129,19 +129,19 @@ std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& ce
     return shared;
 }
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement>
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>
 GenerateContainedElementsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement>
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>
 GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions);
 
-winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement
 GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInline>
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline>
 GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveRequirement>
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement>
 GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);
 
 template<typename TRtTypeImpl, typename TSharedType, typename TRtType = typename TRtTypeImpl::class_type>
@@ -171,7 +171,7 @@ winrt::Windows::Data::Json::JsonObject JsonCppToJsonObject(const Json::Value& js
 Json::Value JsonObjectToJsonCpp(winrt::Windows::Data::Json::IJsonObject const& jsonObject);
 
 void RemoteResourceElementToRemoteResourceInformationVector(
-    winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
     std::vector<::AdaptiveCards::RemoteResourceInformation>& resourceUris);
 
 // Peek interface to help get implementation types from winrt interfaces
@@ -200,21 +200,21 @@ template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
 
 void SharedWarningsToAdaptiveWarnings(
     const std::vector<std::shared_ptr<::AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
-    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& toAddTo);
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& toAddTo);
 
-winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning>
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>
 SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
 void AdaptiveWarningsToSharedWarnings(
-    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& adaptiveWarnings,
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
-winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType MapSharedFallbackTypeToWinUI3(const AdaptiveCards::FallbackType type);
+winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type);
 
-AdaptiveCards::FallbackType MapWinUI3FallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::WinUI3::FallbackType const& type);
+AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType const& type);
 
-winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration GetAdaptiveActionParserRegistrationFromSharedModel(
+winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration GetAdaptiveActionParserRegistrationFromSharedModel(
     const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration);
 
-winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration GetAdaptiveElementParserRegistrationFromSharedModel(
+winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration GetAdaptiveElementParserRegistrationFromSharedModel(
     const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration);

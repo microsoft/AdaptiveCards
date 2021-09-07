@@ -5,7 +5,7 @@
 #include "AdaptiveUnsupportedElement.h"
 #include "AdaptiveUnsupportedElement.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveUnsupportedElement::AdaptiveUnsupportedElement(const std::shared_ptr<::AdaptiveCards::UnknownElement>& sharedUnknown) :
         m_actualType(sharedUnknown->GetElementTypeString())

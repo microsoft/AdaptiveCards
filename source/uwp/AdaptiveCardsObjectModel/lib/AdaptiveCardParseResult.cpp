@@ -4,10 +4,10 @@
 #include "AdaptiveCardParseResult.h"
 #include "AdaptiveCardParseResult.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveCardParseResult::AdaptiveCardParseResult(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& card) :
-        AdaptiveCard{card}, Errors{winrt::single_threaded_vector<WinUI3::AdaptiveError>()}, Warnings{winrt::single_threaded_vector <WinUI3::AdaptiveWarning>()}
+    AdaptiveCardParseResult::AdaptiveCardParseResult(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveCard const& card) :
+        AdaptiveCard{card}, Errors{winrt::single_threaded_vector<Uwp::AdaptiveError>()}, Warnings{winrt::single_threaded_vector <Uwp::AdaptiveWarning>()}
     {
     }
 }

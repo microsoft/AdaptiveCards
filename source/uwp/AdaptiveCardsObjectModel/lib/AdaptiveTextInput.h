@@ -6,7 +6,7 @@
 #include "AdaptiveInputElement.h"
 #include "AdaptiveTextInput.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("2e716e94-a83a-4e9b-9873-bff858af068d") AdaptiveTextInput : AdaptiveTextInputT<AdaptiveTextInput, ITypePeek>, AdaptiveInputElementBase
     {
@@ -17,8 +17,8 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<hstring> Value;
         property<bool> IsMultiline;
         property<uint32_t> MaxLength;
-        property<WinUI3::TextInputStyle> TextInputStyle;
-        property<WinUI3::IAdaptiveActionElement> InlineAction;
+        property<Uwp::TextInputStyle> TextInputStyle;
+        property<Uwp::IAdaptiveActionElement> InlineAction;
         property<hstring> Regex;
 
         auto ElementType() { return ElementType::TextInput; }
@@ -30,7 +30,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveTextInput : AdaptiveTextInputT<AdaptiveTextInput, implementation::AdaptiveTextInput>
     {

@@ -5,7 +5,7 @@
 #include "ChoiceInput.h"
 #include "AdaptiveChoiceInput.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     // TODO: This is an interesting pattern; the RT type just wraps the shared type and stores the data into
     // the shared type directly instead of having its own values. Is it possible to make a generic translator
@@ -25,7 +25,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         hstring Value();
         void Value(hstring const& value);
 
-        auto ElementType() { return WinUI3::ElementType::ChoiceInput; }
+        auto ElementType() { return Uwp::ElementType::ChoiceInput; }
 
         std::shared_ptr<::AdaptiveCards::ChoiceInput> GetSharedModel();
 
@@ -37,7 +37,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveChoiceInput : AdaptiveChoiceInputT<AdaptiveChoiceInput, implementation::AdaptiveChoiceInput>
     {

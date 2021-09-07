@@ -5,17 +5,17 @@
 #include "AdaptiveImage.h"
 #include "AdaptiveImage.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveImage::AdaptiveImage(const std::shared_ptr<::AdaptiveCards::Image>& sharedImage)
     {
         Url = UTF8ToHString(sharedImage->GetUrl());
         BackgroundColor = UTF8ToHString(sharedImage->GetBackgroundColor());
-        Style = static_cast<WinUI3::ImageStyle>(sharedImage->GetImageStyle());
-        Size = static_cast<WinUI3::ImageSize>(sharedImage->GetImageSize());
+        Style = static_cast<Uwp::ImageStyle>(sharedImage->GetImageStyle());
+        Size = static_cast<Uwp::ImageSize>(sharedImage->GetImageSize());
         PixelWidth = sharedImage->GetPixelWidth();
         PixelHeight = sharedImage->GetPixelHeight();
-        HorizontalAlignment = opt_cast<WinUI3::HAlignment>(sharedImage->GetHorizontalAlignment());
+        HorizontalAlignment = opt_cast<Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
         AltText = UTF8ToHString(sharedImage->GetAltText());
         SelectAction = GenerateActionProjection(sharedImage->GetSelectAction());
 

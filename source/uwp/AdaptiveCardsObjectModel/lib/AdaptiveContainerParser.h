@@ -5,20 +5,20 @@
 #include "Container.h"
 #include "AdaptiveContainerParser.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct AdaptiveContainerParser : AdaptiveContainerParserT<AdaptiveContainerParser>
     {
         AdaptiveContainerParser() = default;
 
-        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement FromJson(
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
             winrt::Windows::Data::Json::JsonObject const& inputJson,
-            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveElementParserRegistration const& elementParsers,
-            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveActionParserRegistration const& actionParsers,
-            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveWarning> const& warnings);
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveContainerParser : AdaptiveContainerParserT<AdaptiveContainerParser, implementation::AdaptiveContainerParser>
     {

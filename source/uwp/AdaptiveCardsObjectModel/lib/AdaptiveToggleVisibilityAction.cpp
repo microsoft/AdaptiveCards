@@ -6,7 +6,7 @@
 #include "AdaptiveToggleVisibilityAction.g.cpp"
 #include "AdaptiveToggleVisibilityTarget.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     template<typename TRtType, typename TRtImplType, typename TSharedClass>
     auto project_vector(std::vector<std::shared_ptr<TSharedClass>> const& elements)
@@ -34,13 +34,13 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
     AdaptiveToggleVisibilityAction::AdaptiveToggleVisibilityAction(const std::shared_ptr<::AdaptiveCards::ToggleVisibilityAction>& sharedToggleVisibilityAction)
     {
-        TargetElements = project_vector<WinUI3::AdaptiveToggleVisibilityTarget, implementation::AdaptiveToggleVisibilityTarget>(sharedToggleVisibilityAction->GetTargetElements());
+        TargetElements = project_vector<Uwp::AdaptiveToggleVisibilityTarget, implementation::AdaptiveToggleVisibilityTarget>(sharedToggleVisibilityAction->GetTargetElements());
         InitializeBaseElement(sharedToggleVisibilityAction);
     }
 
-    WinUI3::ActionType AdaptiveToggleVisibilityAction::ActionType()
+    Uwp::ActionType AdaptiveToggleVisibilityAction::ActionType()
     {
-        return winrt::AdaptiveCards::ObjectModel::WinUI3::ActionType::ToggleVisibility;
+        return winrt::AdaptiveCards::ObjectModel::Uwp::ActionType::ToggleVisibility;
     }
 
     std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveToggleVisibilityAction::GetSharedModel()

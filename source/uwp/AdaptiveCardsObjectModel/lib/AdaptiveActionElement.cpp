@@ -3,7 +3,7 @@
 #include "pch.h"
 #include "AdaptiveActionElement.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     winrt::Windows::Data::Json::JsonObject AdaptiveActionElementBase::ToJson()
     {
@@ -17,7 +17,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         sharedCardElement.SetIconUrl(HStringToUTF8(IconUrl));
         sharedCardElement.SetStyle(HStringToUTF8(Style));
         sharedCardElement.SetTooltip(HStringToUTF8(Tooltip));
-        sharedCardElement.SetFallbackType(MapWinUI3FallbackTypeToShared(m_fallbackType));
+        sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
         sharedCardElement.SetIsEnabled(IsEnabled.get());
         sharedCardElement.SetMode(static_cast<::AdaptiveCards::Mode>(Mode.get()));
 
@@ -44,13 +44,13 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         IconUrl = UTF8ToHString(sharedModel->GetIconUrl());
         Style = UTF8ToHString(sharedModel->GetStyle());
         Tooltip = UTF8ToHString(sharedModel->GetTooltip());
-        Mode = static_cast<WinUI3::ActionMode>(sharedModel->GetMode());
+        Mode = static_cast<Uwp::ActionMode>(sharedModel->GetMode());
 
         IsEnabled = sharedModel->GetIsEnabled();
 
         InternalId = sharedModel->GetInternalId().Hash();
-        m_fallbackType = static_cast<WinUI3::FallbackType>(MapSharedFallbackTypeToWinUI3(sharedModel->GetFallbackType()));
-        if (m_fallbackType == WinUI3::FallbackType::Content)
+        m_fallbackType = static_cast<Uwp::FallbackType>(MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType()));
+        if (m_fallbackType == Uwp::FallbackType::Content)
         {
             if (auto fallback = std::static_pointer_cast<::AdaptiveCards::BaseActionElement>(sharedModel->GetFallbackContent()))
             {

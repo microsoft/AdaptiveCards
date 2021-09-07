@@ -4,22 +4,22 @@
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumn.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveColumn::AdaptiveColumn(std::shared_ptr<::AdaptiveCards::Column> const& sharedColumn)
     {
         Items = GenerateContainedElementsProjection(sharedColumn->GetItems());
         SelectAction = GenerateActionProjection(sharedColumn->GetSelectAction());
-        Style = static_cast<WinUI3::ContainerStyle>(sharedColumn->GetStyle());
+        Style = static_cast<Uwp::ContainerStyle>(sharedColumn->GetStyle());
 
         if (sharedColumn->GetVerticalContentAlignment())
         {
             VerticalContentAlignment =
-                static_cast<WinUI3::VerticalContentAlignment>(*sharedColumn->GetVerticalContentAlignment());
+                static_cast<Uwp::VerticalContentAlignment>(*sharedColumn->GetVerticalContentAlignment());
         }
 
         Bleed = sharedColumn->GetBleed();
-        BleedDirection = static_cast<WinUI3::BleedDirection>(sharedColumn->GetBleedDirection());
+        BleedDirection = static_cast<Uwp::BleedDirection>(sharedColumn->GetBleedDirection());
         m_width = UTF8ToHString(sharedColumn->GetWidth());
         PixelWidth = sharedColumn->GetPixelWidth();
         MinHeight = sharedColumn->GetMinHeight();

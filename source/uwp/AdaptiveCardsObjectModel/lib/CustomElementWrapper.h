@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 #pragma once
 
-namespace AdaptiveCards::ObjectModel::WinUI3
+namespace AdaptiveCards::ObjectModel::Uwp
 {
     class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {
     public:
-        CustomElementWrapper(_In_ winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement);
+        CustomElementWrapper(_In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement);
 
         bool GetSeparator() const override;
         void SetSeparator(bool value) override;
@@ -22,12 +22,12 @@ namespace AdaptiveCards::ObjectModel::WinUI3
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement GetWrappedElement();
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement GetWrappedElement();
 
     private:
         std::string GetCardElementId() const;
         void SetCardElementId(const std::string& value);
 
-        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement m_cardElement;
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement m_cardElement;
     };
 }

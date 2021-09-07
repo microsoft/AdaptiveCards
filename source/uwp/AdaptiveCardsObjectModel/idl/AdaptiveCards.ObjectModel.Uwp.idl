@@ -4,7 +4,7 @@
 import "Windows.Foundation.idl";
 import "Windows.Data.Json.idl";
 
-namespace AdaptiveCards.ObjectModel.WinUI3
+namespace AdaptiveCards.ObjectModel.Uwp
 {
     runtimeclass AdaptiveCardParseResult;
 

@@ -5,15 +5,15 @@
 #include "RichTextBlock.h"
 #include "AdaptiveRichTextBlock.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveRichTextBlock : AdaptiveRichTextBlockT<AdaptiveRichTextBlock, ITypePeek>, AdaptiveCardElementBase
     {
         AdaptiveRichTextBlock(const std::shared_ptr<::AdaptiveCards::RichTextBlock>& sharedRichTextBlock = std::make_shared<::AdaptiveCards::RichTextBlock>()) noexcept;
 
         // IAdaptiveRichTextBlock
-        property_opt<WinUI3::HAlignment> HorizontalAlignment;
-        property<winrt::Windows::Foundation::Collections::IVector<WinUI3::IAdaptiveInline>> Inlines;
+        property_opt<Uwp::HAlignment> HorizontalAlignment;
+        property<winrt::Windows::Foundation::Collections::IVector<Uwp::IAdaptiveInline>> Inlines;
 
         // IAdaptiveCardElement
         auto ElementType() { return ElementType::RichTextBlock; }
@@ -25,7 +25,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveRichTextBlock : AdaptiveRichTextBlockT<AdaptiveRichTextBlock, implementation::AdaptiveRichTextBlock>
     {

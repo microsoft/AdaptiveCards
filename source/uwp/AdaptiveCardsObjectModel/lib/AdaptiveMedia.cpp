@@ -5,13 +5,13 @@
 #include "AdaptiveMedia.g.cpp"
 #include "AdaptiveMediaSource.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveMedia::AdaptiveMedia(const std::shared_ptr<::AdaptiveCards::Media>& sharedMedia)
     {
         Poster = UTF8ToHString(sharedMedia->GetPoster());
         AltText = UTF8ToHString(sharedMedia->GetAltText());
-        Sources = GenerateVectorProjection<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveMediaSource>(sharedMedia->GetSources());
+        Sources = GenerateVectorProjection<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveMediaSource>(sharedMedia->GetSources());
         InitializeBaseElement(sharedMedia);
     }
 
@@ -22,7 +22,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         media->SetPoster(HStringToUTF8(Poster));
         media->SetAltText(HStringToUTF8(AltText));
         media->GetSources() =
-            GenerateSharedVector<winrt::AdaptiveCards::ObjectModel::WinUI3::implementation::AdaptiveMediaSource, ::AdaptiveCards::MediaSource>(Sources.get());
+            GenerateSharedVector<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveMediaSource, ::AdaptiveCards::MediaSource>(Sources.get());
 
         return media;
     }

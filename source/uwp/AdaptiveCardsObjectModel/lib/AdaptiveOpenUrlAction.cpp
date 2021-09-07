@@ -5,7 +5,7 @@
 #include "AdaptiveOpenUrlAction.h"
 #include "AdaptiveOpenUrlAction.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveOpenUrlAction::AdaptiveOpenUrlAction(const std::shared_ptr<::AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
     {

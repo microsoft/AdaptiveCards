@@ -3,7 +3,7 @@
 
 #define VER_FILETYPE                VFT_DLL
 #define VER_FILESUBTYPE             VFT2_UNKNOWN
-#define VER_FILEDESCRIPTION_STR     "Adaptive Cards WinUI3 ObjectModel"
+#define VER_FILEDESCRIPTION_STR     "Adaptive Cards Uwp ObjectModel"
 #define VER_INTERNALNAME_STR        VER_FILEDESCRIPTION_STR
-#define VER_ORIGINALFILENAME_STR    "AdaptiveCards.ObjectModel.WinUI3.dll"
+#define VER_ORIGINALFILENAME_STR    "AdaptiveCards.ObjectModel.Uwp.dll"
 #include <common.ver>

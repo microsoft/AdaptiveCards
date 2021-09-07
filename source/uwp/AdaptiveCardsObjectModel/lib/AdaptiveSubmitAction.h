@@ -6,7 +6,7 @@
 #include "AdaptiveActionElement.h"
 #include "AdaptiveSubmitAction.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("32114ce2-7e10-4f7f-8225-bfd661c6794c") AdaptiveSubmitAction : AdaptiveSubmitActionT<AdaptiveSubmitAction, ITypePeek>, AdaptiveActionElementBase
     {
@@ -15,7 +15,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         // IAdaptiveSubmitAction
         property<winrt::Windows::Data::Json::JsonValue> DataJson{nullptr};
-        property<WinUI3::AssociatedInputs> AssociatedInputs;
+        property<Uwp::AssociatedInputs> AssociatedInputs;
 
         // IAdaptiveActionElement
         auto ActionType() { return ActionType::Submit; }
@@ -27,7 +27,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveSubmitAction : AdaptiveSubmitActionT<AdaptiveSubmitAction, implementation::AdaptiveSubmitAction>
     {

@@ -5,7 +5,7 @@
 #include "Image.h"
 #include "AdaptiveImage.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("c940ac19-5faa-47f3-9d4b-f4d8e7d6ec1d") AdaptiveImage : AdaptiveImageT<AdaptiveImage, ITypePeek>, AdaptiveCardElementBase
     {
@@ -14,13 +14,13 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         // IAdaptiveImage
         property<hstring> Url;
         property<hstring> BackgroundColor;
-        property<WinUI3::ImageStyle> Style;
-        property<WinUI3::ImageSize> Size;
+        property<Uwp::ImageStyle> Style;
+        property<Uwp::ImageSize> Size;
         property<uint32_t> PixelWidth;
         property<uint32_t> PixelHeight;
         property<hstring> AltText;
-        property_opt<WinUI3::HAlignment> HorizontalAlignment;
-        property<WinUI3::IAdaptiveActionElement> SelectAction;
+        property_opt<Uwp::HAlignment> HorizontalAlignment;
+        property<Uwp::IAdaptiveActionElement> SelectAction;
 
         // IAdaptiveCardElement
         auto ElementType() { return ElementType::Image; }
@@ -32,7 +32,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveImage : AdaptiveImageT<AdaptiveImage, implementation::AdaptiveImage>
     {

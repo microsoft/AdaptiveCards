@@ -6,7 +6,7 @@
 #include "AdaptiveTableRow.h"
 #include "AdaptiveTableColumnDefinition.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveTable::AdaptiveTable(std::shared_ptr<::AdaptiveCards::Table> const& sharedTable)
     {
@@ -16,15 +16,15 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         if (sharedTable->GetVerticalCellContentAlignment())
         {
             VerticalCellContentAlignment =
-                static_cast<WinUI3::VerticalContentAlignment>(*sharedTable->GetVerticalCellContentAlignment());
+                static_cast<Uwp::VerticalContentAlignment>(*sharedTable->GetVerticalCellContentAlignment());
         }
 
         if (sharedTable->GetHorizontalCellContentAlignment())
         {
-            HorizontalCellContentAlignment = static_cast<WinUI3::HAlignment>(*sharedTable->GetHorizontalCellContentAlignment());
+            HorizontalCellContentAlignment = static_cast<Uwp::HAlignment>(*sharedTable->GetHorizontalCellContentAlignment());
         }
 
-        GridStyle = static_cast<WinUI3::ContainerStyle>(sharedTable->GetGridStyle());
+        GridStyle = static_cast<Uwp::ContainerStyle>(sharedTable->GetGridStyle());
         Rows = GenerateVectorProjection<implementation::AdaptiveTableRow>(sharedTable->GetRows());
         Columns = GenerateVectorProjection<implementation::AdaptiveTableColumnDefinition>(sharedTable->GetColumns());
 

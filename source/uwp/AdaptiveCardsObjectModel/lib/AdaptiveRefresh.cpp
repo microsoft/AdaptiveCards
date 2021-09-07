@@ -2,7 +2,7 @@
 #include "AdaptiveRefresh.h"
 #include "AdaptiveRefresh.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveRefresh::AdaptiveRefresh(std::shared_ptr<::AdaptiveCards::Refresh> const& sharedRefresh)
     {

@@ -3,7 +3,7 @@
 #pragma once
 #include "AdaptiveRemoteResourceInformation.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct AdaptiveRemoteResourceInformation : AdaptiveRemoteResourceInformationT<AdaptiveRemoteResourceInformation>
     {
@@ -14,7 +14,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
         property<hstring> MimeType;
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveRemoteResourceInformation : AdaptiveRemoteResourceInformationT<AdaptiveRemoteResourceInformation, implementation::AdaptiveRemoteResourceInformation>
     {

@@ -6,7 +6,7 @@
 #include "AdaptiveInputElement.h"
 #include "AdaptiveTimeInput.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("5d05c3fe-f808-4181-9f44-3a802b556a43") AdaptiveTimeInput : AdaptiveTimeInputT < AdaptiveTimeInput, ITypePeek>, AdaptiveInputElementBase
     {
@@ -27,7 +27,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
     };
 }
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveTimeInput : AdaptiveTimeInputT<AdaptiveTimeInput, implementation::AdaptiveTimeInput>
     {

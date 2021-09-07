@@ -5,7 +5,7 @@
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveSubmitAction.g.cpp"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveSubmitAction::AdaptiveSubmitAction(const std::shared_ptr<::AdaptiveCards::SubmitAction>& sharedSubmitAction)
     {
@@ -15,7 +15,7 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
             DataJson = StringToJsonValue(sharedJson);
         }
 
-        AssociatedInputs = static_cast<WinUI3::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
+        AssociatedInputs = static_cast<Uwp::AssociatedInputs>(sharedSubmitAction->GetAssociatedInputs());
 
         InitializeBaseElement(sharedSubmitAction);
     }

@@ -2,7 +2,7 @@
 #include "Refresh.h"
 #include "AdaptiveRefresh.g.h"
 
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     struct DECLSPEC_UUID("8D452985-D06B-4541-AEAF-DD7A3DC7CCD8") AdaptiveRefresh : AdaptiveRefreshT<AdaptiveRefresh, ITypePeek>
     {
@@ -14,11 +14,11 @@ namespace winrt::AdaptiveCards::ObjectModel::WinUI3::implementation
 
         std::shared_ptr<::AdaptiveCards::Refresh> GetSharedModel();
 
-        property<WinUI3::IAdaptiveActionElement> Action;
+        property<Uwp::IAdaptiveActionElement> Action;
         property<winrt::Windows::Foundation::Collections::IVector<hstring>> UserIds;
     };
 }
-namespace winrt::AdaptiveCards::ObjectModel::WinUI3::factory_implementation
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
 {
     struct AdaptiveRefresh : AdaptiveRefreshT<AdaptiveRefresh, implementation::AdaptiveRefresh>
     {
