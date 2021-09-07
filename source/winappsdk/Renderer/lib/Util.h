@@ -156,6 +156,7 @@ map_rt_to_abi_(Windows::UI::Xaml::DependencyObject, Windows::UI::Xaml::IDependen
 map_rt_to_abi_(Windows::UI::Xaml::Media::Brush, Windows::UI::Xaml::Media::IBrush);
 map_rt_to_abi_(Windows::UI::Xaml::ResourceDictionary, Windows::UI::Xaml::IResourceDictionary);
 map_rt_to_abi_(Windows::UI::Xaml::UIElement, Windows::UI::Xaml::IUIElement);
+map_rt_to_abi_(Windows::UI::Xaml::FrameworkElement, Windows::UI::Xaml::IFrameworkElement);
 
 template<typename I> auto to_winrt(I* src)
 {

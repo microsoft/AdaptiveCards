@@ -63,8 +63,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
             RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
-            ComPtr<AdaptiveRenderArgs> childRenderArgs;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, xamlGrid.Get(), renderArgs));
+            auto childRenderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, xamlGrid, renderArgs);
 
             IterateOverVector<ABI::AdaptiveCards::ObjectModel::WinUI3::AdaptiveImage, ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveImage>(
                 images.Get(),

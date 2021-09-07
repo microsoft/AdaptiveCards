@@ -55,8 +55,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         ComPtr<IFrameworkElement> parentElement;
         RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
-        ComPtr<IAdaptiveRenderArgs> newRenderArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get(), renderArgs));
+        auto newRenderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, parentElement.Get(), renderArgs);
 
         ComPtr<IGrid> xamlGrid =
             XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));

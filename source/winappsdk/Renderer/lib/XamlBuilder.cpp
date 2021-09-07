@@ -63,24 +63,21 @@ namespace AdaptiveCards::Rendering::WinUI3
             boolean allowCustomStyle;
             RETURN_IF_FAILED(adaptiveCardConfig->get_AllowCustomStyle(&allowCustomStyle));
 
-            ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle = defaultContainerStyle;
+            rtom::ContainerStyle containerStyle = static_cast<rtom::ContainerStyle>(defaultContainerStyle);
             if (allowCustomStyle)
             {
-                ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle cardStyle;
-                RETURN_IF_FAILED(adaptiveCard->get_Style(&cardStyle));
-
-                if (cardStyle != ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle::None)
+                auto cardStyle = to_winrt(adaptiveCard).Style();
+                if (cardStyle != rtom::ContainerStyle::None)
                 {
                     containerStyle = cardStyle;
                 }
             }
-            ComPtr<IAdaptiveRenderArgs> renderArgs;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr, adaptiveCard, nullptr));
+            auto renderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, nullptr, to_winrt(adaptiveCard), nullptr);
 
             ComPtr<IPanel> bodyElementContainer;
             ComPtr<IUIElement> rootElement;
             RETURN_IF_FAILED(
-                CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), xamlBuilder, &bodyElementContainer, &rootElement));
+                CreateRootCardElement(adaptiveCard, renderContext, renderArgs, xamlBuilder, &bodyElementContainer, &rootElement));
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
 
@@ -108,9 +105,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             // Enumerate the child items of the card and build xaml for them
             ComPtr<IVector<IAdaptiveCardElement*>> body;
             RETURN_IF_FAILED(adaptiveCard->get_Body(&body));
-            ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
-            RETURN_IF_FAILED(
-                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, rootAsFrameworkElement.Get(), adaptiveCard, nullptr));
+            auto bodyRenderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, rootAsFrameworkElement, to_winrt(adaptiveCard), nullptr);
             RETURN_IF_FAILED(
                 BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
 
@@ -133,7 +128,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                                                 bodyElementContainer.Get(),
                                                 bodyCount > 0,
                                                 renderContext,
-                                                renderArgs.Get());
+                                                renderArgs);
                 }
                 else
                 {
@@ -143,9 +138,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                 }
             }
 
-            boolean isInShowCard;
-            renderArgs->get_IsInShowCard(&isInShowCard);
-
+            bool isInShowCard = renderArgs.IsInShowCard();
             if (!isInShowCard)
             {
                 RETURN_IF_FAILED(

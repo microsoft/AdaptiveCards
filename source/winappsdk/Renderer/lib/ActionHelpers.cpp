@@ -173,9 +173,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
             THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
-            ComPtr<AdaptiveRenderArgs> childRenderArgs;
-            THROW_IF_FAILED(
-                MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, buttonContentsStackPanel.Get(), nullptr));
+            auto childRenderArgs =
+                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, buttonContentsStackPanel, nullptr);
 
             ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
             THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
@@ -835,7 +834,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                          _In_ IPanel* bodyPanel,
                          bool insertSeparator,
                          _In_ IAdaptiveRenderContext* renderContext,
-                         _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs)
+                         _In_ rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -1084,7 +1083,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                                  _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                  _In_ IVector<IAdaptiveActionElement*>* children,
                                  _In_ IAdaptiveRenderContext* renderContext,
-                                 _In_ IAdaptiveRenderArgs* renderArgs,
+                                 rtrender::AdaptiveRenderArgs const& renderArgs,
                                  _Outptr_ IUIElement** actionSetControl)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;

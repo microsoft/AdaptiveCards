@@ -88,8 +88,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         ComPtr<IFrameworkElement> parentElement;
         RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
-        ComPtr<IAdaptiveRenderArgs> newRenderArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get(), renderArgs));
+        auto newRenderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, parentElement.Get(), renderArgs);
 
         ComPtr<IPanel> containerPanelAsPanel;
         RETURN_IF_FAILED(containerPanel.As(&containerPanelAsPanel));
