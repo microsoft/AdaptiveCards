@@ -257,16 +257,6 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
     };
 
-    /* This type is unused
-    runtimeclass AdaptiveSeparator
-    {
-        AdaptiveSeparator();
-
-        ForegroundColor Color;
-        SeparatorThickness Thickness;
-    };
-    */
-
     interface IAdaptiveTextElement
     {
         Windows.Foundation.IReference<TextSize> Size;
@@ -783,8 +773,6 @@ namespace AdaptiveCards.ObjectModel.Uwp
         AdaptiveColumnSetParser();
     };
 
-    [default_interface] runtimeclass AdaptiveFactParser : IAdaptiveElementParser { AdaptiveFactParser(); };
-
     [default_interface] runtimeclass AdaptiveChoiceSetInputParser : IAdaptiveElementParser
     {
         AdaptiveChoiceSetInputParser();
@@ -827,27 +815,27 @@ namespace AdaptiveCards.ObjectModel.Uwp
         AdaptiveActionSetParser();
     };
 
-    [default_interface] runtimeclass AdaptiveOpenUrlActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveOpenUrlActionParser : IAdaptiveActionParser
     {
         AdaptiveOpenUrlActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveShowCardActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveShowCardActionParser : IAdaptiveActionParser
     {
         AdaptiveShowCardActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveSubmitActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveSubmitActionParser : IAdaptiveActionParser
     {
         AdaptiveSubmitActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveExecuteActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveExecuteActionParser : IAdaptiveActionParser
     {
         AdaptiveExecuteActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveToggleVisibilityActionParser : IAdaptiveElementParser
+    [default_interface] runtimeclass AdaptiveToggleVisibilityActionParser : IAdaptiveActionParser
     {
         AdaptiveToggleVisibilityActionParser();
     };

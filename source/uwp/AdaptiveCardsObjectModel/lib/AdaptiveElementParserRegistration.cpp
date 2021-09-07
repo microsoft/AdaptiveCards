@@ -41,6 +41,9 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
                                                 winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser const& Parser)
     {
         auto typeString = HStringToUTF8(type);
+
+        // During initialization we will add the known parsers to m_registration. These are already present in the corresponding
+        // shared model registration (m_sharedParserRegistration) which will throw if we attempt to modify them by adding them again.
         if (!m_isInitializing)
         {
             m_sharedParserRegistration->AddParser(

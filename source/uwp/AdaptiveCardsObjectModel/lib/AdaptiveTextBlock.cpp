@@ -11,8 +11,19 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     {
         Wrap = sharedTextBlock->GetWrap();
         MaxLines = sharedTextBlock->GetMaxLines();
-        HorizontalAlignment = opt_cast<Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
-        Style = opt_cast<Uwp::TextStyle>(sharedTextBlock->GetStyle());
+
+        if (sharedTextBlock->GetHorizontalAlignment().has_value())
+        {
+            HorizontalAlignment =
+                winrt::box_value(static_cast<Uwp::HAlignment>(sharedTextBlock->GetHorizontalAlignment().value()))
+                    .as<Windows::Foundation::IReference<Uwp::HAlignment>>();
+        }
+
+        if (sharedTextBlock->GetStyle().has_value())
+        {
+            Style = winrt::box_value(static_cast<Uwp::TextStyle>(sharedTextBlock->GetStyle().value()))
+                        .as<Windows::Foundation::IReference<Uwp::TextStyle>>();
+        }
 
         InitializeTextElement(sharedTextBlock);
         InitializeBaseElement(sharedTextBlock);

@@ -9,9 +9,21 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveNumberInput::AdaptiveNumberInput(const std::shared_ptr<::AdaptiveCards::NumberInput>& sharedNumberInput)
     {
-        Min = sharedNumberInput->GetMin();
-        Max = sharedNumberInput->GetMax();
-        Value = sharedNumberInput->GetValue();
+        if (sharedNumberInput->GetMin().has_value())
+        {
+            Min = winrt::box_value(sharedNumberInput->GetMin().value()).as<Windows::Foundation::IReference<double>>();
+        }
+
+        if (sharedNumberInput->GetMax().has_value())
+        {
+            Max = winrt::box_value(sharedNumberInput->GetMax().value()).as<Windows::Foundation::IReference<double>>();
+        }
+
+        if (sharedNumberInput->GetValue().has_value())
+        {
+            Value = winrt::box_value(sharedNumberInput->GetValue().value()).as<Windows::Foundation::IReference<double>>();
+        }
+
         Placeholder = UTF8ToHString(sharedNumberInput->GetPlaceholder());
         InitializeBaseElement(sharedNumberInput);
     }

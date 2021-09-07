@@ -10,7 +10,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     {
         AdaptiveOpenUrlActionParser() = default;
 
-        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement FromJson(
             winrt::Windows::Data::Json::JsonObject const& inputJson,
             winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
             winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,

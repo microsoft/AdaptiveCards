@@ -95,7 +95,6 @@ std::wstring StringToWString(std::string_view in)
     return {};
 }
 
-
 winrt::hstring UTF8ToHString(std::string_view in)
 {
     return winrt::hstring{StringToWString(in)};
@@ -253,8 +252,7 @@ std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(
     return results;
 }
 
-winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement
-GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement)
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement)
 {
     switch (baseElement->GetElementType())
     {
@@ -453,8 +451,8 @@ winrt::Windows::Data::Json::JsonValue HStringToJsonValue(winrt::hstring const& i
     if (!winrt::Windows::Data::Json::JsonValue::TryParse(inputHString, returned))
     {
         // NB: While Windows.Data.Json.JsonValue does not have an exposed constructor,
-        //      the activation factory does support calling ActivateInstance to get a fresh
-        //      "empty" value.
+        // the activation factory does support calling ActivateInstance to get a fresh
+        // "empty" value.
         returned = winrt::get_activation_factory<decltype(returned)>().ActivateInstance<decltype(returned)>();
     }
     return returned;

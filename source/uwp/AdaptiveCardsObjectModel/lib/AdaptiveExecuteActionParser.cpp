@@ -9,7 +9,7 @@
 
 namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement AdaptiveExecuteActionParser::FromJson(
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement AdaptiveExecuteActionParser::FromJson(
         winrt::Windows::Data::Json::JsonObject const& inputJson,
         winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
         winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
@@ -17,6 +17,6 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     {
         return ::AdaptiveCards::ObjectModel::Uwp::FromJson<implementation::AdaptiveExecuteAction, ::AdaptiveCards::ExecuteAction, ::AdaptiveCards::ExecuteActionParser>(
                    inputJson, elementParsers, actionParsers, warnings)
-            .as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>();
+            .as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>();
     }
 }

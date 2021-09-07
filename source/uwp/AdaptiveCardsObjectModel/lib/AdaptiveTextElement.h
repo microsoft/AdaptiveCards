@@ -17,13 +17,38 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     protected:
         template<typename T> void InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
-            IsSubtle = sharedModel->GetIsSubtle();
-            FontType = opt_cast<Uwp::FontType>(sharedModel->GetFontType());
-            Size = opt_cast<Uwp::TextSize>(sharedModel->GetTextSize());
-            Weight = opt_cast<Uwp::TextWeight>(sharedModel->GetTextWeight());
-            Color = opt_cast<Uwp::ForegroundColor>(sharedModel->GetTextColor());
             Text = UTF8ToHString(sharedModel->GetText());
             Language = UTF8ToHString(sharedModel->GetLanguage());
+
+            if (sharedModel->GetIsSubtle().has_value())
+            {
+                IsSubtle =
+                    winrt::box_value(static_cast<bool>(sharedModel->GetIsSubtle().value())).as<Windows::Foundation::IReference<bool>>();
+            }
+
+            if (sharedModel->GetFontType().has_value())
+            {
+                FontType = winrt::box_value(static_cast<Uwp::FontType>(sharedModel->GetFontType().value()))
+                               .as<Windows::Foundation::IReference<Uwp::FontType>>();
+            }
+
+            if (sharedModel->GetTextSize().has_value())
+            {
+                Size = winrt::box_value(static_cast<Uwp::TextSize>(sharedModel->GetTextSize().value()))
+                           .as<Windows::Foundation::IReference<Uwp::TextSize>>();
+            }
+
+            if (sharedModel->GetTextWeight().has_value())
+            {
+                Weight = winrt::box_value(static_cast<Uwp::TextWeight>(sharedModel->GetTextWeight().value()))
+                             .as<Windows::Foundation::IReference<Uwp::TextWeight>>();
+            }
+
+            if (sharedModel->GetTextColor().has_value())
+            {
+                Color = winrt::box_value(static_cast<Uwp::ForegroundColor>(sharedModel->GetTextColor().value()))
+                            .as<Windows::Foundation::IReference<Uwp::ForegroundColor>>();
+            }
         }
 
         template<typename T> void CopyTextElementProperties(T& sharedCardElement)

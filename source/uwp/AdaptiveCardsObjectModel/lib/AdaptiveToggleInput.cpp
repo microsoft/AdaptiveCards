@@ -21,6 +21,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveToggleInput::GetSharedModel()
     {
         auto toggleInput = std::make_shared<::AdaptiveCards::ToggleInput>();
+        CopySharedElementProperties(*toggleInput);
 
         toggleInput->SetTitle(HStringToUTF8(Title));
         toggleInput->SetValue(HStringToUTF8(Value));

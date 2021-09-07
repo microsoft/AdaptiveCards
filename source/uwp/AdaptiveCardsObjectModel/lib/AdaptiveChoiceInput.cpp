@@ -28,7 +28,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
     void AdaptiveChoiceInput::Value(hstring const& value)
     {
-        m_sharedChoiceInput->SetTitle(HStringToUTF8(value));
+        m_sharedChoiceInput->SetValue(HStringToUTF8(value));
     }
 
     std::shared_ptr<::AdaptiveCards::ChoiceInput> AdaptiveChoiceInput::GetSharedModel()

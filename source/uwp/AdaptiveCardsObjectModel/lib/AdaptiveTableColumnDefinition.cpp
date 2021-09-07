@@ -8,20 +8,32 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition(std::shared_ptr<::AdaptiveCards::TableColumnDefinition> const& sharedTableColumnDefinition)
     {
-        if (sharedTableColumnDefinition->GetVerticalCellContentAlignment())
+        if (sharedTableColumnDefinition->GetVerticalCellContentAlignment().has_value())
         {
             VerticalCellContentAlignment =
-                static_cast<Uwp::VerticalContentAlignment>(*sharedTableColumnDefinition->GetVerticalCellContentAlignment());
+                winrt::box_value(static_cast<Uwp::VerticalContentAlignment>(
+                                     sharedTableColumnDefinition->GetVerticalCellContentAlignment().value()))
+                    .as<Windows::Foundation::IReference<Uwp::VerticalContentAlignment>>();
         }
 
-        if (sharedTableColumnDefinition->GetHorizontalCellContentAlignment())
+        if (sharedTableColumnDefinition->GetHorizontalCellContentAlignment().has_value())
         {
             HorizontalCellContentAlignment =
-                static_cast<Uwp::HAlignment>(*sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
+                winrt::box_value(
+                    static_cast<Uwp::HAlignment>(sharedTableColumnDefinition->GetHorizontalCellContentAlignment().value()))
+                    .as<Windows::Foundation::IReference<Uwp::HAlignment>>();
         }
 
-        Width = sharedTableColumnDefinition->GetWidth();
-        PixelWidth = sharedTableColumnDefinition->GetPixelWidth();
+        if (sharedTableColumnDefinition->GetWidth().has_value())
+        {
+            Width = winrt::box_value(sharedTableColumnDefinition->GetWidth().value()).as<Windows::Foundation::IReference<uint32_t>>();
+        }
+
+        if (sharedTableColumnDefinition->GetPixelWidth().has_value())
+        {
+            PixelWidth =
+                winrt::box_value(sharedTableColumnDefinition->GetPixelWidth().value()).as<Windows::Foundation::IReference<uint32_t>>();
+        }
     }
 
     std::shared_ptr<::AdaptiveCards::TableColumnDefinition> AdaptiveTableColumnDefinition::GetSharedModel()
@@ -30,7 +42,8 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 
         if (VerticalCellContentAlignment)
         {
-            tableColumnDefinition->SetVerticalCellContentAlignment(VerticalCellContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
+            tableColumnDefinition->SetVerticalCellContentAlignment(
+                VerticalCellContentAlignment.get<::AdaptiveCards::VerticalContentAlignment>());
         }
 
         if (HorizontalCellContentAlignment)

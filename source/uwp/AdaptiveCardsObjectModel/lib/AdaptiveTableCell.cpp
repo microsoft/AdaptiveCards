@@ -11,14 +11,19 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         Items = GenerateContainedElementsProjection(sharedTableCell->GetItems());
         SelectAction = GenerateActionProjection(sharedTableCell->GetSelectAction());
         Style = static_cast<Uwp::ContainerStyle>(sharedTableCell->GetStyle());
-        if (sharedTableCell->GetVerticalContentAlignment())
+        if (sharedTableCell->GetVerticalContentAlignment().has_value())
         {
-            VerticalContentAlignment = static_cast<Uwp::VerticalContentAlignment>(*sharedTableCell->GetVerticalContentAlignment());
+            VerticalContentAlignment = winrt::box_value(static_cast<Uwp::VerticalContentAlignment>(
+                                                            sharedTableCell->GetVerticalContentAlignment().value()))
+                                           .as<Windows::Foundation::IReference<Uwp::VerticalContentAlignment>>();
         }
         MinHeight = sharedTableCell->GetMinHeight();
         Bleed = sharedTableCell->GetBleed();
         BleedDirection = static_cast<Uwp::BleedDirection>(sharedTableCell->GetBleedDirection());
-        Rtl = sharedTableCell->GetRtl();
+        if (sharedTableCell->GetRtl().has_value())
+        {
+            Rtl = winrt::box_value(sharedTableCell->GetRtl().value()).as<Windows::Foundation::IReference<bool>>();
+        }
 
         auto backgroundImage = sharedTableCell->GetBackgroundImage();
         if (backgroundImage && !backgroundImage->GetUrl().empty())

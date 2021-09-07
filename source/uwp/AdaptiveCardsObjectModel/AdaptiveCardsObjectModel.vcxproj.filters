@@ -63,7 +63,6 @@
     <ClCompile Include="lib\AdaptiveRichTextBlock.cpp" />
     <ClCompile Include="lib\AdaptiveRichTextBlockParser.cpp" />
     <ClCompile Include="lib\AdaptiveTextRun.cpp" />
-    <ClCompile Include="lib\AdaptiveTextElement.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionParser.cpp" />
@@ -77,7 +76,6 @@
     <ClCompile Include="lib\AdaptiveTableColumnDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveTableParser.cpp" />
     <ClCompile Include="lib\AdaptiveTableRow.cpp" />
-    <ClCompile Include="lib\AdaptiveFactParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -155,7 +153,6 @@
     <ClInclude Include="lib\AdaptiveTableColumnDefinition.h" />
     <ClInclude Include="lib\AdaptiveTableParser.h" />
     <ClInclude Include="lib\AdaptiveTableRow.h" />
-    <ClInclude Include="lib\AdaptiveFactParser.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.ObjectModel.Uwp.idl" />

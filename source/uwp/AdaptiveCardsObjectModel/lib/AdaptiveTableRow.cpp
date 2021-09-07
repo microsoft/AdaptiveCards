@@ -9,15 +9,18 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveTableRow::AdaptiveTableRow(const std::shared_ptr<::AdaptiveCards::TableRow>& sharedTableRow)
     {
-        if (sharedTableRow->GetVerticalCellContentAlignment())
+        if (sharedTableRow->GetVerticalCellContentAlignment().has_value())
         {
-            VerticalCellContentAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::VerticalContentAlignment>(*sharedTableRow->GetVerticalCellContentAlignment());
+            VerticalCellContentAlignment = winrt::box_value(static_cast<Uwp::VerticalContentAlignment>(
+                                                                sharedTableRow->GetVerticalCellContentAlignment().value()))
+                                               .as<Windows::Foundation::IReference<Uwp::VerticalContentAlignment>>();
         }
 
-        if (sharedTableRow->GetHorizontalCellContentAlignment())
+        if (sharedTableRow->GetHorizontalCellContentAlignment().has_value())
         {
-            VerticalCellContentAlignment = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HAlignment>(
-                *sharedTableRow->GetHorizontalCellContentAlignment());
+            HorizontalCellContentAlignment =
+                winrt::box_value(static_cast<Uwp::HAlignment>(sharedTableRow->GetHorizontalCellContentAlignment().value()))
+                    .as<Windows::Foundation::IReference<Uwp::HAlignment>>();
         }
 
         Style = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::ContainerStyle>(sharedTableRow->GetStyle());

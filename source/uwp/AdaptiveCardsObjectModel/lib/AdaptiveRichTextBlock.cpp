@@ -9,7 +9,13 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveRichTextBlock::AdaptiveRichTextBlock(const std::shared_ptr<::AdaptiveCards::RichTextBlock>& sharedRichTextBlock) noexcept
     {
-        HorizontalAlignment = opt_cast<Uwp::HAlignment>(sharedRichTextBlock->GetHorizontalAlignment());
+        if (sharedRichTextBlock->GetHorizontalAlignment().has_value())
+        {
+            HorizontalAlignment =
+                winrt::box_value(static_cast<Uwp::HAlignment>(sharedRichTextBlock->GetHorizontalAlignment().value()))
+                    .as<Windows::Foundation::IReference<Uwp::HAlignment>>();
+        }
+
         Inlines = GenerateInlinesProjection(sharedRichTextBlock->GetInlines());
 
         InitializeBaseElement(sharedRichTextBlock);

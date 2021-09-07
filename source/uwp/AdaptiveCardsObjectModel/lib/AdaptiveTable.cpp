@@ -13,15 +13,18 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         ShowGridLines = sharedTable->GetShowGridLines();
         FirstRowAsHeaders = sharedTable->GetFirstRowAsHeaders();
 
-        if (sharedTable->GetVerticalCellContentAlignment())
+        if (sharedTable->GetVerticalCellContentAlignment().has_value())
         {
-            VerticalCellContentAlignment =
-                static_cast<Uwp::VerticalContentAlignment>(*sharedTable->GetVerticalCellContentAlignment());
+            VerticalCellContentAlignment = winrt::box_value(static_cast<Uwp::VerticalContentAlignment>(
+                                                                sharedTable->GetVerticalCellContentAlignment().value()))
+                                               .as<Windows::Foundation::IReference<Uwp::VerticalContentAlignment>>();
         }
 
-        if (sharedTable->GetHorizontalCellContentAlignment())
+        if (sharedTable->GetHorizontalCellContentAlignment().has_value())
         {
-            HorizontalCellContentAlignment = static_cast<Uwp::HAlignment>(*sharedTable->GetHorizontalCellContentAlignment());
+            HorizontalCellContentAlignment =
+                winrt::box_value(static_cast<Uwp::HAlignment>(sharedTable->GetHorizontalCellContentAlignment().value()))
+                    .as<Windows::Foundation::IReference<Uwp::HAlignment>>();
         }
 
         GridStyle = static_cast<Uwp::ContainerStyle>(sharedTable->GetGridStyle());

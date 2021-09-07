@@ -12,10 +12,11 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         SelectAction = GenerateActionProjection(sharedColumn->GetSelectAction());
         Style = static_cast<Uwp::ContainerStyle>(sharedColumn->GetStyle());
 
-        if (sharedColumn->GetVerticalContentAlignment())
+        if (sharedColumn->GetVerticalContentAlignment().has_value())
         {
             VerticalContentAlignment =
-                static_cast<Uwp::VerticalContentAlignment>(*sharedColumn->GetVerticalContentAlignment());
+                winrt::box_value(static_cast<Uwp::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment().value()))
+                    .as<Windows::Foundation::IReference<Uwp::VerticalContentAlignment>>();
         }
 
         Bleed = sharedColumn->GetBleed();
@@ -30,7 +31,10 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
             BackgroundImage = winrt::make<implementation::AdaptiveBackgroundImage>(backgroundImage);
         }
 
-        Rtl = sharedColumn->GetRtl();
+        if (sharedColumn->GetRtl().has_value())
+        {
+            Rtl = winrt::box_value(sharedColumn->GetRtl().value()).as<Windows::Foundation::IReference<bool>>();
+        }
 
         InitializeBaseElement(sharedColumn);
     }
@@ -78,7 +82,11 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
             column->SetSelectAction(GenerateSharedAction(SelectAction));
         }
 
-        column->SetRtl(Rtl);
+        if (Rtl)
+        {
+            column->SetRtl(Rtl.get());
+        }
+
         column->GetItems() = GenerateSharedElements(Items.get());
 
         return column;

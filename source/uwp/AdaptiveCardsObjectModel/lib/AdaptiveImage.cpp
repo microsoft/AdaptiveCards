@@ -15,9 +15,14 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         Size = static_cast<Uwp::ImageSize>(sharedImage->GetImageSize());
         PixelWidth = sharedImage->GetPixelWidth();
         PixelHeight = sharedImage->GetPixelHeight();
-        HorizontalAlignment = opt_cast<Uwp::HAlignment>(sharedImage->GetHorizontalAlignment());
         AltText = UTF8ToHString(sharedImage->GetAltText());
         SelectAction = GenerateActionProjection(sharedImage->GetSelectAction());
+
+        if (sharedImage->GetHorizontalAlignment().has_value())
+        {
+            HorizontalAlignment = winrt::box_value(static_cast<Uwp::HAlignment>(sharedImage->GetHorizontalAlignment().value()))
+                                      .as<Windows::Foundation::IReference<Uwp::HAlignment>>();
+        }
 
         InitializeBaseElement(sharedImage);
     }

@@ -55,19 +55,20 @@ namespace AdaptiveCards::ObjectModel::Uwp
         }
     }
 
-    std::string CustomActionWrapper::GetActionElementId() const
-    {
-        return HStringToUTF8(m_actionElement.Id());
-    }
+    std::string CustomActionWrapper::GetActionElementId() const { return HStringToUTF8(m_actionElement.Id()); }
 
-    void CustomActionWrapper::SetActionElementId(const std::string& value)
-    {
-        m_actionElement.Id(UTF8ToHString(value));
-    }
+    void CustomActionWrapper::SetActionElementId(const std::string& value) { m_actionElement.Id(UTF8ToHString(value)); }
 
     std::string CustomActionWrapper::GetActionElementTitle() const
     {
-        return HStringToUTF8(m_actionElement.Title());
+        try
+        {
+            return HStringToUTF8(m_actionElement.Title());
+        }
+        catch (...)
+        {
+            return "";
+        }
     }
 
     void CustomActionWrapper::SetActionElementTitle(const std::string& value)
