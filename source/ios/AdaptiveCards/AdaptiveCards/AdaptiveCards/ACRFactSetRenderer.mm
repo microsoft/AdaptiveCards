@@ -7,6 +7,7 @@
 #import "ACRFactSetRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACOPaddingHandler.h"
 #import "ACRColumnSetView.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRRegistration.h"
@@ -193,11 +194,11 @@
 
     if (elem->GetHeight() == HeightType::Stretch) {
         if (titleStack.arrangedSubviews.count) {
-            [titleStack.arrangedSubviews.lastObject setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+            [ACOPaddingHandler configureHugging:titleStack.arrangedSubviews.lastObject];
         }
-        
+
         if (valueStack.arrangedSubviews.count) {
-            [valueStack.arrangedSubviews.lastObject setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+            [ACOPaddingHandler configureHugging:valueStack.arrangedSubviews.lastObject];
         }
     }
 

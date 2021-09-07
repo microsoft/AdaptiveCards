@@ -40,7 +40,7 @@
 
     UIView *padding = [[UIView alloc] init];
 
-    [self configureHugging:padding];
+    [ACOPaddingHandler configureHugging:padding];
 
     NSMutableArray<NSValue *> *values = [_paddingMap objectForKey:view];
     if (!values) {
@@ -54,7 +54,7 @@
     return padding;
 }
 
-- (void)configureHugging:(UIView *)view
++ (void)configureHugging:(UIView *)view
 {
     view.translatesAutoresizingMaskIntoConstraints = NO;
     [view setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
@@ -68,7 +68,7 @@
 
     if ((HeightType::Stretch == correspondingElement.element->GetHeight()) &&
         (correspondingElement.type != ACRImage)) {
-        [self configureHugging:view];
+        [ACOPaddingHandler configureHugging:view];
         [_stretchableViewSet addObject:view];
     }
 }
