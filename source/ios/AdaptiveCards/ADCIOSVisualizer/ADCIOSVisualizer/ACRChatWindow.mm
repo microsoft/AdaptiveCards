@@ -13,7 +13,7 @@
 @implementation ACRChatWindow {
     NSUInteger numberOfCards;
     NSMutableArray<NSString *> *adaptiveCardsPayloads;
-    NSMutableArray<UIView *> *adaptiveCardsViews;
+    NSMutableArray<id> *adaptiveCardsViews;
     CGFloat adaptiveCardsWidth;
     NSString *hostConfig;
     ACOResourceResolvers *resolvers;
@@ -81,24 +81,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
-
-    UIView *adaptiveCardView = adaptiveCardsViews[indexPath.row];
-    NSString *identifier = [NSString stringWithFormat:@"%p", adaptiveCardView];
-
-    cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell) {
-        return cell;
+    ACRView *adaptiveCardView = nil;
+    id view = adaptiveCardsViews[indexPath.row];
+    // view will be null when accessiblity event has occured in which case redraw the adaptive cards
+    if (view == [NSNull null]) {
+        adaptiveCardView = [self renderCard:adaptiveCardsPayloads[indexPath.row]];
+        if (adaptiveCardView) {
+            adaptiveCardsViews[indexPath.row] = adaptiveCardView;
+        }
     } else {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:identifier];
-        [cell.contentView addSubview:adaptiveCardView];
+        adaptiveCardView = (ACRView *)view;
     }
 
-    [adaptiveCardView.centerXAnchor constraintEqualToAnchor:cell.contentView.centerXAnchor].active = YES;
-    [adaptiveCardView.centerYAnchor constraintEqualToAnchor:cell.contentView.centerYAnchor].active = YES;
-    [cell.contentView.heightAnchor constraintEqualToAnchor:adaptiveCardView.heightAnchor].active = YES;
-    [cell.contentView.widthAnchor constraintEqualToAnchor:adaptiveCardView.widthAnchor].active = YES;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"adaptiveCell" forIndexPath:indexPath];
+    if (cell) {
+        ((ACRChatWindowCell *)cell).adaptiveCardView = adaptiveCardView;
+    }
 
     return cell;
 }
@@ -126,7 +124,7 @@
     [tableView reloadData];
 }
 
-- (void)renderCards:(NSString *)card
+- (ACRView *)renderCard:(NSString *)card
 {
     NSString *jsonString = card;
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:hostConfig
@@ -146,8 +144,61 @@
                            widthConstraint:adaptiveCardsWidth
                                   delegate:self.adaptiveCardsDelegates];
     }
+    return renderResult.view;
+}
 
-    [adaptiveCardsViews addObject:renderResult.view];
+- (void)renderCards:(NSString *)card
+{
+    [adaptiveCardsViews addObject:[self renderCard:card]];
+}
+
+// empty the cached adaptive cards views
+// only visible adaptive card view will be drawn initially, and will cause to render adaptive cards when the cards in the invisible rows become visible.
+- (void)prepareForRedraw
+{
+    if (adaptiveCardsViews) {
+        for (NSInteger i = 0; i < adaptiveCardsViews.count; i++) {
+            adaptiveCardsViews[i] = [NSNull null];
+        }
+    }
+}
+@end
+
+// configure the content cell
+@implementation ACRChatWindowCell {
+    NSArray<NSLayoutConstraint *> *_contentViewConstraints;
+}
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        _contentViewConstraints = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
+- (void)setAdaptiveCardView:(ACRView *)adaptiveCardView
+{
+    _adaptiveCardView = adaptiveCardView;
+    if (self.adaptiveCardView) {
+        if (self.contentView.subviews && self.contentView.subviews.count) {
+            [self.contentView.subviews[0] removeFromSuperview];
+        }
+        [self.contentView addSubview:self.adaptiveCardView];
+        [self updateLayoutConstraints];
+    }
+}
+
+- (void)updateLayoutConstraints
+{
+    _contentViewConstraints = @[
+        [self.adaptiveCardView.centerXAnchor constraintEqualToAnchor:self.contentView.centerXAnchor],
+        [self.adaptiveCardView.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor],
+        [self.contentView.heightAnchor constraintEqualToAnchor:self.adaptiveCardView.heightAnchor],
+        [self.contentView.widthAnchor constraintEqualToAnchor:self.adaptiveCardView.widthAnchor]
+    ];
+    [NSLayoutConstraint activateConstraints:_contentViewConstraints];
 }
 
 @end

@@ -18,7 +18,8 @@
 									"altText": "Departing airplane"
 								}
 							],
-							"bleed": true
+							"bleed": true,
+                            "style": "emphasis"
 						},
 						{
 							"type": "Container",

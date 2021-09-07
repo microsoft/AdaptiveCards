@@ -5,7 +5,6 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Management.Deployment;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,47 +15,75 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 
 using System.Runtime.InteropServices;
-using OpenQA.Selenium.Appium.Windows;
-using OpenQA.Selenium.Appium;
 using Windows.Foundation;
+using Windows.Management.Deployment;
+using Microsoft.Windows.Apps.Test.Foundation;
+using Microsoft.Windows.Apps.Test.Foundation.Controls;
+using Microsoft.Windows.Apps.Test.Foundation.Waiters;
+using Microsoft.Windows.Apps.Test.Automation;
 
 namespace UWPUITests
 {
+    using Window = Microsoft.Windows.Apps.Test.Foundation.Controls.Window;
 
+    // Most of this code is part of the MUX Testing Infrastructure,
+    // investigation on the added packages must be made to verify if there's any API that can do the same
+    // TODO: Verify if the MUXTestInfra package can be used, instead of duplicating their code (Issue #6052)
     public class Application
     {
-        protected const string WindowsApplicationDriverUrl = "http://127.0.0.1:4723/wd/hub";
-        private WindowsDriver<WindowsElement> TestAppSession = null;
-
         private readonly string _simplePackageName;
 
         private readonly string _packageName;
         private readonly string _packageFamilyName;
         private readonly string _appName;
+        private readonly string _appWindowTitle;
 
         private readonly string _certSerialNumber;
         private readonly string _baseAppxDir;
 
-        public Application()
+        private readonly UICondition _windowCondition = null;
+        private readonly UICondition _appFrameWindowCondition = null;
+
+        private static Application _Instance = null;
+
+        public static Application Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    _Instance = new Application();
+                }
+                return _Instance;
+            }
+        }
+
+        private Application()
         {
             _simplePackageName = "UWPUITestApp";
 
             _packageName = "AdaptiveCardsUWPUITestApp";
             _packageFamilyName = "AdaptiveCardsUWPUITestApp_ghhk6r1bdgbcc";
             _appName = "AdaptiveCardsUWPUITestApp_ghhk6r1bdgbcc!App";
+            _appWindowTitle = "UWPUITestApp";
 
             _certSerialNumber = "55caf56ff51d839e482b7c988be2c263";
 
             string assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string baseDirectory = Directory.GetParent(assemblyDir).Parent.FullName;
+            string baseDirectory = Directory.GetParent(assemblyDir).Parent.Parent.FullName;
 
             // Replace the TestLibrary folder for the TestApp folder
-            string appBaseDirectory = baseDirectory.Replace("UWPUITestLibrary", "UWPUITestApp");
+            string appBaseDirectory = baseDirectory.Replace("UWPUITests", "UWPUITestApp");
 
             _baseAppxDir = appBaseDirectory;
+
+            _windowCondition = UICondition.Create("@ClassName='Window' AND @Name={0}", _appWindowTitle);
+            _appFrameWindowCondition = UICondition.Create("@ClassName='Window' AND @Name={0}", _appWindowTitle);
         }
 
         #region Properties
+        public UIObject CoreWindow { get; private set; }
+        public UIObject ApplicationFrameWindow { get; private set; }
         public Process Process { get; private set; }
 
         #endregion
@@ -64,48 +91,185 @@ namespace UWPUITests
         #region Methods
         internal void Initialize(bool doLaunch = false, string deploymentDir = null)
         {
-            if (TestAppSession == null)
+            var topWindowCondition = _windowCondition.OrWith(_appFrameWindowCondition);
+
+            UIObject topWindowObj = null;
+            bool didFindWindow = UIObject.Root.Children.TryFind(topWindowCondition, out topWindowObj);
+
+            // Only try to launch the app if we couldn't find the window.
+            if (!didFindWindow)
             {
-                TestAppSession = Launch();
+                CoreWindow = Launch();
+
+                foreach (UIObject obj in CoreWindow.Ancestors)
+                {
+                    if (obj.Matches(_appFrameWindowCondition))
+                    {
+                        ApplicationFrameWindow = CoreWindow.Parent;
+                        break;
+                    }
+                }
             }
+            else if (didFindWindow)
+            {
+                // topWindowObj should match either _windowCondition or _appFrameWindowCondition
+
+                if (topWindowObj.Matches(_windowCondition))
+                {
+                    // If the top level window is CoreWindow, then there is no AppFrame window:
+                    CoreWindow = topWindowObj;
+                    ApplicationFrameWindow = null;
+                }
+                else // _appFrameWindowCondition
+                {
+                    if (!topWindowObj.Matches(_appFrameWindowCondition))
+                    {
+                    }
+
+                    // Maxmize window to ensure we can find UIA elements
+                    var appFrameWindow = new Window(topWindowObj);
+                    if (appFrameWindow.CanMaximize)
+                    {
+                        appFrameWindow.SetWindowVisualState(WindowVisualState.Maximized);
+                    }
+
+                    Assert.IsTrue(topWindowObj.Matches(_appFrameWindowCondition));
+                    ApplicationFrameWindow = topWindowObj;
+
+                    Logger.LogMessage("Looking for CoreWindow...");
+                    for (int retries = 0; retries < 5; ++retries)
+                    {
+                        if (topWindowObj.Children.TryFind(_windowCondition, out var coreWindowObject))
+                        {
+                            CoreWindow = coreWindowObject;
+                            Logger.LogMessage("Found CoreWindow.");
+                            break;
+                        }
+
+                        Logger.LogMessage("CoreWindow not found. Sleep for 500 ms and retry");
+                        Thread.Sleep(500);
+                    }
+                }
+            }
+
+            if (CoreWindow == null)
+            {
+                // We expect to have a window by this point.
+                // LogDumpTree();
+                throw new UIObjectNotFoundException("Could not find application window.");
+            }
+
+            // If this is running on desktop (it has an app frame window) then try to
+            // maximize the window.
+
+            if (ApplicationFrameWindow != null)
+            {
+                var appFrameWindow = new Window(ApplicationFrameWindow);
+                if (appFrameWindow.CanMaximize)
+                {
+                    appFrameWindow.SetWindowVisualState(WindowVisualState.Maximized);
+                }
+            }
+
+            Process = Process.GetProcessById(CoreWindow.ProcessId);
         }
 
-        private WindowsDriver<WindowsElement> Launch()
+        private UIObject Launch()
         {
-            WindowsDriver<WindowsElement> testAppSession = null;
+            UIObject coreWindow = null;
 
             InstallTestAppIfNeeded();
 
             Logger.LogMessage("Launching app {0}", _appName);
 
-            testAppSession = LaunchApp();
+            coreWindow = LaunchApp();
 
-            Assert.IsNotNull(testAppSession, "coreWindow");
+            Assert.IsNotNull(coreWindow, "coreWindow");
 
-            return testAppSession;
+            Logger.LogMessage("Waiting for the close-app invoker to be found to signal that the app has launched successfully...");
+
+            for (int retries = 0; retries < 5; ++retries)
+            {
+                UIObject obj;
+                coreWindow.Descendants.TryFind(UICondition.Create("@AutomationId='__CloseAppInvoker'"), out obj);
+                if (obj != null)
+                {
+                    Logger.LogMessage("Invoker found!");
+                    break;
+                }
+
+                Logger.LogMessage("Invoker not found. Sleeping for 500 ms before trying again...");
+                Thread.Sleep(500);
+            }
+
+            Logger.LogMessage("15056441 tracing, device family:" + Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily);
+
+            return coreWindow;
         }
 
-        private WindowsDriver<WindowsElement> LaunchApp()
+        private UIObject LaunchApp()
         {
-            AppiumOptions options = new AppiumOptions();
-            options.AddAdditionalCapability("platformName", "Windows");
-            options.AddAdditionalCapability("platformVersion", "10");
-            options.AddAdditionalCapability("deviceName", "WindowsPC");
+            UIObject coreWindow = null;
 
-            // Update this value
-            options.AddAdditionalCapability("app", _appName);
+            // Launch sometimes times out but the app is just slow to launch and Launch has what appears to be
+            // a 5-second timeout built in. 5 seconds isn't always enough in VM scenarios. If we try again, 
+            // Launch will see that the app is already running and move on.
+            const int MaxLaunchRetries = 5;
+            for (int retries = 1; retries <= MaxLaunchRetries; ++retries)
+            {
+                try
+                {
+                    Logger.LogMessage("Attempting launch, try #{0}...", retries);
+                    coreWindow = LaunchUWPApp();
+                    Logger.LogMessage("Launch successful!");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogMessage("Failed to launch app. Exception: " + ex.ToString());
 
-            WindowsDriver<WindowsElement> testAppSession = new WindowsDriver<WindowsElement>(new Uri(WindowsApplicationDriverUrl), options);
+                    if (retries < MaxLaunchRetries)
+                    {
+                        Logger.LogMessage("UAPApp.Launch might not have waited long enough, trying again {0}", retries);
+                        Thread.Sleep(TimeSpan.FromSeconds(10)); // Give a healthy wait time.
+                    }
+                    else
+                    {
+                        Logger.LogMessage("Dumping UIA tree...");
+                        // LogDumpTree();
+                        Logger.LogMessage("Could not launch app {0} with top-level window condition '{1}'!", _appName, CreateTopLevelWindowCondition().ToString());
+                        throw;
+                    }
+                }
+            }
 
-            return testAppSession;
+            return coreWindow;
+        }
+
+        private UIObject LaunchUWPApp()
+        {
+            var nameCondition = UICondition.CreateFromName(_appWindowTitle);
+            var topLevelWindowCondition = CreateTopLevelWindowCondition().AndWith(nameCondition);
+            return UAPApp.Launch(_appName, topLevelWindowCondition);
+        }
+
+        private UICondition CreateTopLevelWindowCondition()
+        {
+            string deviceFamily = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily;
+            if (deviceFamily.Equals("Windows.Desktop", StringComparison.OrdinalIgnoreCase)
+                || deviceFamily.Equals("Windows.Server", StringComparison.OrdinalIgnoreCase)
+                || deviceFamily.Equals("Windows.Team", StringComparison.OrdinalIgnoreCase))
+            {
+                return UICondition.CreateFromClassName("ApplicationFrameWindow");
+            }
+            else
+            {
+                return UICondition.CreateFromClassName("Windows.UI.Core.CoreWindow");
+            }
         }
 
         public void Close()
         {
-            if (TestAppSession != null)
-            {
-                TestAppSession.Quit();
-            }
         }
 
         // This is a slightly modified version of how WinUI remove a previously installed version of the test app, as Appium is not
@@ -145,16 +309,12 @@ namespace UWPUITests
             foreach (var installedPackage in installedPackages)
             {
                 Logger.LogMessage("Test AppX package already installed. Removing existing package by name: {0}", installedPackage.Id.FullName);
-                
+
                 AutoResetEvent removePackageCompleteEvent = new AutoResetEvent(false);
 
-                var removeAppPowershellProcess = Process.Start(new ProcessStartInfo("powershell",
+                var removeAppPowershellProcess = ExecuteAndLogProcess(new ProcessStartInfo("powershell",
                     string.Format("-ExecutionPolicy Unrestricted Get-AppxPackage *{0}* | Remove-AppxPackage",
-                        "AdaptiveCardsUWPUITestApp"))
-                {
-                    UseShellExecute = true
-                });
-                removeAppPowershellProcess.WaitForExit();
+                        "AdaptiveCardsUWPUITestApp")));
 
                 if (removeAppPowershellProcess.ExitCode == 0)
                 {
@@ -173,12 +333,8 @@ namespace UWPUITests
 
             Logger.LogMessage("Checking if the app's certificate is installed...");
 
-            var certutilProcess = Process.Start(new ProcessStartInfo("certutil.exe",
-                    string.Format("-verifystore TrustedPeople {0}", _certSerialNumber))
-            {
-                UseShellExecute = true
-            });
-            certutilProcess.WaitForExit();
+            var certutilProcess = ExecuteAndLogProcess(new ProcessStartInfo("certutil.exe",
+                    string.Format("-verifystore TrustedPeople {0}", _certSerialNumber)));
 
             if (certutilProcess.ExitCode == 0)
             {
@@ -189,18 +345,35 @@ namespace UWPUITests
                 Logger.LogMessage("Certificate is not installed. Installing app and certificate...");
             }
 
-            var powershellProcess = Process.Start(new ProcessStartInfo("powershell",
+            var powershellProcess = ExecuteAndLogProcess(new ProcessStartInfo("powershell",
                     string.Format("-ExecutionPolicy Unrestricted -File {0}\\Add-AppDevPackage.ps1 {1}",
-                        Path.GetDirectoryName(mostRecentlyBuiltAppx),
-                        certutilProcess.ExitCode == 0 ? "-Force" : ""))
-            {
-                UseShellExecute = true
-            });
-            powershellProcess.WaitForExit();
-
+                        Path.GetDirectoryName(mostRecentlyBuiltAppx), "-Force")));
             if (powershellProcess.ExitCode != 0)
             {
                 throw new Exception(string.Format("Failed to install AppX for {0}!", _packageName));
+            }
+        }
+
+        private Process ExecuteAndLogProcess(ProcessStartInfo startInfo)
+        {
+            startInfo.UseShellExecute = false;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
+            var p = Process.Start(startInfo);
+            Task stdoutTask = Task.Run(() => RedirectStreamToLog(p.StandardOutput));
+            Task stderrTask = Task.Run(() => RedirectStreamToLog(p.StandardError));
+            stdoutTask.Wait();
+            stderrTask.Wait();
+            p.WaitForExit();
+            return p;
+        }
+
+        private void RedirectStreamToLog(System.IO.StreamReader sr)
+        {
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                Logger.LogMessage(line);
             }
         }
         #endregion

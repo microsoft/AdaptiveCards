@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveToggleInput.h"
 #include "AdaptiveToggleInputRenderer.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -35,7 +34,7 @@ namespace AdaptiveCards::Rendering::Uwp
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
             renderContext->AddWarning(
-                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
+                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                 HStringReference(L"Toggle Input was stripped from card because interactivity is not supported").Get());
             return S_OK;
         }
@@ -45,7 +44,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(cardElement.As(&adaptiveToggleInput));
 
         ComPtr<ICheckBox> checkBox =
-            XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+            XamlHelpers::CreateABIClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
 
         HString title;
         RETURN_IF_FAILED(adaptiveToggleInput->get_Title(title.GetAddressOf()));
@@ -91,19 +90,6 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(inputLayout.CopyTo(toggleInputControl));
 
         return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveToggleInputRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveToggleInput, AdaptiveCards::ToggleInput, AdaptiveCards::ToggleInputParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

@@ -7,6 +7,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
 using namespace ABI::Windows::Foundation::Collections;
 
 using namespace ABI::Windows::Foundation;
@@ -57,9 +58,9 @@ namespace AdaptiveCards::Rendering::Uwp
 
     private:
         void RefreshContainerTile();
-        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveCards::Rendering::Uwp::BackgroundImageFillMode* fillMode,
-                                           _Out_ ABI::AdaptiveCards::Rendering::Uwp::HAlignment* hAlignment,
-                                           _Out_ ABI::AdaptiveCards::Rendering::Uwp::VAlignment* vAlignment);
+        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::BackgroundImageFillMode* fillMode,
+                                           _Out_ ABI::AdaptiveCards::ObjectModel::Uwp::HAlignment* hAlignment,
+                                           _Out_ ABI::AdaptiveCards::ObjectModel::Uwp::VAlignment* vAlignment);
 
         // Fields
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_rootElement;
@@ -67,7 +68,7 @@ namespace AdaptiveCards::Rendering::Uwp
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICanvas> m_containerElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IImageBrush> m_brushXaml;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveBackgroundImage> m_adaptiveBackgroundImage;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveBackgroundImage> m_adaptiveBackgroundImage;
         ABI::Windows::Foundation::Size m_imageSize{};
         ABI::Windows::Foundation::Size m_containerSize{};
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Shapes::IRectangle>> m_xamlChildren;

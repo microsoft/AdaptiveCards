@@ -77,4 +77,7 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 - (ACOInputResults *)dispatchAndValidateInput:(ACRColumnView *)parent;
 
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)path onObject:(NSObject *)object;
+
+- (void)setContext:(ACORenderContext *)context;
+
 @end

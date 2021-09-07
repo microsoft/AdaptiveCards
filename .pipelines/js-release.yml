@@ -11,21 +11,13 @@ pool:
 
 parameters:
 - name: target_packages
-  displayName: "Which packages to publish? Provide YAML sequence of package details (name, increment-level, prerelease-identifier). See https://docs.npmjs.com/cli/v7/commands/npm-version for how to configure version increment."
+  displayName: "Which packages to publish? Provide YAML sequence of package names."
   type: object
   default:
-  - name: adaptivecards
-    increment: prerelease
-    prerelease-identifier: beta
-  - name: adaptivecards-controls
-    increment: prerelease
-    prerelease-identifier: beta
-  - name: adaptivecards-designer
-    increment: prerelease
-    prerelease-identifier: beta
-  - name: adaptivecards-templating
-    increment: prerelease
-    prerelease-identifier: beta
+  - adaptivecards
+  - adaptivecards-controls
+  - adaptivecards-designer
+  - adaptivecards-templating
 - name: dry_run
   displayName: "Dry run without pushing to npmjs"
   type: object
@@ -34,9 +26,9 @@ parameters:
 steps:
 - task: NodeTool@0
   name: NodeTool1
-  displayName: Use Node 12.x
+  displayName: Use Node 14.x
   inputs:
-    versionSpec: 12.x
+    versionSpec: 14.x
 
 - bash: |
    npm ci 
@@ -51,51 +43,29 @@ steps:
   displayName: 'Bash - lerna-audit --no-fix'
 
 - ${{ each target_package in parameters.target_packages }}:
-  - task: Npm@1
-    displayName: '[${{ target_package.name }}] npm version'
-    inputs:
-      command: custom
-      customCommand: 'version ${{ target_package.increment }} --preid ${{ target_package.prerelease_identifier }} --no-push --yes'
-      workingDir: 'source/nodejs/${{ target_package.name }}'
-
-- bash: |
-   git diff
-  workingDirectory: source/nodejs
-  displayName: 'Bash - git diff'
-
-- ${{ each target_package in parameters.target_packages }}:
   - ${{ if eq(parameters.dry_run, true) }}:
     - task: Npm@1
-      displayName: '[${{ target_package.name }}] npm publish --dry-run'
+      displayName: '[${{ target_package }}] npm publish --dry-run'
       inputs:
         command: custom
         customCommand: publish --dry-run
-        workingDir: source/nodejs/${{ target_package.name }}
+        workingDir: source/nodejs/${{ target_package }}
 
   - ${{ if eq(parameters.dry_run, false) }}:
     - task: Npm@1
-      displayName: '[${{ target_package.name }}] npm publish'
+      displayName: '[${{ target_package }}] npm publish'
       inputs:
         command: publish
-        workingDir: source/nodejs/${{ target_package.name }}
+        workingDir: source/nodejs/${{ target_package }}
         publishEndpoint: npmjs.com
       condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
+
     - bash: |
        git config --global user.email "adaptivecardscore@microsoft.com"
        git config --global user.name "adaptivecards"
-       git stash
-       git checkout main
-       git checkout -b "adaptivecards/nodejs/post-release"
-       git stash pop
-       git add -u
-       git commit -m "[JS] Bump versions post-release"
-       git push --tags --set-upstream origin "adaptivecards/nodejs/post-release"
-       curl -i -u $AC_GHUSER:$AC_GHPAT -d '{ "title": "[JS] Bump versions post-release", "head": "adaptivecards/nodejs/post-release", "base": "main", "body": "Auto-generated post-release pull request" }' https://api.github.com/repos/microsoft/adaptivecards/pulls
-
+       git push --tags
       workingDirectory: source/android/adaptivecards
-      displayName: 'Update version file'
-      env:
-        AC_GHUSER: $(ghuser)
-        AC_GHPAT: $(ghpat)
+      displayName: 'Push git tag'
+
 
 

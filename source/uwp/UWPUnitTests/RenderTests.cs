@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using AdaptiveCards.ObjectModel.Uwp;
+using AdaptiveCards.Rendering.Uwp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
-using System.Threading.Tasks;
-using UWPTestLibrary;
-using AdaptiveCards.Rendering.Uwp;
 
 namespace UWPUnitTests
 {
@@ -261,7 +261,41 @@ namespace UWPUnitTests
             return false;
         }
 
-        public async Task<RenderedAdaptiveCard> RenderInDispatcher(AdaptiveCard card)
+        [TestMethod]
+        public async Task MaxActionsWarnings()
+        {
+            AdaptiveCard card = new AdaptiveCard
+            {
+                Version = "1.5"
+            };
+
+            AdaptiveSubmitAction action1 = new AdaptiveSubmitAction();
+            card.Actions.Add(action1);
+            AdaptiveSubmitAction action2 = new AdaptiveSubmitAction();
+            card.Actions.Add(action2);
+            AdaptiveSubmitAction action3 = new AdaptiveSubmitAction();
+            card.Actions.Add(action3);
+
+            AdaptiveHostConfig hostConfig = new AdaptiveHostConfig();
+            hostConfig.Actions.MaxActions = 2;
+
+            var renderedCard = await RenderInDispatcher(card, hostConfig, false);
+
+            Assert.AreEqual(1, renderedCard.Warnings.Count);
+            Assert.AreEqual(0, renderedCard.Errors.Count);
+
+            Assert.AreEqual("Some actions were not rendered due to exceeding the maximum number of actions allowed", renderedCard.Warnings[0].Message);
+
+            renderedCard = await RenderInDispatcher(card, hostConfig, true);
+
+            Assert.AreEqual(1, renderedCard.Warnings.Count);
+            Assert.AreEqual(0, renderedCard.Errors.Count);
+
+            Assert.AreEqual("Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed", renderedCard.Warnings[0].Message);
+
+        }
+
+        public async Task<RenderedAdaptiveCard> RenderInDispatcher(AdaptiveCard card, AdaptiveHostConfig hostConfig = null, bool overflowMaxActions = false)
         {
             RenderedAdaptiveCard renderedCard = null;
 
@@ -272,9 +306,14 @@ namespace UWPUnitTests
             {
                 try
                 {
+                    AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
 
-                    var renderer = new AdaptiveCardRenderer();
+                    if (hostConfig != null)
+                    {
+                        renderer.HostConfig = hostConfig;
+                    }
 
+                    renderer.OverflowMaxActions = overflowMaxActions;
                     renderedCard = renderer.RenderAdaptiveCard(card);
                 }
                 catch (Exception e)
