@@ -3,30 +3,31 @@
 #pragma once
 
 #include "TextInput.h"
+#include "AdaptiveTextInputRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::Uwp
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
 {
-    class AdaptiveTextInputRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>
+    struct AdaptiveTextInputRenderer : AdaptiveTextInputRendererT<AdaptiveTextInputRenderer>
     {
-        AdaptiveRuntime(AdaptiveTextInputRenderer);
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement element,
+                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext renderContext,
+                                                   winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs renderArgs);
+        //{
+        //    winrt::Windows::UI::Xaml::Controls::TextBox textBox{};
+        //    return textBox;
+        //}
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
-
-    private:
-        HRESULT HandleLayoutAndValidation(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
-                                          ABI::Windows::UI::Xaml::Controls::ITextBox* textBox,
-                                          ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
-                                          ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                                          ABI::Windows::UI::Xaml::IUIElement** inputLayout);
+        winrt::Windows::UI::Xaml::UIElement
+        HandleLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveTextInput adaptiveTextInput,
+                                  winrt::Windows::UI::Xaml::Controls::TextBox textBox,
+                                  winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext renderContext,
+                                  winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs renderArgs);
     };
+}
 
-    ActivatableClass(AdaptiveTextInputRenderer);
+namespace winrt::AdaptiveCards::Rendering::Uwp::factory_implementation
+{
+    struct AdaptiveTextInputRenderer : AdaptiveTextInputRendererT<AdaptiveTextInputRenderer, implementation::AdaptiveTextInputRenderer>
+    {
+    };
 }

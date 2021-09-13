@@ -258,6 +258,9 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                    ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                    ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder);
 
+    winrt::Windows::UI::Xaml::Controls::Border CreateValidationBorder(winrt::Windows::UI::Xaml::UIElement childElement,
+                                                                      winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext renderContext);
+
     HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInput,
                                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,

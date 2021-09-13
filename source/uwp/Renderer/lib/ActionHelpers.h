@@ -40,6 +40,12 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
                             _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* inlineAction,
                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBoxWithInlineAction);
 
+    winrt::Windows::UI::Xaml::UIElement HandleInlineAction(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext renderContext,
+                                                           winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs renderArgs,
+                                                           winrt::Windows::UI::Xaml::Controls::TextBox textBox,
+                                                           winrt::Windows::UI::Xaml::UIElement textBoxParentContainer,
+                                                           winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement inlineAction);
+
     void WireButtonClickToAction(_In_ ABI::Windows::UI::Xaml::Controls::IButton* button,
                                  _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
                                  _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext);

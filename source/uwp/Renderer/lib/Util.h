@@ -291,8 +291,6 @@ namespace AdaptiveCards::Rendering::Uwp
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveDateInputRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Number").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveNumberInputRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Text").Get(),
-                                           Make<AdaptiveCards::Rendering::Uwp::AdaptiveTextInputRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Time").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveTimeInputRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Media").Get(),
@@ -307,12 +305,18 @@ namespace AdaptiveCards::Rendering::Uwp
         winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer toggleRenderer =
             winrt::make<winrt::AdaptiveCards::Rendering::Uwp::implementation::AdaptiveToggleInputRenderer>();
 
-        winrt::com_ptr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer> abiToggleRenderer
-        {
-            toggleRenderer.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>()
-        };
+        winrt::com_ptr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer> abiToggleRenderer{
+            toggleRenderer.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>()};
 
         registration->Set(HStringReference(L"Input.Toggle").Get(), abiToggleRenderer.get());
+
+        winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer textRenderer =
+            winrt::make<winrt::AdaptiveCards::Rendering::Uwp::implementation::AdaptiveTextInputRenderer>();
+
+        winrt::com_ptr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer> abiTextRenderer{
+            textRenderer.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>()};
+
+        registration->Set(HStringReference(L"Input.Text").Get(), abiTextRenderer.get());
 
         return S_OK;
     }

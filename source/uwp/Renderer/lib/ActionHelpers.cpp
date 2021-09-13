@@ -453,10 +453,11 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
             ComPtr<IAdaptiveActionInvoker> actionInvoker;
             RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
             EventRegistrationToken clickToken;
-            RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                                         /*args*/) -> HRESULT {
-                                                       return actionInvoker->SendActionEvent(action.Get());
-                                                   }).Get(),
+            RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>(
+                                                       [action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+                                                                               /*args*/) -> HRESULT
+                                                       { return actionInvoker->SendActionEvent(action.Get()); })
+                                                       .Get(),
                                                    &clickToken));
 
             boolean isEnabled;
@@ -648,13 +649,17 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         // Make the action the same size as the text box
         EventRegistrationToken eventToken;
         THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
-            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                                /*args*/) -> HRESULT {
-                ComPtr<IFrameworkElement> actionFrameworkElement;
-                RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
+            Callback<IRoutedEventHandler>(
+                [actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs*
+                                                                      /*args*/) -> HRESULT
+                {
+                    ComPtr<IFrameworkElement> actionFrameworkElement;
+                    RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
 
-                return ActionHelpers::SetMatchingHeight(actionFrameworkElement.Get(), textBoxContainerAsFrameworkElement.Get());
-            }).Get(),
+                    return ActionHelpers::SetMatchingHeight(actionFrameworkElement.Get(),
+                                                            textBoxContainerAsFrameworkElement.Get());
+                })
+                .Get(),
             &eventToken));
 
         // Wrap the action in a button
@@ -694,13 +699,32 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
             EventRegistrationToken keyDownEventToken;
             THROW_IF_FAILED(textBoxAsUIElement->add_KeyDown(
-                Callback<IKeyEventHandler>([actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT {
-                    return HandleKeydownForInlineAction(args, actionInvoker.Get(), localInlineAction.Get());
-                }).Get(),
+                Callback<IKeyEventHandler>(
+                    [actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT
+                    { return HandleKeydownForInlineAction(args, actionInvoker.Get(), localInlineAction.Get()); })
+                    .Get(),
                 &keyDownEventToken));
         }
 
         THROW_IF_FAILED(xamlGrid.CopyTo(textBoxWithInlineAction));
+    }
+
+    winrt::Windows::UI::Xaml::UIElement HandleInlineAction(winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext renderContext,
+                                                           winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderArgs renderArgs,
+                                                           winrt::Windows::UI::Xaml::Controls::TextBox textBox,
+                                                           winrt::Windows::UI::Xaml::UIElement textBoxParentContainer,
+                                                           winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement inlineAction)
+    {
+        winrt::com_ptr<ABI::Windows::UI::Xaml::IUIElement> abiTextBoxWithInlineAction;
+
+        HandleInlineAction(renderContext.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext>().get(),
+                           renderArgs.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs>().get(),
+                           textBox.as<ABI::Windows::UI::Xaml::Controls::ITextBox>().get(),
+                           textBoxParentContainer.as<ABI::Windows::UI::Xaml::IUIElement>().get(),
+                           inlineAction.as<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>().get(),
+                           abiTextBoxWithInlineAction.put());
+
+        return abiTextBoxWithInlineAction.as<winrt::Windows::UI::Xaml::UIElement>();
     }
 
     void WrapInTouchTarget(_In_ IAdaptiveCardElement* adaptiveCardElement,
@@ -841,11 +865,14 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         THROW_IF_FAILED(localButton.As(&buttonBase));
 
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                                          /*args*/) -> HRESULT {
-                                                  THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
-                                                  return S_OK;
-                                              }).Get(),
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>(
+                                                  [strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+                                                                                /*args*/) -> HRESULT
+                                                  {
+                                                      THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
+                                                      return S_OK;
+                                                  })
+                                                  .Get(),
                                               &clickToken));
     }
 
@@ -978,10 +1005,11 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
         EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(flyoutItem->add_Click(Callback<IRoutedEventHandler>([actionParam, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                                          /*args*/) -> HRESULT {
-                                                   return actionInvoker->SendActionEvent(actionParam.Get());
-                                               }).Get(),
+        RETURN_IF_FAILED(flyoutItem->add_Click(Callback<IRoutedEventHandler>(
+                                                   [actionParam, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+                                                                                /*args*/) -> HRESULT
+                                                   { return actionInvoker->SendActionEvent(actionParam.Get()); })
+                                                   .Get(),
                                                &clickToken));
 
         // Add the new menu item to the vector
@@ -1265,29 +1293,33 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         UINT lastPrimaryActionIndex = 0;
         ComPtr<IAdaptiveActionElement> lastPrimaryAction;
         bool allActionsHaveIcons{true};
-        IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
-            HString iconUrl;
-            RETURN_IF_FAILED(child->get_IconUrl(iconUrl.GetAddressOf()));
+        IterateOverVector<IAdaptiveActionElement>(children,
+                                                  [&](IAdaptiveActionElement* child)
+                                                  {
+                                                      HString iconUrl;
+                                                      RETURN_IF_FAILED(child->get_IconUrl(iconUrl.GetAddressOf()));
 
-            if (WindowsIsStringEmpty(iconUrl.Get()))
-            {
-                allActionsHaveIcons = false;
-            }
+                                                      if (WindowsIsStringEmpty(iconUrl.Get()))
+                                                      {
+                                                          allActionsHaveIcons = false;
+                                                      }
 
-            // We need to figure out which button is going to be the last visible button. That button may need to be
-            // handled separately if we have show card actions in the overflow menu.
-            ComPtr<IAdaptiveActionElement> action(child);
-            ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode;
-            RETURN_IF_FAILED(action->get_Mode(&mode));
-            if (currentButtonIndex < maxActions && mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
-            {
-                lastPrimaryActionIndex = currentButtonIndex;
-                lastPrimaryAction = action;
-                currentButtonIndex++;
-            }
+                                                      // We need to figure out which button is going to be the last
+                                                      // visible button. That button may need to be handled separately
+                                                      // if we have show card actions in the overflow menu.
+                                                      ComPtr<IAdaptiveActionElement> action(child);
+                                                      ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode;
+                                                      RETURN_IF_FAILED(action->get_Mode(&mode));
+                                                      if (currentButtonIndex < maxActions &&
+                                                          mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
+                                                      {
+                                                          lastPrimaryActionIndex = currentButtonIndex;
+                                                          lastPrimaryAction = action;
+                                                          currentButtonIndex++;
+                                                      }
 
-            return S_OK;
-        });
+                                                      return S_OK;
+                                                  });
 
         RETURN_IF_FAILED(renderArgs->put_AllowAboveTitleIconPlacement(allActionsHaveIcons));
 
@@ -1303,79 +1335,82 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         bool pastLastPrimaryAction = false;
         ComPtr<IButton> overflowButton;
         std::vector<std::pair<ComPtr<IAdaptiveActionElement>, ComPtr<IUIElement>>> showCardOverflowButtons;
-        IterateOverVector<IAdaptiveActionElement>(children, [&](IAdaptiveActionElement* child) {
-            ComPtr<IAdaptiveActionElement> action(child);
-            ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode;
-            RETURN_IF_FAILED(action->get_Mode(&mode));
-
-            ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
-            RETURN_IF_FAILED(action->get_ActionType(&actionType));
-
-            ComPtr<IUIElement> actionControl;
-            if (!pastLastPrimaryAction && mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
+        IterateOverVector<IAdaptiveActionElement>(
+            children,
+            [&](IAdaptiveActionElement* child)
             {
-                // The last button may need special handling so don't handle it here
-                if (currentButtonIndex != lastPrimaryActionIndex)
-                {
-                    // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
-                    RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
-                                                                   adaptiveActionSet,
-                                                                   action.Get(),
-                                                                   true,
-                                                                   currentButtonIndex,
-                                                                   actionsPanel.Get(),
-                                                                   showCardsPanel.Get(),
-                                                                   columnDefinitions.Get(),
-                                                                   nullptr,
-                                                                   renderContext,
-                                                                   renderArgs,
-                                                                   &actionControl));
+                ComPtr<IAdaptiveActionElement> action(child);
+                ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode mode;
+                RETURN_IF_FAILED(action->get_Mode(&mode));
 
-                    currentButtonIndex++;
+                ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
+                RETURN_IF_FAILED(action->get_ActionType(&actionType));
+
+                ComPtr<IUIElement> actionControl;
+                if (!pastLastPrimaryAction && mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
+                {
+                    // The last button may need special handling so don't handle it here
+                    if (currentButtonIndex != lastPrimaryActionIndex)
+                    {
+                        // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
+                        RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
+                                                                       adaptiveActionSet,
+                                                                       action.Get(),
+                                                                       true,
+                                                                       currentButtonIndex,
+                                                                       actionsPanel.Get(),
+                                                                       showCardsPanel.Get(),
+                                                                       columnDefinitions.Get(),
+                                                                       nullptr,
+                                                                       renderContext,
+                                                                       renderArgs,
+                                                                       &actionControl));
+
+                        currentButtonIndex++;
+                    }
+                    else
+                    {
+                        pastLastPrimaryAction = true;
+                    }
+                }
+                else if (pastLastPrimaryAction && (mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary) && !overflowMaxActions)
+                {
+                    // If we have more primary actions than the max actions and we're not allowed to overflow them just set a warning and continue
+                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MaxActionsExceeded,
+                                              HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed")
+                                                  .Get());
+                    return S_OK;
                 }
                 else
                 {
-                    pastLastPrimaryAction = true;
+                    // If the action's mode is secondary or we're overflowing max actions, create a flyout item on the overflow menu
+                    if (overflowButton == nullptr)
+                    {
+                        // Create a button for the overflow menu if it doesn't exist yet
+                        RETURN_IF_FAILED(CreateFlyoutButton(renderContext, renderArgs, &overflowButton));
+                    }
+
+                    // Add a flyout item to the overflow menu
+                    RETURN_IF_FAILED(AddOverflowFlyoutItem(action.Get(), overflowButton.Get(), renderContext, &actionControl));
+
+                    // Show card actions in the overflow menu move to the action bar when selected, so we need to keep track
+                    // of these so we can make non-visible buttons for them later. They need to go after all the actions we're creating as primary.
+                    if (actionType == ActionType_ShowCard)
+                    {
+                        showCardOverflowButtons.emplace_back(std::make_pair(action, actionControl));
+                    }
+
+                    // If this was supposed to be a primary action but it got overflowed due to max actions, add a warning
+                    if (mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
+                    {
+                        renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MaxActionsExceeded,
+                                                  HStringReference(L"Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed")
+                                                      .Get());
+                    }
                 }
-            }
-            else if (pastLastPrimaryAction && (mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary) && !overflowMaxActions)
-            {
-                // If we have more primary actions than the max actions and we're not allowed to overflow them just set a warning and continue
-                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MaxActionsExceeded,
-                                          HStringReference(L"Some actions were not rendered due to exceeding the maximum number of actions allowed")
-                                              .Get());
+
                 return S_OK;
-            }
-            else
-            {
-                // If the action's mode is secondary or we're overflowing max actions, create a flyout item on the overflow menu
-                if (overflowButton == nullptr)
-                {
-                    // Create a button for the overflow menu if it doesn't exist yet
-                    RETURN_IF_FAILED(CreateFlyoutButton(renderContext, renderArgs, &overflowButton));
-                }
-
-                // Add a flyout item to the overflow menu
-                RETURN_IF_FAILED(AddOverflowFlyoutItem(action.Get(), overflowButton.Get(), renderContext, &actionControl));
-
-                // Show card actions in the overflow menu move to the action bar when selected, so we need to keep track
-                // of these so we can make non-visible buttons for them later. They need to go after all the actions we're creating as primary.
-                if (actionType == ActionType_ShowCard)
-                {
-                    showCardOverflowButtons.emplace_back(std::make_pair(action, actionControl));
-                }
-
-                // If this was supposed to be a primary action but it got overflowed due to max actions, add a warning
-                if (mode == ABI::AdaptiveCards::ObjectModel::Uwp::ActionMode::Primary)
-                {
-                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::MaxActionsExceeded,
-                                              HStringReference(L"Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed")
-                                                  .Get());
-                }
-            }
-
-            return S_OK;
-        });
+            });
 
         ComPtr<IUIElement> lastActionOverflowItem;
         if (overflowButton != nullptr && showCardOverflowButtons.size() != 0)

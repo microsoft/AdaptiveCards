@@ -984,6 +984,18 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return S_OK;
     }
 
+    winrt::Windows::UI::Xaml::Controls::Border CreateValidationBorder(winrt::Windows::UI::Xaml::UIElement childElement,
+                                                                      winrt::AdaptiveCards::Rendering::Uwp::AdaptiveRenderContext renderContext)
+    {
+        winrt::com_ptr<ABI::Windows::UI::Xaml::Controls::IBorder> abiBorder;
+
+        CreateValidationBorder(childElement.as<ABI::Windows::UI::Xaml::IUIElement>().get(),
+                               renderContext.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext>().get(),
+                               abiBorder.put());
+
+        return abiBorder.as<winrt::Windows::UI::Xaml::Controls::Border>();
+    }
+
     HRESULT HandleLabelAndErrorMessage(_In_ IAdaptiveInputElement* adaptiveInput,
                                        _In_ IAdaptiveRenderContext* renderContext,
                                        _In_ IAdaptiveRenderArgs* renderArgs,
@@ -1257,13 +1269,30 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         return S_OK;
     }
 
-    winrt::Windows::UI::Xaml::UIElement HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement adaptiveInput,
-                                                                       winrt::Windows::UI::Xaml::UIElement inputUIElement,
-                                                                       boolean hasTypeSpecificValidation,
-                                                                       winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext)
+    winrt::Windows::UI::Xaml::UIElement
+        HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement adaptiveInput,
+                                       winrt::Windows::UI::Xaml::UIElement inputUIElement,
+                                       boolean hasTypeSpecificValidation,
+                                       winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext)
     {
         winrt::com_ptr<ABI::Windows::UI::Xaml::IUIElement> abiInputLayout;
-        THROW_IF_FAILED(HandleInputLayoutAndValidation(
+
+        ////auto foo = adaptiveInput.as<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement>().get();
+        ////foo;
+
+        ////auto bar = inputUIElement.as<ABI::Windows::UI::Xaml::IUIElement>();
+        ////auto barget = bar.get();
+        ////barget;
+
+        //THROW_IF_FAILED(HandleInputLayoutAndValidation(
+        //    nullptr,
+        //    inputUIElement.as<ABI::Windows::UI::Xaml::IUIElement>().get(),
+        //    hasTypeSpecificValidation,
+        //    nullptr,
+        //    abiInputLayout.put(),
+        //    nullptr));
+
+         THROW_IF_FAILED(HandleInputLayoutAndValidation(
             adaptiveInput.as<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement>().get(),
             inputUIElement.as<ABI::Windows::UI::Xaml::IUIElement>().get(),
             hasTypeSpecificValidation,

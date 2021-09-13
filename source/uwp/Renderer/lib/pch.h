@@ -40,8 +40,10 @@
 #include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
 #include <winrt/Windows.UI.Xaml.Input.h>
 #include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
 #include <winrt/AdaptiveCards.Rendering.Uwp.h>
+
 
 // Commonly-used AdaptiveCardRenderer headers
 #include "AdaptiveCards.Rendering.Uwp.h"
