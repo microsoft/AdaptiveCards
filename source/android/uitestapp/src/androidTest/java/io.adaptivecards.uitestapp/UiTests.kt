@@ -8,6 +8,8 @@ import org.junit.Rule
 import io.adaptivecards.uitestapp.RenderCardUiTestAppActivity
 import kotlin.Throws
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.ViewAssertion
 import org.hamcrest.Matchers
 import androidx.test.espresso.action.ViewActions
 import io.adaptivecards.uitestapp.TestHelpers
@@ -57,5 +59,18 @@ class UiTests {
         Espresso.onView(Matchers.allOf(ViewMatchers.withText("OK"), ViewMatchers.isDisplayed())).perform(ViewActions.scrollTo(), ViewActions.click())
         TestHelpers.goToInputsScreen()
         Espresso.onData(Matchers.`is`(RetrievedInput("dueDate", "2021-02-04"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun RenderedMarkdownStartsWithRightNumber() {
+        Espresso.onData(Matchers.`is`("TextBlock.Markdown.NumberStart.json")).perform(ViewActions.click())
+        TestHelpers.goToRenderedCardScreen()
+
+        Espresso.onView(ViewMatchers.withText("1. First item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("2. Second item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText("3. Third item in the list;")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        Espresso.onView(ViewMatchers.withText("10. The tenth thing\n11. The list is still going!\n12. Should be 12!")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }
