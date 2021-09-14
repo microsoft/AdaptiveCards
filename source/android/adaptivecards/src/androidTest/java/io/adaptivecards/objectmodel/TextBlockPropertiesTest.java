@@ -380,6 +380,32 @@ public class TextBlockPropertiesTest
         Assert.assertEquals(expectedHtml, html);
     }
 
+    @Test
+    public void TestNumberedListHonoursStart () throws Exception
+    {
+        final String textWithNewLines = "18. Green\r19. Orange\r20. Blue";
+        // This looks counter intuitive but without the replacement of '\n\r' for "<br/>" the
+        // output will only contain a blank space where '\n' is expected
+        final String expectedHtml = "18. Green\n19. Orange\n20. Blue";
+
+        String html = RendererUtil.handleSpecialText(textWithNewLines).toString();
+
+        Assert.assertEquals(expectedHtml, html);
+    }
+
+    @Test
+    public void TestNumberedListIncrementsCorrectly () throws Exception
+    {
+        final String textWithNewLines = "18. Green\r18. Orange\r18. Blue";
+        // This looks counter intuitive but without the replacement of '\n\r' for "<br/>" the
+        // output will only contain a blank space where '\n' is expected
+        final String expectedHtml = "18. Green\n19. Orange\n20. Blue";
+
+        String html = RendererUtil.handleSpecialText(textWithNewLines).toString();
+
+        Assert.assertEquals(expectedHtml, html);
+    }
+
     // This string is the result for an empty textblock or a textblock with all default values
     public static final String s_defaultTextBlock = "{\"text\":\"\",\"type\":\"TextBlock\"}\n";
 
