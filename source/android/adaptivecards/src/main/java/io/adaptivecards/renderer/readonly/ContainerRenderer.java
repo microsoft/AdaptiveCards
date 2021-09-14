@@ -86,7 +86,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = getLocalContainerStyle(container, containerStyle);
         applyPadding(styleForThis, containerStyle, containerView, hostConfig);
-        applyContainerStyle(styleForThis, containerView, hostConfig);
+        applyContainerStyle(styleForThis, containerStyle, containerView, hostConfig);
         applyBleed(container, containerView, context, hostConfig);
         BaseCardElementRenderer.applyRtl(container.GetRtl(), containerView);
 
@@ -189,7 +189,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
     public static void ApplyPadding(ContainerStyle computedContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, HostConfig hostConfig)
     {
         applyPadding(computedContainerStyle, parentContainerStyle, collectionElementView, hostConfig);
-        applyContainerStyle(computedContainerStyle, collectionElementView, hostConfig);
+        applyContainerStyle(computedContainerStyle, parentContainerStyle, collectionElementView, hostConfig);
     }
 
     public static void applyPadding(ContainerStyle computedContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, HostConfig hostConfig)
@@ -206,16 +206,20 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
     }
 
-    public static void applyContainerStyle(ContainerStyle computedContainerStyle, ViewGroup collectionElementView, HostConfig hostConfig)
+    public static void applyContainerStyle(ContainerStyle computedContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, HostConfig hostConfig)
     {
-        int color = Color.parseColor(hostConfig.GetBackgroundColor(computedContainerStyle));
-        if (collectionElementView.getBackground() instanceof GradientDrawable)
+        if (computedContainerStyle != parentContainerStyle)
         {
-            ((GradientDrawable) collectionElementView.getBackground()).setColor(color);
-        }
-        else
-        {
-            collectionElementView.setBackgroundColor(color);
+            String backgroundColor = hostConfig.GetBackgroundColor(computedContainerStyle);
+            int color = Color.parseColor(backgroundColor);
+            if (collectionElementView.getBackground() instanceof GradientDrawable)
+            {
+                ((GradientDrawable) collectionElementView.getBackground()).setColor(color);
+            }
+            else
+            {
+                collectionElementView.setBackgroundColor(color);
+            }
         }
     }
 

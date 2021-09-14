@@ -132,7 +132,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         columnSetLayout.setTag(tagContent);
 
         ContainerRenderer.applyPadding(styleForThis, parentContainerStyle, columnSetLayout, hostConfig);
-        ContainerRenderer.applyContainerStyle(styleForThis, columnSetLayout, hostConfig);
+        ContainerRenderer.applyContainerStyle(styleForThis, parentContainerStyle, columnSetLayout, hostConfig);
         ContainerRenderer.applyBleed(columnSet, columnSetLayout, context, hostConfig);
 
         return columnSetLayout;
