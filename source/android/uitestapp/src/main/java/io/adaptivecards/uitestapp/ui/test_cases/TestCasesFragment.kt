@@ -40,8 +40,6 @@ class TestCasesFragment : Fragment() {
 
     private fun populateTestCaseList () {
         try {
-            val something : MutableList<String> = mutableListOf("a", "b", "c")
-
             val activity : FragmentActivity = requireActivity();
             val assets : AssetManager = activity.assets;
             val assetsList = assets.list("");
