@@ -11,24 +11,14 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveContainer::AdaptiveContainer(const std::shared_ptr<::AdaptiveCards::Container>& sharedContainer)
     {
-        if (sharedContainer->GetVerticalContentAlignment().has_value())
-        {
-            VerticalContentAlignment = winrt::box_value(static_cast<Uwp::VerticalContentAlignment>(
-                                                            sharedContainer->GetVerticalContentAlignment().value()))
-                                           .as<Windows::Foundation::IReference<Uwp::VerticalContentAlignment>>();
-        }
-
+        VerticalContentAlignment = opt_cast<Uwp::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
         Items = GenerateContainedElementsProjection(sharedContainer->GetItems());
         SelectAction = GenerateActionProjection(sharedContainer->GetSelectAction());
         Style = static_cast<Uwp::ContainerStyle>(sharedContainer->GetStyle());
         MinHeight = sharedContainer->GetMinHeight();
         Bleed = sharedContainer->GetBleed();
         BleedDirection = static_cast<Uwp::BleedDirection>(sharedContainer->GetBleedDirection());
-
-        if (sharedContainer->GetRtl().has_value())
-        {
-            Rtl = winrt::box_value(sharedContainer->GetRtl().value()).as<Windows::Foundation::IReference<bool>>();
-        }
+        Rtl = sharedContainer->GetRtl();
 
         auto backgroundImage = sharedContainer->GetBackgroundImage();
         if (backgroundImage && !backgroundImage->GetUrl().empty())

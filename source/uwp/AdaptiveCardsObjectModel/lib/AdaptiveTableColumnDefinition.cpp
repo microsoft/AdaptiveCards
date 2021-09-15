@@ -8,32 +8,12 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
     AdaptiveTableColumnDefinition::AdaptiveTableColumnDefinition(std::shared_ptr<::AdaptiveCards::TableColumnDefinition> const& sharedTableColumnDefinition)
     {
-        if (sharedTableColumnDefinition->GetVerticalCellContentAlignment().has_value())
-        {
-            VerticalCellContentAlignment =
-                winrt::box_value(static_cast<Uwp::VerticalContentAlignment>(
-                                     sharedTableColumnDefinition->GetVerticalCellContentAlignment().value()))
-                    .as<Windows::Foundation::IReference<Uwp::VerticalContentAlignment>>();
-        }
-
-        if (sharedTableColumnDefinition->GetHorizontalCellContentAlignment().has_value())
-        {
-            HorizontalCellContentAlignment =
-                winrt::box_value(
-                    static_cast<Uwp::HAlignment>(sharedTableColumnDefinition->GetHorizontalCellContentAlignment().value()))
-                    .as<Windows::Foundation::IReference<Uwp::HAlignment>>();
-        }
-
-        if (sharedTableColumnDefinition->GetWidth().has_value())
-        {
-            Width = winrt::box_value(sharedTableColumnDefinition->GetWidth().value()).as<Windows::Foundation::IReference<uint32_t>>();
-        }
-
-        if (sharedTableColumnDefinition->GetPixelWidth().has_value())
-        {
-            PixelWidth =
-                winrt::box_value(sharedTableColumnDefinition->GetPixelWidth().value()).as<Windows::Foundation::IReference<uint32_t>>();
-        }
+        VerticalCellContentAlignment =
+            opt_cast<Uwp::VerticalContentAlignment>(sharedTableColumnDefinition->GetVerticalCellContentAlignment());
+        HorizontalCellContentAlignment =
+            opt_cast<Uwp::HAlignment>(sharedTableColumnDefinition->GetHorizontalCellContentAlignment());
+        Width = sharedTableColumnDefinition->GetWidth();
+        PixelWidth = sharedTableColumnDefinition->GetPixelWidth();
     }
 
     std::shared_ptr<::AdaptiveCards::TableColumnDefinition> AdaptiveTableColumnDefinition::GetSharedModel()

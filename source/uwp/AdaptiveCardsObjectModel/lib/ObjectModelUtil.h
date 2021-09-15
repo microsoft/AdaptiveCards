@@ -18,7 +18,6 @@ template<typename TStored> struct property
     auto operator->() { return std::addressof(m_stored); }
 };
 
-
 template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> const& src)
 {
     if (src.has_value())
@@ -41,13 +40,13 @@ template<typename TStored> struct property_opt
         {
             m_stored = t;
         }
-        else if constexpr (std::is_same_v<T, std::optional<T>>)
+        else if constexpr (std::is_same_v<T, std::optional<TStored>>)
         {
-            m_stored = t ? winrt::box_value(*t) : nullptr;
+            m_stored = t.has_value() ? winrt::box_value(t.value()).as<winrt::Windows::Foundation::IReference<TStored>>() : nullptr;
         }
         else if constexpr (std::is_null_pointer_v<T>)
         {
-            m_stored = std::nullopt;
+            m_stored = nullptr;
         }
         else
         {
@@ -80,7 +79,6 @@ template<typename TStored> struct property_opt
     operator bool() const { return static_cast<bool>(m_stored); }
     operator std::optional<TStored>() { return get(); }
 };
-
 
 std::string WStringToString(std::wstring_view in);
 std::wstring StringToWString(std::string_view in);

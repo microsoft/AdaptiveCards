@@ -12,21 +12,8 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
     {
         ShowGridLines = sharedTable->GetShowGridLines();
         FirstRowAsHeaders = sharedTable->GetFirstRowAsHeaders();
-
-        if (sharedTable->GetVerticalCellContentAlignment().has_value())
-        {
-            VerticalCellContentAlignment = winrt::box_value(static_cast<Uwp::VerticalContentAlignment>(
-                                                                sharedTable->GetVerticalCellContentAlignment().value()))
-                                               .as<Windows::Foundation::IReference<Uwp::VerticalContentAlignment>>();
-        }
-
-        if (sharedTable->GetHorizontalCellContentAlignment().has_value())
-        {
-            HorizontalCellContentAlignment =
-                winrt::box_value(static_cast<Uwp::HAlignment>(sharedTable->GetHorizontalCellContentAlignment().value()))
-                    .as<Windows::Foundation::IReference<Uwp::HAlignment>>();
-        }
-
+        VerticalCellContentAlignment = opt_cast<Uwp::VerticalContentAlignment>(sharedTable->GetVerticalCellContentAlignment());
+        HorizontalCellContentAlignment = opt_cast<Uwp::HAlignment>(sharedTable->GetHorizontalCellContentAlignment());
         GridStyle = static_cast<Uwp::ContainerStyle>(sharedTable->GetGridStyle());
         Rows = GenerateVectorProjection<implementation::AdaptiveTableRow>(sharedTable->GetRows());
         Columns = GenerateVectorProjection<implementation::AdaptiveTableColumnDefinition>(sharedTable->GetColumns());
