@@ -1,27 +1,18 @@
 {
-    "type": "AdaptiveCard",
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "Hey",
-            "wrap": true,
-            "horizontalAlignment": "Right",
-            "weight": "Bolder",
-            "size": "ExtraLarge",
-            "color": "Good"
-        },
-        {
-            "type": "TextBlock",
-            "text": "Hlo",
-            "wrap": true,
-            "horizontalAlignment": "Right",
-            "weight": "Bolder",
-            "size": "ExtraLarge",
-            "color": "Good"
-        }
-    ],
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.2",
-    "minHeight": "400px",
-    "verticalContentAlignment": "center"
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card's action will open a URL"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "Action.OpenUrl",
+			"url": "https://adaptivecards.io"
+		}
+	]
 }
