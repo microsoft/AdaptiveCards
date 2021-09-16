@@ -76,14 +76,11 @@
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     [container configureForSelectAction:acoSelectAction rootView:rootView];
-    configVisibility(container, elem);
 
-    [container hideIfSubviewsAreAllHidden];
-    
-    [container configureHeight:GetACRVerticalContentAlignment(containerElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top))
-                     minHeight:containerElem->GetMinHeight()
-                    heightType:GetACRHeight(containerElem->GetHeight())
-                          type:ACRContainer];
+    [container configureLayoutAndVisibility:GetACRVerticalContentAlignment(containerElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top))
+                                  minHeight:containerElem->GetMinHeight()
+                                 heightType:GetACRHeight(containerElem->GetHeight())
+                                       type:ACRContainer];
 
     [rootView.context popBaseCardElementContext:acoElem];
 

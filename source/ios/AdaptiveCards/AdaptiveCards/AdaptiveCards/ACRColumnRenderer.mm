@@ -72,10 +72,10 @@
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
 
-    [column configureHeight:GetACRVerticalContentAlignment(columnElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top))
-                  minHeight:columnElem->GetMinHeight()
-                 heightType:GetACRHeight(columnElem->GetHeight())
-                       type:ACRColumn];
+    [column configureLayoutAndVisibility:GetACRVerticalContentAlignment(columnElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top))
+                               minHeight:columnElem->GetMinHeight()
+                              heightType:GetACRHeight(columnElem->GetHeight())
+                                    type:ACRColumn];
 
     [column setClipsToBounds:NO];
 
@@ -85,12 +85,6 @@
     [column configureForSelectAction:acoSelectAction rootView:rootView];
 
     column.shouldGroupAccessibilityChildren = YES;
-
-    // config visibility for column view followed by configuring visibility of the items of column
-    configVisibility(column, elem);
-    configVisibilityWithVisibilityManager(rootView, column, column);
-
-    [column hideIfSubviewsAreAllHidden];
 
     [viewGroup addArrangedSubview:column];
 

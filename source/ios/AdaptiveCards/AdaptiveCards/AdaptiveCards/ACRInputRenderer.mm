@@ -229,8 +229,6 @@
         [inputs addObject:inputview];
     }
 
-    configVisibility(inputview, elem);
-
     return inputview;
 }
 

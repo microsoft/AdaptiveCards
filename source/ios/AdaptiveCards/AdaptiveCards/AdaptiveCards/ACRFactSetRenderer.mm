@@ -6,8 +6,8 @@
 //
 #import "ACRFactSetRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOFillerSpaceManager.h"
 #import "ACOHostConfigPrivate.h"
-#import "ACOPaddingHandler.h"
 #import "ACRColumnSetView.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRRegistration.h"
@@ -194,11 +194,11 @@
 
     if (elem->GetHeight() == HeightType::Stretch) {
         if (titleStack.arrangedSubviews.count) {
-            [ACOPaddingHandler configureHugging:titleStack.arrangedSubviews.lastObject];
+            [ACOFillerSpaceManager configureHugging:titleStack.arrangedSubviews.lastObject];
         }
 
         if (valueStack.arrangedSubviews.count) {
-            [ACOPaddingHandler configureHugging:valueStack.arrangedSubviews.lastObject];
+            [ACOFillerSpaceManager configureHugging:valueStack.arrangedSubviews.lastObject];
         }
     }
 
@@ -209,8 +209,6 @@
     }
 
     [viewGroup addArrangedSubview:factSetWrapperView];
-
-    configVisibility(factSetWrapperView, elem);
 
     return factSetWrapperView;
 }

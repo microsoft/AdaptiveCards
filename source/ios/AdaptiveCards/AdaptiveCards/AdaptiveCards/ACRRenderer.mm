@@ -123,10 +123,10 @@ using namespace AdaptiveCards;
 
     [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
-    [verticalView configureHeight:GetACRVerticalContentAlignment(adaptiveCard->GetVerticalContentAlignment())
-                        minHeight:adaptiveCard->GetMinHeight()
-                       heightType:GetACRHeight(adaptiveCard->GetHeight())
-                             type:ACRColumn];
+    [verticalView configureLayoutAndVisibility:GetACRVerticalContentAlignment(adaptiveCard->GetVerticalContentAlignment())
+                                     minHeight:adaptiveCard->GetMinHeight()
+                                    heightType:GetACRHeight(adaptiveCard->GetHeight())
+                                          type:ACRColumn];
 
     [[rootView card] setInputs:inputs];
 
@@ -177,7 +177,6 @@ using namespace AdaptiveCards;
             separator = [ACRSeparator renderSeparation:elem
                                           forSuperview:view
                                         withHostConfig:[config getHostConfig]];
-            configSeparatorVisibility(separator, elem);
         }
 
         ACRBaseCardElementRenderer *renderer =
@@ -197,10 +196,7 @@ using namespace AdaptiveCards;
 
             renderedView = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
 
-            if ([view isKindOfClass:[ACRColumnView class]]) {
-                ACRColumnView *columnView = (ACRColumnView *)view;
-                [columnView configureHeightFor:renderedView acoElement:acoElem];
-            }
+            [view updateLayoutAndVisibilityOfRenderedView:renderedView acoElement:acoElem separator:separator rootView:rootView];
 
             if (separator && !renderedView) {
                 [(ACRContentStackView *)view removeViewFromContentStackView:separator];
@@ -209,8 +205,6 @@ using namespace AdaptiveCards;
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
     }
-
-    [view toggleVisibilityOfFirstView];
 
     return view;
 }

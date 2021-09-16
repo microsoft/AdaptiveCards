@@ -7,17 +7,18 @@
 
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
-#import "ACRRegistration.h"
-#import "ACRCustomRenderers.h"
-#import "ACOPaddingHandler.h"
+#import "ACOFillerSpaceManager.h"
 #import "ACORenderContext.h"
 #import "ACOVisibilityManager.h"
+#import "ACRCustomRenderers.h"
+#import "ACRRegistration.h"
 #import "ACRRenderer.h"
 #import "ACRSeparator.h"
-#import "Mocks/ADCMockResolver.h"
 #import "ACRView.h"
 #import "Column.h"
 #import "Enums.h"
+#import "Mocks/ACRMockViews.h"
+#import "Mocks/ADCMockResolver.h"
 #import "TextBlock.h"
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -36,8 +37,8 @@
 {
     _classBundle = [NSBundle bundleForClass:[self class]];
     _hostConfig = [NSString stringWithContentsOfFile:[_classBundle pathForResource:@"sample" ofType:@"json"]
-                                           encoding:NSUTF8StringEncoding
-                                              error:nil];
+                                            encoding:NSUTF8StringEncoding
+                                               error:nil];
     // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
@@ -46,7 +47,7 @@
     if (self.testRun.failureCount && _tearDownMessage) {
         NSLog(@"%@", _tearDownMessage);
         _tearDownMessage = nil;
-    }    
+    }
 }
 
 - (NSArray<ACOAdaptiveCard *> *)prepCards:(NSArray<NSString *> *)fileNames
@@ -64,12 +65,13 @@
 - (void)testVisibilityManagerSimple
 {
     UIView *viewToBeHidden0 = [[UIView alloc] init];
-    NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
-    [arrangedSubviews addObject:viewToBeHidden0];
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
-    [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
+    ACRMockContentStackView *hostView = [[ACRMockContentStackView alloc] init];
+    [hostView addArrangedSubview:viewToBeHidden0];
+    ACOVisibilityManager *manager = [hostView getVisibilityManager];
+    [manager hideView:viewToBeHidden0 hostView:hostView];
+    NSArray<UIView *> *arrangedSubviews = [hostView getArrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
-    [manager unhideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
+    [manager unhideView:viewToBeHidden0 hostView:hostView];
     XCTAssert(arrangedSubviews[0].hidden == NO);
 }
 
@@ -78,17 +80,23 @@
     UIView *viewToBeHidden0 = [[UIView alloc] init];
     UIView *viewToBeHidden1 = [[UIView alloc] init];
     ACRSeparator *separator0 = [[ACRSeparator alloc] init];
-    NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
-    [arrangedSubviews addObject:viewToBeHidden0];
-    [arrangedSubviews addObject:separator0];
-    [arrangedSubviews addObject:viewToBeHidden1];
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
-    [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
+    ACRMockContentStackView *hostView = [[ACRMockContentStackView alloc] init];
+    ACOFillerSpaceManager *fillerSpaceManager = [hostView getFillerSpaceManager];
+
+    [hostView addArrangedSubview:viewToBeHidden0];
+    [hostView addArrangedSubview:separator0];
+    [hostView addArrangedSubview:viewToBeHidden1];
+    [fillerSpaceManager associateSeparatorWithOwnerVew:separator0 ownerView:viewToBeHidden1];
+    [hostView applyVisibilityToSubviews];
+
+    NSArray<UIView *> *arrangedSubviews = [hostView getArrangedSubviews];
+    ACOVisibilityManager *manager = [hostView getVisibilityManager];
+    [manager hideView:viewToBeHidden0 hostView:hostView];
     XCTAssert(arrangedSubviews[0].hidden == YES);
     XCTAssert(arrangedSubviews[1].hidden == YES);
     XCTAssert(arrangedSubviews[2].hidden == NO);
 
-    [manager unhideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
+    [manager unhideView:viewToBeHidden0 hostView:hostView];
     XCTAssert(arrangedSubviews[0].hidden == NO);
     XCTAssert(arrangedSubviews[1].hidden == NO);
     XCTAssert(arrangedSubviews[2].hidden == NO);
@@ -98,16 +106,18 @@
 {
     UIView *viewToBeHidden0 = [[UIView alloc] init];
     UIView *viewToBeHidden1 = [[UIView alloc] init];
-    NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
-    [arrangedSubviews addObject:viewToBeHidden0];
-    [arrangedSubviews addObject:viewToBeHidden1];
 
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
-    [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
+    ACRMockContentStackView *hostView = [[ACRMockContentStackView alloc] init];
+    ACOVisibilityManager *manager = [hostView getVisibilityManager];
+    [hostView addArrangedSubview:viewToBeHidden0];
+    [hostView addArrangedSubview:viewToBeHidden1];
+    [manager hideView:viewToBeHidden0 hostView:hostView];
+
+    NSArray<UIView *> *arrangedSubviews = [hostView getArrangedSubviews];
     XCTAssert(arrangedSubviews[0].hidden == YES);
     XCTAssert(arrangedSubviews[1].hidden == NO);
 
-    [manager unhideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
+    [manager unhideView:viewToBeHidden0 hostView:hostView];
     XCTAssert(arrangedSubviews[0].hidden == NO);
     XCTAssert(arrangedSubviews[1].hidden == NO);
 }
@@ -117,17 +127,26 @@
     UIView *viewToBeHidden0 = [[UIView alloc] init];
     UIView *viewToBeHidden1 = [[UIView alloc] init];
     ACRSeparator *separator0 = [[ACRSeparator alloc] init];
-    NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
-    [arrangedSubviews addObject:viewToBeHidden0];
-    [arrangedSubviews addObject:separator0];
-    [arrangedSubviews addObject:viewToBeHidden1];
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
-    [manager hideView:viewToBeHidden1 arrangedSubviews:arrangedSubviews];
+
+    ACRMockContentStackView *hostView = [[ACRMockContentStackView alloc] init];
+    ACOFillerSpaceManager *fillerSpaceManager = [hostView getFillerSpaceManager];
+    ACOVisibilityManager *manager = [hostView getVisibilityManager];
+
+    [hostView addArrangedSubview:viewToBeHidden0];
+    [hostView addArrangedSubview:separator0];
+    [hostView addArrangedSubview:viewToBeHidden1];
+
+    [fillerSpaceManager associateSeparatorWithOwnerVew:separator0 ownerView:viewToBeHidden1];
+    [hostView applyVisibilityToSubviews];
+
+    NSArray<UIView *> *arrangedSubviews = [hostView getArrangedSubviews];
+
+    [manager hideView:viewToBeHidden1 hostView:hostView];
     XCTAssert(arrangedSubviews[0].hidden == NO);
     XCTAssert(arrangedSubviews[1].hidden == YES);
     XCTAssert(arrangedSubviews[2].hidden == YES);
 
-    [manager unhideView:viewToBeHidden1 arrangedSubviews:arrangedSubviews];
+    [manager unhideView:viewToBeHidden1 hostView:hostView];
     XCTAssert(arrangedSubviews[0].hidden == NO);
     XCTAssert(arrangedSubviews[1].hidden == NO);
     XCTAssert(arrangedSubviews[2].hidden == NO);
@@ -136,94 +155,69 @@
 - (void)testVisibilityManagerHidePadding
 {
     UIView *viewToBeHidden = [[UIView alloc] init];
-    UIView *padding = [[UIView alloc] init];
-    NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
-    [arrangedSubviews addObject:viewToBeHidden];
-    [arrangedSubviews addObject:padding];
+    ACRMockContentStackView *hostView = [[ACRMockContentStackView alloc] init];
+    [hostView addArrangedSubview:viewToBeHidden];
+
+    [hostView configureLayoutAndVisibility:ACRVerticalContentAlignmentTop minHeight:0 heightType:ACRHeightStretch type:ACRContainer];
+    NSArray<UIView *> *arrangedSubviews = [hostView getArrangedSubviews];
+
     // if column width is 'auto' and there isn't a view, padding disapears
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
-    manager.columnWidth = @"auto";
-    [manager addPadding:padding];
-    [manager hideView:viewToBeHidden arrangedSubviews:arrangedSubviews];
+    ACOVisibilityManager *manager = [hostView getVisibilityManager];
+    [manager hideView:viewToBeHidden hostView:hostView];
+    [hostView updatePaddingVisibility];
+
     XCTAssert(arrangedSubviews[0].hidden == YES);
     XCTAssert(arrangedSubviews[1].hidden == YES);
-    [manager unhideView:viewToBeHidden arrangedSubviews:arrangedSubviews];
+
+    [manager unhideView:viewToBeHidden hostView:hostView];
+    [hostView updatePaddingVisibility];
     XCTAssert(arrangedSubviews[0].hidden == NO);
     XCTAssert(arrangedSubviews[1].hidden == NO);
 }
 
 - (void)testVisibilityManagerPaddingWithStretch
 {
-    UIView *viewToBeHidden = [[UIView alloc] init];
-    UIView *padding = [[UIView alloc] init];
-    NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
-    [arrangedSubviews addObject:viewToBeHidden];
-    [arrangedSubviews addObject:padding];
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
-    manager.columnWidth = @"stretch";
-    [manager addPadding:padding];
-    [manager hideView:viewToBeHidden arrangedSubviews:arrangedSubviews];
-    XCTAssert(arrangedSubviews[0].hidden == YES);
-    XCTAssert(arrangedSubviews[1].hidden == NO);
-    [manager unhideView:viewToBeHidden arrangedSubviews:arrangedSubviews];
-    XCTAssert(arrangedSubviews[0].hidden == NO);
-    XCTAssert(arrangedSubviews[1].hidden == NO);
-}
+    NSArray<NSString *> *testFiles = @[
+        @"Action.ToggleVisibilityExhaustive"
+    ];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:testFiles];
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    ACRCustomColumnRenderer *testColumnRenderer = [ACRCustomColumnRenderer getInstance];
 
-- (void)testVisibilityManagerDoesNotHidePadding
-{
-    UIView *viewToBeHidden0 = [[UIView alloc] init];
-    ACRSeparator *separator = [[ACRSeparator alloc] init];
-    UIView *viewToBeHidden1 = [[UIView alloc] init];
-    UIView *padding = [[UIView alloc] init];
-    NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
-    [arrangedSubviews addObject:viewToBeHidden0];
-    [arrangedSubviews addObject:separator];
-    [arrangedSubviews addObject:viewToBeHidden1];
-    [arrangedSubviews addObject:padding];
-    // even if column width is 'auto', if there is a view padding doesn't disapear
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
-    manager.columnWidth = @"auto";
-    [manager addPadding:padding];
-    [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
-    XCTAssert(arrangedSubviews[0].hidden == YES);
-    XCTAssert(arrangedSubviews[1].hidden == YES);
-    XCTAssert(arrangedSubviews[2].hidden == NO);
-    XCTAssert(arrangedSubviews[3].hidden == NO);
-    [manager unhideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
-    XCTAssert(arrangedSubviews[0].hidden == NO);
-    XCTAssert(arrangedSubviews[1].hidden == NO);
-    XCTAssert(arrangedSubviews[2].hidden == NO);
-    XCTAssert(arrangedSubviews[3].hidden == NO);
-}
+    ACOResourceResolvers *resolvers = [[ACOResourceResolvers alloc] init];
+    ADCMockResolver *mockReslover = [[ADCMockResolver alloc] init];
+    [resolvers setResourceResolver:mockReslover scheme:@"http"];
+    [resolvers setResourceResolver:mockReslover scheme:@"https"];
+    ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:_hostConfig
+                                                            resourceResolvers:resolvers];
+    void (^testBlock)(UIView *, NSDictionary *) =
+        ^(UIView *view, NSDictionary *dictionary) {
+            id val = dictionary[@"expected"][@"numberOfViews"];
+            if ([val isKindOfClass:[NSString class]]) {
+                int numberOfPaddings = [((NSString *)val) intValue];
+                NSUInteger numberOfViews = 0;
+                for (UIView *subView in [((ACRColumnView *)view) getArrangedSubviews]) {
+                    if (!subView.isHidden) {
+                        numberOfViews += 1;
+                    }
+                }
+                XCTAssertEqual(numberOfPaddings, numberOfViews);
+            }
+        };
 
-- (void)testVisibilityManagerHidePaddingComplex0
-{
-    UIView *viewToBeHidden0 = [[UIView alloc] init];
-    ACRSeparator *separator = [[ACRSeparator alloc] init];
-    UIView *viewToBeHidden1 = [[UIView alloc] init];
-    UIView *padding = [[UIView alloc] init];
-    NSMutableArray<UIView *> *arrangedSubviews = [[NSMutableArray alloc] init];
-    [arrangedSubviews addObject:viewToBeHidden0];
-    [arrangedSubviews addObject:separator];
-    [arrangedSubviews addObject:viewToBeHidden1];
-    [arrangedSubviews addObject:padding];
-    // even if column width is 'auto', if there is a view padding doesn't disapear
-    ACOVisibilityManager *manager = [[ACOVisibilityManager alloc] init];
-    manager.columnWidth = @"auto";
-    [manager addPadding:padding];
-    [manager hideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
-    [manager hideView:viewToBeHidden1 arrangedSubviews:arrangedSubviews];
-    XCTAssert(arrangedSubviews[0].hidden == YES);
-    XCTAssert(arrangedSubviews[1].hidden == YES);
-    XCTAssert(arrangedSubviews[2].hidden == YES);
-    XCTAssert(arrangedSubviews[3].hidden == YES);
-    [manager unhideView:viewToBeHidden0 arrangedSubviews:arrangedSubviews];
-    [manager unhideView:viewToBeHidden1 arrangedSubviews:arrangedSubviews];
-    XCTAssert(arrangedSubviews[0].hidden == NO);
-    XCTAssert(arrangedSubviews[1].hidden == NO);
-    XCTAssert(arrangedSubviews[2].hidden == NO);
-    XCTAssert(arrangedSubviews[3].hidden == NO);
+    testColumnRenderer.fetchActualRenderedView = testBlock;
+
+    [registration setBaseCardElementRenderer:testColumnRenderer cardElementType:ACRColumn useResourceResolver:YES];
+
+    self.continueAfterFailure = NO;
+
+    for (int i = 0; i < cards.count; i++) {
+        ACOAdaptiveCard *card = cards[i];
+        _tearDownMessage = [NSString stringWithFormat:@"The number of padding is not correct when tested with %@", testFiles[i]];
+        ACRRenderResult *renderResult = [ACRRenderer render:card config:hostconfigParseResult.config widthConstraint:320.0];
+        _tearDownMessage = [NSString stringWithFormat:@"rendering failed for %@ card", testFiles[i]];
+        XCTAssertEqual(renderResult.succeeded, YES);
+    }
 }
 
 - (void)testAddColumnToContextNullability
@@ -268,26 +262,27 @@
 
 - (void)testPaddingInitialization
 {
-    ACOPaddingHandler *paddingHandler = [[ACOPaddingHandler alloc] init];
+    ACOFillerSpaceManager *paddingHandler = [[ACOFillerSpaceManager alloc] init];
     XCTAssertNotNil(paddingHandler);
 }
 
-#if 0
 - (void)testPaddingConfigurePadding
 {
-    ACOPaddingHandler *paddingHandler = [[ACOPaddingHandler alloc] init];
+    ACOFillerSpaceManager *paddingHandler = [[ACOFillerSpaceManager alloc] init];
     auto elem = std::make_shared<TextBlock>();
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem];
     UIView *view = [[UIView alloc] init];
-    UIView *padding0 = [paddingHandler configureHeight:view correspondingElement:acoElem];
-    XCTAssertNil(padding0);
-    
+    [paddingHandler configureHeight:view correspondingElement:acoElem];
+    XCTAssertEqual(NO, paddingHandler.hasPadding);
+    XCTAssertNotEqual(kFillerViewLayoutConstraintPriority, [view contentHuggingPriorityForAxis:UILayoutConstraintAxisVertical]);
+
     elem->SetHeight(HeightType::Stretch);
-    UIView *padding1 = [paddingHandler configureHeight:view correspondingElement:acoElem];
-    
-    XCTAssertNotNil(padding1);
+    [paddingHandler configureHeight:view correspondingElement:acoElem];
+    XCTAssertEqual(YES, paddingHandler.hasPadding);
+    XCTAssertEqual(kFillerViewLayoutConstraintPriority, [view contentHuggingPriorityForAxis:UILayoutConstraintAxisVertical]);
+
+    XCTAssertEqual(NO, [paddingHandler isPadding:view]);
 }
-#endif
 
 NSArray<ACOBaseCardElement *> *buildTextBlocksWithHeightStretch(uint n)
 {
@@ -302,75 +297,77 @@ NSArray<ACOBaseCardElement *> *buildTextBlocksWithHeightStretch(uint n)
     return textBlocks;
 }
 
-#if 0
 - (void)testPaddingActivateConstraints
 {
     NSArray<ACOBaseCardElement *> *textBlocks = buildTextBlocksWithHeightStretch(3);
-    ACOPaddingHandler *paddingHandler = [[ACOPaddingHandler alloc] init];
+    ACOFillerSpaceManager *paddingHandler = [[ACOFillerSpaceManager alloc] init];
     UIView *superView = [[UIView alloc] init];
     for (ACOBaseCardElement *acoElem in textBlocks) {
         UIView *view = [[UIView alloc] init];
         [superView addSubview:view];
-        UIView *padding = [paddingHandler configureHeight:view correspondingElement:acoElem];
-        if (padding) {
-            [superView addSubview:padding];
-        }
-        XCTAssertTrue([paddingHandler isPadding:padding]);
+        [paddingHandler configureHeight:view correspondingElement:acoElem];
         XCTAssertFalse([paddingHandler isPadding:view]);
+        XCTAssertEqual(kFillerViewLayoutConstraintPriority, [view contentHuggingPriorityForAxis:UILayoutConstraintAxisVertical]);
     }
-    
+
     NSArray<NSLayoutConstraint *> *constraints = [paddingHandler activateConstraintsForPadding];
     XCTAssertNotNil(constraints);
-    XCTAssertTrue(constraints.count == 2);
+    XCTAssertEqual(constraints.count, 2);
 }
-#endif
 
 - (void)testPaddingOnSampleCards
 {
-    NSArray<NSString *> *testFiles = @[@"Container.VerticalContentAlignment",
-                                      @"Container.VerticalContentAlignment2",
-                                      @"Column.VerticalAlignment",
-                                      @"ColumnSet.FactSet.VerticalStretch",
-                                      @"ColumnSet.Image.VerticalStretch",
-                                      @"ColumnSet.Input.ChoiceSet.VerticalStretch"];
+    NSArray<NSString *> *testFiles = @[
+        @"Container.VerticalContentAlignment",
+        @"Container.VerticalContentAlignment2",
+        @"Column.VerticalAlignment",
+        @"ColumnSet.FactSet.VerticalStretch",
+        @"ColumnSet.Image.VerticalStretch",
+        @"ColumnSet.Input.ChoiceSet.VerticalStretch"
+    ];
     NSArray<ACOAdaptiveCard *> *cards = [self prepCards:testFiles];
     ACRRegistration *registration = [ACRRegistration getInstance];
     ACRCustomContainerRenderer *testContainerRenderer = [ACRCustomContainerRenderer getInstance];
     ACRCustomColumnRenderer *testColumnRenderer = [ACRCustomColumnRenderer getInstance];
-    
+
     ACOResourceResolvers *resolvers = [[ACOResourceResolvers alloc] init];
     ADCMockResolver *mockReslover = [[ADCMockResolver alloc] init];
     [resolvers setResourceResolver:mockReslover scheme:@"http"];
     [resolvers setResourceResolver:mockReslover scheme:@"https"];
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:_hostConfig
                                                             resourceResolvers:resolvers];
-    void (^testBlock) (UIView *, NSDictionary *) =
-    ^(UIView *view, NSDictionary *dictionary) {
-        id val = dictionary[@"expected"][@"numberOfViews"];
-        if ([val isKindOfClass:[NSString class]]) {
-            int numberOfPaddings = [((NSString *)val) intValue];
-            NSUInteger numberOfViews = [((ACRColumnView *)view) getArrangedSubviews].count;
-            XCTAssertEqual(numberOfPaddings, numberOfViews);
-        }
-    };
-    
+    void (^testBlock)(UIView *, NSDictionary *) =
+        ^(UIView *view, NSDictionary *dictionary) {
+            id val = dictionary[@"expected"][@"numberOfViews"];
+            if ([val isKindOfClass:[NSString class]]) {
+                int numberOfPaddings = [((NSString *)val) intValue];
+                NSUInteger numberOfViews = 0;
+                for (UIView *subView in [((ACRColumnView *)view) getArrangedSubviews]) {
+                    if (!subView.isHidden) {
+                        numberOfViews += 1;
+                    }
+                }
+                XCTAssertEqual(numberOfPaddings, numberOfViews);
+            }
+        };
+
     testContainerRenderer.fetchActualRenderedView = testBlock;
-    
+
     testColumnRenderer.fetchActualRenderedView = testBlock;
-    
+
     [registration setBaseCardElementRenderer:testContainerRenderer cardElementType:ACRContainer useResourceResolver:YES];
-    
+
     [registration setBaseCardElementRenderer:testColumnRenderer cardElementType:ACRColumn useResourceResolver:YES];
-    
+
     self.continueAfterFailure = NO;
-    
+
     for (int i = 0; i < cards.count; i++) {
         ACOAdaptiveCard *card = cards[i];
         _tearDownMessage = [NSString stringWithFormat:@"The number of padding is not correct when tested with %@", testFiles[i]];
         ACRRenderResult *renderResult = [ACRRenderer render:card config:hostconfigParseResult.config widthConstraint:320.0];
         _tearDownMessage = [NSString stringWithFormat:@"rendering failed for %@ card", testFiles[i]];
         XCTAssertEqual(renderResult.succeeded, YES);
-    }    
+    }
 }
 
 @end

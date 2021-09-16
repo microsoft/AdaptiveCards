@@ -6,19 +6,14 @@
 //
 
 #import "ACOBaseCardElementPrivate.h"
-#import "ACOPaddingHandler.h"
+#import "ACOFillerSpaceManager.h"
 #import "ACRView.h"
 
-@implementation ACRColumnView {
-    ACOVisibilityManager *_visibilityManager;
-@protected
-    ACOPaddingHandler *_paddingHandler;
-}
+@implementation ACRColumnView
 
 - (void)setColumnWidth:(NSString *)columnWidth
 {
     _columnWidth = columnWidth;
-    _visibilityManager.columnWidth = columnWidth;
 }
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
@@ -27,10 +22,7 @@
     [super config:attributes];
     self.isLastColumn = NO;
     self.inputHandlers = [[NSMutableArray<ACRIBaseInputHandler> alloc] init];
-    _visibilityManager = [[ACOVisibilityManager alloc] init];
-    _paddingHandler = [[ACOPaddingHandler alloc] init];
 }
-
 - (void)addArrangedSubview:(UIView *)view
 {
     [self configureWidthOfView:view];
@@ -115,71 +107,6 @@
             }
         }
     }];
-}
-
-- (void)hideView:(UIView *)view
-{
-    [_visibilityManager hideView:view arrangedSubviews:[self getContentStackSubviews]];
-}
-
-- (void)unhideView:(UIView *)view
-{
-    [_visibilityManager unhideView:view arrangedSubviews:[self getContentStackSubviews]];
-}
-
-- (BOOL)hasStretchableView
-{
-    return _paddingHandler.hasPadding;
-}
-
-- (UIView *)addPaddingSpace
-{
-    UIView *padding = [super addPaddingSpace];
-    [_visibilityManager addPadding:padding];
-    return padding;
-}
-
-- (UIView *)addPaddingFor:(UIView *)view
-{
-    return [_paddingHandler addPaddingFor:view];
-}
-
-- (void)configureHeightFor:(UIView *)view acoElement:(ACOBaseCardElement *)element
-{
-    [_paddingHandler configureHeight:view correspondingElement:element];
-}
-
-- (void)configureHeight:(ACRVerticalContentAlignment)verticalContentAlignment
-              minHeight:(NSInteger)minHeight
-             heightType:(ACRHeightType)heightType
-                   type:(ACRCardElementType)type
-{
-    if (!self.hasStretchableView) {
-        if (verticalContentAlignment == ACRVerticalContentAlignmentCenter ||
-            verticalContentAlignment == ACRVerticalContentAlignmentBottom) {
-            [self insertArrangedSubview:[self addPaddingFor:self] atIndex:0];
-        }
-
-        if (verticalContentAlignment == ACRVerticalContentAlignmentCenter ||
-            (verticalContentAlignment == ACRVerticalContentAlignmentTop &&
-             self.distribution == UIStackViewDistributionFill)) {
-            [self addArrangedSubview:[self addPaddingFor:self]];
-        }
-    }
-    if (minHeight > 0) {
-        NSLayoutConstraint *constraint =
-            [NSLayoutConstraint constraintWithItem:self
-                                         attribute:NSLayoutAttributeHeight
-                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                            toItem:nil
-                                         attribute:NSLayoutAttributeNotAnAttribute
-                                        multiplier:1
-                                          constant:minHeight];
-        constraint.priority = 999;
-        constraint.active = YES;
-    }
-
-    [_paddingHandler activateConstraintsForPadding];
 }
 
 @end

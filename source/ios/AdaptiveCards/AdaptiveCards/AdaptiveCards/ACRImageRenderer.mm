@@ -100,7 +100,7 @@
 
     // added padding to strech for image view because stretching ImageView is not desirable
     if (imgElem->GetHeight() == HeightType::Stretch) {
-        [viewGroup addArrangedSubview:[(ACRColumnView *)viewGroup addPaddingFor:wrappingView]];
+        [viewGroup addArrangedSubview:[viewGroup addPaddingFor:wrappingView]];
     }
 
     [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
@@ -137,8 +137,6 @@
     if (stringForAccessiblilityLabel.length) {
         view.accessibilityLabel = stringForAccessiblilityLabel;
     }
-
-    configVisibility(wrappingView, elem);
 
     if (imgElem->GetImageStyle() == ImageStyle::Person) {
         wrappingView.isPersonStyle = YES;

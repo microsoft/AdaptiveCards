@@ -67,8 +67,6 @@
     [inputs addObject:inputLabelView];
 
     [viewGroup addArrangedSubview:inputLabelView];
-    
-    configVisibility(inputLabelView, elem);
 
     return inputLabelView;
 }
