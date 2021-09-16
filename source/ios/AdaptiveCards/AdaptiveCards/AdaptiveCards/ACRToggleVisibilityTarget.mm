@@ -40,7 +40,6 @@
         NSString *hashString = [NSString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
         NSUInteger tag = hashString.hash;
         UIView *view = [_rootView viewWithTag:tag];
-        UIView *separator = nil;
         BOOL bHide = NO;
 
         id<ACOIVisibilityManagerFacade> facade = [_rootView.context retrieveVisiblityManagerWithTag:view.tag];

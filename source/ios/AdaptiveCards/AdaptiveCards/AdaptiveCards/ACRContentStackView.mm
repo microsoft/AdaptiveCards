@@ -14,14 +14,11 @@
 
 using namespace AdaptiveCards;
 
-static int kToggleVisibilityContext;
-
 @implementation ACRContentStackView {
     NSMutableArray *_targets;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
     UIStackView *_stackView;
-    NSHashTable<UIView *> *_hiddenSubviews;
     NSMutableDictionary<NSString *, NSValue *> *_subviewIntrinsicContentSizeCollection;
     ACRRtl _rtl;
     NSMutableSet *_invisibleViews;
@@ -55,7 +52,6 @@ static int kToggleVisibilityContext;
     self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         _subviewIntrinsicContentSizeCollection = [[NSMutableDictionary alloc] init];
         _paddingHandler = [[ACOFillerSpaceManager alloc] init];
         _visibilityManager = [[ACOVisibilityManager alloc] init:_paddingHandler];
@@ -77,7 +73,6 @@ static int kToggleVisibilityContext;
 
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         [self config:nil];
     }
 
@@ -264,46 +259,6 @@ static int kToggleVisibilityContext;
     }
 }
 
-// it's hard to know collection to know when filling the collection is done, this method
-// signals that the filling is done, and do the final visibility adjustment
-- (void)hideIfSubviewsAreAllHidden
-{
-    NSInteger count = [_hiddenSubviews count];
-    if (count and count == [_stackView.arrangedSubviews count]) {
-        self.hidden = YES;
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-    if (context == &kToggleVisibilityContext) {
-        if ([object isKindOfClass:[UIView class]]) {
-            UIView *view = (UIView *)object;
-            BOOL isHidden = view.hidden;
-            if (isHidden == YES and ![_hiddenSubviews containsObject:view]) {
-                [_hiddenSubviews addObject:view];
-                [self decreaseIntrinsicContentSize:view];
-                if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
-                    self.hidden = YES;
-                }
-            } else {
-                if ([_hiddenSubviews containsObject:view]) {
-                    [self increaseIntrinsicContentSize:view];
-                    [_hiddenSubviews removeObject:view];
-                    if (self.hidden) {
-                        self.hidden = NO;
-                    }
-                }
-            }
-        }
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
-}
-
 - (void)removeLastViewFromArrangedSubview
 {
     if ([self subviewsCounts]) {
@@ -316,20 +271,6 @@ static int kToggleVisibilityContext;
 
 - (void)removeViewFromContentStackView:(UIView *)view
 {
-    if (view.hidden) {
-        if ([_hiddenSubviews containsObject:view]) {
-            [_hiddenSubviews removeObject:view];
-        }
-    }
-    if ([view isKindOfClass:[ACRSeparator class]]) {
-        ACRSeparator *separator = (ACRSeparator *)view;
-        if (separator.isVisibilityObserved) {
-            [view removeObserver:self forKeyPath:@"hidden"];
-            separator.isVisibilityObserved = NO;
-        }
-    } else {
-        [view removeObserver:self forKeyPath:@"hidden"];
-    }
     [_stackView removeArrangedSubview:view];
     [view removeFromSuperview];
 }

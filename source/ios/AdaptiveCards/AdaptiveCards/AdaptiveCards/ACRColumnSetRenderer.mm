@@ -98,7 +98,6 @@
     UIView *viewWithMinWidth = nil;
     ACRColumnView *viewWithMaxSize = nil;
     NSMutableArray<ACRColumnView *> *viewsWithRelativeWidth = [[NSMutableArray alloc] init];
-    NSMutableArray<ACRColumnView *> *columnViews = [[NSMutableArray alloc] init];
 
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {

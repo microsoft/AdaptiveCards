@@ -76,8 +76,6 @@
 
 - (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView *_Nonnull view, NSUInteger idx, BOOL *_Nonnull stop))block;
 
-- (void)hideIfSubviewsAreAllHidden;
-
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nullable)parent;
 
 - (void)removeViewFromContentStackView:(UIView *_Nonnull)view;
