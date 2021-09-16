@@ -49,11 +49,13 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         HostConfig hostConfig,
         RenderArgs renderArgs) throws AdaptiveFallbackException
     {
-        long size;
-        if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
+
+        if (baseActionElementList == null)
         {
             return null;
         }
+
+        long size = baseActionElementList.size();
 
         LinearLayout actionButtonsLayout = new LinearLayout(context);
         actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
