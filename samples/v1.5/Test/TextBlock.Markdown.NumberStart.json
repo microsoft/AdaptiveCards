@@ -1,0 +1,24 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.3",
+  "body": [
+	{
+	  "type": "TextBlock",
+	  "text": "1. First item in the list;"
+	},
+	{
+	  "type": "TextBlock",
+	  "text": "2. Second item in the list;"
+	},
+	{
+	  "type": "TextBlock",
+	  "text": "3. Third item in the list;"
+	},
+	{
+		"type": "TextBlock",
+		"text": "10. The tenth thing\r10. The list is still going!\r10. Should be 12!",
+		"wrap": true
+	}
+  ]
+}
