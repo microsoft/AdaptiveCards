@@ -57,7 +57,7 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate, InputHandlingViewProtocol {
     
     // Click on Text to change state
     override func mouseDown(with event: NSEvent) {
-        state = state == .on ? .off : .on
+        state = buttonType == .switch && state == .on ? .off : .on
         if  state == .on {
             handleButtonAction()
         }

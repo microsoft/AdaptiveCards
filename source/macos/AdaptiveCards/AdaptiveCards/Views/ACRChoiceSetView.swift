@@ -38,9 +38,11 @@ class ACRChoiceSetView: NSView, InputHandlingViewProtocol {
     
     private func handleClickAction(_ clickedButton: ACRChoiceButton) {
         guard isRadioGroup else { return }
-        if previousButton?.buttonValue != clickedButton.buttonValue {
+        if previousButton != clickedButton {
             previousButton?.state = .off
             previousButton = clickedButton
+        } else {
+            clickedButton.state = .on
         }
     }
     

@@ -14,10 +14,28 @@ class ACRChoiceSetButtontests: XCTestCase {
         choiceRadioButtonView = ACRChoiceButton(renderConfig: renderConfig, buttonType: .radio)
     }
     
-    func testCheckBoxButtonInitialStateAndClicks() {
+    func testCheckBoxButtonClick() {
         XCTAssertEqual(choiceCheckBoxButtonView.state, .off)
         choiceCheckBoxButtonView.button.performClick(nil)
         XCTAssertEqual(choiceCheckBoxButtonView.state, .on)
+        choiceCheckBoxButtonView.button.performClick(nil)
+        XCTAssertEqual(choiceCheckBoxButtonView.state, .off)
+    }
+    
+    func testRadioButtonLabelClick() {
+        XCTAssertEqual(choiceRadioButtonView.state, .off)
+        choiceRadioButtonView.mouseDown(with: NSEvent())
+        XCTAssertEqual(choiceRadioButtonView.state, .on)
+        choiceRadioButtonView.mouseDown(with: NSEvent())
+        XCTAssertEqual(choiceRadioButtonView.state, .on)
+    }
+    
+    func testCheckBoxButtonLabelClick() {
+        XCTAssertEqual(choiceCheckBoxButtonView.state, .off)
+        choiceCheckBoxButtonView.mouseDown(with: NSEvent())
+        XCTAssertEqual(choiceCheckBoxButtonView.state, .on)
+        choiceCheckBoxButtonView.mouseDown(with: NSEvent())
+        XCTAssertEqual(choiceCheckBoxButtonView.state, .off)
     }
     
     func testCheckBoxButtonImagesOff() {

@@ -87,6 +87,24 @@ class ACRTextView: NSTextView, SelectActionHandlingProtocol {
         }
     }
     
+    convenience init(asFactSetFieldWith config: HyperlinkColorConfig) {
+        self.init()
+        setContentCompressionResistancePriority(.required, for: .vertical)
+        alignment = .left
+        isEditable = false
+        backgroundColor = .clear
+        linkTextAttributes = [
+            .foregroundColor: config.foregroundColor,
+            .underlineColor: config.underlineColor,
+            .underlineStyle: config.underlineStyle.rawValue
+        ]
+    }
+    
+    public func makeContentBold() {
+        let fontManager = NSFontManager.shared
+        font = fontManager.convert(font ?? NSFont.systemFont(ofSize: 14), toHaveTrait: NSFontTraitMask.boldFontMask)
+    }
+    
     override var canBecomeKeyView: Bool {
         return isEditable
     }

@@ -34,9 +34,10 @@
     return [[ACSMarkdownParserResult alloc] initWithParsedString:parsedString htmlData:htmlData];
 }
 
- + (ACSMarkdownParserResult * _Nonnull)processTextFromFact:(ACSFact * _Nullable)fact hostConfig:(ACSHostConfig * _Nonnull)config
+ + (ACSMarkdownParserResult * _Nonnull)processTextFromFact:(ACSFact * _Nullable)fact hostConfig:(ACSHostConfig * _Nonnull)config isTitle:(BOOL)isTitle
 {
-    auto text = [BridgeConverter getStringCpp:[fact getValue]];
+    std::string text = [BridgeConverter getStringCpp:isTitle ? [fact getTitle] : [fact getValue]];
+    
     auto language = [BridgeConverter getStringCpp:[fact getLanguage]];
     std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([BridgeTextUtils getLocalizedDate:text language:language]);
     

@@ -31,11 +31,11 @@ class FactSetRendererTest: XCTestCase {
         guard let valueStack = renderedFacts[1] as? NSStackView else { return XCTFail() }
         
         for (index, elem) in titleStack.arrangedSubviews.enumerated() {
-            guard let titleView = elem as? ACRFactTextField else { return XCTFail() }
+            guard let titleView = elem as? ACRTextView else { return XCTFail() }
             let valueArray = valueStack.arrangedSubviews
-            guard let valueView = valueArray[index] as? ACRFactTextField else { return XCTFail() }
-            XCTAssertEqual(factsRendered[index].getTitle(), titleView.plainTextValue)
-            XCTAssertEqual(factsRendered[index].getValue(), valueView.plainTextValue)
+            guard let valueView = valueArray[index] as? ACRTextView else { return XCTFail() }
+            XCTAssertEqual(factsRendered[index].getTitle(), titleView.string)
+            XCTAssertEqual(factsRendered[index].getValue(), valueView.string)
         }
     }
     
@@ -55,11 +55,11 @@ class FactSetRendererTest: XCTestCase {
         guard let valueStack = renderedFacts[1] as? NSStackView else { return XCTFail() }
         
         for (index, elem) in titleStack.arrangedSubviews.enumerated() {
-            guard let titleView = elem as? ACRFactTextField else { return XCTFail() }
+            guard let titleView = elem as? ACRTextView else { return XCTFail() }
             let valueArray = valueStack.arrangedSubviews
-            guard let valueView = valueArray[index] as? ACRFactTextField else { return XCTFail() }
-            XCTAssertEqual(factsRendered[index].getTitle(), titleView.plainTextValue)
-            XCTAssertEqual(factsRendered[index].getValue(), valueView.plainTextValue)
+            guard let valueView = valueArray[index] as? ACRTextView else { return XCTFail() }
+            XCTAssertEqual(factsRendered[index].getTitle(), titleView.string)
+            XCTAssertEqual(factsRendered[index].getValue(), valueView.string)
         }
     }
     
@@ -79,11 +79,11 @@ class FactSetRendererTest: XCTestCase {
         guard let valueStack = renderedFacts[1] as? NSStackView else { return XCTFail() }
         
         for (index, elem) in titleStack.arrangedSubviews.enumerated() {
-            guard let titleView = elem as? ACRFactTextField else { return XCTFail() }
+            guard let titleView = elem as? ACRTextView else { return XCTFail() }
             let valueArray = valueStack.arrangedSubviews
-            guard let valueView = valueArray[index] as? ACRFactTextField else { return XCTFail() }
-            XCTAssertEqual(factsRendered[index].getTitle(), titleView.plainTextValue)
-            XCTAssertEqual(factsRendered[index].getValue(), valueView.plainTextValue)
+            guard let valueView = valueArray[index] as? ACRTextView else { return XCTFail() }
+            XCTAssertEqual(factsRendered[index].getTitle(), titleView.string)
+            XCTAssertEqual(factsRendered[index].getValue(), valueView.string)
         }
     }
     
@@ -110,11 +110,11 @@ class FactSetRendererTest: XCTestCase {
         guard let valueStack = renderedFacts[1] as? NSStackView else { return XCTFail() }
         
         for (index, elem) in titleStack.arrangedSubviews.enumerated() {
-            guard let titleView = elem as? ACRFactTextField else { return XCTFail() }
+            guard let titleView = elem as? ACRTextView else { return XCTFail() }
             let valueArray = valueStack.arrangedSubviews
-            guard let valueView = valueArray[index] as? ACRFactTextField else { return XCTFail() }
-            XCTAssertEqual(factsRendered[index].getTitle(), titleView.plainTextValue)
-            XCTAssertEqual(factsRendered[index].getValue(), valueView.plainTextValue)
+            guard let valueView = valueArray[index] as? ACRTextView else { return XCTFail() }
+            XCTAssertEqual(factsRendered[index].getTitle(), titleView.string)
+            XCTAssertEqual(factsRendered[index].getValue(), valueView.string)
         }
     }
     
@@ -135,11 +135,11 @@ class FactSetRendererTest: XCTestCase {
         XCTAssertTrue(resourceResolver.textResolverCalled)
         
         for (index, elem) in titleStack.arrangedSubviews.enumerated() {
-            guard let titleView = elem as? ACRFactTextField else { return XCTFail() }
+            guard let titleView = elem as? ACRTextView else { return XCTFail() }
             let valueArray = valueStack.arrangedSubviews
-            guard let valueView = valueArray[index] as? ACRFactTextField else { return XCTFail() }
-            XCTAssertEqual(factsRendered[index].getTitle(), titleView.plainTextValue)
-            XCTAssertEqual("Value Exists too", valueView.plainTextValue)
+            guard let valueView = valueArray[index] as? ACRTextView else { return XCTFail() }
+            XCTAssertEqual(factsRendered[index].getTitle(), titleView.string)
+            XCTAssertEqual("Value Exists too", valueView.string)
         }
     }
     
