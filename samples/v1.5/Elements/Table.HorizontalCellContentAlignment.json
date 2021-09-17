@@ -11,6 +11,7 @@
 		},
 		{
 			"type": "Table",
+            "showGridLines": true,
 			"columns": [
 				{
 					"width": 1
@@ -123,6 +124,7 @@
 							"items": [
 								{
 									"type": "Table",
+                                    "showGridLines": true,
 									"columns": [
 										{
 											"width": 1
@@ -208,6 +210,7 @@
 							"items": [
 								{
 									"type": "Table",
+                                    "showGridLines": true,
 									"columns": [
 										{
 											"width": 1
@@ -244,6 +247,7 @@
 										},
 										{
 											"type": "TableRow",
+                                            "showGridLines": true,
 											"cells": [
 												{
 													"type": "TableCell",
@@ -269,6 +273,7 @@
 										}
 									],
 									"firstRowAsHeaders": false,
+                                    "showGridLines": true,
 									"horizontalCellContentAlignment": "Right"
 								}
 							]
@@ -276,9 +281,9 @@
 					]
 				}
 			],
-			"showGridLines": false,
 			"firstRowAsHeaders": false,
-			"verticalCellContentAlignment": "Center"
+			"verticalCellContentAlignment": "Center",
+            "horizontalCellContentAlignment": "Center"
 		}
 	]
 }

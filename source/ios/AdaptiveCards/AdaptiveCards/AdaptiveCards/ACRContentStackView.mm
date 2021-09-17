@@ -18,7 +18,6 @@ using namespace AdaptiveCards;
     NSMutableArray *_targets;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
-    UIStackView *_stackView;
     NSMutableDictionary<NSString *, NSValue *> *_subviewIntrinsicContentSizeCollection;
     ACRRtl _rtl;
     NSMutableSet *_invisibleViews;

@@ -88,19 +88,17 @@
                 if (idx < cells.size()) {
                     auto cell = cells.at(idx);
                     ACRTableCellDefinition *cellDefinition = [[ACRTableCellDefinition alloc] init];
-                    auto style = row->GetStyle();
-                    if (style == ContainerStyle::None) {
-                        style = cell->GetStyle();
-                    }
-                    cellDefinition.style = (ACRContainerStyle)style;
-                    cellDefinition.horizontalAlignment = (ACRHorizontalAlignment)row->GetHorizontalCellContentAlignment().value_or(static_cast<HorizontalAlignment>(rootView.context.horizontalContentAlignment));
-                    cellDefinition.verticalAlignment =
-                        (ACRVerticalContentAlignment)cell->GetVerticalContentAlignment().value_or(row->GetVerticalCellContentAlignment().value_or(static_cast<VerticalContentAlignment>(rootView.context.verticalContentAlignment)));
-                    cellView = [[ACRTableCellView alloc] init:[[ACOBaseCardElement alloc] initWithBaseCardElement:cell]
+                    cellDefinition.style = rootView.context.style;
+                    cellDefinition.horizontalAlignment = rootView.context.horizontalContentAlignment;
+                    cellDefinition.verticalAlignment = rootView.context.verticalContentAlignment;
+                    ACOBaseCardElement *cellElement = [[ACOBaseCardElement alloc] initWithBaseCardElement:cell];
+                    cellView = [[ACRTableCellView alloc] init:cellElement
                                                cellDefinition:cellDefinition
                                                      rootView:rootView
                                                        inputs:inputs
                                                    hostConfig:acoConfig];
+                    [[ACRTableCellRenderer getInstance] render:cellView rootView:rootView inputs:inputs baseCardElement:cellElement hostConfig:acoConfig];
+
                 } else {
                     // filler view for empty cells
                     cellView = [[ACRTableCellView alloc] init];

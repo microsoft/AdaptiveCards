@@ -1121,7 +1121,7 @@
 			name = ImageSet;
 			sourceTree = "<group>";
 		};
-		6BFCA139264F548600195CA7 /* TableView */ = {
+		6BFCA139264F548600195CA7 /* Table */ = {
 			isa = PBXGroup;
 			children = (
 				6BFCA14A265452E000195CA7 /* ACRTableRenderer.h */,
@@ -1135,7 +1135,7 @@
 				6BFCA13B264F54B100195CA7 /* ACRTableView.h */,
 				6BFCA13D264F54B300195CA7 /* ACRTableView.mm */,
 			);
-			name = TableView;
+			name = Table;
 			sourceTree = "<group>";
 		};
 		6BFF99DC2600121A0028069F /* Action.Execute */ = {
@@ -1198,7 +1198,7 @@
 				F42979341F3007C500E89914 /* ReadOnlyObjects */,
 				6B8C766826461F1A009548FA /* Resources */,
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
-				6BFCA139264F548600195CA7 /* TableView */,
+				6BFCA139264F548600195CA7 /* Table */,
 				6B92A71B266FE84F00CAE3BF /* Utilities */,
 			);
 			path = AdaptiveCards;

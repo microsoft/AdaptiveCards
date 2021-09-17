@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface ACRTableCellView : ACRContentStackView
+@interface ACRTableCellView : ACRColumnView
 
 - (instancetype)init:(ACOBaseCardElement *)baseCardElement
       cellDefinition:(ACRTableCellDefinition *)definition   
