@@ -18,7 +18,7 @@
     background-color: #CDCDCD;
 }
 
-@media all and (min-width: 501px) {
+@media all and (min-width: 651px) {
     .content {
         display: flex;
         flex: 1 1 auto;
@@ -50,7 +50,7 @@
     display: none !important;
 }
 
-@media all and (min-width: 501px) {
+@media all and (min-width: 651px) {
     .acd-toolPalette-pane {
         display: flex;
         flex: 0 0 auto;
@@ -536,7 +536,7 @@
 */
 
 /* NOTE: All of these are layed out sequentially on small-x-dimension displays */
-@media all and (min-width: 501px) {
+@media all and (min-width: 651px) {
     .acd-dockedLeft {
         border-right: 1px solid #D2D2D2;
     }
@@ -681,7 +681,7 @@
     overflow: hidden;
 }
 
-@media all and (min-width: 501px) {
+@media all and (min-width: 651px) {
     .acd-previewAndBottomDocks {
         display: flex;
         flex: 1 1 100%;
@@ -904,7 +904,7 @@
     margin: 0px 8px 0px 8px;
 }
 
-@media all and (min-width: 501px) {
+@media all and (min-width: 651px) {
     .acd-toolbar {
         display: flex;
         flex: 0 0 auto;
@@ -1525,7 +1525,7 @@ a.default-ac-anchor:visited:active {
 }
 
 /* NOTE: small-x-dimension display */
-@media all and (max-width: 500px) {
+@media all and (max-width: 650px) {
     .acd-designer-cardArea {
         border-bottom: 1px solid #D2D2D2;
     }
@@ -1577,7 +1577,9 @@ a.default-ac-anchor:visited:active {
     }
 
     .acd-error-pane {
+        flex: 1 1 auto;
         white-space: normal;
+        overflow: auto;
     }
 
     .acd-dialog-frame {
@@ -1609,6 +1611,7 @@ a.default-ac-anchor:visited:active {
     .acd-toolbox {
         border-bottom: 1px solid #D2D2D2;
         width: 100% !important; /* overrides stored width from settings */
+        height: auto !important;
     }
 
     .acd-previewRightAndBottomDocks {
@@ -1652,4 +1655,3 @@ a.default-ac-anchor:visited:active {
         padding-right: 3px;
     }
 }
-

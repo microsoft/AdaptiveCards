@@ -176,8 +176,9 @@ export class CardDesigner extends Designer.DesignContext {
 
             this._draggedElement = sender.renderDragVisual();
             this._draggedElement.style.position = "absolute";
-            this._draggedElement.style.left = this._currentMousePosition.x + "px";
-            this._draggedElement.style.top = this._currentMousePosition.y + "px";
+            const adjustedPosition = Utils.adjustPointForScroll(this._currentMousePosition);
+            this._draggedElement.style.left = adjustedPosition.x + "px";
+            this._draggedElement.style.top = adjustedPosition.y + "px";
 
             document.body.appendChild(this._draggedElement);
         }
@@ -979,8 +980,9 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             if (!peerDropped && this._draggedElement) {
-                this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
-                this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+                const adjustedPosition = Utils.adjustPointForScroll(this._currentMousePosition);
+                this._draggedElement.style.left = adjustedPosition.x - 10 + "px";
+                this._draggedElement.style.top = adjustedPosition.y - 10 + "px";
             }
         }
     }
