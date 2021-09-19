@@ -345,7 +345,8 @@ namespace AdaptiveCards
             {TextInputStyle::Email, "Email"},
             {TextInputStyle::Tel, "Tel"},
             {TextInputStyle::Text, "Text"},
-            {TextInputStyle::Url, "Url"}});
+            {TextInputStyle::Url, "Url"},
+            {TextInputStyle::Password, "Password"}});
 
     DEFINE_ADAPTIVECARD_ENUM(ContainerStyle, {
             {ContainerStyle::Default, "Default"},
