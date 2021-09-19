@@ -1,11 +1,15 @@
 # Schema files
 Are you looking to make schema changes and don't know where to start? Make sure to check out our [contribution guidelines](https://github.com/Microsoft/AdaptiveCards/blob/main/.github/CONTRIBUTING.md) to get started.
+
 ## AdaptiveCard schema
 
 ### Referenceable versions
 
-Here's a list of the schema URLs you can reference
+Here's a list of the schema URLs you can reference:
 
+* https://adaptivecards.io/schemas/1.5.0/adaptive-card.json
+* https://adaptivecards.io/schemas/1.4.0/adaptive-card.json
+* https://adaptivecards.io/schemas/1.3.0/adaptive-card.json
 * https://adaptivecards.io/schemas/1.2.0/adaptive-card.json
 * https://adaptivecards.io/schemas/1.1.0/adaptive-card.json
 
