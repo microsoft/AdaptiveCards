@@ -2,7 +2,7 @@
 
 # MediaSource
 
-#### Introduced in version 1.1
+**Introduced in version 1.1**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

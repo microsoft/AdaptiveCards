@@ -2,7 +2,24 @@
 
 ## AdaptiveCardConfig|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
+|**supportsInteractivity**|`boolean`| No, default: `true`|Control whether interactive `Action`s are allowed to be invoked|1.0
+|**imageBaseUrl**|`string`| No|Base URL to be used when loading resources|1.0
+|**fontFamily**|`string`| No, default: `"Calibri"`|Font face to use when rendering text|1.0
 |**allowCustomStyle**|`boolean`| No, default: `true`|Controls whether custom styling is allowed|1.0
+|**actions**|`object`| No|Options for `Action`s|1.0
+|**adaptiveCard**|`object`| No|Toplevel options for `AdaptiveCards`|1.0
+|**containerStyles**|`object`| No|Controls styling for default and emphasis containers|1.0
+|**imageSizes**|`object`| No|Controls `Image` sizes|1.0
+|**imageSet**|`object`| No|Controls how `ImageSet`s are displayed|1.0
+|**factSet**|`object`| No|Controls the display of `FactSet`s|1.0
+|**fontSizes**|`object`| No|Controls font size metrics for different text styles|1.0
+|**fontWeights**|`object`| No|Controls font weight metrics|1.0
+|**spacing**|`object`| No|Controls how elements are to be laid out|1.0
+|**separator**|`object`| No|Controls how separators are displayed|1.0
+|**media**|`object`| No|Controls the display and behavior of `Media` elements|1.1
+|**inputs**|`object`| No|Controls display and behavior of Input types|1.3
+|**textBlock**|`object`| No|Configuration settings for TextBlocks|1.0
+|**textStyles**|`object`| No|Sets default properties for text of a given style|1.0
 
 
 
