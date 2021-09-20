@@ -6,47 +6,66 @@ var fs = require("fs");
 import { forEach } from "p-iteration";
 
 export async function generateAsync() {
-
 	// First find the top-level directory
-	var relativeTopDir = findRelativeTopDirectory();
+	const relativeTopDir = findRelativeTopDirectory();
+    console.log(`Using "${relativeTopDir}" as the root.`);
 
 	await generateHostConfigAsync(relativeTopDir);
-
 	await generateElementsAsync(relativeTopDir);
-
 }
 
 async function generateHostConfigAsync(relativeTopDir: string) {
-
-	var schemaModel = await markedschema.buildModel({
+    const modelObj = {
 		schema: relativeTopDir + "schemas/host-config.json",
 		toc: relativeTopDir + "source/nodejs/adaptivecards-site/schema-hostconfig-toc.yml",
 		rootDefinition: "AdaptiveCardConfig"
-	});
+    };
+    
+    console.log(`Generating HostConfig with:`)
+    console.table(modelObj);
 
-	var finalContents = "# Host config";
+    let schemaModel;
+    try {
+	    schemaModel = await markedschema.buildModel(modelObj);
+    } catch (err) {
+        console.error(`Error encounted while building schema model for '${modelObj.schema}':`);
+        console.error(`Code: ${err.code}`);
+        console.error(`Msg: ${err.message}`);
+        console.error(`Stacktrace: ${err.stack}`);
+    }
+
+	let finalContents = "# Host config";
 
 	await forEach(schemaModel, async (root: any) => {
 		await forEach(root.children, async (child: any) => {
-
 			finalContents += "\n\n## " + child.name;
-
 			finalContents += markedschema.generateMarkdown.createPropertiesSummary(child.properties, null, true, true, child.version);
 		});
 	});
 
 	await writeFileAsync(relativeTopDir + "specs/HostConfig.md", finalContents);
-
 }
 
 async function generateElementsAsync(relativeTopDir: string) {
-
-	var schemaModel = await typedschema.markdown.buildModel({
+    const modelObj = {
 		schema: relativeTopDir + "schemas/src",
 		toc: relativeTopDir + "source/nodejs/adaptivecards-site/schema-explorer-toc.yml",
 		rootDefinition: "AdaptiveCard",
 		examplesPath: relativeTopDir + "samples/v1.*"
-	});
+	};
+
+    console.log(`Generating elements with:`);
+    console.table(modelObj);
+
+    let schemaModel;
+    try {
+        schemaModel = await typedschema.markdown.buildModel(modelObj);
+    } catch(err) {
+        console.error(`Error encounted while building elements model for '${modelObj.schema}':`);
+        console.error(`Code: ${err.code}`);
+        console.error(`Msg: ${err.message}`);
+        console.error(`Stacktrace: ${err.stack}`);
+    }
 
 	await forEach(schemaModel, async (root: any) => {
 		await forEach(root.children, async (child: any) => {
@@ -101,7 +120,6 @@ async function generateElementsAsync(relativeTopDir: string) {
 			}
 		});
 	});
-
 }
 
 function readFileAsync(fileName: string, encoding: string): Promise<string> {
@@ -116,10 +134,6 @@ function readFileAsync(fileName: string, encoding: string): Promise<string> {
 	});
 }
 
-function readFile(fileName: string, encoding: string): string {
-	return fs.readFileSync(fileName, encoding);
-}
-
 function writeFileAsync(fileName: string, contents: string): Promise<void> {
 	return new Promise(function (resolve, reject) {
 		fs.writeFile(fileName, contents, (err) => {
@@ -130,10 +144,6 @@ function writeFileAsync(fileName: string, contents: string): Promise<void> {
 			}
 		})
 	});
-}
-
-function writeFile(fileName: string, contents: string): void {
-	fs.writeFileSync(fileName, contents);
 }
 
 function findRelativeTopDirectory(backLevels?: string): string {

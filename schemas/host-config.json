@@ -613,7 +613,7 @@
 				}
 			}
 		},
-		"TextStyleConfig": {
+		"TextStylesConfig": {
 			"type": "object",
 			"description": "Sets default properties for text of a given style",
 			"properties": {
@@ -669,12 +669,12 @@
 				}
 			}
 		},
-		"TextStylesConfig": {
+		"TextBlockConfig": {
 			"type": "object",
-			"description": "Configuration settings for TextBocks",
+			"description": "Configuration settings for TextBlocks",
 			"properties": {
 				"heading": {
-					"$ref": "#/definitions/TextStyleConfig",
+					"$ref": "#/definitions/TextStylesConfig",
 					"default": {
 						"weight": "bolder",
 						"size": "large",
@@ -689,7 +689,7 @@
 		"properties": {
 			"supportsInteractivity": {
 				"type": "boolean",
-				"description": "Control whether interactive `Action`s are allowed to be invoke",
+				"description": "Control whether interactive `Action`s are allowed to be invoked",
 				"default": true
 			},
 			"imageBaseUrl": {
@@ -746,3 +746,4 @@
 			}
 		}
 	}
+}
