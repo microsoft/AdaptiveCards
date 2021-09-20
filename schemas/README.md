@@ -19,11 +19,11 @@ The Adaptive Card schema is generated from "typed schema" files located in the `
 
 Our schema explorer on the website is also generated from the typed schema files in the `src` folder.
 
-To generate the schema, see [ac-typed-schema](../source/nodejs/ac-typed-schema). Once built (see the nodejs [README](https://github.com/microsoft/AdaptiveCards/source/nodejs/README.md)), run `npm run generate-adaptive-schema`. This will output the generated schema as `schemas/adaptive-card.json` (which should not be checked in). From here, the file should be copied into the version-appropriate subfolder (e.g. `cd schemas && cp adaptive-card.json 1.4.0/adaptive-card.json`).
+To generate the schema, see [ac-typed-schema](../source/nodejs/ac-typed-schema). Once built (see the nodejs [README](../source/nodejs/README.md)), run `npm run generate-adaptive-schema`. This will output the generated schema as `schemas/adaptive-card.json` (which should not be checked in). From here, the file should be copied into the version-appropriate subfolder (e.g. `cd schemas && cp adaptive-card.json 1.4.0/adaptive-card.json`).
 
 ### Generating the schema spec markdown
 
-Once the schema itself is generating correctly, the markdown specs need to be generated as well. The tool you need is [spec-generator](../source/nodejs/spec-generator). Once built, issue the command `npm run run` (yes, really), which will generate the various markdown files you can find in the [specs folder](../specs).
+Once the schema itself is generating correctly, the markdown specs need to be generated as well. The tool you need is [spec-generator](../source/nodejs/spec-generator). Once built, issue the command `npm run run` (yes, really), which will generate the various markdown files you can find in the [specs folder](../specs). More details can be found in the specs README.
 
 ### Non-extensible schema
 
