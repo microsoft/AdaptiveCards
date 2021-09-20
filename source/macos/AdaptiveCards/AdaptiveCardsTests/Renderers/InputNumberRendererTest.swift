@@ -77,6 +77,52 @@ class InputNumberRendererTest: XCTestCase {
         let inputNumberField = renderNumberInput()
         XCTAssertEqual(inputNumberField.inputString, "20.0")
     }
+    
+    func testclearButtonHiddenByDefault() {
+        inputNumber = .make(value: nil)
+        let inputNumberField = renderNumberInput()
+        XCTAssertTrue(inputNumberField.textField.clearButton.isHidden)
+    }
+    
+    func testClearButtonVisibleWhenValuePresent() {
+        inputNumber = .make(value : 0)
+        let inputNumberField = renderNumberInput()
+        XCTAssertFalse(inputNumberField.textField.clearButton.isHidden)
+    }
+    
+    func testClearButtonClearsValue() {
+        inputNumber = .make(value : 0)
+        
+        let inputNumberField = renderNumberInput()
+        XCTAssertFalse(inputNumberField.textField.clearButton.isHidden)
+        XCTAssertEqual(inputNumberField.textField.stringValue, "0")
+        
+        inputNumberField.textField.clearButton.performClick()
+        
+        XCTAssertTrue(inputNumberField.textField.clearButton.isHidden)
+        XCTAssertEqual(inputNumberField.textField.stringValue, "")
+    }
+    
+    func testOnlyDecimalPointReturnsZero() {
+        let inputNumberField = renderNumberInput()
+        inputNumberField.inputString = "."
+        
+        XCTAssertEqual(inputNumberField.value, "0")
+    }
+    
+    func testDecimalPointtAtEndReturnsTheInteger() {
+        let inputNumberField = renderNumberInput()
+        inputNumberField.inputString = "2."
+        
+        XCTAssertEqual(inputNumberField.value, "2")
+    }
+    
+    func testDecimalValuesReturnedWhenStored() {
+        inputNumber = .make(value : 12.3)
+        
+        let inputNumberField = renderNumberInput()
+        XCTAssertEqual(inputNumberField.value, "12.3")
+    }
        
     private func renderNumberInput() -> ACRNumericTextField {
         let view = inputNumberRenderer.render(element: inputNumber, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)

@@ -12,15 +12,14 @@ open class InputNumberRenderer: NSObject, BaseCardElementRendererProtocol {
         
         // setting up basic properties for Input.Number TextField
         let inputField: ACRNumericTextField = {
-            let view = ACRNumericTextField()
+            let view = ACRNumericTextField(config: config)
             view.placeholder = inputElement.getPlaceholder() ?? ""
             view.maxValue = inputElement.getMax()?.doubleValue ?? ACRNumericTextField.MAXVAL
             view.minValue = inputElement.getMin()?.doubleValue ?? ACRNumericTextField.MINVAL
             view.inputString = inputElement.getValue()?.stringValue ?? ""
             return view
         }()
-
-        inputField.setNumericFormatter(InputNumberFormatter())
+        
         inputField.stepperShouldWrapValues(false)
         inputField.isHidden = !inputElement.getIsVisible()
         inputField.id = inputElement.getId()
@@ -34,24 +33,32 @@ open class InputNumberRenderer: NSObject, BaseCardElementRendererProtocol {
 open class ACRNumericTextField: NSView, NSTextFieldDelegate {
     var id: String?
     private var previousValue = ""
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
+    private var config: RenderConfig
+    
+    init(config: RenderConfig) {
+        self.config = config
+        super.init(frame: .zero)
         setupViews()
         setupConstraints()
         setUpControls()
-        setUpTheme()
-        setupTrackingArea()
     }
     
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private (set) lazy var textField: NSTextField = {
-        let view = NSTextField()
+    private (set) lazy var textField: ACRTextField = {
+        let view = ACRTextField(numericFieldWith: config)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         view.isEditable = true
+        view.stringValue = ""
+        view.cell?.usesSingleLineMode = true
+        view.maximumNumberOfLines = 1
+        view.cell?.lineBreakMode = .byTruncatingTail
+        if #available(OSX 10.13, *) {
+            view.layer?.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        }
         return view
     }()
 
@@ -66,18 +73,29 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
     }
     
     public func controlTextDidChange(_ obj: Notification) {
-        guard let textView = obj.object as? NSTextField else { return }
-        // updating the stepper value when text field value change
-        stepper.doubleValue = Double(textView.accessibilityValue() ?? "") ?? stepper.doubleValue
-        guard let stringValue = textView.accessibilityValue() else { return }
-        if Double(stringValue) != nil {
-            textView.stringValue = stringValue
-        } else if Int(stringValue) == nil && !stringValue.isEmpty {
-            textView.stringValue = previousValue
-        } else if stringValue.isEmpty {
-            textView.stringValue = ""
+        guard let textfield = obj.object as? ACRTextField else { return }
+        var stringValue = textfield.stringValue
+        
+        stepper.doubleValue = Double(textField.stringValue) ?? stepper.doubleValue
+        let charSet = NSCharacterSet(charactersIn: "1234567890.").inverted
+        let chars = stringValue.components(separatedBy: charSet)
+        stringValue = chars.joined()
+
+        // Only 1 "." should be
+        let comma = NSCharacterSet(charactersIn: ".")
+        let chuncks = stringValue.components(separatedBy: comma as CharacterSet)
+        switch chuncks.count {
+        case 0:
+            stringValue = ""
+        case 1:
+            stringValue = "\(chuncks[0])"
+        default:
+            stringValue = "\(chuncks[0]).\(chuncks[1])"
         }
-        previousValue = textView.accessibilityValue() ?? ""
+
+        // replace string
+        textfield.stringValue = stringValue
+        previousValue = textField.stringValue
     }
     
     func setupViews() {
@@ -98,28 +116,6 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
     func setUpControls() {
         stepper.target = self
         stepper.action = #selector(handleStepperAction(_:))
-    }
-    
-    func setUpTheme() {
-        textField.wantsLayer = true
-        textField.layer?.backgroundColor = .clear
-        stepper.wantsLayer = true
-        stepper.layer?.backgroundColor = .clear
-    }
-    
-    func setupTrackingArea() {
-        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
-        addTrackingArea(trackingArea)
-    }
-    
-    override open func mouseEntered(with event: NSEvent) {
-        guard let contentView = event.trackingArea?.owner as? ACRNumericTextField else { return }
-        contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseEnter()
-    }
-    
-    override open func mouseExited(with event: NSEvent) {
-        guard let contentView = event.trackingArea?.owner as? ACRNumericTextField else { return }
-        contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseExit()
     }
 }
 
@@ -177,7 +173,11 @@ extension ACRNumericTextField: InputHandlingViewProtocol {
     }
     
     var value: String {
-        return String(Int(inputValue))
+        if Float(inputValue).truncatingRemainder(dividingBy: 1) == 0 {
+            return String(Int(inputValue))
+        } else {
+            return String(Float(inputValue))
+        }
     }
     
     var key: String {
@@ -190,18 +190,5 @@ extension ACRNumericTextField: InputHandlingViewProtocol {
     
     var isValid: Bool {
         return true
-    }
-}
-
-// MARK: - Numeric Formatter
-open class InputNumberFormatter: NumberFormatter {
-    override init() {
-        super.init()
-        hasThousandSeparators = false
-        numberStyle = Style.decimal
-    }
-    
-    public required init?(coder: NSCoder) {
-        super.init(coder: coder)
     }
 }

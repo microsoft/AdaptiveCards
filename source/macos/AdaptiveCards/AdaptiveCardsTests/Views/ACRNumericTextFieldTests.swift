@@ -6,7 +6,7 @@ class ACRNumericTestFieldTests: XCTestCase {
     private var numericView: ACRNumericTextField!
     override func setUp() {
         super.setUp()
-        numericView = ACRNumericTextField()
+        numericView = ACRNumericTextField(config: .default)
         numericView.inputString = "20"
     }
     
