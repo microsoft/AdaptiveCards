@@ -123,7 +123,10 @@ class CheckBox extends React.PureComponent {
 		return (
 			<TouchableOpacity activeOpacity={1}
 				onPress={this.onChange.bind(this)}
-				style={style}>
+				style={style}
+				accessibilityRole={this.props.isRadioButtonType ? 'radio' : 'checkbox'}
+				accessibilityState={{checked: this.state.checked}}
+				>
 				{this.renderContent()}
 			</TouchableOpacity>
 		)

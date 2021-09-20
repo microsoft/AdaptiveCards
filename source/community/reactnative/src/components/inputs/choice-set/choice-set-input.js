@@ -162,7 +162,11 @@ export class ChoiceSetInput extends React.Component {
 			<View style={styles.containerView}>
 				{(Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
 					activeOpacity={1}
-					onPress={onPress}>
+					onPress={onPress}
+					accessible={true}
+					accessibilityRole={'button'}
+					accessibilityState={{ expanded: this.state.isPickerSelected }}
+				>
 					<View style={this.styleConfig.dropdown}>
 						<Text
 							style={[this.styleConfig.dropdownText, this.styleConfig.defaultFontConfig]}
@@ -178,29 +182,42 @@ export class ChoiceSetInput extends React.Component {
 					</View>
 				</TouchableOpacity>}
 				{((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
-					<View style={styles.pickerContainer}>
-						<Picker
-							mode={'dropdown'}
-							selectedValue={this.getPickerInitialValue(addInputItem)}
-							onValueChange={
-								(itemValue) => {
-									this.setState({
-										selectedPickerValue: itemValue,
-										isError: false
-									})
-									addInputItem(this.id, { value: itemValue, errorState: false });
-								}}>
-							{this.choices.map((item, key) => (
-								<Picker.Item
-									label={item.title}
-									value={item.value} key={key}
-								/>)
-							)}
-						</Picker>
-					</View>
+					this.getPickerComponent(addInputItem)
 				}
 			</View>
 		)
+	}
+
+	getPickerComponent(addInputItem) {
+		let picker = (
+			<Picker
+				mode={'dropdown'}
+				itemStyle={this.styleConfig.picker}
+				selectedValue={this.getPickerInitialValue(addInputItem)}
+				onValueChange={
+					(itemValue) => {
+						this.setState({
+							selectedPickerValue: itemValue,
+							isError: false
+						})
+						addInputItem(this.id, { value: itemValue, errorState: false });
+					}}>
+				{this.choices.map((item, key) => (
+					<Picker.Item
+						label={item.title}
+						value={item.value} key={key}
+					/>)
+				)}
+			</Picker>
+		);
+		if (Platform.OS == Constants.PlatformAndroid) {
+			picker = (
+				<View style={this.styleConfig.dropdown}>
+					{picker}
+				</View>
+			)
+		}
+		return picker;
 	}
 
 	/**
@@ -298,7 +315,7 @@ export class ChoiceSetInput extends React.Component {
 					<ElementWrapper configManager={this.props.configManager} json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
 						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 						<View
-							accessible={true}
+							accessible={false}
 							accessibilityLabel={this.payload.altText}
 							style={styles.choiceSetView}>
 							{!isMultiSelect ?
@@ -321,13 +338,6 @@ const styles = StyleSheet.create({
 	},
 	choiceSetView: {
 		marginTop: 3
-	},
-	pickerContainer: {
-		borderWidth: 1,
-		backgroundColor: Constants.LightGreyColor,
-		borderColor: Constants.LightGreyColor,
-		borderRadius: 5,
-		marginHorizontal: 2
 	},
 	button: {
 		height: 30,

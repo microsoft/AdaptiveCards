@@ -186,4 +186,7 @@ export const ThemeElement = Object.freeze({
 	CheckBoxText: "checkBoxText",
 	Dropdown: "dropdown",
 	DropdownText: "dropdownText",
+	Picker: "picker",
+	DateTimePicker: "dateTimePicker",
+	Switch: "switch"
 });

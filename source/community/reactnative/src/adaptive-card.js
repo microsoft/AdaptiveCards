@@ -19,6 +19,7 @@ import { ThemeConfig, defaultThemeConfig } from './utils/theme-config';
 import { ActionWrapper } from './components/actions/action-wrapper';
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
+import * as Enums from './utils/enums';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers';
@@ -184,7 +185,10 @@ export default class AdaptiveCard extends React.Component {
 	}
 
 	getAdaptiveCardContent() {
-		let containerStyles = [styles.container]
+		// padding
+		const padding = this.hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
+		let containerStyles = [{ padding: padding }]
+
 		//If containerStyle is passed by the user from adaptive card via props, we will override this style
 		this.props.containerStyle && containerStyles.push(this.props.containerStyle)
 
@@ -330,9 +334,6 @@ AdaptiveCard.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		padding: 10
-	},
 	actionContainer: {
 		marginVertical: 10
 	},

@@ -209,11 +209,11 @@ export class Input extends React.Component {
 			let opacityStyle = { opacity: inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.4 };
 			return (
 				<View>
-					<ElementWrapper configManager={this.props.configManager} json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
-						<View style={styles.elementWrapper}>
-							<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
+					<ElementWrapper configManager={this.props.configManager} json={payload} style={styles.elementWrapper} isError={this.props.isError} isFirst={this.props.isFirst}>
+						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
+						<View style={wrapperStyle} >
 							<TextInput
-								style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
+								style={[styles.inlineActionInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
 								autoCapitalize={Constants.NoneString}
 								autoCorrect={false}
 								accessible={true}
@@ -236,19 +236,25 @@ export class Input extends React.Component {
 								}}
 								value={this.props.value}
 							/>
+							<TouchableOpacity
+								style={styles.inlineAction}
+								disabled={inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled} //isEnabled defaults to true
+								opacity={inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.5}
+								onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}
+								accessible={true}
+								accessibilityLabel={inlineAction.title}
+								accessibilityState={{ disabled: inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled }}
+								accessibilityRole={'button'}
+							>
+								{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
+									<Text style={[styles.inlineActionText, opacityStyle]}>{inlineAction.title}</Text> :
+									<Image
+										style={[styles.inlineActionImage, opacityStyle]}
+										source=
+										{{ uri: inlineAction.iconUrl }} />
+								}
+							</TouchableOpacity>
 						</View>
-						<TouchableOpacity
-							disabled={inlineAction.isEnabled == undefined ? false : !inlineAction.isEnabled} //isEnabled defaults to true
-							opacity={inlineAction.isEnabled == undefined ? 1.0 : inlineAction.isEnabled ? 1.0 : 0.5}
-							onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}>
-							{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
-								<Text style={[styles.inlineActionText, opacityStyle]}>{inlineAction.title}</Text> :
-								<Image
-									style={[styles.inlineActionImage, opacityStyle]}
-									source=
-									{{ uri: inlineAction.iconUrl }} />
-							}
-						</TouchableOpacity>
 					</ElementWrapper>
 					{this.props.isError && (this.state.showInlineActionErrors || showErrors) && this.showErrorMessage()}
 				</View>
@@ -314,9 +320,7 @@ export class Input extends React.Component {
 
 const styles = StyleSheet.create({
 	inlineActionText: {
-		marginLeft: 5,
-		marginTop: 15,
-		color: '#3a3a3a',
+		color: Constants.LightBlack
 	},
 	multiLineHeight: {
 		height: 88,
@@ -331,27 +335,23 @@ const styles = StyleSheet.create({
 	input: {
 		width: Constants.FullWidth,
 		padding: 5,
-		marginTop: 3,
+		marginTop: 3
+	},
+	inlineActionInput: {
+		flex: 1,
 	},
 	inlineActionWrapper: {
-		flexDirection: 'row',
-		backgroundColor: "transparent",
+		flexDirection: Constants.FlexRow,
+		backgroundColor: Constants.TransparentString,
 		borderRadius: 5
 	},
-	inlineActionTextInput: {
-		padding: 5,
-		flex: 1,
-		backgroundColor: 'transparent',
-		color: '#3a3a3a',
-		borderColor: "#9E9E9E",
-		borderWidth: 1,
+	inlineAction: {
+		marginLeft: 10
 	},
 	inlineActionImage: {
-		marginLeft: 10,
 		width: 40,
 		height: 40,
-		backgroundColor: 'transparent',
-		flexShrink: 0,
+		backgroundColor: Constants.TransparentString
 	},
 });
 

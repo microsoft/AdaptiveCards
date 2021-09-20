@@ -1,0 +1,134 @@
+
+{
+    "type": "AdaptiveCard",
+    "name": "containersNestedVerticalContentAlignment",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "text": "${cafeName}"
+                }
+            ],
+            "minHeight": "100px",
+            "verticalContentAlignment": "Center"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "style": "Person",
+                                    "url": "${cafeteriaImage}",
+                                    "size": "Small"
+                                }
+                            ],
+                            "width": "auto"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "weight": "Bolder",
+                                    "text": "${creator.name}",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "spacing": "None",
+                                    "text": "Created {{DATE(${createdUtc},SHORT)}}",
+                                    "isSubtle": true,
+                                    "wrap": true
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ]
+                }
+            ],
+            "minHeight": "100px",
+            "verticalContentAlignment": "Center"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "Container",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "${description}",
+                            "wrap": true
+                        }
+                    ],
+                    "minHeight": "100px",
+                    "verticalContentAlignment": "Center"
+                }
+            ],
+            "minHeight": "200px",
+            "verticalContentAlignment": "Center"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "FactSet",
+                    "facts": [
+                        {
+                            "$data": "${properties}",
+                            "title": "${key}:",
+                            "value": "${value}"
+                        }
+                    ]
+                }
+            ],
+            "minHeight": "300px",
+            "verticalContentAlignment": "Center"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.ShowCard",
+            "title": "Set due date",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "Input.Date",
+                        "id": "dueDate"
+                    },
+                    {
+                        "type": "Input.Text",
+                        "id": "comment",
+                        "placeholder": "Add a comment",
+                        "isMultiline": true
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "OK"
+                    }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+            }
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "View",
+            "url": "${viewUrl}"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3"
+}

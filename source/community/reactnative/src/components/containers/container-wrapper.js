@@ -63,8 +63,14 @@ export class ContainerWrapper extends React.PureComponent {
      */
     getComputedStyles = () => {
         let computedStyles = [];
-
         const { hostConfig } = this.props.configManager;
+
+        //Constructing the vertical Content Alignment for columnSet
+        if (this.payload.parent && this.payload.parent["verticalContentAlignment"]) {
+            if(this.payload.type === Constants.TypeColumnSet) {
+                this.payload.verticalContentAlignment = this.payload.parent["verticalContentAlignment"];
+            }
+        }
 
         // vertical content alignment
         let verticalContentAlignment = Utils.parseHostConfigEnum(
@@ -100,17 +106,16 @@ export class ContainerWrapper extends React.PureComponent {
         const borderColor = styleDefinition.borderColor;
         computedStyles.push({ borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor) });
 
+        
         // padding
-        const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
-        computedStyles.push({ padding: padding });
+        // const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
+        if (this.payload.style) {
+            computedStyles.push({ padding: Constants.containerPadding});
+        }
 
         // bleed
-        if (this.payload.bleed && this.props.containerStyle) {
-            const { isFirst, isLast } = this.props;
-            const marginLeft = isFirst ? -padding : 0;
-            const marginRight = isLast ? -padding : 0;
-
-            computedStyles.push({ marginVertical: -padding, marginLeft, marginRight });
+        if (this.payload.bleed && this.payload.style) {
+            computedStyles.push({ padding: -Constants.containerPadding});
         }
 
         // height 

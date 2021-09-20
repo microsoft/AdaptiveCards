@@ -14,10 +14,14 @@ export class ThemeConfig {
         this.checkBoxText = new Config(ThemeElement.CheckBoxText, obj);
         this.dropdown = new Config(ThemeElement.Dropdown, obj);
         this.dropdownText = new Config(ThemeElement.DropdownText, obj);
+        this.picker = new Config(ThemeElement.Picker, obj);
+        this.dateTimePicker = new Config(ThemeElement.DateTimePicker, obj)
+        this.switch = new Config(ThemeElement.Switch, obj);
     }
 }
 
 // Each instance of this class holds config of specific element type 
+// this class holds config of specific element type 
 class Config {
     constructor(type, customConfig = {}) {
         this.type = type;
@@ -111,13 +115,31 @@ export const defaultThemeConfig = {
         inactiveColor: Constants.LightBlack,
     },
     dropdown: {
-        flexDirection: Constants.FlexRow,
-        justifyContent: Constants.SpaceBetween,
-        alignItems: Constants.FlexEnd,
-        borderWidth: 1,
-        backgroundColor: Constants.WhiteColor,
-        borderColor: Constants.LightGreyColor,
-        borderRadius: 5,
+        ios: {
+            flexDirection: Constants.FlexRow,
+            justifyContent: Constants.SpaceBetween,
+            alignItems: Constants.FlexEnd,
+            borderWidth: 1,
+            backgroundColor: Constants.WhiteColor,
+            borderColor: Constants.LightGreyColor,
+            borderRadius: 5,
+        },
+        android: {
+            borderWidth: 1,
+            backgroundColor: Constants.WhiteColor,
+            borderColor: Constants.LightGreyColor,
+            borderRadius: 5,
+            backgroundColor: Constants.LightGreyColor,
+        },
+        windows: {
+            flexDirection: Constants.FlexRow,
+            justifyContent: Constants.SpaceBetween,
+            alignItems: Constants.FlexEnd,
+            borderWidth: 1,
+            backgroundColor: Constants.WhiteColor,
+            borderColor: Constants.LightGreyColor,
+            borderRadius: 5,
+        }
     },
     dropdownText: {
         color: Constants.BlackColor,
@@ -125,6 +147,25 @@ export const defaultThemeConfig = {
         marginTop: 10,
         marginLeft: 8,
         height: 30,
-    }
-
+    },
+    picker: {
+        borderWidth: 1,
+        backgroundColor: Constants.LightGreyColor,
+        borderColor: Constants.LightGreyColor,
+        color: Constants.BlackColor,
+        borderRadius: 5,
+        marginHorizontal: 2
+    },
+    dateTimePicker: {
+        backgroundColor: Constants.WhiteColor,
+        height: 260,
+        width: Constants.FullWidth,
+        textColor: Constants.BlackColor
+    },
+    /// (Input.Toggle) Based on React-Native props of the same name that can be passed to switch.
+    switch: {
+        trackColor: undefined, /// Object of type {true: color; false: color} (See RN Docs)
+        thumbColor: undefined, 
+        ios_backgroundColor: undefined
+    },
 }

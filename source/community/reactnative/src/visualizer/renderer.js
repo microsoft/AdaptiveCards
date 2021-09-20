@@ -68,10 +68,29 @@ export default class Renderer extends React.Component {
     constructor(props) {
         super(props);
         this.payload = props.payload;
+        this.dataJson = props?.dataJson;
         this.onModalClose = props.onModalClose;
     }
 
+    getTemplatePayload(templatejson, datajson) {
+        try {
+
+            const template = new ACData.Template(templatejson);
+
+            templatePayload = template.expand({
+                $root: datajson
+            });
+            return templatePayload;
+        } catch (error) {
+        }
+    }
+
     bindPayloadWithData() {
+        if(this.payload && this.dataJson) {
+            this.payload = this.getTemplatePayload(this.payload, this.dataJson);
+            return;
+        }
+
         // Create a Template instance from the template payload
         var template = new ACData.Template(this.payload);
 
@@ -115,6 +134,35 @@ export default class Renderer extends React.Component {
                     { "key": "List", "value": "Backlog" },
                     { "key": "Assigned to", "value": "Matt Hidinger" },
                     { "key": "Due date", "value": "Not set" }
+                ],
+                "cafeName": "Cafe 34",
+                "cafeDescription": "Open Mon-Fri from 9am - 2pm",
+                "cafeteriaImage": "https://th.bing.com/th/id/R.f70650f59a71616da0d8f4b5c73e9f60?rik=g02xYdIzQX5Img&riu=http%3a%2f%2fwww.designtechnikblog.ch%2fwp-content%2fuploads%2f2018%2f02%2f7486f09c-1dce-478b-99aa-0a142c9e9165.jpg&ehk=wNERHkKGpde%2bmt9lefTeLF88%2br6OFdhUKNG8oEExDg8%3d&risl=&pid=ImgRaw&r=0",
+                "menu":[
+                    {
+                        "image": "https://i.pinimg.com/originals/22/28/af/2228afa177aa08b6664c76bd9d7ec56c.jpg",
+                        "station": "Station 1",
+                        "name": "Korean",
+                        "description": "Chili Pickled Cabbage, Pork Bulgogi, Korean Barbecue, Fried..."
+                    },
+                    {
+                        "image": "https://th.bing.com/th/id/R.611dd20fbfc894b973b662498027721f?rik=Ev8dUaRZCrpnTg&riu=http%3a%2f%2fdimondcafeoakland.com%2fuploads%2f3%2f4%2f7%2f7%2f34778011%2f8770113.jpg&ehk=ZSUEdr0fuSpjM22rivCpa7O8UlMNQfRozIW9UKogB1o%3d&risl=&pid=ImgRaw&r=0",
+                        "station": "Station 2",
+                        "name": "Mexican",
+                        "description": "Enchiladas, Street tacos, Guacamole"
+                    },
+                    {
+                        "image": "https://th.bing.com/th/id/OIP.NqBIh7UiCM7KRxnn6ijgRwAAAA?pid=ImgDet&rs=1",
+                        "station": "Station 3",
+                        "name": "Grille",
+                        "description": "Selection of burgers, French fries, Fountain drinks."
+                    },
+                    {
+                        "image": "https://th.bing.com/th/id/OIP.gHJJCykFexBZTex15nhCPAAAAA?pid=ImgDet&w=300&h=300&rs=1",
+                        "station": "Station 3",
+                        "name": "in.gredients",
+                        "description": "Enchiladas, Street tacos, Guacamole"
+                    }
                 ]
             }
         }

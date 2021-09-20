@@ -54,7 +54,7 @@ export class Column extends React.Component {
 		}
 		return children.map((ChildElement, index) => React.cloneElement(ChildElement, {
 			containerStyle: this.column.style,
-			isFirst: index === 0, columnWidth: this.column.width, 
+			isFirst: index === 0, columnWidth: this.column.width,
 			configManager: this.props.configManager
 		}));
 	}
@@ -142,7 +142,7 @@ export class Column extends React.Component {
 		if (!this.isForemostElement() && this.column.spacing) {
 			spacingStyle.push({ marginLeft: this.spacing })
 		}
-		spacingStyle.push({ flexGrow: 1 });
+		// spacingStyle.push({ flexGrow: 1 });
 
 		if (Utils.isPixelValue(this.column.width) && Utils.isaNumber(this.column.width)) {
 			containerViewStyle.push({ width: parseInt(this.column.width) })
@@ -164,6 +164,14 @@ export class Column extends React.Component {
 		if (separator) {
 			separatorStyles = [containerViewStyle, styles.separatorStyle];
 		}
+
+		if (!this.props.isFirst) {
+			containerViewStyle.push({ marginLeft: this.spacing });
+		}
+
+		const minHeight = Utils.convertStringToNumber(this.column.minHeight);
+		//We will pass the style as array, since it can be updated in the container wrapper if required.
+		typeof minHeight === "number" && containerViewStyle.push({ minHeight, backgroundColor:"green" });
 
 		return <ContainerWrapper configManager={this.props.configManager} json={this.column} hasBackgroundImage={this.props.hasBackgroundImage} isFirst={isFirst} isLast={isLast} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
 			<ActionComponent {...actionComponentProps}>

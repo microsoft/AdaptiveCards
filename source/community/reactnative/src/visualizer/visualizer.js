@@ -74,6 +74,7 @@ export default class Visualizer extends React.Component {
                     <Renderer
                         payload={this.state.selectedPayload}
                         isDataBinding={Constants.DataBinding === this.state.activeIndexValue}
+                        dataJson={this.state.dataJson}
                         onModalClose={this.closeModal}
                     />
                 </Modal>
@@ -145,7 +146,8 @@ export default class Visualizer extends React.Component {
 
         this.setState({
             isModalVisible: true,
-            selectedPayload: notAdaptiveCard ? AdaptiveCardBuilder.buildAdaptiveCard(payload.json.content, payload.json.contentType) : payload.json
+            selectedPayload: notAdaptiveCard ? AdaptiveCardBuilder.buildAdaptiveCard(payload.json.content, payload.json.contentType) : payload.json,
+            dataJson: notAdaptiveCard? '' : payload?.data
         })
     }
 

@@ -12,6 +12,8 @@ import {
 import { SelectAction } from '../actions';
 import ElementWrapper from '../elements/element-wrapper';
 import { Column } from "./column";
+import * as Utils from '../../utils/util';
+import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { ContainerWrapper } from './';
 
@@ -50,9 +52,21 @@ export class ColumnSet extends React.PureComponent {
 
 	internalRenderer() {
 		const payload = this.payload;
+		const { hostConfig } = this.props.configManager;
 
+		// padding
+        const spacingEnumValue = Utils.parseHostConfigEnum(
+			Enums.Spacing,
+			this.payload.spacing,
+			Enums.Spacing.Default);
+        const padding = hostConfig.getEffectiveSpacing(spacingEnumValue);
+
+		const minHeight = Utils.convertStringToNumber(this.payload.minHeight);
+		//We will pass the style as array, since it can be updated in the container wrapper if required.
+		const containerStyle = typeof minHeight === "number" ? { minHeight } : {};
+		
 		var columnSetContent = (
-			<ContainerWrapper configManager={this.props.configManager} style={{ flex: this.payload.columns.length }} json={payload} containerStyle={this.props.containerStyle}>
+			<ContainerWrapper configManager={this.props.configManager} style={[{ flex: this.payload.columns.length, marginTop: padding }, containerStyle]} json={payload} containerStyle={this.props.containerStyle}>
 				<ElementWrapper configManager={this.props.configManager} json={payload} style={styles.defaultBGStyle} isFirst={this.props.isFirst}>
 					{this.parsePayload()}
 				</ElementWrapper>

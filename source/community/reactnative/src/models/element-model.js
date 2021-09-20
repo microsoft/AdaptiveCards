@@ -62,6 +62,7 @@ export class RichTextBlockModel extends BaseModel {
     constructor(payload, parent, hostConfig) {
         super(payload, parent, hostConfig);
         this.text = payload.text;
+        this.underline = payload.underline || false;
         this.color = payload.color;
         this.horizontalAlignment = payload.horizontalAlignment;
         this.isSubtle = payload.isSubtle || false;

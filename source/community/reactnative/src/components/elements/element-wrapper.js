@@ -49,14 +49,13 @@ export default class ElementWrapper extends React.Component {
 		)
 	}
 
-    /**
-     * @description Return the styles applicable based on the given payload
+	/**
+	 * @description Return the styles applicable based on the given payload
 	 * @returns {Array} computedStyles
-     */
+	 */
 	getComputedStyles = () => {
 		const payload = this.props.json;
 		const receivedStyles = this.props.style;
-
 		let computedStyles = [styles.inputContainer, receivedStyles];
 
 		// height 
@@ -68,6 +67,25 @@ export default class ElementWrapper extends React.Component {
 				Enums.Height.Auto);
 			const height = this.props.configManager.hostConfig.getEffectiveHeight(heightEnumValue);
 			computedStyles.push({ flex: height });
+		}
+		if (payload.parent && payload.parent["verticalContentAlignment"] && payload.parent.type === Constants.TypeColumn) {
+			// vertical content alignment
+			let verticalContentAlignment = Utils.parseHostConfigEnum(
+				Enums.VerticalAlignment,
+				payload.parent["verticalContentAlignment"],
+				Enums.VerticalAlignment.Top
+			);
+			switch (verticalContentAlignment) {
+				case Enums.VerticalAlignment.Center:
+					computedStyles.push({ justifyContent: Constants.CenterString });
+					break;
+				case Enums.VerticalAlignment.Bottom:
+					computedStyles.push({ justifyContent: Constants.FlexEnd });
+					break;
+				default:
+					computedStyles.push({ justifyContent: Constants.FlexStart });
+					break;
+			}
 		}
 
 		return computedStyles;
@@ -88,9 +106,9 @@ export default class ElementWrapper extends React.Component {
 	}
 
 	/**
-     * @description Return the element for spacing and/or separator
-     * @returns {object} View element with spacing based on `spacing` and `separator` prop
-     */
+	 * @description Return the element for spacing and/or separator
+	 * @returns {object} View element with spacing based on `spacing` and `separator` prop
+	 */
 	getSpacingElement = () => {
 		const payload = this.props.json;
 		const spacingEnumValue = Utils.parseHostConfigEnum(
@@ -113,11 +131,16 @@ export default class ElementWrapper extends React.Component {
 	}
 
 	/**
-     * @description Return the element for separator
-     * @returns {object} View element with `separator` prop
-     */
+	 * @description Return the element for separator
+	 * @returns {object} View element with `separator` prop
+	 */
 	getSeparatorElement = () => {
-		return <View style={[this.styleConfig.separatorStyle, { height: 3 }]}></View>
+		const spacingEnumValue = Utils.parseHostConfigEnum(
+			Enums.Spacing,
+			this.props.json.spacing,
+			Enums.Spacing.Default);
+		const spacing = this.props.configManager.hostConfig.getEffectiveSpacing(spacingEnumValue);
+		return <View style={[this.styleConfig.separatorStyle, { height: 3, marginBottom: spacing }]}></View>
 	}
 }
 

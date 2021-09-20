@@ -67,13 +67,15 @@ export class ActionWrapper extends React.Component {
 					}
 				}
 				if (isValid) {
-					const isFirstElement = index == 0 || this.hostConfig.actions.actionsOrientation === Enums.Orientation.Vertical
+					const isFirstElement = index == 0
+					const isLastElement = index == (actions.length - 1)
 					if (element.type === 'Action.ShowCard') {
 						this.hasShowCard = true;
 						renderedElement.push(
 							<Element
 								json={element}
 								isFirst={isFirstElement}
+								isLast={isLastElement}
 								maxWidth={100 / actions.length + "%"}
 								configManager={this.props.configManager}
 								onShowCardTapped={this.onShowAdaptiveCard}
@@ -81,7 +83,7 @@ export class ActionWrapper extends React.Component {
 							/>);
 					}
 					else {
-						renderedElement.push(<Element json={element} configManager={this.props.configManager} isFirst={isFirstElement} maxWidth={100 / actions.length + "%"} key={`${element.type}-${index}`} />);
+						renderedElement.push(<Element json={element} configManager={this.props.configManager} isFirst={isFirstElement} isLast={isLastElement} maxWidth={100 / actions.length + "%"} key={`${element.type}-${index}`} />);
 					}
 				}
 			} else {

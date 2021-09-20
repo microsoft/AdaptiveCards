@@ -8,7 +8,8 @@ import React from 'react';
 import {
 	Switch,
 	StyleSheet,
-	View
+	View,
+	Platform
 } from 'react-native';
 
 import { InputContextConsumer } from '../../utils/context';
@@ -68,17 +69,33 @@ export class ToggleInput extends React.Component {
 						return (
 							<View
 								accessible={true}
-								accessibilityLabel={this.altText}
-								style={styles.toggleView}>
+								accessibilityLabel={this.altText || Platform.OS === 'android' ? this.title : undefined}
+								style={styles.toggleView}
+								accessibilityRole={'switch'}
+								onAccessibilityAction={
+									(event) => {
+										if (event.nativeEvent.actionName === 'activate') {
+											this.toggleValueChanged(!this.state.toggleValue, addInputItem);
+										}
+									}
+								}
+								accessibilityActions={[{name: 'activate'}]}
+								accessibilityState={{checked: this.state.toggleValue}}
+							>
 								<Switch
+									trackColor={this.props.configManager.themeConfig.switch[Platform.OS].trackColor}
+									thumbColor={this.props.configManager.themeConfig.switch[Platform.OS].thumbColor}
+									ios_backgroundColor={this.props.configManager.themeConfig.switch[Platform.OS].ios_backgroundColor}
+									accessible={false}
+									importantForAccessibility='no-hide-descendants'
 									style={styles.switch}
 									value={toggleValue}
 									onValueChange={toggleValue => {
 										this.toggleValueChanged(toggleValue, addInputItem)
 									}}>
 								</Switch>
-								<View style={styles.titleContainer}>
-									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} />
+								<View style={styles.titleContainer} importantForAccessibility='no-hide-descendants'>
+									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title}/>
 								</View>
 							</View>
 						)
@@ -91,11 +108,9 @@ export class ToggleInput extends React.Component {
 
 const styles = StyleSheet.create({
 	toggleContainer: {
-		paddingTop: 5,
-		paddingBottom: 5
+		marginVertical: 3
 	},
 	toggleView: {
-		padding: 5,
 		flexDirection: Constants.FlexRowReverse,
 		justifyContent: Constants.SpaceBetween,
 		alignItems: Constants.CenterString,

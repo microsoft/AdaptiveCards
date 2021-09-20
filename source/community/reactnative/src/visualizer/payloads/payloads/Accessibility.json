@@ -40,8 +40,58 @@
 					"type": "Action.Submit",
 					"title": "OK",
 					"data": "submit"
+				},
+				{
+					"type": "RichTextBlock",
+					"wrap": true,
+					"paragraphs": [
+					{
+						"inlines": [
+							{
+								"type": "TextRun",
+								"text": "Please click here: "
+							},
+							{
+								"type": "TextRun",
+								"text": "a very very long link that opens bing.com",
+								"selectAction": {
+									"type": "Action.OpenUrl",
+									"url": "bing.com"
+								}
+							},
+							{
+								"type": "TextRun",
+								"text": ". Gap. "
+							}
+							
+						]
+					}
+				]
+				},
+				{
+					"type": "RichTextBlock",
+					"wrap": true,
+					"paragraphs": [
+					{
+						"inlines": [
+							{
+								"type": "TextRun",
+								"text": "Please click here: "
+							},
+							{
+								"type": "TextRun",
+								"text": "bing.com",
+								"selectAction": {
+									"type": "Action.OpenUrl",
+									"url": "bing.com"
+								}
+							}
+							
+						]
+					}
+				]
 				}
-			]
+			]	
 		}
 	]
 }

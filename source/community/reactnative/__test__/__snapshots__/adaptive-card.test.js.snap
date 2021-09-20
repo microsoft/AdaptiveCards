@@ -26,9 +26,6 @@ exports[`renders correctly 1`] = `
             "borderColor": undefined,
             "borderWidth": 0,
           },
-          Object {
-            "padding": 5,
-          },
         ],
         Array [
           Object {

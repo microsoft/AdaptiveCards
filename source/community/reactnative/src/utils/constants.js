@@ -48,6 +48,7 @@ export const WhiteColor = 'white';
 export const BlackColor = '#000000';
 export const LightBlack = "#404040";
 export const buttonDefaultColor = "#1D9BF6";
+export const BackgroundDisabledColor = "rgba(0,0,0,.3)";
 
 export const TrueString = "true";
 export const FalseString = "false";
@@ -63,6 +64,8 @@ export const TypeColumnSet = "ColumnSet";
 export const TypeAdaptiveCard = "AdaptiveCard";
 export const TypeTextBlock = "TextBlock";
 export const TypeRichTextBlock = "RichTextBlock";
+export const TypeColumn = "Column";
+export const TypeContainer = "Container";
 
 export const TypeString = "string";
 export const TypeObject = "object"
@@ -72,3 +75,5 @@ export const Button = "button";
 
 export const BehaviourPadding = "padding";
 export const BehaviourHeight = "height";
+
+export const containerPadding = 8;

@@ -12,28 +12,38 @@
                     "inlines": [
                         {
                             "type": "TextRun",
-                            "text": "**The Huffington Post**",
+                            "text": "**The BigThinkCode - **",
                             "color": "good",
                             "selectAction": {
-                                "type": "Action.Submit",
+                                "type": "Action.OpenUrl",
                                 "title": "cool link",
-                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                "url": "https://www.bigthinkcode.com/"
                             }
                         },
                         {
                             "type": "TextRun",
-                            "text": "5/23/2016",
+                            "text": "BIG PLANS NEED BIG THINK[ING]",
                             "color": "good",
+                            "underline": true,
                             "selectAction": {
                                 "type": "Action.Submit",
-                                "title": "cool link",
-                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                "title": "WE THINK IN CODE",
+                                "url": "https://www.youtube.com/watch?v=J12lKt717Ws"
                             }
-                        },
+                        }
+                    ]
+                },
+                {
+                    "type": "TextBlock",
+                    "text": " "
+                },
+                {
+                    "inlines": [
                         {
                             "type": "TextRun",
                             "text": "This is highlighted",
-                            "highlight": true
+                            "highlight": true,
+                            "underline": true
                         },
                         {
                             "type": "TextRun",
@@ -42,24 +52,29 @@
                     ]
                 },
                 {
+                    "type": "TextBlock",
+                    "text": " "
+                },
+                {
                     "inlines": [
                         {
                             "type": "TextRun",
-                            "text": "[Weather in](http://google.com)",
+                            "text": "[Weather in](https://www.bigthinkcode.com/)",
                             "color": "good",
                             "selectAction": {
                                 "type": "Action.OpenUrl",
                                 "title": "5/23/2016",
-                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                "url": "https://www.youtube.com/watch?v=J12lKt717Ws"
                             }
                         },
                         {
                             "type": "TextRun",
                             "text": "**Chennai on**",
+                            "underline": true,
                             "selectAction": {
                                 "type": "Action.OpenUrl",
                                 "title": "5/23/2016",
-                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                "url": "https://www.youtube.com/watch?v=J12lKt717Ws"
                             }
                         },
                         {

@@ -1,0 +1,151 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "name": "cafe1",
+    "body": [
+        {
+            "type": "Container",
+            "bleed": true,
+            "backgroundImage": {
+                "url": "${cafeteriaImage}"
+            },
+            "verticalContentAlignment": "bottom",
+            "height": "stretch",
+            "minHeight": "240px",
+            "items": [
+                {
+                    "type": "Container",
+                    "bleed": true,
+                    "items": [
+                        {
+                            "type": "ColumnSet",
+                            "bleed": true,
+                            "columns": [
+                                {
+                                    "type": "Column",
+                                    "width": 25,
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Open",
+                                            "height": "stretch",
+                                            "size": "Small",
+                                            "color": "Light"
+                                        }
+                                    ],
+                                    "style": "accent",
+                                    "height": "stretch"
+                                },
+                                {
+                                    "type": "Column",
+                                    "width": 75,
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": " "
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "${cafeName}",
+                            "wrap": true,
+                            "spacing": "Medium",
+                            "size": "ExtraLarge",
+                            "weight": "Bolder",
+                            "color": "Light"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "${cafeDescription}",
+                            "wrap": true,
+                            "spacing": "None",
+                            "color": "Light"
+                        },
+                        {
+                            "type": "Container",
+                            "minHeight": "20px"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Today",
+            "wrap": true,
+            "size": "Medium",
+            "isSubtle": true,
+            "spacing": "Large"
+        },
+        {
+            "type": "Container",
+            "bleed": true,
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "bleed": true,
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "bleed": true,
+                            "height": "stretch",
+                            "padding": "",
+                            "spacing": "None",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "url": "${image}",
+                                    "size": "Medium",
+                                    "spacing": "None"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "bleed": true,
+                            "verticalContentAlignment": "center",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${station}",
+                                    "wrap": true,
+                                    "isSubtle": true,
+                                    "spacing": "None",
+                                    "weight": "Lighter",
+                                    "size": "Small"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${name}",
+                                    "wrap": true,
+                                    "spacing": "None"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${description}",
+                                    "wrap": true,
+                                    "spacing": "None",
+                                    "isSubtle": true,
+                                    "weight": "Lighter",
+                                    "maxLines": 2,
+                                    "size": "Small"
+                                }
+                            ]
+                        }
+                    ],
+                    "minHeight": "80px",
+                    "spacing": "Small"
+                }
+            ],
+            "$data": "${menu}",
+            "height": "stretch",
+            "spacing": "Small"
+        }
+    ]
+}

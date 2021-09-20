@@ -11,7 +11,8 @@ import {
 	TextInput,
 	Modal,
 	Button,
-	ViewPropTypes
+	ViewPropTypes,
+	Platform
 } from 'react-native';
 
 import { InputContextConsumer } from '../../utils/context';
@@ -83,10 +84,13 @@ export class PickerInput extends React.Component {
 				{({ addInputItem, showErrors }) => (
 					<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
 						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
-						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
+						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}
+							accessibilityLabel={Platform.OS === 'android' ? (this.payload.altText || this.props.value || placeholder) : undefined}
+							accessibilityRole='button'>
 							{/* added extra view to fix touch event in ios . */}
 							<View
 								accessible={true}
+								importantForAccessibility={'no-hide-descendants'}
 								accessibilityLabel={this.payload.altText || this.props.value || placeholder}
 								pointerEvents='none'
 								style={this.getComputedStyles(showErrors)}>
@@ -108,7 +112,7 @@ export class PickerInput extends React.Component {
 							visible={this.props.modalVisible}
 							onRequestClose={this.props.handleModalClose}>
 							<View style={[styles.overlay, modalOverlayStyle]}>
-								<View style={[styles.modal, modalStyle]}>
+								<View style={[this.styleConfig.dateTimePicker, modalStyle]}>
 									<View style={[styles.modalBtnContainer, modalBtnContainer]}>
 										<Button
 											style={[modalButtonStyle]}
@@ -123,6 +127,7 @@ export class PickerInput extends React.Component {
 										value={this.props.chosenDate || new Date()}
 										minimumDate={this.props.minDate}
 										maximumDate={this.props.maxDate}
+										textColor={this.styleConfig.dateTimePicker.textColor}
 										onChange={(event, date) => this.props.handleDateChange(date)} />
 								</View>
 							</View>
@@ -150,28 +155,21 @@ export class PickerInput extends React.Component {
 const styles = StyleSheet.create({
 	inputWrapper: {
 		width: Constants.FullWidth,
-		marginTop: 3,
+		marginTop: 3
 	},
 	elementWrapper: {
 		marginVertical: 3
 	},
 	overlay: {
 		flex: 1,
-		backgroundColor: 'rgba(0,0,0,.3)',
+		backgroundColor: Constants.BackgroundDisabledColor,
 		alignItems: Constants.CenterString,
 		justifyContent: Constants.FlexEnd
-	},
-	modal: {
-		backgroundColor: Constants.WhiteColor,
-		height: 260,
-		width: Constants.FullWidth
 	},
 	modalBtnContainer: {
 		width: Constants.FullWidth,
 		alignItems: Constants.CenterString,
 		flexDirection: Constants.FlexRow,
-		justifyContent: Constants.FlexEnd,
-		paddingHorizontal: 15,
-		marginTop: 15
+		justifyContent: Constants.FlexEnd
 	}
 });
