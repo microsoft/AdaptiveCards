@@ -28,7 +28,7 @@ namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
             renderContext.AddWarning(winrt::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
                                      L"Toggle Input was stripped from card because interactivity is not supported");
 
-            return S_OK;
+            return nullptr;
         }
 
         AdaptiveToggleInput toggleInput = cardElement.as<AdaptiveToggleInput>();
