@@ -7,7 +7,7 @@
 | **type** | `"FactSet"` | Yes | Must be `"FactSet"`. | 1.0 |
 | **facts** | `Fact[]` | Yes | The array of `Fact`'s. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -40,19 +40,21 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `Container`
+  * `TableCell`
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TableRow`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 

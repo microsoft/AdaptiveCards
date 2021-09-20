@@ -14,10 +14,10 @@
 | **spacing** | `Spacing` | No | Controls the amount of spacing between this column and the preceding column. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `Column`. | 1.0 |
-| **verticalContentAlignment** | `VerticalContentAlignment` | No, default: `"top"` | Defines how the content should be aligned vertically within the column. | 1.1 |
+| **verticalContentAlignment** | `VerticalContentAlignment?` | No | Defines how the content should be aligned vertically within the column. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top. | 1.1 |
 | **width** | `string`, `number` | No | `"auto"`, `"stretch"`, a number representing relative width of the column in the column group, or in version 1.1 and higher, a specific pixel width, like `"50px"`. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -35,19 +35,21 @@ The card elements to render inside the `Column`.
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `Container`
+  * `TableCell`
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TableRow`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `TextBlock`
 
 
 ## backgroundImage
@@ -121,11 +123,11 @@ Style hint for `Column`.
 
 ## verticalContentAlignment
 
-Defines how the content should be aligned vertically within the column.
+Defines how the content should be aligned vertically within the column. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.
 
-* **Type**: `VerticalContentAlignment`
+* **Type**: `VerticalContentAlignment?`
 * **Version** : 1.1
-* **Required**: No, default: `"top"`
+* **Required**: No
 * **Allowed values**:
   * `"top"`
   * `"center"`

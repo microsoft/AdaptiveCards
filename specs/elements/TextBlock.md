@@ -6,17 +6,17 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"TextBlock"` | Yes | Must be `"TextBlock"`. | 1.0 |
 | **text** | `string` | Yes | Text to display. A subset of markdown is supported (https://aka.ms/ACTextFeatures) | 1.0 |
-| **color** | `Colors` | No | Controls the color of `TextBlock` elements. | 1.0 |
-| **fontType** | `FontType` | No | Type of font to use for rendering | 1.2 |
-| **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal text alignment. | 1.0 |
-| **isSubtle** | `boolean` | No | If `true`, displays text slightly toned down to appear less prominent. | 1.0 |
+| **color** | `Colors?` | No | Controls the color of `TextBlock` elements. | 1.0 |
+| **fontType** | `FontType?` | No | Type of font to use for rendering | 1.2 |
+| **horizontalAlignment** | `HorizontalAlignment?` | No | Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left. | 1.0 |
+| **isSubtle** | `boolean?` | No | If `true`, displays text slightly toned down to appear less prominent. | 1.0 |
 | **maxLines** | `number` | No | Specifies the maximum number of lines to display. | 1.0 |
-| **size** | `FontSize` | No | Controls size of text. | 1.0 |
-| **weight** | `FontWeight` | No | Controls the weight of `TextBlock` elements. | 1.0 |
+| **size** | `FontSize?` | No | Controls size of text. | 1.0 |
+| **weight** | `FontWeight?` | No | Controls the weight of `TextBlock` elements. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.0 |
-| **style** | `TextBlockStyle` | No, default: `"paragraph"` | The style of this TextBlock for accessibility purposes. | 1.0 |
+| **style** | `TextBlockStyle?` | No, default: `"default"` | The style of this TextBlock for accessibility purposes. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -33,7 +33,7 @@
 
 Controls the color of `TextBlock` elements.
 
-* **Type**: `Colors`
+* **Type**: `Colors?`
 * **Required**: No
 * **Allowed values**:
   * `"default"`
@@ -49,7 +49,7 @@ Controls the color of `TextBlock` elements.
 
 Type of font to use for rendering
 
-* **Type**: `FontType`
+* **Type**: `FontType?`
 * **Version** : 1.2
 * **Required**: No
 * **Allowed values**:
@@ -59,9 +59,9 @@ Type of font to use for rendering
 
 ## horizontalAlignment
 
-Controls the horizontal text alignment.
+Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left.
 
-* **Type**: `HorizontalAlignment`
+* **Type**: `HorizontalAlignment?`
 * **Required**: No
 * **Allowed values**:
   * `"left"`
@@ -73,7 +73,7 @@ Controls the horizontal text alignment.
 
 Controls size of text.
 
-* **Type**: `FontSize`
+* **Type**: `FontSize?`
 * **Required**: No
 * **Allowed values**:
   * `"default"`
@@ -87,7 +87,7 @@ Controls size of text.
 
 Controls the weight of `TextBlock` elements.
 
-* **Type**: `FontWeight`
+* **Type**: `FontWeight?`
 * **Required**: No
 * **Allowed values**:
   * `"default"`
@@ -99,11 +99,11 @@ Controls the weight of `TextBlock` elements.
 
 The style of this TextBlock for accessibility purposes.
 
-* **Type**: `TextBlockStyle`
-* **Required**: No, default: `"paragraph"`
+* **Type**: `TextBlockStyle?`
+* **Required**: No, default: `"default"`
 * **Allowed values**:
-  * `"paragraph"`: This is the default style. The TextBlock behaves as standard content and will be read as such by accessibility software.
-  * `"heading"`: The TextBlock behaves as a heading which impacts how accessibility software handles navigation and narration.
+  * `"default"`: This is the default style which provide no special styling or behavior.
+  * `"heading"`: The TextBlock is a heading. This will apply the heading styling defaults and mark the text block as a heading for accessiblity.
 
 
 ## fallback
@@ -116,19 +116,21 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `Container`
+  * `TableCell`
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TableRow`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 
