@@ -65,6 +65,11 @@
             txtInput = [bundle loadNibNamed:@"ACRTextUrlField" owner:rootView options:nil][0];
             break;
         }
+        case TextInputStyle::Password: {
+            txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
+            txtInput.secureTextEntry = YES;
+            break;
+        }
         case TextInputStyle::Text:
         default: {
             txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
@@ -74,6 +79,7 @@
     txtInput.placeholder = [NSString stringWithCString:inputBlock->GetPlaceholder().c_str()
                                               encoding:NSUTF8StringEncoding];
     txtInput.text = [NSString stringWithCString:inputBlock->GetValue().c_str() encoding:NSUTF8StringEncoding];
+
     txtInput.allowsEditingTextAttributes = YES;
     return txtInput;
 }
