@@ -2617,16 +2617,17 @@ namespace RendererQml
 				showCardIcon->Property("icon.height", "12");
 				showCardIcon->Property("icon.source", RendererQml::arrow_down_12, true);
 				showCardIcon->Property("background", showCardIconBackground->ToString());
+                showCardIcon->Property("onReleased", Formatter() << buttonId << ".released()");
                 textLayout->AddChild(showCardIcon);
             }
 
             contentLayout->AddChild(textLayout);
             buttonElement->Property("contentItem", contentItem->ToString());
 
-            std::string onClickedFunction;
+            std::string onReleasedFunction;
             if (action->GetElementTypeString() == "Action.OpenUrl")
             {
-                onClickedFunction = getActionOpenUrlClickFunc(std::dynamic_pointer_cast<AdaptiveCards::OpenUrlAction>(action), context);
+                onReleasedFunction = getActionOpenUrlClickFunc(std::dynamic_pointer_cast<AdaptiveCards::OpenUrlAction>(action), context);
             }
             else if (action->GetElementTypeString() == "Action.ShowCard")
             {
@@ -2634,7 +2635,7 @@ namespace RendererQml
             }
             else if (action->GetElementTypeString() == "Action.ToggleVisibility")
             {
-				onClickedFunction = getActionToggleVisibilityClickFunc(std::dynamic_pointer_cast<AdaptiveCards::ToggleVisibilityAction>(action), context);
+                onReleasedFunction = getActionToggleVisibilityClickFunc(std::dynamic_pointer_cast<AdaptiveCards::ToggleVisibilityAction>(action), context);
             }
             else if (action->GetElementTypeString() == "Action.Submit")
             {
@@ -2642,10 +2643,10 @@ namespace RendererQml
             }
             else
             {
-                onClickedFunction = "";
+                onReleasedFunction = "";
             }
 
-            buttonElement->Property("onClicked", Formatter() << "{\n" << onClickedFunction << "}\n");
+            buttonElement->Property("onReleased", Formatter() << "{\n" << onReleasedFunction << "}\n");
             return buttonElement;
         }
 
@@ -2661,7 +2662,7 @@ namespace RendererQml
             const auto action = element.second;
 
             onClickedFunction = getActionSubmitClickFunc(action, context);
-            buttonElement->Property("onClicked", Formatter() << "{\n" << onClickedFunction << "}\n");
+            buttonElement->Property("onReleased", Formatter() << "{\n" << onClickedFunction << "}\n");
         }
     }
 
@@ -2674,7 +2675,7 @@ namespace RendererQml
             const auto action = element.second;
 
             onClickedFunction = getActionShowCardClickFunc(buttonElement, context);
-            buttonElement->Property("onClicked", Formatter() << "{\n" << onClickedFunction << "}\n");
+            buttonElement->Property("onReleased", Formatter() << "{\n" << onClickedFunction << "}\n");
         }
 
         context->clearShowCardButtonList();
@@ -2730,7 +2731,7 @@ namespace RendererQml
 			if (buttonElement->GetId() != button->GetId())
 			{
 				function << "if(" << button->GetId() << ".showCard)\n{\n";
-				function << button->GetId() << ".clicked()\n}\n";
+				function << button->GetId() << ".released()\n}\n";
 			}
 		}
 
