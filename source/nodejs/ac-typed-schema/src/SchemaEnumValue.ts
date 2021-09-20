@@ -17,7 +17,7 @@ export class SchemaEnumValue {
 			}
 			this._value = sourceObj.value;
 			this._description = sourceObj.description;
-            this._version = sourceObj.version;
+			this._version = sourceObj.version;
 		}
 	}
 
@@ -29,9 +29,9 @@ export class SchemaEnumValue {
 		return this._description;
 	}
 
-    get version() {
-        return this._version;
-    }
+	get version() {
+		return this._version;
+	}
 
 	get original() {
 		return this._original;
