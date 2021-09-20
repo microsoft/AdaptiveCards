@@ -3,7 +3,7 @@
 export class SchemaEnumValue {
 	private _original: any;
 	private _value: string;
-    private _version?: string;
+	private _version?: string;
 	private _description?: string;
 
 	constructor(sourceObj: any) {
