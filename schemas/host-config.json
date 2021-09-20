@@ -67,17 +67,6 @@
 				}
 			}
 		},
-		"AdaptiveCardConfig": {
-			"type": "object",
-			"description": "Toplevel options for `AdaptiveCards`",
-			"properties": {
-				"allowCustomStyle": {
-					"type": "boolean",
-					"description": "Controls whether custom styling is allowed",
-					"default": true
-				}
-			}
-		},
 		"ContainerStyleConfig": {
 			"type": "object",
 			"description": "Controls styling of a container",
@@ -685,64 +674,72 @@
 				}
 			}
 		},
-		"type": "object",
-		"properties": {
-			"supportsInteractivity": {
-				"type": "boolean",
-				"description": "Control whether interactive `Action`s are allowed to be invoked",
-				"default": true
-			},
-			"imageBaseUrl": {
-				"type": "string",
-				"format": "uri",
-				"description": "Base URL to be used when loading resources"
-			},
-			"fontFamily": {
-				"type": "string",
-				"description": "Font face to use when rendering text",
-				"default": "Calibri"
-			},
-			"actions": {
-				"$ref": "#/definitions/ActionsConfig"
-			},
-			"adaptiveCard": {
-				"$ref": "#/definitions/AdaptiveCardConfig"
-			},
-			"containerStyles": {
-				"$ref": "#/definitions/ContainerStylesConfig"
-			},
-			"imageSizes": {
-				"$ref": "#/definitions/ImageSizesConfig"
-			},
-			"imageSet": {
-				"$ref": "#/definitions/ImageSetConfig"
-			},
-			"factSet": {
-				"$ref": "#/definitions/FactSetConfig"
-			},
-			"fontSizes": {
-				"$ref": "#/definitions/FontSizesConfig"
-			},
-			"fontWeights": {
-				"$ref": "#/definitions/FontWeightsConfig"
-			},
-			"spacing": {
-				"$ref": "#/definitions/SpacingsConfig"
-			},
-			"separator": {
-				"$ref": "#/definitions/SeparatorConfig"
-			},
-			"media": {
-				"$ref": "#/definitions/MediaConfig"
-			},
-			"inputs": {
-				"$ref": "#/definitions/InputsConfig"
-			},
-			"textBlock": {
-				"$ref": "#/definitions/TextBlockConfig"
-			},
-			"textStyles": {
-				"$ref": "#/definitions/TextStylesConfig"
+		"AdaptiveCardConfig": {
+			"type": "object",
+			"description": "Toplevel options for `AdaptiveCards`",
+			"properties": {
+				"supportsInteractivity": {
+					"type": "boolean",
+					"description": "Control whether interactive `Action`s are allowed to be invoked",
+					"default": true
+				},
+				"imageBaseUrl": {
+					"type": "string",
+					"format": "uri",
+					"description": "Base URL to be used when loading resources"
+				},
+				"fontFamily": {
+					"type": "string",
+					"description": "Font face to use when rendering text",
+					"default": "Calibri"
+				},
+				"allowCustomStyle": {
+					"type": "boolean",
+					"description": "Controls whether custom styling is allowed",
+					"default": true
+				},
+				"actions": {
+					"$ref": "#/definitions/ActionsConfig"
+				},
+				"adaptiveCard": {
+					"$ref": "#/definitions/AdaptiveCardConfig"
+				},
+				"containerStyles": {
+					"$ref": "#/definitions/ContainerStylesConfig"
+				},
+				"imageSizes": {
+					"$ref": "#/definitions/ImageSizesConfig"
+				},
+				"imageSet": {
+					"$ref": "#/definitions/ImageSetConfig"
+				},
+				"factSet": {
+					"$ref": "#/definitions/FactSetConfig"
+				},
+				"fontSizes": {
+					"$ref": "#/definitions/FontSizesConfig"
+				},
+				"fontWeights": {
+					"$ref": "#/definitions/FontWeightsConfig"
+				},
+				"spacing": {
+					"$ref": "#/definitions/SpacingsConfig"
+				},
+				"separator": {
+					"$ref": "#/definitions/SeparatorConfig"
+				},
+				"media": {
+					"$ref": "#/definitions/MediaConfig"
+				},
+				"inputs": {
+					"$ref": "#/definitions/InputsConfig"
+				},
+				"textBlock": {
+					"$ref": "#/definitions/TextBlockConfig"
+				},
+				"textStyles": {
+					"$ref": "#/definitions/TextStylesConfig"
+				}
 			}
 		}
 	}
