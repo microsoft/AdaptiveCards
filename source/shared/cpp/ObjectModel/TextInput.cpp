@@ -78,8 +78,7 @@ void TextInput::SetValue(const std::string& value)
 
 bool TextInput::GetIsMultiline() const
 {
-    // isMultiline is ignored if the TextInputStyle is password
-    return m_isMultiline && m_style != TextInputStyle::Password;
+    return m_isMultiline;
 }
 
 void TextInput::SetIsMultiline(const bool value)
@@ -143,8 +142,8 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& cont
         ParseUtil::GetEnumValue<TextInputStyle>(json, AdaptiveCardSchemaKey::Style, TextInputStyle::Text, TextInputStyleFromString);
     textInput->SetTextInputStyle(textInputStyle);
 
-    // emit warning in the case where style is `password` but multiline is specified (this is an invalid combination...
-    // we will ignore multiline, though we'll allow it to serialize (see TextInput::GetIsMultiline()).
+    // emit warning in the case where style is `password` but multiline is specified (this is an invalid combination.
+    // renderers should ignore multiline in this case)
     if (isMultiline && textInputStyle == TextInputStyle::Password)
     {
         context.warnings.emplace_back(

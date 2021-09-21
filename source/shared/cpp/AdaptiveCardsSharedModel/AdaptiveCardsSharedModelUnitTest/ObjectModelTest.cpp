@@ -727,13 +727,13 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(WarningStatusCode::InvalidValue == warning->GetStatusCode());
             Assert::AreEqual("Input.Text ignores isMultiline when using password style"s, warning->GetReason());
 
-            // verify the generated element doesn't report itself as supporting multiline
+            // verify the generated element still reports itself as supporting multiline
             const auto card = parseResult->GetAdaptiveCard();
             const auto body = card->GetBody();
             Assert::AreEqual(body.size(), 1ui64);
             const auto theInput = std::dynamic_pointer_cast<TextInput>(body.at(0));
             Assert::IsTrue(TextInputStyle::Password == theInput->GetTextInputStyle());
-            Assert::IsFalse(theInput->GetIsMultiline());
+            Assert::IsTrue(theInput->GetIsMultiline());
 
             // verify that we still serialize isMultiline == true
             const auto serializedCard = card->SerializeToJsonValue();
