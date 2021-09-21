@@ -1,11 +1,12 @@
 # Host config
 
-## AdaptiveCardConfig|Property|Type|Required|Description|Version|
+## HostConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**supportsInteractivity**|`boolean`| No, default: `true`|Control whether interactive `Action`s are allowed to be invoked|1.0
 |**imageBaseUrl**|`string`| No|Base URL to be used when loading resources|1.0
 |**fontFamily**|`string`| No, default: `"Calibri"`|Font face to use when rendering text|1.0
-|**allowCustomStyle**|`boolean`| No, default: `true`|Controls whether custom styling is allowed|1.0
 |**actions**|`object`| No|Options for `Action`s|1.0
 |**adaptiveCard**|`object`| No|Toplevel options for `AdaptiveCards`|1.0
 |**containerStyles**|`object`| No|Controls styling for default and emphasis containers|1.0
@@ -23,7 +24,17 @@
 
 
 
-## ActionsConfig|Property|Type|Required|Description|Version|
+## AdaptiveCardConfig
+
+|Property|Type|Required|Description|Version|
+|--------|----|--------|-----------|-------|
+|**allowCustomStyle**|`boolean`| No, default: `true`|Controls whether custom styling is allowed|1.0
+
+
+
+## ActionsConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**actionsOrientation**|`string`| No, default: `"horizontal"`|Controls how buttons are laid out|1.0
 |**actionAlignment**|`string`| No, default: `"stretch"`|Control layout of buttons|1.0
@@ -36,14 +47,18 @@
 
 
 
-## ContainerStylesConfig|Property|Type|Required|Description|Version|
+## ContainerStylesConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**default**|`object`| No|Default container style|1.0
 |**emphasis**|`object`| No|Container style to use for emphasis|1.0
 
 
 
-## FactSetConfig|Property|Type|Required|Description|Version|
+## FactSetConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**title**|`object`| No, default: `{"weight":"bolder","size":"default","color":"default","fontType":"default","isSubtle":false,"wrap":true,"maxWidth":150}`|Parameters controlling the display of text in a fact set|1.0
 |**value**|`object`| No, default: `{"weight":"default","size":"default","color":"default","fontType":"default","isSubtle":false,"wrap":true,"maxWidth":0}`|Parameters controlling the display of text in a fact set|1.0
@@ -51,7 +66,9 @@
 
 
 
-## FontSizesConfig|Property|Type|Required|Description|Version|
+## FontSizesConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**small**|`integer`| No, default: `10`|Small font size|1.0
 |**default**|`integer`| No, default: `12`|Default font size|1.0
@@ -61,7 +78,9 @@
 
 
 
-## FontWeightsConfig|Property|Type|Required|Description|Version|
+## FontWeightsConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**lighter**|`integer`| No, default: `200`|&nbsp;|1.0
 |**default**|`integer`| No, default: `400`|&nbsp;|1.0
@@ -69,7 +88,9 @@
 
 
 
-## ForegroundColorsConfig|Property|Type|Required|Description|Version|
+## ForegroundColorsConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**default**|`object`| No, default: `{"default":"#FF000000","subtle":"#B2000000"}`|&nbsp;|1.0
 |**accent**|`object`| No, default: `{"default":"#FF0000FF","subtle":"#B20000FF"}`|&nbsp;|1.0
@@ -81,14 +102,18 @@
 
 
 
-## ImageSetConfig|Property|Type|Required|Description|Version|
+## ImageSetConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**imageSize**|`string`| No, default: `"auto"`|Controls individual image sizing|1.0
 |**maxImageHeight**|`integer`| No, default: `100`|Constrain image height to this value|1.0
 
 
 
-## ImageSizesConfig|Property|Type|Required|Description|Version|
+## ImageSizesConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**small**|`integer`| No, default: `80`|Small image size value|1.0
 |**medium**|`integer`| No, default: `120`|Medium image size value|1.0
@@ -96,7 +121,9 @@
 
 
 
-## MediaConfig#### Introduced in version 1.1
+## MediaConfig
+
+#### Introduced in version 1.1
 
 |Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
@@ -106,14 +133,18 @@
 
 
 
-## SeparatorConfig|Property|Type|Required|Description|Version|
+## SeparatorConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**lineThickness**|`integer`| No, default: `1`|Thickness of separator line|1.0
 |**lineColor**|`string,null`| No, default: `#B2000000`|Color to use when drawing separator line|1.0
 
 
 
-## ShowCardConfig|Property|Type|Required|Description|Version|
+## ShowCardConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**actionMode**|`string`| No, default: `"inline"`|Controls how the card is displayed. Note: Popup show cards are not recommended for cards with input validation, and may be deprecated in the future.|1.0
 |**style**|`object`| No, default: `emphasis`|Controls styling of a container|1.0
@@ -121,7 +152,9 @@
 
 
 
-## SpacingsConfig|Property|Type|Required|Description|Version|
+## SpacingsConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
 |**small**|`integer`| No, default: `3`|Small spacing value|1.0
 |**default**|`integer`| No, default: `8`|Default spacing value|1.0
@@ -132,7 +165,9 @@
 
 
 
-## TextBlockConfig|Property|Type|Required|Description|Version|
+## TextBlockConfig
+
+|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
-|**heading**|`object`| No, default: `{"weight":"bolder","size":"large","color":"default","fontType":"default","isSubtle":false}`|Sets default properties for text of a given style|1.0
+|**headingLevel**|`integer`| No, default: `2`|When displaying a `TextBlock` element with the `heading` style, this is the heading level exposed to accessibility tools.|1.0
 

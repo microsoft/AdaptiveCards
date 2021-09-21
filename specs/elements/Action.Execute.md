@@ -2,7 +2,7 @@
 
 # Action.Execute
 
-#### Introduced in version 1.4
+**Introduced in version 1.4**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -11,7 +11,7 @@
 | **data** | `string`, `object` | No | Initial data that input fields will be combined with. These are essentially ‘hidden’ properties. | 1.4 |
 | **associatedInputs** | `AssociatedInputs` | No, default: `"auto"` | Controls which inputs are associated with the action. | 1.4 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

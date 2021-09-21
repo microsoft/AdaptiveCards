@@ -17,7 +17,7 @@
 | **verticalContentAlignment** | `VerticalContentAlignment?` | No | Defines how the content should be aligned vertically within the column. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top. | 1.1 |
 | **width** | `string`, `number` | No | `"auto"`, `"stretch"`, a number representing relative width of the column in the column group, or in version 1.1 and higher, a specific pixel width, like `"50px"`. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -39,17 +39,17 @@ The card elements to render inside the `Column`.
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TableRow`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `Table`
-  * `TableRow`
-  * `TextBlock`
 
 
 ## backgroundImage
