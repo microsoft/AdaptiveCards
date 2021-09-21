@@ -3,36 +3,28 @@
 #pragma once
 
 #include "MediaSource.h"
+#include "AdaptiveMediaSource.g.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    class DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveMediaSource
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>>
+    struct DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveMediaSource
+        : AdaptiveMediaSourceT<AdaptiveMediaSource, ITypePeek>
     {
-        AdaptiveRuntime(AdaptiveMediaSource);
+        AdaptiveMediaSource(std::shared_ptr<::AdaptiveCards::MediaSource> const& sharedMediaSource =
+                                std::make_shared<::AdaptiveCards::MediaSource>());
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::MediaSource>& sharedMediaSource);
+        property<hstring> MimeType;
+        property<hstring> Url;
 
-        // IAdaptiveMediaSource
-        IFACEMETHODIMP get_MimeType(_Outptr_ HSTRING* mimeType);
-        IFACEMETHODIMP put_MimeType(_In_ HSTRING mimeType);
-
-        IFACEMETHODIMP get_Url(_Outptr_ HSTRING* url);
-        IFACEMETHODIMP put_Url(_In_ HSTRING url);
-
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::MediaSource>& sharedModel);
+        virtual std::shared_ptr<::AdaptiveCards::MediaSource> GetSharedModel();
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
-
-    private:
-        Microsoft::WRL::Wrappers::HString m_mimeType;
-        Microsoft::WRL::Wrappers::HString m_url;
     };
-
-    ActivatableClass(AdaptiveMediaSource);
+}
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+{
+    struct AdaptiveMediaSource : AdaptiveMediaSourceT<AdaptiveMediaSource, implementation::AdaptiveMediaSource>
+    {
+    };
 }

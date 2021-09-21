@@ -2,15 +2,12 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.Uwp.h"
-#include "ObjectModelUtil.h"
-
 namespace AdaptiveCards::ObjectModel::Uwp
 {
     class CustomElementWrapper : public AdaptiveCards::BaseCardElement
     {
     public:
-        CustomElementWrapper(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* cardElement);
+        CustomElementWrapper(_In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& cardElement);
 
         bool GetSeparator() const override;
         void SetSeparator(bool value) override;
@@ -25,12 +22,12 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** cardElement);
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement GetWrappedElement();
 
     private:
         std::string GetCardElementId() const;
         void SetCardElementId(const std::string& value);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> m_cardElement;
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement m_cardElement;
     };
 }

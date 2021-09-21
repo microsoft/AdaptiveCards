@@ -5,12 +5,13 @@
 #include <windows.h>
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
+#include <module.g.cpp>
 
 using namespace Microsoft::WRL;
 
 STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId, _COM_Outptr_ IActivationFactory** factory)
 {
-    return Module<ModuleType::InProc>::GetModule().GetActivationFactory(activatableClassId, factory);
+    return WINRT_GetActivationFactory(activatableClassId, reinterpret_cast<void**>(factory));
 }
 
 STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _COM_Outptr_ void** ppv)
@@ -20,13 +21,7 @@ STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _COM_Outptr_ vo
 
 STDAPI DllCanUnloadNow()
 {
-    HRESULT hr = S_FALSE;
-    if (Module<ModuleType::InProc>::GetModule().GetObjectCount() == 0)
-    {
-        Module<ModuleType::InProc>::GetModule().Terminate();
-        hr = S_OK;
-    }
-    return hr;
+    return WINRT_CanUnloadNow();
 }
 
 STDAPI_(BOOL) DllMain(_In_ HINSTANCE hInstance, _In_ DWORD dwReason, _In_ void* /*lpReserved*/)
