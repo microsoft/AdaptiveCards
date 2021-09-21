@@ -485,7 +485,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             Assert::IsTrue(parseResult->GetWarnings().size() == 0);
             Assert::IsTrue(body.size() == 1);
-            Assert::IsTrue(body.at(0)->GetElementType() == CardElementType::ChoiceSetInput); 
+            Assert::IsTrue(body.at(0)->GetElementType() == CardElementType::ChoiceSetInput);
             auto choiceSetElement = std::dynamic_pointer_cast<ChoiceSetInput>(body.at(0));
             Assert::IsTrue(choiceSetElement->GetChoices().size() == 0);
 
@@ -660,7 +660,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto i = 0;
             for (const auto& elem : body) {
                 std::shared_ptr<TextBlock> textBlock = std::dynamic_pointer_cast<TextBlock>(elem);
-				Assert::IsTrue(textBlock->GetStyle() == expectedStyles[i++]);
+                Assert::IsTrue(textBlock->GetStyle() == expectedStyles[i++]);
             }
         }
     };

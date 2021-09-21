@@ -1,0 +1,47 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Below this is an empty TableRow not parented to a Table.",
+			"wrap": true
+		},
+		{
+			"type": "TableRow",
+			"horizontalContentAlignment": "center"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Below this is a TableRow containing a cell, all of which is not parented to a Table.",
+			"wrap": true
+		},
+		{
+			"type": "TableRow",
+			"horizontalContentAlignment": "center",
+			"cells": [
+				{
+					"type": "TableCell",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "TableCell inside an orphaned TableRow",
+							"wrap": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TableCell",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Inside an orphaned TableCell",
+					"wrap": true
+				}
+			]
+		}
+	]
+}

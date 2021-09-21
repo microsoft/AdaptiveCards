@@ -20,7 +20,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(TableCellParse)
         {
-            std::string tableCellFragment {R"(
+            const std::string tableCellFragment {R"(
             {
                 "type": "TableCell",
                 "items": [
@@ -65,7 +65,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TableEmptyParseTests)
         {
-            std::vector<std::string> jsonFragments {
+            const std::vector<std::string> jsonFragments {
                 "{\"type\":\"TableRow\"}\n",
                 "{\"type\":\"Table\"}\n",
                 "{\"items\":[],\"type\":\"TableCell\"}\n" // since this is Container, it auto-emits items
@@ -84,7 +84,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TableRowParse)
         {
-            std::string tableRowFragment { R"(
+            const std::string tableRowFragment { R"(
             {
                 "type": "TableRow",
                 "horizontalCellContentAlignment": "center",
@@ -140,7 +140,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TableColumnDefinitionSimpleParse)
         {
-            std::string columnDefinitionFragment = R"(
+            const std::string columnDefinitionFragment = R"(
                 {
                     "horizontalCellContentAlignment": "center",
                     "verticalCellContentAlignment": "bottom",
@@ -167,7 +167,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(TableColumnDefinitionPixelParse)
         {
-            std::string columnDefinitionFragment = R"(
+            const std::string columnDefinitionFragment = R"(
                 {
                     "horizontalCellContentAlignment": "right",
                     "verticalCellContentAlignment": "center",
@@ -193,7 +193,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(TableColumnDefinitionMissingUnitParse)
         {
             // ensure we emit a parse warning for missing units
-            std::string columnDefinitionFragment = R"(
+            const std::string columnDefinitionFragment = R"(
                 {
                     "width": "10"
                 })";
@@ -208,7 +208,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(TableColumnDefinitionInvalidParse)
         {
             // ensure we emit parse warnings for invalid units
-            std::string columnDefinitionInvalidUnitFragment = R"(
+            const std::string columnDefinitionInvalidUnitFragment = R"(
                 {
                     "width": "10pixels"
                 })";
@@ -219,9 +219,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsFalse(context.warnings.empty(), L"Parsing a string with no units should yield warnings");
         }
 
-        TEST_METHOD(TableParse)
+        TEST_METHOD(TableFragmentParseValid)
         {
-            std::string tableFragment = R"(
+            const std::string tableFragment = R"(
             {
                 "type": "Table",
                 "gridStyle": "accent",
@@ -384,6 +384,207 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto serializedResult = table->Serialize();
             Assert::AreEqual("{\"columns\":[{\"width\":1},{\"width\":1},{\"width\":3}],\"gridStyle\":\"Accent\",\"rows\":[{\"cells\":[{\"items\":[{\"text\":\"Name\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Type\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Description\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"TableCell\"}],\"style\":\"Accent\",\"type\":\"TableRow\"},{\"cells\":[{\"items\":[{\"text\":\"columns\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"ColumnDefinition[]\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Defines the table's columns (number of columns, and column sizes).\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"}],\"type\":\"TableRow\"},{\"cells\":[{\"items\":[{\"text\":\"rows\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"TableRow[]\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"},{\"items\":[{\"text\":\"Defines the rows of the Table, each being a collection of cells. Rows are not required, which allows empty Tables to be generated via templating without breaking the rendering of the whole card.\",\"type\":\"TextBlock\",\"wrap\":true}],\"type\":\"TableCell\"}],\"type\":\"TableRow\"}],\"type\":\"Table\"}\n"s,
                 serializedResult);
+        }
+
+        TEST_METHOD(TableCardParseValid)
+        {
+            const std::string tableCard = R"(
+            {
+                "type": "AdaptiveCard",
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "version": "1.5",
+                "body": [
+                    {
+                        "type": "Table",
+                        "gridStyle": "accent",
+                        "firstRowAsHeaders": true,
+                        "columns": [
+                            {
+                                "width": 1
+                            },
+                            {
+                                "width": 1
+                            },
+                            {
+                                "width": 3
+                            }
+                        ],
+                        "rows": [
+                            {
+                                "type": "TableRow",
+                                "cells": [
+                                    {
+                                        "type": "TableCell",
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "Name",
+                                                "wrap": true,
+                                                "weight": "Bolder"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TableCell",
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "Type",
+                                                "wrap": true,
+                                                "weight": "Bolder"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TableCell",
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "Description",
+                                                "wrap": true,
+                                                "weight": "Bolder"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "style": "accent"
+                            },
+                            {
+                                "type": "TableRow",
+                                "cells": [
+                                    {
+                                        "type": "TableCell",
+                                        "style": "good",
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "columns",
+                                                "wrap": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TableCell",
+                                        "style": "warning",
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "some text",
+                                                "wrap": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TableCell",
+                                        "style": "accent",
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "some text #2",
+                                                "wrap": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            })";
+
+            auto result = AdaptiveCard::DeserializeFromString(tableCard, "1.5");
+            auto card = result->GetAdaptiveCard();
+            auto body = card->GetBody();
+            Assert::AreEqual(1ui64, body.size());
+            auto bodyElem = body.at(0);
+            Assert::AreEqual("Table"s, bodyElem->GetElementTypeString());
+        }
+
+        TEST_METHOD(TableCardParseOrphanedTableRow)
+        {
+            const std::string tableCard = R"(
+            {
+                "type": "AdaptiveCard",
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "version": "1.5",
+                "body": [
+                    {
+                        "type": "TableRow",
+                        "cells": [
+                            {
+                                "type": "TableCell",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Name",
+                                        "wrap": true,
+                                        "weight": "Bolder"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "TableCell",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Type",
+                                        "wrap": true,
+                                        "weight": "Bolder"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "TableCell",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Description",
+                                        "wrap": true,
+                                        "weight": "Bolder"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            })";
+
+            auto result = AdaptiveCard::DeserializeFromString(tableCard, "1.5");
+            auto card = result->GetAdaptiveCard();
+            auto body = card->GetBody();
+            Assert::AreEqual(1ui64, body.size());
+            auto bodyElem = body.at(0);
+            Assert::AreEqual("TableRow"s, bodyElem->GetElementTypeString());
+        }
+
+        TEST_METHOD(TableCardParseOrphanedTableCell)
+        {
+            const std::string tableCard = R"(
+            {
+                "type": "AdaptiveCard",
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "version": "1.5",
+                "body": [
+                    {
+                        "type": "TableCell",
+                        "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": "Name",
+                                "wrap": true,
+                                "weight": "Bolder"
+                            }
+                        ]
+                    }
+                ]
+            })";
+
+            auto result = AdaptiveCard::DeserializeFromString(tableCard, "1.5");
+            auto card = result->GetAdaptiveCard();
+            auto body = card->GetBody();
+            Assert::AreEqual(1ui64, body.size());
+            auto bodyElem = body.at(0);
+            Assert::AreEqual("TableCell"s, bodyElem->GetElementTypeString());
         }
     };
 }
