@@ -18,9 +18,9 @@ async function generateHostConfigAsync(relativeTopDir: string) {
     const modelObj = {
 		schema: relativeTopDir + "schemas/host-config.json",
 		toc: relativeTopDir + "source/nodejs/adaptivecards-site/schema-hostconfig-toc.yml",
-		rootDefinition: "AdaptiveCardConfig"
+		rootDefinition: "HostConfig"
     };
-    
+
     console.log(`Generating HostConfig with:`)
     console.table(modelObj);
 
@@ -38,7 +38,7 @@ async function generateHostConfigAsync(relativeTopDir: string) {
 
 	await forEach(schemaModel, async (root: any) => {
 		await forEach(root.children, async (child: any) => {
-			finalContents += "\n\n## " + child.name;
+			finalContents += "\n\n## " + child.name + "\n\n";
 			finalContents += markedschema.generateMarkdown.createPropertiesSummary(child.properties, null, true, true, child.version);
 		});
 	});
@@ -61,7 +61,7 @@ async function generateElementsAsync(relativeTopDir: string) {
     try {
         schemaModel = await typedschema.markdown.buildModel(modelObj);
     } catch(err) {
-        console.error(`Error encounted while building elements model for '${modelObj.schema}':`);
+        console.error(`Error encountered while building elements model for '${modelObj.schema}':`);
         console.error(`Code: ${err.code}`);
         console.error(`Msg: ${err.message}`);
         console.error(`Stacktrace: ${err.stack}`);

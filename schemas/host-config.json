@@ -1,5 +1,16 @@
 {
 	"definitions": {
+		"AdaptiveCardConfig": {
+			"type": "object",
+			"description": "Toplevel options for `AdaptiveCards`",
+			"properties": {
+				"allowCustomStyle": {
+					"type": "boolean",
+					"description": "Controls whether custom styling is allowed",
+					"default": true
+				}
+			}
+		},
 		"ActionsConfig": {
 			"type": "object",
 			"description": "Options for `Action`s",
@@ -602,7 +613,7 @@
 				}
 			}
 		},
-		"TextStylesConfig": {
+		"TextStyleConfig": {
 			"type": "object",
 			"description": "Sets default properties for text of a given style",
 			"properties": {
@@ -658,12 +669,12 @@
 				}
 			}
 		},
-		"TextBlockConfig": {
+		"TextStylesConfig": {
 			"type": "object",
-			"description": "Configuration settings for TextBlocks",
+			"description": "Sets default properties for text of a given style",
 			"properties": {
 				"heading": {
-					"$ref": "#/definitions/TextStylesConfig",
+					"$ref": "#/definitions/TextStyleConfig",
 					"default": {
 						"weight": "bolder",
 						"size": "large",
@@ -671,12 +682,33 @@
 						"fontType": "default",
 						"isSubtle": false
 					}
+				},
+				"columnHeader": {
+					"$ref": "#/definitions/TextStyleConfig",
+					"default": {
+						"weight": "bolder",
+						"size": "default",
+						"color": "default",
+						"fontType": "default",
+						"isSubtle": false
+					}
 				}
 			}
 		},
-		"AdaptiveCardConfig": {
+		"TextBlockConfig": {
 			"type": "object",
-			"description": "Toplevel options for `AdaptiveCards`",
+			"description": "Configuration settings for TextBlocks",
+			"properties": {
+				"headingLevel": {
+					"type": "integer",
+					"description": "When displaying a `TextBlock` element with the `heading` style, this is the heading level exposed to accessibility tools.",
+					"default": 2
+				}
+			}
+		},
+		"HostConfig": {
+			"type": "object",
+			"description": "Contains host-configurable settings",
 			"properties": {
 				"supportsInteractivity": {
 					"type": "boolean",
@@ -692,11 +724,6 @@
 					"type": "string",
 					"description": "Font face to use when rendering text",
 					"default": "Calibri"
-				},
-				"allowCustomStyle": {
-					"type": "boolean",
-					"description": "Controls whether custom styling is allowed",
-					"default": true
 				},
 				"actions": {
 					"$ref": "#/definitions/ActionsConfig"
