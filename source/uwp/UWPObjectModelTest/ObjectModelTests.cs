@@ -252,7 +252,7 @@ namespace UWPObjectModelTest
             {
                 // Image Properties
                 AltText = "This is a picture",
-                BackgroundColor = "0xffffffff",
+                BackgroundColor = "#ffffffff",
                 HorizontalAlignment = HAlignment.Center,
                 PixelHeight = 50,
                 PixelWidth = 40,
@@ -271,7 +271,7 @@ namespace UWPObjectModelTest
             ValidateBaseElementProperties(image, "ImageId", false, true, Spacing.Large, HeightType.Stretch);
 
             Assert.AreEqual("This is a picture", image.AltText);
-            Assert.AreEqual("0xffffffff", image.BackgroundColor);
+            Assert.AreEqual("#ffffffff", image.BackgroundColor);
             Assert.AreEqual(HAlignment.Center, image.HorizontalAlignment);
             Assert.AreEqual<uint>(50, image.PixelHeight);
             Assert.AreEqual<uint>(40, image.PixelWidth);
@@ -279,8 +279,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual(ImageStyle.Person, image.Style);
             Assert.AreEqual("https://www.stuff.com/picture.jpg", image.Url);
 
-            var jsonString = image.ToJson().ToString();
-            Assert.AreEqual("{\"altText\":\"This is a picture\",\"backgroundColor\":\"0xffffffff\",\"height\":\"50px\",\"horizontalAlignment\":\"center\",\"id\":\"ImageId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"style\":\"person\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture.jpg\",\"width\":\"40px\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(image);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"altText\":\"This is a picture\",\"backgroundColor\":\"#ffffffff\",\"height\":\"50px\",\"horizontalAlignment\":\"center\",\"id\":\"ImageId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"style\":\"person\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture.jpg\",\"width\":\"40px\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -329,8 +337,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("https://www.stuff.com/media.mp4", media.Sources[0].Url);
             Assert.AreEqual("https://www.stuff.com/media.mp3", media.Sources[1].Url);
 
-            var jsonString = media.ToJson().ToString();
-            Assert.AreEqual("{\"altText\":\"This is some audio\",\"height\":\"Stretch\",\"id\":\"MediaId\",\"isVisible\":false,\"poster\":\"https://www.stuff.com/poster.jpg\",\"separator\":true,\"sources\":[{\"mimeType\":\"audio/mp4\",\"url\":\"https://www.stuff.com/media.mp4\"},{\"mimeType\":\"audio/mpeg\",\"url\":\"https://www.stuff.com/media.mp3\"}],\"spacing\":\"large\",\"type\":\"Media\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(media);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"altText\":\"This is some audio\",\"height\":\"Stretch\",\"id\":\"MediaId\",\"isVisible\":false,\"poster\":\"https://www.stuff.com/poster.jpg\",\"separator\":true,\"sources\":[{\"mimeType\":\"audio/mp4\",\"url\":\"https://www.stuff.com/media.mp4\"},{\"mimeType\":\"audio/mpeg\",\"url\":\"https://www.stuff.com/media.mp3\"}],\"spacing\":\"large\",\"type\":\"Media\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -549,8 +565,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("Value1", factSet.Facts[0].Value);
             Assert.AreEqual("Value2", factSet.Facts[1].Value);
 
-            var jsonString = factSet.ToJson().ToString();
-            Assert.AreEqual("{\"facts\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"height\":\"Stretch\",\"id\":\"FactSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"type\":\"FactSet\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(factSet);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"facts\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"height\":\"Stretch\",\"id\":\"FactSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"type\":\"FactSet\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -590,8 +614,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("Image1Id", imageSet.Images[0].Id);
             Assert.AreEqual("Image2Id", imageSet.Images[1].Id);
 
-            var jsonString = imageSet.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ImageSetId\",\"imageSize\":\"Small\",\"images\":[{\"id\":\"Image1Id\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture.jpg\"},{\"id\":\"Image2Id\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture2.jpg\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"type\":\"ImageSet\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(imageSet);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"height\":\"Stretch\",\"id\":\"ImageSetId\",\"imageSize\":\"Small\",\"images\":[{\"id\":\"Image1Id\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture.jpg\"},{\"id\":\"Image2Id\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture2.jpg\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"type\":\"ImageSet\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -637,8 +669,16 @@ namespace UWPObjectModelTest
             Assert.IsNotNull(textInput.InlineAction);
             Assert.AreEqual("Inline Action", textInput.InlineAction.Title);
 
-            var jsonString = textInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"Text Input Error Message\",\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"maxLength\":5,\"placeholder\":\"Placeholder\",\"regex\":\"([A-Z])\\\\w+\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(textInput);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"errorMessage\":\"Text Input Error Message\",\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"maxLength\":5,\"placeholder\":\"Placeholder\",\"regex\":\"([A-Z])\\\\w+\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -673,8 +713,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("Placeholder", numberInput.Placeholder);
             Assert.AreEqual(42, numberInput.Value);
 
-            var jsonString = numberInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(numberInput);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -686,13 +734,24 @@ namespace UWPObjectModelTest
                 Min = null,
                 Value = null,
                 Placeholder = "some text",
-                IsRequired = false
+                IsRequired = false,
+                Id = "NumberInputId"
             };
 
             Assert.IsNull(numberInput.Max);
             Assert.IsNull(numberInput.Min);
             Assert.IsNull(numberInput.Value);
-            Assert.AreEqual("{\"placeholder\":\"some text\",\"type\":\"Input.Number\"}", numberInput.ToJson().ToString());
+
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(numberInput);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"id\":\"NumberInputId\",\"placeholder\":\"some text\",\"type\":\"Input.Number\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
 
             numberInput.Min = -1;
             numberInput.Max = 1;
@@ -701,7 +760,17 @@ namespace UWPObjectModelTest
             Assert.AreEqual(numberInput.Min, -1);
             Assert.AreEqual(numberInput.Max, 1);
             Assert.AreEqual(numberInput.Value, 0);
-            Assert.AreEqual("{\"max\":1,\"min\":-1,\"placeholder\":\"some text\",\"type\":\"Input.Number\",\"value\":0}", numberInput.ToJson().ToString());
+
+            adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(numberInput);
+
+            expectedSerialization = "{\"actions\":[],\"body\":[{\"id\":\"NumberInputId\",\"max\":1,\"min\":-1,\"placeholder\":\"some text\",\"type\":\"Input.Number\",\"value\":0}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -736,8 +805,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("Placeholder", dateInput.Placeholder);
             Assert.AreEqual("2018-01-14", dateInput.Value);
 
-            var jsonString = dateInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"Date Input Error Message\",\"height\":\"Stretch\",\"id\":\"DateInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"max\":\"2019-01-14\",\"min\":\"2017-01-14\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Date\",\"value\":\"2018-01-14\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(dateInput);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"errorMessage\":\"Date Input Error Message\",\"height\":\"Stretch\",\"id\":\"DateInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"max\":\"2019-01-14\",\"min\":\"2017-01-14\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Date\",\"value\":\"2018-01-14\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -772,7 +849,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("Placeholder", timeInput.Placeholder);
             Assert.AreEqual("02:00", timeInput.Value);
 
-            var jsonString = timeInput.ToJson().ToString();
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(timeInput);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"errorMessage\":\"ErrorMessage\",\"height\":\"Stretch\",\"id\":\"TimeInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"max\":\"05:00\",\"min\":\"01:00\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Time\",\"value\":\"02:00\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -809,8 +895,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("ValueOn", toggleInput.ValueOn);
             Assert.AreEqual(true, toggleInput.Wrap);
 
-            var jsonString = toggleInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"ErrorMessage\",\"height\":\"Stretch\",\"id\":\"ToggleInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"separator\":true,\"spacing\":\"medium\",\"title\":\"Title\",\"type\":\"Input.Toggle\",\"value\":\"Value\",\"valueOff\":\"ValueOff\",\"valueOn\":\"ValueOn\",\"wrap\":true}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(toggleInput);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"errorMessage\":\"ErrorMessage\",\"height\":\"Stretch\",\"id\":\"ToggleInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"separator\":true,\"spacing\":\"medium\",\"title\":\"Title\",\"type\":\"Input.Toggle\",\"value\":\"Value\",\"valueOff\":\"ValueOff\",\"valueOn\":\"ValueOn\",\"wrap\":true}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -866,8 +960,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("Value1", choiceSet.Choices[0].Value);
             Assert.AreEqual("Value2", choiceSet.Choices[1].Value);
 
-            var jsonString = choiceSet.ToJson().ToString();
-            Assert.AreEqual("{\"choices\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"errorMessage\":\"ErrorMessage\",\"height\":\"Stretch\",\"id\":\"ChoiceSetInputId\",\"isMultiSelect\":true,\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Expanded\",\"type\":\"Input.ChoiceSet\",\"value\":\"Value2\",\"wrap\":true}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(choiceSet);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"choices\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"errorMessage\":\"ErrorMessage\",\"height\":\"Stretch\",\"id\":\"ChoiceSetInputId\",\"isMultiSelect\":true,\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Expanded\",\"type\":\"Input.ChoiceSet\",\"value\":\"Value2\",\"wrap\":true}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         public void ValidateBaseActionProperties(
@@ -1101,8 +1203,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("Submit One", actionSet.Actions[0].Title);
             Assert.AreEqual("Submit Two", actionSet.Actions[1].Title);
 
-            var jsonString = actionSet.ToJson().ToString();
-            Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"height\":\"Stretch\",\"id\":\"ActionSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"extraLarge\",\"type\":\"ActionSet\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(actionSet);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"height\":\"Stretch\",\"id\":\"ActionSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"extraLarge\",\"type\":\"ActionSet\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -1168,8 +1278,16 @@ namespace UWPObjectModelTest
             Assert.AreEqual("This is text run number 2", (richTextBlock.Inlines[1] as AdaptiveTextRun).Text);
             Assert.AreEqual("This is text run number 3", (richTextBlock.Inlines[2] as AdaptiveTextRun).Text);
 
-            var jsonString = richTextBlock.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"underline\":true,\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(richTextBlock);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"underline\":true,\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -1185,8 +1303,16 @@ namespace UWPObjectModelTest
 
             Assert.AreEqual(FallbackType.Drop, textBlockDrop.FallbackType);
 
-            var jsonString = textBlockDrop.ToJson().ToString();
-            Assert.AreEqual("{\"fallback\":\"drop\",\"requires\":{\"foo\":\"1.2.3.4\"},\"text\":\"This text block has fallback type Drop\",\"type\":\"TextBlock\"}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(textBlockDrop);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"fallback\":\"drop\",\"requires\":{\"foo\":\"1.2.3.4\"},\"text\":\"This text block has fallback type Drop\",\"type\":\"TextBlock\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
 
             AdaptiveTextBlock textBlockNone = new AdaptiveTextBlock
             {
@@ -1198,8 +1324,16 @@ namespace UWPObjectModelTest
 
             Assert.AreEqual(FallbackType.None, textBlockNone.FallbackType);
 
-            jsonString = textBlockNone.ToJson().ToString();
-            Assert.AreEqual("{\"requires\":{\"foo\":\"0.0.0.0\"},\"text\":\"This text block has fallback explicitly set to None\",\"type\":\"TextBlock\"}", jsonString);
+            adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(textBlockNone);
+
+            expectedSerialization = "{\"actions\":[],\"body\":[{\"requires\":{\"foo\":\"0.0.0.0\"},\"text\":\"This text block has fallback explicitly set to None\",\"type\":\"TextBlock\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]

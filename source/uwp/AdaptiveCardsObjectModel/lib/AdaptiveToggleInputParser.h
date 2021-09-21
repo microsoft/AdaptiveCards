@@ -3,25 +3,24 @@
 #pragma once
 
 #include "ToggleInput.h"
+#include "AdaptiveToggleInputParser.g.h"
 
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    class AdaptiveToggleInputParser
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParser>
+    struct AdaptiveToggleInputParser : AdaptiveToggleInputParserT<AdaptiveToggleInputParser>
     {
-        AdaptiveRuntime(AdaptiveToggleInputParser);
+        AdaptiveToggleInputParser() = default;
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
-
-        IFACEMETHODIMP FromJson(
-            _In_ ABI::Windows::Data::Json::IJsonObject*,
-            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParsers,
-            _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParsers,
-            _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** element) noexcept override;
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement FromJson(
+            winrt::Windows::Data::Json::JsonObject const& inputJson,
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+            winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings);
     };
-
-    ActivatableClass(AdaptiveToggleInputParser);
+}
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::factory_implementation
+{
+    struct AdaptiveToggleInputParser : AdaptiveToggleInputParserT<AdaptiveToggleInputParser, implementation::AdaptiveToggleInputParser>
+    {
+    };
 }
