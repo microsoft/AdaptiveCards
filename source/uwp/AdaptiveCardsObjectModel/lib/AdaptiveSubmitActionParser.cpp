@@ -4,30 +4,19 @@
 
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveSubmitActionParser.h"
+#include "AdaptiveSubmitActionParser.g.cpp"
 #include "AdaptiveElementParserRegistration.h"
 
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace Microsoft::WRL;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    HRESULT AdaptiveSubmitActionParser::RuntimeClassInitialize() noexcept
-    try
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement AdaptiveSubmitActionParser::FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings)
     {
-        return S_OK;
+        return ::AdaptiveCards::ObjectModel::Uwp::FromJson<implementation::AdaptiveSubmitAction, ::AdaptiveCards::SubmitAction, ::AdaptiveCards::SubmitActionParser>(
+                   inputJson, elementParsers, actionParsers, warnings)
+            .as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>();
     }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveSubmitActionParser::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::ObjectModel::Uwp::FromJson<AdaptiveCards::ObjectModel::Uwp::AdaptiveSubmitAction, AdaptiveCards::SubmitAction, AdaptiveCards::SubmitActionParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-    }
-    CATCH_RETURN;
 }
