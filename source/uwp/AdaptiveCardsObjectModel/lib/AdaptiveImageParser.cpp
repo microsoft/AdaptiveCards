@@ -3,36 +3,21 @@
 #include "pch.h"
 
 #include "AdaptiveImageParser.h"
+#include "AdaptiveImageParser.g.cpp"
 
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveImage.h"
-#include "AdaptiveBase64Util.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::Storage;
-using namespace ABI::Windows::Storage::Streams;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveImageParser::AdaptiveImageParser() {}
-
-    HRESULT AdaptiveImageParser::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveImageParser::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** element) noexcept
-    try
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement AdaptiveImageParser::FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings)
     {
-        return AdaptiveCards::ObjectModel::Uwp::FromJson<AdaptiveCards::ObjectModel::Uwp::AdaptiveImage, AdaptiveCards::Image, AdaptiveCards::ImageParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+        return ::AdaptiveCards::ObjectModel::Uwp::FromJson<implementation::AdaptiveImage, ::AdaptiveCards::Image, ::AdaptiveCards::ImageParser>(
+                   inputJson, elementParsers, actionParsers, warnings)
+            .as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>();
     }
-    CATCH_RETURN;
 }

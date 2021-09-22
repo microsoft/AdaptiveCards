@@ -283,5 +283,44 @@ namespace UWPUnitTests
                 throw testException;
             }
         }
+
+        [TestMethod]
+        public void UnknownElementFallback()
+        {
+            string jsonString = @"
+            {
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.2"",
+                ""body"": [
+                    {
+                        ""type"": ""Steve Holt!"",
+                        ""egg"": ""her?"",
+                        ""fallback"": ""drop""
+                    },
+                    {
+                        ""type"": ""Graph"",
+                        ""someProperty"": ""foo"",
+                        ""fallback"": {
+                            ""type"": ""TextBlock"",
+                            ""text"": ""No graph support. Guess we'll just use this textblock instead."",
+                            ""wrap"": true
+                        }
+                    }
+                ]
+            }";
+
+            AdaptiveCard parsedCard = AdaptiveCard.FromJsonString(jsonString).AdaptiveCard;
+            Assert.AreEqual(2, parsedCard.Body.Count);
+
+            IAdaptiveCardElement firstElement = parsedCard.Body[0];
+            Assert.AreEqual(FallbackType.Drop, firstElement.FallbackType);
+
+            IAdaptiveCardElement secondElement = parsedCard.Body[1];
+            Assert.AreEqual(FallbackType.Content, secondElement.FallbackType);
+
+            IAdaptiveCardElement fallbackContent = secondElement.FallbackContent;
+            Assert.AreEqual(ElementType.TextBlock, fallbackContent.ElementType);
+            Assert.AreEqual("No graph support. Guess we'll just use this textblock instead.", (fallbackContent as AdaptiveTextBlock).Text);
+        }
     }
 }

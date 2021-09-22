@@ -3,50 +3,21 @@
 #include "pch.h"
 
 #include "AdaptiveUnsupportedAction.h"
+#include "AdaptiveUnsupportedAction.g.cpp"
 
-using namespace Microsoft::WRL::Wrappers;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveUnsupportedAction::AdaptiveUnsupportedAction(const std::shared_ptr<::AdaptiveCards::UnknownAction>& sharedUnknown)
     {
-        std::shared_ptr<AdaptiveCards::UnknownAction> unknownAction = std::make_shared<AdaptiveCards::UnknownAction>();
-        return RuntimeClassInitialize(unknownAction);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::UnknownAction>& sharedUnknown)
-    try
-    {
-        if (sharedUnknown == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        InitializeBaseElement(std::static_pointer_cast<BaseActionElement>(sharedUnknown));
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveUnsupportedAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
-    {
-        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Unsupported;
-        return S_OK;
+        InitializeBaseElement(sharedUnknown);
     }
 
-    HRESULT AdaptiveUnsupportedAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedUnknown)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveUnsupportedAction::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::UnknownAction> unknownAction = std::make_shared<AdaptiveCards::UnknownAction>();
+        auto unknownAction = std::make_shared<::AdaptiveCards::UnknownAction>();
+        unknownAction->SetElementTypeString(HStringToUTF8(ActionTypeString));
+        CopySharedElementProperties(*unknownAction);
 
-        HString typeString;
-        RETURN_IF_FAILED(get_ActionTypeString(typeString.GetAddressOf()));
-        unknownAction->SetElementTypeString(HStringToUTF8(typeString.Get()));
-        RETURN_IF_FAILED(CopySharedElementProperties(*unknownAction));
-
-        sharedUnknown = std::move(unknownAction);
-        return S_OK;
+        return unknownAction;
     }
-    CATCH_RETURN;
 }
