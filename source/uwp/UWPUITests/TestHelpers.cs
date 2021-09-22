@@ -3,10 +3,7 @@ using Microsoft.Windows.Apps.Test.Foundation.Controls;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -93,7 +90,7 @@ namespace UWPUITests
         public static void GoToTestCase(string testCaseName)
         {
             var application = Application.Instance.CoreWindow;
-            
+
             // If we are not in the home screen then we go to home and then click on the TestCase
             if (GetTitleText() != "Home")
             {
@@ -146,7 +143,7 @@ namespace UWPUITests
             // so we have to remove them before looking up for the month number
             int currentMonth = MonthNameToInt(monthAndYear[0]);
             MoveToMonth(currentMonth, month, calendarView);
-            
+
             // Click on the day "16" button which in turn closes the popup
             FindElementByName("16", calendarView).Click();
         }
