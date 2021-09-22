@@ -8,7 +8,7 @@
 | **items** | `Element[]` | Yes | The card elements to render inside the `Container`. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `Container`. | 1.0 |
-| **verticalContentAlignment** | `VerticalContentAlignment` | No, default: `"top"` | Defines how the content should be aligned vertically within the container. | 1.1 |
+| **verticalContentAlignment** | `VerticalContentAlignment?` | No | Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top. | 1.1 |
 | **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
 | **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image. Acceptable formats are PNG, JPEG, and GIF | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the container in pixels, like `"80px"`. | 1.2 |
@@ -36,7 +36,7 @@ The card elements to render inside the `Container`.
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `Container`
+  * `TableCell`
   * `FactSet`
   * `Image`
   * `ImageSet`
@@ -48,6 +48,8 @@ The card elements to render inside the `Container`.
   * `Input.Toggle`
   * `Media`
   * `RichTextBlock`
+  * `Table`
+  * `TableRow`
   * `TextBlock`
 
 
@@ -82,11 +84,11 @@ Style hint for `Container`.
 
 ## verticalContentAlignment
 
-Defines how the content should be aligned vertically within the container.
+Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.
 
-* **Type**: `VerticalContentAlignment`
+* **Type**: `VerticalContentAlignment?`
 * **Version** : 1.1
-* **Required**: No, default: `"top"`
+* **Required**: No
 * **Allowed values**:
   * `"top"`
   * `"center"`
@@ -115,7 +117,7 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `Container`
+  * `TableCell`
   * `FactSet`
   * `Image`
   * `ImageSet`
@@ -127,6 +129,8 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `Input.Toggle`
   * `Media`
   * `RichTextBlock`
+  * `Table`
+  * `TableRow`
   * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 

@@ -51,7 +51,7 @@ The card elements to show in the primary card region.
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `Container`
+  * `TableCell`
   * `FactSet`
   * `Image`
   * `ImageSet`
@@ -63,6 +63,8 @@ The card elements to show in the primary card region.
   * `Input.Toggle`
   * `Media`
   * `RichTextBlock`
+  * `Table`
+  * `TableRow`
   * `TextBlock`
 
 

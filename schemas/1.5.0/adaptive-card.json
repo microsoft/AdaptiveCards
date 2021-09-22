@@ -2,6 +2,110 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "definitions": {
+    "AdaptiveCard": {
+      "description": "An Adaptive Card, containing a free-form body of card elements, and an optional set of actions.",
+      "properties": {
+        "type": {
+          "enum": [
+            "AdaptiveCard"
+          ],
+          "description": "Must be `AdaptiveCard`"
+        },
+        "version": {
+          "type": "string",
+          "description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
+          "examples": [
+            "1.0",
+            "1.1",
+            "1.2"
+          ]
+        },
+        "refresh": {
+          "$ref": "#/definitions/Refresh",
+          "description": "Defines how the card can be refreshed by making a request to the target Bot.",
+          "version": "1.4"
+        },
+        "authentication": {
+          "$ref": "#/definitions/Authentication",
+          "description": "Defines authentication information to enable on-behalf-of single sign on or just-in-time OAuth.",
+          "version": "1.4"
+        },
+        "body": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Element"
+          },
+          "description": "The card elements to show in the primary card region."
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Action"
+          },
+          "description": "The Actions to show in the card's action bar."
+        },
+        "selectAction": {
+          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
+          "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
+          "version": "1.1"
+        },
+        "fallbackText": {
+          "type": "string",
+          "description": "Text shown when the client doesn't support the version specified (may contain markdown)."
+        },
+        "backgroundImage": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BackgroundImage"
+            },
+            {
+              "type": "string",
+              "format": "uri-reference",
+              "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
+              "version": "1.0"
+            }
+          ],
+          "description": "Specifies the background image of the card.",
+          "version": "1.2"
+        },
+        "minHeight": {
+          "type": "string",
+          "description": "Specifies the minimum height of the card.",
+          "examples": [
+            "50px"
+          ],
+          "version": "1.2",
+          "features": [
+            2293
+          ]
+        },
+        "speak": {
+          "type": "string",
+          "description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
+        },
+        "lang": {
+          "type": "string",
+          "description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.",
+          "examples": [
+            "en",
+            "fr",
+            "es"
+          ]
+        },
+        "verticalContentAlignment": {
+          "$ref": "#/definitions/VerticalContentAlignment",
+          "description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
+          "version": "1.1"
+        },
+        "$schema": {
+          "type": "string",
+          "format": "uri",
+          "description": "The Adaptive Card schema."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
     "Action.Execute": {
       "description": "Gathers input fields, merges with optional data field, and sends an event to the client. Clients process the event by sending an Invoke activity of type adaptiveCard/action to the target Bot. The inputs that are gathered are those on the current card, and in the case of a show card those on any parent cards. See [Universal Action Model](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/universal-action-model) documentation for more details.",
       "version": "1.4",
@@ -231,110 +335,6 @@
           "additionalProperties": false
         }
       ]
-    },
-    "AdaptiveCard": {
-      "description": "An Adaptive Card, containing a free-form body of card elements, and an optional set of actions.",
-      "properties": {
-        "type": {
-          "enum": [
-            "AdaptiveCard"
-          ],
-          "description": "Must be `AdaptiveCard`"
-        },
-        "version": {
-          "type": "string",
-          "description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
-          "examples": [
-            "1.0",
-            "1.1",
-            "1.2"
-          ]
-        },
-        "refresh": {
-          "$ref": "#/definitions/Refresh",
-          "description": "Defines how the card can be refreshed by making a request to the target Bot.",
-          "version": "1.4"
-        },
-        "authentication": {
-          "$ref": "#/definitions/Authentication",
-          "description": "Defines authentication information to enable on-behalf-of single sign on or just-in-time OAuth.",
-          "version": "1.4"
-        },
-        "body": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ImplementationsOf.Element"
-          },
-          "description": "The card elements to show in the primary card region."
-        },
-        "actions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ImplementationsOf.Action"
-          },
-          "description": "The Actions to show in the card's action bar."
-        },
-        "selectAction": {
-          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
-          "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
-          "version": "1.1"
-        },
-        "fallbackText": {
-          "type": "string",
-          "description": "Text shown when the client doesn't support the version specified (may contain markdown)."
-        },
-        "backgroundImage": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/BackgroundImage"
-            },
-            {
-              "type": "string",
-              "format": "uri-reference",
-              "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
-              "version": "1.0"
-            }
-          ],
-          "description": "Specifies the background image of the card.",
-          "version": "1.2"
-        },
-        "minHeight": {
-          "type": "string",
-          "description": "Specifies the minimum height of the card.",
-          "examples": [
-            "50px"
-          ],
-          "version": "1.2",
-          "features": [
-            2293
-          ]
-        },
-        "speak": {
-          "type": "string",
-          "description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
-        },
-        "lang": {
-          "type": "string",
-          "description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.",
-          "examples": [
-            "en",
-            "fr",
-            "es"
-          ]
-        },
-        "verticalContentAlignment": {
-          "$ref": "#/definitions/VerticalContentAlignment",
-          "description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
-          "version": "1.1"
-        },
-        "$schema": {
-          "type": "string",
-          "format": "uri",
-          "description": "The Adaptive Card schema."
-        }
-      },
-      "type": "object",
-      "additionalProperties": false
     },
     "ActionSet": {
       "description": "Displays a set of actions.",
@@ -908,6 +908,487 @@
         }
       ]
     },
+    "Media": {
+      "description": "Displays a media player for audio or video content.",
+      "version": "1.1",
+      "features": [
+        196
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "Media"
+          ],
+          "description": "Must be `Media`"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MediaSource"
+          },
+          "description": "Array of media sources to attempt to play."
+        },
+        "poster": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "URL of an image to display before playing. Supports data URI in version 1.2+"
+        },
+        "altText": {
+          "type": "string",
+          "description": "Alternate text describing the audio or video."
+        },
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sources"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "MediaSource": {
+      "description": "Defines a source for a Media element",
+      "version": "1.1",
+      "features": [
+        196
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "MediaSource"
+          ],
+          "description": "Must be `MediaSource`"
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "Mime type of associated media (e.g. `\"video/mp4\"`)."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "URL to media. Supports data URI in version 1.2+"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mimeType",
+        "url"
+      ]
+    },
+    "RichTextBlock": {
+      "description": "Defines an array of inlines, allowing for inline text formatting.",
+      "version": "1.2",
+      "features": [
+        1933
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "RichTextBlock"
+          ],
+          "description": "Must be `RichTextBlock`"
+        },
+        "inlines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Inline"
+          },
+          "description": "The array of inlines."
+        },
+        "horizontalAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
+        },
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "inlines"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "Table": {
+      "description": "Provides a way to display data in a tabular form.",
+      "version": "1.5",
+      "properties": {
+        "type": {
+          "enum": [
+            "Table"
+          ],
+          "description": "Must be `Table`"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableColumnDefinition"
+          },
+          "description": "Defines the number of columns in the table, their sizes, and more."
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableRow"
+          },
+          "description": "Defines the rows of the table."
+        },
+        "firstRowAsHeader": {
+          "type": "boolean",
+          "description": "Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.",
+          "default": true
+        },
+        "showGridLines": {
+          "type": "boolean",
+          "description": "Specifies whether grid lines should be displayed.",
+          "default": true
+        },
+        "gridStyle": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ContainerStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines the style of the grid. This property currently only controls the grid's color.",
+          "default": "default"
+        },
+        "horizontalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells is horizontally aligned by default. When not specified, horizontal alignment is defined on a per-cell basis."
+        },
+        "verticalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells is vertically aligned by default. When not specified, vertical alignment is defined on a per-cell basis."
+        },
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "TableCell": {
+      "description": "Represents a cell within a row of a Table element.",
+      "version": "1.5",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "TableCell"
+          ],
+          "description": "Must be `TableCell`"
+        },
+        "items": {},
+        "selectAction": {},
+        "style": {},
+        "verticalContentAlignment": {},
+        "bleed": {},
+        "backgroundImage": {},
+        "minHeight": {},
+        "rtl?": {},
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Container"
+        }
+      ]
+    },
+    "TableColumnDefinition": {
+      "description": "Defines the characteristics of a column in a Table element.",
+      "version": "1.5",
+      "properties": {
+        "type": {
+          "enum": [
+            "TableColumnDefinition"
+          ],
+          "description": "Must be `TableColumnDefinition`"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "Specifies the width of the column. If expressed as a number, width represents the weight a the column relative to the other columns in the table. If expressed as a string, width must by in the format \"<number>px\" (for instance, \"50px\") and represents an explicit number of pixels.",
+          "default": 1
+        },
+        "horizontalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells in the column is horizontally aligned by default. When specified, this value overrides the setting at the table level. When not specified, horizontal alignment is defined at the table, row or cell level."
+        },
+        "verticalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table level. When not specified, vertical alignment is defined at the table, row or cell level."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "TableRow": {
+      "description": "Represents a row of cells within a Table element.",
+      "version": "1.5",
+      "properties": {
+        "type": {
+          "enum": [
+            "TableRow"
+          ],
+          "description": "Must be `TableRow`"
+        },
+        "cells": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TableCell"
+          },
+          "description": "The cells in this row. If a row contains more cells than there are columns defined on the Table element, the extra cells are ignored."
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ContainerStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines the style of the entire row."
+        },
+        "horizontalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells in the row is horizontally aligned by default. When specified, this value overrides both the setting at the table and columns level. When not specified, horizontal alignment is defined at the table, column or cell level."
+        },
+        "verticalCellContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table and column level. When not specified, vertical alignment is defined either at the table, column or cell level."
+        },
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "TextBlock": {
+      "description": "Displays text, allowing control over font sizes, weight, and color.",
+      "properties": {
+        "type": {
+          "enum": [
+            "TextBlock"
+          ],
+          "description": "Must be `TextBlock`"
+        },
+        "text": {
+          "type": "string",
+          "description": "Text to display. A subset of markdown is supported (https://aka.ms/ACTextFeatures)"
+        },
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Colors"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the color of `TextBlock` elements."
+        },
+        "fontType": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Type of font to use for rendering",
+          "version": "1.2"
+        },
+        "horizontalAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/HorizontalAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
+        },
+        "isSubtle": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "If `true`, displays text slightly toned down to appear less prominent.",
+          "default": false
+        },
+        "maxLines": {
+          "type": "number",
+          "description": "Specifies the maximum number of lines to display."
+        },
+        "size": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontSize"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls size of text."
+        },
+        "weight": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Controls the weight of `TextBlock` elements."
+        },
+        "wrap": {
+          "type": "boolean",
+          "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
+          "default": false
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBlockStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The style of this TextBlock for accessibility purposes.",
+          "default": "default"
+        },
+        "fallback": {},
+        "height": {},
+        "separator": {},
+        "spacing": {},
+        "id": {},
+        "isVisible": {},
+        "requires": {}
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
     "TextRun": {
       "description": "Defines a single run of formatted text. A TextRun with no properties set can be represented in the json as string containing the text as a shorthand for the json object. These two representations are equivalent.",
       "version": "1.2",
@@ -1341,487 +1822,6 @@
         }
       ]
     },
-    "Media": {
-      "description": "Displays a media player for audio or video content.",
-      "version": "1.1",
-      "features": [
-        196
-      ],
-      "properties": {
-        "type": {
-          "enum": [
-            "Media"
-          ],
-          "description": "Must be `Media`"
-        },
-        "sources": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MediaSource"
-          },
-          "description": "Array of media sources to attempt to play."
-        },
-        "poster": {
-          "type": "string",
-          "format": "uri-reference",
-          "description": "URL of an image to display before playing. Supports data URI in version 1.2+"
-        },
-        "altText": {
-          "type": "string",
-          "description": "Alternate text describing the audio or video."
-        },
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
-      },
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "sources"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Element"
-        }
-      ]
-    },
-    "MediaSource": {
-      "description": "Defines a source for a Media element",
-      "version": "1.1",
-      "features": [
-        196
-      ],
-      "properties": {
-        "type": {
-          "enum": [
-            "MediaSource"
-          ],
-          "description": "Must be `MediaSource`"
-        },
-        "mimeType": {
-          "type": "string",
-          "description": "Mime type of associated media (e.g. `\"video/mp4\"`)."
-        },
-        "url": {
-          "type": "string",
-          "format": "uri-reference",
-          "description": "URL to media. Supports data URI in version 1.2+"
-        }
-      },
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "mimeType",
-        "url"
-      ]
-    },
-    "RichTextBlock": {
-      "description": "Defines an array of inlines, allowing for inline text formatting.",
-      "version": "1.2",
-      "features": [
-        1933
-      ],
-      "properties": {
-        "type": {
-          "enum": [
-            "RichTextBlock"
-          ],
-          "description": "Must be `RichTextBlock`"
-        },
-        "inlines": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ImplementationsOf.Inline"
-          },
-          "description": "The array of inlines."
-        },
-        "horizontalAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/HorizontalAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
-        },
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
-      },
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "inlines"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Element"
-        }
-      ]
-    },
-    "Table": {
-      "description": "Provides a way to display data in a tabular form.",
-      "version": "1.5",
-      "properties": {
-        "type": {
-          "enum": [
-            "Table"
-          ],
-          "description": "Must be `Table`"
-        },
-        "columns": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TableColumnDefinition"
-          },
-          "description": "Defines the number of columns in the table, their sizes ans more."
-        },
-        "rows": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TableRow"
-          },
-          "description": "Defines the rows of the table."
-        },
-        "firstRowAsHeader": {
-          "type": "boolean",
-          "description": "Specifies whether the first row of the table should be treated as a header row, and be announced as such by accessibility software.",
-          "default": true
-        },
-        "showGridLines": {
-          "type": "boolean",
-          "description": "Specifies whether grid lines should be displayed.",
-          "default": true
-        },
-        "gridStyle": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ContainerStyle"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Defines the style of the grid. This property currently only controls the grid's color.",
-          "default": "default"
-        },
-        "horizontalCellContentAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/HorizontalAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls how the content of all cells is horizontally aligned by default. When not specified, horizontal alignment is defined on a per-cell basis."
-        },
-        "verticalCellContentAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/VerticalAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls how the content of all cells is vertically aligned by default. When not specified, vertical alignment is defined on a per-cell basis."
-        },
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
-      },
-      "type": "object",
-      "additionalProperties": false,
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Element"
-        }
-      ]
-    },
-    "TableCell": {
-      "description": "Represents a cell within a row of a Table element.",
-      "version": "1.5",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "enum": [
-            "TableCell"
-          ],
-          "description": "Must be `TableCell`"
-        },
-        "items": {},
-        "selectAction": {},
-        "style": {},
-        "verticalContentAlignment": {},
-        "bleed": {},
-        "backgroundImage": {},
-        "minHeight": {},
-        "rtl?": {},
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
-      },
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Container"
-        }
-      ]
-    },
-    "TableColumnDefinition": {
-      "description": "Defines the characteristics of a column in a Table element.",
-      "version": "1.5",
-      "properties": {
-        "type": {
-          "enum": [
-            "TableColumnDefinition"
-          ],
-          "description": "Must be `TableColumnDefinition`"
-        },
-        "width": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
-          ],
-          "description": "Specifies the width of the column. If expressed as a number, width represents the weight a the column relative to the other columns in the table. If expressed as a string, width must by in the format \"<number>px\" (for instance, \"50px\") and represents an explicit number of pixels.",
-          "default": 1
-        },
-        "horizontalCellContentAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/HorizontalAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls how the content of all cells in the column is horizontally aligned by default. When specified, this value overrides the setting at the table level. When not specified, horizontal alignment is defined at the table, row or cell level."
-        },
-        "verticalCellContentAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/VerticalAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table level. When not specified, vertical alignment is defined at the table, row or cell level."
-        }
-      },
-      "type": "object",
-      "additionalProperties": false
-    },
-    "TableRow": {
-      "description": "Represents a row of cells within a Table element.",
-      "version": "1.5",
-      "properties": {
-        "type": {
-          "enum": [
-            "TableRow"
-          ],
-          "description": "Must be `TableRow`"
-        },
-        "cells": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TableCell"
-          },
-          "description": "The cells in this row. If a row contains more cells than there are columns defined on the Table element, the extra cells are ignored."
-        },
-        "style": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ContainerStyle"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Defines the style of the entire row."
-        },
-        "horizontalCellContentAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/HorizontalAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls how the content of all cells in the row is horizontally aligned by default. When specified, this value overrides both the setting at the table and columns level. When not specified, horizontal alignment is defined at the table, column or cell level."
-        },
-        "verticalCellContentAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/VerticalAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table and column level. When not specified, vertical alignment is defined either at the table, column or cell level."
-        },
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
-      },
-      "type": "object",
-      "additionalProperties": false,
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Element"
-        }
-      ]
-    },
-    "TextBlock": {
-      "description": "Displays text, allowing control over font sizes, weight, and color.",
-      "properties": {
-        "type": {
-          "enum": [
-            "TextBlock"
-          ],
-          "description": "Must be `TextBlock`"
-        },
-        "text": {
-          "type": "string",
-          "description": "Text to display. A subset of markdown is supported (https://aka.ms/ACTextFeatures)"
-        },
-        "color": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Colors"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls the color of `TextBlock` elements."
-        },
-        "fontType": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontType"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Type of font to use for rendering",
-          "version": "1.2"
-        },
-        "horizontalAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/HorizontalAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls the horizontal text alignment. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
-        },
-        "isSubtle": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "If `true`, displays text slightly toned down to appear less prominent.",
-          "default": false
-        },
-        "maxLines": {
-          "type": "number",
-          "description": "Specifies the maximum number of lines to display."
-        },
-        "size": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontSize"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls size of text."
-        },
-        "weight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Controls the weight of `TextBlock` elements."
-        },
-        "wrap": {
-          "type": "boolean",
-          "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
-          "default": false
-        },
-        "style": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextBlockStyle"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The style of this TextBlock for accessibility purposes.",
-          "default": "default"
-        },
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
-      },
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "text"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Element"
-        }
-      ]
-    },
     "ActionStyle": {
       "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
       "features": [
@@ -2074,11 +2074,12 @@
             "text",
             "tel",
             "url",
-            "email"
+            "email",
+            "password"
           ]
         },
         {
-          "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])$"
+          "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])|([p|P][a|A][s|S][s|S][w|W][o|O][r|R][d|D])$"
         }
       ]
     },
@@ -2443,66 +2444,6 @@
           ],
           "allOf": [
             {
-              "$ref": "#/definitions/Input.ChoiceSet"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Date"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Number"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Text"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Time"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Toggle"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
               "$ref": "#/definitions/Media"
             }
           ]
@@ -2554,6 +2495,66 @@
           "allOf": [
             {
               "$ref": "#/definitions/TextBlock"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Date"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Number"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Time"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Toggle"
             }
           ]
         }
@@ -2671,66 +2672,6 @@
           ],
           "allOf": [
             {
-              "$ref": "#/definitions/Input.ChoiceSet"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Date"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Number"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Text"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Time"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Toggle"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
               "$ref": "#/definitions/Media"
             }
           ]
@@ -2782,6 +2723,66 @@
           "allOf": [
             {
               "$ref": "#/definitions/TextBlock"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Date"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Number"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Time"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Toggle"
             }
           ]
         }
@@ -2865,66 +2866,6 @@
           ],
           "allOf": [
             {
-              "$ref": "#/definitions/Input.ChoiceSet"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Date"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Number"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Text"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Time"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Input.Toggle"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
               "$ref": "#/definitions/Media"
             }
           ]
@@ -2978,25 +2919,7 @@
               "$ref": "#/definitions/TextBlock"
             }
           ]
-        }
-      ]
-    },
-    "ImplementationsOf.Inline": {
-      "anyOf": [
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/TextRun"
-            }
-          ]
-        }
-      ]
-    },
-    "ImplementationsOf.Input": {
-      "anyOf": [
+        },
         {
           "required": [
             "type"
@@ -3078,6 +3001,84 @@
           "allOf": [
             {
               "$ref": "#/definitions/TableCell"
+            }
+          ]
+        }
+      ]
+    },
+    "ImplementationsOf.Inline": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/TextRun"
+            }
+          ]
+        }
+      ]
+    },
+    "ImplementationsOf.Input": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.ChoiceSet"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Date"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Number"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Text"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Time"
+            }
+          ]
+        },
+        {
+          "required": [
+            "type"
+          ],
+          "allOf": [
+            {
+              "$ref": "#/definitions/Input.Toggle"
             }
           ]
         }

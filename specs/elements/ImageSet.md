@@ -55,7 +55,7 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `Container`
+  * `TableCell`
   * `FactSet`
   * `Image`
   * `ImageSet`
@@ -67,6 +67,8 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `Input.Toggle`
   * `Media`
   * `RichTextBlock`
+  * `Table`
+  * `TableRow`
   * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 

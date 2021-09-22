@@ -6,6 +6,11 @@
     "text",
     "tel",
     "url",
-    "email"
+    "email",
+    {
+      "value": "password",
+      "description": "Display input text with password masking.",
+      "version": "1.5"
+    }
   ]
 }
