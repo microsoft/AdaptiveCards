@@ -11,7 +11,7 @@
 
 namespace AdaptiveCards
 {
-    class CollectionTypeElement;
+    class StyledCollectionElement;
     class ParseContext
     {
     public:
@@ -36,8 +36,8 @@ namespace AdaptiveCards
         ContainerStyle GetParentalContainerStyle() const;
         void SetParentalContainerStyle(const ContainerStyle style);
         AdaptiveCards::InternalId PaddingParentInternalId() const;
-        void SaveContextForCollectionTypeElement(const CollectionTypeElement& current);
-        void RestoreContextForCollectionTypeElement(const CollectionTypeElement& current);
+        void SaveContextForStyledCollectionElement(const StyledCollectionElement& current);
+        void RestoreContextForStyledCollectionElement(const StyledCollectionElement& current);
 
         ContainerBleedDirection GetBleedDirection() const;
         void PushBleedDirection(const ContainerBleedDirection direction);

@@ -5,21 +5,22 @@
 #include "pch.h"
 #include "BackgroundImage.h"
 #include "BaseCardElement.h"
+#include "CollectionCoreElement.h"
 #include "Util.h"
 
 namespace AdaptiveCards
 {
-    class CollectionTypeElement : public BaseCardElement
+    class StyledCollectionElement : public CollectionCoreElement
     {
     public:
-        CollectionTypeElement(const CollectionTypeElement&) = default;
-        CollectionTypeElement(CollectionTypeElement&&) = default;
-        CollectionTypeElement& operator=(const CollectionTypeElement&) = default;
-        CollectionTypeElement& operator=(CollectionTypeElement&&) = default;
-        ~CollectionTypeElement() = default;
-        CollectionTypeElement(CardElementType type,
-                              ContainerStyle style = ContainerStyle::None,
-                              std::optional<VerticalContentAlignment> alignment = std::nullopt);
+        StyledCollectionElement(const StyledCollectionElement&) = default;
+        StyledCollectionElement(StyledCollectionElement&&) = default;
+        StyledCollectionElement& operator=(const StyledCollectionElement&) = default;
+        StyledCollectionElement& operator=(StyledCollectionElement&&) = default;
+        ~StyledCollectionElement() = default;
+        StyledCollectionElement(CardElementType type,
+                                ContainerStyle style = ContainerStyle::None,
+                                std::optional<VerticalContentAlignment> alignment = std::nullopt);
 
         ContainerStyle GetStyle() const;
         void SetStyle(const ContainerStyle value);
@@ -63,8 +64,6 @@ namespace AdaptiveCards
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo,
                                     const std::vector<std::shared_ptr<T>>& elements);
 
-        virtual void DeserializeChildren(AdaptiveCards::ParseContext& context, const Json::Value& value) = 0;
-
         Json::Value SerializeToJsonValue() const override;
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& value);
 
@@ -90,7 +89,7 @@ namespace AdaptiveCards
     };
 
     template<typename T>
-    std::shared_ptr<T> CollectionTypeElement::Deserialize(ParseContext& context, const Json::Value& value)
+    std::shared_ptr<T> StyledCollectionElement::Deserialize(ParseContext& context, const Json::Value& value)
     {
         auto collection = BaseCardElement::Deserialize<T>(context, value);
 
@@ -116,18 +115,18 @@ namespace AdaptiveCards
             collection->SetMinHeight(*minHeight);
         }
 
-        // configures for cotainer style
+        // configures for container style
         collection->ConfigForContainerStyle(context);
 
         // we walk parse tree dfs, so we need to save current style,
         // before we walk back up to a parent.
-        context.SaveContextForCollectionTypeElement(*collection);
+        context.SaveContextForStyledCollectionElement(*collection);
 
         // Parse Items
         collection->DeserializeChildren(context, value);
 
         // since we are walking dfs, we have to restore the style before we back up
-        context.RestoreContextForCollectionTypeElement(*collection);
+        context.RestoreContextForStyledCollectionElement(*collection);
 
         context.SetCanFallbackToAncestor(canFallbackToAncestor);
 
@@ -138,8 +137,8 @@ namespace AdaptiveCards
     }
 
     template<typename T>
-    void CollectionTypeElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo,
-                                                       const std::vector<std::shared_ptr<T>>& elements)
+    void StyledCollectionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo,
+                                                         const std::vector<std::shared_ptr<T>>& elements)
     {
         if (m_backgroundImage != nullptr)
         {
@@ -149,9 +148,6 @@ namespace AdaptiveCards
             resourceInfo.push_back(backgroundImageInfo);
         }
 
-        for (const auto& elem : elements)
-        {
-            elem->GetResourceInformation(resourceInfo);
-        }
+        CollectionCoreElement::GetResourceInformation(resourceInfo, elements);
     }
 }

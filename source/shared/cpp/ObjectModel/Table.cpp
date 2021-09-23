@@ -7,8 +7,8 @@
 namespace AdaptiveCards
 {
     Table::Table() :
-        BaseCardElement(CardElementType::Table), m_columnDefinitions({}), m_rows({}), m_gridStyle(ContainerStyle::None),
-        m_showGridLines(true), m_firstRowAsHeaders(true)
+        CollectionCoreElement(CardElementType::Table), m_columnDefinitions({}), m_rows({}),
+        m_gridStyle(ContainerStyle::None), m_showGridLines(true), m_firstRowAsHeaders(true)
     {
         PopulateKnownPropertiesSet();
     }
@@ -69,9 +69,19 @@ namespace AdaptiveCards
 
     void Table::SetRows(const std::vector<std::shared_ptr<TableRow>>& value) { m_rows = value; }
 
+    void Table::DeserializeChildren(ParseContext& context, const Json::Value& value)
+    {
+        if (auto deserializedRows =
+                ParseUtil::GetElementCollectionOfSingleType<TableRow>(
+                    context, value, AdaptiveCardSchemaKey::Rows, &TableRow::DeserializeTableRow, false); !deserializedRows.empty())
+        {
+            m_rows = deserializedRows;
+        }
+    }
+
     Json::Value Table::SerializeToJsonValue() const
     {
-        Json::Value root = BaseCardElement::SerializeToJsonValue();
+        Json::Value root = CollectionCoreElement::SerializeToJsonValue();
 
         if (!m_columnDefinitions.empty())
         {
@@ -127,17 +137,8 @@ namespace AdaptiveCards
     {
         ParseUtil::ExpectTypeString(json, CardElementType::Table);
 
-        std::shared_ptr<Table> table = BaseCardElement::Deserialize<Table>(context, json);
-        table->SetShowGridLines(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::ShowGridLines, true, false));
-        table->SetGridStyle(
-            ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::GridStyle, ContainerStyle::None, ContainerStyleFromString));
-        table->SetFirstRowAsHeaders(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::FirstRowAsHeaders, true, false));
-        table->SetHorizontalCellContentAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
-            json, AdaptiveCardSchemaKey::HorizontalCellContentAlignment, HorizontalAlignmentFromString));
-        table->SetVerticalCellContentAlignment(ParseUtil::GetOptionalEnumValue<VerticalContentAlignment>(
-            json, AdaptiveCardSchemaKey::VerticalCellContentAlignment, VerticalContentAlignmentFromString));
+        std::shared_ptr<Table> table = CollectionCoreElement::Deserialize<Table>(context, json);
 
-        // manually deserialize columns
         if (const auto& columnsArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::Columns, false); !columnsArray.empty())
         {
             auto& columns = table->GetColumns();
@@ -147,12 +148,14 @@ namespace AdaptiveCards
             }
         }
 
-        if (auto deserializedRows = ParseUtil::GetElementCollection<TableRow>(
-                false, context, json, AdaptiveCardSchemaKey::Rows, false, CardElementTypeToString(CardElementType::TableRow));
-            !deserializedRows.empty())
-        {
-            table->SetRows(deserializedRows);
-        }
+        table->SetShowGridLines(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::ShowGridLines, true, false));
+        table->SetGridStyle(
+            ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::GridStyle, ContainerStyle::None, ContainerStyleFromString));
+        table->SetFirstRowAsHeaders(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::FirstRowAsHeaders, true, false));
+        table->SetHorizontalCellContentAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
+            json, AdaptiveCardSchemaKey::HorizontalCellContentAlignment, HorizontalAlignmentFromString));
+        table->SetVerticalCellContentAlignment(ParseUtil::GetOptionalEnumValue<VerticalContentAlignment>(
+            json, AdaptiveCardSchemaKey::VerticalCellContentAlignment, VerticalContentAlignmentFromString));
 
         return table;
     }

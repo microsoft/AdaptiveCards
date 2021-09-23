@@ -10,12 +10,12 @@
 using namespace AdaptiveCards;
 
 // This ctor used by types that want to be exactly like Container, but with a different name (e.g. TableCell)
-Container::Container(CardElementType derivedType) : CollectionTypeElement(derivedType)
+Container::Container(CardElementType derivedType) : StyledCollectionElement(derivedType)
 {
     PopulateKnownPropertiesSet();
 }
 
-Container::Container() : CollectionTypeElement(CardElementType::Container)
+Container::Container() : StyledCollectionElement(CardElementType::Container)
 {
     PopulateKnownPropertiesSet();
 }
@@ -43,7 +43,7 @@ void Container::SetRtl(const std::optional<bool>& value)
 
 Json::Value Container::SerializeToJsonValue() const
 {
-    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
+    Json::Value root = StyledCollectionElement::SerializeToJsonValue();
     std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
@@ -63,7 +63,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
-    auto container = CollectionTypeElement::Deserialize<Container>(context, value);
+    auto container = StyledCollectionElement::Deserialize<Container>(context, value);
 
     container->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
 
@@ -99,6 +99,6 @@ void Container::PopulateKnownPropertiesSet()
 void Container::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto items = GetItems();
-    CollectionTypeElement::GetResourceInformation<BaseCardElement>(resourceInfo, items);
+    StyledCollectionElement::GetResourceInformation<BaseCardElement>(resourceInfo, items);
     return;
 }

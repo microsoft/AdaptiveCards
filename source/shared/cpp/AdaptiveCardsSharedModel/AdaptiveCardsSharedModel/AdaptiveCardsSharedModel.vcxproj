@@ -219,10 +219,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseElement.cpp" />
-    <ClCompile Include="..\..\ObjectModel\CollectionTypeElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\CollectionCoreElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\ObjectModel\Inline.cpp" />
     <ClCompile Include="..\..\ObjectModel\RichTextElementProperties.cpp" />
+    <ClCompile Include="..\..\ObjectModel\StyledCollectionElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\Table.cpp" />
     <ClCompile Include="..\..\ObjectModel\TableCell.cpp" />
     <ClCompile Include="..\..\ObjectModel\TableColumnDefinition.cpp" />
@@ -297,11 +298,12 @@
     <ClInclude Include="..\..\ObjectModel\AuthCardButton.h" />
     <ClInclude Include="..\..\ObjectModel\Authentication.h" />
     <ClInclude Include="..\..\ObjectModel\BaseElement.h" />
-    <ClInclude Include="..\..\ObjectModel\CollectionTypeElement.h" />
+    <ClInclude Include="..\..\ObjectModel\CollectionCoreElement.h" />
     <ClInclude Include="..\..\ObjectModel\FeatureRegistration.h" />
     <ClInclude Include="..\..\ObjectModel\Inline.h" />
     <ClInclude Include="..\..\ObjectModel\InternalId.h" />
     <ClInclude Include="..\..\ObjectModel\RichTextElementProperties.h" />
+    <ClInclude Include="..\..\ObjectModel\StyledCollectionElement.h" />
     <ClInclude Include="..\..\ObjectModel\Table.h" />
     <ClInclude Include="..\..\ObjectModel\TableCell.h" />
     <ClInclude Include="..\..\ObjectModel\TableColumnDefinition.h" />

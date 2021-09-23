@@ -29,10 +29,19 @@ namespace AdaptiveCards
     const std::vector<std::shared_ptr<TableCell>>& TableRow::GetCells() const { return m_cells; }
     void TableRow::SetCells(const std::vector<std::shared_ptr<TableCell>>& value) { m_cells = value; }
 
-    std::optional<VerticalContentAlignment> TableRow::GetVerticalCellContentAlignment() const { return m_verticalCellContentAlignment; }
-    void TableRow::SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value) { m_verticalCellContentAlignment = value; }
+    std::optional<VerticalContentAlignment> TableRow::GetVerticalCellContentAlignment() const
+    {
+        return m_verticalCellContentAlignment;
+    }
+    void TableRow::SetVerticalCellContentAlignment(std::optional<VerticalContentAlignment> value)
+    {
+        m_verticalCellContentAlignment = value;
+    }
 
-    std::optional<HorizontalAlignment> TableRow::GetHorizontalCellContentAlignment() const { return m_horizontalCellContentAlignment; }
+    std::optional<HorizontalAlignment> TableRow::GetHorizontalCellContentAlignment() const
+    {
+        return m_horizontalCellContentAlignment;
+    }
     void TableRow::SetHorizontalCellContentAlignment(std::optional<HorizontalAlignment> value)
     {
         m_horizontalCellContentAlignment = value;
@@ -75,10 +84,13 @@ namespace AdaptiveCards
         return root;
     }
 
-    std::shared_ptr<BaseCardElement> TableRowParser::Deserialize(ParseContext& context, const Json::Value& json)
+    std::shared_ptr<TableRow> TableRow::DeserializeTableRowFromString(ParseContext& context, const std::string& json)
     {
-        ParseUtil::ExpectTypeString(json, CardElementType::TableRow);
+        return DeserializeTableRow(context, ParseUtil::GetJsonValueFromString(json));
+    }
 
+    std::shared_ptr<TableRow> TableRow::DeserializeTableRow(ParseContext& context, const Json::Value& json)
+    {
         std::shared_ptr<TableRow> tableRow = BaseCardElement::Deserialize<TableRow>(context, json);
 
         tableRow->SetHorizontalCellContentAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
@@ -86,15 +98,10 @@ namespace AdaptiveCards
         tableRow->SetVerticalCellContentAlignment(ParseUtil::GetOptionalEnumValue<VerticalContentAlignment>(
             json, AdaptiveCardSchemaKey::VerticalCellContentAlignment, VerticalContentAlignmentFromString));
         tableRow->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
-        auto cells = ParseUtil::GetElementCollection<TableCell>(
-            false, context, json, AdaptiveCardSchemaKey::Cells, false, CardElementTypeToString(CardElementType::TableCell));
+        auto cells = ParseUtil::GetElementCollectionOfSingleType<TableCell>(
+            context, json, AdaptiveCardSchemaKey::Cells, &TableCell::DeserializeTableCell, false);
         tableRow->SetCells(cells);
 
         return tableRow;
-    }
-
-    std::shared_ptr<BaseCardElement> TableRowParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
-    {
-        return TableRowParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
     }
 }

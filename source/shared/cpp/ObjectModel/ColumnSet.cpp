@@ -10,7 +10,7 @@
 
 using namespace AdaptiveCards;
 
-ColumnSet::ColumnSet() : CollectionTypeElement(CardElementType::ColumnSet)
+ColumnSet::ColumnSet() : StyledCollectionElement(CardElementType::ColumnSet)
 {
     PopulateKnownPropertiesSet();
 }
@@ -27,7 +27,7 @@ std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns()
 
 Json::Value ColumnSet::SerializeToJsonValue() const
 {
-    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
+    Json::Value root = StyledCollectionElement::SerializeToJsonValue();
 
     std::string const& propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
     root[propertyName] = Json::Value(Json::arrayValue);
@@ -60,7 +60,7 @@ void ColumnSet::PopulateKnownPropertiesSet()
 void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto columns = GetColumns();
-    CollectionTypeElement::GetResourceInformation<Column>(resourceInfo, columns);
+    StyledCollectionElement::GetResourceInformation<Column>(resourceInfo, columns);
     return;
 }
 
@@ -68,7 +68,7 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
-    auto container = CollectionTypeElement::Deserialize<ColumnSet>(context, value);
+    auto container = StyledCollectionElement::Deserialize<ColumnSet>(context, value);
 
     return container;
 }
