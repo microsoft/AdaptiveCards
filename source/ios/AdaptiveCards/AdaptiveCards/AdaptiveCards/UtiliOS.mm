@@ -13,6 +13,7 @@
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
+#import "ACRTableRow.h"
 #import "ACRTargetBuilderDirector.h"
 #import "ACRUIImageView.h"
 #import "ACRViewPrivate.h"
@@ -938,7 +939,7 @@ ACRHeightType GetACRHeight(HeightType adaptiveHeight)
 ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment)
 {
     ACRVerticalContentAlignment contentAlignment = ACRVerticalContentAlignmentTop;
-    switch (adaptiveVerticalContentAlignment){
+    switch (adaptiveVerticalContentAlignment) {
         case AdaptiveCards::VerticalContentAlignment::Top:
             contentAlignment = ACRVerticalContentAlignmentTop;
             break;

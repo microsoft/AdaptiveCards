@@ -12,6 +12,7 @@
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView, ACOIVisibilityManagerFacade> {
   @protected
+    UIStackView *_stackView;
     ACOFillerSpaceManager *_paddingHandler;
     NSMutableArray<UIView *> *_paddings;
     ACOVisibilityManager *_visibilityManager;
