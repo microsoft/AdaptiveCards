@@ -527,31 +527,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                                 "items": [
                                     {
                                         "type": "TextBlock",
-                                        "text": "Name",
-                                        "wrap": true,
-                                        "weight": "Bolder"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "TableCell",
-                                "items": [
-                                    {
-                                        "type": "TextBlock",
-                                        "text": "Type",
-                                        "wrap": true,
-                                        "weight": "Bolder"
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "TableCell",
-                                "items": [
-                                    {
-                                        "type": "TextBlock",
-                                        "text": "Description",
-                                        "wrap": true,
-                                        "weight": "Bolder"
+                                        "text": "..."
                                     }
                                 ]
                             }
@@ -570,6 +546,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(CardElementTypeToString(CardElementType::Unknown),
                 CardElementTypeToString(bodyElem->GetElementType()),
                 L"An orphaned TableRow should implemented with UnknownElement");
+
+            auto serializedCard = card->Serialize();
+            Assert::AreEqual(R"()"s, serializedCard);
         }
 
         TEST_METHOD(TableCardParseOrphanedTableCell)
@@ -604,6 +583,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(CardElementTypeToString(CardElementType::Unknown),
                 CardElementTypeToString(bodyElem->GetElementType()),
                 L"An orphaned TableCell should implemented with UnknownElement");
+        }
+
+        TEST_METHOD(OrphanedTableRowFallback)
+        {
+
         }
 
         TEST_METHOD(TableCardParseWithImpliedTypes)
