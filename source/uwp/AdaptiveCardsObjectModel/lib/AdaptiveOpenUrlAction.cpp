@@ -3,79 +3,30 @@
 #include "pch.h"
 
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveOpenUrlAction.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveOpenUrlAction::AdaptiveOpenUrlAction(const std::shared_ptr<::AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
     {
-        std::shared_ptr<AdaptiveCards::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
-        return RuntimeClassInitialize(openUrlAction);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& sharedOpenUrlAction)
-    try
-    {
-        if (sharedOpenUrlAction == nullptr)
+        if (!sharedOpenUrlAction->GetUrl().empty())
         {
-            return E_INVALIDARG;
+            Url = winrt::Windows::Foundation::Uri{UTF8ToHString(sharedOpenUrlAction->GetUrl())};
         }
 
-        ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(), &uriActivationFactory));
-        HString asHstring;
-        RETURN_IF_FAILED(UTF8ToHString(sharedOpenUrlAction->GetUrl(), asHstring.GetAddressOf()));
+        InitializeBaseElement(sharedOpenUrlAction);
+    }
 
-        if (asHstring.IsValid())
+    std::shared_ptr<::AdaptiveCards::BaseActionElement> AdaptiveOpenUrlAction::GetSharedModel()
+    {
+        auto openUrlAction = std::make_shared<::AdaptiveCards::OpenUrlAction>();
+        CopySharedElementProperties(*openUrlAction);
+
+        if (Url.get())
         {
-            RETURN_IF_FAILED(uriActivationFactory->CreateUri(asHstring.Get(), m_url.GetAddressOf()));
+            openUrlAction->SetUrl(HStringToUTF8(Url->AbsoluteUri()));
         }
 
-        InitializeBaseElement(std::static_pointer_cast<AdaptiveCards::BaseActionElement>(sharedOpenUrlAction));
-        return S_OK;
+        return openUrlAction;
     }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveOpenUrlAction::get_Url(_COM_Outptr_ IUriRuntimeClass** url) { return m_url.CopyTo(url); }
-
-    HRESULT AdaptiveOpenUrlAction::put_Url(_In_ IUriRuntimeClass* url)
-    try
-    {
-        m_url = url;
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveCards::ObjectModel::Uwp::ActionType* actionType)
-    {
-        *actionType = ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::OpenUrl;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveOpenUrlAction::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedModel)
-    try
-    {
-        std::shared_ptr<AdaptiveCards::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveCards::OpenUrlAction>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*openUrlAction));
-
-        if (m_url != nullptr)
-        {
-            HString urlTemp;
-            m_url->get_AbsoluteUri(urlTemp.GetAddressOf());
-
-            std::string urlString;
-            RETURN_IF_FAILED(HStringToUTF8(urlTemp.Get(), urlString));
-            openUrlAction->SetUrl(urlString);
-        }
-
-        sharedModel = std::move(openUrlAction);
-        return S_OK;
-    }
-    CATCH_RETURN;
 }
