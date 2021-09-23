@@ -63,10 +63,8 @@ export class Toolbox {
         this._collapsedTabContainer = collapsedTabContainer;
 
         this._renderedElement = document.createElement("div");
-        this._renderedElement.style.overflow = "auto";
-        this._renderedElement.style.display = "flex";
-        this._renderedElement.style.flexDirection = "column";
-        this._renderedElement.style.position = "relative";
+        this._renderedElement.classList.add("acd-toolbox");
+        this.stretch = this.stretch; // trigger CSS class painting based on defaults
 
         this._headerRootElement = document.createElement("div");
         this._headerRootElement.innerHTML = "";
@@ -284,10 +282,12 @@ export class Toolbox {
         this._stretch = value;
 
         if (this._stretch) {
-            this.renderedElement.style.flex = "1 1 auto";
+            this.renderedElement.classList.add("acd-toolbox-stretch");
+            this.renderedElement.classList.remove("acd-toolbox-no-stretch");
         }
         else {
-            this.renderedElement.style.flex = "0 0 auto";
+            this.renderedElement.classList.add("acd-toolbox-no-stretch");
+            this.renderedElement.classList.remove("acd-toolbox-stretch");
         }
     }
 }
