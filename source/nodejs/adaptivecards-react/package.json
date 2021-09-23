@@ -18,8 +18,8 @@
 		"microsoft",
 		"bot"
 	],
-	"main": "lib/adaptivecards-react.js",
-	"types": "lib/adaptivecards-react.d.ts",
+	"main": "dist/adaptivecards-react.js",
+	"types": "lib/src/adaptivecards-react.d.ts",
 	"files": [
 		"lib",
 		"dist",
@@ -31,7 +31,7 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
-		"dts": "dts-generator --prefix react-adaptivecards --project . --out dist/react-adaptivecards.d.ts",
+		"dts": "dts-generator --prefix adaptivecards-react --project . --out dist/adaptivecards-react.d.ts",
 		"lint": "eslint src/*.ts src/*.tsx",
 		"release": "npm run build && webpack --mode=production && npm run dts",
 		"docs": "npx typedoc"
