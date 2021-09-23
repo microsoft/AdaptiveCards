@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ACRTableCellDefinition : NSObject
 
 @property ACRContainerStyle style;
-@property ACRVerticalAlignment verticalAlignment;
+@property ACRVerticalContentAlignment verticalAlignment;
 @property ACRHorizontalAlignment horizontalAlignment;
 
 @end

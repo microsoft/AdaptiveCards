@@ -10,7 +10,7 @@
 #import "ACRButton.h"
 #import "ACRViewPrivate.h"
 #import "BaseActionElement.h"
-#import "Mocks/MockACRView.h"
+#import "Mocks/ACRMockViews.h"
 #import "Mocks/MockContext.h"
 #import "OpenUrlAction.h"
 #import <UIKit/UIKit.h>
@@ -111,4 +111,3 @@ using namespace AdaptiveCards;
 }
 
 @end
-

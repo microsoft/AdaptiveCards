@@ -111,15 +111,15 @@
     return NO;
 }
 
-- (ACRVerticalAlignment)verticalContentAlignment
+- (ACRVerticalContentAlignment)verticalContentAlignment
 {
     if (_verticalAlignmentContext && [_verticalAlignmentContext count]) {
         NSNumber *number = [_verticalAlignmentContext lastObject];
         if (number) {
-            return (ACRVerticalAlignment)[number intValue];
+            return (ACRVerticalContentAlignment)[number intValue];
         }
     }
-    return ACRVerticalTop;
+    return ACRVerticalContentAlignmentTop;
 }
 
 - (ACRHorizontalAlignment)horizontalContentAlignment

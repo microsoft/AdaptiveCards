@@ -35,21 +35,15 @@
 
 - (void)doSelectAction
 {
+    NSMutableSet<id<ACOIVisibilityManagerFacade>> *facades = [[NSMutableSet alloc] init];
     for (const auto &target : _action->GetTargetElements()) {
         NSString *hashString = [NSString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
         NSUInteger tag = hashString.hash;
         UIView *view = [_rootView viewWithTag:tag];
-        UIView *separator = nil;
         BOOL bHide = NO;
 
         id<ACOIVisibilityManagerFacade> facade = [_rootView.context retrieveVisiblityManagerWithTag:view.tag];
-        // if facade is available, use the interface, otherwise stick to the old interface until the change is complete
-        if (!facade) {
-            NSMutableString *hashStringForSeparator = [NSMutableString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
-            [hashStringForSeparator appendString:@"-separator"];
-            NSUInteger separatorTag = hashStringForSeparator.hash;
-            separator = [_rootView viewWithTag:separatorTag];
-        }
+        [facades addObject:facade];
 
         AdaptiveCards::IsVisible toggleEnum = target->GetIsVisible();
         if (toggleEnum == AdaptiveCards::IsVisibleToggle) {
@@ -67,23 +61,11 @@
             } else {
                 [facade unhideView:view];
             }
-        } else {
-            if (bHide) {
-                if (!view.isHidden) {
-                    view.hidden = bHide;
-                }
-                if (separator && !separator.isHidden) {
-                    separator.hidden = bHide;
-                }
-            } else {
-                if (view.isHidden) {
-                    view.hidden = bHide;
-                }
-                if (separator && separator.isHidden) {
-                    separator.hidden = bHide;
-                }
-            }
         }
+    }
+
+    for (id<ACOIVisibilityManagerFacade> viewToUpdateVisibility in facades) {
+        [viewToUpdateVisibility updatePaddingVisibility];
     }
 
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:[[ACOBaseActionElement alloc] initWithBaseActionElement:_action]];

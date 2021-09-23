@@ -143,8 +143,6 @@
 
     configRtl(lab, rootView.context);
 
-    configVisibility(lab, elem);
-
     return lab;
 }
 

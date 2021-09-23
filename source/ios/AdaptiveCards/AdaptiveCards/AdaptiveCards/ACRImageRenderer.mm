@@ -98,6 +98,11 @@
 
     [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
 
+    // added padding to strech for image view because stretching ImageView is not desirable
+    if (imgElem->GetHeight() == HeightType::Stretch) {
+        [viewGroup addArrangedSubview:[viewGroup addPaddingFor:wrappingView]];
+    }
+
     [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingView.topAnchor].active = YES;
@@ -114,12 +119,6 @@
         [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
-    }
-
-    if (imgElem->GetHeight() == HeightType::Stretch && imgElem->GetPixelHeight() == 0) {
-        if ([viewGroup isKindOfClass:[ACRColumnView class]]) {
-            [(ACRColumnView *)viewGroup addPaddingSpace];
-        }
     }
 
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
@@ -139,8 +138,6 @@
         view.accessibilityLabel = stringForAccessiblilityLabel;
     }
 
-    configVisibility(wrappingView, elem);
-
     if (imgElem->GetImageStyle() == ImageStyle::Person) {
         wrappingView.isPersonStyle = YES;
     }
@@ -148,7 +145,7 @@
     if (view && view.image) {
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
         [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:view.image imageView:view];
-    }   
+    }
     return wrappingView;
 }
 

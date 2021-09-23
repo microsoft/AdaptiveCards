@@ -73,13 +73,13 @@
 - (void)setVerticalAlignment
 {
     switch (_definition.verticalAlignment) {
-        case ACRVerticalTop:
+        case ACRVerticalContentAlignmentTop:
             [_contentView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
             break;
-        case ACRVerticalCenter:
+        case ACRVerticalContentAlignmentCenter:
             [_contentView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
             break;
-        case ACRVerticalBottom:
+        case ACRVerticalContentAlignmentBottom:
             [_contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
             break;
     }

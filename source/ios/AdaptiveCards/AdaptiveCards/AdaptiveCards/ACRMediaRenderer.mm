@@ -154,9 +154,11 @@
         }
     }
 
-    configVisibility(contentholdingview, elem);
+    if (mediaElem->GetHeight() == HeightType::Stretch) {
+        [viewGroup addArrangedSubview:[viewGroup addPaddingFor:contentholdingview]];
+    }
 
-    return view;
+    return contentholdingview;
 }
 
 - (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView

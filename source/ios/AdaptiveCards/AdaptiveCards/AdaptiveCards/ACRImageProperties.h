@@ -18,6 +18,7 @@
 @property CGSize contentSize;
 @property ACRImageSize acrImageSize;
 @property ACRHorizontalAlignment acrHorizontalAlignment;
+@property ACRHeightType height;
 @property CGFloat pixelWidth;
 @property CGFloat pixelHeight;
 

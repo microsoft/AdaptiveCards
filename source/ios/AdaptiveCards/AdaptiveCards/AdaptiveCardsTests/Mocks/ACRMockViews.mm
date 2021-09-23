@@ -1,11 +1,11 @@
 //
-//  MockACRView.m
+//  ACRMockViews.mm
 //  AdaptiveCardsTests
 //
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "MockACRView.h"
+#import "ACRMockViews.h"
 #import "MockContext.h"
 #import <Foundation/Foundation.h>
 
@@ -24,5 +24,25 @@
         _mockContext = context;
     }
 }
+
+@end
+
+@implementation ACRMockContentStackView
+
+- (instancetype)init
+{
+    return [super initWithFrame:CGRectMake(0, 0, 100, 100) attributes:nil];
+}
+
+- (ACOVisibilityManager *)getVisibilityManager
+{
+    return _visibilityManager;
+}
+
+- (ACOFillerSpaceManager *)getFillerSpaceManager
+{
+    return _paddingHandler;
+}
+
 
 @end

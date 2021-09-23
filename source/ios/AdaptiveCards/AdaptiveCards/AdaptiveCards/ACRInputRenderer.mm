@@ -161,23 +161,9 @@
             inputview = inputLabelView;
         }
         txtInput.delegate = textInputHandler;
-
-        [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
-    if (elem->GetHeight() == HeightType::Stretch && !inputBlck->GetIsMultiline()) {
-        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview:inputview];
-
-        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-        UIView *blankTrailingSpace = [[UIView alloc] init];
-        [textInputContainer addArrangedSubview:blankTrailingSpace];
-        [textInputContainer adjustHuggingForLastElement];
-
-        [viewGroup addArrangedSubview:textInputContainer];
-    } else {
-        [viewGroup addArrangedSubview:inputview];
-    }
+    [viewGroup addArrangedSubview:inputview];
 
     inputview.translatesAutoresizingMaskIntoConstraints = false;
 
@@ -242,8 +228,6 @@
     } else {
         [inputs addObject:inputview];
     }
-
-    configVisibility(inputview, elem);
 
     return inputview;
 }

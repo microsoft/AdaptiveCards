@@ -49,22 +49,9 @@
 
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput accessibilityItem:numInput viewGroup:viewGroup dataSource:numberInputHandler];
 
-    if (elem->GetHeight() == HeightType::Stretch) {
-        ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
-        [inputContainer addArrangedSubview:inputLabelView];
-        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-        UIView *blankTrailingSpace = [[UIView alloc] init];
-        [inputContainer addArrangedSubview:blankTrailingSpace];
-        [inputContainer adjustHuggingForLastElement];
-
-        [viewGroup addArrangedSubview:inputContainer];
-    } else {
-        [viewGroup addArrangedSubview:inputLabelView];
-    }
+    [viewGroup addArrangedSubview:inputLabelView];
 
     [inputs addObject:inputLabelView];
-
-    configVisibility(inputLabelView, elem);
 
     return inputLabelView;
 }
