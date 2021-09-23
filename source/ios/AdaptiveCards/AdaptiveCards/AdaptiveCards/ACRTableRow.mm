@@ -81,24 +81,31 @@
         NSMutableDictionary<NSNumber *, NSNumber *> *viewToRelativeSize = [[NSMutableDictionary alloc] init];
         NSMutableArray<UIView *> *viewsWithRelativeWidth = [[NSMutableArray alloc] init];
 
+        configBleed(rootView, element, self, acoConfig);
+
         for (auto idx = 0; idx < endIdx; idx++) {
             ACRColumnDefinition *ithColumnDefinition = columnDefinition[idx];
             if (ithColumnDefinition.isValid) {
                 ACRTableCellView *cellView = nil;
                 if (idx < cells.size()) {
                     auto cell = cells.at(idx);
+                    ACOBaseCardElement *cellElement = [[ACOBaseCardElement alloc] initWithBaseCardElement:cell];
+                    cell->SetParentalId(row->GetInternalId());
+                    [rootView.context pushBaseCardElementContext:cellElement];
+
                     ACRTableCellDefinition *cellDefinition = [[ACRTableCellDefinition alloc] init];
                     cellDefinition.style = rootView.context.style;
                     cellDefinition.horizontalAlignment = rootView.context.horizontalContentAlignment;
                     cellDefinition.verticalAlignment = rootView.context.verticalContentAlignment;
-                    ACOBaseCardElement *cellElement = [[ACOBaseCardElement alloc] initWithBaseCardElement:cell];
+                    cellDefinition.cellSpacing = (ithColumnDefinition.showGridLines) || (cell->GetStyle() != ContainerStyle::None) ? [acoConfig getHostConfig]->GetSpacing().paddingSpacing : self.spacing;
+
                     cellView = [[ACRTableCellView alloc] init:cellElement
                                                cellDefinition:cellDefinition
                                                      rootView:rootView
                                                        inputs:inputs
                                                    hostConfig:acoConfig];
                     [[ACRTableCellRenderer getInstance] render:cellView rootView:rootView inputs:inputs baseCardElement:cellElement hostConfig:acoConfig];
-
+                    [rootView.context popBaseCardElementContext:cellElement];
                 } else {
                     // filler view for empty cells
                     cellView = [[ACRTableCellView alloc] init];
@@ -113,6 +120,11 @@
                     }
 
                     [self addSubview:cellView];
+
+                    if (idx < cells.size()) {
+                        configBleed(rootView, cells.at(idx), cellView, acoConfig);
+                    }
+
                     if (ithColumnDefinition.isPixelWidth) {
                         [cellView.widthAnchor constraintEqualToConstant:ithColumnDefinition.numeric + lineOffset].active = YES;
                     } else {
@@ -169,11 +181,6 @@
         }
     }
     return self;
-}
-
-- (void)addArrangedSubview:(UIView *)view
-{
-    [self addSubview:view];
 }
 
 - (CGSize)intrinsicContentSize

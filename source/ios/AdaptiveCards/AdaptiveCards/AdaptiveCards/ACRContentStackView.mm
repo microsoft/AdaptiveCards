@@ -22,6 +22,7 @@ using namespace AdaptiveCards;
     ACRRtl _rtl;
     NSMutableSet *_invisibleViews;
     ACRVerticalContentAlignment _verticalContentAlignment;
+    ACRHorizontalAlignment _horizontalAlignment;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -210,6 +211,11 @@ using namespace AdaptiveCards;
         if ([topPaddingAttrib boolValue]) {
             top = [topPaddingAttrib floatValue];
         }
+
+        NSNumber *horizontalAlignment = attributes[@"horizontal-alignment"];
+        if ([horizontalAlignment intValue]) {
+            _horizontalAlignment = (ACRHorizontalAlignment)[horizontalAlignment intValue];
+        }
     }
 
     [self applyPaddingToTop:top
@@ -351,12 +357,39 @@ using namespace AdaptiveCards;
     CGFloat topPadding = (location & ACRBleedToTopEdge) ? top : 0;
     CGFloat bottomPadding = (location & ACRBleedToBottomEdge) ? bottom : 0;
 
-    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%f@%u)-[_stackView]-(%f@%u)-|",
-                                                           leadingPadding, priority, trailingPadding, priority];
+    NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
+    NSDictionary *dictionary = nil;
+
+    if (_horizontalAlignment == ACRRight || _horizontalAlignment == ACRCenter) {
+        UILayoutGuide *leftSpacer = [[UILayoutGuide alloc] init];
+        [self addLayoutGuide:leftSpacer];
+        [constraints addObject:[self.centerYAnchor constraintEqualToAnchor:leftSpacer.centerYAnchor]];
+        NSLayoutConstraint *leftSpacerWidthConstraint = [leftSpacer.widthAnchor constraintEqualToConstant:0];
+        leftSpacerWidthConstraint.priority = UILayoutPriorityDefaultLow;
+        [constraints addObject:leftSpacerWidthConstraint];
+        if (_horizontalAlignment == ACRCenter) {
+            UILayoutGuide *rightSpacer = [[UILayoutGuide alloc] init];
+            [self addLayoutGuide:rightSpacer];
+            [constraints addObject:[self.centerYAnchor constraintEqualToAnchor:rightSpacer.centerYAnchor]];
+            NSLayoutConstraint *rightSpacerWidthConstraint = [rightSpacer.widthAnchor constraintEqualToConstant:0];
+            rightSpacerWidthConstraint.priority = UILayoutPriorityDefaultLow;
+            [constraints addObject:rightSpacerWidthConstraint];
+            [constraints addObject:[rightSpacer.widthAnchor constraintEqualToAnchor:leftSpacer.widthAnchor]];
+            dictionary = NSDictionaryOfVariableBindings(_stackView, rightSpacer, leftSpacer);
+        } else {
+            dictionary = NSDictionaryOfVariableBindings(_stackView, leftSpacer);
+        }
+    } else {
+        dictionary = NSDictionaryOfVariableBindings(_stackView);
+    }
+
+    NSString *leftSpacerStr = (_horizontalAlignment == ACRRight || _horizontalAlignment == ACRCenter) ? @"[leftSpacer]-" : @"";
+    NSString *rightSpacerStr = (_horizontalAlignment == ACRCenter) ? @"[rightSpacer]-" : @"";
+
+    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-(%f@%u)-%@[_stackView]-%@(%f@%u)-|",
+                                                           leadingPadding, priority, leftSpacerStr, rightSpacerStr, trailingPadding, priority];
     NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%f@%u)-[_stackView]-(%f@%u)-|",
                                                            topPadding, priority, bottomPadding, priority];
-
-    NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
 
     _widthconstraint = [NSLayoutConstraint constraintsWithVisualFormat:horString
                                                                options:0
@@ -367,8 +400,10 @@ using namespace AdaptiveCards;
                                                                 metrics:nil
                                                                   views:dictionary];
 
-    [self addConstraints:_widthconstraint];
-    [self addConstraints:_heightconstraint];
+    [constraints addObjectsFromArray:_widthconstraint];
+    [constraints addObjectsFromArray:_heightconstraint];
+
+    [NSLayoutConstraint activateConstraints:constraints];
 }
 
 // target is the background view, it will be pinned to parent according to the direction set by bleed,
