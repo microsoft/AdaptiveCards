@@ -199,6 +199,24 @@ class TextUtils {
         })
         return content
     }
+    
+    static func addBoldProperty(attributedString: NSAttributedString, textProperties: ACSRichTextElementProperties, hostConfig: ACSHostConfig) -> NSAttributedString {
+        let attributedStringCopy = NSMutableAttributedString(attributedString: attributedString)
+        let currentFont = FontUtils.getFont(for: hostConfig, with: textProperties)
+        attributedString.enumerateAttributes(in: NSRange(location: 0, length: attributedString.length), options: .longestEffectiveRangeNotRequired, using: { attributes, range, _ in
+            if (attributes[.font] as? NSFont) != nil {
+                guard var editedFont = attributes[.font] as? NSFont else { return }
+                if editedFont.fontDescriptor.symbolicTraits.contains(.italic) {
+                    editedFont = NSFontManager.shared.convert(currentFont, toHaveTrait: [.boldFontMask, .italicFontMask])
+                } else {
+                    editedFont = NSFontManager.shared.convert(currentFont, toHaveTrait: .boldFontMask)
+                }
+                attributedStringCopy.addAttribute(.font, value: editedFont, range: range)
+            }
+        })
+        
+        return attributedStringCopy
+    }
 }
 
 class HostConfigUtils {

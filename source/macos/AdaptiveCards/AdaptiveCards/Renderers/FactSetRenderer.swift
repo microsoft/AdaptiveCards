@@ -29,13 +29,16 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
         var requiredWidth: CGFloat = 0
         // Main loop to iterate over Array of facts
         for fact in factArray {
+            let textProperties = BridgeTextUtils.convertFact(toRichTextElementProperties: fact)
+            
             let valueMarkdownParserResult = BridgeTextUtils.processText(from: fact, hostConfig: hostConfig, isTitle: false)
             let valueMarkdownString = TextUtils.getMarkdownString(for: rootView, with: valueMarkdownParserResult)
-            let valueAttributedContent = TextUtils.addFontProperties(attributedString: valueMarkdownString, textProperties: BridgeTextUtils.convertFact(toRichTextElementProperties: fact), hostConfig: hostConfig)
+            let valueAttributedContent = TextUtils.addFontProperties(attributedString: valueMarkdownString, textProperties: textProperties, hostConfig: hostConfig)
             
             let titleMarkdownParserResult = BridgeTextUtils.processText(from: fact, hostConfig: hostConfig, isTitle: true)
             let titleMarkdownString = TextUtils.getMarkdownString(for: rootView, with: titleMarkdownParserResult)
-            let titleAttributedContent = TextUtils.addFontProperties(attributedString: titleMarkdownString, textProperties: BridgeTextUtils.convertFact(toRichTextElementProperties: fact), hostConfig: hostConfig)
+            let titleAttributedContent = TextUtils.addFontProperties(attributedString: titleMarkdownString, textProperties: textProperties, hostConfig: hostConfig)
+            let titleBoldContent = TextUtils.addBoldProperty(attributedString: titleAttributedContent, textProperties: textProperties, hostConfig: hostConfig)
                          
             let titleView = ACRTextView(asFactSetFieldWith: config.hyperlinkColorConfig)
             let valueView = ACRTextView(asFactSetFieldWith: config.hyperlinkColorConfig)
@@ -50,10 +53,8 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
             if !titleMarkdownParserResult.isHTML {
                 titleView.string = fact.getTitle() ?? ""
             } else {
-                titleView.textStorage?.setAttributedString(titleAttributedContent)
+                titleView.textStorage?.setAttributedString(titleBoldContent)
             }
-            
-            titleView.makeContentBold()
             
             if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: false), let textColor = ColorUtils.color(from: colorHex) {
                 titleView.textColor = textColor

@@ -13,7 +13,7 @@ class MultiLineInputTextViewTests: XCTestCase {
     }
     
     func testLeftPadding() {
-        XCTAssertEqual(multiLineInputTextView.textView.textContainer?.lineFragmentPadding, renderConfig.inputFieldConfig.leftPadding)
+        XCTAssertEqual(multiLineInputTextView.textView.textContainer?.lineFragmentPadding, renderConfig.inputFieldConfig.leftPadding + 2)
     }
     
     func testInitialBackgroundColor() {
@@ -32,8 +32,8 @@ class MultiLineInputTextViewTests: XCTestCase {
     }
     
     func testBorderParameters() {
-        XCTAssertEqual(multiLineInputTextView.textView.layer?.borderWidth, renderConfig.inputFieldConfig.borderWidth)
-        XCTAssertEqual(multiLineInputTextView.textView.layer?.borderColor, renderConfig.inputFieldConfig.borderColor.cgColor)
+        XCTAssertEqual(multiLineInputTextView.layer?.borderWidth, renderConfig.inputFieldConfig.borderWidth)
+        XCTAssertEqual(multiLineInputTextView.layer?.borderColor, renderConfig.inputFieldConfig.borderColor.cgColor)
     }
     
     func testFocusRingCornerRadius() {

@@ -134,7 +134,7 @@ public struct ChoiceSetButtonConfig {
 }
 public struct InputFieldConfig {
     public static let `default` = InputFieldConfig(height: 20, leftPadding: 0, rightPadding: 0, yPadding: 0, focusRingCornerRadius: 0, borderWidth: 0.3, wantsClearButton: false, clearButtonImage: nil, calendarImage: nil, clockImage: nil, font: .systemFont(ofSize: 12), highlightedColor: .lightGray, backgroundColor: .white, borderColor: .darkGray)
-    public static let darkDefault = InputFieldConfig(height: 20, leftPadding: 0, rightPadding: 0, yPadding: 0, focusRingCornerRadius: 0, borderWidth: 0.3, wantsClearButton: false, clearButtonImage: nil, calendarImage: nil, clockImage: nil, font: .systemFont(ofSize: 12), highlightedColor: .darkGray, backgroundColor: .controlBackgroundColor, borderColor: .lightGray)
+    public static let darkDefault = InputFieldConfig(height: 20, leftPadding: 0, rightPadding: 0, yPadding: 0, focusRingCornerRadius: 0, borderWidth: 0.3, wantsClearButton: false, clearButtonImage: nil, calendarImage: nil, clockImage: nil, font: .systemFont(ofSize: 12), highlightedColor: .darkGray, backgroundColor: NSColor(white: 0.11, alpha: 1), borderColor: .lightGray)
     
     let height: CGFloat
     let leftPadding: CGFloat

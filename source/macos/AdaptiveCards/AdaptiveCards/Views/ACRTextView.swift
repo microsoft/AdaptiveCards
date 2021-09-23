@@ -100,11 +100,6 @@ class ACRTextView: NSTextView, SelectActionHandlingProtocol {
         ]
     }
     
-    public func makeContentBold() {
-        let fontManager = NSFontManager.shared
-        font = fontManager.convert(font ?? NSFont.systemFont(ofSize: 14), toHaveTrait: NSFontTraitMask.boldFontMask)
-    }
-    
     override var canBecomeKeyView: Bool {
         return isEditable
     }

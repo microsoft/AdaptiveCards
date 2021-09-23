@@ -51,11 +51,12 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         textView.isAutomaticTextReplacementEnabled = false
         textView.smartInsertDeleteEnabled = false
         textView.font = config.font
-        textView.textContainer?.lineFragmentPadding = config.leftPadding
-        textView.wantsLayer = true
-        textView.layer?.borderColor = config.borderColor.cgColor
-        textView.layer?.borderWidth = config.borderWidth
-        textView.layer?.cornerRadius = config.focusRingCornerRadius
+        // 2 is added as extra padding to match single line input text element
+        textView.textContainer?.lineFragmentPadding = config.leftPadding + 2
+        wantsLayer = true
+        layer?.borderColor = config.borderColor.cgColor
+        layer?.borderWidth = config.borderWidth
+        layer?.cornerRadius = config.focusRingCornerRadius
         textView.backgroundColor = config.backgroundColor
         
         // For hover need tracking area
@@ -66,7 +67,8 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     func setPlaceholder(placeholder: String) {
         let placeholderValue = NSMutableAttributedString(string: placeholder)
         placeholderValue.addAttributes([.foregroundColor: NSColor.placeholderTextColor, .font: config.font], range: NSRange(location: 0, length: placeholderValue.length))
-        textView.placeholderLeftPadding = config.leftPadding
+        // 2 is added as extra padding to match single line input text element
+        textView.placeholderLeftPadding = config.leftPadding + 2
         textView.placeholderAttrString = placeholderValue
     }
     
