@@ -182,19 +182,16 @@ export class SidePanel {
 
     attachTo(attachTo: HTMLElement) {
         this._attachedTo = attachTo;
-        this._attachedTo.style.position = "relative";
+        this._attachedTo.classList.add("acd-sidepanel-parent");
 
         this._contentHost = document.createElement("div");
-        this._contentHost.style.display = "flex";
-        this._contentHost.style.overflow = "hidden";
-        this._contentHost.style.flex = "1 1 auto";
-        this._contentHost.style.position = "relative";
+        this._contentHost.className = "acd-sidepanel-host";
 
         if (this.isVertical) {
-            this._contentHost.style.flexDirection = "column";
+            this._contentHost.classList.add("acd-sidepanel-host-vertical");
         }
         else {
-            this._contentHost.style.flexDirection = "row";
+            this._contentHost.classList.add("acd-sidepanel-host-horizontal");
         }
 
         for (let i = 0; i < this._toolboxes.length; i++) {
@@ -245,23 +242,20 @@ export class SidePanel {
         }
 
         this._attachedTo.innerHTML = "";
-        this._attachedTo.style.display = "flex";
 
         if (this.isVertical) {
             if (this.size) {
                 this._attachedTo.style.width = this.size + "px";
             }
 
-            this._attachedTo.style.flexDirection = "row";
-            this._attachedTo.style.overflowX = "hidden";
+            this._attachedTo.classList.add("acd-sidepanel-parent-vertical");
         }
         else {
             if (this.size) {
                 this._attachedTo.style.height = this.size + "px";
             }
 
-            this._attachedTo.style.flexDirection = "column";
-            this._attachedTo.style.overflowY = "hidden";
+            this._attachedTo.classList.add("acd-sidepanel-parent-horizontal");
         }
 
         if (this._alignment == SidePanelAlignment.Right || this._alignment == SidePanelAlignment.Bottom) {
