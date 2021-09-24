@@ -294,7 +294,7 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Image has SelectAction. Action has title and tooltip. (tooltip should be used as tooltip)",
+			"text": "Image has SelectAction. Action has title. (title should be used as tooltip)",
 			"weight": "bolder",
 			"wrap": true
 		},
@@ -305,8 +305,7 @@
 			"altText": "Image Alt Text.",
 			"selectAction": {
 				"type": "Action.Submit",
-				"title": "title",
-				"tooltip": "tooltip"
+				"title": "title"
 			}
 		},
 		{
