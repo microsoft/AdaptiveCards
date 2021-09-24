@@ -7,9 +7,9 @@ namespace AdaptiveCards
 {
     struct CaseInsensitiveEqualTo
     {
-        bool operator()(const std::string& lhs, const std::string& rhs) const noexcept
+        template<typename T> bool operator()(T const& lhs, T const& rhs) const noexcept
         {
-            return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](unsigned char a, unsigned char b) {
+            return std::equal(std::begin(lhs), std::end(lhs), std::begin(rhs), std::end(rhs), [](auto a, auto b) {
                 return std::toupper(a) == std::toupper(b);
             });
         }
@@ -17,9 +17,9 @@ namespace AdaptiveCards
 
     struct CaseInsensitiveHash
     {
-        size_t operator()(const std::string& keyval) const noexcept
+        template<typename T> size_t operator()(T const& keyval) const noexcept
         {
-            return std::accumulate(keyval.cbegin(), keyval.cend(), size_t{0}, [](size_t acc, unsigned char c) {
+            return std::accumulate(std::cbegin(keyval), std::cend(keyval), size_t{0}, [](size_t acc, auto c) {
                 return acc + std::toupper(c);
             });
         }

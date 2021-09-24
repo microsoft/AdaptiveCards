@@ -2,15 +2,12 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.ObjectModel.Uwp.h"
-#include "ObjectModelUtil.h"
-
 namespace AdaptiveCards::ObjectModel::Uwp
 {
     class CustomActionWrapper : public AdaptiveCards::BaseActionElement
     {
     public:
-        CustomActionWrapper(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* actionElement);
+        CustomActionWrapper(_In_ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& actionElement);
 
         void SetId(std::string&& value) override;
         void SetId(const std::string& value) override;
@@ -20,7 +17,7 @@ namespace AdaptiveCards::ObjectModel::Uwp
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** actionElement);
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement GetWrappedElement();
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
@@ -31,6 +28,6 @@ namespace AdaptiveCards::ObjectModel::Uwp
         std::string GetActionElementTitle() const;
         void SetActionElementTitle(const std::string& value);
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> m_actionElement;
+        winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement m_actionElement;
     };
 }
