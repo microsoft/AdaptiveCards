@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-react",
-	"version": "1.0.0-beta.3",
+	"version": "1.0.0-beta.4",
 	"description": "React.js Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -18,8 +18,8 @@
 		"microsoft",
 		"bot"
 	],
-	"main": "dist/adaptivecards-react.js",
-	"types": "lib/src/adaptivecards-react.d.ts",
+	"main": "lib/adaptivecards-react.js",
+	"types": "lib/adaptivecards-react.d.ts",
 	"files": [
 		"lib",
 		"dist",
