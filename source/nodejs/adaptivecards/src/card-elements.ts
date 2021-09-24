@@ -2832,7 +2832,7 @@ export class TextInput extends Input {
     protected internalRender(): HTMLElement | undefined {
         let result: HTMLInputElement | HTMLTextAreaElement;
 
-        if (this.isMultiline && this.style != Enums.InputTextStyle.Password) {
+        if (this.isMultiline && this.style !== Enums.InputTextStyle.Password) {
             result = document.createElement("textarea");
             result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
 
