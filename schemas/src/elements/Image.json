@@ -14,7 +14,7 @@
     },
     "backgroundColor": {
       "type": "string",
-      "description": "Applies a background to a transparent image. This property will respect the image style.",
+      "description": "Applies a background to a transparent image. This property will respect the image style. Required to be in hex format, either #RRGGBB or #AARRGGBB. For example, #C7DEF9.",
       "example": "#DDDDDD",
       "version": "1.1"
     },
