@@ -5,8 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOParseContext.h"
 #import "ACOEnums.h"
+#import "ACOParseContext.h"
 #import <Foundation/Foundation.h>
 
 @class ACOFeatureRegistration;
@@ -15,13 +15,14 @@
 
 @property ACRActionType type;
 @property NSString *sentiment;
+@property (nonatomic, copy) NSString *tooltip;
+@property (nonatomic, readonly) NSString *inlineTooltip;
 
 - (NSString *)title;
 - (NSString *)elementId;
 - (NSString *)url;
 - (NSString *)data;
 - (NSString *)verb;
-- (NSString *)toolTip;
 - (NSData *)additionalProperty;
 
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg;

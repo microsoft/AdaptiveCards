@@ -227,6 +227,9 @@
         }
 
         ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:action];
+        if (!acoSelectAction.tooltip && acoSelectAction.title && key.length) {
+            acoSelectAction.tooltip = acoSelectAction.title;
+        }
 
         NSObject *target;
         if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getQuickReplyTargetBuilderDirector], acoSelectAction, button, &target)) {

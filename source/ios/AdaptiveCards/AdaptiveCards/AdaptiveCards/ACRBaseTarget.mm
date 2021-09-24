@@ -9,16 +9,35 @@
 #import <FluentUI/FluentUI-Swift.h>
 #import <UIKit/UIKit.h>
 
-@implementation ACRBaseTarget
+@implementation ACRBaseTarget {
+    NSString *_toolTip;
+}
 
 - (void)doSelectAction
 {
 }
 
-- (void)showToolTip:(UIView *)anchorView
+- (void)addGestureRecognizer:(UIView *)view tooTipText:(NSString *)toolTipText
 {
-    [MSFTooltip.shared showWith:@"Hello World!" for:anchorView preferredArrowDirection:MSFTooltipArrowDirectionDown offset:CGPointMake(0.0, 0.0) screenMargins:MSFTooltip.defaultScreenMargins dismissOn:MSFTooltipDismissModeTapAnywhere onTap:nil];
+    if (view && toolTipText && toolTipText.length) {
+        [self setTooltip:view tooTipText:toolTipText];
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showToolTip:)];
+        [view addGestureRecognizer:longPress];
+    }
 }
 
+- (void)setTooltip:(UIView *)view tooTipText:(NSString *)toolTipText
+{
+    if (view && toolTipText) {
+        _toolTip = toolTipText;
+    }
+}
+
+- (void)showToolTip:(UILongPressGestureRecognizer *)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateBegan && _toolTip && recognizer.view) {
+        [MSFTooltip.shared showWith:_toolTip for:recognizer.view preferredArrowDirection:MSFTooltipArrowDirectionUp offset:CGPointZero screenMargins:MSFTooltip.defaultScreenMargins dismissOn:MSFTooltipDismissModeTapAnywhere onTap:nil];
+    }
+}
 
 @end

@@ -11,8 +11,8 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
+#import "ACRTapGestureRecognizerFactory.h"
 #import "ACRUILabel.h"
 #import "ACRView.h"
 #import "DateTimePreparsedToken.h"
@@ -58,6 +58,8 @@
     if (rootView) {
         NSMutableDictionary *textMap = [rootView getTextMap];
 
+        BOOL hasGestureRecognizerAdded = NO;
+        BOOL hasLongPressGestureRecognizerAdded = NO;
         for (const auto &inlineText : rTxtBlck->GetInlines()) {
             std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
             if (textRun) {
@@ -122,12 +124,25 @@
                         [textRunContent addAttribute:@"SelectAction"
                                                value:target
                                                range:selectActionRange];
-                        [ACRLongPressGestureRecognizerFactory
-                            addTapGestureRecognizerToUITextView:lab
-                                                         target:(NSObject<ACRSelectActionDelegate>
-                                                                     *)target
-                                                       rootView:rootView
-                                                     hostConfig:acoConfig];
+
+                        if (!hasGestureRecognizerAdded) {
+                            [ACRTapGestureRecognizerFactory
+                                addTapGestureRecognizerToUITextView:lab
+                                                             target:(NSObject<ACRSelectActionDelegate>
+                                                                         *)target
+                                                           rootView:rootView
+                                                         hostConfig:acoConfig];
+                            hasGestureRecognizerAdded = YES;
+                        }
+
+                        if (acoAction.inlineTooltip) {
+                            [((ACRBaseTarget *)target) setTooltip:lab tooTipText:acoAction.inlineTooltip];
+                            if (!hasLongPressGestureRecognizerAdded) {
+                                UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:lab action:@selector(handleInlineAction:)];
+                                [lab addGestureRecognizer:recognizer];
+                                hasLongPressGestureRecognizerAdded = YES;
+                            }
+                        }
 
                         [textRunContent addAttribute:NSUnderlineStyleAttributeName
                                                value:[NSNumber numberWithInt:NSUnderlineStyleSingle]

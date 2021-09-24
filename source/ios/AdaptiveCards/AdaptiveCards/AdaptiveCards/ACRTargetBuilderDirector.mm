@@ -62,10 +62,6 @@
         [button addTarget:target
                       action:@selector(send:)
             forControlEvents:UIControlEventTouchUpInside];
-        NSString *toolTip = action.toolTip;
-        if (toolTip.length) {
-            [button addTarget:target action:@selector(showToolTip:) forControlEvents:UIControlEventTouchUpInside];
-        }
     }
     return target;
 }

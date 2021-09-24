@@ -1,6 +1,6 @@
 //
-//  ACRLongPressGestureRecognizerEventHandler
-//  ACRLongPressGestureRecognizerEventHandler.h
+//  ACRTapGestureRecognizerEventHandler
+//  ACRTapGestureRecognizerEventHandler.h
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
@@ -9,10 +9,9 @@
 
 @protocol ACRSelectActionDelegate
 - (void)doSelectAction;
-- (void)showToolTip:(UIView *)anchorView;
 @end
 
-@interface ACRLongPressGestureRecognizerEventHandler : NSObject <UIGestureRecognizerDelegate>
+@interface ACRTapGestureRecognizerEventHandler : NSObject <UIGestureRecognizerDelegate>
 
 @property (weak) id<ACRSelectActionDelegate> delegate;
 
@@ -20,6 +19,6 @@
 // this method will be called when LongPressGesture is recognized
 // 1. it provides users with cue that select action is about to be initiated
 // 2. execute select action by calling its delegate
-- (IBAction)processLongPressGesture:(UILongPressGestureRecognizer *)recognizer;
+- (IBAction)processTapGesture:(UITapGestureRecognizer *)recognizer;
 
 @end

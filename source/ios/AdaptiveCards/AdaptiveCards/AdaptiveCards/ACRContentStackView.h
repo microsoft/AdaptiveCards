@@ -6,7 +6,7 @@
 //
 
 #import "ACRIContentHoldingView.h"
-#import "ACRLongPressGestureRecognizerEventHandler.h"
+#import "ACRTapGestureRecognizerEventHandler.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView>
@@ -61,7 +61,7 @@
 
 - (void)updateIntrinsicContentSize;
 
-- (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop))block;
+- (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView *_Nonnull view, NSUInteger idx, BOOL *_Nonnull stop))block;
 
 - (void)hideIfSubviewsAreAllHidden;
 

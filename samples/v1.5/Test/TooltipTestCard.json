@@ -220,6 +220,108 @@
 				"tooltip": "Tooltip",
 				"title": "Title"
 			}
+		},
+		{
+			"type": "RichTextBlock",
+			"inlines": [
+				{
+					"type": "TextRun",
+					"text": "RichTextBlock with SelectAction, Action has title and tooltip (tooltip should be used as tooltip).",
+					"color": "good",
+					"selectAction": {
+						"type": "Action.Submit",
+						"tooltip": "Tooltip",
+						"title": "Title"
+					}
+				},
+				{
+					"type": "TextRun",
+					"text": " -Should not trigger any actions- ",
+					"weight": "bolder"
+				},
+				{
+					"type": "TextRun",
+					"text": "RichTextBlock with SelectAction, Action has title and no tooltip (title should be used as tooltip).",
+					"color": "warning",
+					"selectAction": {
+						"type": "Action.Submit",
+						"title": "title",
+						"data": {
+							"x": "hello world!"
+						}
+					}
+				},
+				{
+					"type": "TextRun",
+					"text": " -Should not trigger any actions- ",
+					"weight": "bolder"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Image has SelectAction. No title or tooltip (no tooltip)",
+			"weight": "bolder",
+			"wrap": true
+		},
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/cats/1.png",
+			"size": "Large",
+			"altText": "Image Alt Text.",
+			"tooltip": "tooltip",
+			"selectAction": {
+				"type": "Action.Submit"
+			}
+		},
+		{
+			"type": "TextBlock",
+			"text": "Image has SelectAction. Action has title and tooltip. (tooltip should be used as tooltip)",
+			"weight": "bolder",
+			"wrap": true
+		},
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/cats/1.png",
+			"size": "Large",
+			"altText": "Image Alt Text.",
+			"tooltip": "tooltip",
+			"selectAction": {
+				"type": "Action.Submit",
+				"title": "title",
+				"tooltip": "tooltip"
+			}
+		},
+		{
+			"type": "TextBlock",
+			"text": "Image has SelectAction. Action has title and tooltip. (tooltip should be used as tooltip)",
+			"weight": "bolder",
+			"wrap": true
+		},
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/cats/1.png",
+			"size": "Large",
+			"altText": "Image Alt Text.",
+			"selectAction": {
+				"type": "Action.Submit",
+				"title": "title",
+				"tooltip": "tooltip"
+			}
+		},
+		{
+			"type": "TextBlock",
+			"text": "Adaptive Card has SelectAction Action has tooltip. (tooltip should appear)",
+			"weight": "bolder",
+			"wrap": true
 		}
-	]
+	],
+	"selectAction": {
+		"type": "Action.Submit",
+		"title": "title",
+		"data": {
+			"Card Level Action?": "Yes"
+		},
+		"tooltip": "Card Level Tooltip"
+	}
 }

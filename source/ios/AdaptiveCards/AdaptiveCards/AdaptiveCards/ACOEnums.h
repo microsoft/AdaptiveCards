@@ -5,6 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 //
+#include <Foundation/Foundation.h>
+
 typedef NS_ENUM(NSInteger, ACRActionType) {
     ACRExecute = 1,
     ACROpenUrl,
