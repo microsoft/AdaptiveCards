@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "2.2.11",
+  "version": "2.2.12",
   "keywords": [
     "adaptivecards",
     "cards",

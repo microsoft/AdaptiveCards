@@ -20,12 +20,9 @@ import {
 	InputContextConsumer
 } from '../../utils/context';
 
-const ContainResizeMode = 'contain';
-
 export class Img extends React.Component {
 
 	static contextType = InputContext;
-
 
 	constructor(props) {
 		super(props);
@@ -40,7 +37,9 @@ export class Img extends React.Component {
 	}
 
 	componentDidMount() {
-		this.addResourceInformation(this.payload.url, "");
+        if (this.addResourceInformation) {
+		    this.addResourceInformation(this.payload.url, "");
+        }
 	}
 
 	/**
@@ -86,7 +85,7 @@ export class Img extends React.Component {
 	getImageAlignment() {
 		let imageAlignmentStyle = [];
 
-		switch (this.payload.horizontalAlignment) {
+		switch (this.payload?.horizontalAlignment?.toLowerCase()) {
 			case Constants.CenterString:
 				imageAlignmentStyle.push(styles.centerAlignment);
 				break;
@@ -131,10 +130,7 @@ export class Img extends React.Component {
 			switch (sizeValue) {
 				case 1:
 					{
-						sizeStyle.push([styles.imageStretch,
-						{
-							width: this.state.imageWidth, height: this.state.imageHeight
-						}]);
+						sizeStyle.push(styles.imageStretch);
 						break;
 					}
 				case 2:
@@ -175,6 +171,23 @@ export class Img extends React.Component {
 						 * the size of the image is taken as medium as default as per native iOS renderer.
 						 */
 						sizeStyle.push(styles.imageAuto);
+
+						/**
+						 * If horizontal alignment exists for the image schema, we align the image accordingly 
+						 * or we fallback to the default left alignment
+						 */
+						switch (this.payload?.horizontalAlignment?.toLowerCase()) {
+							case Constants.CenterString:
+								sizeStyle.push(styles.imageCenterAlignment);
+								break;
+							case Constants.RightString:
+								sizeStyle.push(styles.imageRightAlignment);
+								break;
+							default:
+								sizeStyle.push(styles.imageLeftAlignment);
+								break;
+						}
+
 						if ((this.isSizeUndefined && this.payload.fromImageSet == true) ||
 							(this.payload.fromImageSet == true)) {
 							const spacingValue = Utils.parseHostConfigEnum(
@@ -247,6 +260,20 @@ export class Img extends React.Component {
 		});
 	}
 
+	getImageComponent(imageUrl, wrapperComputedStyle, imageComputedStyle) {
+		return (
+			<ElementWrapper configManager={this.props.configManager} json={this.payload} isFirst={this.props.isFirst}
+				style={wrapperComputedStyle}
+				onPageLayout={this.onPageLayoutHandler}>
+				<Image style={imageComputedStyle}
+					accessible={true}
+					accessibilityLabel={this.payload.altText}
+					resizeMode={Constants.AlignStretch}
+					source={{ uri: imageUrl }} />
+			</ElementWrapper>
+		);
+	}
+
 	render() {
 		this.parseHostConfig();
 
@@ -285,15 +312,7 @@ export class Img extends React.Component {
 		let containerContent = (<InputContextConsumer>
 			{({ addResourceInformation }) => {
 				this.addResourceInformation = addResourceInformation;
-				return <ElementWrapper configManager={this.props.configManager} json={this.payload} isFirst={this.props.isFirst}
-					style={wrapperComputedStyle}
-					onPageLayout={this.onPageLayoutHandler}>
-
-					<Image style={imageComputedStyle}
-						accessible={this.payload.altText ? true : false}
-						accessibilityLabel={this.payload.altText}
-						source={{ uri: imageUrl }} />
-				</ElementWrapper>
+				return this.getImageComponent(imageUrl, wrapperComputedStyle, imageComputedStyle);
 			}}
 		</InputContextConsumer>);
 
@@ -309,6 +328,15 @@ export class Img extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	imageLeftAlignment: {
+		alignSelf: Constants.FlexStart,
+	},
+	imageCenterAlignment: {
+		alignSelf: Constants.CenterString,
+	},
+	imageRightAlignment: {
+		alignSelf: Constants.FlexEnd,
+	},
 	leftAlignment: {
 		alignItems: Constants.FlexStart,
 	},
@@ -323,10 +351,13 @@ const styles = StyleSheet.create({
 	},
 	imageStretch: {
 		alignSelf: Constants.AlignStretch,
+		aspectRatio: 1,
+		height: Constants.Auto,
 		resizeMode: Constants.AlignStretch,
+		width: '100%',
 	},
 	imageAuto: {
 		alignSelf: Constants.CenterString,
-		resizeMode: ContainResizeMode,
+		resizeMode: Constants.AlignStretch,
 	},
 });
