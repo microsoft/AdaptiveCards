@@ -181,7 +181,6 @@
 		6BDE5C4426FEA7DC003A1DDB /* ACRBaseTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BDE5C3C26FEA7DB003A1DDB /* ACRBaseTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BDE5C4626FEA7DC003A1DDB /* ACRShowCardTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BDE5C3E26FEA7DB003A1DDB /* ACRShowCardTarget.mm */; };
 		6BDE5C4726FEA7DC003A1DDB /* ACRAggregateTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BDE5C3F26FEA7DC003A1DDB /* ACRAggregateTarget.mm */; };
-		6BDE5C4926FEA8EF003A1DDB /* ACRShowCardTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BDE5C4826FEA8EF003A1DDB /* ACRShowCardTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BE8DFD4249C4C1B005EFE66 /* ACRToggleInputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
 		6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -611,7 +610,6 @@
 		6BDE5C3D26FEA7DB003A1DDB /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6BDE5C3E26FEA7DB003A1DDB /* ACRShowCardTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRShowCardTarget.mm; sourceTree = "<group>"; };
 		6BDE5C3F26FEA7DC003A1DDB /* ACRAggregateTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRAggregateTarget.mm; sourceTree = "<group>"; };
-		6BDE5C4826FEA8EF003A1DDB /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRToggleInputView.mm; sourceTree = "<group>"; };
 		6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRToggleInputView.h; sourceTree = "<group>"; };
 		6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRQuickReplyView.h; sourceTree = "<group>"; };
@@ -1072,6 +1070,21 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
+		6BDE5C4A26FEAB52003A1DDB /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				6BDE5C3826FEA7C9003A1DDB /* ACRAggregateTarget.h */,
+				6BDE5C3F26FEA7DC003A1DDB /* ACRAggregateTarget.mm */,
+				6BDE5C3C26FEA7DB003A1DDB /* ACRBaseTarget.h */,
+				6BDE5C3B26FEA7DB003A1DDB /* ACRBaseTarget.mm */,
+				6BDE5C3A26FEA7DB003A1DDB /* ACROverflowTarget.h */,
+				6BDE5C3926FEA7DB003A1DDB /* ACROverflowTarget.mm */,
+				6BDE5C3D26FEA7DB003A1DDB /* ACRShowCardTarget.h */,
+				6BDE5C3E26FEA7DB003A1DDB /* ACRShowCardTarget.mm */,
+			);
+			name = Targets;
+			sourceTree = "<group>";
+		};
 		6BFCA139264F548600195CA7 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1092,14 +1105,6 @@
 		6BFF99DC2600121A0028069F /* Action.Execute */ = {
 			isa = PBXGroup;
 			children = (
-				6BDE5C3826FEA7C9003A1DDB /* ACRAggregateTarget.h */,
-				6BDE5C3F26FEA7DC003A1DDB /* ACRAggregateTarget.mm */,
-				6BDE5C3C26FEA7DB003A1DDB /* ACRBaseTarget.h */,
-				6BDE5C3B26FEA7DB003A1DDB /* ACRBaseTarget.mm */,
-				6BDE5C3A26FEA7DB003A1DDB /* ACROverflowTarget.h */,
-				6BDE5C3926FEA7DB003A1DDB /* ACROverflowTarget.mm */,
-				6BDE5C3D26FEA7DB003A1DDB /* ACRShowCardTarget.h */,
-				6BDE5C3E26FEA7DB003A1DDB /* ACRShowCardTarget.mm */,
 				6BFF99F926003EBA0028069F /* ACOAuthCardButton.h */,
 				6BFF99F726003EBA0028069F /* ACOAuthCardButtonPrivate.h */,
 				6BFF9A0026004C580028069F /* ACOAuthentication.h */,
@@ -1366,6 +1371,7 @@
 		F42979331F30079D00E89914 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				6BDE5C4A26FEAB52003A1DDB /* Targets */,
 				6B124C9E26BA0D49007E9641 /* Action.ToggleVisibility */,
 				6BFF99DC2600121A0028069F /* Action.Execute */,
 				6B250FB1253F5F8E007FFCFB /* ACRTargetBuilder.h */,
@@ -1373,7 +1379,6 @@
 				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
 				6B696CD823202B1A00E1D607 /* ACRTargetBuilderDirector.h */,
 				6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */,
-				6BDE5C4826FEA8EF003A1DDB /* ACRShowCardTarget.h */,
 				6B22425B21E80647000ACDA1 /* ACOParseContext.h */,
 				6B22425C21E80647000ACDA1 /* ACOParseContext.mm */,
 				6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */,
@@ -1674,8 +1679,6 @@
 				6B8C76432641D8D6009548FA /* InternalId.h in Headers */,
 				6BDE5C4226FEA7DC003A1DDB /* ACROverflowTarget.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
-				6BDE5C4926FEA8EF003A1DDB /* ACRShowCardTarget.h in Headers */,
-				6BDE5C4926FEA8EF003A1DDB /* ACRShowCardTarget.h in Headers */,
 				6BDE5C4026FEA7DC003A1DDB /* ACRAggregateTarget.h in Headers */,
 				6BDE5C4426FEA7DC003A1DDB /* ACRBaseTarget.h in Headers */,
 				6B8C766726461E98009548FA /* ACOBundle.h in Headers */,

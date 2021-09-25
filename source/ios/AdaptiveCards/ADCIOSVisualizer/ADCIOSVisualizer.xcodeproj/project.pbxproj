@@ -14,7 +14,6 @@
 		6B1509FE22FC98AE00046B3A /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
 		6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
 		6B150A042302415000046B3A /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A032302415000046B3A /* sample.json */; };
-		6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0523033D6B00046B3A /* filebrowserHostConfig.json */; };
 		6B150A0F23034F2800046B3A /* Feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0923034F2800046B3A /* Feedback.json */; };
 		6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0A23034F2800046B3A /* Input.ChoiceSet.json */; };
 		6B150A1123034F2800046B3A /* FoodOrder.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0B23034F2800046B3A /* FoodOrder.json */; };
@@ -53,7 +52,6 @@
 		6B182BB525DF5FB700629A39 /* person_w1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA225DF5FB700629A39 /* person_w1.png */; };
 		6B182BB625DF5FB700629A39 /* person_m1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA325DF5FB700629A39 /* person_m1.png */; };
 		6B182BB725DF5FB700629A39 /* location_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA425DF5FB700629A39 /* location_gray.png */; };
-		6B182BB825DF5FB700629A39 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA525DF5FB700629A39 /* sample.json */; };
 		6B182BB925DF5FB700629A39 /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA625DF5FB700629A39 /* car.png */; };
 		6B182BBA25DF5FB700629A39 /* Action.Scrolling.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA725DF5FB700629A39 /* Action.Scrolling.json */; };
 		6B182BBB25DF5FB700629A39 /* power_point.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA825DF5FB700629A39 /* power_point.png */; };
@@ -228,7 +226,7 @@
 		6BFF9A17260155240028069F /* Action.Execute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.json; sourceTree = "<group>"; };
 		CCE1C9E07E62A8EF846AC5B2 /* Pods_ADCIOSVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADCIOSVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer.release.xcconfig"; sourceTree = "<group>"; };
-		F423C0721EE1FB6100905679 /* AdaptiveCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = AdaptiveCards.app; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F423C0781EE1FB6100905679 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F423C0791EE1FB6100905679 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -419,7 +417,7 @@
 		F423C0731EE1FB6100905679 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F423C0721EE1FB6100905679 /* AdaptiveCards.app */,
+				F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */,
 				F423C08E1EE1FB6100905679 /* ADCIOSVisualizerTests.xctest */,
 				F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */,
 			);
@@ -518,7 +516,7 @@
 			);
 			name = ADCIOSVisualizer;
 			productName = ADCIOSVisualizer;
-			productReference = F423C0721EE1FB6100905679 /* AdaptiveCards.app */;
+			productReference = F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F423C08D1EE1FB6100905679 /* ADCIOSVisualizerTests */ = {
@@ -563,7 +561,7 @@
 		F423C06A1EE1FB6100905679 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					F423C0711EE1FB6100905679 = {
@@ -654,7 +652,6 @@
 				6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */,
 				6B150A22230353AB00046B3A /* TextBlock.Markdown.json in Resources */,
 				6B182BBD25DF5FB700629A39 /* LocationGreen_A.png in Resources */,
-				6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */,
 				6B182BB525DF5FB700629A39 /* person_w1.png in Resources */,
 				6B182BB225DF5FB700629A39 /* LocationBlue_B.png in Resources */,
 				6B182BAE25DF5FB700629A39 /* SeaTacMap.png in Resources */,
@@ -663,7 +660,6 @@
 				6B5E9CBD24B663CA00757882 /* Adaptive1.0.png in Resources */,
 				6B150A1323034F2800046B3A /* ActivityUpdate.json in Resources */,
 				6B150A21230353AB00046B3A /* TextBlock.DateTimeFormatting.json in Resources */,
-				6B182BB825DF5FB700629A39 /* sample.json in Resources */,
 				6B182BBF25DF5FB700629A39 /* CircleBlue_flight.png in Resources */,
 				6B150A3D230354F200046B3A /* Column.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
@@ -845,6 +841,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -871,7 +868,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -905,6 +902,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -925,7 +923,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -937,6 +935,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F6E8AB850C2EEB024550B8CC /* Pods-ADCIOSVisualizer.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -955,6 +954,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
