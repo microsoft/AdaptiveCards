@@ -43,7 +43,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         ENUM_TEST(ActionType, ActionType::OpenUrl, "Action.OpenUrl"s);
         ENUM_TEST(AdaptiveCardSchemaKey, AdaptiveCardSchemaKey::Accent, "accent"s);
         ENUM_TEST(CardElementType, CardElementType::AdaptiveCard, "AdaptiveCard"s);
-        ENUM_TEST(ChoiceSetStyle, ChoiceSetStyle::Expanded, "Expanded"s);
+        ENUM_TEST(ChoiceSetStyle, ChoiceSetStyle::Filtered, "Filtered"s);
         ENUM_TEST(ContainerStyle, ContainerStyle::Emphasis, "Emphasis"s);
         ENUM_TEST(FontType, FontType::Monospace, "Monospace"s);
         ENUM_TEST(ForegroundColor, ForegroundColor::Accent, "Accent"s);
@@ -54,7 +54,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         ENUM_TEST_WITH_REVERSE_MAP(ImageStyle, ImageStyle::Person, "person"s, );
         ENUM_TEST(SeparatorThickness, SeparatorThickness::Thick, "thick"s);
         ENUM_TEST(Spacing, Spacing::None, "none"s);
-        ENUM_TEST(TextInputStyle, TextInputStyle::Tel, "Tel"s);
+        ENUM_TEST(TextInputStyle, TextInputStyle::Password, "Password"s);
         ENUM_TEST_WITH_REVERSE_MAP(TextSize, TextSize::Large, "Large"s, {{"Normal", TextSize::Default}});
         ENUM_TEST_WITH_REVERSE_MAP(TextWeight, TextWeight::Bolder, "Bolder"s, {{"Normal", TextWeight::Default}});
         ENUM_TEST(VerticalContentAlignment, VerticalContentAlignment::Center, "Center"s);

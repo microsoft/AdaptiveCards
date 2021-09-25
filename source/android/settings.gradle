@@ -1,1 +1,1 @@
-include ':mobilechatapp', ':mobile', ':adaptivecards'
+include ':mobilechatapp', ':uitestapp', ':mobile', ':adaptivecards'

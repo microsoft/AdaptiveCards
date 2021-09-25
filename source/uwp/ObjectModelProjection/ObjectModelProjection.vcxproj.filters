@@ -148,6 +148,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TableCell.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TableRow.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InternalId.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

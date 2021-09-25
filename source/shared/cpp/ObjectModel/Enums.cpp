@@ -333,18 +333,20 @@ namespace AdaptiveCards
             {ActionMode::Popup, "Popup"}});
 
     DEFINE_ADAPTIVECARD_ENUM(AssociatedInputs, {
-        {AssociatedInputs::Auto, "Auto"},
-        {AssociatedInputs::None, "None"}});
+            {AssociatedInputs::Auto, "Auto"},
+            {AssociatedInputs::None, "None"}});
 
     DEFINE_ADAPTIVECARD_ENUM(ChoiceSetStyle, {
             {ChoiceSetStyle::Compact, "Compact"},
-            {ChoiceSetStyle::Expanded, "Expanded"}});
+            {ChoiceSetStyle::Expanded, "Expanded"},
+            {ChoiceSetStyle::Filtered, "Filtered"}});
 
     DEFINE_ADAPTIVECARD_ENUM(TextInputStyle, {
             {TextInputStyle::Email, "Email"},
             {TextInputStyle::Tel, "Tel"},
             {TextInputStyle::Text, "Text"},
-            {TextInputStyle::Url, "Url"}});
+            {TextInputStyle::Url, "Url"},
+            {TextInputStyle::Password, "Password"}});
 
     DEFINE_ADAPTIVECARD_ENUM(ContainerStyle, {
             {ContainerStyle::Default, "Default"},

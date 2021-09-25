@@ -2,108 +2,59 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveToggleInput.h"
 #include "AdaptiveToggleInputRenderer.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
-
-namespace AdaptiveCards::Rendering::Uwp
+namespace Xaml
 {
-    HRESULT AdaptiveToggleInputRenderer::RuntimeClassInitialize() noexcept
-    try
-    {
-        return S_OK;
-    }
-    CATCH_RETURN;
+    using namespace winrt::Windows::UI::Xaml;
+}
 
-    HRESULT AdaptiveToggleInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                                _In_ IAdaptiveRenderContext* renderContext,
-                                                _In_ IAdaptiveRenderArgs* renderArgs,
-                                                _COM_Outptr_ IUIElement** toggleInputControl) noexcept
-    try
+namespace XamlHelpers
+{
+    using namespace AdaptiveCards::Rendering::Uwp::XamlHelpers;
+}
+
+using namespace winrt::AdaptiveCards::ObjectModel::Uwp;
+using namespace winrt::AdaptiveCards::Rendering::Uwp;
+
+namespace winrt::AdaptiveCards::Rendering::Uwp::implementation
+{
+    Xaml::UIElement AdaptiveToggleInputRenderer::Render(IAdaptiveCardElement cardElement,
+                                                        AdaptiveRenderContext renderContext,
+                                                        AdaptiveRenderArgs renderArgs)
     {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
+        if (!renderContext.HostConfig().SupportsInteractivity())
         {
-            renderContext->AddWarning(
-                ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"Toggle Input was stripped from card because interactivity is not supported").Get());
-            return S_OK;
+            renderContext.AddWarning(winrt::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
+                                     L"Toggle Input was stripped from card because interactivity is not supported");
+
+            return nullptr;
         }
 
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
-        RETURN_IF_FAILED(cardElement.As(&adaptiveToggleInput));
+        AdaptiveToggleInput toggleInput = cardElement.as<AdaptiveToggleInput>();
 
-        ComPtr<ICheckBox> checkBox =
-            XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+        Xaml::Controls::CheckBox checkBox{};
+        XamlHelpers::SetContent(checkBox, toggleInput.Title(), toggleInput.Wrap());
 
-        HString title;
-        RETURN_IF_FAILED(adaptiveToggleInput->get_Title(title.GetAddressOf()));
+        checkBox.IsChecked(toggleInput.ValueOn() == toggleInput.Value());
+        checkBox.VerticalAlignment(Xaml::VerticalAlignment::Top);
 
-        boolean wrap;
-        adaptiveToggleInput->get_Wrap(&wrap);
+        // Add Tap handler that sets the event as handled so that it doesn't propagate to the parent containers.
+        checkBox.Tapped([](IInspectable const& /* sender */, Xaml::Input::TappedRoutedEventArgs const& args)
+                        { return args.Handled(true); });
 
-        XamlHelpers::SetContent(checkBox.Get(), title.Get(), wrap);
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", checkBox);
+        Xaml::UIElement inputLayout = XamlHelpers::HandleInputLayoutAndValidation(toggleInput, checkBox, false, renderContext);
 
-        HString value;
-        RETURN_IF_FAILED(adaptiveToggleInput->get_Value(value.GetAddressOf()));
+        winrt::com_ptr<::AdaptiveCards::Rendering::Uwp::ToggleInputValue> inputValue;
+        THROW_IF_FAILED(Microsoft::WRL::MakeAndInitialize<::AdaptiveCards::Rendering::Uwp::ToggleInputValue>(
+            inputValue.put(),
+            toggleInput.as<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleInput>().get(),
+            checkBox.as<ABI::Windows::UI::Xaml::Controls::ICheckBox>().get(),
+            nullptr));
 
-        HString valueOn;
-        RETURN_IF_FAILED(adaptiveToggleInput->get_ValueOn(valueOn.GetAddressOf()));
+        renderContext.AddInputValue(inputValue.as<IAdaptiveInputValue>(), renderArgs);
 
-        INT32 compareValueOn;
-        RETURN_IF_FAILED(WindowsCompareStringOrdinal(value.Get(), valueOn.Get(), &compareValueOn));
-
-        XamlHelpers::SetToggleValue(checkBox.Get(), (compareValueOn == 0));
-
-        ComPtr<IUIElement> checkboxAsUIElement;
-        RETURN_IF_FAILED(checkBox.As(&checkboxAsUIElement));
-        RETURN_IF_FAILED(XamlHelpers::AddHandledTappedEvent(checkboxAsUIElement.Get()));
-
-        ComPtr<IFrameworkElement> frameworkElement;
-        RETURN_IF_FAILED(checkBox.As(&frameworkElement));
-        RETURN_IF_FAILED(frameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
-        RETURN_IF_FAILED(
-            XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Toggle", frameworkElement.Get()));
-
-        ComPtr<IAdaptiveInputElement> adapitveToggleInputAsAdaptiveInput;
-        RETURN_IF_FAILED(adaptiveToggleInput.As(&adapitveToggleInputAsAdaptiveInput));
-
-        ComPtr<IUIElement> inputLayout;
-        ComPtr<IUIElement> validationError;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-            adapitveToggleInputAsAdaptiveInput.Get(), checkboxAsUIElement.Get(), false, renderContext, &inputLayout, nullptr));
-
-        ComPtr<ToggleInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<ToggleInputValue>(&input, adaptiveToggleInput.Get(), checkBox.Get(), nullptr));
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
-
-        RETURN_IF_FAILED(inputLayout.CopyTo(toggleInputControl));
-
-        return S_OK;
+        return inputLayout;
     }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveToggleInputRenderer::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept
-    try
-    {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveToggleInput, AdaptiveCards::ToggleInput, AdaptiveCards::ToggleInputParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-    }
-    CATCH_RETURN;
 }

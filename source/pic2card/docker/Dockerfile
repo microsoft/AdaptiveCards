@@ -10,12 +10,6 @@
 # Both has it's pros and cons, so we will use based on which fits at particular
 # usecase at hand.
 #
-# To build docker image with TFS support
-#   $docker build -t imaginea.azurecr.io/imaginea/api_frozen_mystique:v0.6 .
-#
-# To build pic2card with backend TFS service.
-#   $docker build --build-arg tfs_enable=tfs --build-arg TARGET_API=tfs \
-#      -t imaginea.azurecr.io/imaginea/api_tfs_mystique:v0.6 .
 #
 ARG TARGET_API=frozen_graph
 
@@ -28,6 +22,7 @@ FROM python:3.7.9-slim-buster as frozen_graph
 # Fill in both, as in this case we need both dependencies.
 ADD requirements/requirements-frozen_graph.txt /app/
 ADD requirements/requirements.txt /app/
+RUN printf "\n" >> /app/requirements.txt
 RUN cat /app/requirements-frozen_graph.txt >> /app/requirements.txt
 COPY model/frozen_inference_graph.pb /app/model/
 

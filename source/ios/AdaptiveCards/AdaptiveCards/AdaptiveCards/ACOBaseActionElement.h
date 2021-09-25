@@ -24,7 +24,7 @@
 - (NSString *)data;
 - (NSString *)verb;
 - (NSData *)additionalProperty;
-
+- (BOOL)isEnabled;
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg;
 
 + (NSNumber *)getKey:(ACRActionType)actionType;

@@ -1,0 +1,860 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+import "Windows.Foundation.idl";
+import "Windows.Data.Json.idl";
+
+namespace AdaptiveCards.ObjectModel.Uwp
+{
+    runtimeclass AdaptiveCardParseResult;
+
+    enum TextSize
+    {
+        Small = 0,
+        Default,
+        Medium,
+        Large,
+        ExtraLarge
+    };
+
+    enum TextWeight {
+        Lighter = 0,
+        Default,
+        Bolder,
+    };
+
+    enum ForegroundColor {
+        Default = 0,
+        Dark,
+        Light,
+        Accent,
+        Good,
+        Warning,
+        Attention
+    };
+
+    enum HAlignment {
+        Left = 0,
+        Center,
+        Right,
+    };
+
+    enum VAlignment {
+        Top = 0,
+        Center,
+        Bottom,
+    };
+
+    enum BackgroundImageFillMode {
+        Cover = 0,
+        RepeatHorizontally,
+        RepeatVertically,
+        Repeat
+    };
+
+    enum ElementType {
+        Unsupported = 0,
+        AdaptiveCard,
+        TextBlock,
+        Image,
+        Container,
+        Column,
+        ColumnSet,
+        FactSet,
+        Fact,
+        ImageSet,
+        ChoiceInput,
+        ChoiceSetInput,
+        DateInput,
+        NumberInput,
+        TextInput,
+        TimeInput,
+        ToggleInput,
+        Custom,
+        Media,
+        ActionSet,
+        RichTextBlock,
+        TableCell,
+        TableRow,
+        Table,
+    };
+
+    enum ActionType {
+        Unsupported = 0,
+        ShowCard,
+        Submit,
+        OpenUrl,
+        ToggleVisibility,
+        Execute,
+        Custom
+    };
+
+    enum ImageStyle {
+        Default = 0,
+        Person,
+    };
+
+    enum ImageSize {
+        None = 0,
+        Auto,
+        Stretch,
+        Small,
+        Medium,
+        Large
+    };
+
+    enum SeparatorThickness {
+        Default = 0,
+        Thick,
+    };
+
+    enum Spacing {
+        Default = 0,
+        None,
+        Small,
+        Medium,
+        Large,
+        ExtraLarge,
+        Padding
+    };
+
+    enum ChoiceSetStyle {
+        Compact = 0,
+        Expanded,
+        Filtered,
+    };
+
+    enum TextInputStyle {
+        Text = 0,
+        Tel,
+        Url,
+        Email,
+    };
+
+    enum ContainerStyle {
+        None = 0,
+        Default,
+        Emphasis,
+        Good,
+        Attention,
+        Warning,
+        Accent
+    };
+
+    enum FontType {
+        Default = 0,
+        Monospace,
+    };
+
+    enum ErrorStatusCode {
+        InvalidJson = 0,
+        RenderFailed,
+        RequiredPropertyMissing,
+        InvalidPropertyValue,
+        UnsupportedParserOverride,
+        CustomError,
+    };
+
+    enum WarningStatusCode {
+        UnknownElementType = 0,
+        UnknownActionElementType,
+        UnknownPropertyOnElement,
+        UnknownEnumValue,
+        NoRendererForType,
+        InteractivityNotSupported,
+        MaxActionsExceeded,
+        AssetLoadFailed,
+        UnsupportedSchemaVersion,
+        UnsupportedMediaType,
+        InvalidMediaMix,
+        InvalidValue,
+        UnsupportedValue,
+        PerformingFallback,
+        CustomWarning,
+        EmptyLabelInRequiredInput,
+        MissingValidationErrorMessage,
+        RequiredPropertyMissing,
+    };
+
+    enum VerticalContentAlignment {
+        Top = 0,
+        Center,
+        Bottom
+    };
+
+    enum HeightType {
+        Auto = 0,
+        Stretch,
+    };
+
+    enum IsVisible {
+        IsVisibleToggle = 0,
+        IsVisibleTrue,
+        IsVisibleFalse
+    };
+
+    enum FallbackType {
+        None = 0,
+        Drop,
+        Content,
+    };
+
+    [flags] enum BleedDirection {
+        None = 0x0000,
+        Left = 0x0001,
+        Right = 0x0010,
+        Up = 0x0100,
+        Down = 0x1000,
+        All = Left | Right | Up | Down
+    };
+
+    enum AssociatedInputs {
+        Auto = 0,
+        None,
+    };
+
+    enum TextStyle {
+        Default = 0,
+        Heading,
+        ColumnHeader,
+    };
+
+    enum ActionMode {
+        Primary = 0,
+        Secondary,
+    };
+
+    declare { interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation>; }
+
+    interface IAdaptiveCardElement
+    {
+        ElementType ElementType { get; };
+        String ElementTypeString { get; };
+
+        HeightType Height;
+        Spacing Spacing;
+        Boolean Separator;
+        String Id;
+        Boolean IsVisible;
+        FallbackType FallbackType;
+        IAdaptiveCardElement FallbackContent;
+        Windows.Data.Json.JsonObject AdditionalProperties;
+        Windows.Foundation.Collections.IVector<AdaptiveRequirement> Requirements { get; };
+
+        Windows.Data.Json.JsonObject ToJson();
+    };
+
+    runtimeclass AdaptiveRemoteResourceInformation
+    {
+        AdaptiveRemoteResourceInformation();
+
+        String Url;
+        String MimeType;
+    };
+
+    interface IAdaptiveElementWithRemoteResources
+    {
+        Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
+    };
+
+    interface IAdaptiveTextElement
+    {
+        Windows.Foundation.IReference<TextSize> Size;
+        Windows.Foundation.IReference<TextWeight> Weight;
+        Windows.Foundation.IReference<ForegroundColor> Color;
+        String Text;
+        Windows.Foundation.IReference<Boolean> IsSubtle;
+        String Language;
+        Windows.Foundation.IReference<FontType> FontType;
+    };
+
+    runtimeclass AdaptiveTextBlock : IAdaptiveCardElement, IAdaptiveTextElement
+    {
+        AdaptiveTextBlock();
+
+        Boolean Wrap;
+        Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
+        UInt32 MaxLines;
+        Windows.Foundation.IReference<TextStyle> Style;
+    };
+
+    [version(1), uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085")]
+    interface IAdaptiveInline {};
+
+    runtimeclass AdaptiveTextRun : IAdaptiveInline, IAdaptiveTextElement
+    {
+        AdaptiveTextRun();
+
+        Boolean Italic;
+        Boolean Strikethrough;
+        Boolean Highlight;
+        Boolean Underline;
+        IAdaptiveActionElement SelectAction;
+    };
+
+    runtimeclass AdaptiveRichTextBlock : IAdaptiveCardElement
+    {
+        AdaptiveRichTextBlock();
+
+        Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveInline> Inlines { get; };
+    };
+
+    runtimeclass AdaptiveMediaSource
+    {
+        AdaptiveMediaSource();
+
+        String MimeType;
+        String Url;
+    };
+
+    runtimeclass AdaptiveMedia : IAdaptiveCardElement
+    {
+        AdaptiveMedia();
+
+        String Poster;
+        String AltText;
+
+        Windows.Foundation.Collections.IVector<AdaptiveMediaSource> Sources { get; };
+    };
+
+    runtimeclass AdaptiveBackgroundImage
+    {
+        AdaptiveBackgroundImage();
+
+        String Url;
+        BackgroundImageFillMode FillMode;
+        HAlignment HorizontalAlignment;
+        VAlignment VerticalAlignment;
+    };
+
+    runtimeclass AdaptiveAuthCardButton
+    {
+        AdaptiveAuthCardButton();
+
+        String Type;
+        String Title;
+        String Image;
+        String Value;
+    };
+
+    runtimeclass AdaptiveTokenExchangeResource
+    {
+        AdaptiveTokenExchangeResource();
+
+        String Id;
+        String Uri;
+        String ProviderId;
+    };
+
+    runtimeclass AdaptiveAuthentication
+    {
+        AdaptiveAuthentication();
+
+        String Text;
+        String ConnectionName;
+        AdaptiveTokenExchangeResource TokenExchangeResource;
+        Windows.Foundation.Collections.IVector<AdaptiveAuthCardButton> Buttons { get; };
+    };
+
+    runtimeclass AdaptiveRefresh
+    {
+        AdaptiveRefresh();
+
+        IAdaptiveActionElement Action;
+        Windows.Foundation.Collections.IVector<String> UserIds { get; };
+    };
+
+    runtimeclass AdaptiveCard
+    {
+        AdaptiveCard();
+
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Body { get; };
+        Windows.Foundation.Collections.IVector<IAdaptiveActionElement> Actions { get; };
+        ElementType ElementType { get; };
+        UInt32 InternalId { get; };
+        String Version;
+        String FallbackText;
+        AdaptiveBackgroundImage BackgroundImage;
+        String Language;
+        String Speak;
+        ContainerStyle Style;
+        IAdaptiveActionElement SelectAction;
+        VerticalContentAlignment VerticalContentAlignment;
+        HeightType Height;
+        UInt32 MinHeight;
+        AdaptiveRefresh Refresh;
+        AdaptiveAuthentication Authentication;
+
+        Windows.Data.Json.JsonObject ToJson();
+        Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
+
+        static AdaptiveCardParseResult FromJson(Windows.Data.Json.JsonObject adaptiveJson);
+
+        [method_name("FromJsonWithParserRegistration")] static AdaptiveCardParseResult FromJson(
+            Windows.Data.Json.JsonObject adaptiveJson,
+            AdaptiveElementParserRegistration elementRegistration,
+            AdaptiveActionParserRegistration actionRegistration);
+
+        static AdaptiveCardParseResult FromJsonString(String adaptiveJson);
+
+        [method_name("FromJsonStringWithParserRegistration")] static AdaptiveCardParseResult FromJsonString(
+            String adaptiveJson, AdaptiveElementParserRegistration elementRegistration, AdaptiveActionParserRegistration actionRegistration);
+    };
+
+    runtimeclass AdaptiveCardParseResult
+    {
+        AdaptiveCardParseResult();
+
+        AdaptiveCard AdaptiveCard { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveError> Errors { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveWarning> Warnings { get; };
+    };
+
+    runtimeclass AdaptiveImage : IAdaptiveCardElement
+    {
+        AdaptiveImage();
+
+        String Url;
+        String BackgroundColor;
+        ImageStyle Style;
+        ImageSize Size;
+        UInt32 PixelWidth;
+        UInt32 PixelHeight;
+        Windows.Foundation.IReference<HAlignment> HorizontalAlignment;
+        String AltText;
+        IAdaptiveActionElement SelectAction;
+    };
+
+    runtimeclass AdaptiveImageSet : IAdaptiveCardElement
+    {
+        AdaptiveImageSet();
+
+        Windows.Foundation.Collections.IVector<AdaptiveImage> Images { get; };
+        ImageSize ImageSize;
+    };
+
+    runtimeclass AdaptiveChoiceInput
+    {
+        AdaptiveChoiceInput();
+
+        ElementType ElementType { get; };
+        String Title;
+        String Value;
+    };
+
+    runtimeclass AdaptiveChoiceSetInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveChoiceSetInput();
+
+        String Value;
+        Boolean IsMultiSelect;
+        String Placeholder;
+        Boolean Wrap;
+        ChoiceSetStyle ChoiceSetStyle;
+        Windows.Foundation.Collections.IVector<AdaptiveChoiceInput> Choices { get; };
+    };
+
+    runtimeclass AdaptiveDateInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveDateInput();
+
+        String Max;
+        String Min;
+        String Placeholder;
+        String Value;
+    };
+
+    runtimeclass AdaptiveNumberInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveNumberInput();
+
+        Windows.Foundation.IReference<Double> Max;
+        Windows.Foundation.IReference<Double> Min;
+        String Placeholder;
+        Windows.Foundation.IReference<Double> Value;
+    };
+
+    runtimeclass AdaptiveTextInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveTextInput();
+
+        Boolean IsMultiline;
+        UInt32 MaxLength;
+        String Placeholder;
+        String Value;
+        TextInputStyle TextInputStyle;
+        IAdaptiveActionElement InlineAction;
+        String Regex;
+    };
+
+    runtimeclass AdaptiveTimeInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveTimeInput();
+
+        String Max;
+        String Min;
+        String Placeholder;
+        String Value;
+    };
+
+    runtimeclass AdaptiveToggleInput : IAdaptiveInputElement, IAdaptiveCardElement
+    {
+        AdaptiveToggleInput();
+
+        String Title;
+        Boolean Wrap;
+        String Value;
+        String ValueOff;
+        String ValueOn;
+    };
+
+    interface IAdaptiveContainerBase
+    {
+        ContainerStyle Style;
+        IAdaptiveActionElement SelectAction;
+        Boolean Bleed;
+        BleedDirection BleedDirection { get; };
+        UInt32 MinHeight;
+    };
+
+    interface IAdaptiveContainer
+    {
+        Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
+        AdaptiveBackgroundImage BackgroundImage;
+        Windows.Foundation.IReference<Boolean> Rtl;
+    };
+
+    [default_interface] runtimeclass AdaptiveContainer : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveContainer();
+    };
+
+    runtimeclass AdaptiveColumn : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveColumn();
+
+        String Width;
+        UInt32 PixelWidth;
+        Windows.Foundation.IReference<VerticalContentAlignment> VerticalContentAlignment;
+        Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
+        AdaptiveBackgroundImage BackgroundImage;
+        Windows.Foundation.IReference<Boolean> Rtl;
+    };
+
+    runtimeclass AdaptiveColumnSet : IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveColumnSet();
+
+        Windows.Foundation.Collections.IVector<AdaptiveColumn> Columns { get; };
+    };
+
+    runtimeclass AdaptiveFact
+    {
+        AdaptiveFact();
+
+        ElementType ElementType { get; };
+        String Title;
+        String Value;
+        String Language;
+    };
+
+    runtimeclass AdaptiveFactSet : IAdaptiveCardElement
+    {
+        AdaptiveFactSet();
+
+        Windows.Foundation.Collections.IVector<AdaptiveFact> Facts { get; };
+    };
+
+    [default_interface] runtimeclass AdaptiveTableCell : IAdaptiveContainer, IAdaptiveContainerBase, IAdaptiveCardElement
+    {
+        AdaptiveTableCell();
+    }
+
+    runtimeclass AdaptiveTableRow : IAdaptiveCardElement
+    {
+        AdaptiveTableRow();
+
+        Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+        Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
+        ContainerStyle Style;
+
+        Windows.Foundation.Collections.IVector<AdaptiveTableCell> Cells { get; };
+    }
+
+    runtimeclass AdaptiveTableColumnDefinition
+    {
+        AdaptiveTableColumnDefinition();
+
+        Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+        Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
+
+        Windows.Foundation.IReference<UInt32> Width;
+        Windows.Foundation.IReference<UInt32> PixelWidth;
+    };
+
+    runtimeclass AdaptiveTable : IAdaptiveCardElement
+    {
+        AdaptiveTable();
+
+        Boolean ShowGridLines;
+        Boolean FirstRowAsHeaders;
+        Windows.Foundation.IReference<HAlignment> HorizontalCellContentAlignment;
+        Windows.Foundation.IReference<VerticalContentAlignment> VerticalCellContentAlignment;
+        ContainerStyle GridStyle;
+
+        Windows.Foundation.Collections.IVector<AdaptiveTableColumnDefinition> Columns { get; };
+        Windows.Foundation.Collections.IVector<AdaptiveTableRow> Rows { get; };
+    };
+
+    runtimeclass AdaptiveActionSet : IAdaptiveCardElement
+    {
+        AdaptiveActionSet();
+
+        Windows.Foundation.Collections.IVector<IAdaptiveActionElement> Actions { get; };
+        UInt32 InternalId { get; };
+    };
+
+    [default_interface] runtimeclass AdaptiveUnsupportedAction : IAdaptiveActionElement
+    {
+        AdaptiveUnsupportedAction();
+    };
+
+    [default_interface] runtimeclass AdaptiveUnsupportedElement : IAdaptiveCardElement
+    {
+        AdaptiveUnsupportedElement();
+    };
+
+    interface IAdaptiveActionElement
+    {
+        ActionType ActionType { get; };
+        String ActionTypeString { get; };
+        String Title;
+        String Id;
+        FallbackType FallbackType;
+        IAdaptiveActionElement FallbackContent;
+        String IconUrl;
+        String Style;
+        String Tooltip;
+        Windows.Data.Json.JsonObject AdditionalProperties;
+        Boolean IsEnabled;
+        ActionMode Mode;
+
+        Windows.Data.Json.JsonObject ToJson();
+    };
+
+    runtimeclass AdaptiveOpenUrlAction : IAdaptiveActionElement
+    {
+        AdaptiveOpenUrlAction();
+
+        Windows.Foundation.Uri Url;
+        UInt32 InternalId { get; };
+    };
+
+    runtimeclass AdaptiveShowCardAction : IAdaptiveActionElement
+    {
+        AdaptiveShowCardAction();
+
+        AdaptiveCard Card;
+        UInt32 InternalId { get; };
+    };
+
+    runtimeclass AdaptiveSubmitAction : IAdaptiveActionElement
+    {
+        AdaptiveSubmitAction();
+
+        Windows.Data.Json.JsonValue DataJson;
+        AssociatedInputs AssociatedInputs;
+        UInt32 InternalId { get; };
+    };
+
+    runtimeclass AdaptiveExecuteAction : IAdaptiveActionElement
+    {
+        AdaptiveExecuteAction();
+
+        Windows.Data.Json.JsonValue DataJson;
+        AssociatedInputs AssociatedInputs;
+        String Verb;
+        UInt32 InternalId { get; };
+    };
+
+    runtimeclass AdaptiveToggleVisibilityTarget
+    {
+        AdaptiveToggleVisibilityTarget();
+
+        String ElementId;
+        IsVisible IsVisible;
+    };
+
+    runtimeclass AdaptiveToggleVisibilityAction : IAdaptiveActionElement
+    {
+        AdaptiveToggleVisibilityAction();
+
+        Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget> TargetElements { get; };
+        UInt32 InternalId { get; };
+    };
+
+    runtimeclass AdaptiveRequirement
+    {
+        AdaptiveRequirement(String requirementName, String requirementversion);
+
+        String Name;
+        String Version;
+    }
+
+    interface IAdaptiveElementParser
+    {
+        IAdaptiveCardElement FromJson(Windows.Data.Json.JsonObject inputJson,
+                                        AdaptiveElementParserRegistration elementParsers,
+                                        AdaptiveActionParserRegistration actionParsers,
+                                        Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
+    };
+
+    runtimeclass AdaptiveElementParserRegistration
+    {
+        AdaptiveElementParserRegistration();
+
+        void Set(String type, IAdaptiveElementParser parser);
+        IAdaptiveElementParser Get(String type);
+        void Remove(String type);
+    };
+
+    runtimeclass AdaptiveActionParserRegistration
+    {
+        AdaptiveActionParserRegistration();
+
+        void Set(String type, IAdaptiveActionParser parser);
+        IAdaptiveActionParser Get(String type);
+        void Remove(String type);
+    };
+
+    interface IAdaptiveActionParser
+    {
+        IAdaptiveActionElement FromJson(Windows.Data.Json.JsonObject inputJson,
+                                        AdaptiveElementParserRegistration elementParsers,
+                                        AdaptiveActionParserRegistration actionParsers,
+                                        Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
+    };
+
+    interface IAdaptiveInputElement
+    {
+        Boolean IsRequired;
+        String ErrorMessage;
+        String Label;
+    };
+
+    [default_interface] runtimeclass AdaptiveTextBlockParser : IAdaptiveElementParser
+    {
+        AdaptiveTextBlockParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveRichTextBlockParser : IAdaptiveElementParser
+    {
+        AdaptiveRichTextBlockParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveImageParser : IAdaptiveElementParser { AdaptiveImageParser(); };
+
+    [default_interface] runtimeclass AdaptiveImageSetParser : IAdaptiveElementParser
+    {
+        AdaptiveImageSetParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveContainerParser : IAdaptiveElementParser
+    {
+        AdaptiveContainerParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveColumnParser : IAdaptiveElementParser { AdaptiveColumnParser(); };
+
+    [default_interface] runtimeclass AdaptiveColumnSetParser : IAdaptiveElementParser
+    {
+        AdaptiveColumnSetParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveChoiceSetInputParser : IAdaptiveElementParser
+    {
+        AdaptiveChoiceSetInputParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveDateInputParser : IAdaptiveElementParser
+    {
+        AdaptiveDateInputParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveNumberInputParser : IAdaptiveElementParser
+    {
+        AdaptiveNumberInputParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveTextInputParser : IAdaptiveElementParser
+    {
+        AdaptiveTextInputParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveTimeInputParser : IAdaptiveElementParser
+    {
+        AdaptiveTimeInputParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveToggleInputParser : IAdaptiveElementParser
+    {
+        AdaptiveToggleInputParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveFactSetParser : IAdaptiveElementParser
+    {
+        AdaptiveFactSetParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveMediaParser : IAdaptiveElementParser { AdaptiveMediaParser(); };
+
+    [default_interface] runtimeclass AdaptiveActionSetParser : IAdaptiveElementParser
+    {
+        AdaptiveActionSetParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveOpenUrlActionParser : IAdaptiveActionParser
+    {
+        AdaptiveOpenUrlActionParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveShowCardActionParser : IAdaptiveActionParser
+    {
+        AdaptiveShowCardActionParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveSubmitActionParser : IAdaptiveActionParser
+    {
+        AdaptiveSubmitActionParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveExecuteActionParser : IAdaptiveActionParser
+    {
+        AdaptiveExecuteActionParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveToggleVisibilityActionParser : IAdaptiveActionParser
+    {
+        AdaptiveToggleVisibilityActionParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveTableParser : IAdaptiveElementParser { AdaptiveTableParser(); };
+
+    runtimeclass AdaptiveError
+    {
+        AdaptiveError(ErrorStatusCode statusCode, String message);
+
+        ErrorStatusCode StatusCode;
+        String Message;
+    };
+
+    runtimeclass AdaptiveWarning
+    {
+        AdaptiveWarning(WarningStatusCode statusCode, String message);
+
+        WarningStatusCode StatusCode;
+        String Message;
+    };
+}

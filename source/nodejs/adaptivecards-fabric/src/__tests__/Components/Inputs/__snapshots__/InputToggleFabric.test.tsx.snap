@@ -16,8 +16,8 @@ exports[`InputToggleExtended should be rendered correctly 1`] = `
       >
         <label
           class="ms-Label ms-Toggle-label label-46"
-          for="Toggle1"
-          id="Toggle1-label"
+          for="Toggle0"
+          id="Toggle0-label"
         >
           Are you sure?
         </label>
@@ -26,10 +26,10 @@ exports[`InputToggleExtended should be rendered correctly 1`] = `
         >
           <button
             aria-checked="true"
-            aria-labelledby="Toggle1-label"
+            aria-labelledby="Toggle0-label"
             class="ms-Toggle-background pill-43"
             data-is-focusable="true"
-            id="Toggle1"
+            id="Toggle0"
             role="switch"
             type="button"
           >

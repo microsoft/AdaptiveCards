@@ -12,7 +12,8 @@ public enum TextInputStyle {
   Text(0),
   Tel,
   Url,
-  Email;
+  Email,
+  Password;
 
   public final int swigValue() {
     return swigValue;

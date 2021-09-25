@@ -8,8 +8,6 @@
 
 using namespace Microsoft::WRL;
 
-WrlCreatorMapIncludePragma(AdaptiveCardRenderer);
-
 STDAPI DllGetActivationFactory(_In_ HSTRING activatableClassId, _COM_Outptr_ IActivationFactory** factory)
 {
     return Module<ModuleType::InProc>::GetModule().GetActivationFactory(activatableClassId, factory);

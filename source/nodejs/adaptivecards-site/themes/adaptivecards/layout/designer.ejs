@@ -7,8 +7,10 @@
 <%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>
 
 <style type="text/css">
-	.content {
-		height: calc(100vh - 97px) !important;
+    @media all and (min-width: 651px) {
+		.content {
+			height: calc(100vh - 97px) !important;
+		}
 	}
 
 	body {
@@ -71,7 +73,7 @@
 			designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";
 			designer.sampleCatalogueUrl = "<%- config.root %>designer/sample-catalogue.json";
 			designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
-			
+
 			let hostDocsButton = new ACDesigner.ToolbarButton(
 				"hostDocs",
 				"Host App Docs",
@@ -105,8 +107,9 @@
 				"acd-icon-feedback",
 				function () {
 					window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
-						+ encodeURIComponent("[Designer] [Your feedback title here]")
-						+ "&body=" + encodeURIComponent("[Your detailed feedback here]"))
+						+ encodeURIComponent("[Designer] Feedback title here")
+						+ "&labels=" + encodeURIComponent("Bug,Triage-Needed,Area-Designer")
+						+ "&template=" + encodeURIComponent("designer-bug-report.md"))
 				}
 			);
 
@@ -293,14 +296,14 @@
 		ACDesigner.GlobalSettings.showDataStructureToolbox = false;
 		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
 		ACDesigner.GlobalSettings.showVersionPicker = true;
-		
+
 		<% if (page.previewFeaturesEnabled) { %>
 
         <% } %>
-        
+
 
         if (getParameterByName("preview") === "1") {
-       
+
         }
 
 		require.config({

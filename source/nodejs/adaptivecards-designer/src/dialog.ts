@@ -37,6 +37,7 @@ export abstract class Dialog {
     onClose: (sender: Dialog) => void = null;
 
     readonly closeButton: DialogButton;
+    buttons?: DialogButton[];
 
     title: string;
     width: string;
@@ -66,7 +67,6 @@ export abstract class Dialog {
             dialogFrameElement.className = "acd-dialog-frame";
             dialogFrameElement.style.width = this.width;
             dialogFrameElement.style.height = this.height;
-            dialogFrameElement.style.justifyContent = "space-between";
             dialogFrameElement.setAttribute("aria-modal", "true");
             dialogFrameElement.setAttribute("role", "dialog");
             dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
@@ -108,23 +108,18 @@ export abstract class Dialog {
             };
 
             let titleBarElement = document.createElement("div");
-            titleBarElement.style.display = "flex";
-            titleBarElement.style.alignItems = "center";
-            titleBarElement.style.flex = "0 0 auto";
-            titleBarElement.style.marginBottom = "10px";
+            titleBarElement.className="acd-dialog-title-host";
 
             let titleElement = document.createElement("div");
             titleElement.className = "acd-dialog-title";
             titleElement.id = "acd-dialog-title-element";
             titleElement.innerText = this.title;
-            titleElement.style.flex = "1 1 auto";
             titleElement.setAttribute("role", "heading");
             titleElement.setAttribute("aria-level","1");
             titleElement.tabIndex = -1;
 
             let xButton = document.createElement("button");
             xButton.className = "acd-icon acd-dialog-titleBar-button acd-icon-remove";
-            xButton.style.flex = "0 0 auto";
             xButton.title = "Close";
             xButton.onclick = (e) => { this.close(); }
 
@@ -136,7 +131,13 @@ export abstract class Dialog {
 
             let buttonBarElement = document.createElement("div");
             buttonBarElement.className = "acd-dialog-buttonBar";
-            buttonBarElement.style.flex = "0 0 auto";
+
+            if (this.buttons?.length > 0) {
+                for (const button of this.buttons) {
+                    buttonBarElement.appendChild(button.render());
+                }
+            }
+
             buttonBarElement.appendChild(this.closeButton.render());
 
             dialogFrameElement.appendChild(titleBarElement);

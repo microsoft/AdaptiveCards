@@ -342,7 +342,7 @@ export class OpenImageDialog extends Dialog {
         const poweredByContainer = document.createElement("div");
         poweredByContainer.className = "acd-poweredby-title";
         poweredByContainer.innerHTML =
-            "Powered By <a class='poweredby-link' href='https://www.imaginea.com/' target='_blank'><span class='link'>Imaginea</span></a>";
+            "Powered By <a class='poweredby-link' href='https://www.bigthinkcode.com/' target='_blank'><span class='link'>BigThinkCode</span></a>";
         const container = document.createElement("div");
         container.className = "acd-sample-container";
 
@@ -384,7 +384,7 @@ export class ImageItem {
             imagePlaceholder.setAttribute("alt", sampleImageName);
         }
         imagePlaceholder.onkeydown = (event) => {
-            if (event.keyCode === 13) {
+            if (event.code === "Enter") {
                 this.onClick((event.target as HTMLImageElement).src, sampleImageName);
                 imagePlaceholder.setAttribute("alt", `${sampleImageName} selected`);
             }

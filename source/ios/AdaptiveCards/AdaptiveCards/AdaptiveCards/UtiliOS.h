@@ -5,6 +5,7 @@
 //
 
 #import "ACORenderContext.h"
+#import "ACOVisibilityManager.h"
 #import "ACRErrors.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRSeparator.h"
@@ -19,12 +20,16 @@
 
 using namespace AdaptiveCards;
 
+extern const CGFloat kACRScalerTolerance;
+
 // configures tag and initial visibility of the given view. Toggle visibility action
 // will access the view by the tag to change the visibility.
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo);
 
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo);
+
+void configVisibilityWithVisibilityManager(ACRView *rootView, NSObject<ACOIVisibilityManagerFacade> *facade, ACRContentStackView *view);
 
 void configRtl(UIView *view, ACORenderContext *context);
 
@@ -45,7 +50,11 @@ void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundI
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
                                      UIImageView *imageView, UIImage *img);
 
-void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView);
+void renderBackgroundCoverMode(UIView *backgroundView, UIView *targetView, NSMutableArray<NSLayoutConstraint *> *constraints, ACRContentStackView *parentView);
+
+void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView, NSMutableArray<NSLayoutConstraint *> *constraints);
+
+void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView, NSMutableArray<NSLayoutConstraint *> *constraints);
 
 ObserverActionBlock generateBackgroundImageObserverAction(
     std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer,
@@ -86,17 +95,13 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
 
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties);
 
+void UpdateFontWithDynamicType(NSMutableAttributedString *content);
+
 ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_ptr<UnknownAction> action);
 
 UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> const &config, ACRContainerStyle style, ForegroundColor textColor = ForegroundColor::Default, bool isSubtle = false);
 
 unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &config);
-
-void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView);
-
-void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView);
-
-void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool isComplimentaryAxisHorizontal);
 
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
 
@@ -122,3 +127,7 @@ void partitionActions(
 UIImage *scaleImageToSize(UIImage *image, CGSize newSize);
 
 NSNumber *iOSInternalIdHash(const std::size_t internalIdHash);
+
+id traverseResponderChainForUIViewController(UIView *view);
+
+CGRect FindClosestRectToCover(CGRect coverRect, CGRect targetRectToCover);

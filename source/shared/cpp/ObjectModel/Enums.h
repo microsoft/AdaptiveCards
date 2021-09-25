@@ -333,6 +333,7 @@ namespace AdaptiveCards
         Tel,
         Url,
         Email,
+        Password,
     };
     DECLARE_ADAPTIVECARD_ENUM(TextInputStyle);
 
@@ -369,7 +370,8 @@ namespace AdaptiveCards
     enum class ChoiceSetStyle
     {
         Compact = 0,
-        Expanded
+        Expanded,
+        Filtered
     };
     DECLARE_ADAPTIVECARD_ENUM(ChoiceSetStyle);
 

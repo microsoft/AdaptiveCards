@@ -144,6 +144,14 @@ using namespace AdaptiveCards;
     return nil;
 }
 
+- (BOOL)isEnabled
+{
+    if (_elem) {
+        return _elem->GetIsEnabled();
+    }
+    return YES;
+}
+
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg
 {
     if (_elem) {
