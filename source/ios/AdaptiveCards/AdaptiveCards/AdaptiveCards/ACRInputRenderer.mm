@@ -113,7 +113,9 @@
     }
 
     ACRTextInputHandler *textInputHandler = [[ACRTextInputHandler alloc] init:acoElem];
-    if (inputBlck->GetIsMultiline()) {
+    
+    BOOL isMultiline = (inputBlck->GetTextInputStyle() != TextInputStyle::Password) && inputBlck->GetIsMultiline();
+    if (isMultiline) {
         if (renderAction) {
             // if action is defined, load ACRQuickReplyMultilineView nib for customizable UI
             multilineview = [[ACRQuickReplyMultilineView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
@@ -171,7 +173,7 @@
         [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
-    if (elem->GetHeight() == HeightType::Stretch && !inputBlck->GetIsMultiline()) {
+    if (elem->GetHeight() == HeightType::Stretch && !isMultiline) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
         [textInputContainer addArrangedSubview:inputview];
 
@@ -189,7 +191,7 @@
 
     // configures for action
     if (renderAction) {
-        if (inputBlck->GetIsMultiline()) {
+        if (isMultiline) {
             [inputs addObject:txtview];
         } else {
             [inputs addObject:inputview];
