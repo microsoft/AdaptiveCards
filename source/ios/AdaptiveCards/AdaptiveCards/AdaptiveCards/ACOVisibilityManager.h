@@ -33,7 +33,7 @@
 
 /// change the visibility of the padding of a host view to `visibility`
 /// `visibility` `YES` indicates that the padding will be hidden
-- (void)changeVisibilityOfPadding:(UIView *)hostView visibilityValue:(BOOL)visibility;
+- (void)changeVisibilityOfPadding:(UIView *)hostView visibilityHidden:(BOOL)visibility;
 
 - (void)updatePaddingVisibility;
 

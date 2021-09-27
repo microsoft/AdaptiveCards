@@ -568,7 +568,7 @@ using namespace AdaptiveCards;
         [self addPadding];
     }
 
-    [_visibilityManager changeVisibilityOfPadding:self visibilityValue:!_visibilityManager.hasVisibleViews];
+    [_visibilityManager changeVisibilityOfPadding:self visibilityHidden:!_visibilityManager.hasVisibleViews];
 
     [_visibilityManager updatePaddingVisibility];
 }

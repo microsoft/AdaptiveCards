@@ -151,7 +151,7 @@ const CGFloat kFillerViewLayoutConstraintPriority = UILayoutPriorityDefaultLow -
     return nil;
 }
 
-- (void)associateSeparatorWithOwnerView:separator ownerView:ownerView
+- (void)associateSeparatorWithOwnerView:(UIView *)separator ownerView:(UIView *)ownerView
 {
     [_separatorMap setObject:[NSValue valueWithNonretainedObject:separator] forKey:ownerView];
 }

@@ -39,7 +39,7 @@ extern const CGFloat kFillerViewLayoutConstraintPriority;
 
 - (NSArray<NSValue *> *)getFillerSpaceView:(UIView *)view;
 
-- (void)associateSeparatorWithOwnerView:separator ownerView:ownerView;
+- (void)associateSeparatorWithOwnerView:(UIView *)separator ownerView:(UIView *)ownerView;
 
 - (ACRSeparator *)getSeparatorForOwnerView:(UIView *)ownerView;
 
