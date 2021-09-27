@@ -2,65 +2,37 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveChoiceInput.h"
-#include "ObjectModelUtil.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveChoiceInput.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    HRESULT AdaptiveChoiceInput::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveChoiceInput::AdaptiveChoiceInput(const std::shared_ptr<::AdaptiveCards::ChoiceInput>& sharedChoiceInput) :
+        m_sharedChoiceInput(sharedChoiceInput)
     {
-        m_sharedChoiceInput = std::make_shared<ChoiceInput>();
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveChoiceInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedChoiceInput)
-    {
-        m_sharedChoiceInput = sharedChoiceInput;
-        return S_OK;
     }
 
-    HRESULT AdaptiveChoiceInput::get_Title(_Outptr_ HSTRING* title)
+    hstring AdaptiveChoiceInput::Title()
     {
-        return UTF8ToHString(m_sharedChoiceInput->GetTitle(), title);
+        return UTF8ToHString(m_sharedChoiceInput->GetTitle());
     }
 
-    HRESULT AdaptiveChoiceInput::put_Title(_In_ HSTRING title)
+    void AdaptiveChoiceInput::Title(hstring const& title)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(title, out));
-        m_sharedChoiceInput->SetTitle(out);
-        return S_OK;
+        m_sharedChoiceInput->SetTitle(HStringToUTF8(title));
     }
 
-    HRESULT AdaptiveChoiceInput::get_Value(_Outptr_ HSTRING* value)
+    hstring AdaptiveChoiceInput::Value()
     {
-        return UTF8ToHString(m_sharedChoiceInput->GetValue(), value);
+        return UTF8ToHString(m_sharedChoiceInput->GetValue());
     }
 
-    HRESULT AdaptiveChoiceInput::put_Value(_In_ HSTRING value)
+    void AdaptiveChoiceInput::Value(hstring const& value)
     {
-        std::string out;
-        RETURN_IF_FAILED(HStringToUTF8(value, out));
-        m_sharedChoiceInput->SetValue(out);
-        return S_OK;
+        m_sharedChoiceInput->SetValue(HStringToUTF8(value));
     }
 
-    HRESULT AdaptiveChoiceInput::get_ElementType(_Out_ ElementType* elementType)
+    std::shared_ptr<::AdaptiveCards::ChoiceInput> AdaptiveChoiceInput::GetSharedModel()
     {
-        *elementType = ElementType::ChoiceInput;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveChoiceInput::GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel)
-    {
-        sharedModel = m_sharedChoiceInput;
-        return S_OK;
+        return m_sharedChoiceInput;
     }
 }
