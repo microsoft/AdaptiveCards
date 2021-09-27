@@ -429,7 +429,7 @@ namespace AdaptiveCards
 
             runtimeclass AdaptiveElementRendererRegistration
             {
-                void Set(String type, IAdaptiveElementRenderer parser);
+                void Set(String type, IAdaptiveElementRenderer renderer);
                 IAdaptiveElementRenderer Get(String type);
                 void Remove(String type);
             };
@@ -438,7 +438,7 @@ namespace AdaptiveCards
             {
                 AdaptiveActionRendererRegistration();
 
-                void Set(String type, IAdaptiveActionRenderer parser);
+                void Set(String type, IAdaptiveActionRenderer renderer);
                 IAdaptiveActionRenderer Get(String type);
                 void Remove(String type);
             };

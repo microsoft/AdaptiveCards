@@ -133,10 +133,24 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& cont
     std::shared_ptr<TextInput> textInput = BaseInputElement::Deserialize<TextInput>(context, json);
     textInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
     textInput->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
-    textInput->SetIsMultiline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiline, false));
     textInput->SetMaxLength(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLength, 0));
-    textInput->SetTextInputStyle(
-        ParseUtil::GetEnumValue<TextInputStyle>(json, AdaptiveCardSchemaKey::Style, TextInputStyle::Text, TextInputStyleFromString));
+
+    const auto isMultiline = ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiline, false);
+    textInput->SetIsMultiline(isMultiline);
+
+    const auto textInputStyle =
+        ParseUtil::GetEnumValue<TextInputStyle>(json, AdaptiveCardSchemaKey::Style, TextInputStyle::Text, TextInputStyleFromString);
+    textInput->SetTextInputStyle(textInputStyle);
+
+    // emit warning in the case where style is `password` but multiline is specified (this is an invalid combination.
+    // renderers should ignore multiline in this case)
+    if (isMultiline && textInputStyle == TextInputStyle::Password)
+    {
+        context.warnings.emplace_back(
+            std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidValue,
+                                                       "Input.Text ignores isMultiline when using password style"));
+    }
+
     textInput->SetInlineAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::InlineAction, false));
     textInput->SetRegex(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Regex));
 

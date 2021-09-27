@@ -247,11 +247,9 @@ export class ToolbarChoicePicker extends ToolbarElement {
 
         let pickerContainerElement = document.createElement("div");
         pickerContainerElement.className = "acd-toolbar-choicePicker";
-        pickerContainerElement.style.display = "flex";
-        pickerContainerElement.style.alignItems = "center";
 
         if (this.label) {
-            let labelElement = document.createElement("span");
+            let labelElement = document.createElement("div");
             labelElement.className = "acd-toolbar-label";
             labelElement.innerText = this.label;
             labelElement.id = this._labelledById;
@@ -314,8 +312,6 @@ export class Toolbar {
     attachTo(element: HTMLElement) {
         this._attachedTo = element;
         this._attachedTo.className = "acd-toolbar";
-        this._attachedTo.style.display = "flex";
-        this._attachedTo.style.justifyContent = "space-between";
         this._attachedTo.innerHTML = "";
 
         let leftElements: Array<ToolbarElement> = [];
@@ -333,14 +329,10 @@ export class Toolbar {
         }
 
         let leftContainer = document.createElement("div");
-        leftContainer.style.display = "flex";
-        leftContainer.style.alignItems = "center";
-        leftContainer.style.flexWrap = "wrap";
+        leftContainer.className = "acd-toolbar-content";
 
         let rightContainer = document.createElement("div");
-        rightContainer.style.display = "flex";
-        rightContainer.style.alignItems = "center";
-        rightContainer.style.flexWrap = "wrap";
+        rightContainer.className = "acd-toolbar-content";
 
         this.renderElementsInto(
             leftContainer,
