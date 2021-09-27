@@ -64,7 +64,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"wrap": false,
+							"wrap": true,
 							"text": "Wednesday"
 						},
 						{
@@ -101,7 +101,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"wrap": false,
+							"wrap": true,
 							"text": "Thursday"
 						},
 						{
@@ -137,7 +137,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"wrap": false,
+							"wrap": true,
 							"text": "Friday"
 						},
 						{
@@ -173,7 +173,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"wrap": false,
+							"wrap": true,
 							"text": "Saturday"
 						},
 						{

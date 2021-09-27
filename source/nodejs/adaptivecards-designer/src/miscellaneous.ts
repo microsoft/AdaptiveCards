@@ -60,6 +60,14 @@ export class Utils {
 				}
 			}).filter(x => x.length).join('/')
 	}
+
+    public static adjustPointForScroll(position: IPoint): IPoint {
+        const firstChild = document.firstElementChild;
+        return {
+            x: position.x + firstChild.scrollLeft,
+            y: position.y + firstChild.scrollTop
+        };
+    }
 }
 
 export var defaultHostConfig = new Adaptive.HostConfig(
