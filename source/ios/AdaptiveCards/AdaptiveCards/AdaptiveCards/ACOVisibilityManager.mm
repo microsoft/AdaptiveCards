@@ -212,7 +212,7 @@
 
 - (void)updatePaddingVisibility
 {
-    [_fillerSpaceManager deActivateConstraintsForPadding];
+    [_fillerSpaceManager deactivateConstraintsForPadding];
     [_fillerSpaceManager activateConstraintsForPadding];
 }
 @end

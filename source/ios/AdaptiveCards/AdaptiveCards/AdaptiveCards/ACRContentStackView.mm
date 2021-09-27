@@ -636,7 +636,7 @@ using namespace AdaptiveCards;
     if (!separator) {
         return;
     }
-    [_paddingHandler associateSeparatorWithOwnerVew:separator ownerView:ownerView];
+    [_paddingHandler associateSeparatorWithOwnerView:separator ownerView:ownerView];
 }
 
 /// call this method after subview is rendered

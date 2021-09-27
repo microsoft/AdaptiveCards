@@ -33,13 +33,13 @@ extern const CGFloat kFillerViewLayoutConstraintPriority;
 /// if it's not possible
 - (NSArray<NSLayoutConstraint *> *)activateConstraintsForPadding;
 
-- (void)deActivateConstraintsForPadding;
+- (void)deactivateConstraintsForPadding;
 
 - (BOOL)isPadding:(UIView *)padding;
 
 - (NSArray<NSValue *> *)getFillerSpaceView:(UIView *)view;
 
-- (void)associateSeparatorWithOwnerVew:separator ownerView:ownerView;
+- (void)associateSeparatorWithOwnerView:separator ownerView:ownerView;
 
 - (ACRSeparator *)getSeparatorForOwnerView:(UIView *)ownerView;
 

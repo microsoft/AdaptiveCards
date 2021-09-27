@@ -128,7 +128,7 @@ const CGFloat kFillerViewLayoutConstraintPriority = UILayoutPriorityDefaultLow -
     return nil;
 }
 
-- (void)deActivateConstraintsForPadding
+- (void)deactivateConstraintsForPadding
 {
     if (_paddingConstraints && _paddingConstraints.count) {
         [NSLayoutConstraint deactivateConstraints:_paddingConstraints];
@@ -151,7 +151,7 @@ const CGFloat kFillerViewLayoutConstraintPriority = UILayoutPriorityDefaultLow -
     return nil;
 }
 
-- (void)associateSeparatorWithOwnerVew:separator ownerView:ownerView
+- (void)associateSeparatorWithOwnerView:separator ownerView:ownerView
 {
     [_separatorMap setObject:[NSValue valueWithNonretainedObject:separator] forKey:ownerView];
 }

@@ -86,7 +86,7 @@
     [hostView addArrangedSubview:viewToBeHidden0];
     [hostView addArrangedSubview:separator0];
     [hostView addArrangedSubview:viewToBeHidden1];
-    [fillerSpaceManager associateSeparatorWithOwnerVew:separator0 ownerView:viewToBeHidden1];
+    [fillerSpaceManager associateSeparatorWithOwnerView:separator0 ownerView:viewToBeHidden1];
     [hostView applyVisibilityToSubviews];
 
     NSArray<UIView *> *arrangedSubviews = [hostView getArrangedSubviews];
@@ -136,7 +136,7 @@
     [hostView addArrangedSubview:separator0];
     [hostView addArrangedSubview:viewToBeHidden1];
 
-    [fillerSpaceManager associateSeparatorWithOwnerVew:separator0 ownerView:viewToBeHidden1];
+    [fillerSpaceManager associateSeparatorWithOwnerView:separator0 ownerView:viewToBeHidden1];
     [hostView applyVisibilityToSubviews];
 
     NSArray<UIView *> *arrangedSubviews = [hostView getArrangedSubviews];
