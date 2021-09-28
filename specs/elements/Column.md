@@ -35,14 +35,13 @@ The card elements to render inside the `Column`.
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `TableCell`
+  * `Container`
   * `FactSet`
   * `Image`
   * `ImageSet`
   * `Media`
   * `RichTextBlock`
   * `Table`
-  * `TableRow`
   * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`

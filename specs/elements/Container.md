@@ -36,14 +36,13 @@ The card elements to render inside the `Container`.
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `TableCell`
+  * `Container`
   * `FactSet`
   * `Image`
   * `ImageSet`
   * `Media`
   * `RichTextBlock`
   * `Table`
-  * `TableRow`
   * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
@@ -117,14 +116,13 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Allowed values**:
   * `ActionSet`
   * `ColumnSet`
-  * `TableCell`
+  * `Container`
   * `FactSet`
   * `Image`
   * `ImageSet`
   * `Media`
   * `RichTextBlock`
   * `Table`
-  * `TableRow`
   * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
