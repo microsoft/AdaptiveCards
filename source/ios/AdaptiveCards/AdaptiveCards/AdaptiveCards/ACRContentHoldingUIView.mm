@@ -219,4 +219,5 @@ using namespace AdaptiveCards;
     constraint.active = YES;
     return constraint;
 }
+
 @end

@@ -83,4 +83,25 @@
     super.alignment = UIStackViewAlignmentFill;
 }
 
+- (void)configureLayoutAndVisibility:(ACRVerticalContentAlignment)verticalContentAlignment
+                           minHeight:(NSInteger)minHeight
+                          heightType:(ACRHeightType)heightType
+                                type:(ACRCardElementType)type
+{
+    [super applyVisibilityToSubviews];
+
+    if (minHeight > 0) {
+        NSLayoutConstraint *constraint =
+            [NSLayoutConstraint constraintWithItem:self
+                                         attribute:NSLayoutAttributeHeight
+                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1
+                                          constant:minHeight];
+        constraint.priority = 999;
+        constraint.active = YES;
+    }
+}
+
 @end
