@@ -317,7 +317,7 @@ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement GenerateElementProj
         // Either a new element has been introduced in the shared model without full support here in UWP, or there's a
         // bug in the shared model (see https://github.com/microsoft/AdaptiveCards/issues/6393).
 
-        throw winrt::hresult_error();
+        throw winrt::hresult_error(E_UNEXPECTED, L"CardElementType not supported");
     }
 }
 
