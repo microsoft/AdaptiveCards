@@ -123,7 +123,8 @@ export enum InputTextStyle {
     Text,
     Tel,
     Url,
-    Email
+    Email,
+    Password
 }
 
 /*

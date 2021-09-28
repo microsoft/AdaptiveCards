@@ -13,6 +13,7 @@
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
+#import "ACRTableRow.h"
 #import "ACRTargetBuilderDirector.h"
 #import "ACRUIImageView.h"
 #import "ACRViewPrivate.h"
@@ -919,6 +920,37 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
         default:
             return ACRLeft;
     }
+}
+
+ACRHeightType GetACRHeight(HeightType adaptiveHeight)
+{
+    ACRHeightType height = ACRHeightAuto;
+    switch (adaptiveHeight) {
+        case AdaptiveCards::HeightType::Auto:
+            height = ACRHeightAuto;
+            break;
+        case AdaptiveCards::HeightType::Stretch:
+            height = ACRHeightStretch;
+            break;
+    }
+    return height;
+}
+
+ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment)
+{
+    ACRVerticalContentAlignment contentAlignment = ACRVerticalContentAlignmentTop;
+    switch (adaptiveVerticalContentAlignment) {
+        case AdaptiveCards::VerticalContentAlignment::Top:
+            contentAlignment = ACRVerticalContentAlignmentTop;
+            break;
+        case AdaptiveCards::VerticalContentAlignment::Center:
+            contentAlignment = ACRVerticalContentAlignmentCenter;
+            break;
+        case AdaptiveCards::VerticalContentAlignment::Bottom:
+            contentAlignment = ACRVerticalContentAlignmentBottom;
+            break;
+    }
+    return contentAlignment;
 }
 
 void printSize(NSString *msg, CGSize size)
