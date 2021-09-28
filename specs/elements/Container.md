@@ -12,9 +12,9 @@
 | **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
 | **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image. Acceptable formats are PNG, JPEG, and GIF | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the container in pixels, like `"80px"`. | 1.2 |
-| **rtl?** | `boolean?` | No | When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply. | vNext |
+| **rtl?** | `boolean?` | No | When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply. | 1.5 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -40,17 +40,17 @@ The card elements to render inside the `Container`.
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TableRow`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `Table`
-  * `TableRow`
-  * `TextBlock`
 
 
 ## selectAction
@@ -121,17 +121,17 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TableRow`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `Table`
-  * `TableRow`
-  * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 

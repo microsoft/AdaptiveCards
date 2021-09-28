@@ -2,14 +2,14 @@
 
 # ActionSet
 
-#### Introduced in version 1.2
+**Introduced in version 1.2**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"ActionSet"` | Yes | Must be `"ActionSet"`. | 1.2 |
 | **actions** | `Action[]` | Yes | The array of `Action` elements to show. | 1.2 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -49,17 +49,17 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TableRow`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `Table`
-  * `TableRow`
-  * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 

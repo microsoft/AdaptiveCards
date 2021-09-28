@@ -12,7 +12,7 @@
 | **valueOn** | `string` | No, default: `"true"` | The value when toggle is on | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.2 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -41,17 +41,17 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TableRow`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `Table`
-  * `TableRow`
-  * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 
