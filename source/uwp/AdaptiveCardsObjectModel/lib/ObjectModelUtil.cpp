@@ -307,13 +307,17 @@ winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement GenerateElementProj
     case CardElementType::Table:
         return winrt::make<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveTable>(
             std::AdaptivePointerCast<AdaptiveCards::Table>(baseElement));
-        break;
     case CardElementType::Custom:
         return std::AdaptivePointerCast<::AdaptiveCards::ObjectModel::Uwp::CustomElementWrapper>(baseElement)->GetWrappedElement();
     case CardElementType::Unknown:
-    default:
         return winrt::make<winrt::AdaptiveCards::ObjectModel::Uwp::implementation::AdaptiveUnsupportedElement>(
             std::AdaptivePointerCast<AdaptiveCards::UnknownElement>(baseElement));
+    default:
+        // It should not be possible for an element represented by a CardElementType to not have a matching case here.
+        // Either a new element has been introduced in the shared model without full support here in UWP, or there's a
+        // bug in the shared model (see https://github.com/microsoft/AdaptiveCards/issues/6393).
+
+        throw winrt::hresult_error(E_UNEXPECTED, L"CardElementType not supported");
     }
 }
 
