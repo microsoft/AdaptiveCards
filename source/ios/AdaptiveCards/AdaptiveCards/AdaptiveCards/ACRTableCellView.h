@@ -5,10 +5,10 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
-#import "AdaptiveCards.h"
 #import "ACRContentStackView.h"
+#import "AdaptiveCards.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,17 +17,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property ACRContainerStyle style;
 @property ACRVerticalContentAlignment verticalAlignment;
 @property ACRHorizontalAlignment horizontalAlignment;
+@property CGFloat cellSpacing;
 
 @end
 
-@interface ACRTableCellView : ACRContentStackView
+@interface ACRTableCellView : ACRColumnView
 
 - (instancetype)init:(ACOBaseCardElement *)baseCardElement
-      cellDefinition:(ACRTableCellDefinition *)definition   
+      cellDefinition:(ACRTableCellDefinition *)definition
             rootView:(ACRView *)rootView
               inputs:(NSMutableArray *)inputs
           hostConfig:(ACOHostConfig *)acoConfig;
-
 @end
 
 NS_ASSUME_NONNULL_END

@@ -21,6 +21,7 @@
 @property (readonly) BOOL isFirstRowAsHeaders;
 @property (readonly) ACRVerticalContentAlignment verticalContentAlignment;
 @property (readonly) ACRHorizontalAlignment horizontalContentAlignment;
+@property (readonly) ACRContainerStyle style;
 
 @property (weak) ACOHostConfig* _Nullable hostConfig;
 
