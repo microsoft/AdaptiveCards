@@ -5,11 +5,17 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#import "ACOVisibilityManager.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 #import <UIKit/UIKit.h>
 
-@interface ACRContentStackView : UIView <ACRIContentHoldingView>
+@interface ACRContentStackView : UIView <ACRIContentHoldingView, ACOIVisibilityManagerFacade> {
+  @protected
+    ACOFillerSpaceManager *_paddingHandler;
+    NSMutableArray<UIView *> *_paddings;
+    ACOVisibilityManager *_visibilityManager;
+}
 
 @property (weak, nullable) UIView *backgroundView;
 @property (nonnull) NSArray<NSLayoutConstraint *> *widthconstraint;
@@ -24,6 +30,9 @@
 @property BOOL isBackgroundImageSet;
 // if true, RTL's set
 @property ACRRtl rtl;
+// there are some subviews that can be stretched
+// it indicates that additional filler views are not needed.
+@property (nonatomic) BOOL hasStretchableView;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 
@@ -65,14 +74,33 @@
 
 - (void)updateIntrinsicContentSize;
 
-- (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop))block;
-
-- (void)hideIfSubviewsAreAllHidden;
+- (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView *_Nonnull view, NSUInteger idx, BOOL *_Nonnull stop))block;
 
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nullable)parent;
 
 - (void)removeViewFromContentStackView:(UIView *_Nonnull)view;
 
 - (UIView *_Nonnull)addPaddingSpace;
+
+/// call this method once all subviews are rendered
+/// this methods add padding to itself for alignment and stretch
+/// apply visibility to subviews
+/// configure min height
+/// then activate all contraints associated with the configuration.
+/// activation constraint all at once is more efficient than activating
+/// constraints one by one.
+- (void)configureLayoutAndVisibility:(ACRVerticalContentAlignment)verticalContentAlignment
+                           minHeight:(NSInteger)minHeight
+                          heightType:(ACRHeightType)heightType
+                                type:(ACRCardElementType)type;
+
+/// call this method when visibility of subviews has chaned and
+/// padding needs to be updated
+- (void)updatePaddingVisibility;
+
+/// this method applies visibility to subviews once all of them are rendered and become part of content stack view
+/// applying visibility as each subview is rendered has known side effects.
+/// such as its superview, content stack view becomes hidden if a first subview is set hidden.
+- (void)applyVisibilityToSubviews;
 
 @end

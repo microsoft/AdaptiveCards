@@ -6,6 +6,7 @@
 //
 
 #include "ACRContentStackView.h"
+#import "ACOBaseCardElementPrivate.h"
 #include "ACOHostConfigPrivate.h"
 #import "ACRShowCardTarget.h"
 #import "ACRViewPrivate.h"
@@ -13,16 +14,15 @@
 
 using namespace AdaptiveCards;
 
-static int kToggleVisibilityContext;
-
 @implementation ACRContentStackView {
     NSMutableArray *_targets;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
     UIStackView *_stackView;
-    NSHashTable<UIView *> *_hiddenSubviews;
     NSMutableDictionary<NSString *, NSValue *> *_subviewIntrinsicContentSizeCollection;
     ACRRtl _rtl;
+    NSMutableSet *_invisibleViews;
+    ACRVerticalContentAlignment _verticalContentAlignment;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -52,8 +52,10 @@ static int kToggleVisibilityContext;
     self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         _subviewIntrinsicContentSizeCollection = [[NSMutableDictionary alloc] init];
+        _paddingHandler = [[ACOFillerSpaceManager alloc] init];
+        _visibilityManager = [[ACOVisibilityManager alloc] init:_paddingHandler];
+        _paddings = [[NSMutableArray alloc] init];
         self.clipsToBounds = NO;
         [self config:attributes];
     }
@@ -71,7 +73,6 @@ static int kToggleVisibilityContext;
 
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         [self config:nil];
     }
 
@@ -246,62 +247,15 @@ static int kToggleVisibilityContext;
 
 - (void)addArrangedSubview:(UIView *)view
 {
-    [_stackView addArrangedSubview:view];
-    [self configureVisibilityOfView:view];
+    if (view) {
+        [_stackView addArrangedSubview:view];
+    }
 }
 
 - (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)insertionIndex
 {
-    [_stackView insertArrangedSubview:view atIndex:insertionIndex];
-    [self configureVisibilityOfView:view];
-}
-
-- (void)configureVisibilityOfView:(UIView *)view
-{
-    // if view is hidden before observer is added, we update hidden view count manually
-    if (view.hidden) {
-        [_hiddenSubviews addObject:view];
-    }
-    [view addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:&kToggleVisibilityContext];
-}
-
-// it's hard to know collection to know when filling the collection is done, this method
-// signals that the filling is done, and do the final visibility adjustment
-- (void)hideIfSubviewsAreAllHidden
-{
-    NSInteger count = [_hiddenSubviews count];
-    if (count and count == [_stackView.arrangedSubviews count]) {
-        self.hidden = YES;
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context
-{
-    if (context == &kToggleVisibilityContext) {
-        if ([object isKindOfClass:[UIView class]]) {
-            UIView *view = (UIView *)object;
-            BOOL isHidden = view.hidden;
-            if (isHidden == YES and ![_hiddenSubviews containsObject:view]) {
-                [_hiddenSubviews addObject:view];
-                [self decreaseIntrinsicContentSize:view];
-                if ([_hiddenSubviews count] == [_stackView.arrangedSubviews count]) {
-                    self.hidden = YES;
-                }
-            } else {
-                if ([_hiddenSubviews containsObject:view]) {
-                    [self increaseIntrinsicContentSize:view];
-                    [_hiddenSubviews removeObject:view];
-                    if (self.hidden) {
-                        self.hidden = NO;
-                    }
-                }
-            }
-        }
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    if (view) {
+        [_stackView insertArrangedSubview:view atIndex:insertionIndex];
     }
 }
 
@@ -317,20 +271,6 @@ static int kToggleVisibilityContext;
 
 - (void)removeViewFromContentStackView:(UIView *)view
 {
-    if (view.hidden) {
-        if ([_hiddenSubviews containsObject:view]) {
-            [_hiddenSubviews removeObject:view];
-        }
-    }
-    if ([view isKindOfClass:[ACRSeparator class]]) {
-        ACRSeparator *separator = (ACRSeparator *)view;
-        if (separator.isVisibilityObserved) {
-            [view removeObserver:self forKeyPath:@"hidden"];
-            separator.isVisibilityObserved = NO;
-        }
-    } else {
-        [view removeObserver:self forKeyPath:@"hidden"];
-    }
     [_stackView removeArrangedSubview:view];
     [view removeFromSuperview];
 }
@@ -587,6 +527,14 @@ static int kToggleVisibilityContext;
     }
 }
 
+// use this method if a subview to the content stack view needs a padding
+// use configureHeightFor for all cases except when stretching the subview
+// is not desirable.
+- (UIView *)addPaddingFor:(UIView *)view
+{
+    return [_paddingHandler addPaddingFor:view];
+}
+
 - (UIView *)addPaddingSpace
 {
     UIView *blankTrailingSpace = [[UIView alloc] init];
@@ -596,19 +544,163 @@ static int kToggleVisibilityContext;
     return blankTrailingSpace;
 }
 
-- (void)dealloc
+/// it simply adds padding to the top and bottom of contents of the content stack view
+/// according to vertical alignment
+- (void)addPadding
 {
-    for (UIView *view in _stackView.arrangedSubviews) {
-        [view removeObserver:self forKeyPath:@"hidden"];
+    if (_verticalContentAlignment == ACRVerticalContentAlignmentCenter ||
+        _verticalContentAlignment == ACRVerticalContentAlignmentBottom) {
+        [_paddings addObject:[self addPaddingFor:self]];
+        [self insertArrangedSubview:_paddings.lastObject atIndex:0];
+    }
+
+    if (_verticalContentAlignment == ACRVerticalContentAlignmentCenter ||
+        (_verticalContentAlignment == ACRVerticalContentAlignmentTop &&
+         self.distribution == UIStackViewDistributionFill)) {
+        [_paddings addObject:[self addPaddingFor:self]];
+        [self addArrangedSubview:_paddings.lastObject];
     }
 }
 
-- (void)toggleVisibilityOfFirstView
+- (void)updatePaddingVisibility
 {
-    if ([_stackView.subviews count] and _stackView.subviews[0].hidden) {
-        _stackView.subviews[0].hidden = NO;
-        _stackView.subviews[0].hidden = YES;
+    if ([self shouldAddPadding:self.hasStretchableView]) {
+        [self addPadding];
     }
+
+    [_visibilityManager changeVisibilityOfPadding:self visibilityHidden:!_visibilityManager.hasVisibleViews];
+
+    [_visibilityManager updatePaddingVisibility];
+}
+
+- (void)hideView:(UIView *)view
+{
+    [_visibilityManager hideView:view hostView:self];
+}
+
+- (void)unhideView:(UIView *)view
+{
+    [_visibilityManager unhideView:view hostView:self];
+}
+
+- (BOOL)hasStretchableView
+{
+    return _paddingHandler.hasPadding;
+}
+
+- (void)registerInvisibleView:(UIView *)invisibleView
+{
+    if (!_invisibleViews) {
+        _invisibleViews = [[NSMutableSet alloc] init];
+    }
+
+    [_invisibleViews addObject:invisibleView];
+}
+
+/// this method applies visibility to subviews once all of them are rendered and become part of content stack view
+/// applying visibility as each subview is rendered has known side effects.
+/// such as its superview, content stack view becomes hidden if a first subview is set hidden.
+- (void)applyVisibilityToSubviews
+{
+    for (NSUInteger i = 0; i < _stackView.subviews.count; i++) {
+        UIView *subview = _stackView.subviews[i];
+        if (![_paddingHandler isPadding:subview] && ![subview isKindOfClass:[ACRSeparator class]]) {
+            [_visibilityManager addVisibleView:i];
+        }
+    }
+
+    for (UIView *subview in _invisibleViews) {
+        [_visibilityManager hideView:subview hostView:self];
+    }
+}
+
+- (void)configureHeightFor:(UIView *)view acoElement:(ACOBaseCardElement *)element
+{
+    [_paddingHandler configureHeight:view correspondingElement:element];
+}
+
+/// this function will tell if the content stack view should have a padding
+/// padding will be added if
+/// none of its subviews is stretchable or has padding and there is at least
+/// one visible view.
+/// the content stack view has hasStrechableView property, but getting the property value
+/// has cost, so added the hasStretcahbleView parameter to reduce the number of call to
+/// the property value.
+- (BOOL)shouldAddPadding:(BOOL)hasStretchableView
+{
+    return (!hasStretchableView && _visibilityManager.hasVisibleViews);
+}
+
+- (void)associateSeparatorWithOwnerView:(ACRSeparator *)separator ownerView:(UIView *)ownerView
+{
+    if (!separator) {
+        return;
+    }
+    [_paddingHandler associateSeparatorWithOwnerView:separator ownerView:ownerView];
+}
+
+/// call this method after subview is rendered
+/// it configures height, creates association between the subview and its separator if any
+/// registers subview for its visibility
+- (void)updateLayoutAndVisibilityOfRenderedView:(UIView *)renderedView
+                                     acoElement:(ACOBaseCardElement *)acoElem
+                                      separator:(ACRSeparator *)separator
+                                       rootView:(ACRView *)rootView
+{
+    if (!renderedView) {
+        return;
+    }
+
+    [self configureHeightFor:renderedView acoElement:acoElem];
+    [self associateSeparatorWithOwnerView:separator ownerView:renderedView];
+
+    NSString *hashkey = [NSString stringWithCString:acoElem.element->GetId().c_str()
+                                           encoding:NSUTF8StringEncoding];
+    renderedView.tag = hashkey.hash;
+
+    [rootView.context registerVisibilityManager:self targetViewTag:renderedView.tag];
+
+    if (!acoElem.element->GetIsVisible()) {
+        [self registerInvisibleView:renderedView];
+    }
+}
+
+/// call this method once all subviews are rendered
+/// this methods add padding to itself for alignment and stretch
+/// apply visibility to subviews
+/// configure min height
+/// then activate all contraints associated with the configuration.
+/// activation constraint all at once is more efficient than activating
+/// constraints one by one.
+- (void)configureLayoutAndVisibility:(ACRVerticalContentAlignment)verticalContentAlignment
+                           minHeight:(NSInteger)minHeight
+                          heightType:(ACRHeightType)heightType
+                                type:(ACRCardElementType)type
+{
+    _verticalContentAlignment = verticalContentAlignment;
+
+    [self applyVisibilityToSubviews];
+
+    BOOL isStretchable = self.hasStretchableView;
+
+    if ([self shouldAddPadding:isStretchable]) {
+        [self addPadding];
+    }
+
+    if (minHeight > 0) {
+        NSLayoutConstraint *constraint =
+            [NSLayoutConstraint constraintWithItem:self
+                                         attribute:NSLayoutAttributeHeight
+                                         relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                            toItem:nil
+                                         attribute:NSLayoutAttributeNotAnAttribute
+                                        multiplier:1
+                                          constant:minHeight];
+        constraint.priority = 999;
+        constraint.active = YES;
+    }
+
+    [_paddingHandler activateConstraintsForPadding];
 }
 
 @end
