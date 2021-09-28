@@ -4,13 +4,80 @@
 
 #include <Inline.h>
 
-class bad_string_conversion : public std::exception
+template<typename TStored> struct property
 {
-public:
-    bad_string_conversion() : _dwErr(GetLastError()) {}
+    TStored m_stored;
 
-private:
-    DWORD _dwErr;
+    template<typename T> void operator()(T&& t) { m_stored = std::forward<T>(t); }
+    TStored operator()() { return m_stored; }
+
+    template<typename T> void operator=(T&& t) { m_stored = std::forward<T>(t); }
+    operator TStored() { return m_stored; }
+
+    TStored const& get() const { return m_stored; }
+    auto operator->() { return std::addressof(m_stored); }
+};
+
+template<typename T, typename Q> std::optional<T> opt_cast(std::optional<Q> const& src)
+{
+    if (src.has_value())
+    {
+        return static_cast<T>(src.value());
+    }
+    else
+    {
+        return std::nullopt;
+    }
+}
+
+template<typename TStored> struct property_opt
+{
+    winrt::Windows::Foundation::IReference<TStored> m_stored;
+
+    template<typename T> auto set(T const& t)
+    {
+        if constexpr (std::is_same_v<T, winrt::Windows::Foundation::IReference<TStored>>)
+        {
+            m_stored = t;
+        }
+        else if constexpr (std::is_same_v<T, std::optional<TStored>>)
+        {
+            m_stored = t.has_value() ? winrt::box_value(t.value()).as<winrt::Windows::Foundation::IReference<TStored>>() : nullptr;
+        }
+        else if constexpr (std::is_null_pointer_v<T>)
+        {
+            m_stored = nullptr;
+        }
+        else
+        {
+            static_assert("unsupported");
+        }
+
+        return *this;
+    }
+
+    template<typename TOther = TStored> std::optional<TOther> get()
+    {
+        if constexpr (std::is_same_v<TOther, TStored>)
+        {
+            return m_stored.try_as<TStored>();
+        }
+        else
+        {
+            return opt_cast<TOther>(m_stored.try_as<TStored>());
+        }
+    };
+
+    // C++/WinRT adapters
+    auto operator()() { return m_stored; }
+    template<typename T> auto operator()(T&& t) { return set(std::forward<T>(t)); }
+
+    // Assignment helper
+    template<typename T> auto operator=(T&& t) { return set(std::forward<T>(t)); }
+
+    // Casting helpers "do you have a value" and "cast to your optional type"
+    operator bool() const { return static_cast<bool>(m_stored); }
+    operator std::optional<TStored>() { return get(); }
 };
 
 std::string WStringToString(std::wstring_view in);
@@ -18,193 +85,92 @@ std::wstring StringToWString(std::string_view in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
-HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept;
+winrt::hstring UTF8ToHString(std::string_view in);
 
-// This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
-// (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
-HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept;
+std::string HStringToUTF8(winrt::hstring const& in);
 
-std::string HStringToUTF8(HSTRING in);
+std::shared_ptr<AdaptiveCards::BaseCardElement> GenerateSharedElement(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement const& item);
 
-inline bool Boolify(const boolean value) noexcept
+std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>> GenerateSharedElements(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement> const& items);
+
+std::shared_ptr<AdaptiveCards::BaseActionElement>
+GenerateSharedAction(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement const& action);
+
+std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> GenerateSharedActions(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement> const& actions);
+
+std::unordered_map<std::string, AdaptiveCards::SemanticVersion> GenerateSharedRequirements(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement> const& adaptiveRequirements);
+
+std::vector<std::shared_ptr<AdaptiveCards::Inline>> GenerateSharedInlines(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline> const& inlines);
+
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement
+GenerateElementProjection(const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement);
+
+template<typename TImpl, typename TShared, typename TCollection>
+std::vector<std::shared_ptr<TShared>> GenerateSharedVector(TCollection const& cells)
 {
-    return (value > 0);
-}
-
-HRESULT GenerateSharedElement(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement* items,
-                              std::shared_ptr<AdaptiveCards::BaseCardElement>& containedElement);
-
-HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>* items,
-                               std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
-
-HRESULT GenerateSharedAction(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action,
-                             std::shared_ptr<AdaptiveCards::BaseActionElement>& sharedAction);
-
-HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>* items,
-                              std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedElements);
-
-HRESULT GenerateSharedRequirements(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>* adaptiveRequirements,
-    std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements) noexcept;
-
-HRESULT GenerateSharedInlines(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>* items,
-                              std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
-template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass, class TReturnedSharedModelType>
-HRESULT GenerateSharedVector(_In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* tableCells,
-                             std::vector<std::shared_ptr<TSharedClass>>& containedElements)
-{
-    containedElements.clear();
-
-    IterateOverVector<TWinrtClass, TWinrtInterface>(tableCells, [&](TWinrtInterface* tableCell) {
-        ComPtr<TImplementationClass> adaptiveElement = PeekInnards<TImplementationClass>(tableCell);
-        if (adaptiveElement == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        std::shared_ptr<TReturnedSharedModelType> sharedTableCell;
-        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedTableCell));
-        containedElements.push_back(std::AdaptivePointerCast<TSharedClass>(sharedTableCell));
-        return S_OK;
-    });
-
-    return S_OK;
-}
-
-#define GenerateSharedToggleElements(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS) \
-    GenerateSharedVector<AdaptiveCards::ToggleVisibilityTarget, \
-                         ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget, \
-                         ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget, \
-                         AdaptiveToggleVisibilityTarget, \
-                         AdaptiveCards::ToggleVisibilityTarget>(WINRTTOGGLEELEMENTS, SHAREDTOGGLEELEMENTS);
-
-#define GenerateSharedImages(WINRTIMAGES, SHAREDIMAGES) \
-    GenerateSharedVector<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage, AdaptiveImage, AdaptiveCards::BaseCardElement>( \
-        WINRTIMAGES, SHAREDIMAGES);
-
-#define GenerateSharedFacts(WINRTFACTS, SHAREDFACTS) \
-    GenerateSharedVector<AdaptiveCards::Fact, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact, AdaptiveFact, AdaptiveCards::Fact>( \
-        WINRTFACTS, SHAREDFACTS);
-
-#define GenerateSharedChoices(WINRTCHOICEINPUTS, SHAREDCHOICEINPUTS) \
-    GenerateSharedVector<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput, AdaptiveChoiceInput, AdaptiveCards::ChoiceInput>( \
-        WINRTCHOICEINPUTS, SHAREDCHOICEINPUTS);
-
-#define GenerateSharedMediaSources(WINRTMEDIASOURCES, SHAREDMEDIASOURCES) \
-    GenerateSharedVector<AdaptiveCards::MediaSource, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource, AdaptiveMediaSource, AdaptiveCards::MediaSource>( \
-        WINRTMEDIASOURCES, SHAREDMEDIASOURCES);
-
-#define GenerateSharedColumns(WINRTCOLUMNS, SHAREDCOLUMNS) \
-    GenerateSharedVector<AdaptiveCards::Column, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn, AdaptiveColumn, AdaptiveCards::BaseCardElement>( \
-        WINRTCOLUMNS, SHAREDCOLUMNS);
-
-#define GenerateSharedTableCells(WINRTTABLECELLS, SHAREDTABLECELLS) \
-    GenerateSharedVector<AdaptiveCards::TableCell, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell, AdaptiveTableCell, AdaptiveCards::BaseCardElement>( \
-        WINRTTABLECELLS, SHAREDTABLECELLS);
-
-#define GenerateSharedTableRows(WINRTTABLEROWS, SHAREDTABLEROWS) \
-    GenerateSharedVector<AdaptiveCards::TableRow, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow, AdaptiveTableRow, AdaptiveCards::BaseCardElement>( \
-        WINRTTABLEROWS, SHAREDTABLEROWS);
-
-#define GenerateSharedTableColumnDefinitions(WINRTTABLECOLUMNS, SHAREDTABLECOLUMNS) \
-    GenerateSharedVector<AdaptiveCards::TableColumnDefinition, \
-                         ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition, \
-                         ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition, \
-                         AdaptiveTableColumnDefinition, \
-                         AdaptiveCards::TableColumnDefinition>(WINRTTABLECOLUMNS, SHAREDTABLECOLUMNS);
-
-HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveCards::BaseCardElement>& baseElement,
-                                  _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** projectedElement) noexcept;
-
-HRESULT GenerateContainedElementsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
-
-HRESULT GenerateActionsProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
-
-HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action,
-                                 _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** projectedAction) noexcept;
-
-HRESULT GenerateInlinesProjection(
-    const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline*>* projectedParentContainer) noexcept;
-
-HRESULT GenerateRequirementsProjection(
-    const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement*>* projectedRequirementVector) noexcept;
-
-template<class TSharedClass, class TWinrtInterface, class TWinrtClass, class TImplementationClass>
-HRESULT GenerateVectorProjection(const std::vector<std::shared_ptr<TSharedClass>>& containedElements,
-                                 _In_ ABI::Windows::Foundation::Collections::IVector<TWinrtClass*>* projectedParentContainer) noexcept
-try
-{
-    for (auto& containedElement : containedElements)
+    std::vector<std::shared_ptr<TShared>> shared;
+    for (auto&& c : cells)
     {
-        ComPtr<TWinrtInterface> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<TImplementationClass>(&projectedContainedElement,
-                                                                 std::static_pointer_cast<TSharedClass>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+        if (auto adaptive = peek_innards<TImpl>(c))
+        {
+            shared.emplace_back(std::dynamic_pointer_cast<TShared>(adaptive->GetSharedModel()));
+        }
+        else
+        {
+            throw winrt::hresult_invalid_argument();
+        }
     }
-    return S_OK;
+    return shared;
 }
-CATCH_RETURN;
 
-#define GenerateImagesProjection(SHAREDIMAGES, WINRTIMAGES) \
-    GenerateVectorProjection<AdaptiveCards::Image, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveImage, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveImage, AdaptiveImage>( \
-        SHAREDIMAGES, WINRTIMAGES);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>
+GenerateContainedElementsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& containedElements);
 
-#define GenerateFactsProjection(SHAREDFACTS, WINRTFACTS) \
-    GenerateVectorProjection<AdaptiveCards::Fact, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveFact, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveFact, AdaptiveFact>( \
-        SHAREDFACTS, WINRTFACTS);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement>
+GenerateActionsProjection(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& containedActions);
 
-#define GenerateInputChoicesProjection(SHAREDCHOICES, WINRTCHOICES) \
-    GenerateVectorProjection<AdaptiveCards::ChoiceInput, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveChoiceInput, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveChoiceInput, AdaptiveChoiceInput>( \
-        SHAREDCHOICES, WINRTCHOICES);
+winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement
+GenerateActionProjection(const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
 
-#define GenerateMediaSourcesProjection(SHAREDMEDIASOURCES, WINRTMEDIASOURCES) \
-    GenerateVectorProjection<AdaptiveCards::MediaSource, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMediaSource, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveMediaSource, AdaptiveMediaSource>( \
-        SHAREDMEDIASOURCES, WINRTMEDIASOURCES);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInline>
+GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveCards::Inline>>& containedElements);
 
-#define GenerateColumnsProjection(SHAREDCOLUMNS, WINRTCOLUMNS) \
-    GenerateVectorProjection<AdaptiveCards::Column, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveColumn, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveColumn, AdaptiveColumn>( \
-        SHAREDCOLUMNS, WINRTCOLUMNS);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRequirement>
+GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveCards::SemanticVersion>& sharedRequirements);
 
-#define GenerateToggleTargetProjection(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS) \
-    GenerateVectorProjection<AdaptiveCards::ToggleVisibilityTarget, \
-                             ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveToggleVisibilityTarget, \
-                             ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTarget, \
-                             AdaptiveToggleVisibilityTarget>(SHAREDTOGGLETARGETS, WINRTTOGGLETARGETS);
+template<typename TRtTypeImpl, typename TSharedType, typename TRtType = typename TRtTypeImpl::class_type>
+auto GenerateVectorProjection(std::vector<std::shared_ptr<TSharedType>> const& elements)
+{
+    std::vector<TRtType> converted;
+    for (auto&& e : elements)
+    {
+        converted.emplace_back(winrt::make<TRtTypeImpl>(e));
+    }
+    return winrt::single_threaded_vector<TRtType>(std::move(converted));
+}
 
-#define GenerateTableCellsProjection(SHAREDTABLECELLS, WINRTTABLECELLS) \
-    GenerateVectorProjection<AdaptiveCards::TableCell, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableCell, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableCell, AdaptiveTableCell>( \
-        SHAREDTABLECELLS, WINRTTABLECELLS);
+winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString);
+winrt::Windows::Data::Json::JsonObject HStringToJsonObject(winrt::hstring const& inputHString);
+winrt::hstring JsonObjectToHString(winrt::Windows::Data::Json::IJsonObject const& inputJson);
 
-#define GenerateTableRowsProjection(SHAREDTABLEROWS, WINRTTABLEROWS) \
-    GenerateVectorProjection<AdaptiveCards::TableRow, ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableRow, ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableRow, AdaptiveTableRow>( \
-        SHAREDTABLEROWS, WINRTTABLEROWS);
+std::string JsonObjectToString(winrt::Windows::Data::Json::IJsonObject const& inputJson);
 
-#define GenerateTableColumnDefinitionsProjection(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS) \
-    GenerateVectorProjection<AdaptiveCards::TableColumnDefinition, \
-                             ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTableColumnDefinition, \
-                             ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveTableColumnDefinition, \
-                             AdaptiveTableColumnDefinition>(SHAREDTABLECOLUMNDEFINITIONS, WINRTTABLECOLUMNDEFINITIONS);
+winrt::Windows::Data::Json::JsonValue StringToJsonValue(const std::string& inputString);
+winrt::Windows::Data::Json::JsonValue HStringToJsonValue(winrt::hstring const& inputHString);
+std::string JsonValueToString(winrt::Windows::Data::Json::IJsonValue const& inputValue);
+winrt::hstring JsonValueToHString(winrt::Windows::Data::Json::IJsonValue const& inputJsonValue);
 
-HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-HRESULT JsonObjectToHString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, _Outptr_ HSTRING* result);
-HRESULT JsonObjectToString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
+winrt::Windows::Data::Json::JsonObject JsonCppToJsonObject(const Json::Value& jsonCppValue);
 
-HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
-HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** result);
-HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
-HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
+Json::Value JsonObjectToJsonCpp(winrt::Windows::Data::Json::IJsonObject const& jsonObject);
 
-HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
-HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
-
+void RemoteResourceElementToRemoteResourceInformationVector(
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources const& remoteResourceElement,
+    std::vector<::AdaptiveCards::RemoteResourceInformation>& resourceUris);
 
 // Peek interface to help get implementation types from winrt interfaces
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
@@ -216,112 +182,37 @@ protected:
     virtual ~ITypePeek() {}
 };
 
-template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
+template<typename D, typename I> winrt::com_ptr<D> peek_innards(I&& o)
 {
-    Microsoft::WRL::ComPtr<T> inner;
-    Microsoft::WRL::ComPtr<ITypePeek> peeker;
-
-    if (r && SUCCEEDED(r->QueryInterface(__uuidof(ITypePeek), &peeker)))
+    winrt::com_ptr<D> out;
+    if (auto p = o.try_as<ITypePeek>())
     {
-        inner = reinterpret_cast<T*>(peeker->PeekAt(__uuidof(T)));
+        if (p->PeekAt(__uuidof(D)))
+        {
+            out.copy_from(winrt::get_self<D>(o));
+        }
     }
-    return inner;
+
+    return out;
 }
 
-void RemoteResourceElementToRemoteResourceInformationVector(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementWithRemoteResources* remoteResources,
-                                                            std::vector<AdaptiveCards::RemoteResourceInformation>& resourceUris);
+void SharedWarningsToAdaptiveWarnings(
+    const std::vector<std::shared_ptr<::AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& toAddTo);
 
-HRESULT SharedWarningsToAdaptiveWarnings(
-    const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings);
+winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning>
+SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
-HRESULT AdaptiveWarningsToSharedWarnings(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
+void AdaptiveWarningsToSharedWarnings(
+    winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& sharedWarnings);
 
-ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type);
-AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveCards::ObjectModel::Uwp::FallbackType type);
+winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveCards::FallbackType type);
 
-HRESULT GetAdaptiveActionParserRegistrationFromSharedModel(
-    const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration** adaptiveActionParserRegistration);
+AdaptiveCards::FallbackType MapUwpFallbackTypeToShared(winrt::AdaptiveCards::ObjectModel::Uwp::FallbackType const& type);
 
-HRESULT GetAdaptiveElementParserRegistrationFromSharedModel(
-    const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration,
-    _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration** adaptiveElementParserRegistration);
+winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration GetAdaptiveActionParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveCards::ActionParserRegistration>& sharedActionParserRegistration);
 
-template<typename T, typename TInterface, typename C>
-HRESULT IterateOverVectorWithFailure(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)
-{
-    Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-    ComPtr<IIterable<T*>> vectorIterable;
-    HRESULT hr = localVector.As<IIterable<T*>>(&vectorIterable);
-
-    if (SUCCEEDED(hr))
-    {
-        Microsoft::WRL::ComPtr<IIterator<T*>> vectorIterator;
-        vectorIterable->First(&vectorIterator);
-
-        boolean hasCurrent = false;
-        hr = vectorIterator->get_HasCurrent(&hasCurrent);
-        while (SUCCEEDED(hr) && hasCurrent)
-        {
-            Microsoft::WRL::ComPtr<TInterface> current = nullptr;
-            if (FAILED(vectorIterator->get_Current(current.GetAddressOf())))
-            {
-                return S_OK;
-            }
-
-            hr = iterationCallback(current.Get());
-            if (stopOnFailure && FAILED(hr))
-            {
-                return hr;
-            }
-
-            hr = vectorIterator->MoveNext(&hasCurrent);
-        }
-    }
-
-    return hr;
-}
-
-template<typename T, typename C>
-HRESULT IterateOverVectorWithFailure(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)
-{
-    return IterateOverVectorWithFailure<T, T, C>(vector, stopOnFailure, iterationCallback);
-}
-
-template<typename T, typename TInterface, typename C>
-void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
-{
-    Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-    ComPtr<IIterable<T*>> vectorIterable;
-    THROW_IF_FAILED(localVector.As<IIterable<T*>>(&vectorIterable));
-
-    Microsoft::WRL::ComPtr<IIterator<T*>> vectorIterator;
-    if (FAILED(vectorIterable->First(&vectorIterator)))
-    {
-        return;
-    }
-
-    boolean hasCurrent = false;
-    HRESULT hr = vectorIterator->get_HasCurrent(&hasCurrent);
-    while (SUCCEEDED(hr) && hasCurrent)
-    {
-        Microsoft::WRL::ComPtr<TInterface> current = nullptr;
-        hr = vectorIterator->get_Current(current.GetAddressOf());
-        if (FAILED(hr))
-        {
-            break;
-        }
-
-        iterationCallback(current.Get());
-        hr = vectorIterator->MoveNext(&hasCurrent);
-    }
-}
-
-template<typename T, typename C>
-void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
-{
-    IterateOverVector<T, T, C>(vector, iterationCallback);
-}
+winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration GetAdaptiveElementParserRegistrationFromSharedModel(
+    const std::shared_ptr<AdaptiveCards::ElementParserRegistration>& sharedElementParserRegistration);

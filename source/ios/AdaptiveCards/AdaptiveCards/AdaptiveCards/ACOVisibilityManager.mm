@@ -88,7 +88,7 @@
 
 /// change the visibility of the separator of a host view to `visibility`
 /// `visibility` `YES` indicates that the separator will be hidden
-- (void)changeVisiblityOfSeparator:(UIView *)hostView visibilityValue:(BOOL)visibility contentStackView:(ACRContentStackView *)contentStackView
+- (void)changeVisiblityOfSeparator:(UIView *)hostView visibilityHidden:(BOOL)visibility contentStackView:(ACRContentStackView *)contentStackView
 {
     ACRSeparator *separtor = [_fillerSpaceManager getSeparatorForOwnerView:hostView];
     if (separtor && (separtor.isHidden != visibility)) {
@@ -103,7 +103,7 @@
 
 /// change the visibility of the padding of a host view to `visibility`
 /// `visibility` `YES` indicates that the padding will be hidden
-- (void)changeVisibilityOfPadding:(UIView *)hostView visibilityValue:(BOOL)visibility
+- (void)changeVisibilityOfPadding:(UIView *)hostView visibilityHidden:(BOOL)visibility
 {
     for (NSValue *value in [_fillerSpaceManager getFillerSpaceView:hostView]) {
         UIView *padding = value.nonretainedObjectValue;
@@ -123,8 +123,8 @@
         return;
     }
 
-    [self changeVisibilityOfPadding:hostView visibilityValue:visibility];
-    [self changeVisiblityOfSeparator:hostView visibilityValue:visibility contentStackView:contentStackView];
+    [self changeVisibilityOfPadding:hostView visibilityHidden:visibility];
+    [self changeVisiblityOfSeparator:hostView visibilityHidden:visibility contentStackView:contentStackView];
 }
 
 /// hide `viewToBeHidden`. `hostView` is a superview of type ColumnView or ColumnSetView
@@ -163,7 +163,7 @@
         NSUInteger headIndex = [self getHeadIndexOfVisibleViews];
         if (headIndex != NSNotFound && headIndex < subviews.count) {
             UIView *head = subviews[headIndex];
-            [self changeVisiblityOfSeparator:head visibilityValue:YES contentStackView:hostView];
+            [self changeVisiblityOfSeparator:head visibilityHidden:YES contentStackView:hostView];
         }
     }
 }
@@ -190,7 +190,7 @@
     // check if the unhidden view will become a head
     if ([self amIHead:index]) {
         // only enable filler view associated with the `viewTobeUnhidden`
-        [self changeVisibilityOfPadding:viewToBeUnhidden visibilityValue:NO];
+        [self changeVisibilityOfPadding:viewToBeUnhidden visibilityHidden:NO];
         if (viewToBeUnhidden.isHidden) {
             viewToBeUnhidden.hidden = NO;
             [hostView increaseIntrinsicContentSize:viewToBeUnhidden];
@@ -199,7 +199,7 @@
         // previous head view's separator becomes visible
         if (headIndex != NSNotFound && headIndex < subviews.count) {
             UIView *prevHeadView = subviews[headIndex];
-            [self changeVisiblityOfSeparator:prevHeadView visibilityValue:NO contentStackView:hostView];
+            [self changeVisiblityOfSeparator:prevHeadView visibilityHidden:NO contentStackView:hostView];
         }
     } else {
         if (viewToBeUnhidden.isHidden) {
@@ -212,7 +212,7 @@
 
 - (void)updatePaddingVisibility
 {
-    [_fillerSpaceManager deActivateConstraintsForPadding];
+    [_fillerSpaceManager deactivateConstraintsForPadding];
     [_fillerSpaceManager activateConstraintsForPadding];
 }
 @end

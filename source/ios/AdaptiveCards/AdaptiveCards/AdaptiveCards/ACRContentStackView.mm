@@ -602,7 +602,7 @@ using namespace AdaptiveCards;
         [self addPadding];
     }
 
-    [_visibilityManager changeVisibilityOfPadding:self visibilityValue:!_visibilityManager.hasVisibleViews];
+    [_visibilityManager changeVisibilityOfPadding:self visibilityHidden:!_visibilityManager.hasVisibleViews];
 
     [_visibilityManager updatePaddingVisibility];
 }
@@ -670,7 +670,7 @@ using namespace AdaptiveCards;
     if (!separator) {
         return;
     }
-    [_paddingHandler associateSeparatorWithOwnerVew:separator ownerView:ownerView];
+    [_paddingHandler associateSeparatorWithOwnerView:separator ownerView:ownerView];
 }
 
 /// call this method after subview is rendered
