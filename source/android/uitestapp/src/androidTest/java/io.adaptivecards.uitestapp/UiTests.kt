@@ -73,4 +73,21 @@ class UiTests {
 
         Espresso.onView(ViewMatchers.withText("10. The tenth thing\n11. The list is still going!\n12. Should be 12!")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun InputTextPasswordRetrievesCorrectValue() {
+        Espresso.onData(Matchers.`is`("Input.Text.PasswordStyle.json")).perform(ViewActions.click())
+        TestHelpers.goToRenderedCardScreen()
+
+        // Set value on password field
+        Espresso.onView(ViewMatchers.withTagValue(Matchers.`is`(TagContent("id0")))).perform(ViewActions.scrollTo(), ViewActions.typeText("PasswordValue") )
+        Espresso.onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
+
+        // Click ok submit action
+        Espresso.onView(Matchers.allOf(ViewMatchers.withText("OK"), ViewMatchers.isDisplayed())).perform(ViewActions.scrollTo(), ViewActions.click())
+        TestHelpers.goToInputsScreen()
+        Espresso.onData(Matchers.`is`(RetrievedInput("id0", "PasswordValue"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
+
 }
