@@ -58,7 +58,7 @@
         _firstRowsAsheadersContext = [[NSMutableArray alloc] init];
         _verticalAlignmentContext = [[NSMutableArray alloc] init];
         _horizontalAlignmentContext = [[NSMutableArray alloc] init];
-        _styleContext = [[NSMutableArray alloc] init];;
+        _styleContext = [[NSMutableArray alloc] init];
         _visibilityMap = [NSMapTable mapTableWithKeyOptions:NSMapTableStrongMemory valueOptions:NSMapTableWeakMemory];
     }
 
