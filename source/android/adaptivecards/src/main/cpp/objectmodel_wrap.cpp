@@ -11754,13 +11754,13 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InternalId_1Hash(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::InternalId *arg1 = (AdaptiveCards::InternalId *) 0 ;
-  std::size_t result;
+  unsigned int result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::InternalId **)&jarg1; 
-  result = ((AdaptiveCards::InternalId const *)arg1)->Hash();
+  result = (unsigned int)((AdaptiveCards::InternalId const *)arg1)->Hash();
   jresult = (jlong)result; 
   return jresult;
 }

@@ -187,6 +187,10 @@
       <Link>LinkedTestCards\InputFormWithLabels.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\..\samples\ConsolidatedElementSamples\Input.Toggle.json">
+      <Link>LinkedTestCards\Input.Toggle.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="UWPUITestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
