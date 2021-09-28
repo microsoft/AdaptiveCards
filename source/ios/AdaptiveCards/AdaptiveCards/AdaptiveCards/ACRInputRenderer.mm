@@ -65,6 +65,11 @@
             txtInput = [bundle loadNibNamed:@"ACRTextUrlField" owner:rootView options:nil][0];
             break;
         }
+        case TextInputStyle::Password: {
+            txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
+            txtInput.secureTextEntry = YES;
+            break;
+        }
         case TextInputStyle::Text:
         default: {
             txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
@@ -74,6 +79,7 @@
     txtInput.placeholder = [NSString stringWithCString:inputBlock->GetPlaceholder().c_str()
                                               encoding:NSUTF8StringEncoding];
     txtInput.text = [NSString stringWithCString:inputBlock->GetValue().c_str() encoding:NSUTF8StringEncoding];
+
     txtInput.allowsEditingTextAttributes = YES;
     return txtInput;
 }
@@ -107,7 +113,9 @@
     }
 
     ACRTextInputHandler *textInputHandler = [[ACRTextInputHandler alloc] init:acoElem];
-    if (inputBlck->GetIsMultiline()) {
+    
+    BOOL isMultiline = (inputBlck->GetTextInputStyle() != TextInputStyle::Password) && inputBlck->GetIsMultiline();
+    if (isMultiline) {
         if (renderAction) {
             // if action is defined, load ACRQuickReplyMultilineView nib for customizable UI
             multilineview = [[ACRQuickReplyMultilineView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
@@ -169,7 +177,7 @@
 
     // configures for action
     if (renderAction) {
-        if (inputBlck->GetIsMultiline()) {
+        if (isMultiline) {
             [inputs addObject:txtview];
         } else {
             [inputs addObject:inputview];
