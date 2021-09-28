@@ -2776,7 +2776,19 @@ export class TextInput extends Input {
     static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
     static readonly isMultilineProperty = new BoolProperty(Versions.v1_0, "isMultiline", false);
     static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
-    static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
+    static readonly styleProperty = new EnumProperty(
+        Versions.v1_0,
+        "style",
+        Enums.InputTextStyle,
+        Enums.InputTextStyle.Text,
+        [
+            { value: Enums.InputTextStyle.Text },
+            { value: Enums.InputTextStyle.Tel },
+            { value: Enums.InputTextStyle.Url },
+            { value: Enums.InputTextStyle.Email },
+            { value: Enums.InputTextStyle.Password, targetVersion: Versions.v1_5}
+        ]
+    );
     static readonly inlineActionProperty = new ActionProperty(Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
     static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
 
