@@ -54,7 +54,7 @@ object TableCellRenderer : BaseCardElementRenderer() {
 
         val computedStyle = ContainerRenderer.getLocalContainerStyle(cell, renderArgs.containerStyle)
         ContainerRenderer.applyPadding(computedStyle, renderArgs.containerStyle, cellLayout, hostConfig, renderArgs.table.GetShowGridLines())
-        ContainerRenderer.applyContainerStyle(computedStyle, cellLayout, hostConfig)
+        ContainerRenderer.applyContainerStyle(computedStyle, renderArgs.containerStyle, cellLayout, hostConfig)
         ContainerRenderer.applyVerticalContentAlignment(cellLayout,
                 computeVerticalContentAlignment(cell.GetVerticalContentAlignment(), row, col, renderArgs.table))
         ContainerRenderer.setSelectAction(renderedCard, cell.GetSelectAction(), cellLayout, cardActionHandler, renderArgs)
