@@ -106,24 +106,57 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     
     private func setupButtonConfig() {
         let lightThemePositiveColor = NSColor.color(from: Constants.lightThemePositive) ?? .clear
+        let lightThemePositiveHoverColor = NSColor.color(from: Constants.lightThemePositiveHover) ?? .clear
         let lightThemePositivePressedColor = NSColor.color(from: Constants.lightThemePositivePressed) ?? .clear
-        let lightThemeDestructiveColor = NSColor.color(from: Constants.lightThemeDestructive) ?? .clear
-        let lightThemeDestructivePressedColor = NSColor.color(from: Constants.lightThemeDestructivePressed) ?? .clear
-        let lightThemeDefaultColor = NSColor.color(from: Constants.lightThemeDefault) ?? .clear
-        let lightThemeDefaultPressedColor = NSColor.color(from: Constants.lightThemeDefaultPressed) ?? .clear
-        let lightThemeInlineColor = NSColor.color(from: Constants.lightThemeInline) ?? .clear
-        let lightThemeInlinePressedColor = NSColor.color(from: Constants.lightThemeInlinePressed) ?? .clear
-        let darkThemeDefaultColor = NSColor.color(from: Constants.darkThemePrimary) ?? .clear
-        let darkThemeDefaultPressedColor = NSColor.color(from: Constants.darkThemePressed) ?? .clear
-        let darkThemePositiveColor = NSColor.color(from: Constants.darkThemePositive) ?? .clear
-        let darkThemeDestructiveColor = NSColor.color(from: Constants.darkThemeDestructive) ?? .clear
-        let darkThemeDestructiveHover = NSColor.color(from: Constants.darkThemeDestructiveHover) ?? .clear
-        let darkThemeDestructivePressed = NSColor.color(from: Constants.darkThemeDestructivePressed) ?? .clear
+        let lightThemePositiveTextColor = NSColor.color(from: Constants.lightThemePositiveTextColor) ?? .clear
+        let lightThemePositivePressedTextColor = NSColor.color(from: Constants.lightThemePositiveSelectedTextColor) ?? .clear
+        let lightThemePositiveBorderColor = NSColor.color(from: Constants.lightThemePositiveBorder) ?? .clear
+        let lightThemePositivePressedBorderColor = NSColor.color(from: Constants.lightThemePositivePressedBorderColor) ?? .clear
         
-        let positive = ButtonColorConfig(buttonColor: darkTheme ? darkThemePositiveColor : .white, selectedButtonColor: lightThemePositivePressedColor, hoverButtonColor: lightThemePositiveColor, textColor: darkTheme ? .white : lightThemePositiveColor, selectedTextColor: .white, borderColor: darkTheme ? darkThemePositiveColor : lightThemePositiveColor, selectedBorderColor: lightThemePositivePressedColor)
-        let destructive = ButtonColorConfig(buttonColor: darkTheme ? darkThemeDestructiveColor : .white, selectedButtonColor: darkTheme ? darkThemeDestructivePressed : lightThemeDestructivePressedColor, hoverButtonColor: darkTheme ? darkThemeDestructiveHover : lightThemeDestructiveColor, textColor: darkTheme ? .white : lightThemeDestructiveColor, selectedTextColor: .white, borderColor: darkTheme ? darkThemeDestructiveColor : lightThemeDestructiveColor, selectedBorderColor: darkTheme ? darkThemeDestructivePressed : lightThemeDestructivePressedColor)
-        let `default` = ButtonColorConfig(buttonColor: darkTheme ? darkThemeDefaultColor : .white, selectedButtonColor: darkTheme ? darkThemeDefaultPressedColor : lightThemeDefaultPressedColor, hoverButtonColor: darkTheme ? darkThemeDefaultPressedColor : lightThemeDefaultColor, textColor: darkTheme ? .white : lightThemeDefaultColor, selectedTextColor: .white, borderColor: darkTheme ? darkThemeDefaultColor : lightThemeDefaultColor, selectedBorderColor: darkTheme ? darkThemeDefaultPressedColor : lightThemeDefaultPressedColor)
-        let inline = ButtonColorConfig(buttonColor: .clear, selectedButtonColor: lightThemeInlinePressedColor, hoverButtonColor: lightThemeInlineColor, textColor: .black, selectedTextColor: .black, borderColor: .clear, selectedBorderColor: .clear)
+        let lightThemeDestructiveColor = NSColor.color(from: Constants.lightThemeDestructive) ?? .clear
+        let lightThemeDestructiveHoverColor = NSColor.color(from: Constants.lightThemeDestructiveHover) ?? .clear
+        let lightThemeDestructivePressedColor = NSColor.color(from: Constants.lightThemeDestructivePressed) ?? .clear
+        let lightThemeDestructiveTextColor = NSColor.color(from: Constants.lightThemeDestructiveTextColor) ?? .clear
+        let lightThemeDestructivePressedTextColor = NSColor.color(from: Constants.lightThemeDestructiveSelectedTextColor) ?? .clear
+        let lightThemeDestructiveBorderColor = NSColor.color(from: Constants.lightThemeDestructiveBorder) ?? .clear
+        let lightThemeDestructivePressedBorderColor = NSColor.color(from: Constants.lightThemeDestructivePressedBorderColor) ?? .clear
+        
+        let lightThemeDefaultColor = NSColor.color(from: Constants.lightThemeDefault) ?? .clear
+        let lightThemeDefaultHoverColor = NSColor.color(from: Constants.lightThemeDefaultHover) ?? .clear
+        let lightThemeDefaultPressedColor = NSColor.color(from: Constants.lightThemeDefaultPressed) ?? .clear
+        let lightThemeDefaultTextColor = NSColor.color(from: Constants.lightThemeDefaultTextColor) ?? .clear
+        let lightThemeDefaultPressedTextColor = NSColor.color(from: Constants.lightThemeDefaultSelectedTextColor) ?? .clear
+        let lightThemeDefaultBorderColor = NSColor.color(from: Constants.lightThemeDefaultBorder) ?? .clear
+        let lightThemeDefaultPressedBorderColor = NSColor.color(from: Constants.lightThemeDefaultPressedBorderColor) ?? .clear
+        
+        let darkThemePositiveColor = NSColor.color(from: Constants.darkThemePositive) ?? .clear
+        let darkThemePositiveHoverColor = NSColor.color(from: Constants.darkThemePositiveHover) ?? .clear
+        let darkThemePositivePressedColor = NSColor.color(from: Constants.darkThemePositivePressed) ?? .clear
+        let darkThemePositiveTextColor = NSColor.color(from: Constants.darkThemePositiveTextColor) ?? .clear
+        let darkThemePositivePressedTextColor = NSColor.color(from: Constants.darkThemePositiveSelectedTextColor) ?? .clear
+        let darkThemePositiveBorderColor = NSColor.color(from: Constants.darkThemePositiveBorder) ?? .clear
+        let darkThemePositivePressedBorderColor = NSColor.color(from: Constants.darkThemePositivePressedBorderColor) ?? .clear
+        
+        let darkThemeDestructiveColor = NSColor.color(from: Constants.darkThemeDestructive) ?? .clear
+        let darkThemeDestructiveHoverColor = NSColor.color(from: Constants.darkThemeDestructiveHover) ?? .clear
+        let darkThemeDestructivePressedColor = NSColor.color(from: Constants.darkThemeDestructivePressed) ?? .clear
+        let darkThemeDestructiveTextColor = NSColor.color(from: Constants.darkThemeDestructiveTextColor) ?? .clear
+        let darkThemeDestructivePressedTextColor = NSColor.color(from: Constants.darkThemeDestructiveSelectedTextColor) ?? .clear
+        let darkThemeDestructiveBorderColor = NSColor.color(from: Constants.darkThemeDestructiveBorder) ?? .clear
+        let darkThemeDestructivePressedBorderColor = NSColor.color(from: Constants.darkThemeDestructivePressedBorderColor) ?? .clear
+        
+        let darkThemeDefaultColor = NSColor.color(from: Constants.darkThemeDefault) ?? .clear
+        let darkThemeDefaultHoverColor = NSColor.color(from: Constants.darkThemeDefaultHover) ?? .clear
+        let darkThemeDefaultPressedColor = NSColor.color(from: Constants.darkThemeDefaultPressed) ?? .clear
+        let darkThemeDefaultTextColor = NSColor.color(from: Constants.darkThemeDefaultTextColor) ?? .clear
+        let darkThemeDefaultPressedTextColor = NSColor.color(from: Constants.darkThemeDefaultSelectedTextColor) ?? .clear
+        let darkThemeDefaultBorderColor = NSColor.color(from: Constants.darkThemeDefaultBorder) ?? .clear
+        let darkThemeDefaultPressedBorderColor = NSColor.color(from: Constants.darkThemeDefaultPressedBorderColor) ?? .clear
+        
+        let positive = ButtonColorConfig(buttonColor: darkTheme ? darkThemePositiveColor : lightThemePositiveColor, selectedButtonColor: darkTheme ? darkThemePositivePressedColor : lightThemePositivePressedColor, hoverButtonColor: darkTheme ? darkThemePositiveHoverColor : lightThemePositiveHoverColor, textColor: darkTheme ? darkThemePositiveTextColor : lightThemePositiveTextColor, selectedTextColor: darkTheme ? darkThemePositivePressedTextColor : lightThemePositivePressedTextColor, borderColor: darkTheme ? darkThemePositiveBorderColor : lightThemePositiveBorderColor, selectedBorderColor: darkTheme ? darkThemePositivePressedBorderColor : lightThemePositivePressedBorderColor, wantsBorder: true)
+        let destructive = ButtonColorConfig(buttonColor: darkTheme ? darkThemeDestructiveColor : lightThemeDestructiveColor, selectedButtonColor: darkTheme ? darkThemeDestructivePressedColor : lightThemeDestructivePressedColor, hoverButtonColor: darkTheme ? darkThemeDestructiveHoverColor : lightThemeDestructiveHoverColor, textColor: darkTheme ? darkThemeDestructiveTextColor : lightThemeDestructiveTextColor, selectedTextColor: darkTheme ? darkThemeDestructivePressedTextColor : lightThemeDestructivePressedTextColor, borderColor: darkTheme ? darkThemeDestructiveBorderColor : lightThemeDestructiveBorderColor, selectedBorderColor: darkTheme ? darkThemeDestructivePressedBorderColor : lightThemeDestructivePressedBorderColor, wantsBorder: true)
+        let `default` = ButtonColorConfig(buttonColor: darkTheme ? darkThemeDefaultColor : lightThemeDefaultColor, selectedButtonColor: darkTheme ? darkThemeDefaultPressedColor : lightThemeDefaultPressedColor, hoverButtonColor: darkTheme ? darkThemeDefaultHoverColor : lightThemeDefaultHoverColor, textColor: darkTheme ? darkThemeDefaultTextColor : lightThemeDefaultTextColor, selectedTextColor: darkTheme ? darkThemeDefaultPressedTextColor : lightThemeDefaultPressedTextColor, borderColor: darkTheme ? darkThemeDefaultBorderColor : lightThemeDefaultBorderColor, selectedBorderColor: darkTheme ? darkThemeDefaultPressedBorderColor : lightThemeDefaultPressedBorderColor, wantsBorder: false)
+        let inline = ButtonColorConfig(buttonColor: darkTheme ? darkThemeDefaultColor : lightThemeDefaultColor, selectedButtonColor: darkTheme ? darkThemeDefaultPressedColor : lightThemeDefaultPressedColor, hoverButtonColor: darkTheme ? darkThemeDefaultHoverColor : lightThemeDefaultHoverColor, textColor: darkTheme ? darkThemeDefaultTextColor : lightThemeDefaultTextColor, selectedTextColor: darkTheme ? darkThemeDefaultPressedTextColor : lightThemeDefaultPressedTextColor, borderColor: darkTheme ? darkThemeDefaultBorderColor : lightThemeDefaultBorderColor, selectedBorderColor: darkTheme ? darkThemeDefaultPressedBorderColor : lightThemeDefaultPressedBorderColor, wantsBorder: false)
        
         let buttonConfig = ButtonConfig(positive: positive, destructive: destructive, default: `default`, inline: inline)
         self.buttonConfig = buttonConfig

@@ -24,11 +24,10 @@ extension NSColor {
                                blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
                                alpha: CGFloat(1.0))
             
-        case 8: return NSColor(red: CGFloat((rgbValue & 0x00FF0000) >> 16) / 255.0,
-                               green: CGFloat((rgbValue & 0x0000FF00) >> 8) / 255.0,
-                               blue: CGFloat((rgbValue & 0x000000FF)) / 255.0,
-                               alpha: CGFloat(rgbValue & 0xFF000000) / 255.0)
-        
+        case 8: return NSColor(red: CGFloat((rgbValue & 0xFF000000) >> 24) / 255.0,
+                               green: CGFloat((rgbValue & 0x00FF0000) >> 16) / 255.0,
+                               blue: CGFloat((rgbValue & 0x0000FF00) >> 8) / 255.0,
+                               alpha: CGFloat(rgbValue & 0x000000FF) / 255.0)
         default:
             print("Not valid HexCode: \(hexString)")
             return nil
@@ -37,23 +36,52 @@ extension NSColor {
 }
 
 struct Constants {
-    static let lightThemeDefault = "#007EA8"
-    static let lightThemeDefaultPressed = "#0A5E7D"
+    // HexCodeFormat: #AARRGGBB
+    static let lightThemeDefault = "#000000F2"
+    static let lightThemeDefaultBorder = "#000000F2"
+    static let lightThemeDefaultHover = "#000000CC"
+    static let lightThemeDefaultPressed = "#000000B2"
+    static let lightThemeDefaultPressedBorderColor = "#000000B2"
+    static let lightThemeDefaultTextColor = "#FFFFFFF2"
+    static let lightThemeDefaultSelectedTextColor = "#FFFFFFF2"
     
-    static let lightThemePositive = "#1B8728"
-    static let lightThemePositivePressed = "#196323"
+    static let lightThemePositive = "#FFFFFFFF"
+    static let lightThemePositiveBorder = "#185E46FF"
+    static let lightThemePositiveHover = "185E46FF"
+    static let lightThemePositivePressed = "#134231FF"
+    static let lightThemePositivePressedBorderColor = "#134231FF"
+    static let lightThemePositiveTextColor = "#185E46FF"
+    static let lightThemePositiveSelectedTextColor = "#FFFFFFF2"
     
-    static let lightThemeDestructive = "#D93829"
-    static let lightThemeDestructivePressed = "#A12C23"
+    static let lightThemeDestructive = "#FFFFFFFF"
+    static let lightThemeDestructiveBorder = "#AB0A15FF"
+    static let lightThemeDestructiveHover = "AB0A15FF"
+    static let lightThemeDestructivePressed = "F780D13FF"
+    static let lightThemeDestructivePressedBorderColor = "#780D13FF"
+    static let lightThemeDestructiveTextColor = "#AB0A15FF"
+    static let lightThemeDestructiveSelectedTextColor = "#FFFFFFF2"
     
-    static let lightThemeInline = "#E6E8E8"
-    static let lightThemeInlinePressed = "#B4B6B8"
+    static let darkThemeDefault = "#FFFFFFF2"
+    static let darkThemeDefaultBorder = "#FFFFFFF2"
+    static let darkThemeDefaultHover = "#FFFFFFCC"
+    static let darkThemeDefaultPressed = "#FFFFFFB2"
+    static let darkThemeDefaultPressedBorderColor = "#FFFFFFB2"
+    static let darkThemeDefaultTextColor = "#000000F2"
+    static let darkThemeDefaultSelectedTextColor = "#000000F2"
     
-    static let darkThemePrimary = "#07C1F5"
-    static let darkThemePressed = "#0A5E7D"
+    static let darkThemePositive = "#1A1A1AFF"
+    static let darkThemePositiveBorder = "#3CC29AFF"
+    static let darkThemePositiveHover = "185E46FF"
+    static let darkThemePositivePressed = "#134231FF"
+    static let darkThemePositivePressedBorderColor = "#134231FF"
+    static let darkThemePositiveTextColor = "#3CC29AFF"
+    static let darkThemePositiveSelectedTextColor = "#FFFFFFF2"
     
-    static let darkThemePositive = "#00CF64"
-    static let darkThemeDestructive = "#D4371C"
-    static let darkThemeDestructiveHover = "#A12512"
-    static let darkThemeDestructivePressed = "#6E1D13"
+    static let darkThemeDestructive = "#1A1A1AFF"
+    static let darkThemeDestructiveBorder = "#FC8B98FF"
+    static let darkThemeDestructiveHover = "AB0A15FF"
+    static let darkThemeDestructivePressed = "#780D13FF"
+    static let darkThemeDestructivePressedBorderColor = "#780D13FF"
+    static let darkThemeDestructiveTextColor = "#FC8B98FF"
+    static let darkThemeDestructiveSelectedTextColor = "#FFFFFFF2"
 }

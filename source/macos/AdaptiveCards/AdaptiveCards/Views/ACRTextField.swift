@@ -6,6 +6,12 @@ protocol ACRTextFieldDelegate: AnyObject {
 }
 
 class ACRTextField: NSTextField {
+    private enum Mode {
+        case text
+        case dateTime
+        case number
+    }
+    
     weak var textFieldDelegate: ACRTextFieldDelegate?
     private let config: InputFieldConfig
     private let isDarkMode: Bool
@@ -153,12 +159,6 @@ class ACRTextField: NSTextField {
         return config.wantsClearButton || (textFieldMode == .dateTime)
     }
     
-    private enum Mode {
-        case text
-        case dateTime
-        case number
-    }
-    
     override func becomeFirstResponder() -> Bool {
         let textView = window?.fieldEditor(true, for: nil) as? NSTextView
         textView?.insertionPointColor = isDarkMode ? .white : .black
@@ -173,8 +173,8 @@ class ACRTextField: NSTextField {
     private var focusRingCornerRadius: CGFloat = 0
     private var borderWidth: CGFloat = 0.1
     private var borderColor: NSColor = .black
-    private var wantsClearButton: Bool = false
-    private var isNumericField: Bool = false
+    private var wantsClearButton = false
+    private var isNumericField = false
 
     func setupSpacing(rightPadding: CGFloat = 0, leftPadding: CGFloat = 0, yPadding: CGFloat = 0, focusRingCornerRadius: CGFloat = 0, borderWidth: CGFloat = 0.1, borderColor: NSColor = .black, wantsClearButton: Bool, isNumericField: Bool) {
         self.leftPadding = leftPadding

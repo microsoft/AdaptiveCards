@@ -34,7 +34,6 @@ class ACRButton: FlatButton, ImageHoldingView {
     }
     
     private func initialize() {
-        borderWidth = 1
         onAnimationDuration = 0.0
         offAnimationDuration = 0.0
         momentary = !showsChevron
@@ -47,9 +46,7 @@ class ACRButton: FlatButton, ImageHoldingView {
     
     override open func layout() {
         super.layout()
-        if buttonActionStyle != .inline {
-            cornerRadius = bounds.height / 2
-        }
+        cornerRadius = bounds.height / 2
     }
     
     func setImage(_ image: NSImage) {
@@ -71,8 +68,6 @@ class ACRButton: FlatButton, ImageHoldingView {
             colorConfig = buttonConfig.destructive
         case .inline:
             colorConfig = buttonConfig.inline
-            contentInsets.left = 5
-            contentInsets.right = 5
         }
         
         borderColor = colorConfig.borderColor
@@ -84,6 +79,7 @@ class ACRButton: FlatButton, ImageHoldingView {
         
         textColor = colorConfig.textColor
         selectedTextColor = colorConfig.selectedTextColor
+        borderWidth = colorConfig.wantsBorder ? 1 : 0
     }
 }
 

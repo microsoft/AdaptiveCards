@@ -98,9 +98,6 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         if let iconUrl = action.getIconUrl(), !iconUrl.isEmpty {
             rootview.registerImageHandlingView(button, for: iconUrl)
         }
-        
-        button.cornerRadius = 0
-        button.isBordered = false
 
         let attributedString: NSMutableAttributedString
         attributedString = NSMutableAttributedString(string: button.title)

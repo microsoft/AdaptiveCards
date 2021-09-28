@@ -197,7 +197,6 @@ open class FlatButton: NSButton, CALayerDelegate {
         containerLayer.masksToBounds = false
         containerLayer.masksToBounds = true
         layer?.cornerRadius = 4
-        layer?.borderWidth = 1
         layer?.delegate = self
         titleLayer.delegate = self
         if let scale = window?.backingScaleFactor {

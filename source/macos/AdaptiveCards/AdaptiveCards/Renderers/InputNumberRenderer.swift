@@ -33,7 +33,7 @@ open class InputNumberRenderer: NSObject, BaseCardElementRendererProtocol {
 open class ACRNumericTextField: NSView, NSTextFieldDelegate {
     var id: String?
     private var previousValue = ""
-    private var config: RenderConfig
+    private let config: RenderConfig
     
     init(config: RenderConfig) {
         self.config = config
