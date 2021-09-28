@@ -111,6 +111,10 @@ ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimens
 
 ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
 
+ACRHeightType GetACRHeight(HeightType adaptiveHeight);
+
+ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment);
+
 void printSize(NSString *msg, CGSize size);
 
 NSData *JsonToNSData(const Json::Value &blob);

@@ -40,7 +40,7 @@
 		6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */; };
 		6B124C8C26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */; };
 		6B124C8E26B4B3CD007E9641 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B124C8D26B4B3CD007E9641 /* UIKit.framework */; };
-		6B124C9026B8AC37007E9641 /* MockACRView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C8F26B8AC37007E9641 /* MockACRView.mm */; };
+		6B124C9026B8AC37007E9641 /* ACRMockViews.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C8F26B8AC37007E9641 /* ACRMockViews.mm */; };
 		6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9426B8AE72007E9641 /* MockContext.mm */; };
 		6B124C9826B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */; };
 		6B124C9B26B9F7AD007E9641 /* ACOVisibilityManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B124C9A26B9F7AD007E9641 /* ACOVisibilityManager.mm */; };
@@ -176,7 +176,20 @@
 		6BCE4B292108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BD025ED254784670009B019 /* ACOInputResults.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD025EB254784660009B019 /* ACOInputResults.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BD025EE254784670009B019 /* ACOInputResults.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BD025EC254784670009B019 /* ACOInputResults.mm */; };
+		6BD859FB26F2CA7B0086F5BA /* ACOFillerSpaceManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD859F826F2CA7B0086F5BA /* ACOFillerSpaceManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BD859FC26F2CA7B0086F5BA /* ACOFillerSpaceManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BD859F926F2CA7B0086F5BA /* ACOFillerSpaceManager.mm */; };
+		6BD859FF26F2E1920086F5BA /* Action.ToggleVisibilityExhaustive.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BD859FE26F2E1920086F5BA /* Action.ToggleVisibilityExhaustive.json */; };
 		6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BE6C7B026E2C9A3009E9171 /* ACRCustomRenderers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6C7AF26E2C9A3009E9171 /* ACRCustomRenderers.mm */; };
+		6BE6C7B226E2DF29009E9171 /* Container.VerticalContentAlignment2.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B126E2DF29009E9171 /* Container.VerticalContentAlignment2.json */; };
+		6BE6C7B626E2E140009E9171 /* Column.VerticalAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B526E2E140009E9171 /* Column.VerticalAlignment.json */; };
+		6BE6C7BA26E2E30A009E9171 /* Container.VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B726E2E30A009E9171 /* Container.VerticalContentAlignment.json */; };
+		6BE6C7BB26E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B826E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json */; };
+		6BE6C7BC26E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7B926E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json */; };
+		6BE6C7BE26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7BD26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json */; };
+		6BE6C7C126E2ECEA009E9171 /* ADCMockResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE6C7BF26E2ECEA009E9171 /* ADCMockResolver.m */; };
+		6BE6C7C326E2F07C009E9171 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7C226E2F07C009E9171 /* sample.json */; };
+		6BE6C7C526E7CDD0009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BE6C7C426E7CDCF009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */; };
 		6BE8DFD4249C4C1B005EFE66 /* ACRToggleInputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
 		6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -465,8 +478,8 @@
 		6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRShowCardTarget.mm; sourceTree = "<group>"; };
 		6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsActionsTest.mm; sourceTree = "<group>"; };
 		6B124C8D26B4B3CD007E9641 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/System/iOSSupport/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		6B124C8F26B8AC37007E9641 /* MockACRView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MockACRView.mm; sourceTree = "<group>"; };
-		6B124C9126B8AC58007E9641 /* MockACRView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockACRView.h; sourceTree = "<group>"; };
+		6B124C8F26B8AC37007E9641 /* ACRMockViews.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRMockViews.mm; sourceTree = "<group>"; };
+		6B124C9126B8AC58007E9641 /* ACRMockViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRMockViews.h; sourceTree = "<group>"; };
 		6B124C9326B8AE59007E9641 /* MockContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MockContext.h; sourceTree = "<group>"; };
 		6B124C9426B8AE72007E9641 /* MockContext.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MockContext.mm; sourceTree = "<group>"; };
 		6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveCardsColumnTests.mm; sourceTree = "<group>"; };
@@ -601,7 +614,23 @@
 		6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRLongPressGestureRecognizerFactory.h; sourceTree = "<group>"; };
 		6BD025EB254784660009B019 /* ACOInputResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOInputResults.h; sourceTree = "<group>"; };
 		6BD025EC254784670009B019 /* ACOInputResults.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOInputResults.mm; sourceTree = "<group>"; };
+		6BD859F826F2CA7B0086F5BA /* ACOFillerSpaceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOFillerSpaceManager.h; sourceTree = "<group>"; };
+		6BD859F926F2CA7B0086F5BA /* ACOFillerSpaceManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOFillerSpaceManager.mm; sourceTree = "<group>"; };
+		6BD859FE26F2E1920086F5BA /* Action.ToggleVisibilityExhaustive.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.ToggleVisibilityExhaustive.json; sourceTree = "<group>"; };
 		6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputLabelViewPrivate.h; sourceTree = "<group>"; };
+		6BE6C7A426E17132009E9171 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.VerticalStretch.json; path = ../../../../../../samples/v1.1/Tests/ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
+		6BE6C7AE26E2C969009E9171 /* ACRCustomRenderers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRCustomRenderers.h; sourceTree = "<group>"; };
+		6BE6C7AF26E2C9A3009E9171 /* ACRCustomRenderers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRCustomRenderers.mm; sourceTree = "<group>"; };
+		6BE6C7B126E2DF29009E9171 /* Container.VerticalContentAlignment2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Container.VerticalContentAlignment2.json; sourceTree = "<group>"; };
+		6BE6C7B526E2E140009E9171 /* Column.VerticalAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Column.VerticalAlignment.json; sourceTree = "<group>"; };
+		6BE6C7B726E2E30A009E9171 /* Container.VerticalContentAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Container.VerticalContentAlignment.json; sourceTree = "<group>"; };
+		6BE6C7B826E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.Image.VerticalStretch.json; sourceTree = "<group>"; };
+		6BE6C7B926E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.FactSet.VerticalStretch.json; sourceTree = "<group>"; };
+		6BE6C7BD26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
+		6BE6C7BF26E2ECEA009E9171 /* ADCMockResolver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADCMockResolver.m; sourceTree = "<group>"; };
+		6BE6C7C026E2ECEA009E9171 /* ADCMockResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCMockResolver.h; sourceTree = "<group>"; };
+		6BE6C7C226E2F07C009E9171 /* sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = sample.json; path = ../../../ADCIOSVisualizer/resources/sample.json; sourceTree = "<group>"; };
+		6BE6C7C426E7CDCF009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ColumnSet.Input.ChoiceSet.VerticalStretch.json; sourceTree = "<group>"; };
 		6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRToggleInputView.mm; sourceTree = "<group>"; };
 		6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRToggleInputView.h; sourceTree = "<group>"; };
 		6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRQuickReplyView.h; sourceTree = "<group>"; };
@@ -879,8 +908,10 @@
 		6B124C9226B8AE3B007E9641 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				6B124C8F26B8AC37007E9641 /* MockACRView.mm */,
-				6B124C9126B8AC58007E9641 /* MockACRView.h */,
+				6BE6C7C026E2ECEA009E9171 /* ADCMockResolver.h */,
+				6BE6C7BF26E2ECEA009E9171 /* ADCMockResolver.m */,
+				6B124C8F26B8AC37007E9641 /* ACRMockViews.mm */,
+				6B124C9126B8AC58007E9641 /* ACRMockViews.h */,
 				6B124C9326B8AE59007E9641 /* MockContext.h */,
 				6B124C9426B8AE72007E9641 /* MockContext.mm */,
 			);
@@ -890,10 +921,12 @@
 		6B124C9626B9F519007E9641 /* Columns */ = {
 			isa = PBXGroup;
 			children = (
-				F42741221EFB274C00399FBB /* ACRColumnRenderer.h */,
-				F42741231EFB274C00399FBB /* ACRColumnRenderer.mm */,
+				6BD859F826F2CA7B0086F5BA /* ACOFillerSpaceManager.h */,
+				6BD859F926F2CA7B0086F5BA /* ACOFillerSpaceManager.mm */,
 				6B124C9926B9F6B1007E9641 /* ACOVisibilityManager.h */,
 				6B124C9A26B9F7AD007E9641 /* ACOVisibilityManager.mm */,
+				F42741221EFB274C00399FBB /* ACRColumnRenderer.h */,
+				F42741231EFB274C00399FBB /* ACRColumnRenderer.mm */,
 			);
 			name = Columns;
 			sourceTree = "<group>";
@@ -1051,6 +1084,43 @@
 			name = Media;
 			sourceTree = "<group>";
 		};
+		6BE6C79426E1560A009E9171 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6BE6C7AE26E2C969009E9171 /* ACRCustomRenderers.h */,
+				6BE6C7AF26E2C9A3009E9171 /* ACRCustomRenderers.mm */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		6BE6C79F26E17077009E9171 /* TestFiles */ = {
+			isa = PBXGroup;
+			children = (
+				6BD859FE26F2E1920086F5BA /* Action.ToggleVisibilityExhaustive.json */,
+				6BE6C7B526E2E140009E9171 /* Column.VerticalAlignment.json */,
+				6BE6C7B926E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json */,
+				6BE6C7B826E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json */,
+				6BE6C7C426E7CDCF009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */,
+				6BE6C7BD26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json */,
+				6BE6C7A426E17132009E9171 /* ColumnSet.VerticalStretch.json */,
+				6BE6C7B726E2E30A009E9171 /* Container.VerticalContentAlignment.json */,
+				6BE6C7B126E2DF29009E9171 /* Container.VerticalContentAlignment2.json */,
+				6BE6C7C226E2F07C009E9171 /* sample.json */,
+			);
+			path = TestFiles;
+			sourceTree = "<group>";
+		};
+		6BE6C7C626E7E2A6009E9171 /* ImageSet */ = {
+			isa = PBXGroup;
+			children = (
+				F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */,
+				F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */,
+				F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */,
+				F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */,
+			);
+			name = ImageSet;
+			sourceTree = "<group>";
+		};
 		6BFCA139264F548600195CA7 /* TableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1125,7 +1195,6 @@
 				F42979331F30079D00E89914 /* Actions */,
 				F42979321F30074900E89914 /* Inputs */,
 				F42979351F3007DF00E89914 /* Layouts */,
-				6BB2120621000024009EA1BA /* Media */,
 				F42979341F3007C500E89914 /* ReadOnlyObjects */,
 				6B8C766826461F1A009548FA /* Resources */,
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
@@ -1138,6 +1207,8 @@
 		F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
+				6BE6C79F26E17077009E9171 /* TestFiles */,
+				6BE6C79426E1560A009E9171 /* Helpers */,
 				6B124CA326D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm */,
 				6B124C8B26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm */,
 				6B124C9726B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm */,
@@ -1297,6 +1368,8 @@
 		F42979321F30074900E89914 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				6B92A7E72679227C00CAE3BF /* CompactStyleChoiceSet */,
+				6B70ABA425797B720095D925 /* InputRenderers */,
 				6BD025EB254784660009B019 /* ACOInputResults.h */,
 				6BD025EC254784670009B019 /* ACOInputResults.mm */,
 				F495FC092022A18F0093D4DE /* ACRChoiceSetViewDataSource.h */,
@@ -1327,8 +1400,6 @@
 				6B9BDF7120E1BD0E00F13155 /* ACRToggleInputDataSource.mm */,
 				6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */,
 				6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */,
-				6B92A7E72679227C00CAE3BF /* CompactStyleChoiceSet */,
-				6B70ABA425797B720095D925 /* InputRenderers */,
 			);
 			name = Inputs;
 			sourceTree = "<group>";
@@ -1383,7 +1454,6 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
-				6B124C9626B9F519007E9641 /* Columns */,
 				F42741081EF864A900399FBB /* ACRBaseCardElementRenderer.h */,
 				F42741091EF864A900399FBB /* ACRBaseCardElementRenderer.mm */,
 				F42741261EFB374A00399FBB /* ACRColumnSetRenderer.h */,
@@ -1399,10 +1469,6 @@
 				6B74403825BA71B60051F2A1 /* ACRImageProperties.mm */,
 				F42741101EF873A600399FBB /* ACRImageRenderer.h */,
 				F42741111EF873A600399FBB /* ACRImageRenderer.mm */,
-				F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */,
-				F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */,
-				F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */,
-				F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */,
 				6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */,
 				6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */,
 				F42741141EF895AB00399FBB /* ACRTextBlockRenderer.h */,
@@ -1411,6 +1477,9 @@
 				6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */,
 				F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */,
 				F4F44B6D203FAF9300A2F24C /* ACRUILabel.mm */,
+				6B124C9626B9F519007E9641 /* Columns */,
+				6BE6C7C626E7E2A6009E9171 /* ImageSet */,
+				6BB2120621000024009EA1BA /* Media */,
 			);
 			name = ReadOnlyObjects;
 			sourceTree = "<group>";
@@ -1653,6 +1722,7 @@
 				6B124C9F26BCB2FE007E9641 /* ACOVisibilityManager.h in Headers */,
 				6B92A7E62677DFAB00CAE3BF /* ACRChoiceSetCompactStyleView.h in Headers */,
 				0D3485FD26193BA500614EB9 /* ACROverflowTarget.h in Headers */,
+				6BD859FB26F2CA7B0086F5BA /* ACOFillerSpaceManager.h in Headers */,
 				0D45F5A7261731E400EF03C5 /* ACRActionOverflowRenderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1703,7 +1773,7 @@
 		F423C0AC1EE1FBA900905679 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					F423C0B41EE1FBA900905679 = {
@@ -1782,6 +1852,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BD859FF26F2E1920086F5BA /* Action.ToggleVisibilityExhaustive.json in Resources */,
+				6BE6C7C526E7CDD0009E9171 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */,
+				6BE6C7BA26E2E30A009E9171 /* Container.VerticalContentAlignment.json in Resources */,
+				6BE6C7BE26E2E4EC009E9171 /* ColumnSet.VerticalStretch.json in Resources */,
+				6BE6C7BB26E2E30A009E9171 /* ColumnSet.Image.VerticalStretch.json in Resources */,
+				6BE6C7C326E2F07C009E9171 /* sample.json in Resources */,
+				6BE6C7BC26E2E30A009E9171 /* ColumnSet.FactSet.VerticalStretch.json in Resources */,
+				6BE6C7B626E2E140009E9171 /* Column.VerticalAlignment.json in Resources */,
+				6BE6C7B226E2DF29009E9171 /* Container.VerticalContentAlignment2.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1837,6 +1916,7 @@
 				F49683551F6CA24600DF0D3A /* ACRRenderResult.mm in Sources */,
 				6BFF9A0526004C580028069F /* ACOAuthentication.mm in Sources */,
 				6B8C765226449B09009548FA /* TableColumnDefinition.cpp in Sources */,
+				6BD859FC26F2CA7B0086F5BA /* ACOFillerSpaceManager.mm in Sources */,
 				6BBE841A23CD184D00ECA586 /* ACOWarning.mm in Sources */,
 				0D34860226193C7900614EB9 /* ACROverflowTarget.mm in Sources */,
 				F44873071EE2261F00FCAFAE /* DateInput.cpp in Sources */,
@@ -1978,14 +2058,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B124C8C26B4AA07007E9641 /* AdaptiveCardsActionsTest.mm in Sources */,
+				6BE6C7C126E2ECEA009E9171 /* ADCMockResolver.m in Sources */,
 				6B124CA426D04CA9007E9641 /* AdaptiveCardsUtiliOSTest.mm in Sources */,
+				6BE6C7B026E2C9A3009E9171 /* ACRCustomRenderers.mm in Sources */,
 				30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */,
 				6B124C9526B8AE72007E9641 /* MockContext.mm in Sources */,
 				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
-				6B124C9026B8AC37007E9641 /* MockACRView.mm in Sources */,
+				6B124C9026B8AC37007E9641 /* ACRMockViews.mm in Sources */,
 				6B124C9826B9F5FC007E9641 /* AdaptiveCardsColumnTests.mm in Sources */,
-				30D56DEF2682AB9C00D6E418 /* AdaptiveCardsTextBlockTests.mm in Sources */,
-				30D56DE9268298B300D6E418 /* AdaptiveCardsTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
