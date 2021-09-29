@@ -121,5 +121,6 @@ namespace RendererQml
         static void ValidateShowCardInActions(const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions, std::shared_ptr<AdaptiveRenderContext> context);
 
         static const std::string RemoveBottomMarginValue(std::vector<std::string> showCardsList);
+        static std::shared_ptr<QmlTag> GetCalendar(std::shared_ptr<AdaptiveRenderContext> context, const std::string textFieldId, const std::string calendarBoxId, const std::string stringDateFormat, const std::string minimumDate, const std::string maximumDate);
     };
 }
