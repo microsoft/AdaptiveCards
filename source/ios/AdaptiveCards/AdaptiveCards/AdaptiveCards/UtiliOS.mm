@@ -13,6 +13,7 @@
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
+#import "ACRTableRow.h"
 #import "ACRTargetBuilderDirector.h"
 #import "ACRUIImageView.h"
 #import "ACRViewPrivate.h"
@@ -362,8 +363,8 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview)
 {
-    std::shared_ptr<CollectionTypeElement> collection =
-        std::dynamic_pointer_cast<CollectionTypeElement>(elem);
+    std::shared_ptr<StyledCollectionElement> collection =
+        std::dynamic_pointer_cast<StyledCollectionElement>(elem);
     if (collection) {
         // check current collection type element has padding, if so added to the padding map
         [rootView updatePaddingMap:collection view:container];
@@ -938,7 +939,7 @@ ACRHeightType GetACRHeight(HeightType adaptiveHeight)
 ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment)
 {
     ACRVerticalContentAlignment contentAlignment = ACRVerticalContentAlignmentTop;
-    switch (adaptiveVerticalContentAlignment){
+    switch (adaptiveVerticalContentAlignment) {
         case AdaptiveCards::VerticalContentAlignment::Top:
             contentAlignment = ACRVerticalContentAlignmentTop;
             break;
