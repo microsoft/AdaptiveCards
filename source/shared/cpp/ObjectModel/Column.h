@@ -6,13 +6,13 @@
 #include "Enums.h"
 #include "BackgroundImage.h"
 #include "BaseActionElement.h"
-#include "CollectionTypeElement.h"
+#include "StyledCollectionElement.h"
 
 namespace AdaptiveCards
 {
     class BaseActionElement;
 
-    class Column : public CollectionTypeElement
+    class Column : public StyledCollectionElement
     {
     public:
         Column();
