@@ -39,9 +39,6 @@ Basic usage:
         }
     ]
   };
-```
-
-```js
 <AdaptiveCard
     payload={card}
 />
