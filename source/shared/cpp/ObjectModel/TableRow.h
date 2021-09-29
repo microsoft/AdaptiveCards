@@ -35,6 +35,9 @@ namespace AdaptiveCards
         ContainerStyle GetStyle() const;
         void SetStyle(const ContainerStyle value);
 
+        static std::shared_ptr<TableRow> DeserializeTableRowFromString(ParseContext& context, const std::string& root);
+        static std::shared_ptr<TableRow> DeserializeTableRow(ParseContext& context, const Json::Value& root);
+
     private:
         void PopulateKnownPropertiesSet();
 
@@ -45,19 +48,5 @@ namespace AdaptiveCards
 
         std::vector<std::shared_ptr<AdaptiveCards::TableCell>> m_cells;
         std::optional<bool> m_rtl;
-    };
-
-    class TableRowParser : public BaseCardElementParser
-    {
-    public:
-        TableRowParser() = default;
-        TableRowParser(const TableRowParser&) = default;
-        TableRowParser(TableRowParser&&) = default;
-        TableRowParser& operator=(const TableRowParser&) = default;
-        TableRowParser& operator=(TableRowParser&&) = default;
-        virtual ~TableRowParser() = default;
-
-        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
-        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
     };
 }

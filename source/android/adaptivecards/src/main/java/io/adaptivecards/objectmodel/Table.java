@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class Table extends BaseCardElement {
+public class Table extends CollectionCoreElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -53,6 +53,10 @@ public class Table extends BaseCardElement {
 
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.Table_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
+  public void DeserializeChildren(ParseContext context, JsonValue value) {
+    AdaptiveCardObjectModelJNI.Table_DeserializeChildren(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
   }
 
   public boolean GetShowGridLines() {

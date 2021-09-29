@@ -4,7 +4,7 @@
 #include "ParseContext.h"
 #include "AdaptiveCardParseException.h"
 #include "BaseElement.h"
-#include "CollectionTypeElement.h"
+#include "StyledCollectionElement.h"
 
 namespace AdaptiveCards
 {
@@ -268,7 +268,7 @@ namespace AdaptiveCards
         return invalidId;
     }
 
-    void ParseContext::SaveContextForCollectionTypeElement(const CollectionTypeElement& current)
+    void ParseContext::SaveContextForStyledCollectionElement(const StyledCollectionElement& current)
     {
         // save current style value
         if (current.GetStyle() != ContainerStyle::None)
@@ -286,7 +286,7 @@ namespace AdaptiveCards
         }
     }
 
-    void ParseContext::RestoreContextForCollectionTypeElement(const CollectionTypeElement& current)
+    void ParseContext::RestoreContextForStyledCollectionElement(const StyledCollectionElement& current)
     {
         // pop container style
         if (m_parentalContainerStyles.size() && current.GetStyle() != ContainerStyle::None)

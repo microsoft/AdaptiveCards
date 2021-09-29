@@ -11,7 +11,7 @@
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
-#import "CollectionTypeElement.h"
+#import "StyledCollectionElement.h"
 #import "RichTextElementProperties.h"
 #import "TextBlock.h"
 #import "TextRun.h"

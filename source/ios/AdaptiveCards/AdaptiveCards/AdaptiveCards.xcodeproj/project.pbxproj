@@ -55,8 +55,6 @@
 		6B224278220BAC8B000ACDA1 /* BaseElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B224275220BAC8A000ACDA1 /* BaseElement.cpp */; };
 		6B224279220BAC8B000ACDA1 /* BaseElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B224276220BAC8B000ACDA1 /* BaseElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B22427A220BAC8B000ACDA1 /* pch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B224277220BAC8B000ACDA1 /* pch.cpp */; };
-		6B2242812220DDF5000ACDA1 /* CollectionTypeElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B22427F2220DDF5000ACDA1 /* CollectionTypeElement.cpp */; };
-		6B2242822220DDF5000ACDA1 /* CollectionTypeElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242802220DDF5000ACDA1 /* CollectionTypeElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B2242A32233439E000ACDA1 /* TextElementProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242A12233439D000ACDA1 /* TextElementProperties.cpp */; };
 		6B2242A42233439E000ACDA1 /* TextElementProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242A22233439D000ACDA1 /* TextElementProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B2242A72233442C000ACDA1 /* RichTextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242A52233442C000ACDA1 /* RichTextBlock.cpp */; };
@@ -433,6 +431,10 @@
 		F4FE456B1F196F3D0071D9E5 /* ACRContentStackView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */; };
 		F4FE456E1F1985200071D9E5 /* ACRColumnSetView.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FE456C1F1985200071D9E5 /* ACRColumnSetView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4FE456F1F1985200071D9E5 /* ACRColumnSetView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4FE456D1F1985200071D9E5 /* ACRColumnSetView.mm */; };
+		F9A9E55126FE9FA000D13410 /* CollectionCoreElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A9E54F26FE9FA000D13410 /* CollectionCoreElement.cpp */; };
+		F9A9E55226FE9FA000D13410 /* CollectionCoreElement.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A9E55026FE9FA000D13410 /* CollectionCoreElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F9A9E55526FE9FE400D13410 /* StyledCollectionElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A9E55326FE9FE400D13410 /* StyledCollectionElement.cpp */; };
+		F9A9E55626FE9FE400D13410 /* StyledCollectionElement.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A9E55426FE9FE400D13410 /* StyledCollectionElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -496,8 +498,6 @@
 		6B224275220BAC8A000ACDA1 /* BaseElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BaseElement.cpp; path = ../../../../shared/cpp/ObjectModel/BaseElement.cpp; sourceTree = "<group>"; };
 		6B224276220BAC8B000ACDA1 /* BaseElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseElement.h; path = ../../../../shared/cpp/ObjectModel/BaseElement.h; sourceTree = "<group>"; };
 		6B224277220BAC8B000ACDA1 /* pch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pch.cpp; path = ../../../../shared/cpp/ObjectModel/pch.cpp; sourceTree = "<group>"; };
-		6B22427F2220DDF5000ACDA1 /* CollectionTypeElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CollectionTypeElement.cpp; path = ../../../../shared/cpp/ObjectModel/CollectionTypeElement.cpp; sourceTree = "<group>"; };
-		6B2242802220DDF5000ACDA1 /* CollectionTypeElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CollectionTypeElement.h; path = ../../../../shared/cpp/ObjectModel/CollectionTypeElement.h; sourceTree = "<group>"; };
 		6B2242A12233439D000ACDA1 /* TextElementProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextElementProperties.cpp; path = ../../../../shared/cpp/ObjectModel/TextElementProperties.cpp; sourceTree = "<group>"; };
 		6B2242A22233439D000ACDA1 /* TextElementProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextElementProperties.h; path = ../../../../shared/cpp/ObjectModel/TextElementProperties.h; sourceTree = "<group>"; };
 		6B2242A52233442C000ACDA1 /* RichTextBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RichTextBlock.cpp; path = ../../../../shared/cpp/ObjectModel/RichTextBlock.cpp; sourceTree = "<group>"; };
@@ -877,6 +877,10 @@
 		F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentStackView.mm; sourceTree = "<group>"; };
 		F4FE456C1F1985200071D9E5 /* ACRColumnSetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRColumnSetView.h; sourceTree = "<group>"; };
 		F4FE456D1F1985200071D9E5 /* ACRColumnSetView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRColumnSetView.mm; sourceTree = "<group>"; };
+		F9A9E54F26FE9FA000D13410 /* CollectionCoreElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CollectionCoreElement.cpp; path = ../../../../shared/cpp/ObjectModel/CollectionCoreElement.cpp; sourceTree = "<group>"; };
+		F9A9E55026FE9FA000D13410 /* CollectionCoreElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CollectionCoreElement.h; path = ../../../../shared/cpp/ObjectModel/CollectionCoreElement.h; sourceTree = "<group>"; };
+		F9A9E55326FE9FE400D13410 /* StyledCollectionElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StyledCollectionElement.cpp; path = ../../../../shared/cpp/ObjectModel/StyledCollectionElement.cpp; sourceTree = "<group>"; };
+		F9A9E55426FE9FE400D13410 /* StyledCollectionElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StyledCollectionElement.h; path = ../../../../shared/cpp/ObjectModel/StyledCollectionElement.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1249,8 +1253,8 @@
 				F44872C61EE2261F00FCAFAE /* ChoiceInput.h */,
 				F44872C71EE2261F00FCAFAE /* ChoiceSetInput.cpp */,
 				F44872C81EE2261F00FCAFAE /* ChoiceSetInput.h */,
-				6B22427F2220DDF5000ACDA1 /* CollectionTypeElement.cpp */,
-				6B2242802220DDF5000ACDA1 /* CollectionTypeElement.h */,
+				F9A9E54F26FE9FA000D13410 /* CollectionCoreElement.cpp */,
+				F9A9E55026FE9FA000D13410 /* CollectionCoreElement.h */,
 				F44872C91EE2261F00FCAFAE /* Column.cpp */,
 				F44872CA1EE2261F00FCAFAE /* Column.h */,
 				F44872CB1EE2261F00FCAFAE /* ColumnSet.cpp */,
@@ -1326,6 +1330,8 @@
 				F43660771F0706D800EBA868 /* SharedAdaptiveCard.h */,
 				F44872E71EE2261F00FCAFAE /* ShowCardAction.cpp */,
 				F44872E81EE2261F00FCAFAE /* ShowCardAction.h */,
+				F9A9E55326FE9FE400D13410 /* StyledCollectionElement.cpp */,
+				F9A9E55426FE9FE400D13410 /* StyledCollectionElement.h */,
 				F44872E91EE2261F00FCAFAE /* SubmitAction.cpp */,
 				F44872EA1EE2261F00FCAFAE /* SubmitAction.h */,
 				6B8C764E26449B08009548FA /* Table.cpp */,
@@ -1567,6 +1573,7 @@
 				F4F44B7A20478C5C00A2F24C /* DateTimePreparsedToken.h in Headers */,
 				F4CAE77C1F7325DF00545555 /* Separator.h in Headers */,
 				F4F6BA29204E107F003741B6 /* UnknownElement.h in Headers */,
+				F9A9E55226FE9FA000D13410 /* CollectionCoreElement.h in Headers */,
 				F44873241EE2261F00FCAFAE /* TextBlock.h in Headers */,
 				F4F6BA30204F18D8003741B6 /* AdaptiveCardParseWarning.h in Headers */,
 				F4F6BA31204F18D8003741B6 /* ParseResult.h in Headers */,
@@ -1629,6 +1636,7 @@
 				F42E51791FEC3840008F9642 /* MarkDownParser.h in Headers */,
 				6B268FE720CF19E200D99C1B /* RemoteResourceInformation.h in Headers */,
 				6BC30F6C21E56A6900B9FAAE /* UtiliOS.h in Headers */,
+				F9A9E55626FE9FE400D13410 /* StyledCollectionElement.h in Headers */,
 				CA1218C621C4509400152EA8 /* ToggleVisibilityTarget.h in Headers */,
 				CA1218C721C4509400152EA8 /* ToggleVisibilityAction.h in Headers */,
 				6BAC0F2D228E2D7300E42DEB /* RichTextElementProperties.h in Headers */,
@@ -1641,7 +1649,6 @@
 				6B2242A82233442C000ACDA1 /* RichTextBlock.h in Headers */,
 				6B096D4E225431D0006CC034 /* ACRRichTextBlockRenderer.h in Headers */,
 				300ECB64219A12D100371DC5 /* AdaptiveBase64Util.h in Headers */,
-				6B2242822220DDF5000ACDA1 /* CollectionTypeElement.h in Headers */,
 				6B096D7E22694776006CC034 /* ACRRegistrationPrivate.h in Headers */,
 				6B616C4321CB20D2003E29CE /* ACRActionToggleVisibilityRenderer.h in Headers */,
 				F4F6BA3C204F3109003741B6 /* ACRAggregateTarget.h in Headers */,
@@ -1905,6 +1912,7 @@
 				F4C1F5D61F2187900018CB78 /* ACRInputDateRenderer.mm in Sources */,
 				F44872F71EE2261F00FCAFAE /* BaseActionElement.cpp in Sources */,
 				F44872FB1EE2261F00FCAFAE /* BaseInputElement.cpp in Sources */,
+				F9A9E55526FE9FE400D13410 /* StyledCollectionElement.cpp in Sources */,
 				6BFF99C825FFF53E0028069F /* ExecuteAction.cpp in Sources */,
 				F42979431F322C3E00E89914 /* ACRErrors.mm in Sources */,
 				F44873251EE2261F00FCAFAE /* TextInput.cpp in Sources */,
@@ -1923,6 +1931,7 @@
 				F43110461F357487001AAE30 /* ACOHostConfig.mm in Sources */,
 				F4F6BA2F204F18D8003741B6 /* ParseResult.cpp in Sources */,
 				F4C1F5F21F2BC6840018CB78 /* ACRButton.mm in Sources */,
+				F9A9E55126FE9FA000D13410 /* CollectionCoreElement.cpp in Sources */,
 				6BFCA142264F54B500195CA7 /* ACRTableRow.mm in Sources */,
 				6BFCA145264F54B500195CA7 /* ACRTableCellView.mm in Sources */,
 				6BFF99FB26003EBA0028069F /* ACOAutoCardButton.mm in Sources */,
@@ -1994,7 +2003,6 @@
 				6BB211FC20FF9FEA009EA1BA /* ACRActionSetRenderer.mm in Sources */,
 				C8DEDF39220CDEB00001AAED /* ActionSet.cpp in Sources */,
 				6BFF99E1260012380028069F /* ACORefresh.mm in Sources */,
-				6B2242812220DDF5000ACDA1 /* CollectionTypeElement.cpp in Sources */,
 				F44873051EE2261F00FCAFAE /* Container.cpp in Sources */,
 				6BC30F7921E6E49E00B9FAAE /* ACRCustomActionRenderer.mm in Sources */,
 				6B22427A220BAC8B000ACDA1 /* pch.cpp in Sources */,

@@ -19,7 +19,6 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.CollectionTypeElement;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -28,6 +27,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.SubmitAction;
+import io.adaptivecards.objectmodel.StyledCollectionElement;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
@@ -142,12 +142,12 @@ public class ContainerRenderer extends BaseCardElementRenderer
     /**
      * @deprecated renamed to {@link #applyBleed}
      */
-    public static void ApplyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
+    public static void ApplyBleed(StyledCollectionElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
     {
         applyBleed(collectionElement, collectionElementView, context, hostConfig);
     }
 
-    public static void applyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
+    public static void applyBleed(StyledCollectionElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
     {
         if (collectionElement.GetBleed() && collectionElement.GetCanBleed())
         {
@@ -226,12 +226,12 @@ public class ContainerRenderer extends BaseCardElementRenderer
     /**
      * @deprecated renamed to {@link #getLocalContainerStyle}
      */
-    public static ContainerStyle GetLocalContainerStyle(CollectionTypeElement collectionElement, ContainerStyle parentContainerStyle)
+    public static ContainerStyle GetLocalContainerStyle(StyledCollectionElement collectionElement, ContainerStyle parentContainerStyle)
     {
         return getLocalContainerStyle(collectionElement, parentContainerStyle);
     }
 
-    public static ContainerStyle getLocalContainerStyle(CollectionTypeElement collectionElement, ContainerStyle parentContainerStyle)
+    public static ContainerStyle getLocalContainerStyle(StyledCollectionElement collectionElement, ContainerStyle parentContainerStyle)
     {
         return computeContainerStyle(collectionElement.GetStyle(), parentContainerStyle);
     }

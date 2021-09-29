@@ -363,8 +363,8 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview)
 {
-    std::shared_ptr<CollectionTypeElement> collection =
-        std::dynamic_pointer_cast<CollectionTypeElement>(elem);
+    std::shared_ptr<StyledCollectionElement> collection =
+        std::dynamic_pointer_cast<StyledCollectionElement>(elem);
     if (collection) {
         // check current collection type element has padding, if so added to the padding map
         [rootView updatePaddingMap:collection view:container];
