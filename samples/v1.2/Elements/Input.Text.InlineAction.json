@@ -13,7 +13,7 @@
 			"inlineAction": {
 				"type": "Action.Submit",
 				"iconUrl": "https://adaptivecards.io/content/send.png",
-				"title": "Send"
+				"tooltip": "Send"
 			}
 		},
 		{
