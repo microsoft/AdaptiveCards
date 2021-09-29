@@ -65,6 +65,11 @@
             txtInput = [bundle loadNibNamed:@"ACRTextUrlField" owner:rootView options:nil][0];
             break;
         }
+        case TextInputStyle::Password: {
+            txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
+            txtInput.secureTextEntry = YES;
+            break;
+        }
         case TextInputStyle::Text:
         default: {
             txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
@@ -74,6 +79,7 @@
     txtInput.placeholder = [NSString stringWithCString:inputBlock->GetPlaceholder().c_str()
                                               encoding:NSUTF8StringEncoding];
     txtInput.text = [NSString stringWithCString:inputBlock->GetValue().c_str() encoding:NSUTF8StringEncoding];
+
     txtInput.allowsEditingTextAttributes = YES;
     return txtInput;
 }
@@ -107,7 +113,9 @@
     }
 
     ACRTextInputHandler *textInputHandler = [[ACRTextInputHandler alloc] init:acoElem];
-    if (inputBlck->GetIsMultiline()) {
+    
+    BOOL isMultiline = (inputBlck->GetTextInputStyle() != TextInputStyle::Password) && inputBlck->GetIsMultiline();
+    if (isMultiline) {
         if (renderAction) {
             // if action is defined, load ACRQuickReplyMultilineView nib for customizable UI
             multilineview = [[ACRQuickReplyMultilineView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
@@ -161,29 +169,15 @@
             inputview = inputLabelView;
         }
         txtInput.delegate = textInputHandler;
-
-        [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
-    if (elem->GetHeight() == HeightType::Stretch && !inputBlck->GetIsMultiline()) {
-        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview:inputview];
-
-        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-        UIView *blankTrailingSpace = [[UIView alloc] init];
-        [textInputContainer addArrangedSubview:blankTrailingSpace];
-        [textInputContainer adjustHuggingForLastElement];
-
-        [viewGroup addArrangedSubview:textInputContainer];
-    } else {
-        [viewGroup addArrangedSubview:inputview];
-    }
+    [viewGroup addArrangedSubview:inputview];
 
     inputview.translatesAutoresizingMaskIntoConstraints = false;
 
     // configures for action
     if (renderAction) {
-        if (inputBlck->GetIsMultiline()) {
+        if (isMultiline) {
             [inputs addObject:txtview];
         } else {
             [inputs addObject:inputview];
@@ -242,8 +236,6 @@
     } else {
         [inputs addObject:inputview];
     }
-
-    configVisibility(inputview, elem);
 
     return inputview;
 }

@@ -8,7 +8,7 @@
 
 using namespace AdaptiveCards;
 
-Column::Column() : CollectionTypeElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0)
+Column::Column() : StyledCollectionElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0)
 {
     PopulateKnownPropertiesSet();
 }
@@ -71,7 +71,7 @@ std::string Column::Serialize() const
 
 Json::Value Column::SerializeToJsonValue() const
 {
-    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
+    Json::Value root = StyledCollectionElement::SerializeToJsonValue();
 
     if (!m_width.empty())
     {
@@ -106,7 +106,7 @@ void Column::PopulateKnownPropertiesSet()
 void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto columnItems = GetItems();
-    CollectionTypeElement::GetResourceInformation<BaseCardElement>(resourceInfo, columnItems);
+    StyledCollectionElement::GetResourceInformation<BaseCardElement>(resourceInfo, columnItems);
     return;
 }
 
@@ -123,7 +123,7 @@ void Column::DeserializeChildren(ParseContext& context, const Json::Value& value
 
 std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
-    auto column = CollectionTypeElement::Deserialize<Column>(context, value);
+    auto column = StyledCollectionElement::Deserialize<Column>(context, value);
 
     const auto& fallbackElement = column->GetFallbackContent();
     if (fallbackElement)

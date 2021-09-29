@@ -115,12 +115,12 @@ public class ParseContext {
     return new InternalId(AdaptiveCardObjectModelJNI.ParseContext_PaddingParentInternalId(swigCPtr, this), true);
   }
 
-  public void SaveContextForCollectionTypeElement(CollectionTypeElement current) {
-    AdaptiveCardObjectModelJNI.ParseContext_SaveContextForCollectionTypeElement(swigCPtr, this, CollectionTypeElement.getCPtr(current), current);
+  public void SaveContextForStyledCollectionElement(StyledCollectionElement current) {
+    AdaptiveCardObjectModelJNI.ParseContext_SaveContextForStyledCollectionElement(swigCPtr, this, StyledCollectionElement.getCPtr(current), current);
   }
 
-  public void RestoreContextForCollectionTypeElement(CollectionTypeElement current) {
-    AdaptiveCardObjectModelJNI.ParseContext_RestoreContextForCollectionTypeElement(swigCPtr, this, CollectionTypeElement.getCPtr(current), current);
+  public void RestoreContextForStyledCollectionElement(StyledCollectionElement current) {
+    AdaptiveCardObjectModelJNI.ParseContext_RestoreContextForStyledCollectionElement(swigCPtr, this, StyledCollectionElement.getCPtr(current), current);
   }
 
   public ContainerBleedDirection GetBleedDirection() {

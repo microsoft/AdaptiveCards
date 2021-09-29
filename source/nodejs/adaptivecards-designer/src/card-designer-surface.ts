@@ -3,7 +3,7 @@
 import * as Adaptive from "adaptivecards";
 import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
-import { IPoint } from "./miscellaneous";
+import { IPoint, Utils } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
 import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
@@ -555,8 +555,9 @@ export class CardDesignerSurface {
                     document.body.appendChild(this._dragVisual);
                 }
 
-                this._dragVisual.style.left = (e.x - 6) + "px";
-                this._dragVisual.style.top = (e.y - 6) + "px";
+                const adjustedPoint = Utils.adjustPointForScroll(e);
+                this._dragVisual.style.left = (adjustedPoint.x - 6) + "px";
+                this._dragVisual.style.top = (adjustedPoint.y - 6) + "px";
 
                 let renderedCardObjectRect = this.draggedPeer.getCardObject().renderedElement.getBoundingClientRect();
 

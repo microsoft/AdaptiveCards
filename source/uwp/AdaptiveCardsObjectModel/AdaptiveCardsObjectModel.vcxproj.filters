@@ -63,7 +63,6 @@
     <ClCompile Include="lib\AdaptiveRichTextBlock.cpp" />
     <ClCompile Include="lib\AdaptiveRichTextBlockParser.cpp" />
     <ClCompile Include="lib\AdaptiveTextRun.cpp" />
-    <ClCompile Include="lib\AdaptiveTextElement.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
     <ClCompile Include="lib\AdaptiveExecuteActionParser.cpp" />
@@ -85,10 +84,8 @@
     <ClInclude Include="lib\AdaptiveContainer.h" />
     <ClInclude Include="lib\AdaptiveImage.h" />
     <ClInclude Include="lib\AdaptiveTextBlock.h" />
-    <ClInclude Include="lib\ErrorHandling.h" />
     <ClInclude Include="lib\pch.h" />
     <ClInclude Include="lib\ObjectModelUtil.h" />
-    <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\AdaptiveFactSet.h" />
     <ClInclude Include="lib\AdaptiveFact.h" />
     <ClInclude Include="lib\AdaptiveImageSet.h" />
