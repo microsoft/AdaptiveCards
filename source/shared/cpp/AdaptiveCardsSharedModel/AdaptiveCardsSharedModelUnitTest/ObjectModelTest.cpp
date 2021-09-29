@@ -485,7 +485,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             Assert::IsTrue(parseResult->GetWarnings().size() == 0);
             Assert::IsTrue(body.size() == 1);
-            Assert::IsTrue(body.at(0)->GetElementType() == CardElementType::ChoiceSetInput); 
+            Assert::IsTrue(body.at(0)->GetElementType() == CardElementType::ChoiceSetInput);
             auto choiceSetElement = std::dynamic_pointer_cast<ChoiceSetInput>(body.at(0));
             Assert::IsTrue(choiceSetElement->GetChoices().size() == 0);
 
@@ -660,8 +660,84 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto i = 0;
             for (const auto& elem : body) {
                 std::shared_ptr<TextBlock> textBlock = std::dynamic_pointer_cast<TextBlock>(elem);
-				Assert::IsTrue(textBlock->GetStyle() == expectedStyles[i++]);
+                Assert::IsTrue(textBlock->GetStyle() == expectedStyles[i++]);
             }
+        }
+
+        TEST_METHOD(PasswordStyleParseTest)
+        {
+            const std::string testjson{ R"(
+                    {
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "type": "AdaptiveCard",
+                        "version": "1.5",
+                        "body": [
+                            {
+                                "type": "Input.Text",
+                                "id": "plain",
+                                "label" : "Plaintext"
+                            },
+                            {
+                                "type": "Input.Text",
+                                "id": "password",
+                                "style": "passWORD",
+                                "label" : "Password"
+                            }
+                        ]
+                    }
+                )"};
+
+            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
+            auto card = parseResult->GetAdaptiveCard();
+            auto body = card->GetBody();
+            Assert::AreEqual(body.size(), 2ui64);
+
+            auto plainInput = std::dynamic_pointer_cast<TextInput>(body.at(0));
+            Assert::IsTrue(TextInputStyle::Text == plainInput->GetTextInputStyle());
+
+            auto passwordInput = std::dynamic_pointer_cast<TextInput>(body.at(1));
+            Assert::IsTrue(TextInputStyle::Password == passwordInput->GetTextInputStyle());
+        }
+
+        TEST_METHOD(PasswordWithMultilineParseTest)
+        {
+            const std::string testjson{ R"(
+                    {
+                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                        "type": "AdaptiveCard",
+                        "version": "1.5",
+                        "body": [
+                            {
+                                "type": "Input.Text",
+                                "id": "theId",
+                                "label" : "Password",
+                                "style": "password",
+                                "isMultiline": true
+                            }
+                        ]
+                    }
+                )"};
+
+            const auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
+
+            // verify we emitted a warning and it's correct
+            const auto warnings = parseResult->GetWarnings();
+            Assert::IsTrue(warnings.size() == 1ui64);
+            const auto warning = warnings.at(0);
+            Assert::IsTrue(WarningStatusCode::InvalidValue == warning->GetStatusCode());
+            Assert::AreEqual("Input.Text ignores isMultiline when using password style"s, warning->GetReason());
+
+            // verify the generated element still reports itself as supporting multiline
+            const auto card = parseResult->GetAdaptiveCard();
+            const auto body = card->GetBody();
+            Assert::AreEqual(body.size(), 1ui64);
+            const auto theInput = std::dynamic_pointer_cast<TextInput>(body.at(0));
+            Assert::IsTrue(TextInputStyle::Password == theInput->GetTextInputStyle());
+            Assert::IsTrue(theInput->GetIsMultiline());
+
+            // verify that we still serialize isMultiline == true
+            const auto serializedCard = card->SerializeToJsonValue();
+            Assert::IsTrue(serializedCard["body"][0]["isMultiline"].asBool());
         }
     };
 }

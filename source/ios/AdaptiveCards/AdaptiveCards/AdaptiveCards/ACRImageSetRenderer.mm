@@ -47,8 +47,6 @@ using namespace AdaptiveCards;
 
     configRtl(view, rootView.context);
 
-    configVisibility(view, elem);
-
     return view;
 }
 
