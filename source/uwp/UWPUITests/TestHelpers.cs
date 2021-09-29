@@ -32,6 +32,12 @@ namespace UWPUITests
             return FindDescendantBy("AutomationId", automationId, Application.Instance.CoreWindow);
         }
 
+        public static UIObject FindPopupByName(string name)
+        {
+            // Popups are not under the CoreWindow. Look under the CoreWindow's grandparent
+            return FindDescendantBy("Name", name, Application.Instance.CoreWindow.Parent.Parent);
+        }
+
         public static UIObject FindElementByName(string name, UIObject parent)
         {
             return FindDescendantBy("Name", name, parent);

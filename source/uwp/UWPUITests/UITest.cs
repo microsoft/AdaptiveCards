@@ -120,7 +120,7 @@ namespace UWPUITests
             // Click the overflow menu and find the secondary show card action
             overflowMenu.Click();
 
-            var secondaryShowCardAction = TestHelpers.FindElementByName("Secondary Show Card Action", Application.Instance.CoreWindow.Parent.Parent);
+            var secondaryShowCardAction = TestHelpers.FindPopupByName("Secondary Show Card Action");
             Assert.IsNotNull(secondaryShowCardAction);
 
             // Click the secondary action and validate that the card appears
@@ -131,7 +131,7 @@ namespace UWPUITests
 
             // Close the secondary show card and validate the state
             overflowMenu.Click();
-            secondaryShowCardAction = TestHelpers.FindElementByName("Secondary Show Card Action", Application.Instance.CoreWindow.Parent.Parent);
+            secondaryShowCardAction = TestHelpers.FindPopupByName("Secondary Show Card Action");
             Assert.IsNotNull(secondaryShowCardAction);
             secondaryShowCardAction.Click();
 
