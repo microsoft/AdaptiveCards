@@ -3,10 +3,7 @@ using Microsoft.Windows.Apps.Test.Foundation.Controls;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -33,6 +30,12 @@ namespace UWPUITests
         public static UIObject FindElementByAutomationId(string automationId)
         {
             return FindDescendantBy("AutomationId", automationId, Application.Instance.CoreWindow);
+        }
+
+        public static UIObject FindPopupByName(string name)
+        {
+            // Popups are not under the CoreWindow. Look under the CoreWindow's grandparent
+            return FindDescendantBy("Name", name, Application.Instance.CoreWindow.Parent.Parent);
         }
 
         public static UIObject FindElementByName(string name, UIObject parent)
@@ -93,7 +96,7 @@ namespace UWPUITests
         public static void GoToTestCase(string testCaseName)
         {
             var application = Application.Instance.CoreWindow;
-            
+
             // If we are not in the home screen then we go to home and then click on the TestCase
             if (GetTitleText() != "Home")
             {
@@ -146,7 +149,7 @@ namespace UWPUITests
             // so we have to remove them before looking up for the month number
             int currentMonth = MonthNameToInt(monthAndYear[0]);
             MoveToMonth(currentMonth, month, calendarView);
-            
+
             // Click on the day "16" button which in turn closes the popup
             FindElementByName("16", calendarView).Click();
         }
