@@ -333,33 +333,24 @@ export class CardDesignerSurface {
         if (this.isPreviewMode) {
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
                 const actionType = action.getJsonTypeName();
-                const message = `Action executed: "${actionType}" title: "${action.title}"`;
-                let verb : string;
-                let url : string;
-                let data : string;
+                let message = `Action executed: "${actionType}" title: "${action.title}"`;
 
-                switch (actionType)
-                {
-                    case Adaptive.OpenUrlAction.JsonTypeName:
-                        const actionOpenUrl = <Adaptive.OpenUrlAction>action;
-                        url = `\nurl: "${actionOpenUrl.url}"`;
-                        break;
-
-                    case Adaptive.ExecuteAction.JsonTypeName:
-                        const actionExecute = <Adaptive.ExecuteAction>action;
-                        verb = ` verb: "${actionExecute.verb}"`;
-                        // fallthrough
-
-                    case Adaptive.SubmitAction.JsonTypeName:
-                        const actionBase = <Adaptive.SubmitActionBase>action;
-                        data = `\nSubmitted data: ${JSON.stringify(actionBase.data, undefined, 4)}`;
-                        break;
-
-                    default:
-                        break;
+                const verb = (<Adaptive.ExecuteAction>action).verb;
+                if (verb) {
+                    message += ` verb: "${verb}"`;
+                }
+                
+                const url = (<Adaptive.OpenUrlAction>action).url;
+                if (url) {
+                    message += `\nurl: "${url}"`;
+                }
+                
+                const data = (<Adaptive.SubmitActionBase>action).data;
+                if (data) {
+                    message += `\nSubmitted data: ${JSON.stringify(data, undefined, 4)}`;
                 }
 
-                alert([message, verb, url, data].join(''));
+                alert(message);
             };
         }
 
