@@ -11,7 +11,7 @@
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
-#import "CollectionTypeElement.h"
+#import "StyledCollectionElement.h"
 #import "RichTextElementProperties.h"
 #import "TextBlock.h"
 #import "TextRun.h"
@@ -112,6 +112,10 @@ CGSize getAspectRatio(CGSize size);
 ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
 
 ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
+
+ACRHeightType GetACRHeight(HeightType adaptiveHeight);
+
+ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment);
 
 void printSize(NSString *msg, CGSize size);
 

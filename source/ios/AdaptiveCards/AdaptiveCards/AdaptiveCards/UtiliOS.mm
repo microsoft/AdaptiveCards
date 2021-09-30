@@ -14,6 +14,7 @@
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
+#import "ACRTableRow.h"
 #import "ACRTargetBuilderDirector.h"
 #import "ACRUIImageView.h"
 #import "ACRViewPrivate.h"
@@ -363,8 +364,8 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview)
 {
-    std::shared_ptr<CollectionTypeElement> collection =
-        std::dynamic_pointer_cast<CollectionTypeElement>(elem);
+    std::shared_ptr<StyledCollectionElement> collection =
+        std::dynamic_pointer_cast<StyledCollectionElement>(elem);
     if (collection) {
         // check current collection type element has padding, if so added to the padding map
         [rootView updatePaddingMap:collection view:container];
@@ -941,6 +942,37 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
         default:
             return ACRLeft;
     }
+}
+
+ACRHeightType GetACRHeight(HeightType adaptiveHeight)
+{
+    ACRHeightType height = ACRHeightAuto;
+    switch (adaptiveHeight) {
+        case AdaptiveCards::HeightType::Auto:
+            height = ACRHeightAuto;
+            break;
+        case AdaptiveCards::HeightType::Stretch:
+            height = ACRHeightStretch;
+            break;
+    }
+    return height;
+}
+
+ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment)
+{
+    ACRVerticalContentAlignment contentAlignment = ACRVerticalContentAlignmentTop;
+    switch (adaptiveVerticalContentAlignment) {
+        case AdaptiveCards::VerticalContentAlignment::Top:
+            contentAlignment = ACRVerticalContentAlignmentTop;
+            break;
+        case AdaptiveCards::VerticalContentAlignment::Center:
+            contentAlignment = ACRVerticalContentAlignmentCenter;
+            break;
+        case AdaptiveCards::VerticalContentAlignment::Bottom:
+            contentAlignment = ACRVerticalContentAlignmentBottom;
+            break;
+    }
+    return contentAlignment;
 }
 
 void printSize(NSString *msg, CGSize size)
