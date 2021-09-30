@@ -1682,7 +1682,7 @@ export class CardElementPeer extends DesignerPeer {
             }
         }
 
-        let itemCount: number = 0;
+        let itemCount = 0;
         if (this.cardElement instanceof Adaptive.CardElementContainer) {
             itemCount = this.cardElement.getItemCount();
             for (var i = 0; i < itemCount; i++) {
