@@ -52,18 +52,12 @@ namespace AdaptiveCards::Rendering::Uwp
 
         HRESULT AddInlineShowCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
                                   _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                   _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                  UINT32 primaryButtonIndex,
                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
 
         HRESULT AddInlineShowCard(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
                                   _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                   _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                  UINT32 primaryButtonIndex,
                                   _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
 
         HRESULT AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
@@ -92,10 +86,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         HRESULT AddInlineShowCardHelper(UINT32 internalId,
                                         _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                        _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                        _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                         _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                        UINT32 primaryButtonIndex,
                                         _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs);
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard> m_originatingCard;
