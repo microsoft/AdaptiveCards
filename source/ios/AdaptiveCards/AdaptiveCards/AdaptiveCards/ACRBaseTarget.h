@@ -13,7 +13,7 @@
 
 - (void)addGestureRecognizer:(UIView *)view tooTipText:(NSString *)toolTipText;
 
-- (void)setTooltip:(UIView *)view tooTipText:(NSString *)toolTipText;
+- (void)setTooltip:(UIView *)view toolTipText:(NSString *)toolTipText;
 
 - (void)showToolTip:(UILongPressGestureRecognizer *)gesture;
 

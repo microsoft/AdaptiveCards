@@ -20,13 +20,13 @@
 - (void)addGestureRecognizer:(UIView *)view tooTipText:(NSString *)toolTipText
 {
     if (view && toolTipText && toolTipText.length) {
-        [self setTooltip:view tooTipText:toolTipText];
+        [self setTooltip:view toolTipText:toolTipText];
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(showToolTip:)];
         [view addGestureRecognizer:longPress];
     }
 }
 
-- (void)setTooltip:(UIView *)view tooTipText:(NSString *)toolTipText
+- (void)setTooltip:(UIView *)view toolTipText:(NSString *)toolTipText
 {
     if (view && toolTipText) {
         _toolTip = toolTipText;

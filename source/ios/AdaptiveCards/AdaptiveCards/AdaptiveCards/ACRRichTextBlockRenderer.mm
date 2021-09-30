@@ -139,7 +139,7 @@
                         }
 
                         if (acoAction.inlineTooltip) {
-                            [((ACRBaseTarget *)target) setTooltip:lab tooTipText:acoAction.inlineTooltip];
+                            [((ACRBaseTarget *)target) setTooltip:lab toolTipText:acoAction.inlineTooltip];
                             if (!hasLongPressGestureRecognizerAdded) {
                                 UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:lab action:@selector(handleInlineAction:)];
                                 [lab addGestureRecognizer:recognizer];

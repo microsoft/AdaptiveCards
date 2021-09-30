@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		2C0E200870AA04B0CE430788 /* Pods_ADCIOSVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B6A389927067B3D00BAD3D2 /* Pods_ADCIOSVisualizer.framework */; };
+		30860BC220C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		30860BC420C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		506EA8317D7037D97F0E93A0 /* Pods_ADCIOSVisualizerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE20E3021AB8AB532DA36D2F /* Pods_ADCIOSVisualizerUITests.framework */; };
 		6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B055763233EC53D000EE24A /* RichTextBlock.json */; };
-		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		6B1509FE22FC98AE00046B3A /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
 		6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
 		6B150A042302415000046B3A /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A032302415000046B3A /* sample.json */; };
@@ -65,8 +67,8 @@
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
 		6B250FC9253FB0CE007FFCFB /* ACRCustomSubmitTargetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */; };
-		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
-		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B268FE320CEF19400D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		6B268FE520CEF89100D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
 		6B37723F26015FA30024E527 /* Action.Execute.Auth.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B37723E26015FA30024E527 /* Action.Execute.Auth.json */; };
 		6B5E9CBD24B663CA00757882 /* Adaptive1.0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */; };
@@ -201,6 +203,9 @@
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B37723E26015FA30024E527 /* Action.Execute.Auth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.Auth.json; sourceTree = "<group>"; };
 		6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
+		6B6A389527067B1800BAD3D2 /* FluentUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FluentUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B6A389727067B2E00BAD3D2 /* Pods_AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B6A389927067B3D00BAD3D2 /* Pods_ADCIOSVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_ADCIOSVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B70AB87256490CC0095D925 /* Image.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.SelectAction.json; sourceTree = "<group>"; };
 		6B92A7F4267D15DA00CAE3BF /* ACRInputTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputTest.mm; sourceTree = "<group>"; };
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -224,7 +229,10 @@
 		6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActionSet.Inputs.Tests.json; sourceTree = "<group>"; };
 		6BFF9A11260132800028069F /* Action.ExecuteTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Action.ExecuteTest.mm; sourceTree = "<group>"; };
 		6BFF9A17260155240028069F /* Action.Execute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.json; sourceTree = "<group>"; };
+		A6604DB0AC7E897E0BE1563B /* Pods-ADCIOSVisualizerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizerUITests.debug.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		B5D4F53A8A5DC9A531E2A265 /* Pods-ADCIOSVisualizerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizerUITests.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		CCE1C9E07E62A8EF846AC5B2 /* Pods_ADCIOSVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADCIOSVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE20E3021AB8AB532DA36D2F /* Pods_ADCIOSVisualizerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADCIOSVisualizerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer.release.xcconfig"; sourceTree = "<group>"; };
 		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -261,6 +269,7 @@
 			files = (
 				6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */,
 				B9D8B05DB6C57A3C308FFDEF /* Pods_ADCIOSVisualizer.framework in Frameworks */,
+				2C0E200870AA04B0CE430788 /* Pods_ADCIOSVisualizer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +290,7 @@
 				6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */,
 				6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */,
 				6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */,
+				506EA8317D7037D97F0E93A0 /* Pods_ADCIOSVisualizerUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +385,9 @@
 		6BF339E120A66A3F00DA5973 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B6A389927067B3D00BAD3D2 /* Pods_ADCIOSVisualizer.framework */,
+				6B6A389727067B2E00BAD3D2 /* Pods_AdaptiveCards.framework */,
+				6B6A389527067B1800BAD3D2 /* FluentUI.framework */,
 				6B1D8B9D268AC2B6005DB234 /* CoreGraphics.framework */,
 				6B980935215AE8780024B79B /* AdaptiveCards.framework */,
 				6B980933215AE6EC0024B79B /* UIKit.framework */,
@@ -382,6 +395,7 @@
 				6B2D8604211143BD008DD972 /* AdaptiveCards.framework */,
 				6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */,
 				CCE1C9E07E62A8EF846AC5B2 /* Pods_ADCIOSVisualizer.framework */,
+				CE20E3021AB8AB532DA36D2F /* Pods_ADCIOSVisualizerUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -391,6 +405,8 @@
 			children = (
 				F6E8AB850C2EEB024550B8CC /* Pods-ADCIOSVisualizer.debug.xcconfig */,
 				D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */,
+				A6604DB0AC7E897E0BE1563B /* Pods-ADCIOSVisualizerUITests.debug.xcconfig */,
+				B5D4F53A8A5DC9A531E2A265 /* Pods-ADCIOSVisualizerUITests.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -541,9 +557,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F423C0A81EE1FB6100905679 /* Build configuration list for PBXNativeTarget "ADCIOSVisualizerUITests" */;
 			buildPhases = (
+				EAD445035CFEC6AAE4C791EA /* [CP] Check Pods Manifest.lock */,
 				F423C0951EE1FB6100905679 /* Sources */,
 				F423C0961EE1FB6100905679 /* Frameworks */,
 				F423C0971EE1FB6100905679 /* Resources */,
+				C9DED31CA30E9B8469C5840D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -611,18 +629,18 @@
 				6B150A36230354F200046B3A /* Image.Size.json in Resources */,
 				6B150A1123034F2800046B3A /* FoodOrder.json in Resources */,
 				6B70AB88256490CC0095D925 /* Image.SelectAction.json in Resources */,
-				6B268FE520CEF89100D99C1B /* (null) in Resources */,
+				6B268FE520CEF89100D99C1B /* BuildFile in Resources */,
 				6B150A37230354F200046B3A /* ColumnSet.Spacing.json in Resources */,
 				6B182BBC25DF5FB700629A39 /* Conflict.png in Resources */,
 				6B1509FE22FC98AE00046B3A /* samples in Resources */,
 				6B182BB425DF5FB700629A39 /* filebrowserHostConfig.json in Resources */,
-				6B268FE320CEF19400D99C1B /* (null) in Resources */,
+				6B268FE320CEF19400D99C1B /* BuildFile in Resources */,
 				6B182BBB25DF5FB700629A39 /* power_point.png in Resources */,
 				6B182BB325DF5FB700629A39 /* SmallVerticalLineGray.png in Resources */,
 				6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */,
 				6B37723F26015FA30024E527 /* Action.Execute.Auth.json in Resources */,
 				6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */,
-				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
+				6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */,
 				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
 				6B150A40230354F200046B3A /* Image.json in Resources */,
 				6B150A042302415000046B3A /* sample.json in Resources */,
@@ -630,7 +648,7 @@
 				6B182BBA25DF5FB700629A39 /* Action.Scrolling.json in Resources */,
 				6B182BCF25E5AD3500629A39 /* image_3.png in Resources */,
 				6BFF9A18260155240028069F /* Action.Execute.json in Resources */,
-				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
+				30860BC220C9B5C9009F9D99 /* BuildFile in Resources */,
 				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
 				6B9FAF4F25D70AAB00D1A791 /* AdditionalProperties.json in Resources */,
 				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,
@@ -670,7 +688,7 @@
 				6B182BD325E5D7D400629A39 /* bg_image.png in Resources */,
 				6B150A1223034F2800046B3A /* Restaurant.json in Resources */,
 				6B150A0F23034F2800046B3A /* Feedback.json in Resources */,
-				30860BC420C9B5C9009F9D99 /* (null) in Resources */,
+				30860BC420C9B5C9009F9D99 /* BuildFile in Resources */,
 				6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */,
 				6B150A27230353AB00046B3A /* TextBlock.HorizontalAlignment.json in Resources */,
 			);
@@ -731,6 +749,46 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C9DED31CA30E9B8469C5840D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizerUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MicrosoftFluentUI/FluentUI.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FluentUI.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizerUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EAD445035CFEC6AAE4C791EA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ADCIOSVisualizerUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -999,6 +1057,7 @@
 		};
 		F423C0A91EE1FB6100905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6604DB0AC7E897E0BE1563B /* Pods-ADCIOSVisualizerUITests.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UBF8T346G9;
@@ -1012,6 +1071,7 @@
 		};
 		F423C0AA1EE1FB6100905679 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B5D4F53A8A5DC9A531E2A265 /* Pods-ADCIOSVisualizerUITests.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UBF8T346G9;
