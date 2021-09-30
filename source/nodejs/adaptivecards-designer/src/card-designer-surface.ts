@@ -333,23 +333,33 @@ export class CardDesignerSurface {
         if (this.isPreviewMode) {
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
                 const actionType = action.getJsonTypeName();
-                let message = `Action executed: "${actionType}" title: "${action.title}"`;
+                const message = `Action executed: "${actionType}" title: "${action.title}"`;
+                let verb : string;
+                let url : string;
+                let data : string;
 
-                if (actionType === Adaptive.ExecuteAction.JsonTypeName) {
-                    const actionExecute = <Adaptive.ExecuteAction>action;
-                    message += ` verb: "${actionExecute.verb}"`;
+                switch (actionType)
+                {
+                    case Adaptive.OpenUrlAction.JsonTypeName:
+                        const actionOpenUrl = <Adaptive.OpenUrlAction>action;
+                        url = `\nurl: "${actionOpenUrl.url}"`;
+                        break;
+
+                    case Adaptive.ExecuteAction.JsonTypeName:
+                        const actionExecute = <Adaptive.ExecuteAction>action;
+                        verb = ` verb: "${actionExecute.verb}"`;
+                        // fallthrough
+
+                    case Adaptive.SubmitAction.JsonTypeName:
+                        const actionBase = <Adaptive.SubmitActionBase>action;
+                        data = `\nSubmitted data: ${JSON.stringify(actionBase.data, undefined, 4)}`;
+                        break;
+
+                    default:
+                        break;
                 }
 
-                if (actionType === Adaptive.OpenUrlAction.JsonTypeName) {
-                    const actionOpenUrl = <Adaptive.OpenUrlAction>action;
-                    message += `\nurl: "${actionOpenUrl.url}"`;
-                }
-
-                if (actionType === Adaptive.SubmitAction.JsonTypeName || actionType === Adaptive.ExecuteAction.JsonTypeName) {
-                    const actionBase = <Adaptive.SubmitActionBase>action;
-                    message += `\nSubmitted data: ${JSON.stringify(actionBase.data, undefined, 4)}`;
-                }
-                alert(message);
+                alert([message, verb, url, data].join(''));
             };
         }
 
