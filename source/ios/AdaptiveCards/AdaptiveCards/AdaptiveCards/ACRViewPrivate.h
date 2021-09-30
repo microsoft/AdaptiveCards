@@ -12,7 +12,7 @@
 #import "ACRView.h"
 #import "ActionParserRegistration.h"
 #import "BackgroundImage.h"
-#import "CollectionTypeElement.h"
+#import "StyledCollectionElement.h"
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRRegistration.h"
@@ -49,7 +49,7 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (void)removeObserverOnImageView:(NSString *)KeyPath onObject:(NSObject *)object keyToImageView:(NSString *)key;
 
-- (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view;
+- (void)updatePaddingMap:(std::shared_ptr<StyledCollectionElement> const &)collection view:(UIView *)view;
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId;
 

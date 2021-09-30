@@ -128,30 +128,24 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
                                                      ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                      ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                     UINT32 primaryButtonIndex,
                                                      ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         return renderResult->AddInlineShowCard(
-            adaptiveCard, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
+            adaptiveCard, showCardAction, showCardUIElement, renderArgs);
     }
 
     HRESULT AdaptiveRenderContext::AddInlineShowCard(_In_opt_ IAdaptiveActionSet* actionSet,
                                                      _In_ IAdaptiveShowCardAction* showCardAction,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                      _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                     UINT32 primaryButtonIndex,
                                                      _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         return renderResult->AddInlineShowCard(
-            actionSet, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs);
+            actionSet, showCardAction, showCardUIElement, renderArgs);
     }
 
     HRESULT AdaptiveRenderContext::AddOverflowButton(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionSet* actionSet,
