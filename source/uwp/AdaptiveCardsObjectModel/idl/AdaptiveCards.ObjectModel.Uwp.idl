@@ -17,13 +17,15 @@ namespace AdaptiveCards.ObjectModel.Uwp
         ExtraLarge
     };
 
-    enum TextWeight {
+    enum TextWeight
+    {
         Lighter = 0,
         Default,
         Bolder,
     };
 
-    enum ForegroundColor {
+    enum ForegroundColor
+    {
         Default = 0,
         Dark,
         Light,
@@ -33,26 +35,30 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Attention
     };
 
-    enum HAlignment {
+    enum HAlignment
+    {
         Left = 0,
         Center,
         Right,
     };
 
-    enum VAlignment {
+    enum VAlignment
+    {
         Top = 0,
         Center,
         Bottom,
     };
 
-    enum BackgroundImageFillMode {
+    enum BackgroundImageFillMode
+    {
         Cover = 0,
         RepeatHorizontally,
         RepeatVertically,
         Repeat
     };
 
-    enum ElementType {
+    enum ElementType
+    {
         Unsupported = 0,
         AdaptiveCard,
         TextBlock,
@@ -79,7 +85,8 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Table,
     };
 
-    enum ActionType {
+    enum ActionType
+    {
         Unsupported = 0,
         ShowCard,
         Submit,
@@ -89,12 +96,14 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Custom
     };
 
-    enum ImageStyle {
+    enum ImageStyle
+    {
         Default = 0,
         Person,
     };
 
-    enum ImageSize {
+    enum ImageSize
+    {
         None = 0,
         Auto,
         Stretch,
@@ -103,12 +112,14 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Large
     };
 
-    enum SeparatorThickness {
+    enum SeparatorThickness
+    {
         Default = 0,
         Thick,
     };
 
-    enum Spacing {
+    enum Spacing
+    {
         Default = 0,
         None,
         Small,
@@ -118,20 +129,24 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Padding
     };
 
-    enum ChoiceSetStyle {
+    enum ChoiceSetStyle
+    {
         Compact = 0,
         Expanded,
         Filtered,
     };
 
-    enum TextInputStyle {
+    enum TextInputStyle
+    {
         Text = 0,
         Tel,
         Url,
         Email,
+        Password,
     };
 
-    enum ContainerStyle {
+    enum ContainerStyle
+    {
         None = 0,
         Default,
         Emphasis,
@@ -141,12 +156,14 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Accent
     };
 
-    enum FontType {
+    enum FontType
+    {
         Default = 0,
         Monospace,
     };
 
-    enum ErrorStatusCode {
+    enum ErrorStatusCode
+    {
         InvalidJson = 0,
         RenderFailed,
         RequiredPropertyMissing,
@@ -155,7 +172,8 @@ namespace AdaptiveCards.ObjectModel.Uwp
         CustomError,
     };
 
-    enum WarningStatusCode {
+    enum WarningStatusCode
+    {
         UnknownElementType = 0,
         UnknownActionElementType,
         UnknownPropertyOnElement,
@@ -176,24 +194,28 @@ namespace AdaptiveCards.ObjectModel.Uwp
         RequiredPropertyMissing,
     };
 
-    enum VerticalContentAlignment {
+    enum VerticalContentAlignment
+    {
         Top = 0,
         Center,
         Bottom
     };
 
-    enum HeightType {
+    enum HeightType
+    {
         Auto = 0,
         Stretch,
     };
 
-    enum IsVisible {
+    enum IsVisible
+    {
         IsVisibleToggle = 0,
         IsVisibleTrue,
         IsVisibleFalse
     };
 
-    enum FallbackType {
+    enum FallbackType
+    {
         None = 0,
         Drop,
         Content,
@@ -208,18 +230,21 @@ namespace AdaptiveCards.ObjectModel.Uwp
         All = Left | Right | Up | Down
     };
 
-    enum AssociatedInputs {
+    enum AssociatedInputs
+    {
         Auto = 0,
         None,
     };
 
-    enum TextStyle {
+    enum TextStyle
+    {
         Default = 0,
         Heading,
         ColumnHeader,
     };
 
-    enum ActionMode {
+    enum ActionMode
+    {
         Primary = 0,
         Secondary,
     };
@@ -278,8 +303,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         Windows.Foundation.IReference<TextStyle> Style;
     };
 
-    [version(1), uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085")]
-    interface IAdaptiveInline {};
+    [version(1), uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085")] interface IAdaptiveInline {};
 
     runtimeclass AdaptiveTextRun : IAdaptiveInline, IAdaptiveTextElement
     {
@@ -706,9 +730,9 @@ namespace AdaptiveCards.ObjectModel.Uwp
     interface IAdaptiveElementParser
     {
         IAdaptiveCardElement FromJson(Windows.Data.Json.JsonObject inputJson,
-                                        AdaptiveElementParserRegistration elementParsers,
-                                        AdaptiveActionParserRegistration actionParsers,
-                                        Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
+                                      AdaptiveElementParserRegistration elementParsers,
+                                      AdaptiveActionParserRegistration actionParsers,
+                                      Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
     };
 
     runtimeclass AdaptiveElementParserRegistration
@@ -744,10 +768,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         String Label;
     };
 
-    [default_interface] runtimeclass AdaptiveTextBlockParser : IAdaptiveElementParser
-    {
-        AdaptiveTextBlockParser();
-    };
+    [default_interface] runtimeclass AdaptiveTextBlockParser : IAdaptiveElementParser { AdaptiveTextBlockParser(); };
 
     [default_interface] runtimeclass AdaptiveRichTextBlockParser : IAdaptiveElementParser
     {
@@ -756,64 +777,40 @@ namespace AdaptiveCards.ObjectModel.Uwp
 
     [default_interface] runtimeclass AdaptiveImageParser : IAdaptiveElementParser { AdaptiveImageParser(); };
 
-    [default_interface] runtimeclass AdaptiveImageSetParser : IAdaptiveElementParser
-    {
-        AdaptiveImageSetParser();
-    };
+    [default_interface] runtimeclass AdaptiveImageSetParser : IAdaptiveElementParser { AdaptiveImageSetParser(); };
 
-    [default_interface] runtimeclass AdaptiveContainerParser : IAdaptiveElementParser
-    {
-        AdaptiveContainerParser();
-    };
+    [default_interface] runtimeclass AdaptiveContainerParser : IAdaptiveElementParser { AdaptiveContainerParser(); };
 
     [default_interface] runtimeclass AdaptiveColumnParser : IAdaptiveElementParser { AdaptiveColumnParser(); };
 
-    [default_interface] runtimeclass AdaptiveColumnSetParser : IAdaptiveElementParser
-    {
-        AdaptiveColumnSetParser();
-    };
+    [default_interface] runtimeclass AdaptiveColumnSetParser : IAdaptiveElementParser { AdaptiveColumnSetParser(); };
 
     [default_interface] runtimeclass AdaptiveChoiceSetInputParser : IAdaptiveElementParser
     {
         AdaptiveChoiceSetInputParser();
     };
 
-    [default_interface] runtimeclass AdaptiveDateInputParser : IAdaptiveElementParser
-    {
-        AdaptiveDateInputParser();
-    };
+    [default_interface] runtimeclass AdaptiveDateInputParser : IAdaptiveElementParser { AdaptiveDateInputParser(); };
 
     [default_interface] runtimeclass AdaptiveNumberInputParser : IAdaptiveElementParser
     {
         AdaptiveNumberInputParser();
     };
 
-    [default_interface] runtimeclass AdaptiveTextInputParser : IAdaptiveElementParser
-    {
-        AdaptiveTextInputParser();
-    };
+    [default_interface] runtimeclass AdaptiveTextInputParser : IAdaptiveElementParser { AdaptiveTextInputParser(); };
 
-    [default_interface] runtimeclass AdaptiveTimeInputParser : IAdaptiveElementParser
-    {
-        AdaptiveTimeInputParser();
-    };
+    [default_interface] runtimeclass AdaptiveTimeInputParser : IAdaptiveElementParser { AdaptiveTimeInputParser(); };
 
     [default_interface] runtimeclass AdaptiveToggleInputParser : IAdaptiveElementParser
     {
         AdaptiveToggleInputParser();
     };
 
-    [default_interface] runtimeclass AdaptiveFactSetParser : IAdaptiveElementParser
-    {
-        AdaptiveFactSetParser();
-    };
+    [default_interface] runtimeclass AdaptiveFactSetParser : IAdaptiveElementParser { AdaptiveFactSetParser(); };
 
     [default_interface] runtimeclass AdaptiveMediaParser : IAdaptiveElementParser { AdaptiveMediaParser(); };
 
-    [default_interface] runtimeclass AdaptiveActionSetParser : IAdaptiveElementParser
-    {
-        AdaptiveActionSetParser();
-    };
+    [default_interface] runtimeclass AdaptiveActionSetParser : IAdaptiveElementParser { AdaptiveActionSetParser(); };
 
     [default_interface] runtimeclass AdaptiveOpenUrlActionParser : IAdaptiveActionParser
     {

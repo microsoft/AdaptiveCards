@@ -145,6 +145,54 @@ namespace UWPUITests
             Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Secondary Show Card"); });
         }
 
+        [TestMethod]
+        public void PasswordTest()
+        {
+            TestHelpers.GoToTestCase("Input.Text.PasswordStyle");
+
+            var passwordBox = TestHelpers.CastTo<Edit>(TestHelpers.FindByMultiple(
+                "Name", "Input.Text With Password Style\r\n",
+                "ClassName", "PasswordBox"));
+
+            Assert.IsTrue(passwordBox.IsPassword);
+
+            passwordBox.SendKeys("aNewPassword123!");
+            Assert.AreEqual("●●●●●●●●●●●●●●●●", passwordBox.Value);
+
+            // Submit data
+            TestHelpers.FindElementByName("OK").Click();
+
+            // Verify submitted data
+            Assert.AreEqual("aNewPassword123!", TestHelpers.GetInputValue("id0"));
+        }
+
+        [TestMethod]
+        public void PasswordRegexTest()
+        {
+            TestHelpers.GoToTestCase("Input.Text.PasswordStyle");
+
+            var passwordBox = TestHelpers.CastTo<Edit>(TestHelpers.FindByMultiple(
+                "Name", "Input.Text With Password Style\r\n",
+                "ClassName", "PasswordBox"));
+
+            Assert.IsTrue(passwordBox.IsPassword);
+
+            passwordBox.SendKeys("short");
+
+            // Submit data
+            TestHelpers.FindElementByName("OK").Click();
+
+            var errorMessage = TestHelpers.FindElementByName("Password must be between 8 and 20 characters");
+            Assert.IsNotNull(errorMessage);
+
+            passwordBox.SendKeys("LONGER!");
+
+            TestHelpers.FindElementByName("OK").Click();
+
+            // Verify submitted data
+            Assert.AreEqual("shortLONGER!", TestHelpers.GetInputValue("id0"));
+        }
+
         [ClassCleanup]
         public static void TearDown()
         {
