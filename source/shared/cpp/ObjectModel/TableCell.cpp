@@ -12,8 +12,15 @@ namespace AdaptiveCards
 
     std::shared_ptr<TableCell> TableCell::DeserializeTableCell(ParseContext& context, const Json::Value& value)
     {
+        const auto& idProperty = ParseUtil::GetString(value, AdaptiveCardSchemaKey::Id);
+        const InternalId internalId = InternalId::Next();
+
+        context.PushElement(idProperty, internalId);
+
         auto cell = StyledCollectionElement::Deserialize<TableCell>(context, value);
         cell->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
+
+        context.PopElement();
 
         return cell;
     }
