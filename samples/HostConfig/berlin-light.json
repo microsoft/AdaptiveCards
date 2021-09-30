@@ -1,0 +1,89 @@
+{
+    "supportsInteractivity": true,
+    "spacing": {
+        "small": 8,
+        "default": 12,
+        "medium": 16,
+        "large": 20,
+        "extraLarge": 24,
+        "padding": 16
+    },
+	"fontFamily": "'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif",
+	"fontSizes": {
+		"small": 12,
+		"default": 12,
+		"medium": 14,
+		"large": 20,
+		"extraLarge": 40
+	},
+	"fontWeights": {
+		"lighter": 400,
+		"default": 400,
+		"bolder": 600
+	},
+    "fontTypes": {
+        "default": {
+            "fontFamily": "'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif",
+            "fontSizes": {
+                "small": 12,
+                "default": 12,
+                "medium": 14,
+                "large": 20,
+                "extraLarge": 40
+            },
+            "fontWeights": {
+                "lighter": 400,
+                "default": 400,
+                "bolder": 600
+            }
+        },
+        "monospace": {
+            "fontFamily": "'Courier New', Courier, monospace",
+            "fontSizes": {
+                "small": 12,
+                "default": 12,
+                "medium": 14,
+                "large": 20,
+                "extraLarge": 40
+            },
+            "fontWeights": {
+                "lighter": 400,
+                "default": 400,
+                "bolder": 600
+            }
+        }
+    },
+	"foregroundColors": {
+		"default": {
+			"default": "#000000E4"
+		},
+		"accent": {
+			"default": "#005FB8"
+		},
+		"dark": {
+			"default": "#0000008C"
+		}
+	},
+	"imageSizes": {
+        "small": 32,
+        "medium": 52,
+        "large": 100
+    },
+    "textStyles": {
+        "heading": {
+            "fontType": "default",
+            "size": "large",
+            "weight": "bolder",
+            "color": "default",
+            "isSubtle": false
+        }
+    },
+    "textBlock": {
+        "maxWidth": "252px"
+    },
+	"separator": {
+		"lineThickness": 1,
+		"lineColor": "#333333"
+	}
+}
+

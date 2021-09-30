@@ -1,0 +1,86 @@
+.ac-adaptiveCard {
+    border: 0px;
+}
+
+.berlinInnerContainer {
+    border: 1px solid #E6E6E6;
+    width: 300px;
+    border-radius: 4px;
+}
+
+.ac-anchor {
+    text-decoration: none;
+}
+
+.ac-anchor:link {
+    color: #003E92;
+}
+
+.ac-textInput {
+    border: 0px;
+    border-radius: 2px;
+    height: 22px;
+}
+
+.ac-pushButton {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	cursor: pointer;
+	font-family: Segoe UI Variable Static Text;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	font-feature-settings: 'rclt' off;
+	padding: 5px 12px 7px;
+	width: 120px;
+	height: 32px;
+	background: #005FB8;
+	border: 0px;
+	border-radius: 4px;
+	color: #FFFFFF;
+}
+	
+.ac-pushButton:hover {
+	background: rgba(0, 95, 184, 0.9);
+}
+	
+.ac-pushButton:active { 
+	color: rgba(255, 255, 255, 0.7);
+	background: rgba(0, 95, 184, 0.8);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-sizing: border-box;
+	border-radius: 4px;
+}
+	
+.ac-pushButton:focus {
+	background: #005FB8;
+	border: 3px solid #FFFFFF;
+	box-sizing: border-box;
+	border-radius: 7px;
+	box-shadow: 2px solid rgba(0, 0, 0, 0.8956);
+}
+
+.ac-pushButton-disabled {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	cursor: pointer;
+	font-family: Segoe UI Variable Static Text;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	font-feature-settings: 'rclt' off;
+	padding: 5px 12px 7px;
+	width: 120px;
+	height: 32px;
+	background: rgba(0, 0, 0, 0.2169);
+	border-radius: 4px;
+	color: #FFFFFF;
+	border: 0px;
+}
+	
