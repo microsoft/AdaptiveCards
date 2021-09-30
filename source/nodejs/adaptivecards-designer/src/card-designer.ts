@@ -249,7 +249,7 @@ export class CardDesigner extends Designer.DesignContext {
             let paletteItemContainer = document.createElement('div');
             paletteItemContainer.className = "acd-palette-item-container";
 
-            for (var i = 0; i < categorizedTypes[category].length; i++) {
+            for (let i = 0; i < categorizedTypes[category].length; i++) {
                 this.addPaletteItem(categorizedTypes[category][i], paletteItemContainer);
             }
 
