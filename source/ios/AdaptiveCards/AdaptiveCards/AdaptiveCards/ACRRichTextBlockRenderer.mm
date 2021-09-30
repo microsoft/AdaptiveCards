@@ -221,6 +221,7 @@
     configRtl(lab, rootView.context);
     
     [viewGroup addArrangedSubview:lab];
+    
     return lab;
 }
 
