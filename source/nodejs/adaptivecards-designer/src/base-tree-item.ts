@@ -13,6 +13,15 @@ export abstract class BaseTreeItem extends DraggableElement {
     private _expandCollapseElement: HTMLElement;
     private _childContainerElement: HTMLElement;
 
+    private needsToBeScrolled() {
+        // detect the case where the treeViewHost's parent isn't currently
+        // overflowed. if it *is* overflowed (has scrollbar), then scrolling is
+        // appropriate. otherwise, we might be in a small-screen situation
+        // (single column rendering) where scrolling is undesireable
+        const treeViewHostParent = this._rootElement.closest(".acd-treeView-host").parentElement;
+        return (treeViewHostParent && treeViewHostParent.scrollHeight > treeViewHostParent.clientHeight);
+    }
+
     private setIsSelected(value: boolean, scrollIntoView: boolean) {
         if (this._isSelected !== value) {
             this._isSelected = value;
@@ -59,7 +68,7 @@ export abstract class BaseTreeItem extends DraggableElement {
     }
 
     protected selectedChanged(scrollIntoView: boolean) {
-        if (this.isSelected && scrollIntoView) {
+        if (this.isSelected && scrollIntoView && this.needsToBeScrolled()) {
             this._rootElement.scrollIntoView();
         }
 

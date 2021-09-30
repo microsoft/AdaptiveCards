@@ -2,59 +2,23 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveActionSet.h"
+#include "AdaptiveActionSet.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    AdaptiveActionSet::AdaptiveActionSet() { m_actions = Microsoft::WRL::Make<Vector<IAdaptiveActionElement*>>(); }
-
-    HRESULT AdaptiveActionSet::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveActionSet::AdaptiveActionSet(std::shared_ptr<::AdaptiveCards::ActionSet> const& sharedActionSet)
     {
-        std::shared_ptr<AdaptiveCards::ActionSet> ActionSet = std::make_shared<AdaptiveCards::ActionSet>();
-        return RuntimeClassInitialize(ActionSet);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveActionSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet)
-    try
-    {
-        if (sharedActionSet == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        RETURN_IF_FAILED(GenerateActionsProjection(sharedActionSet->GetActions(), m_actions.Get()));
-        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedActionSet));
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveActionSet::get_Actions(_COM_Outptr_ IVector<IAdaptiveActionElement*>** items)
-    {
-        return m_actions.CopyTo(items);
+        Actions = GenerateActionsProjection(sharedActionSet->GetActions());
+        InitializeBaseElement(sharedActionSet);
     }
 
-    HRESULT AdaptiveActionSet::get_ElementType(_Out_ ElementType* elementType)
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveActionSet::GetSharedModel()
     {
-        *elementType = ElementType::ActionSet;
-        return S_OK;
+        auto actionSet = std::make_shared<::AdaptiveCards::ActionSet>();
+        CopySharedElementProperties(*actionSet);
+
+        actionSet->GetActions() = GenerateSharedActions(Actions.get());
+
+        return actionSet;
     }
-
-    HRESULT AdaptiveActionSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel)
-    try
-    {
-        std::shared_ptr<AdaptiveCards::ActionSet> actionSet = std::make_shared<AdaptiveCards::ActionSet>();
-        RETURN_IF_FAILED(CopySharedElementProperties(*actionSet));
-
-        GenerateSharedActions(m_actions.Get(), actionSet->GetActions());
-
-        sharedModel = std::move(actionSet);
-        return S_OK;
-    }
-    CATCH_RETURN;
 }

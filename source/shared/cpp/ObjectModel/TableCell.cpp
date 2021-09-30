@@ -10,18 +10,16 @@ namespace AdaptiveCards
 {
     TableCell::TableCell() : Container(CardElementType::TableCell) {}
 
-    std::shared_ptr<BaseCardElement> TableCellParser::Deserialize(ParseContext& context, const Json::Value& value)
+    std::shared_ptr<TableCell> TableCell::DeserializeTableCell(ParseContext& context, const Json::Value& value)
     {
-        ParseUtil::ExpectTypeString(value, CardElementType::TableCell);
-
-        auto cell = CollectionTypeElement::Deserialize<TableCell>(context, value);
+        auto cell = StyledCollectionElement::Deserialize<TableCell>(context, value);
         cell->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
 
         return cell;
     }
 
-    std::shared_ptr<BaseCardElement> TableCellParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+    std::shared_ptr<TableCell> TableCell::DeserializeTableCellFromString(ParseContext& context, const std::string& jsonString)
     {
-        return TableCellParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+        return TableCell::DeserializeTableCell(context, ParseUtil::GetJsonValueFromString(jsonString));
     }
 }

@@ -980,9 +980,9 @@ export class TextBlock extends BaseTextBlock {
 
             if (this.style === "heading") {
                 element.setAttribute("role", "heading");
-                
+
                 let headingLevel = this.hostConfig.textBlock.headingLevel;
-                
+
                 if (headingLevel !== undefined && headingLevel > 0) {
                     element.setAttribute("aria-level", headingLevel.toString());
                 }
@@ -2776,7 +2776,19 @@ export class TextInput extends Input {
     static readonly maxLengthProperty = new NumProperty(Versions.v1_0, "maxLength");
     static readonly isMultilineProperty = new BoolProperty(Versions.v1_0, "isMultiline", false);
     static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
-    static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
+    static readonly styleProperty = new EnumProperty(
+        Versions.v1_0,
+        "style",
+        Enums.InputTextStyle,
+        Enums.InputTextStyle.Text,
+        [
+            { value: Enums.InputTextStyle.Text },
+            { value: Enums.InputTextStyle.Tel },
+            { value: Enums.InputTextStyle.Url },
+            { value: Enums.InputTextStyle.Email },
+            { value: Enums.InputTextStyle.Password, targetVersion: Versions.v1_5}
+        ]
+    );
     static readonly inlineActionProperty = new ActionProperty(Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
     static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
 
@@ -2832,7 +2844,7 @@ export class TextInput extends Input {
     protected internalRender(): HTMLElement | undefined {
         let result: HTMLInputElement | HTMLTextAreaElement;
 
-        if (this.isMultiline) {
+        if (this.isMultiline && this.style !== Enums.InputTextStyle.Password) {
             result = document.createElement("textarea");
             result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
 
@@ -3355,7 +3367,7 @@ export class ChoiceSetInput extends Input {
                     this._textInput.placeholder = this.placeholder;
                     this._textInput.setAttribute("aria-label", this.placeholder);
                 }
-        
+
                 let dataList = document.createElement("datalist");
                 dataList.id = Utils.generateUniqueId();
 
@@ -4001,7 +4013,7 @@ export abstract class Action extends CardObject {
 
     setupElementForAccessibility(element: HTMLElement, promoteTooltipToLabel: boolean = false) {
         element.tabIndex = this.isEnabled ? 0 : -1;
-        
+
         element.setAttribute("role", this.getAriaRole());
 
         if (element instanceof HTMLButtonElement) {
@@ -4054,7 +4066,7 @@ export abstract class Action extends CardObject {
                 this.execute();
             }
         };
-        
+
         this._renderedElement = buttonElement;
 
         this.renderButtonContent();
@@ -4862,7 +4874,7 @@ class ActionCollection {
             if (afterSelectedAction) {
                 renderedAction.isFocusable = false;
             }
-            
+
             if (renderedAction !== action) {
                 renderedAction.state = ActionButtonState.Subdued;
             }
