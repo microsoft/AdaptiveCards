@@ -6,6 +6,7 @@
 //
 #import "ACRFactSetRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOFillerSpaceManager.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnSetView.h"
 #import "ACRContentHoldingUIView.h"
@@ -191,6 +192,16 @@
         configRtl(valueLab, rootView.context);
     }
 
+    if (elem->GetHeight() == HeightType::Stretch) {
+        if (titleStack.arrangedSubviews.count) {
+            [ACOFillerSpaceManager configureHugging:titleStack.arrangedSubviews.lastObject];
+        }
+
+        if (valueStack.arrangedSubviews.count) {
+            [ACOFillerSpaceManager configureHugging:valueStack.arrangedSubviews.lastObject];
+        }
+    }
+
     factSetWrapperView.accessibilityElements = accessibilityElements;
 
     if (!nValidFacts) {
@@ -198,22 +209,6 @@
     }
 
     [viewGroup addArrangedSubview:factSetWrapperView];
-
-    if (factSet->GetHeight() == HeightType::Stretch) {
-        UIView *blankTrailingSpace0 = [[UIView alloc] init];
-        blankTrailingSpace0.translatesAutoresizingMaskIntoConstraints = NO;
-        [titleStack addArrangedSubview:blankTrailingSpace0];
-        [blankTrailingSpace0 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [blankTrailingSpace0 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-
-        UIView *blankTrailingSpace1 = [[UIView alloc] init];
-        blankTrailingSpace1.translatesAutoresizingMaskIntoConstraints = NO;
-        [valueStack addArrangedSubview:blankTrailingSpace1];
-        [blankTrailingSpace1 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [blankTrailingSpace1 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-    }
-
-    configVisibility(factSetWrapperView, elem);
 
     return factSetWrapperView;
 }

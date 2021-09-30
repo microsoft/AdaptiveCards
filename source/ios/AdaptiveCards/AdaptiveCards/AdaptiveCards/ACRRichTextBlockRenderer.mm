@@ -219,11 +219,8 @@
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     configRtl(lab, rootView.context);
-
-    configVisibility(lab, elem);
     
     [viewGroup addArrangedSubview:lab];
-
     return lab;
 }
 

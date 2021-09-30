@@ -9,6 +9,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRInputLabelViewPrivate.h"
+#import "ACRQuickReplyView.h"
 #import "UtiliOS.h"
 
 @implementation ACRInputLabelView
@@ -119,6 +120,10 @@
 
         self.inputAccessibilityItem.isAccessibilityElement = YES;
         self.labelText = self.inputAccessibilityItem.accessibilityLabel;
+
+        if (HeightType::Stretch == inputBlck->GetHeight() && [inputView isKindOfClass:[ACRQuickReplyView class]]) {
+            [self.stack addArrangedSubview:[(ACRColumnView *)viewGroup addPaddingFor:self]];
+        }
 
         self.shouldGroupAccessibilityChildren = NO;
 

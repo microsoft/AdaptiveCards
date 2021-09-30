@@ -7,112 +7,212 @@
 //
 
 #import "ACOVisibilityManager.h"
+#import "ACRColumnView.h"
 #import "ACREnums.h"
 #import "ACRSeparator.h"
 
-@implementation ACOVisibilityManager
+@implementation ACOVisibilityManager {
+    /// tracks objects that are used in filling the space
+    __weak ACOFillerSpaceManager *_fillerSpaceManager;
+    /// tracks visible views
+    NSMutableOrderedSet<NSNumber *> *_visibleViews;
+}
 
-- (void)hideView:(UIView *)viewToBeHidden arrangedSubviews:(NSArray<UIView *> *)subviews
+- (instancetype)init:(ACOFillerSpaceManager *)fillerSpaceManager
 {
-    if (!subviews || !viewToBeHidden) {
+    self = [super init];
+    if (self) {
+        _fillerSpaceManager = fillerSpaceManager;
+        _visibleViews = [[NSMutableOrderedSet alloc] init];
+    }
+    return self;
+}
+
+- (BOOL)hasVisibleViews
+{
+    return _visibleViews.count > 0;
+}
+
+/// adds index of a visible view to a visible views collection, and the index is maintained in sorted order
+/// in increasing order.
+- (void)addVisibleView:(NSUInteger)index
+{
+    NSNumber *indexAsNumber = [NSNumber numberWithLong:index];
+    if ([_visibleViews containsObject:indexAsNumber]) {
+        return;
+    }
+    NSRange range = NSMakeRange(0, _visibleViews.count);
+    NSUInteger insertionIndex = [_visibleViews indexOfObject:indexAsNumber
+                                               inSortedRange:range
+                                                     options:NSBinarySearchingInsertionIndex
+                                             usingComparator:^(id num0, id num1) {
+                                                 return [num0 compare:num1];
+                                             }];
+    [_visibleViews insertObject:indexAsNumber atIndex:insertionIndex];
+}
+
+/// removes the index of view from the visible views collection
+/// maintain the sorted order after the removal
+- (void)removeVisibleViewAtIndex:(NSUInteger)index
+{
+    NSNumber *indexAsNumber = [NSNumber numberWithLong:index];
+    if (![_visibleViews containsObject:indexAsNumber]) {
+        return;
+    }
+    NSRange range = NSMakeRange(0, _visibleViews.count);
+    NSUInteger removalIndex = [_visibleViews indexOfObject:indexAsNumber
+                                             inSortedRange:range
+                                                   options:NSBinarySearchingInsertionIndex
+                                           usingComparator:^(id num0, id num1) {
+                                               return [num0 compare:num1];
+                                           }];
+    [_visibleViews removeObjectAtIndex:removalIndex];
+}
+
+/// YES means the index of view is currently the leading or top view
+- (BOOL)amIHead:(NSUInteger)index
+{
+    NSNumber *indexAsNumber = [NSNumber numberWithLong:index];
+    return (_visibleViews.count && [_visibleViews.firstObject isEqual:indexAsNumber]);
+}
+
+/// returns the current leading or top view's index
+- (NSUInteger)getHeadIndexOfVisibleViews
+{
+    if (_visibleViews.count) {
+        return [_visibleViews.firstObject longValue];
+    }
+
+    return NSNotFound;
+}
+
+/// change the visibility of the separator of a host view to `visibility`
+/// `visibility` `YES` indicates that the separator will be hidden
+- (void)changeVisiblityOfSeparator:(UIView *)hostView visibilityHidden:(BOOL)visibility contentStackView:(ACRContentStackView *)contentStackView
+{
+    ACRSeparator *separtor = [_fillerSpaceManager getSeparatorForOwnerView:hostView];
+    if (separtor && (separtor.isHidden != visibility)) {
+        separtor.hidden = visibility;
+        if (visibility) {
+            [contentStackView decreaseIntrinsicContentSize:separtor];
+        } else {
+            [contentStackView increaseIntrinsicContentSize:separtor];
+        }
+    }
+}
+
+/// change the visibility of the padding of a host view to `visibility`
+/// `visibility` `YES` indicates that the padding will be hidden
+- (void)changeVisibilityOfPadding:(UIView *)hostView visibilityHidden:(BOOL)visibility
+{
+    for (NSValue *value in [_fillerSpaceManager getFillerSpaceView:hostView]) {
+        UIView *padding = value.nonretainedObjectValue;
+        if (padding.isHidden != visibility) {
+            padding.hidden = visibility;
+        }
+    }
+}
+
+/// change the visibility of the padding(s) and separator of a host view to `visibility`
+/// `visibility` `YES` indicates that the padding will be hidden
+- (void)changeVisiblityOfAssociatedViews:(UIView *)hostView
+                         visibilityValue:(BOOL)visibility
+                        contentStackView:(ACRContentStackView *)contentStackView
+{
+    if (!hostView) {
         return;
     }
 
+    [self changeVisibilityOfPadding:hostView visibilityHidden:visibility];
+    [self changeVisiblityOfSeparator:hostView visibilityHidden:visibility contentStackView:contentStackView];
+}
+
+/// hide `viewToBeHidden`. `hostView` is a superview of type ColumnView or ColumnSetView
+- (void)hideView:(UIView *)viewToBeHidden hostView:(ACRContentStackView *)hostView
+{
+    if (!hostView || !hostView.subviews || !viewToBeHidden || !_fillerSpaceManager) {
+        return;
+    }
+
+    NSArray<UIView *> *subviews = [hostView getContentStackSubviews];
+    if (!subviews) {
+        return;
+    }
+
+    NSUInteger index = [subviews indexOfObject:viewToBeHidden];
+    if (index == NSNotFound) {
+        return;
+    }
+
+    BOOL isHead = [self amIHead:index];
+    [self removeVisibleViewAtIndex:index];
+
+    // setting hidden view to hidden again is a programming error
+    // as it requires to have equal or more times of the opposite value to be set
+    // in order to reverse it
     if (!viewToBeHidden.isHidden) {
         viewToBeHidden.hidden = YES;
+        // decrease the intrinsic content size by the intrinsic content size of
+        // `viewToBeHidden` otherwise, viewTobeHidden's size will be included
+        [hostView decreaseIntrinsicContentSize:viewToBeHidden];
+        [self changeVisiblityOfAssociatedViews:viewToBeHidden visibilityValue:YES contentStackView:hostView];
     }
 
-    // get the index of the target view
-    // if the target view is not the tail,
-    // check to the right, and if the right separator and not hidden,
-    // hide the separator
-    // if the target view is tail, check to left, and if the left is separator and not hidden,
-    // hide the separator
-    NSInteger index = [subviews indexOfObject:viewToBeHidden];
-    if (index + 1 < subviews.count) {
-        NSInteger nextViewIndex = index + 1;
-        UIView *nextView = subviews[nextViewIndex];
-        if ([nextView isKindOfClass:[ACRSeparator class]]) {
-            if (!nextView.isHidden) {
-                nextView.hidden = YES;
-            }
-        }
-    } else if (index - 1 >= 0) {
-        NSInteger prevViewIndex = index - 1;
-        UIView *prevView = subviews[prevViewIndex];
-        if ([prevView isKindOfClass:[ACRSeparator class]]) {
-            if (!prevView.isHidden) {
-                prevView.hidden = YES;
-            }
-        }
-    }
-
-    // only cares for tailing padding at the moment
-    // if column width is "auto", and all of its children hidden,
-    // hide column, if is "stretch", then don't hide it.
-    if (self.padding && [_columnWidth isEqualToString:@"auto"]) {
-        for (UIView *subview in subviews) {
-            if (!subview.isHidden && ![subview isEqual:self.padding]) {
-                return;
-            }
-        }
-
-        if (!self.padding.isHidden) {
-            self.padding.hidden = YES;
+    // if `viewToBeHidden` is a head, get new head if any, and hide its separator
+    if (isHead) {
+        NSUInteger headIndex = [self getHeadIndexOfVisibleViews];
+        if (headIndex != NSNotFound && headIndex < subviews.count) {
+            UIView *head = subviews[headIndex];
+            [self changeVisiblityOfSeparator:head visibilityHidden:YES contentStackView:hostView];
         }
     }
 }
 
-- (void)unhideView:(UIView *)viewToBeUnhidden arrangedSubviews:(NSArray<UIView *> *)subviews
+/// unhide `viewToBeUnhidden`. `hostView` is a superview of type ColumnView or ColumnSetView
+- (void)unhideView:(UIView *)viewToBeUnhidden hostView:(ACRContentStackView *)hostView
 {
-    if (!subviews || !viewToBeUnhidden) {
+    if (!hostView || !viewToBeUnhidden || !_fillerSpaceManager) {
         return;
     }
 
-    // find the index of target view and check if the view is at tail
-    // if tail, check to left for separator else check to right
-    // if trailing padding exists, the target view is tail and padding is hidden,
-    // unhide the padding regardless
-    BOOL isViewFound = NO, isLastView = YES;
-    NSInteger targetIndex = subviews.count;
-    for (NSInteger i = 0; i < subviews.count; i++) {
-        UIView *subview = subviews[i];
-        if ([subview isEqual:viewToBeUnhidden]) {
-            targetIndex = i;
-            isViewFound = YES;
-        } else if (!subview.isHidden && isViewFound && (!self.padding || (self.padding && ![subview isEqual:self.padding]))) {
-            isLastView = NO;
-            break;
-        }
+    NSArray<UIView *> *subviews = [hostView getContentStackSubviews];
+    if (!subviews) {
+        return;
     }
 
-    if (isViewFound) {
-        UIView *separator = nil;
-        NSInteger separatorIndex = targetIndex;
-        if (isLastView) {
-            separatorIndex -= 1;
-            if (separatorIndex > 0 && [subviews[separatorIndex] isKindOfClass:[ACRSeparator class]]) {
-                separator = subviews[separatorIndex];
-            }
-        } else {
-            separatorIndex += 1;
-            if (separatorIndex < subviews.count && [subviews[separatorIndex] isKindOfClass:[ACRSeparator class]]) {
-                separator = subviews[separatorIndex];
-            }
+    NSUInteger index = [subviews indexOfObject:viewToBeUnhidden];
+    if (index == NSNotFound) {
+        return;
+    }
+
+    NSUInteger headIndex = [self getHeadIndexOfVisibleViews];
+    [self addVisibleView:index];
+    // check if the unhidden view will become a head
+    if ([self amIHead:index]) {
+        // only enable filler view associated with the `viewTobeUnhidden`
+        [self changeVisibilityOfPadding:viewToBeUnhidden visibilityHidden:NO];
+        if (viewToBeUnhidden.isHidden) {
+            viewToBeUnhidden.hidden = NO;
+            [hostView increaseIntrinsicContentSize:viewToBeUnhidden];
         }
 
-        UIView *targetView = subviews[targetIndex];
-        if (targetView.isHidden) {
-            targetView.hidden = NO;
+        // previous head view's separator becomes visible
+        if (headIndex != NSNotFound && headIndex < subviews.count) {
+            UIView *prevHeadView = subviews[headIndex];
+            [self changeVisiblityOfSeparator:prevHeadView visibilityHidden:NO contentStackView:hostView];
         }
-        if (separator && separator.isHidden) {
-            separator.hidden = NO;
+    } else {
+        if (viewToBeUnhidden.isHidden) {
+            viewToBeUnhidden.hidden = NO;
+            [hostView increaseIntrinsicContentSize:viewToBeUnhidden];
         }
-
-        if (isLastView && self.padding && self.padding.isHidden) {
-            self.padding.hidden = NO;
-        }
+        [self changeVisiblityOfAssociatedViews:viewToBeUnhidden visibilityValue:NO contentStackView:hostView];
     }
 }
 
+- (void)updatePaddingVisibility
+{
+    [_fillerSpaceManager deactivateConstraintsForPadding];
+    [_fillerSpaceManager activateConstraintsForPadding];
+}
 @end

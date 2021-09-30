@@ -333,6 +333,7 @@ namespace AdaptiveCards
         Tel,
         Url,
         Email,
+        Password,
     };
     DECLARE_ADAPTIVECARD_ENUM(TextInputStyle);
 
