@@ -94,10 +94,62 @@ namespace UWPUITests
             Assert.AreEqual("true", TestHelpers.GetInputValue("acceptTerms"));
         }
 
+        [TestMethod]
+        public void SecondaryShowCardTest()
+        {
+            TestHelpers.GoToTestCase("PrimarySecondaryShowCards");
+
+            // We should be able to find the primary show card action and the overflow menu
+            var primaryShowCardAction = TestHelpers.FindByMultiple("Name", "Primary Show Card Action", "ClassName", "Button");
+            Assert.IsNotNull(primaryShowCardAction);
+
+            var overflowMenu = TestHelpers.FindByMultiple("Name", "...", "ClassName", "Button");
+            Assert.IsNotNull(overflowMenu);
+
+            // We should not be able to find either of the show cards
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Primary Show Card"); });
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Secondary Show Card"); });
+
+            // Click the primary show card and validate that the card appears
+            primaryShowCardAction.Click();
+
+            var primaryShowCard = TestHelpers.FindElementByName("Primary Show Card");
+            Assert.IsNotNull(primaryShowCard);
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Secondary Show Card"); });
+
+            // Click the overflow menu and find the secondary show card action
+            overflowMenu.Click();
+
+            var secondaryShowCardAction = TestHelpers.FindPopupByName("Secondary Show Card Action");
+            Assert.IsNotNull(secondaryShowCardAction);
+
+            // Click the secondary action and validate that the card appears
+            secondaryShowCardAction.Click();
+
+            var secondaryShowCard = TestHelpers.FindElementByName("Secondary Show Card");
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Primary Show Card"); });
+
+            // Close the secondary show card and validate the state
+            overflowMenu.Click();
+            secondaryShowCardAction = TestHelpers.FindPopupByName("Secondary Show Card Action");
+            Assert.IsNotNull(secondaryShowCardAction);
+            secondaryShowCardAction.Click();
+
+            primaryShowCardAction = TestHelpers.FindByMultiple("Name", "Primary Show Card Action", "ClassName", "Button");
+            Assert.IsNotNull(primaryShowCardAction);
+
+            overflowMenu = TestHelpers.FindByMultiple("Name", "...", "ClassName", "Button");
+            Assert.IsNotNull(overflowMenu);
+
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Primary Show Card"); });
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Secondary Show Card"); });
+        }
+
         [ClassCleanup]
         public static void TearDown()
         {
             application.Close();
         }
     }
+
 }
