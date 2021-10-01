@@ -1,0 +1,37 @@
+{"$data" :
+{
+  "LineItems": [
+    {
+      "Name": "Leonardo DiCaprio"
+    },
+    {
+      "Name": "Bradley Cooper"
+    }
+  ]
+},
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "Container",
+      "spacing": "small",
+      "selectAction": {
+        "type": "Action.ToggleVisibility",
+        "title": "expand",
+        "targetElements": "${foreach(foreach(indicesAndValues(LineItems), x, concat('cardContent', x.index)), y, json(concat('{ \"elementId\": \"', y, '\", \"isVisible\": true}')))}"
+      },
+      "verticalContentAlignment": "center",
+      "items": [
+        {
+          "type": "Image",
+          "id": "chevronDown",
+          "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhklEQVQ4T2NkoBAwUqifYXAYwMrAwLCQgYGhhIGB4RmRXpJiYGDoYWBgiId5oZix4krP/w4daSIMkWKsuPL0f4cOyMJe5DAgxhAUzSDXogciPkMwNGMzACSGzRCsmnEZgG4IA7Kf0QMZXzoAuwSkARZg2GKIUEIqhmrqxRW9hAwgmCyGgQEA0UY6FkSob0cAAAAASUVORK5CYII=",
+          "width": "20px",
+          "altText": "Details collapsed"
+        }
+      ],
+      "width": "auto"
+    }
+  ]
+}
