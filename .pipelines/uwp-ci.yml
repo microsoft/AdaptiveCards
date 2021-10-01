@@ -54,13 +54,15 @@ steps:
 - task: VSTest@2
   displayName: 'VsTest - Unit Tests'
   inputs:
+    testRunTitle: 'UWP Unit Tests'
+    searchFolder: '$(System.DefaultWorkingDirectory)\source\uwp'
     testAssemblyVer2: |
      **\Release\UWPUnitTests.build.appxrecipe
      !**\obj\**
     otherConsoleOptions: '/Framework:FrameworkUap10'
     runInParallel: true
     runTestsInIsolation: true
-    codeCoverageEnabled: false
+    codeCoverageEnabled: true
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
     diagnosticsEnabled: True
@@ -69,12 +71,14 @@ steps:
 - task: VSTest@2
   displayName: 'VsTest - UI Tests'
   inputs:
+    testRunTitle: 'UWP UI Tests'
+    searchFolder: '$(System.DefaultWorkingDirectory)\source\uwp'
     testAssemblyVer2: |
      **\Release\netcoreapp2.1\UWPUITests.dll
      !**\obj\**
     uiTests: true
     runTestsInIsolation: true
-    codeCoverageEnabled: false
+    codeCoverageEnabled: true
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
     diagnosticsEnabled: True
