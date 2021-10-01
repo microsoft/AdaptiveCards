@@ -130,7 +130,7 @@
                                                                               actionElement:acoSelectAction
                                                                                  hostConfig:acoConfig];
     if (target && acoSelectAction.inlineTooltip) {
-        [target addGestureRecognizer:view tooTipText:acoSelectAction.inlineTooltip];
+        [target addGestureRecognizer:view toolTipText:acoSelectAction.inlineTooltip];
     }
 
     view.translatesAutoresizingMaskIntoConstraints = NO;

@@ -17,7 +17,7 @@
 {
 }
 
-- (void)addGestureRecognizer:(UIView *)view tooTipText:(NSString *)toolTipText
+- (void)addGestureRecognizer:(UIView *)view toolTipText:(NSString *)toolTipText
 {
     if (view && toolTipText && toolTipText.length) {
         [self setTooltip:view toolTipText:toolTipText];

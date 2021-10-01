@@ -11,7 +11,7 @@
 
 @interface ACRBaseTarget : NSObject <ACRSelectActionDelegate>
 
-- (void)addGestureRecognizer:(UIView *)view tooTipText:(NSString *)toolTipText;
+- (void)addGestureRecognizer:(UIView *)view toolTipText:(NSString *)toolTipText;
 
 - (void)setTooltip:(UIView *)view toolTipText:(NSString *)toolTipText;
 

@@ -580,7 +580,7 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
 {
     *target = [director build:action forButton:button];
     if (action.tooltip && target) {
-        [((ACRBaseTarget *)*target) addGestureRecognizer:button tooTipText:action.tooltip];
+        [((ACRBaseTarget *)*target) addGestureRecognizer:button toolTipText:action.tooltip];
     }
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }

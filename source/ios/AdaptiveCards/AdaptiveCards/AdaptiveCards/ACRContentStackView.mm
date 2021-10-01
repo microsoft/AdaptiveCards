@@ -546,7 +546,7 @@ using namespace AdaptiveCards;
             setAccessibilityTrait(self, action);
             self.accessibilityLabel = configureForAccessibilityLabel(action, [self gatherAccessibilityLabelsFromSubviews]);
             if (action.inlineTooltip) {
-                [target addGestureRecognizer:self tooTipText:action.inlineTooltip];
+                [target addGestureRecognizer:self toolTipText:action.inlineTooltip];
             }
         }
     }
