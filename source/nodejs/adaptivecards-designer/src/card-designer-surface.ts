@@ -332,7 +332,25 @@ export class CardDesignerSurface {
 
         if (this.isPreviewMode) {
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
-                alert("Action executed\n" + JSON.stringify(action.toJSON(this._serializationContext), undefined, 4));
+                const actionType = action.getJsonTypeName();
+                let message = `Action executed: "${actionType}" title: "${action.title}"`;
+
+                const verb = (<Adaptive.ExecuteAction>action).verb;
+                if (verb) {
+                    message += ` verb: "${verb}"`;
+                }
+                
+                const url = (<Adaptive.OpenUrlAction>action).url;
+                if (url) {
+                    message += `\nurl: "${url}"`;
+                }
+                
+                const data = (<Adaptive.SubmitActionBase>action).data;
+                if (data) {
+                    message += `\nSubmitted data: ${JSON.stringify(data, undefined, 4)}`;
+                }
+
+                alert(message);
             };
         }
 
