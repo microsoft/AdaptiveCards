@@ -187,7 +187,7 @@ function setupContainerPicker() {
 
     hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
 
-    for (var i = 0; i < hostContainerOptions.length; i++) {
+    for (let i = 0; i < hostContainerOptions.length; i++) {
         var option = document.createElement("option");
         option.value = hostContainerOptions[i].name;
         option.text = hostContainerOptions[i].name;
@@ -234,7 +234,7 @@ function actionExecuted(action: Adaptive.Action) {
         message += "    Method: " + httpAction.method + "\n";
         message += "    Headers:\n";
 
-        for (var i = 0; i < httpAction.headers.length; i++) {
+        for (let i = 0; i < httpAction.headers.length; i++) {
             message += "        " + httpAction.headers[i].name + ": " + httpAction.headers[i].value + "\n";
         }
 
@@ -282,7 +282,7 @@ function showValidationErrors() {
         var errorContainer = document.getElementById("errorContainer");
         errorContainer.innerHTML = "";
 
-        for (var i = 0; i < lastValidationErrors.length; i++) {
+        for (let i = 0; i < lastValidationErrors.length; i++) {
             var errorElement = document.createElement("div");
             errorElement.innerText = lastValidationErrors[i].message;
 

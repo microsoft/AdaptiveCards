@@ -48,7 +48,7 @@ export function getHeaderMarkdown(content, level) {
 	level = defaultValueHelper(level, 2);
 
 	var md = '';
-	for (var i = 0; i < level; ++i) {
+	for (let i = 0; i < level; ++i) {
 		md += '#';
 	}
 

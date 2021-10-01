@@ -705,7 +705,7 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
         input.placeholder = "(not set)";
         input.choices.push(new Adaptive.Choice("(not set)", "none"));
 
-        for (var i = 0; i < context.designContext.hostContainer.actionsRegistry.getItemCount(); i++) {
+        for (let i = 0; i < context.designContext.hostContainer.actionsRegistry.getItemCount(); i++) {
             let actionType = context.designContext.hostContainer.actionsRegistry.getItemAt(i).typeName;
             let excludeAction = true;
 
@@ -1274,7 +1274,7 @@ export abstract class DesignerPeer extends DraggableElement {
         designerSurface.appendChild(this.renderedElement);
 
         if (processChildren) {
-            for (var i = 0; i < this.getChildCount(); i++) {
+            for (let i = 0; i < this.getChildCount(); i++) {
                 this.getChildAt(i).addElementsToDesignerSurface(designerSurface, processChildren);
             }
         }
@@ -1284,7 +1284,7 @@ export abstract class DesignerPeer extends DraggableElement {
         this.renderedElement.parentNode.removeChild(this.renderedElement);
 
         if (processChildren) {
-            for (var i = 0; i < this.getChildCount(); i++) {
+            for (let i = 0; i < this.getChildCount(); i++) {
                 this.getChildAt(i).removeElementsFromDesignerSurface(processChildren);
             }
         }
@@ -1685,7 +1685,7 @@ export class CardElementPeer extends DesignerPeer {
         let itemCount = 0;
         if (this.cardElement instanceof Adaptive.CardElementContainer) {
             itemCount = this.cardElement.getItemCount();
-            for (var i = 0; i < itemCount; i++) {
+            for (let i = 0; i < itemCount; i++) {
                 let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
 
                 if (!existingPeer) {
@@ -1700,7 +1700,7 @@ export class CardElementPeer extends DesignerPeer {
             }
         }
 
-        for (var i = 0; i < this.cardElement.getActionCount(); i++) {
+        for (let i = 0; i < this.cardElement.getActionCount(); i++) {
             let existingPeer = this.findActionChild(this.cardElement.getActionAt(i));
 
             if (!existingPeer) {
@@ -1746,7 +1746,7 @@ export class CardElementPeer extends DesignerPeer {
             let targetChild: DesignerPeer = null;
             let insertAfter: boolean;
 
-            for (var i = 0; i < this.getChildCount(); i++) {
+            for (let i = 0; i < this.getChildCount(); i++) {
                 let rect = this.getChildAt(i).getBoundingRect();
 
                 if (rect.isInside(insertionPoint)) {
@@ -1924,7 +1924,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
         let availableActions: Adaptive.ITypeRegistration<Adaptive.Action>[] = [];
 
-        for (var i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
+        for (let i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
             let typeRegistration = context.hostContainer.actionsRegistry.getItemAt(i);
 
             if (typeRegistration.schemaVersion.compareTo(context.targetVersion) <= 0) {
@@ -2250,7 +2250,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 
         let availableActions: Adaptive.ITypeRegistration<Adaptive.Action>[] = [];
 
-        for (var i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
+        for (let i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
             let typeRegistration = context.hostContainer.actionsRegistry.getItemAt(i);
 
             if (typeRegistration.schemaVersion.compareTo(context.targetVersion) <= 0) {
