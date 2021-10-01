@@ -1682,8 +1682,10 @@ export class CardElementPeer extends DesignerPeer {
             }
         }
 
+        let itemCount = 0;
         if (this.cardElement instanceof Adaptive.CardElementContainer) {
-            for (var i = 0; i < this.cardElement.getItemCount(); i++) {
+            itemCount = this.cardElement.getItemCount();
+            for (var i = 0; i < itemCount; i++) {
                 let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
 
                 if (!existingPeer) {
@@ -1707,7 +1709,7 @@ export class CardElementPeer extends DesignerPeer {
                         this.designerSurface,
                         this,
                         this.cardElement.getActionAt(i)),
-                    i);
+                        itemCount + i);
             }
         }
 
