@@ -276,8 +276,6 @@ product.pbxproj
 **/.DS_Store
 .build/
 xcuserdata/
-Pods/
-Podfile.lock
 
 #Generated header from MIDL
 **/UWP/Renderer/AdaptiveCards.Rendering.Uwp.h
