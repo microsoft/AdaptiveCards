@@ -9,6 +9,58 @@
 
 @implementation ACRContentHoldingUIScrollView
 
+- (void)preconfigreAutolayout
+{
+    if (!self.contentview) {
+        return;
+    }
+
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.stretchConstraints = [[NSMutableArray alloc] init];
+    self.nonStretchConstraints = [[NSMutableArray alloc] init];
+
+    [(NSMutableArray *)self.stretchConstraints addObject:[self.heightAnchor constraintEqualToAnchor:self.contentview.heightAnchor]];
+    [(NSMutableArray *)self.nonStretchConstraints addObject:[self.heightAnchor constraintEqualToAnchor:self.contentview.heightAnchor]];
+
+    [(NSMutableArray *)self.stretchConstraints addObjectsFromArray:@[
+        [self.contentview.widthAnchor constraintEqualToAnchor:self.widthAnchor
+                                                   multiplier:1.0],
+        [self.contentview.centerXAnchor constraintEqualToAnchor:self.centerXAnchor],
+        [self.contentview.centerYAnchor constraintEqualToAnchor:self.centerYAnchor]
+    ]];
+
+    [(NSMutableArray *)self.nonStretchConstraints addObjectsFromArray:@[
+        [NSLayoutConstraint constraintWithItem:self
+                                     attribute:NSLayoutAttributeTop
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.contentview
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.0
+                                      constant:0],
+        [NSLayoutConstraint constraintWithItem:self
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.contentview
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.0
+                                      constant:0],
+        [NSLayoutConstraint constraintWithItem:self
+                                     attribute:NSLayoutAttributeLeading
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.contentview
+                                     attribute:NSLayoutAttributeLeading
+                                    multiplier:1.0
+                                      constant:0],
+        [NSLayoutConstraint constraintWithItem:self
+                                     attribute:NSLayoutAttributeTrailing
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.contentview
+                                     attribute:NSLayoutAttributeTrailing
+                                    multiplier:1.0
+                                      constant:0]
+    ]];
+}
+
 - (CGSize)intrinsicContentSize
 {
     // whenever intrinsic content size is called, re-check if content size for subviews have changed
@@ -36,17 +88,12 @@
     self.contentWidth = [self intrinsicContentSize].width;
 
     // if content size is smaller than the superview, and stretch is specified, stretch content view
-    if (self.contentview && (self.stretch && self.frame.size.width > self.contentWidth && !self.widthConstraintForStretch.active)) {
+    if (self.contentview && (self.stretch && self.frame.size.width > self.contentWidth &&
+                             self.stretchConstraints &&
+                             self.stretchConstraints.count > 0 &&
+                             !self.stretchConstraints[0].active)) {
         // add new constraints before layoutSubview before layout pass
-        self.widthConstraintForStretch = [self.contentview.widthAnchor constraintEqualToAnchor:self.widthAnchor multiplier:1.0];
-        self.widthConstraintForStretch.active = YES;
-
-        self.centerXConstraintForStretch = [self.contentview.centerXAnchor constraintEqualToAnchor:self.centerXAnchor];
-        self.centerXConstraintForStretch.active = YES;
-
-        self.centerYConstraintForStretch = [self.contentview.centerYAnchor constraintEqualToAnchor:self.centerYAnchor];
-        self.centerYConstraintForStretch.active = YES;
-
+        [NSLayoutConstraint activateConstraints:self.stretchConstraints];
         // layout pass
         [super layoutSubviews];
         // everything is done
@@ -58,53 +105,8 @@
     if ((self.contentview.axis == UILayoutConstraintAxisHorizontal) && self.frame.size.width < self.contentWidth && !_isContentSizeConstraintSet) {
         _isContentSizeConstraintSet = YES;
         // de-activate constraints
-        if (self.widthConstraintForStretch) {
-            self.widthConstraintForStretch.active = NO;
-        }
-
-        if (self.centerXConstraintForStretch) {
-            self.centerXConstraintForStretch.active = NO;
-        }
-
-        if (self.centerYConstraintForStretch) {
-            self.centerYConstraintForStretch.active = NO;
-        }
-
-        // following constraints enables scrolling behaviors
-        [NSLayoutConstraint constraintWithItem:self
-                                     attribute:NSLayoutAttributeTop
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:self.contentview
-                                     attribute:NSLayoutAttributeTop
-                                    multiplier:1.0
-                                      constant:0]
-            .active = YES;
-        [NSLayoutConstraint constraintWithItem:self
-                                     attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:self.contentview
-                                     attribute:NSLayoutAttributeBottom
-                                    multiplier:1.0
-                                      constant:0]
-            .active = YES;
-        [NSLayoutConstraint constraintWithItem:self
-                                     attribute:NSLayoutAttributeLeading
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:self.contentview
-                                     attribute:NSLayoutAttributeLeading
-                                    multiplier:1.0
-                                      constant:0]
-            .active = YES;
-        [NSLayoutConstraint constraintWithItem:self
-                                     attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:self.contentview
-                                     attribute:NSLayoutAttributeTrailing
-                                    multiplier:1.0
-                                      constant:0]
-            .active = YES;
-
-
+        [NSLayoutConstraint deactivateConstraints:self.stretchConstraints];
+        [NSLayoutConstraint activateConstraints:self.nonStretchConstraints];
         // now ready for layout pass
         [super layoutSubviews];
     }

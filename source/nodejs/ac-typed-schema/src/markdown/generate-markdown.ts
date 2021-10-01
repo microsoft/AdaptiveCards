@@ -160,14 +160,14 @@ function createTable(formattedProperties: any[]) {
 	*/
 	var tableData = [];
 	var headerRow = [];
-	for (var propName in formattedProperties[0]) {
+	for (let propName in formattedProperties[0]) {
 		headerRow.push(__(propName));
 	}
 	tableData.push(headerRow);
 
 	formattedProperties.forEach((formattedProperty) => {
 		var dataRow = [];
-		for (var propName in formattedProperty) {
+		for (let propName in formattedProperty) {
 			dataRow.push(formattedProperty[propName]);
 		}
 		tableData.push(dataRow);
@@ -222,14 +222,14 @@ export function createEnumSummary(enumType: SchemaEnum) {
 	*/
 	var tableData = [];
 	var headerRow = [];
-	for (var propName in rows[0]) {
+	for (let propName in rows[0]) {
 		headerRow.push(propName);
 	}
 	tableData.push(headerRow);
 
 	rows.forEach((row) => {
 		var dataRow = [];
-		for (var propName in row) {
+		for (let propName in row) {
 			dataRow.push(row[propName]);
 		}
 		tableData.push(dataRow);

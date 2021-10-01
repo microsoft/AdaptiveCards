@@ -187,8 +187,6 @@
 
     lab.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [viewGroup addArrangedSubview:lab];
-
     HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left);
 
     if (adaptiveAlignment == HorizontalAlignment::Left) {
@@ -221,7 +219,9 @@
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     configRtl(lab, rootView.context);
-
+    
+    [viewGroup addArrangedSubview:lab];
+    
     return lab;
 }
 
