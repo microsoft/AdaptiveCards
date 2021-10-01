@@ -19,7 +19,7 @@ export class PopupMenu extends PopupControl {
         element.className = this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
         element.setAttribute("role", "listbox");
 
-        for (var i = 0; i < this._items.length; i++) {
+        for (let i = 0; i < this._items.length; i++) {
             var renderedItem = this._items.get(i).render(this.hostConfig);
             renderedItem.tabIndex = 0;
 

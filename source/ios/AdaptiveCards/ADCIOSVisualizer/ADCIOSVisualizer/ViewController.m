@@ -447,6 +447,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
                     alertController:(UIAlertController *)alert
+                      additionalData:(NSDictionary *)additionalData
 {
     // [Option 1] the easiest way is to just present the alert view. It's prepared and presentable ready.
     //    [self presentViewController: alert];

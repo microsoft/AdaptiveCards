@@ -60,7 +60,7 @@ export abstract class DesignerPeerRegistry<TSource, TPeer> {
     }
 
     findTypeRegistration(sourceType: TSource): DesignerPeers.DesignerPeerRegistration<TSource, TPeer> {
-        for (var i = 0; i < this._items.length; i++) {
+        for (let i = 0; i < this._items.length; i++) {
             if (this._items[i].sourceType === sourceType) {
                 return this._items[i];
             }
@@ -87,7 +87,7 @@ export abstract class DesignerPeerRegistry<TSource, TPeer> {
     }
 
     unregisterPeer(sourceType: TSource) {
-        for (var i = 0; i < this._items.length; i++) {
+        for (let i = 0; i < this._items.length; i++) {
             if (this._items[i].sourceType === sourceType) {
                 this._items.splice(i, 1);
 
@@ -372,7 +372,7 @@ export class CardDesignerSurface {
 
             peer.addElementsToDesignerSurface(this._designerSurface);
 
-            for (var i = 0; i < peer.getChildCount(); i++) {
+            for (let i = 0; i < peer.getChildCount(); i++) {
                 this.addPeer(peer.getChildAt(i));
             }
         }
@@ -399,7 +399,7 @@ export class CardDesignerSurface {
                 result = currentPeer;
             }
 
-            for (var i = 0; i < currentPeer.getChildCount(); i++) {
+            for (let i = 0; i < currentPeer.getChildCount(); i++) {
                 var deeperResult = this.internalFindDropTarget(pointerPosition, currentPeer.getChildAt(i), forPeer);
 
                 if (deeperResult) {
@@ -414,7 +414,7 @@ export class CardDesignerSurface {
     }
 
     private findCardElementPeer(cardElement: Adaptive.CardElement): DesignerPeers.CardElementPeer {
-        for (var i = 0; i < this._allPeers.length; i++) {
+        for (let i = 0; i < this._allPeers.length; i++) {
             var peer = this._allPeers[i];
 
             if (peer instanceof DesignerPeers.CardElementPeer && peer.cardElement == cardElement) {
@@ -426,7 +426,7 @@ export class CardDesignerSurface {
     }
 
     private findActionPeer(action: Adaptive.Action): DesignerPeers.ActionPeer {
-        for (var i = 0; i < this._allPeers.length; i++) {
+        for (let i = 0; i < this._allPeers.length; i++) {
             var peer = this._allPeers[i];
 
             if (peer instanceof DesignerPeers.ActionPeer && peer.action == action) {
@@ -730,7 +730,7 @@ export class CardDesignerSurface {
 
     updateLayout(isFullRefresh: boolean = true) {
         if (!this.isPreviewMode) {
-            for (var i = 0; i < this._allPeers.length; i++) {
+            for (let i = 0; i < this._allPeers.length; i++) {
                 this._allPeers[i].updateLayout();
             }
 
