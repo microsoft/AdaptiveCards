@@ -91,6 +91,11 @@ namespace AdaptiveCards
 
     std::shared_ptr<TableRow> TableRow::DeserializeTableRow(ParseContext& context, const Json::Value& json)
     {
+        const auto& idProperty = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id);
+        const InternalId internalId = InternalId::Next();
+
+        context.PushElement(idProperty, internalId);
+
         std::shared_ptr<TableRow> tableRow = BaseCardElement::Deserialize<TableRow>(context, json);
 
         tableRow->SetHorizontalCellContentAlignment(ParseUtil::GetOptionalEnumValue<HorizontalAlignment>(
@@ -98,9 +103,12 @@ namespace AdaptiveCards
         tableRow->SetVerticalCellContentAlignment(ParseUtil::GetOptionalEnumValue<VerticalContentAlignment>(
             json, AdaptiveCardSchemaKey::VerticalCellContentAlignment, VerticalContentAlignmentFromString));
         tableRow->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
+
         auto cells = ParseUtil::GetElementCollectionOfSingleType<TableCell>(
             context, json, AdaptiveCardSchemaKey::Cells, &TableCell::DeserializeTableCell, false);
         tableRow->SetCells(cells);
+
+        context.PopElement();
 
         return tableRow;
     }
