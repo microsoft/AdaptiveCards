@@ -116,128 +116,6 @@ namespace AdaptiveCards::Rendering::Uwp
         {
             std::shared_ptr<ShowCardInfo> showCardInfoToHandle = found->second;
 
-            Visibility overflowButtonVisibility = Visibility_Collapsed;
-            if (showCardInfoToHandle->overflowUIElement != nullptr)
-            {
-                RETURN_IF_FAILED(showCardInfoToHandle->overflowUIElement->get_Visibility(&overflowButtonVisibility));
-            }
-
-            // Check if the action is being invoked from the overflow menu
-            if (overflowButtonVisibility == Visibility_Visible)
-            {
-                // When a show card action is selected from the overflow menu, we need to move it from the overflow menu
-                // to the action bar by swapping it with the last item currently there. In order to do this we make this
-                // action non-visible in the flyout menu and visible in the action bar, and we make the last action
-                // visible in the action bar visible in the flyout menu and non-visible in the action bar.
-
-                auto overflowButtonPair = m_overflowButtons.find(showCardInfoToHandle->actionSetId);
-                ComPtr<IUIElement> overflowButton = overflowButtonPair->second;
-
-                ComPtr<IFrameworkElement> overflowButtonAsFrameworkElement;
-                RETURN_IF_FAILED(overflowButton.As(&overflowButtonAsFrameworkElement));
-
-                ComPtr<IDependencyObject> buttonParent;
-                RETURN_IF_FAILED(overflowButtonAsFrameworkElement->get_Parent(&buttonParent));
-
-                ComPtr<IPanel> actionPanel;
-                RETURN_IF_FAILED(buttonParent.As(&actionPanel));
-
-                ComPtr<IVector<UIElement*>> actionButtons;
-                RETURN_IF_FAILED(actionPanel->get_Children(&actionButtons));
-
-                // In some cases the action panel will be a grid with column definitions that will need to be updated so get those now
-                ComPtr<IGrid> actionPanelAsGrid;
-                buttonParent.As(&actionPanelAsGrid);
-
-                ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
-                if (actionPanelAsGrid != nullptr)
-                {
-                    RETURN_IF_FAILED(actionPanelAsGrid->get_ColumnDefinitions(&columnDefinitions));
-                }
-
-                // Walk the buttons in the button bar. We're looking for the last visible action button (so we can hide
-                // it now that it's visible on the overflow menu). This will be the second to last visible button in the
-                // panel (the last being the overflow button itself)
-                UINT currentButtonIndex = 0;
-                UINT lastVisibleButtonIndex = 0;
-                UINT penultimateVisibleButtonIndex = 0;
-                ComPtr<IUIElement> lastVisibleButton;
-                ComPtr<IUIElement> penultimateVisibleButton;
-                IterateOverVector<UIElement, IUIElement>(actionButtons.Get(), [&](IUIElement* actionUIElement) {
-                    ComPtr<IUIElement> action(actionUIElement);
-
-                    Visibility visibility;
-                    RETURN_IF_FAILED(action->get_Visibility(&visibility));
-
-                    if (visibility == Visibility_Visible)
-                    {
-                        // Keep track of the second to last visible button to collapse (and it's index to update column definitions)
-                        penultimateVisibleButton = lastVisibleButton;
-                        lastVisibleButton = action;
-
-                        penultimateVisibleButtonIndex = lastVisibleButtonIndex;
-                        lastVisibleButtonIndex = currentButtonIndex;
-                    }
-
-                    currentButtonIndex++;
-                    return S_OK;
-                });
-
-                // If there isn't a visible button available to swap this show card with, there's nothing to do here.
-                if (penultimateVisibleButton != nullptr)
-                {
-                    // Hide the last visible non-overflow button (that action will be shown in the overflow menu)
-                    RETURN_IF_FAILED(penultimateVisibleButton->put_Visibility(Visibility_Collapsed));
-
-                    // Set the column width to auto if we're using column definitions to allow the space allocated for this button to collapse
-                    if (columnDefinitions != nullptr)
-                    {
-                        ComPtr<IColumnDefinition> columnDefinition;
-                        RETURN_IF_FAILED(columnDefinitions->GetAt(penultimateVisibleButtonIndex, &columnDefinition));
-                        RETURN_IF_FAILED(columnDefinition->put_Width({0, GridUnitType::GridUnitType_Auto}));
-                    }
-
-                    // Make the show card button visible
-                    RETURN_IF_FAILED(showCardInfoToHandle->buttonUIElement->put_Visibility(Visibility_Visible));
-
-                    // Set the column width to 1* if we're using column definitions to show equal width buttons
-                    if (columnDefinitions != nullptr)
-                    {
-                        ComPtr<IColumnDefinition> columnDefinition;
-                        RETURN_IF_FAILED(columnDefinitions->GetAt(showCardInfoToHandle->primaryButtonIndex, &columnDefinition));
-                        RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
-                    }
-
-                    // Next get the flyout menu so we can collapse this action from the flyout and show the one we hid from the action bar
-                    ComPtr<IButtonWithFlyout> overflowButtonAsButtonWithFlyout;
-                    RETURN_IF_FAILED(overflowButton.As(&overflowButtonAsButtonWithFlyout));
-
-                    ComPtr<IFlyoutBase> flyoutBase;
-                    RETURN_IF_FAILED(overflowButtonAsButtonWithFlyout->get_Flyout(&flyoutBase));
-
-                    ComPtr<IMenuFlyout> flyout;
-                    RETURN_IF_FAILED(flyoutBase.As(&flyout));
-
-                    // Get the menu flyout items
-                    ComPtr<IVector<MenuFlyoutItemBase*>> flyoutItems;
-                    RETURN_IF_FAILED(flyout->get_Items(&flyoutItems));
-
-                    // Make all items visible to ensure the action we removed from the button panel shows up in the overflow menu
-                    IterateOverVector<MenuFlyoutItemBase, IMenuFlyoutItemBase>(flyoutItems.Get(), [&](IMenuFlyoutItemBase* flyoutItem) {
-                        ComPtr<IMenuFlyoutItemBase> flyoutItemBase(flyoutItem);
-
-                        ComPtr<IUIElement> flyoutItemAsUIElement;
-                        RETURN_IF_FAILED(flyoutItemBase.As(&flyoutItemAsUIElement));
-                        RETURN_IF_FAILED(flyoutItemAsUIElement->put_Visibility(Visibility_Visible));
-
-                        return S_OK;
-                    });
-
-                    // Make the the action we're handling collapsed in the overflow menu. It is now shown in the button bar and don't want it to show here.
-                    RETURN_IF_FAILED(showCardInfoToHandle->overflowUIElement->put_Visibility(Visibility_Collapsed));
-                }
-            }
-
             // Determine if the card is currently being shown
             ABI::Windows::UI::Xaml::Visibility currentVisibility;
             showCardInfoToHandle->cardUIElement->get_Visibility(&currentVisibility);
@@ -503,10 +381,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT RenderedAdaptiveCard::AddInlineShowCard(_In_ IAdaptiveActionSet* actionSet,
                                                     _In_ IAdaptiveShowCardAction* showCardAction,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                    UINT32 primaryButtonIndex,
                                                     ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     try
     {
@@ -514,7 +389,7 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(actionSet->get_InternalId(&actionSetId));
 
         RETURN_IF_FAILED(AddInlineShowCardHelper(
-            actionSetId, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs));
+            actionSetId, showCardAction, showCardUIElement, renderArgs));
 
         return S_OK;
     }
@@ -522,18 +397,14 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCard* adaptiveCard,
                                                     ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                    UINT32 primaryButtonIndex,
                                                     _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     try
     {
         UINT32 actionSetId;
         RETURN_IF_FAILED(adaptiveCard->get_InternalId(&actionSetId));
 
-        RETURN_IF_FAILED(AddInlineShowCardHelper(
-            actionSetId, showCardAction, actionButtonUIElement, actionOverflowUIElement, showCardUIElement, primaryButtonIndex, renderArgs));
+        RETURN_IF_FAILED(AddInlineShowCardHelper(actionSetId, showCardAction, showCardUIElement, renderArgs));
 
         return S_OK;
     }
@@ -541,10 +412,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
     HRESULT RenderedAdaptiveCard::AddInlineShowCardHelper(UINT32 actionSetId,
                                                           _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveShowCardAction* showCardAction,
-                                                          _In_ ABI::Windows::UI::Xaml::IUIElement* actionButtonUIElement,
-                                                          _In_ ABI::Windows::UI::Xaml::IUIElement* actionOverflowUIElement,
                                                           _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
-                                                          UINT32 primaryButtonIndex,
                                                           _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs)
     try
     {
@@ -553,10 +421,7 @@ namespace AdaptiveCards::Rendering::Uwp
 
         std::shared_ptr<ShowCardInfo> showCardInfo = std::make_shared<ShowCardInfo>();
         showCardInfo->actionSetId = actionSetId;
-        showCardInfo->buttonUIElement = actionButtonUIElement;
-        showCardInfo->overflowUIElement = actionOverflowUIElement;
         showCardInfo->cardUIElement = showCardUIElement;
-        showCardInfo->primaryButtonIndex = primaryButtonIndex;
 
         m_showCards.emplace(std::make_pair(showCardActionId, showCardInfo));
 
@@ -637,5 +502,4 @@ namespace AdaptiveCards::Rendering::Uwp
     {
         return m_inputs->GetInputValue(inputElement, inputValue);
     }
-
 }
