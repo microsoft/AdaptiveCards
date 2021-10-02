@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRTapGestureRecognizerFactory.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRShowCardTarget.h"
@@ -19,25 +19,22 @@
 
 using namespace AdaptiveCards;
 
-@implementation ACRTapGestureRecognizerFactory
+@implementation ACRLongPressGestureRecognizerFactory
 
-+ (ACRBaseTarget *)addTapGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> *)viewGroup
-                                          rootView:(ACRView *)rootView
-                                     recipientView:(UIView *)recipientView
-                                     actionElement:(ACOBaseActionElement *)action
-                                        hostConfig:(ACOHostConfig *)config
++ (void)addLongPressGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> *)viewGroup
+                                     rootView:(ACRView *)rootView
+                                recipientView:(UIView *)recipientView
+                                actionElement:(ACOBaseActionElement *)action
+                                   hostConfig:(ACOHostConfig *)config
 {
     if (action != nullptr) {
         NSObject<ACRSelectActionDelegate> *target;
         if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target) && viewGroup) {
-            UITapGestureRecognizer *recognizer = [ACRTapGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
+            UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
             [recipientView addGestureRecognizer:recognizer];
             setAccessibilityTrait(recipientView, action);
-            return (ACRBaseTarget *)target;
         }
     }
-
-    return nil;
 }
 
 + (void)addTapGestureRecognizerToUITextView:(UITextView *)textView
@@ -52,17 +49,19 @@ using namespace AdaptiveCards;
     }
 }
 
-+ (UITapGestureRecognizer *)getGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
-                                          target:(NSObject<ACRSelectActionDelegate> *)target
++ (UILongPressGestureRecognizer *)getGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
+                                                target:(NSObject<ACRSelectActionDelegate> *)target
 {
-    ACRTapGestureRecognizerEventHandler *handler = [[ACRTapGestureRecognizerEventHandler alloc] init];
+    ACRLongPressGestureRecognizerEventHandler *handler = [[ACRLongPressGestureRecognizerEventHandler alloc] init];
     // add the target to the viewGroup; life time of the target is as long as the viewGroup
     // add the handler to the viewGroup; life time of the target is as long as the viewGroup
     [viewGroup addTarget:target];
     [viewGroup addTarget:handler];
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:handler action:@selector(processTapGesture:)];
+    UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:handler action:@selector(processLongPressGesture:)];
     handler.delegate = target;
     recognizer.delegate = handler;
+    recognizer.minimumPressDuration = 0.01;
+    recognizer.allowableMovement = 1;
     return recognizer;
 }
 

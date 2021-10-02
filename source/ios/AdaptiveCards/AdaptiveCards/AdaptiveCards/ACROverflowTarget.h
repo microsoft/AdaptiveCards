@@ -6,8 +6,8 @@
 //
 
 #import "ACOActionOverflow.h"
-#import "ACRBaseTarget.h"
 #import "ACRIContentHoldingView.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACRView.h"
 #import <UIKit/UIKit.h>
 
@@ -21,7 +21,7 @@
 
 @end
 
-@interface ACROverflowTarget : ACRBaseTarget
+@interface ACROverflowTarget : NSObject <ACRSelectActionDelegate>
 
 - (instancetype)initWithActionElement:(ACOActionOverflow *)actionElement
                              rootView:(ACRView *)rootView;

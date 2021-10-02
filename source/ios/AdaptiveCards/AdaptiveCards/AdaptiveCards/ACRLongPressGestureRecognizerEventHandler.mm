@@ -5,14 +5,14 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRTapGestureRecognizerEventHandler.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 
-@implementation ACRTapGestureRecognizerEventHandler
+@implementation ACRLongPressGestureRecognizerEventHandler
 
 // this method does the followings
 // 1. it provides users with cue that select action is about to be initiated
 // 2. execute select action by calling its delegate
-- (IBAction)processTapGesture:(UITapGestureRecognizer *)recognizer;
+- (IBAction)processLongPressGesture:(UILongPressGestureRecognizer *)recognizer;
 {
     // activate it when fingers lifts off
     if (recognizer.state == UIGestureRecognizerStateBegan) {

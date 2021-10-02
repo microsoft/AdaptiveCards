@@ -6,7 +6,7 @@
 //
 
 #import "ACOMediaEvent.h"
-#import "ACRTapGestureRecognizerEventHandler.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACRView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>

@@ -7,7 +7,7 @@
 
 #import "ACOVisibilityManager.h"
 #import "ACRIContentHoldingView.h"
-#import "ACRTapGestureRecognizerEventHandler.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView, ACOIVisibilityManagerFacade> {
