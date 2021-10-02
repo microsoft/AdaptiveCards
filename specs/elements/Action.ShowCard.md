@@ -18,6 +18,7 @@
 | **fallback** | `Action`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **tooltip** | `string` | No | Defines text that should be displayed to the end user as they hover the mouse over the action, and read when using narration software. | 1.5 |
 | **isEnabled** | `boolean` | No, default: `true` | Determines whether the action should be enabled. | 1.5 |
+| **mode** | `ActionMode` | No, default: `"primary"` | Determines whether the action should be displayed as a button or in the overflow menu. | 1.5 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 
 
@@ -58,6 +59,18 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `Action.Submit`
   * `Action.ToggleVisibility`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
+
+
+## mode
+
+Determines whether the action should be displayed as a button or in the overflow menu.
+
+* **Type**: `ActionMode`
+* **Version** : 1.5
+* **Required**: No, default: `"primary"`
+* **Allowed values**:
+  * `"primary"`: Action is displayed as a button.
+  * `"secondary"`: Action is placed in an overflow menu (typically a popup menu under a `...` button).
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
