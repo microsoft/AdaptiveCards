@@ -11,7 +11,6 @@
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 #import "AdaptiveCards/ACRImageProperties.h"
-#import "AdaptiveCards/ACRShowCardTarget.h"
 #import "AdaptiveCards/ACRViewPrivate.h"
 #import "AdaptiveCards/Container.h"
 #import "AdaptiveCards/OpenUrlAction.h"
