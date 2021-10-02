@@ -531,20 +531,37 @@ using namespace AdaptiveCards;
     return currentBest;
 }
 
+- (NSString *)gatherAccessibilityLabelsFromSubviews
+{
+    return nil;
+}
+
 - (void)configureForSelectAction:(ACOBaseActionElement *)action rootView:(ACRView *)rootView
 {
     if (action != nullptr) {
-        NSObject<ACRSelectActionDelegate> *target = nil;
+        ACRBaseTarget *target = nil;
         if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target)) {
             [self addTarget:target];
             self.selectActionTarget = target;
             setAccessibilityTrait(self, action);
+            self.accessibilityLabel = configureForAccessibilityLabel(action, [self gatherAccessibilityLabelsFromSubviews]);
+            if (action.inlineTooltip) {
+                [target addGestureRecognizer:self toolTipText:action.inlineTooltip];
+            }
         }
     }
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    for (UITouch *touch in touches) {
+        for (UIGestureRecognizer *recognizer in touch.gestureRecognizers) {
+            if ([recognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+                [(ACRBaseTarget *)self.selectActionTarget showToolTip:(UILongPressGestureRecognizer *)recognizer];
+                return;
+            }
+        }
+    }
     if (self.selectActionTarget) {
         return;
     } else {
