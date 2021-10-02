@@ -4040,14 +4040,6 @@ export abstract class Action extends CardObject {
         }
     }
 
-    promoteAsPrimary(): Action | undefined {
-        if (this._actionCollection) {
-            return this._actionCollection.promoteAsPrimary(this);
-        }
-
-        return undefined;
-    }
-
     parse(source: any, context?: SerializationContext) {
         return super.parse(source, context ? context : new SerializationContext());
     }
@@ -4128,10 +4120,6 @@ export abstract class Action extends CardObject {
      */
     validateInputs(): Input[] {
         return this.internalValidateInputs(this.getReferencedInputs());
-    }
-
-    get shouldPromoteAsPrimaryOnExecute(): boolean {
-        return this.mode === "primary";
     }
 
     get isPrimary(): boolean {
@@ -4713,10 +4701,6 @@ export class ShowCardAction extends Action {
 
         return result;
     }
-
-    get shouldPromoteAsPrimaryOnExecute(): boolean {
-        return true;
-    }
 }
 
 class OverflowAction extends Action {
@@ -4748,14 +4732,6 @@ class OverflowAction extends Action {
                 menuItem.isEnabled = this.actions[i].isEnabled;
                 menuItem.onClick = () => {
                     let actionToExecute = this.actions[i];
-
-                    if (actionToExecute.shouldPromoteAsPrimaryOnExecute) {
-                        let swappedAction = actionToExecute.promoteAsPrimary();
-
-                        if (swappedAction) {
-                            this.actions[i] = swappedAction;
-                        }
-                    }
 
                     contextMenu.closePopup(false);
 
@@ -4919,32 +4895,6 @@ class ActionCollection {
                 this.expandShowCardAction(action, true);
             }
         }
-    }
-
-    promoteAsPrimary(action: Action): Action | undefined {
-        if (this._renderedActions.length > 1) {
-            let swappedAction = this._renderedActions[this._renderedActions.length - 2];
-
-            action.render();
-
-            if (swappedAction.renderedElement && swappedAction.renderedElement.parentElement && action.renderedElement) {
-                swappedAction.renderedElement.parentElement.replaceChild(action.renderedElement, swappedAction.renderedElement);
-
-                action.renderedElement.setAttribute("aria-posinset", (this._renderedActions.length - 1).toString());
-                action.renderedElement.setAttribute("aria-setsize", this._renderedActions.length.toString());
-                action.renderedElement.setAttribute("role", "menuitem");
-
-                swappedAction.renderedElement.removeAttribute("aria-posinset");
-                swappedAction.renderedElement.removeAttribute("aria-setsize");
-                swappedAction.renderedElement.removeAttribute("role");
-
-                this._renderedActions[this._renderedActions.length - 2] = action;
-
-                return swappedAction;
-            }
-        }
-
-        return undefined;
     }
 
     parse(source: any, context: SerializationContext) {
