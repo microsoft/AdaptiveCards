@@ -14,7 +14,6 @@
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
 #import "UtiliOS.h"
-#import <FluentUI/FluentUI-Swift.h>
 
 @implementation ACRInputChoiceSetRenderer
 
@@ -87,7 +86,7 @@
     if (style == ChoiceSetStyle::Compact || style == ChoiceSetStyle::Filtered) {
         ACRChoiceSetCompactStyleView *choiceSetView = (ACRChoiceSetCompactStyleView *)view;
         choiceSetView.borderStyle = UITextBorderStyleRoundedRect;
-        choiceSetView.backgroundColor = UIColor.groupTableViewBackgroundColor;
+        choiceSetView.backgroundColor = UIColor.systemGroupedBackgroundColor;
         // adjusting the right layout margins of the ACRChoiceSetCompactStyleView
         // can position showFilteredListControl
         UIButton *button = (UIButton *)choiceSetView.showFilteredListControl;
