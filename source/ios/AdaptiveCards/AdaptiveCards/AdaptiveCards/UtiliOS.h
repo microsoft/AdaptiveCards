@@ -83,6 +83,8 @@ ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
 
 void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action);
 
+NSString *configureForAccessibilityLabel(ACOBaseActionElement *action, NSString *contentString);
+
 void TexStylesToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock,
                                           const TextStyleConfig &textStyleConfig,
                                           RichTextElementProperties &textProp);

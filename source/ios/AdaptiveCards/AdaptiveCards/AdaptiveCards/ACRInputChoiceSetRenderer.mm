@@ -14,6 +14,7 @@
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
 #import "UtiliOS.h"
+#import <FluentUI/FluentUI-Swift.h>
 
 @implementation ACRInputChoiceSetRenderer
 

@@ -6,9 +6,9 @@
 //
 
 #import "ACRIContentHoldingView.h"
-#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACOInputResults.h"
 #import "ACRView.h"
+#import "ACRBaseTarget.h"
 #import <UIKit/UIKit.h>
 
 // keys used in retrieving values from properties that are dispatced by
@@ -23,7 +23,7 @@ extern NSString *const ACRAggregateTargetFirstResponder;
 
 // AggregateTraget is used to relay the signal back to host
 // It's associated with Action.Submit
-@interface ACRAggregateTarget : NSObject <ACRSelectActionDelegate>
+@interface ACRAggregateTarget : ACRBaseTarget
 @property ACOBaseActionElement *actionElement;
 @property (weak) ACRView *view;
 @property (weak) ACRColumnView *currentShowcard;
