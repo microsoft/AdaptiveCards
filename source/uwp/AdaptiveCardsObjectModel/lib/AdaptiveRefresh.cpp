@@ -1,83 +1,35 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 #include "pch.h"
-
 #include "AdaptiveRefresh.h"
+#include "AdaptiveRefresh.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Data::Json;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    HRESULT AdaptiveRefresh::RuntimeClassInitialize() noexcept
+    AdaptiveRefresh::AdaptiveRefresh(std::shared_ptr<::AdaptiveCards::Refresh> const& sharedRefresh)
     {
-        std::shared_ptr<AdaptiveCards::Refresh> refresh = std::make_shared<AdaptiveCards::Refresh>();
-        return RuntimeClassInitialize(refresh);
-    }
-
-    HRESULT AdaptiveRefresh::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::Refresh>& sharedRefresh)
-    {
-        RETURN_IF_FAILED(GenerateActionProjection(sharedRefresh->GetAction(), &m_action));
-
-        m_userIds = Microsoft::WRL::Make<Vector<HSTRING>>();
-        for (auto& sharedUserId : sharedRefresh->GetUserIds())
+        std::vector<winrt::hstring> ids;
+        for (auto&& id : sharedRefresh->GetUserIds())
         {
-            HString userId;
-            RETURN_IF_FAILED(UTF8ToHString(sharedUserId, userId.GetAddressOf()));
-            RETURN_IF_FAILED(m_userIds->Append(userId.Get()));
+            ids.emplace_back(UTF8ToHString(id));
         }
 
-        return S_OK;
+        Action = GenerateActionProjection(sharedRefresh->GetAction());
+        UserIds = winrt::single_threaded_vector<hstring>(std::move(ids));
     }
 
-    HRESULT AdaptiveRefresh::get_Action(_COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement** action)
+    std::shared_ptr<::AdaptiveCards::Refresh> AdaptiveRefresh::GetSharedModel()
     {
-        return m_action.CopyTo(action);
-    }
+        auto refresh = std::make_shared<::AdaptiveCards::Refresh>();
 
-    HRESULT AdaptiveRefresh::put_Action(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* action)
-    {
-        m_action = action;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveRefresh::get_UserIds(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** userIds)
-    {
-        return m_userIds.CopyTo(userIds);
-    }
-
-    HRESULT AdaptiveRefresh::GetSharedModel(std::shared_ptr<AdaptiveCards::Refresh>& sharedModel)
-    {
-        std::shared_ptr<AdaptiveCards::Refresh> refresh = std::make_shared<AdaptiveCards::Refresh>();
-
-        if (m_action != nullptr)
+        if (Action.get())
         {
-            std::shared_ptr<BaseActionElement> sharedAction;
-            RETURN_IF_FAILED(GenerateSharedAction(m_action.Get(), sharedAction));
-            refresh->SetAction(std::move(sharedAction));
+            refresh->SetAction(GenerateSharedAction(Action));
         }
 
-        ComPtr<IIterable<HSTRING>> userIdIterable;
-        RETURN_IF_FAILED(m_userIds.As(&userIdIterable));
-
-        ComPtr<IIterator<HSTRING>> userIdIterator;
-        if (SUCCEEDED(userIdIterable->First(&userIdIterator)))
+        for (auto&& id : UserIds.get())
         {
-            boolean hasCurrent = false;
-            HRESULT hr = userIdIterator->get_HasCurrent(&hasCurrent);
-            while (SUCCEEDED(hr) && hasCurrent)
-            {
-                HString userId;
-                RETURN_IF_FAILED(userIdIterator->get_Current(userId.GetAddressOf()));
-
-                refresh->GetUserIds().push_back(HStringToUTF8(userId.Get()));
-                hr = userIdIterator->MoveNext(&hasCurrent);
-            }
+            refresh->GetUserIds().emplace_back(HStringToUTF8(id));
         }
 
-        sharedModel = std::move(refresh);
-        return S_OK;
+        return refresh;
     }
 }

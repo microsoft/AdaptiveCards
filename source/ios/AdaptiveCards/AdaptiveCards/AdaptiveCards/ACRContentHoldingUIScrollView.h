@@ -14,8 +14,14 @@
 @property UIStackView *contentview;
 @property CGFloat spacing;
 @property CGFloat contentWidth;
-@property NSLayoutConstraint *widthConstraintForStretch;
-@property NSLayoutConstraint *centerXConstraintForStretch;
-@property NSLayoutConstraint *centerYConstraintForStretch;
+
+// collection of constraints that will be used when
+// buttons will only occupy just enough space
+@property NSArray<NSLayoutConstraint *> *nonStretchConstraints;
+// collection of constraints that will be used when buttons will
+// streteched to fill the available width
+@property NSArray<NSLayoutConstraint *> *stretchConstraints;
+
+- (void)preconfigreAutolayout;
 
 @end

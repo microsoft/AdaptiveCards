@@ -33,6 +33,16 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
+#include <winrt/base.h>
+#include <winrt/Windows.UI.Xaml.Automation.h>
+#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
+#include <winrt/Windows.UI.Xaml.Controls.h>
+#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
+#include <winrt/Windows.UI.Xaml.Input.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/AdaptiveCards.ObjectModel.Uwp.h>
+#include <winrt/AdaptiveCards.Rendering.Uwp.h>
+
 // Commonly-used AdaptiveCardRenderer headers
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "ErrorHandling.h"
@@ -55,10 +65,4 @@
 #include <windows.ui.xaml.shapes.h>
 #include <windows.ui.xaml.markup.h>
 
-#include <winrt/base.h>
-#include <winrt/Windows.UI.Xaml.Automation.h>
-#include <winrt/Windows.UI.Xaml.Automation.Peers.h>
-#include <winrt/Windows.UI.Xaml.Controls.h>
-#include <winrt/Windows.UI.Xaml.Controls.Primitives.h>
-#include <winrt/Windows.Foundation.h>
-#include <winrt/AdaptiveCards.Rendering.Uwp.h>
+

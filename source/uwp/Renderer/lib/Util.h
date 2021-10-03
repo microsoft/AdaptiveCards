@@ -221,10 +221,7 @@ typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler
 struct ShowCardInfo
 {
     UINT32 actionSetId;
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> buttonUIElement;
-    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> overflowUIElement;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> cardUIElement;
-    UINT primaryButtonIndex;
 };
 
 // Peek interface to help get implementation types from winrt interfaces
@@ -295,8 +292,6 @@ namespace AdaptiveCards::Rendering::Uwp
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveTextInputRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Time").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveTimeInputRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Toggle").Get(),
-                                           Make<AdaptiveCards::Rendering::Uwp::AdaptiveToggleInputRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Media").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveMediaRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"RichTextBlock").Get(),
@@ -305,6 +300,16 @@ namespace AdaptiveCards::Rendering::Uwp
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveTableRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"TextBlock").Get(),
                                            Make<AdaptiveCards::Rendering::Uwp::AdaptiveTextBlockRenderer>().Get()));
+
+        winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer toggleRenderer =
+            winrt::make<winrt::AdaptiveCards::Rendering::Uwp::implementation::AdaptiveToggleInputRenderer>();
+
+        winrt::com_ptr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer> abiToggleRenderer
+        {
+            toggleRenderer.as<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementRenderer>()
+        };
+
+        registration->Set(HStringReference(L"Input.Toggle").Get(), abiToggleRenderer.get());
 
         return S_OK;
     }

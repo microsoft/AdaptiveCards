@@ -14,6 +14,7 @@
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
 #import "UtiliOS.h"
+#import <FluentUI/FluentUI-Swift.h>
 
 @implementation ACRInputChoiceSetRenderer
 
@@ -66,21 +67,7 @@
 
     [inputs addObject:inputLabelView];
 
-    if (elem->GetHeight() == HeightType::Stretch) {
-        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview:inputLabelView];
-
-        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-        UIView *blankTrailingSpace = [[UIView alloc] init];
-        [textInputContainer addArrangedSubview:blankTrailingSpace];
-        [textInputContainer adjustHuggingForLastElement];
-
-        [viewGroup addArrangedSubview:textInputContainer];
-    } else {
-        [viewGroup addArrangedSubview:inputLabelView];
-    }
-
-    configVisibility(inputLabelView, elem);
+    [viewGroup addArrangedSubview:inputLabelView];
 
     return inputLabelView;
 }

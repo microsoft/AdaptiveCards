@@ -19,7 +19,7 @@ export class PopupMenu extends PopupControl {
         element.className = "ms-ctrl ms-popup";
         element.setAttribute("role", "listbox");
 
-        for (var i = 0; i < this._items.length; i++) {
+        for (let i = 0; i < this._items.length; i++) {
             var renderedItem = this._items.get(i).render();
             renderedItem.tabIndex = 0;
 

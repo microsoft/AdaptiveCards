@@ -5,27 +5,18 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveTimeInputParser.h"
+#include "AdaptiveTimeInputParser.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    HRESULT AdaptiveTimeInputParser::RuntimeClassInitialize() noexcept { return S_OK; }
-
-    HRESULT AdaptiveTimeInputParser::FromJson(
-        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning*>* adaptiveWarnings,
-        _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement** element) noexcept
-    try
+    winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement AdaptiveTimeInputParser::FromJson(
+        winrt::Windows::Data::Json::JsonObject const& inputJson,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveElementParserRegistration const& elementParsers,
+        winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveActionParserRegistration const& actionParsers,
+        winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveWarning> const& warnings)
     {
-        return AdaptiveCards::ObjectModel::Uwp::FromJson<AdaptiveCards::ObjectModel::Uwp::AdaptiveTimeInput, AdaptiveCards::TimeInput, AdaptiveCards::TimeInputParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+        return ::AdaptiveCards::ObjectModel::Uwp::FromJson<implementation::AdaptiveTimeInput, ::AdaptiveCards::TimeInput, ::AdaptiveCards::TimeInputParser>(
+                   inputJson, elementParsers, actionParsers, warnings)
+            .as<winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveCardElement>();
     }
-    CATCH_RETURN;
 }

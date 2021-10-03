@@ -176,8 +176,9 @@ export class CardDesigner extends Designer.DesignContext {
 
             this._draggedElement = sender.renderDragVisual();
             this._draggedElement.style.position = "absolute";
-            this._draggedElement.style.left = this._currentMousePosition.x + "px";
-            this._draggedElement.style.top = this._currentMousePosition.y + "px";
+            const adjustedPosition = Utils.adjustPointForScroll(this._currentMousePosition);
+            this._draggedElement.style.left = adjustedPosition.x + "px";
+            this._draggedElement.style.top = adjustedPosition.y + "px";
 
             document.body.appendChild(this._draggedElement);
         }
@@ -245,9 +246,14 @@ export class CardDesigner extends Designer.DesignContext {
 
             this._toolPaletteToolbox.content.appendChild(categoryList);
 
-            for (var i = 0; i < categorizedTypes[category].length; i++) {
-                this.addPaletteItem(categorizedTypes[category][i], categoryList);
+            let paletteItemContainer = document.createElement('div');
+            paletteItemContainer.className = "acd-palette-item-container";
+
+            for (let i = 0; i < categorizedTypes[category].length; i++) {
+                this.addPaletteItem(categorizedTypes[category][i], paletteItemContainer);
             }
+
+            categoryList.appendChild(paletteItemContainer);
         }
     }
 
@@ -305,10 +311,10 @@ export class CardDesigner extends Designer.DesignContext {
 			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
 		}
 
-        let _cardArea = document.getElementById("cardArea");
+        let cardArea = document.getElementById("cardArea");
 
-        if (_cardArea) {
-            _cardArea.style.backgroundColor = this.hostContainer.getBackgroundColor();
+        if (cardArea) {
+            cardArea.style.backgroundColor = this.hostContainer.getBackgroundColor();
         }
 
         this.hostContainer.initialize();
@@ -974,8 +980,9 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             if (!peerDropped && this._draggedElement) {
-                this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
-                this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+                const adjustedPosition = Utils.adjustPointForScroll(this._currentMousePosition);
+                this._draggedElement.style.left = adjustedPosition.x - 10 + "px";
+                this._draggedElement.style.top = adjustedPosition.y - 10 + "px";
             }
         }
     }
@@ -1024,7 +1031,7 @@ export class CardDesigner extends Designer.DesignContext {
         this._cardEditorToolbox.content = document.createElement("div");
         this._cardEditorToolbox.content.setAttribute("role", "region");
         this._cardEditorToolbox.content.setAttribute("aria-label", "card payload editor");
-        this._cardEditorToolbox.content.style.overflow = "hidden";
+        this._cardEditorToolbox.content.classList.add("acd-code-editor");
 
         this._cardEditor = monaco.editor.create(
             this._cardEditorToolbox.content,
@@ -1049,7 +1056,7 @@ export class CardDesigner extends Designer.DesignContext {
             this._sampleDataEditorToolbox.content = document.createElement("div");
             this._sampleDataEditorToolbox.content.setAttribute("role", "region");
             this._sampleDataEditorToolbox.content.setAttribute("aria-label", "sample data editor");
-            this._sampleDataEditorToolbox.content.style.overflow = "hidden";
+            this._sampleDataEditorToolbox.content.classList.add("acd-code-editor");
 
             this._sampleDataEditor = monaco.editor.create(
                 this._sampleDataEditorToolbox.content,
@@ -1110,14 +1117,15 @@ export class CardDesigner extends Designer.DesignContext {
 
         root.innerHTML =
             '<div id="toolbarHost" role="region" aria-label="toolbar"></div>' +
-            '<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">' +
-                '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer acd-dockedLeft" style="border-right: 1px solid #D2D2D2;"></div>' +
+            '<div class="content">' +
+                '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer acd-dockedLeft"></div>' +
                 '<div id="toolPalettePanel" class="acd-toolPalette-pane" role="region" aria-label="card elements"></div>' +
-                '<div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">' +
-                    '<div style="display: flex; flex: 1 1 100%; overflow: hidden;">' +
+                '<div class="acd-previewRightAndBottomDocks">' +
+                    '<div class="acd-previewAndBottomDocks">' +
+                        '<div class="acd-designer-card-header">CARD PREVIEW</div>' +
                         '<div id="cardArea" class="acd-designer-cardArea" role="region" aria-label="card preview">' +
                             '<div style="flex: 1 1 100%; overflow: auto;">' +
-                                '<div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>' +
+                                '<div id="designerHost" class="acd-designer-host"></div>' +
                             '</div>' +
                             '<div id="errorPane" class="acd-error-pane acd-hidden"></div>' +
                         '</div>' +
@@ -1125,9 +1133,9 @@ export class CardDesigner extends Designer.DesignContext {
                        '<div id="propertySheetPanel" class="acd-propertySheet-pane" role="region" aria-label="element properties"></div>' +
                     '</div>' +
                     '<div id="jsonEditorPanel" class="acd-json-editor-pane"></div>' +
-                    '<div id="bottomCollapsedPaneTabHost" class="acd-horizontalCollapsedTabContainer" style="border-top: 1px solid #D2D2D2;"></div>' +
+                    '<div id="bottomCollapsedPaneTabHost" class="acd-horizontalCollapsedTabContainer"></div>' +
                 '</div>' +
-                '<div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer acd-dockedRight" style="border-left: 1px solid #D2D2D2;"></div>' +
+                '<div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer acd-dockedRight"></div>' +
             '</div>';
 
         this.toolbar.attachTo(document.getElementById("toolbarHost"));

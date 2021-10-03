@@ -78,18 +78,31 @@
 - (void)handleInlineAction:(UIGestureRecognizer *)gestureRecognizer
 {
     ACRUILabel *view = (ACRUILabel *)gestureRecognizer.view;
+    if (view) {
+        id target = [view retrieveTarget:gestureRecognizer];
+        if (target) {
+            if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+                [target showToolTip:(UILongPressGestureRecognizer *)gestureRecognizer];
+            } else if ([target respondsToSelector:@selector(doSelectAction)]) {
+                [target doSelectAction];
+            }
+        }
+    }
+}
 
+- (ACRBaseTarget *)retrieveTarget:(UIGestureRecognizer *)gestureRecognizer
+{
+    ACRUILabel *view = (ACRUILabel *)gestureRecognizer.view;
     CGPoint pt = [gestureRecognizer locationInView:view];
     pt.x -= view.textContainerInset.left;
     pt.y -= view.textContainerInset.top;
 
     NSUInteger indexAtChar = [[view layoutManager] characterIndexForPoint:pt inTextContainer:view.textContainer fractionOfDistanceBetweenInsertionPoints:NULL];
     if (indexAtChar < view.textStorage.length) {
-        id target = [view.attributedText attribute:@"SelectAction" atIndex:indexAtChar effectiveRange:nil];
-        if ([target respondsToSelector:@selector(doSelectAction)]) {
-            [target doSelectAction];
-        }
+        return [view.attributedText attribute:@"SelectAction" atIndex:indexAtChar effectiveRange:nil];
     }
+
+    return nil;
 }
 
 @end

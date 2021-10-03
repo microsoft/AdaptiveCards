@@ -1,0 +1,20 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Check out our website!",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "Click Here!",
+			"tooltip": "Adaptive Cards website",
+			"url": "https://adaptivecards.io/"
+		}
+	]
+}
