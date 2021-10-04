@@ -39,16 +39,16 @@ The card elements to render inside the `Column`.
   * `FactSet`
   * `Image`
   * `ImageSet`
-  * `Media`
-  * `RichTextBlock`
-  * `Table`
-  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TextBlock`
 
 
 ## backgroundImage
