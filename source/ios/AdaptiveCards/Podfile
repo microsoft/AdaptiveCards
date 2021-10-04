@@ -1,15 +1,17 @@
 use_frameworks!
+pod 'MicrosoftFluentUI', '0.2.6'
 target 'AdaptiveCards' do
   project './AdaptiveCards/AdaptiveCards.xcodeproj'
-  pod 'MicrosoftFluentUI', '~> 0.2.6'
+  target 'AdaptiveCardsTests' do
+      inherit! :complete
+  end
 end
+
 target 'ADCIOSVisualizer' do
   project './ADCIOSVisualizer/ADCIOSVisualizer.xcodeproj'
-  pod 'MicrosoftFluentUI', '~> 0.2.6'
+  target 'ADCIOSVisualizerUITests' do
+  end
 end
-target 'ADCIOSVisualizerUITests' do
-  project './ADCIOSVisualizer/ADCIOSVisualizer.xcodeproj'
-  pod 'MicrosoftFluentUI', '~> 0.2.6'
-end
+
 workspace 'AdaptiveCards'
 platform :ios, '13'
