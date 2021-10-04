@@ -137,7 +137,7 @@ using namespace AdaptiveCards;
                                                                                 target:self
                                                                                 action:@selector(dismiss)];
         UIToolbar *bar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, picker.frame.size.width, 44)];
-        [bar setBarStyle:UIBarStyleBlackOpaque];
+        [bar setBarStyle:UIBarStyleBlack];
 
         bar.items = @[ button ];
         button.tintColor = [UIColor blackColor];
