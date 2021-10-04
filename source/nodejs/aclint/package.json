@@ -16,7 +16,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@types/node": "^13.9.3",
-		"adaptivecards": "^1.3.0-alpha.4",
+		"adaptivecards": "^2.10.0-beta.1",
 		"chalk": "^3.0.0",
 		"yargs": "^15.3.1"
 	},
