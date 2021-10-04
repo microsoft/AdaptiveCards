@@ -13,6 +13,7 @@ FOUNDATION_EXPORT double AdaptiveCardsFrameworkVersionNumber;
 //! Project version string for AFramework.
 FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
+#import "ACOActionOverflow.h"
 #import "ACOAdaptiveCard.h"
 #import "ACOAdaptiveCardParseResult.h"
 #import "ACOBaseCardElement.h"
@@ -32,6 +33,7 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import "ACRActionSubmitRenderer.h"
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRBaseCardElementRenderer.h"
+#import "ACRBaseTarget.h"
 #import "ACRButton.h"
 #import "ACRChoiceSetCompactStyleView.h"
 #import "ACRColumnRenderer.h"
@@ -66,6 +68,8 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import "ACRTableRenderer.h"
 #import "ACRTableRow.h"
 #import "ACRTableView.h"
+#import "ACRTapGestureRecognizerEventHandler.h"
+#import "ACRTapGestureRecognizerFactory.h"
 #import "ACRTextBlockRenderer.h"
 #import "ACRTextInputHandler.h"
 #import "ACRTextView.h"
