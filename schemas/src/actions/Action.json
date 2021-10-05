@@ -36,6 +36,12 @@
 			"description": "Determines whether the action should be enabled.",
 			"default": true,
 			"version": "1.5"
+		},
+		"mode": {
+			"type": "ActionMode",
+			"description": "Determines whether the action should be displayed as a button or in the overflow menu.",
+			"version": "1.5",
+			"default": "primary"
 		}
 	}
 }

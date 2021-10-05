@@ -55,16 +55,16 @@ The card elements to show in the primary card region.
   * `FactSet`
   * `Image`
   * `ImageSet`
-  * `Media`
-  * `RichTextBlock`
-  * `Table`
-  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TextBlock`
 
 
 ## actions
