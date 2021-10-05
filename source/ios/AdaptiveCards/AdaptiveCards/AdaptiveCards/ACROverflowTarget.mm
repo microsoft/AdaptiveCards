@@ -12,6 +12,8 @@
 #import "ACRViewPrivate.h"
 #import "UtiliOS.h"
 
+NSString *const ACROverflowTargetIsRootLevelKey = @"isAtRootLevel";
+
 @implementation ACROverflowMenuItem {
     __weak ACRView *_rootView;
     std::shared_ptr<AdaptiveCards::BaseActionElement> _action;
@@ -104,6 +106,7 @@
     __weak ACRView *_rootView;
     UIAlertController *_alert;
     NSMutableArray<ACROverflowMenuItem *> *_menuItems;
+    BOOL _isAtRootLevel;
 }
 
 - (instancetype)initWithActionElement:(ACOActionOverflow *)actionElement
@@ -112,6 +115,7 @@
     self = [super init];
     if (self) {
         _rootView = rootView;
+        _isAtRootLevel = actionElement.isAtRootLevel;
         [self createMenu:actionElement];
     }
     return self;
@@ -184,9 +188,11 @@
 {
     BOOL shouldDisplay = YES;
     if ([_rootView.acrActionDelegate
-            respondsToSelector:@selector(onDisplayOverflowActionMenu:alertController:)]) {
+            respondsToSelector:@selector(onDisplayOverflowActionMenu:alertController:additionalData:)]) {
+        NSDictionary *additionalData = @{ACROverflowTargetIsRootLevelKey: [NSNumber numberWithBool:_isAtRootLevel]};
         shouldDisplay = ![_rootView.acrActionDelegate onDisplayOverflowActionMenu:_menuItems
-                                                                  alertController:_alert];
+                                                                  alertController:_alert
+                                                                   additionalData:additionalData];
     }
 
     if (shouldDisplay) {

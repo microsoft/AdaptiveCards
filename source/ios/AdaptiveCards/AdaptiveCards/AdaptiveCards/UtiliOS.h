@@ -11,7 +11,7 @@
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
-#import "CollectionTypeElement.h"
+#import "StyledCollectionElement.h"
 #import "RichTextElementProperties.h"
 #import "TextBlock.h"
 #import "TextRun.h"
@@ -83,6 +83,8 @@ ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
 
 void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action);
 
+NSString *configureForAccessibilityLabel(ACOBaseActionElement *action, NSString *contentString);
+
 void TexStylesToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock,
                                           const TextStyleConfig &textStyleConfig,
                                           RichTextElementProperties &textProp);
@@ -110,6 +112,10 @@ CGSize getAspectRatio(CGSize size);
 ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
 
 ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
+
+ACRHeightType GetACRHeight(HeightType adaptiveHeight);
+
+ACRVerticalContentAlignment GetACRVerticalContentAlignment(VerticalContentAlignment adaptiveVerticalContentAlignment);
 
 void printSize(NSString *msg, CGSize size);
 

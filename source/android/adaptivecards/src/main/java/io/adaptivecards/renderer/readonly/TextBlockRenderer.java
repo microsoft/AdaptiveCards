@@ -10,6 +10,7 @@ import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.view.View;
@@ -221,8 +222,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         {
             textView.setMaxLines(1);
         }
+
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
+
         textView.setHorizontallyScrolling(false);
         applyTextFormat(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextWeight(), renderArgs);
         applyTextSize(textView, hostConfig, textBlock.GetStyle(), textBlock.GetFontType(), textBlock.GetTextSize(), renderArgs);
@@ -239,6 +242,8 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         {
             textView.setMaxLines(1);
         }
+
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
 
         viewGroup.addView(textView);
         return textView;

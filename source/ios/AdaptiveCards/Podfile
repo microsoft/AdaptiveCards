@@ -1,0 +1,17 @@
+use_frameworks!
+pod 'MicrosoftFluentUI', '0.2.6'
+target 'AdaptiveCards' do
+  project './AdaptiveCards/AdaptiveCards.xcodeproj'
+  target 'AdaptiveCardsTests' do
+      inherit! :complete
+  end
+end
+
+target 'ADCIOSVisualizer' do
+  project './ADCIOSVisualizer/ADCIOSVisualizer.xcodeproj'
+  target 'ADCIOSVisualizerUITests' do
+  end
+end
+
+workspace 'AdaptiveCards'
+platform :ios, '13'

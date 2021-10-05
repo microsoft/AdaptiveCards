@@ -39,6 +39,7 @@
         "fallback": {},
         "tooltip": {},
         "isEnabled": {},
+        "mode": {},
         "requires": {}
       },
       "type": "object",
@@ -70,6 +71,7 @@
         "fallback": {},
         "tooltip": {},
         "isEnabled": {},
+        "mode": {},
         "requires": {}
       },
       "type": "object",
@@ -103,6 +105,7 @@
         "fallback": {},
         "tooltip": {},
         "isEnabled": {},
+        "mode": {},
         "requires": {}
       },
       "type": "object",
@@ -146,6 +149,7 @@
         "fallback": {},
         "tooltip": {},
         "isEnabled": {},
+        "mode": {},
         "requires": {}
       },
       "type": "object",
@@ -180,6 +184,7 @@
         "fallback": {},
         "tooltip": {},
         "isEnabled": {},
+        "mode": {},
         "requires": {}
       },
       "type": "object",
@@ -443,7 +448,7 @@
             }
           ],
           "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
-          "version": "vNext"
+          "version": "1.5"
         },
         "separator": {
           "type": "boolean",
@@ -670,7 +675,7 @@
             }
           ],
           "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
-          "version": "vNext"
+          "version": "1.5"
         },
         "fallback": {},
         "height": {},
@@ -1484,7 +1489,7 @@
           "items": {
             "$ref": "#/definitions/TableColumnDefinition"
           },
-          "description": "Defines the number of columns in the table, their sizes ans more."
+          "description": "Defines the number of columns in the table, their sizes, and more."
         },
         "rows": {
           "type": "array",
@@ -1556,8 +1561,6 @@
     "TableCell": {
       "description": "Represents a cell within a row of a Table element.",
       "version": "1.5",
-      "type": "object",
-      "additionalProperties": false,
       "properties": {
         "type": {
           "enum": [
@@ -1565,26 +1568,91 @@
           ],
           "description": "Must be `TableCell`"
         },
-        "items": {},
-        "selectAction": {},
-        "style": {},
-        "verticalContentAlignment": {},
-        "bleed": {},
-        "backgroundImage": {},
-        "minHeight": {},
-        "rtl?": {},
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
-      },
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Container"
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ImplementationsOf.Element"
+          },
+          "description": "The card elements to render inside the `TableCell`."
+        },
+        "selectAction": {
+          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
+          "description": "An Action that will be invoked when the `TableCell` is tapped or selected. `Action.ShowCard` is not supported.",
+          "version": "1.1"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ContainerStyle"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Style hint for `TableCell`."
+        },
+        "verticalContentAlignment": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VerticalContentAlignment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
+          "version": "1.1"
+        },
+        "bleed": {
+          "type": "boolean",
+          "description": "Determines whether the element should bleed through its parent's padding.",
+          "version": "1.2",
+          "features": [
+            2109
+          ]
+        },
+        "backgroundImage": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BackgroundImage"
+            },
+            {
+              "type": "string",
+              "format": "uri-reference",
+              "description": "The URL (or data url) to use as the background image. Supports data URI."
+            }
+          ],
+          "description": "Specifies the background image. Acceptable formats are PNG, JPEG, and GIF",
+          "version": "1.2"
+        },
+        "minHeight": {
+          "type": "string",
+          "description": "Specifies the minimum height of the container in pixels, like `\"80px\"`.",
+          "examples": [
+            "50px"
+          ],
+          "version": "1.2",
+          "features": [
+            2293
+          ]
+        },
+        "rtl?": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
+          "version": "1.5"
         }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "items"
       ]
     },
     "TableColumnDefinition": {
@@ -1684,22 +1752,10 @@
             }
           ],
           "description": "Controls how the content of all cells in the column is vertically aligned by default. When specified, this value overrides the setting at the table and column level. When not specified, vertical alignment is defined either at the table, column or cell level."
-        },
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
+        }
       },
       "type": "object",
-      "additionalProperties": false,
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Element"
-        }
-      ]
+      "additionalProperties": false
     },
     "TextBlock": {
       "description": "Displays text, allowing control over font sizes, weight, and color.",
@@ -1819,6 +1875,24 @@
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "ActionMode": {
+      "description": "Determines whether an action is displayed with a button or is moved to the overflow menu.",
+      "features": [
+        4715
+      ],
+      "version": "1.5",
+      "anyOf": [
+        {
+          "enum": [
+            "primary",
+            "secondary"
+          ]
+        },
+        {
+          "pattern": "^([p|P][r|R][i|I][m|M][a|A][r|R][y|Y])|([s|S][e|E][c|C][o|O][n|N][d|D][a|A][r|R][y|Y])$"
         }
       ]
     },
@@ -2074,11 +2148,12 @@
             "text",
             "tel",
             "url",
-            "email"
+            "email",
+            "password"
           ]
         },
         {
-          "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])$"
+          "pattern": "^([t|T][e|E][x|X][t|T])|([t|T][e|E][l|L])|([u|U][r|R][l|L])|([e|E][m|M][a|A][i|I][l|L])|([p|P][a|A][s|S][s|S][w|W][o|O][r|R][d|D])$"
         }
       ]
     },
@@ -2533,26 +2608,6 @@
           ],
           "allOf": [
             {
-              "$ref": "#/definitions/TableCell"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/TableRow"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
               "$ref": "#/definitions/TextBlock"
             }
           ]
@@ -2761,26 +2816,6 @@
           ],
           "allOf": [
             {
-              "$ref": "#/definitions/TableCell"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/TableRow"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
               "$ref": "#/definitions/TextBlock"
             }
           ]
@@ -2955,26 +2990,6 @@
           ],
           "allOf": [
             {
-              "$ref": "#/definitions/TableCell"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/TableRow"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
               "$ref": "#/definitions/TextBlock"
             }
           ]
@@ -3059,30 +3074,6 @@
         }
       ]
     },
-    "ImplementationsOf.Container": {
-      "anyOf": [
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/Container"
-            }
-          ]
-        },
-        {
-          "required": [
-            "type"
-          ],
-          "allOf": [
-            {
-              "$ref": "#/definitions/TableCell"
-            }
-          ]
-        }
-      ]
-    },
     "Extendable.Action": {
       "properties": {
         "title": {
@@ -3127,119 +3118,18 @@
           "default": true,
           "version": "1.5"
         },
+        "mode": {
+          "$ref": "#/definitions/ActionMode",
+          "description": "Determines whether the action should be displayed as a button or in the overflow menu.",
+          "version": "1.5",
+          "default": "primary"
+        },
         "requires": {}
       },
       "type": "object",
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Item"
-        }
-      ]
-    },
-    "Extendable.Container": {
-      "description": "Containers group items together.",
-      "properties": {
-        "type": {
-          "enum": [
-            "Container"
-          ],
-          "description": "Must be `Container`"
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ImplementationsOf.Element"
-          },
-          "description": "The card elements to render inside the `Container`."
-        },
-        "selectAction": {
-          "$ref": "#/definitions/ImplementationsOf.ISelectAction",
-          "description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
-          "version": "1.1"
-        },
-        "style": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ContainerStyle"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Style hint for `Container`."
-        },
-        "verticalContentAlignment": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/VerticalContentAlignment"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
-          "version": "1.1"
-        },
-        "bleed": {
-          "type": "boolean",
-          "description": "Determines whether the element should bleed through its parent's padding.",
-          "version": "1.2",
-          "features": [
-            2109
-          ]
-        },
-        "backgroundImage": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/BackgroundImage"
-            },
-            {
-              "type": "string",
-              "format": "uri-reference",
-              "description": "The URL (or data url) to use as the background image. Supports data URI."
-            }
-          ],
-          "description": "Specifies the background image. Acceptable formats are PNG, JPEG, and GIF",
-          "version": "1.2"
-        },
-        "minHeight": {
-          "type": "string",
-          "description": "Specifies the minimum height of the container in pixels, like `\"80px\"`.",
-          "examples": [
-            "50px"
-          ],
-          "version": "1.2",
-          "features": [
-            2293
-          ]
-        },
-        "rtl?": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
-          "version": "vNext"
-        },
-        "fallback": {},
-        "height": {},
-        "separator": {},
-        "spacing": {},
-        "id": {},
-        "isVisible": {},
-        "requires": {}
-      },
-      "type": "object",
-      "required": [
-        "items"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Element"
         }
       ]
     },

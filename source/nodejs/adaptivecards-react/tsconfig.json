@@ -6,5 +6,5 @@
         "outDir": "./lib",
         "resolveJsonModule": true
     },
-    "files": ["./src/react-adaptivecards.ts"]
+    "files": ["src/adaptivecards-react.ts"]
 }
