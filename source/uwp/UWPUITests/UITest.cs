@@ -156,7 +156,7 @@ namespace UWPUITests
 
             Assert.IsTrue(passwordBox.IsPassword);
 
-            passwordBox.SendKeys("aNewPassword123!");
+            passwordBox.SetValue("aNewPassword123!");
             Assert.AreEqual("●●●●●●●●●●●●●●●●", passwordBox.Value);
 
             // Submit data
@@ -177,7 +177,7 @@ namespace UWPUITests
 
             Assert.IsTrue(passwordBox.IsPassword);
 
-            passwordBox.SendKeys("short");
+            passwordBox.SetValue("short");
 
             // Submit data
             TestHelpers.FindElementByName("OK").Click();
@@ -185,12 +185,12 @@ namespace UWPUITests
             var errorMessage = TestHelpers.FindElementByName("Password must be between 8 and 20 characters");
             Assert.IsNotNull(errorMessage);
 
-            passwordBox.SendKeys("LONGER!");
+            passwordBox.SetValue("LOOOONGER!");
 
             TestHelpers.FindElementByName("OK").Click();
 
             // Verify submitted data
-            Assert.AreEqual("shortLONGER!", TestHelpers.GetInputValue("id0"));
+            Assert.AreEqual("LOOOONGER!", TestHelpers.GetInputValue("id0"));
         }
 
         [ClassCleanup]
