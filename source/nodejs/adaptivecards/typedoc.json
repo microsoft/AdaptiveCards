@@ -1,6 +1,6 @@
 {
 	"name": "Adaptive Cards Javascript SDK",
-	"entryPoints": "./src",
+	"entryPoints": "./src/adaptivecards.ts",
 	"out": "docs",
 	"exclude": [
 		"**/__tests__/**"
