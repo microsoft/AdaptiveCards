@@ -39,6 +39,7 @@
 		"@typescript-eslint/parser": "^3.4.0",
 		"adaptive-expressions": "^4.11.0",
 		"adaptivecards": "^2.10.0",
+		"adaptivecards-controls": "^0.9.0",
 		"adaptivecards-templating": "^2.2.0",
 		"cpy-cli": "^3.1.1",
 		"dotenv-webpack": "^7.0.3",
