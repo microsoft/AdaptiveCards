@@ -5,21 +5,22 @@
 namespace RendererQml
 {
 	AdaptiveCardQmlRenderer::AdaptiveCardQmlRenderer()
-		: AdaptiveCardQmlRenderer(std::make_shared<AdaptiveCards::HostConfig>())
+		: AdaptiveCardQmlRenderer(std::make_shared<AdaptiveCards::HostConfig>(), std::make_shared<AdaptiveCardRenderConfig>())
 	{
 	}
 
-	AdaptiveCardQmlRenderer::AdaptiveCardQmlRenderer(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig)
+	AdaptiveCardQmlRenderer::AdaptiveCardQmlRenderer(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig, std::shared_ptr<AdaptiveCardRenderConfig> renderConfig)
 		: AdaptiveCardsRendererBase(AdaptiveCards::SemanticVersion("1.2"))
 	{
 		SetObjectTypes();
 		SetHostConfig(hostConfig);
+		SetRenderConfig(renderConfig);
 	}
 
 	std::shared_ptr<RenderedQmlAdaptiveCard> AdaptiveCardQmlRenderer::RenderCard(std::shared_ptr<AdaptiveCards::AdaptiveCard> card)
 	{
 		std::shared_ptr<RenderedQmlAdaptiveCard> output;
-		auto context = std::make_shared<AdaptiveRenderContext>(GetHostConfig(), GetElementRenderers());
+		auto context = std::make_shared<AdaptiveRenderContext>(GetHostConfig(), GetElementRenderers(), GetRenderConfig());
 		std::shared_ptr<QmlTag> tag;
 
 		try
@@ -487,7 +488,7 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::TextInputRender(std::shared_ptr<AdaptiveCards::TextInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-        const std::string origionalElementId = input->GetId();
+		const std::string origionalElementId = input->GetId();
 
 		std::shared_ptr<QmlTag> uiTextInput;
 		std::shared_ptr<QmlTag> scrollViewTag;
@@ -2937,7 +2938,7 @@ namespace RendererQml
     {
         for (const auto& componentElement : context->getShowCardLoaderComponentList())
         {
-            auto subContext = std::make_shared<AdaptiveRenderContext>(context->GetConfig(), context->GetElementRenderers());
+            auto subContext = std::make_shared<AdaptiveRenderContext>(context->GetConfig(), context->GetElementRenderers(), context->GetRenderConfig());
 
             // Add parent input input elements to the child card
             for (const auto& inputElement : context->getInputElementList())

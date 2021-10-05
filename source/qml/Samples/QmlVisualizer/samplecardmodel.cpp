@@ -2,6 +2,7 @@
 #include "samplecardlist.h"
 #include "adaptivecard_light_config.h"
 #include "adaptivecard_dark_config.h"
+#include "AdaptiveCardRenderConfig.h"
 
 #include <windows.h>
 #include <shellapi.h>
@@ -17,7 +18,8 @@ SampleCardModel::SampleCardModel(QObject *parent)
 {
 
     std::shared_ptr<AdaptiveSharedNamespace::HostConfig> hostConfig = std::make_shared<AdaptiveSharedNamespace::HostConfig>(AdaptiveSharedNamespace::HostConfig::DeserializeFromString(LightConfig::lightConfig));
-    renderer_ptr = std::make_shared<AdaptiveCardQmlRenderer>(AdaptiveCardQmlRenderer(hostConfig));
+    auto renderConfig = getRenderConfig(false);
+    renderer_ptr = std::make_shared<AdaptiveCardQmlRenderer>(AdaptiveCardQmlRenderer(hostConfig, renderConfig));
 }
 
 int SampleCardModel::rowCount(const QModelIndex &parent) const
@@ -224,15 +226,21 @@ const std::map<std::string, std::string> SampleCardModel::rehostImage(const std:
 void SampleCardModel::setTheme(const QString& theme)
 {
     std::shared_ptr<AdaptiveSharedNamespace::HostConfig> hostConfig;
+    bool isDark = true;
+
     if(theme.toStdString() == "Light")
     {
+        isDark = false;
         hostConfig = std::make_shared<AdaptiveSharedNamespace::HostConfig>(AdaptiveSharedNamespace::HostConfig::DeserializeFromString(LightConfig::lightConfig));
     }
     else
     {
         hostConfig = std::make_shared<AdaptiveSharedNamespace::HostConfig>(AdaptiveSharedNamespace::HostConfig::DeserializeFromString(DarkConfig::darkConfig));
     }
-    renderer_ptr = std::make_shared<AdaptiveCardQmlRenderer>(AdaptiveCardQmlRenderer(hostConfig));
+
+    auto renderConfig = getRenderConfig(isDark);
+    renderer_ptr = std::make_shared<AdaptiveCardQmlRenderer>(AdaptiveCardQmlRenderer(hostConfig, renderConfig));
+
     emit reloadCardOnThemeChange();
 }
 
@@ -296,4 +304,24 @@ const std::string SampleCardModel::getImagePath(const std::string& imageName)
 	dir_path = std::string("file:/") + dir_path;
 
 	return dir_path;
+}
+
+std::shared_ptr<AdaptiveCardRenderConfig> SampleCardModel::getRenderConfig(const bool isDark)
+{
+    auto renderConfig = std::make_shared<AdaptiveCardRenderConfig>(isDark);
+    renderConfig->setInputTextConfig(getInputTextConfig(isDark));
+    return renderConfig;
+}
+
+InputTextConfig SampleCardModel::getInputTextConfig(const bool isDark)
+{
+    InputTextConfig textInputConfig;
+
+    //Dark Values are default in the struct
+    if (!isDark)
+    {
+        textInputConfig.height = "4";
+    }
+
+    return textInputConfig;
 }

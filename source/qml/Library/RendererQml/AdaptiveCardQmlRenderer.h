@@ -2,6 +2,7 @@
 #include "pch.h"
 
 #include "AdaptiveCardsRendererBase.h"
+#include "AdaptiveCardRenderConfig.h"
 #include "RenderedQmlAdaptiveCard.h"
 #include "AdaptiveRenderContext.h"
 
@@ -37,7 +38,7 @@ namespace RendererQml
     {
     public:
         AdaptiveCardQmlRenderer();
-        AdaptiveCardQmlRenderer(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig);
+        AdaptiveCardQmlRenderer(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig, std::shared_ptr<AdaptiveCardRenderConfig> renderConfig);
 
         std::shared_ptr<RenderedQmlAdaptiveCard> RenderCard(std::shared_ptr<AdaptiveCards::AdaptiveCard> card);
 

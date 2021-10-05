@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "AdaptiveCardRenderConfig.h"
 #include "AdaptiveRenderContext.h"
 #include "AdaptiveFallbackException.h"
 #include "BaseInputElement.h"
@@ -7,8 +8,8 @@
 
 namespace RendererQml
 {
-    AdaptiveRenderContext::AdaptiveRenderContext(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig, std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> elementRenderers) :
-        m_ancestorHasFallback(false), m_hostConfig(hostConfig), m_elementRenderers(elementRenderers)
+    AdaptiveRenderContext::AdaptiveRenderContext(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig, std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> elementRenderers, std::shared_ptr<AdaptiveCardRenderConfig> renderConfig) :
+        m_ancestorHasFallback(false), m_hostConfig(hostConfig), m_elementRenderers(elementRenderers), m_renderConfig(renderConfig)
     {
         m_renderArgs.SetForegroundColors(m_hostConfig->GetContainerStyles().defaultPalette.foregroundColors);
     }
@@ -111,6 +112,11 @@ namespace RendererQml
     std::shared_ptr<AdaptiveCards::HostConfig> AdaptiveRenderContext::GetConfig()
     {
         return m_hostConfig;
+    }
+
+    std::shared_ptr<AdaptiveCardRenderConfig> AdaptiveRenderContext::GetRenderConfig()
+    {
+        return m_renderConfig;
     }
 
 	const std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> AdaptiveRenderContext::GetElementRenderers()

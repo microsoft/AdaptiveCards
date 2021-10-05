@@ -56,6 +56,8 @@ private:
 
 	static const std::string getImagePath(const std::string& imageName);
 
+    std::shared_ptr<AdaptiveCardRenderConfig> getRenderConfig(const bool isDark);
+    InputTextConfig getInputTextConfig(const bool isDark);
 };
 
 #endif // SAMPLECARDMODEL_H

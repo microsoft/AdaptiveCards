@@ -16,7 +16,7 @@ namespace RendererQml
     class AdaptiveRenderContext : public std::enable_shared_from_this<AdaptiveRenderContext>
     {
     public:
-        AdaptiveRenderContext(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig, std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> elementRenderers);
+        AdaptiveRenderContext(std::shared_ptr<AdaptiveCards::HostConfig> hostConfig, std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> elementRenderers, std::shared_ptr<AdaptiveCardRenderConfig> renderConfig);
 
         std::shared_ptr<QmlTag> Render(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, CardRendererFunction renderFunction, bool isChildCard = false);
         std::shared_ptr<QmlTag> Render(std::shared_ptr<AdaptiveCards::BaseElement> element);
@@ -25,6 +25,7 @@ namespace RendererQml
         void AddWarning(const AdaptiveWarning& warning);
 
         std::shared_ptr<AdaptiveCards::HostConfig> GetConfig();
+        std::shared_ptr<AdaptiveCardRenderConfig> GetRenderConfig();
 
 		const std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> GetElementRenderers();
 
@@ -95,6 +96,7 @@ namespace RendererQml
         std::vector<AdaptiveWarning> m_warnings;
         bool m_ancestorHasFallback;
         std::shared_ptr<AdaptiveCards::HostConfig> m_hostConfig;
+        std::shared_ptr<AdaptiveCardRenderConfig> m_renderConfig;
         AdaptiveRenderArgs m_renderArgs;
         AdaptiveCards::FeatureRegistration m_featureRegistration;
         std::string m_lang;

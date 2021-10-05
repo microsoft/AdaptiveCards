@@ -2,6 +2,7 @@
 
 #include "pch.h"
 
+#include "AdaptiveCardRenderConfig.h"
 #include "AdaptiveElementRenderers.h"
 
 namespace RendererQml
@@ -33,6 +34,16 @@ namespace RendererQml
             m_hostConfig = hostConfig;
         }
 
+        virtual std::shared_ptr<AdaptiveCardRenderConfig> GetRenderConfig()
+        {
+            return m_renderConfig;
+        }
+
+        virtual void SetRenderConfig(std::shared_ptr<AdaptiveCardRenderConfig> renderConfig)
+        {
+            m_renderConfig = renderConfig;
+        }
+
         virtual std::shared_ptr<AdaptiveElementRenderers<TUIElement, TContext>> GetElementRenderers()
         {
             return m_elementRenderers;
@@ -43,6 +54,7 @@ namespace RendererQml
     private:
         AdaptiveCards::SemanticVersion m_supportedSchemaVersion;
         std::shared_ptr<AdaptiveCards::HostConfig> m_hostConfig;
+        std::shared_ptr<AdaptiveCardRenderConfig> m_renderConfig;
         std::shared_ptr<AdaptiveElementRenderers<TUIElement, TContext>> m_elementRenderers;
     };
 
