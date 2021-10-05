@@ -12,7 +12,7 @@ class HostConfigUtilsTests: XCTestCase {
     }
     
     func testColorUtilsEightCharHexString() {
-        color = ColorUtils.color(from: "#9900FFCC")
+        color = ColorUtils.color(from: "#CC9900FF")
         XCTAssertEqual(color, NSColor(red: 0.6, green: 0, blue: 1, alpha: 0.8))
     }
     

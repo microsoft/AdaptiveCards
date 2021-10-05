@@ -64,7 +64,7 @@ class ACRTextField: NSTextField {
         } else {
             leftPadding += config.leftPadding
         }
-        customCell.setupSpacing(rightPadding: config.rightPadding, leftPadding: leftPadding, focusRingCornerRadius: config.focusRingCornerRadius, borderWidth: config.borderWidth, borderColor: config.borderColor, wantsClearButton: wantsClearButton, isNumericField: textFieldMode == .number)
+        customCell.setupSpacing(rightPadding: config.rightPadding, leftPadding: leftPadding, yPadding: config.yPadding, focusRingCornerRadius: config.focusRingCornerRadius, borderWidth: config.borderWidth, borderColor: config.borderColor, wantsClearButton: wantsClearButton, isNumericField: textFieldMode == .number)
         cell = customCell
         font = config.font
         if wantsClearButton {
@@ -191,7 +191,8 @@ class ACRTextField: NSTextField {
         var titleRect = super.titleRect(forBounds: rect)
 
         let minimumHeight = self.cellSize(forBounds: rect).height
-        titleRect.origin.y += (titleRect.height - minimumHeight) / 2
+        // Subtract yPadding to remove offset due to to font baseline
+        titleRect.origin.y += (titleRect.height - minimumHeight) / 2 - yPadding
         titleRect.size.height = minimumHeight
         titleRect.origin.x += leftPadding
         // 16px is the image size(clear button)

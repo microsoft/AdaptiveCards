@@ -115,10 +115,10 @@ class ColorUtils {
                                blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
                                alpha: CGFloat(1.0))
             
-        case 8: return NSColor(red: CGFloat((rgbValue & 0xFF000000) >> 24) / 255.0,
-                               green: CGFloat((rgbValue & 0x00FF0000) >> 16) / 255.0,
-                               blue: CGFloat((rgbValue & 0x0000FF00) >> 8) / 255.0,
-                               alpha: CGFloat(rgbValue & 0x000000FF) / 255.0)
+        case 8: return NSColor(red: CGFloat((rgbValue & 0x00FF0000) >> 16) / 255.0,
+                               green: CGFloat((rgbValue & 0x0000FF00) >> 8) / 255.0,
+                               blue: CGFloat(rgbValue & 0x000000FF) / 255.0,
+                               alpha: CGFloat((rgbValue & 0xFF000000) >> 24) / 255.0)
         default:
             logError("Not valid HexCode: \(hexString)")
             return nil
