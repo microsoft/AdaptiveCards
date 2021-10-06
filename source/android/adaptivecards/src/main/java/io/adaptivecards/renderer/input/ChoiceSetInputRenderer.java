@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Filter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -50,6 +52,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -439,12 +442,16 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         class FilteredChoiceSetAdapter extends ArrayAdapter<String>
         {
             boolean m_mustWrap = false;
+            List<String> m_items, m_tempItems, m_suggestions;
 
             FilteredChoiceSetAdapter(Context context, int resource,
                                      Vector<String> items, boolean mustWrap)
             {
                 super(context, resource, items);
                 m_mustWrap = mustWrap;
+                m_items = items;
+                m_tempItems = new ArrayList<>(items);
+                m_suggestions = new ArrayList<>();
             }
 
             @NonNull
@@ -463,6 +470,66 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
                 return view;
             }
+
+            @NonNull
+            @Override
+            public Filter getFilter() {
+                return substringFilter;
+            }
+
+            Filter substringFilter = new Filter() {
+
+                private FilterResults m_cachedAllResults = null;
+
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    if (constraint != null)
+                    {
+                        m_suggestions.clear();
+
+                        if (constraint.length() > 0) {
+                            for (String choice : m_tempItems) {
+                                if (choice.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                                    m_suggestions.add(choice);
+                                }
+                            }
+                        }
+
+                        FilterResults filterResults = new FilterResults();
+                        filterResults.values = m_suggestions;
+                        filterResults.count = m_suggestions.size();
+                        return filterResults;
+                    }
+                    else
+                    {
+                        if (m_cachedAllResults == null)
+                        {
+                            List<String> allSuggestions = new ArrayList<>(m_tempItems);
+
+                            FilterResults allResults = new FilterResults();
+                            allResults.values = allSuggestions;
+                            allResults.count = allSuggestions.size();
+
+                            m_cachedAllResults = allResults;
+                        }
+
+                        return m_cachedAllResults;
+                    }
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults filterResults) {
+                    List<String> filterList = (ArrayList<String>) filterResults.values;
+                    if (filterResults != null && filterResults.count > 0) {
+                        clear();
+                        for (String filteredChoice : filterList) {
+                            add(filteredChoice);
+                            notifyDataSetChanged();
+                        }
+                    }
+                }
+            };
+
         }
 
         autoCompleteTextView.setAdapter(new FilteredChoiceSetAdapter(context,
@@ -474,6 +541,22 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             autoCompleteTextView.setText(titleList.get(valueIndex));
         }
+
+        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event){
+                autoCompleteTextView.showDropDown();
+                return false;
+            }
+        });
+
+        autoCompleteTextView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                autoCompleteTextView.showDropDown();
+                return false;
+            }
+        });
 
         autoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
