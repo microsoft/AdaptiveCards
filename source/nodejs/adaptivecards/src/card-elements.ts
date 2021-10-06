@@ -3473,18 +3473,17 @@ export class ChoiceSetInput extends Input {
 
     isValid(): boolean {
         if (this._textInput) {
+            if (this.value === "" || this.value === this.placeholder) {
+                return true;
+            }
             for (let choice of this.choices) {
                 if (this.value === choice.value) {
                     return true;
                 }
-            }
-            
-            if (this.value === undefined) {
-                return !this.isRequired;
             }            
         }
 
-        return super.isValid();
+        return false;
     }
 
     get value(): string | undefined {
