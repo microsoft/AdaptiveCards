@@ -3480,10 +3480,12 @@ export class ChoiceSetInput extends Input {
                 if (this.value === choice.value) {
                     return true;
                 }
-            }            
+            }
+
+            return false;
         }
 
-        return false;
+        return super.isValid();
     }
 
     get value(): string | undefined {
