@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition, ISeparationDefinition,
@@ -3478,8 +3478,10 @@ export class ChoiceSetInput extends Input {
                     return true;
                 }
             }
-
-            return false;
+            
+            if (this.value === undefined) {
+                return !this.isRequired;
+            }            
         }
 
         return super.isValid();
