@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -454,6 +455,18 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 m_suggestions = new ArrayList<>();
             }
 
+            @Override
+            public int getCount()
+            {
+                return m_items.size();
+            }
+
+            @Override
+            public String getItem(int pos)
+            {
+                return m_items.get(pos);
+            }
+
             @NonNull
             @Override
             // getView returns the view when spinner is not selected
@@ -479,53 +492,54 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
             Filter substringFilter = new Filter() {
 
-                private FilterResults m_cachedAllResults = null;
-
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
-                    if (constraint != null)
-                    {
-                        m_suggestions.clear();
 
-                        if (constraint.length() > 0) {
-                            for (String choice : m_tempItems) {
-                                if (choice.toLowerCase().contains(constraint.toString().toLowerCase())) {
-                                    m_suggestions.add(choice);
+                    FilterResults filterResults = new FilterResults();
+                    synchronized (filterResults)
+                    {
+                        if (constraint != null)
+                        {
+                            m_suggestions.clear();
+
+                            if (constraint.length() > 0) {
+                                for (String choice : m_tempItems) {
+                                    if (choice.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                                        m_suggestions.add(choice);
+                                    }
                                 }
                             }
-                        }
+                            else
+                            {
+                                List<String> allSuggestions = new ArrayList<>(m_tempItems);
+                                m_suggestions.addAll(allSuggestions);
+                            }
 
-                        FilterResults filterResults = new FilterResults();
-                        filterResults.values = m_suggestions;
-                        filterResults.count = m_suggestions.size();
-                        return filterResults;
-                    }
-                    else
-                    {
-                        if (m_cachedAllResults == null)
+                            filterResults.values = m_suggestions;
+                            filterResults.count = m_suggestions.size();
+                        }
+                        else
                         {
                             List<String> allSuggestions = new ArrayList<>(m_tempItems);
 
-                            FilterResults allResults = new FilterResults();
-                            allResults.values = allSuggestions;
-                            allResults.count = allSuggestions.size();
-
-                            m_cachedAllResults = allResults;
+                            filterResults.values = allSuggestions;
+                            filterResults.count = allSuggestions.size();
                         }
-
-                        return m_cachedAllResults;
+                        return filterResults;
                     }
                 }
 
                 @Override
-                protected void publishResults(CharSequence constraint, FilterResults filterResults) {
-                    List<String> filterList = (ArrayList<String>) filterResults.values;
-                    if (filterResults != null && filterResults.count > 0) {
-                        clear();
-                        for (String filteredChoice : filterList) {
-                            add(filteredChoice);
-                            notifyDataSetChanged();
-                        }
+                protected void publishResults(CharSequence constraint, FilterResults filterResults)
+                {
+                    if (filterResults != null && filterResults.count > 0)
+                    {
+                        m_items = (ArrayList<String>) filterResults.values;
+                        notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        notifyDataSetInvalidated();
                     }
                 }
             };
