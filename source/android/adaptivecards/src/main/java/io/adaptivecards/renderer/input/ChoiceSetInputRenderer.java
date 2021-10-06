@@ -496,6 +496,10 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 protected FilterResults performFiltering(CharSequence constraint) {
 
                     FilterResults filterResults = new FilterResults();
+
+                    // Due to the time it takes for evaluating all options, this part of the code has
+                    // to be synchronized, otherwise the worker thread that calls the publishResults
+                    // function will throw an illegalstateexception or a concurrentmodificationexception
                     synchronized (filterResults)
                     {
                         if (constraint != null)
