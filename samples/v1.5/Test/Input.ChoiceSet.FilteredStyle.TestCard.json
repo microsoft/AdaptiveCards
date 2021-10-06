@@ -1,0 +1,124 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"choices": [
+				{
+					"title": "Apple Cider",
+					"value": "1"
+				},
+				{
+					"title": "Grape Juice",
+					"value": "2"
+				},
+				{
+					"title": "Banana Smoothie",
+					"value": "3"
+				},
+				{
+					"title": "Orange Juice",
+					"value": "4"
+				}
+			],
+			"value": "Banana Smoothie",
+			"label": "1.0 Compact Style",
+			"placeholder": "Click On Expand",
+			"id": "1"
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "Input.ChoiceSet",
+					"choices": [
+						{
+							"title": "Apple Cider",
+							"value": "1"
+						},
+						{
+							"title": "Grape Juice",
+							"value": "2"
+						},
+						{
+							"title": "Banana Smoothie",
+							"value": "3"
+						},
+						{
+							"title": "Orange Juice",
+							"value": "4"
+						}
+					],
+					"placeholder": "Type Some To Expand",
+					"style": "filtered",
+					"label": "1.5 Filtered Style",
+					"id": "2"
+				},
+				{
+					"type": "Input.ChoiceSet",
+					"choices": [
+						{
+							"title": "Should be able to type anything",
+							"value": "1"
+						},
+						{
+							"title": "Validation should fail if typed input doesn't match choices",
+							"value": "2"
+						},
+						{
+							"title": "Typing 'O' should show Banana Smoothie and Orange Juice.",
+							"value": "3"
+						}
+					],
+					"placeholder": "Placeholder text",
+					"isMultiSelect": true,
+					"style": "expanded",
+					"wrap": true,
+					"label": "Check Lists",
+					"id": "7",
+					"isRequired": true
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"wrap": true,
+			"id": "4",
+			"text": "Setting both filtered style and multiline will ignore the style as this example"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"choices": [
+				{
+					"title": "Apple Cider",
+					"value": "1"
+				},
+				{
+					"title": "Grape Juice",
+					"value": "2"
+				},
+				{
+					"title": "Banana Smoothie",
+					"value": "3"
+				},
+				{
+					"title": "Orange Juice",
+					"value": "4"
+				}
+			],
+			"placeholder": "Placeholder text",
+			"style": "filtered",
+			"isMultiSelect": true,
+			"id": "3"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"id": "6",
+			"title": "Check"
+		}
+	]
+}
