@@ -20,6 +20,7 @@
 			"inlineAction": {
 				"type": "Action.OpenUrl",
 				"title": "Reply",
+				"tooltip": "Reply to this message",
 				"url": "https://adaptivecards.io"
 			}
 		}
