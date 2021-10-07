@@ -7,8 +7,9 @@ import android.content.res.Resources;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+
+import android.os.Build;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -57,6 +58,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
@@ -443,7 +446,10 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         class FilteredChoiceSetAdapter extends ArrayAdapter<String>
         {
             boolean m_mustWrap = false;
-            List<String> m_items, m_tempItems, m_suggestions;
+
+            // m_items contains the items currently being displayed as suggestions
+            // m_originalItemsList contains the items provided by the card author when the element was created
+            List<String> m_items, m_originalItemsList;
 
             FilteredChoiceSetAdapter(Context context, int resource,
                                      Vector<String> items, boolean mustWrap)
@@ -451,8 +457,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 super(context, resource, items);
                 m_mustWrap = mustWrap;
                 m_items = items;
-                m_tempItems = new ArrayList<>(items);
-                m_suggestions = new ArrayList<>();
+                m_originalItemsList = new ArrayList<>(items);
             }
 
             @Override
@@ -487,10 +492,10 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             @NonNull
             @Override
             public Filter getFilter() {
-                return substringFilter;
+                return m_substringFilter;
             }
 
-            Filter substringFilter = new Filter() {
+            Filter m_substringFilter = new Filter() {
 
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
@@ -502,33 +507,37 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     // function will throw an illegalstateexception or a concurrentmodificationexception
                     synchronized (filterResults)
                     {
-                        if (constraint != null)
-                        {
-                            m_suggestions.clear();
+                        List<String> filteredSuggestions = new ArrayList<>();
 
-                            if (constraint.length() > 0) {
-                                for (String choice : m_tempItems) {
-                                    if (choice.toLowerCase().contains(constraint.toString().toLowerCase())) {
-                                        m_suggestions.add(choice);
-                                    }
-                                }
+                        // isEmpty compares against null and 0-length strings
+                        if (!TextUtils.isEmpty(constraint))
+                        {
+                            String lowerCaseConstraint = constraint.toString().toLowerCase();
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                            {
+                                Predicate<String> bySubstring = choice -> choice.toLowerCase().contains(lowerCaseConstraint);
+                                filteredSuggestions = m_originalItemsList.stream().filter(bySubstring).collect(Collectors.toList());
                             }
                             else
                             {
-                                List<String> allSuggestions = new ArrayList<>(m_tempItems);
-                                m_suggestions.addAll(allSuggestions);
+                                for (String choice : m_originalItemsList)
+                                {
+                                    if (choice.toLowerCase().contains(lowerCaseConstraint))
+                                    {
+                                        filteredSuggestions.add(choice);
+                                    }
+                                }
                             }
-
-                            filterResults.values = m_suggestions;
-                            filterResults.count = m_suggestions.size();
                         }
                         else
                         {
-                            List<String> allSuggestions = new ArrayList<>(m_tempItems);
-
-                            filterResults.values = allSuggestions;
-                            filterResults.count = allSuggestions.size();
+                            filteredSuggestions = m_originalItemsList;
                         }
+
+                        filterResults.values = filteredSuggestions;
+                        filterResults.count = filteredSuggestions.size();
+
                         return filterResults;
                     }
                 }

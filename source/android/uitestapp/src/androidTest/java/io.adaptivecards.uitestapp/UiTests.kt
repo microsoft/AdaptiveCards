@@ -190,7 +190,7 @@ class UiTests {
 
         // Click on a random point to dismiss the choices popup
         val device: UiDevice = UiDevice.getInstance(getInstrumentation())
-        device.click(0, 10)
+        device.click(1, 20)
 
         // Click again on the choiceset
         Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent("chosenAnimal"))))).perform(
