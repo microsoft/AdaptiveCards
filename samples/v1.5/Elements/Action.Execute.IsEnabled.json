@@ -1,0 +1,23 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Disabled Execute Button",
+      "wrap": true
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Execute",
+      "title": "Enabled"
+    },
+    {
+      "type": "Action.Execute",
+      "title": "Disabled",
+      "isEnabled": false
+    }
+  ]
+}
