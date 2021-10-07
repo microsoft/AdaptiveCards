@@ -419,7 +419,7 @@ using namespace AdaptiveCards;
         return;
     }
     if (!key || key.length == 0) {
-        _filteredList = _unfilteredList;
+        [self resetFilter];
     } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:_filter, key.lowercaseString];
         _filteredList = [_unfilteredList filteredArrayUsingPredicate:predicate];
