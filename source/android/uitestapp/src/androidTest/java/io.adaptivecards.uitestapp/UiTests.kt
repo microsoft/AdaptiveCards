@@ -89,16 +89,14 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "rr" to try to find parrot
-        Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent("chosenAnimal"))))).perform(
-            ViewActions.scrollTo(), ViewActions.click(),
-            ViewActions.clearText(), ViewActions.typeText("rr"));
+        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "rr")
 
-        Espresso.onData(Matchers.`is`("Crimson Shining Parrot")).inRoot(RootMatchers.isPlatformPopup()).perform(ViewActions.scrollTo(), ViewActions.click());
+        TestHelpers.selectPopupOption("Crimson Shining Parrot")
 
-        Espresso.onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
+        TestHelpers.clickOnElementWithText("OK")
 
         TestHelpers.goToInputsScreen()
-        Espresso.onData(Matchers.`is`(RetrievedInput("chosenAnimal", "Crimson Shining Parrot"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        TestHelpers.assertInputValuePairExists("chosenAnimal", "Crimson Shining Parrot")
     }
 
     @Test
@@ -108,16 +106,14 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "rr" to try to find parrot
-        Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent("chosenAnimal"))))).perform(
-            ViewActions.scrollTo(), ViewActions.click(),
-            ViewActions.clearText(), ViewActions.typeText("RR"));
+        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "RR")
 
-        Espresso.onData(Matchers.`is`("Crimson Shining Parrot")).inRoot(RootMatchers.isPlatformPopup()).perform(ViewActions.scrollTo(), ViewActions.click());
+        TestHelpers.selectPopupOption("Crimson Shining Parrot")
 
-        Espresso.onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
+        TestHelpers.clickOnElementWithText("OK")
 
         TestHelpers.goToInputsScreen()
-        Espresso.onData(Matchers.`is`(RetrievedInput("chosenAnimal", "Crimson Shining Parrot"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        TestHelpers.assertInputValuePairExists("chosenAnimal", "Crimson Shining Parrot")
     }
 
     @Test
@@ -127,16 +123,14 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "braz" to try to find brazillian
-        Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent("chosenAnimal"))))).perform(
-            ViewActions.scrollTo(), ViewActions.click(),
-            ViewActions.clearText(), ViewActions.typeText("braz"));
+        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "braz")
 
-        Espresso.onData(Matchers.`is`("Brazilian Tulipwood")).inRoot(RootMatchers.isPlatformPopup()).perform(ViewActions.scrollTo(), ViewActions.click());
+        TestHelpers.selectPopupOption("Brazilian Tulipwood")
 
-        Espresso.onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
+        TestHelpers.clickOnElementWithText("OK")
 
         TestHelpers.goToInputsScreen()
-        Espresso.onData(Matchers.`is`(RetrievedInput("chosenAnimal", "Brazilian Tulipwood"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        TestHelpers.assertInputValuePairExists("chosenAnimal", "Brazilian Tulipwood")
     }
 
     @Test
@@ -146,16 +140,14 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text and write "cuda" to try to find barracuda
-        Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent("chosenAnimal"))))).perform(
-            ViewActions.scrollTo(), ViewActions.click(),
-            ViewActions.clearText(), ViewActions.typeText("cuda"));
+        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "cuda")
 
-        Espresso.onData(Matchers.`is`("Blackspot barracuda")).inRoot(RootMatchers.isPlatformPopup()).perform(ViewActions.scrollTo(), ViewActions.click());
+        TestHelpers.selectPopupOption("Blackspot barracuda")
 
-        Espresso.onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
+        TestHelpers.clickOnElementWithText("OK")
 
         TestHelpers.goToInputsScreen()
-        Espresso.onData(Matchers.`is`(RetrievedInput("chosenAnimal", "Blackspot barracuda"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        TestHelpers.assertInputValuePairExists("chosenAnimal", "Blackspot barracuda")
     }
 
     @Test
@@ -165,16 +157,14 @@ class UiTests {
         TestHelpers.goToRenderedCardScreen()
 
         // Click on the filtered choiceset, delete all text
-        Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent("chosenAnimal"))))).perform(
-            ViewActions.scrollTo(), ViewActions.click(),
-            ViewActions.clearText());
+        TestHelpers.clearTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"))
 
-        Espresso.onData(Matchers.`is`("CORAL")).inRoot(RootMatchers.isPlatformPopup()).perform(ViewActions.scrollTo(), ViewActions.click());
+        TestHelpers.selectPopupOption("CORAL")
 
-        Espresso.onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
+        TestHelpers.clickOnElementWithText("OK")
 
         TestHelpers.goToInputsScreen()
-        Espresso.onData(Matchers.`is`(RetrievedInput("chosenAnimal", "Alaska tree coral"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        TestHelpers.assertInputValuePairExists("chosenAnimal", "Alaska tree coral")
     }
 
     @Test
@@ -183,24 +173,46 @@ class UiTests {
         Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
         TestHelpers.goToRenderedCardScreen()
 
-        // Click on the filtered choiceset, delete all text
-        Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent("chosenAnimal"))))).perform(
-            ViewActions.scrollTo(), ViewActions.click(),
-            ViewActions.clearText());
+        // Click on the filtered choiceset and delete all text
+        TestHelpers.clearTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"))
 
         // Click on a random point to dismiss the choices popup
         val device: UiDevice = UiDevice.getInstance(getInstrumentation())
         device.click(1, 20)
 
         // Click again on the choiceset
-        Espresso.onView(ViewMatchers.withParent(ViewMatchers.withTagValue(Matchers.`is`(TagContent("chosenAnimal"))))).perform(
-            ViewActions.scrollTo(), ViewActions.click());
+        TestHelpers.findInputInValidatedContainer("chosenAnimal").perform(ViewActions.scrollTo(), ViewActions.click());
 
-        Espresso.onData(Matchers.`is`("Zebra White")).inRoot(RootMatchers.isPlatformPopup()).perform(ViewActions.scrollTo(), ViewActions.click());
+        TestHelpers.selectPopupOption("Zebra White")
 
-        Espresso.onView(ViewMatchers.withText("OK")).perform(ViewActions.click())
+        TestHelpers.clickOnElementWithText("OK")
 
         TestHelpers.goToInputsScreen()
-        Espresso.onData(Matchers.`is`(RetrievedInput("chosenAnimal", "Zebra White"))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        TestHelpers.assertInputValuePairExists("chosenAnimal", "Zebra White")
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun TestFilteredChoiceSetMaintainsAllChoices() {
+        Espresso.onData(Matchers.`is`("Input.ChoiceSet.Filtered.json")).perform(ViewActions.click())
+        TestHelpers.goToRenderedCardScreen()
+
+        // Click on the filtered choiceset and type "parrot"
+        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "parrot");
+
+        // Select and option to remove popup
+        TestHelpers.selectPopupOption("Mexican Parrotlet")
+
+        // Click again on the choiceset and type "stygobromid", as there's only one result it
+        // should have not appeared in the "parrot" query but it should still show up to verify
+        // that options are not accidentally deleted when searching
+        TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "stygobromid");
+
+        TestHelpers.selectPopupOption("Alabama stygobromid")
+
+        TestHelpers.clickOnElementWithText("OK")
+
+        TestHelpers.goToInputsScreen()
+        TestHelpers.assertInputValuePairExists("chosenAnimal", "Alabama stygobromid")
     }
 }
