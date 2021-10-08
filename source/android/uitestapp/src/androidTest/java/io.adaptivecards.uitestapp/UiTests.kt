@@ -207,6 +207,9 @@ class UiTests {
         // Select and option to remove popup
         TestHelpers.selectPopupOption("Mexican Parrotlet")
 
+        val device: UiDevice = UiDevice.getInstance(getInstrumentation())
+        device.click(1, 20)
+
         Thread.sleep(1000)
 
         // Click again on the choiceset and type "stygobromid", as there's only one result it
