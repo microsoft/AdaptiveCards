@@ -1,0 +1,36 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Primary Show Card Action",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "Primary Show Card",
+						"wrap": true
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Secondary Show Card Action",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "Secondary Show Card",
+						"wrap": true
+					}
+				]
+			},
+			"mode": "secondary"
+		}
+	]
+}

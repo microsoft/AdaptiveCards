@@ -48,7 +48,7 @@
 					"selectAction": {
 						"type": "Action.OpenUrl",
 						"url": "https://adaptivecards.io",
-						"title": "Default"
+						"tooltip": "Default"
 					}
 				},
 				{
@@ -62,7 +62,7 @@
 					"color": "warning",
 					"selectAction": {
 						"type": "Action.Submit",
-						"title": "Action.Submit",
+						"tooltip": "Action.Submit",
 						"data": {
 							"x": "hello world!"
 						}
@@ -79,7 +79,7 @@
 					"color": "accent",
 					"selectAction": {
 						"type": "Action.ToggleVisibility",
-						"title": "Toggle!",
+						"tooltip": "Toggle!",
 						"targetElements": [ "textToToggle", "imageToToggle", "imageToToggle2" ]
 					}
 				}

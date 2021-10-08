@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class ColumnSet extends CollectionTypeElement {
+public class ColumnSet extends StyledCollectionElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 

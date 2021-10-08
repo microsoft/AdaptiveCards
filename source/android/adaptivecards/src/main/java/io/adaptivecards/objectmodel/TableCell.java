@@ -51,4 +51,14 @@ public class TableCell extends Container {
     this(AdaptiveCardObjectModelJNI.new_TableCell__SWIG_1(TableCell.getCPtr(arg0), arg0), true);
   }
 
+  public static TableCell DeserializeTableCellFromString(ParseContext context, String root) {
+    long cPtr = AdaptiveCardObjectModelJNI.TableCell_DeserializeTableCellFromString(ParseContext.getCPtr(context), context, root);
+    return (cPtr == 0) ? null : new TableCell(cPtr, true);
+  }
+
+  public static TableCell DeserializeTableCell(ParseContext context, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.TableCell_DeserializeTableCell(ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
+    return (cPtr == 0) ? null : new TableCell(cPtr, true);
+  }
+
 }

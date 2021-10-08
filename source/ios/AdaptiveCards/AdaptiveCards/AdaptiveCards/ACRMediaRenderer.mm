@@ -11,7 +11,7 @@
 #import "ACOMediaEventPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRTapGestureRecognizerFactory.h"
 #import "ACRMediaTarget.h"
 #import "ACRUIImageView.h"
 #import "ACRView.h"
@@ -141,7 +141,7 @@
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig containingview:contentholdingview];
         }
         // config gesture recognizer and embed it to the poster.
-        UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:mediaTarget];
+        UITapGestureRecognizer *recognizer = [ACRTapGestureRecognizerFactory getGestureRecognizer:viewGroup target:mediaTarget];
         [view addGestureRecognizer:recognizer];
         view.userInteractionEnabled = YES;
 
@@ -154,9 +154,11 @@
         }
     }
 
-    configVisibility(contentholdingview, elem);
+    if (mediaElem->GetHeight() == HeightType::Stretch) {
+        [viewGroup addArrangedSubview:[viewGroup addPaddingFor:contentholdingview]];
+    }
 
-    return view;
+    return contentholdingview;
 }
 
 - (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView

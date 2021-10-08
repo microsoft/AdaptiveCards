@@ -9,13 +9,13 @@
 | **altText** | `string` | No | Alternate text describing the image. | 1.0 |
 | **backgroundColor** | `string` | No | Applies a background to a transparent image. This property will respect the image style. | 1.1 |
 | **height** | `string`, `BlockElementHeight` | No, default: `"auto"` | The desired height of the image. If specified as a pixel value, ending in 'px', E.g., 50px, the image will distort to fit that exact height. This overrides the `size` property. | 1.1 |
-| **horizontalAlignment** | `HorizontalAlignment` | No | Controls how this element is horizontally positioned within its parent. | 1.0 |
+| **horizontalAlignment** | `HorizontalAlignment?` | No | Controls how this element is horizontally positioned within its parent. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **size** | `ImageSize` | No | Controls the approximate size of the image. The physical dimensions will vary per host. | 1.0 |
 | **style** | `ImageStyle` | No | Controls how this `Image` is displayed. | 1.0 |
 | **width** | `string` | No | The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.1 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -42,9 +42,9 @@ The desired height of the image. If specified as a pixel value, ending in 'px', 
 
 ## horizontalAlignment
 
-Controls how this element is horizontally positioned within its parent.
+Controls how this element is horizontally positioned within its parent. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left.
 
-* **Type**: `HorizontalAlignment`
+* **Type**: `HorizontalAlignment?`
 * **Required**: No
 * **Allowed values**:
   * `"left"`
@@ -113,6 +113,7 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `Input.Toggle`
   * `Media`
   * `RichTextBlock`
+  * `Table`
   * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 

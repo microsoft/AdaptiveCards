@@ -5,14 +5,14 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#import "ACRBaseTarget.h"
 #import "ACRIContentHoldingView.h"
-#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACRView.h"
 #import "SharedAdaptiveCard.h"
 #import "ShowCardAction.h"
 #import <UIKit/UIKit.h>
 
-@interface ACRShowCardTarget : NSObject <ACRSelectActionDelegate>
+@interface ACRShowCardTarget : ACRBaseTarget
 
 - (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ShowCardAction> const &)showCardActionElement
                                config:(ACOHostConfig *)config

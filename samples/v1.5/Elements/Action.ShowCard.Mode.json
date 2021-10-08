@@ -1,0 +1,63 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Please confirm your data:",
+			"wrap": true,
+			"style": "heading"
+		},
+		{
+			"type": "FactSet",
+			"facts": [
+				{
+					"title": "First Name",
+					"value": "John"
+				},
+				{
+					"title": "Last Name",
+					"value": "Smith"
+				},
+				{
+					"title": "Phone number ",
+					"value": "(555) 555-5555"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Execute",
+			"title": "Confirm data"
+		},
+		{
+			"type": "Action.Execute",
+			"title": "Edit data",
+			"data": "edit",
+			"mode": "secondary"
+		},
+		{
+			"type": "Action.Execute",
+			"title": "Delete data",
+			"data": "delete",
+			"mode": "secondary"
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "More information",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "The data shown above is what we have on file for you. Please confirm whether this data is correct.",
+						"wrap": true
+					}
+				]
+			},
+			"mode": "secondary"
+		}
+	]
+}

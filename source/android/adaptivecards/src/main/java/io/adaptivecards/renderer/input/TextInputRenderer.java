@@ -13,6 +13,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -90,6 +91,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
         else if (textInputStyle == TextInputStyle.Email)
         {
             editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        }
+        else if (textInputStyle == TextInputStyle.Password)
+        {
+            editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
         }
         else
         {
@@ -397,7 +403,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         BaseActionElement action = textInput.GetInlineAction();
 
-        if (textInput.GetIsMultiline())
+        if (textInput.GetIsMultiline() && (textInput.GetTextInputStyle() != TextInputStyle.Password))
         {
             // If the Input.Text has to stretch then don't limit the number of lines,
             // otherwise default to 3 lines

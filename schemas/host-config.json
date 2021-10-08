@@ -1,5 +1,16 @@
 {
 	"definitions": {
+		"AdaptiveCardConfig": {
+			"type": "object",
+			"description": "Toplevel options for `AdaptiveCards`",
+			"properties": {
+				"allowCustomStyle": {
+					"type": "boolean",
+					"description": "Controls whether custom styling is allowed",
+					"default": true
+				}
+			}
+		},
 		"ActionsConfig": {
 			"type": "object",
 			"description": "Options for `Action`s",
@@ -64,17 +75,6 @@
 					"type": "integer",
 					"description": "Controls size of action icon",
 					"default": 30
-				}
-			}
-		},
-		"AdaptiveCardConfig": {
-			"type": "object",
-			"description": "Toplevel options for `AdaptiveCards`",
-			"properties": {
-				"allowCustomStyle": {
-					"type": "boolean",
-					"description": "Controls whether custom styling is allowed",
-					"default": true
 				}
 			}
 		},
@@ -671,7 +671,7 @@
 		},
 		"TextStylesConfig": {
 			"type": "object",
-			"description": "Configuration settings for TextBocks",
+			"description": "Sets default properties for text of a given style",
 			"properties": {
 				"heading": {
 					"$ref": "#/definitions/TextStyleConfig",
@@ -682,67 +682,92 @@
 						"fontType": "default",
 						"isSubtle": false
 					}
+				},
+				"columnHeader": {
+					"$ref": "#/definitions/TextStyleConfig",
+					"default": {
+						"weight": "bolder",
+						"size": "default",
+						"color": "default",
+						"fontType": "default",
+						"isSubtle": false
+					}
 				}
 			}
 		},
-		"type": "object",
-		"properties": {
-			"supportsInteractivity": {
-				"type": "boolean",
-				"description": "Control whether interactive `Action`s are allowed to be invoke",
-				"default": true
-			},
-			"imageBaseUrl": {
-				"type": "string",
-				"format": "uri",
-				"description": "Base URL to be used when loading resources"
-			},
-			"fontFamily": {
-				"type": "string",
-				"description": "Font face to use when rendering text",
-				"default": "Calibri"
-			},
-			"actions": {
-				"$ref": "#/definitions/ActionsConfig"
-			},
-			"adaptiveCard": {
-				"$ref": "#/definitions/AdaptiveCardConfig"
-			},
-			"containerStyles": {
-				"$ref": "#/definitions/ContainerStylesConfig"
-			},
-			"imageSizes": {
-				"$ref": "#/definitions/ImageSizesConfig"
-			},
-			"imageSet": {
-				"$ref": "#/definitions/ImageSetConfig"
-			},
-			"factSet": {
-				"$ref": "#/definitions/FactSetConfig"
-			},
-			"fontSizes": {
-				"$ref": "#/definitions/FontSizesConfig"
-			},
-			"fontWeights": {
-				"$ref": "#/definitions/FontWeightsConfig"
-			},
-			"spacing": {
-				"$ref": "#/definitions/SpacingsConfig"
-			},
-			"separator": {
-				"$ref": "#/definitions/SeparatorConfig"
-			},
-			"media": {
-				"$ref": "#/definitions/MediaConfig"
-			},
-			"inputs": {
-				"$ref": "#/definitions/InputsConfig"
-			},
-			"textBlock": {
-				"$ref": "#/definitions/TextBlockConfig"
-			},
-			"textStyles": {
-				"$ref": "#/definitions/TextStylesConfig"
+		"TextBlockConfig": {
+			"type": "object",
+			"description": "Configuration settings for TextBlocks",
+			"properties": {
+				"headingLevel": {
+					"type": "integer",
+					"description": "When displaying a `TextBlock` element with the `heading` style, this is the heading level exposed to accessibility tools.",
+					"default": 2
+				}
+			}
+		},
+		"HostConfig": {
+			"type": "object",
+			"description": "Contains host-configurable settings",
+			"properties": {
+				"supportsInteractivity": {
+					"type": "boolean",
+					"description": "Control whether interactive `Action`s are allowed to be invoked",
+					"default": true
+				},
+				"imageBaseUrl": {
+					"type": "string",
+					"format": "uri",
+					"description": "Base URL to be used when loading resources"
+				},
+				"fontFamily": {
+					"type": "string",
+					"description": "Font face to use when rendering text",
+					"default": "Calibri"
+				},
+				"actions": {
+					"$ref": "#/definitions/ActionsConfig"
+				},
+				"adaptiveCard": {
+					"$ref": "#/definitions/AdaptiveCardConfig"
+				},
+				"containerStyles": {
+					"$ref": "#/definitions/ContainerStylesConfig"
+				},
+				"imageSizes": {
+					"$ref": "#/definitions/ImageSizesConfig"
+				},
+				"imageSet": {
+					"$ref": "#/definitions/ImageSetConfig"
+				},
+				"factSet": {
+					"$ref": "#/definitions/FactSetConfig"
+				},
+				"fontSizes": {
+					"$ref": "#/definitions/FontSizesConfig"
+				},
+				"fontWeights": {
+					"$ref": "#/definitions/FontWeightsConfig"
+				},
+				"spacing": {
+					"$ref": "#/definitions/SpacingsConfig"
+				},
+				"separator": {
+					"$ref": "#/definitions/SeparatorConfig"
+				},
+				"media": {
+					"$ref": "#/definitions/MediaConfig"
+				},
+				"inputs": {
+					"$ref": "#/definitions/InputsConfig"
+				},
+				"textBlock": {
+					"$ref": "#/definitions/TextBlockConfig"
+				},
+				"textStyles": {
+					"$ref": "#/definitions/TextStylesConfig"
+				}
 			}
 		}
 	}
+}

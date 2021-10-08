@@ -63,6 +63,7 @@ The card elements to show in the primary card region.
   * `Input.Toggle`
   * `Media`
   * `RichTextBlock`
+  * `Table`
   * `TextBlock`
 
 
