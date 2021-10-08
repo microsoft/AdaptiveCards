@@ -4,10 +4,12 @@ REM This script copies the dll and winmd files to have different names to be sig
 REM setting platform variables
 set AC=AdaptiveCards
 set ACUWP=AdaptiveCards.Rendering.Uwp
+set ACOM=AdaptiveCards.ObjectModel.Uwp
 
 REM setting path variables
 set ACROOT=source\uwp\
 set ACPATH=AdaptiveCardRenderer\
+set ACPATHOM=AdaptiveCardsObjectModel\
 set BINPATH=Release\
 
 if "%2" == "" goto :usage
@@ -34,6 +36,21 @@ call :checkedCopy %ACROOT%x64\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%x64\%AC
 call :checkedCopy %ACROOT%ARM\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%ARM\%ACUWP%.dll
 call :checkedCopy %ACROOT%ARM64\Release\%ACPATH%%ACUWP%.dll tosign\%ACPATH%ARM64\%ACUWP%.dll
 
+REM AdaptiveCards
+echo %ACPATHOM%
+REM AdaptiveCards ObjectModel
+
+mkdir tosign\%ACPATHOM%\Win32
+mkdir tosign\%ACPATHOM%\x64
+mkdir tosign\%ACPATHOM%\ARM
+mkdir tosign\%ACPATHOM%\ARM64
+
+call :checkedCopy %ACROOT%\Release\%ACPATHOM%%ACOM%.winmd tosign\%ACPATHOM%%ACOM%.winmd
+call :checkedCopy %ACROOT%Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%Win32\%ACOM%.dll
+call :checkedCopy %ACROOT%x64\Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%x64\%ACOM%.dll
+call :checkedCopy %ACROOT%ARM\Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%ARM\%ACOM%.dll
+call :checkedCopy %ACROOT%ARM64\Release\%ACPATHOM%%ACOM%.dll tosign\%ACPATHOM%ARM64\%ACOM%.dll
+
 popd
 goto :end
 
@@ -46,6 +63,13 @@ call :checkedCopy signed\%ACPATH%Win32\%ACUWP%.dll %ACROOT%Release\%ACPATH%%ACUW
 call :checkedCopy signed\%ACPATH%x64\%ACUWP%.dll %ACROOT%x64\Release\%ACPATH%%ACUWP%.dll
 call :checkedCopy signed\%ACPATH%ARM\%ACUWP%.dll %ACROOT%ARM\Release\%ACPATH%%ACUWP%.dll
 call :checkedCopy signed\%ACPATH%ARM64\%ACUWP%.dll %ACROOT%ARM64\Release\%ACPATH%%ACUWP%.dll
+
+REM AdaptiveCardsObjectModel
+call :checkedCopy signed\%ACPATHOM%%ACOM%.winmd %ACROOT%Release\%ACPATHOM%%ACOM%.winmd
+call :checkedCopy signed\%ACPATHOM%Win32\%ACOM%.dll %ACROOT%Release\%ACPATHOM%%ACOM%.dll
+call :checkedCopy signed\%ACPATHOM%x64\%ACOM%.dll %ACROOT%x64\Release\%ACPATHOM%%ACOM%.dll
+call :checkedCopy signed\%ACPATHOM%ARM\%ACOM%.dll %ACROOT%ARM\Release\%ACPATHOM%%ACOM%.dll
+call :checkedCopy signed\%ACPATHOM%ARM64\%ACOM%.dll %ACROOT%ARM64\Release\%ACPATHOM%%ACOM%.dll
 
 popd
 goto :end
