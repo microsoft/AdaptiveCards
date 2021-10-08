@@ -3,20 +3,50 @@
 	"type" : "AdaptiveCard",
 	"version" : "1.0",
 	"body" :
-		[ 
+		[
+			{
+				"columns": [
+					{
+						"items": [
+							{
+								"size": "ExtraLarge",
+								"text": "Trip to UAE",
+								"type": "TextBlock",
+								"wrap": true
+							},
+							{
+								"size": "Small",
+								"spacing": "Small",
+								"color": "Accent",
+								"weight": "Bolder",
+								"type": "TextBlock",
+								"text": "ER-13052"
+							}
+						],
+						"width": "stretch",
+						"backgroundImage": {
+							"url": "https://i.picsum.photos/id/741/375/132.jpg?hmac=ERFnNR0i8FOAhUzgI--BoJ6Bvr5aWWb03TltW7R5U8E",
+							"verticalAlignment": "Center",
+							"horizontalAlignment": "Center"
+						},
+						"type": "Column"
+					}
+				],
+				"type": "ColumnSet"
+			},
 			{
 				"type" : "Container",
 				"items" : [
 					{
 						"type" : "TextBlock",
-						"text" : "Every elements below this has to be convered by a purple background image",
+						"text" : "Every elements below this has to be convered by background images",
 						"wrap" : true
 					}, 
 					{
 						"type" : "Container",
 						"backgroundImage" : 
 						{
-							"url" : "http://104.211.228.145:3000/images/assets/icons/Background.png"
+							"url" : "https://picsum.photos/50"
 						},
 						"items" : [
 							{
@@ -104,10 +134,10 @@
 		{
 			"type": "Container",
 			"backgroundImage": {
-				"url": "http://104.211.228.145:3000/images/assets/icons/Background.png",
+				"url": "https://picsum.photos/50",
 				"fillMode": "Cover"
 			},
-            "items": [
+			"items": [
 				{
 					"id": "txtid",
 					"text": "Test Card.",
@@ -134,14 +164,14 @@
 					"id": "idchoice",
 					"type": "Input.ChoiceSet",
 					"choices": [
-                        {
-                            "title": "Choice 1",
-                            "value": "Choice 1"
-                        },
-                        {
-                            "title": "Choice 2",
-                            "value": "Choice 2"
-                        }
+						{
+							"title": "Choice 1",
+							"value": "Choice 1"
+						},
+						{
+							"title": "Choice 2",
+							"value": "Choice 2"
+						}
 					]
 				},
 				{

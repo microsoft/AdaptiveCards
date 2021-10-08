@@ -60,18 +60,7 @@
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]];
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
 
-    NSMutableArray *constraints = [[NSMutableArray alloc] init];
-
-    if (columnSetElem->GetMinHeight() > 0) {
-        [constraints addObject:
-                         [NSLayoutConstraint constraintWithItem:columnSetView
-                                                      attribute:NSLayoutAttributeHeight
-                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                         toItem:nil
-                                                      attribute:NSLayoutAttributeNotAnAttribute
-                                                     multiplier:1
-                                                       constant:columnSetElem->GetMinHeight()]];
-    }
+    NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
 
     ACRColumnRenderer *castedRenderer = (ACRColumnRenderer *)columnRenderer;
     auto relativeColumnWidthCounts = 0;
@@ -109,12 +98,10 @@
     UIView *viewWithMinWidth = nil;
     ACRColumnView *viewWithMaxSize = nil;
     NSMutableArray<ACRColumnView *> *viewsWithRelativeWidth = [[NSMutableArray alloc] init];
-    NSMutableSet<ACRColumnView *> *viewsWithPaddingView = [[NSMutableSet alloc] init];
 
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {
             separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
-            configSeparatorVisibility(separator, prevColumn);
         }
 
         [acoColumn setElem:column];
@@ -131,6 +118,8 @@
             curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
             if (separator && !curView) {
                 [columnSetView removeViewFromContentStackView:separator];
+            } else {
+                [columnSetView updateLayoutAndVisibilityOfRenderedView:curView acoElement:acoColumn separator:separator rootView:rootView];
             }
         } @catch (ACOFallbackException *e) {
 
@@ -189,10 +178,6 @@
             [columnSetView setAlignmentForColumnStretch];
         }
 
-        if (curView.hasPaddingView) {
-            [viewsWithPaddingView addObject:curView];
-        }
-
         CGSize size = [curView intrinsicContentSize];
         if (size.width * size.height > maxIntrinsicSize) {
             maxIntrinsicSize = size.width * size.height;
@@ -200,11 +185,6 @@
         }
 
         prevColumn = column;
-    }
-
-    if (columns.size() > 1 && [viewsWithPaddingView containsObject:viewWithMaxSize]) {
-        viewWithMaxSize.hasPaddingView = NO;
-        [viewWithMaxSize removeLastViewFromArrangedSubview];
     }
 
     for (ACRColumnView *view in viewsWithRelativeWidth) {
@@ -233,15 +213,15 @@
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     [columnSetView configureForSelectAction:acoSelectAction rootView:rootView];
-    configVisibility(columnSetView, elem);
 
-    [columnSetView hideIfSubviewsAreAllHidden];
+    [columnSetView configureLayoutAndVisibility:GetACRVerticalContentAlignment(columnSetElem->GetVerticalContentAlignment().value_or(VerticalContentAlignment::Top))
+                                      minHeight:columnSetElem->GetMinHeight()
+                                     heightType:GetACRHeight(columnSetElem->GetHeight())
+                                           type:ACRColumnSet];
 
     [columnSetView setNeedsLayout];
 
     [rootView.context popBaseCardElementContext:acoElem];
-
-    [columnSetView toggleVisibilityOfFirstView];
 
     return columnSetView;
 }

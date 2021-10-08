@@ -36,6 +36,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                            const wchar_t* resourceName,
                                            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
 
+    void SetStyleFromResourceDictionary(winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext,
+                                        winrt::hstring resourceName,
+                                        winrt::Windows::UI::Xaml::IFrameworkElement frameworkElement);
+
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                                                                UINT spacing,
                                                                                UINT separatorThickness,
@@ -172,6 +176,10 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
         }
     }
 
+    void SetContent(winrt::Windows::UI::Xaml::Controls::IContentControl contentControl,
+                    _In_ winrt::param::hstring contentString,
+                    boolean wrap = false);
+
     template<typename T> void SetContent(_In_ T* item, _In_ HSTRING contentString, boolean wrap)
     {
         ComPtr<T> localItem(item);
@@ -261,6 +269,12 @@ namespace AdaptiveCards::Rendering::Uwp::XamlHelpers
                                            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                                            ABI::Windows::UI::Xaml::IUIElement** inputLayout,
                                            ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
+
+    winrt::Windows::UI::Xaml::UIElement
+    HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement adaptiveInput,
+                                   winrt::Windows::UI::Xaml::UIElement inputUIElement,
+                                   boolean hasTypeSpecificValidation,
+                                   winrt::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext renderContext);
 
     template<typename TXamlControl>
     HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,

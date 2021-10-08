@@ -52,7 +52,7 @@ public class MediaRenderer extends BaseCardElementRenderer
 
     private class PosterOnClickListener implements View.OnClickListener
     {
-        public PosterOnClickListener(ImageView poster, ImageView playButton, FullscreenVideoView mediaView, boolean allowedInlinePlayback, BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler)
+        public PosterOnClickListener(ImageView poster, ImageView playButton, FullscreenVideoView mediaView, boolean allowedInlinePlayback, BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard, ICardActionHandler cardActionHandler, ViewGroup posterLayout)
         {
             m_poster = poster;
             m_playButton = playButton;
@@ -62,6 +62,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             m_cardMediaElement = mediaElement;
             m_renderedAdaptiveCard = renderedAdaptiveCard;
             m_cardActionHandler = cardActionHandler;
+            m_posterLayout = posterLayout;
         }
 
         @Override
@@ -78,13 +79,14 @@ public class MediaRenderer extends BaseCardElementRenderer
                     m_playButton.setVisibility(View.GONE);
                     m_mediaView.setVisibility(View.VISIBLE);
                 }
-
+                m_posterLayout.setClickable(false);
                 m_cardActionHandler.onMediaPlay(m_cardMediaElement, m_renderedAdaptiveCard);
 
                 m_alreadyClicked = true;
             }
         }
 
+        private ViewGroup m_posterLayout;
         private ImageView m_poster;
         private ImageView m_playButton;
         private FullscreenVideoView m_mediaView;
@@ -150,6 +152,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             poster.SetUrl(hostConfig.GetMedia().getDefaultPoster());
         }
+        poster.SetAltText(media.GetAltText());
 
         if(!poster.GetUrl().isEmpty())
         {
@@ -257,6 +260,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             }
         }
         mediaView.setShouldAutoplay(true);
+        mediaView.setContentDescription(media.GetAltText());
 
         RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
@@ -293,7 +297,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, hostConfig, renderArgs);
         FullscreenVideoView mediaView = renderMediaPlayer(context, posterLayout, media, hostConfig);
 
-        posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler));
+        posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler, posterLayout));
         mediaView.setOnCompletionListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler));
 
         mediaLayout.addView(posterLayout);

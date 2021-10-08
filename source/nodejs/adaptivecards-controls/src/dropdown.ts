@@ -77,7 +77,7 @@ export class DropDownPopupControl extends PopupControl {
 
         var selectedIndex = this._owner.selectedIndex;
 
-        for (var i = 0; i < this._owner.items.length; i++) {
+        for (let i = 0; i < this._owner.items.length; i++) {
             var renderedItem = this._owner.items.get(i).render();
             renderedItem.tabIndex = 0;
 
@@ -212,7 +212,7 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
     attach(rootElement: HTMLElement) {
         super.attach(rootElement);
 
-        for (var i = 0; i < this.rootElement.children.length; i++) {
+        for (let i = 0; i < this.rootElement.children.length; i++) {
             var childElement = this.rootElement.children[i];
 
             if (childElement.tagName.toLowerCase() == "ms-dropdown-item") {

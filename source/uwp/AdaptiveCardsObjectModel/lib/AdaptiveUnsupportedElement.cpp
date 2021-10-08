@@ -3,52 +3,22 @@
 #include "pch.h"
 
 #include "AdaptiveUnsupportedElement.h"
+#include "AdaptiveUnsupportedElement.g.cpp"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::ObjectModel::Uwp;
-using namespace ABI::Windows::Foundation::Collections;
-
-namespace AdaptiveCards::ObjectModel::Uwp
+namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
 {
-    HRESULT AdaptiveUnsupportedElement::RuntimeClassInitialize() noexcept
-    try
+    AdaptiveUnsupportedElement::AdaptiveUnsupportedElement(const std::shared_ptr<::AdaptiveCards::UnknownElement>& sharedUnknown) :
+        m_actualType(sharedUnknown->GetElementTypeString())
     {
-        std::shared_ptr<AdaptiveCards::UnknownElement> unknownElement = std::make_shared<AdaptiveCards::UnknownElement>();
-        return RuntimeClassInitialize(unknownElement);
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveUnsupportedElement::RuntimeClassInitialize(const std::shared_ptr<AdaptiveCards::UnknownElement>& sharedUnknown)
-    try
-    {
-        if (sharedUnknown == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
-        InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedUnknown));
-        m_actualType = sharedUnknown->GetElementTypeString();
-        return S_OK;
-    }
-    CATCH_RETURN;
-
-    HRESULT AdaptiveUnsupportedElement::get_ElementType(_Out_ ElementType* elementType)
-    {
-        *elementType = ElementType::Unsupported;
-        return S_OK;
+        InitializeBaseElement(sharedUnknown);
     }
 
-    HRESULT AdaptiveUnsupportedElement::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedUnknown)
-    try
+    std::shared_ptr<::AdaptiveCards::BaseCardElement> AdaptiveUnsupportedElement::GetSharedModel()
     {
-        std::shared_ptr<AdaptiveCards::UnknownElement> unknownElement = std::make_shared<AdaptiveCards::UnknownElement>();
-
+        auto unknownElement = std::make_shared<::AdaptiveCards::UnknownElement>();
         unknownElement->SetElementTypeString(m_actualType);
-        RETURN_IF_FAILED(CopySharedElementProperties(*unknownElement));
+        CopySharedElementProperties(*unknownElement);
 
-        sharedUnknown = std::move(unknownElement);
-        return S_OK;
+        return unknownElement;
     }
-    CATCH_RETURN;
 }

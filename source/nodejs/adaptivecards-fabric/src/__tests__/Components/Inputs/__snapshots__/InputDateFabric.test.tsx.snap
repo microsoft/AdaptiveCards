@@ -39,7 +39,7 @@ exports[`InputDateExtended renders component correctly 1`] = `
                 />
                 <i
                   aria-hidden="true"
-                  class="ms-DatePicker-event--without-label msDatePickerDisabled icon-54"
+                  class="ms-DatePicker-event--without-label msDatePickerDisabled icon-57"
                   data-icon-name="Calendar"
                 >
                   

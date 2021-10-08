@@ -26,13 +26,13 @@ import android.media.AudioManager;
 import android.media.MediaDataSource;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
-import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnSeekCompleteListener;
-import android.net.Uri;
 import android.media.MediaPlayer.OnVideoSizeChangedListener;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcelable;
@@ -40,13 +40,10 @@ import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
-
 import android.widget.FrameLayout;
-import java.io.IOException;
+import android.widget.MediaController;
 
-import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
-import io.adaptivecards.renderer.IOnlineMediaLoader;
-import io.adaptivecards.renderer.registration.CardRendererRegistration;
+import java.io.IOException;
 
 /**
  * Acts like a android.widget.VideoView with fullscreen functionality
@@ -61,7 +58,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
  */
 
 @SuppressLint("NewApi")
-public class FullscreenVideoView extends FrameLayout implements OnPreparedListener, OnErrorListener, OnSeekCompleteListener, OnCompletionListener, OnInfoListener, OnVideoSizeChangedListener, OnBufferingUpdateListener, TextureView.SurfaceTextureListener
+public class FullscreenVideoView extends FrameLayout implements OnPreparedListener, OnErrorListener, OnSeekCompleteListener, OnCompletionListener, OnInfoListener, OnVideoSizeChangedListener, OnBufferingUpdateListener, TextureView.SurfaceTextureListener, MediaController.MediaPlayerControl
 {
     protected Context m_context;
 
@@ -542,6 +539,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
      *
      * @see <a href="http://developer.android.com/reference/android/media/MediaPlayer.html#getCurrentPosition%28%29">getCurrentPosition</a>
      */
+    @Override
     public int getCurrentPosition()
     {
         if (m_mediaPlayer != null)
@@ -556,6 +554,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
      *
      * @see <a href="http://developer.android.com/reference/android/media/MediaPlayer.html#getDuration%28%29">getDuration</a>
      */
+    @Override
     public int getDuration()
     {
         if (m_mediaPlayer != null)
@@ -612,6 +611,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
      *
      * @see <a href="http://developer.android.com/reference/android/media/MediaPlayer.html#isPlaying%28%29">isPlaying</a>
      */
+    @Override
     public boolean isPlaying() throws IllegalStateException
     {
         if (m_mediaPlayer != null)
@@ -626,6 +626,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
      *
      * @see <a href="http://developer.android.com/reference/android/media/MediaPlayer.html#pause%28%29">pause</a>
      */
+    @Override
     public void pause() throws IllegalStateException
     {
         if (m_mediaPlayer != null)
@@ -650,6 +651,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
      *
      * @see <a href="http://developer.android.com/reference/android/media/MediaPlayer.html#start%28%29">start</a>
      */
+    @Override
     public void start() throws IllegalStateException
     {
         if (m_mediaPlayer != null)
@@ -682,6 +684,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
      * @throws IllegalStateException if the internal player engine has not been initialized
      * @see <a href="http://developer.android.com/reference/android/media/MediaPlayer.html#seekTo%28%29">seekTo</a>
      */
+    @Override
     public void seekTo(int msec) throws IllegalStateException
     {
         if (m_mediaPlayer != null)
@@ -694,6 +697,31 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
                 m_mediaPlayer.seekTo(msec);
             }
         } else throw new RuntimeException("Media Player is not initialized");
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return m_mediaPlayer.getAudioSessionId();
     }
 
     public void setOnCompletionListener(OnCompletionListener l)

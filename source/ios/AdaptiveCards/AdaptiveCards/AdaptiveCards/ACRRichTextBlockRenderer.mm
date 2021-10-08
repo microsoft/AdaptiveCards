@@ -11,8 +11,8 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRContentHoldingUIView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
+#import "ACRTapGestureRecognizerFactory.h"
 #import "ACRUILabel.h"
 #import "ACRView.h"
 #import "DateTimePreparsedToken.h"
@@ -58,6 +58,8 @@
     if (rootView) {
         NSMutableDictionary *textMap = [rootView getTextMap];
 
+        BOOL hasGestureRecognizerAdded = NO;
+        BOOL hasLongPressGestureRecognizerAdded = NO;
         for (const auto &inlineText : rTxtBlck->GetInlines()) {
             std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
             if (textRun) {
@@ -90,6 +92,8 @@
                                                                              options:options
                                                                   documentAttributes:nil
                                                                                error:nil];
+                    UpdateFontWithDynamicType(textRunContent);
+
                     lab.selectable = YES;
                     lab.dataDetectorTypes = UIDataDetectorTypeLink | UIDataDetectorTypePhoneNumber;
                     lab.userInteractionEnabled = YES;
@@ -105,8 +109,9 @@
 
                 // Obtain text color to apply to the attributed string
                 ACRContainerStyle style = lab.style;
+                auto textColor = textRun->GetTextColor().value_or(ForegroundColor::Default);
                 auto foregroundColor = [acoConfig getTextBlockColor:style
-                                                          textColor:textRun->GetTextColor().value_or(ForegroundColor::Default)
+                                                          textColor:textColor
                                                        subtleOption:textRun->GetIsSubtle().value_or(false)];
 
                 // Config and add Select Action
@@ -122,19 +127,32 @@
                         [textRunContent addAttribute:@"SelectAction"
                                                value:target
                                                range:selectActionRange];
-                        [ACRLongPressGestureRecognizerFactory
-                            addTapGestureRecognizerToUITextView:lab
-                                                         target:(NSObject<ACRSelectActionDelegate>
-                                                                     *)target
-                                                       rootView:rootView
-                                                     hostConfig:acoConfig];
 
-                        [textRunContent addAttribute:NSUnderlineStyleAttributeName
-                                               value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
-                                               range:selectActionRange];
-                        [textRunContent addAttribute:NSUnderlineColorAttributeName
-                                               value:foregroundColor
-                                               range:selectActionRange];
+                        if (!hasGestureRecognizerAdded) {
+                            [ACRTapGestureRecognizerFactory
+                                addTapGestureRecognizerToUITextView:lab
+                                                             target:(NSObject<ACRSelectActionDelegate>
+                                                                         *)target
+                                                           rootView:rootView
+                                                         hostConfig:acoConfig];
+                            hasGestureRecognizerAdded = YES;
+                        }
+
+                        if (acoAction.inlineTooltip) {
+                            [((ACRBaseTarget *)target) setTooltip:lab toolTipText:acoAction.inlineTooltip];
+                            if (!hasLongPressGestureRecognizerAdded) {
+                                UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:lab action:@selector(handleInlineAction:)];
+                                [lab addGestureRecognizer:recognizer];
+                                hasLongPressGestureRecognizerAdded = YES;
+                            }
+                        }
+
+                        if (@available(iOS 13.0, *)) {
+                            foregroundColor = UIColor.linkColor;
+                        } else {
+                            // Fallback on earlier versions
+                            foregroundColor = [ACOHostConfig convertHexColorCodeToUIColor:"#007affff"];
+                        }
                     }
                 }
 
@@ -183,8 +201,6 @@
 
     lab.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [viewGroup addArrangedSubview:lab];
-
     HorizontalAlignment adaptiveAlignment = rTxtBlck->GetHorizontalAlignment().value_or(HorizontalAlignment::Left);
 
     if (adaptiveAlignment == HorizontalAlignment::Left) {
@@ -217,9 +233,9 @@
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     configRtl(lab, rootView.context);
-
-    configVisibility(lab, elem);
-
+    
+    [viewGroup addArrangedSubview:lab];
+    
     return lab;
 }
 

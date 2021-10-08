@@ -94,7 +94,7 @@ function createPropertiesSummary(properties, knownTypes, autoLink, includeVersio
         }
 
         md += '|Property|Type|Required|Description|';
-        if(includeVersion) {
+        if (includeVersion) {
             md += 'Version|';
         }
         md += '\n';

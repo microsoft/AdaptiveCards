@@ -55,6 +55,7 @@ using namespace AdaptiveCards;
 
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
+
         self.isRequired = elem->GetIsRequired();
 
         DateTimePreparser preparser;
@@ -123,7 +124,6 @@ using namespace AdaptiveCards;
         self.placeholder = placeHolderStr;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleRoundedRect;
-        self.backgroundColor = UIColor.groupTableViewBackgroundColor;
         self.delegate = self;
 
         if (date) {

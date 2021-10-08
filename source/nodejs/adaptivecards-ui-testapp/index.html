@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Adaptive Cards UI TestApp</title>
+
+		<link rel="stylesheet" type="text/css" href="./adaptivecards-ui-testapp.css" />
+
+		<script type="text/javascript">
+
+		function renderTestCasesList() {
+			var elementList = ACUITestApp.listAllFiles();
+			var testCaseListElement = document.getElementById("testCaseList");
+
+			elementList.forEach(element => {
+				testCaseListElement.appendChild(element);
+			});
+		}
+
+		function renderingAdaptiveCardFinishedCallback(renderedCard) {
+			var renderedCardDiv = document.getElementById("renderedCardSpace");
+			renderedCardDiv.innerHTML = "";
+			renderedCardDiv.appendChild(renderedCard);
+		}
+
+		function renderTestCase(testCaseFileName)
+		{
+			ACUITestApp.readAndRenderCard(testCaseFileName, renderingAdaptiveCardFinishedCallback);
+		}
+
+		window.onload = function(){
+
+			renderTestCasesList();
+
+			// Render a sample card
+			var card = {
+				"type": "AdaptiveCard",
+				"version": "1.0",
+				"body": [
+					{
+						"type": "Image",
+						"url": "http://adaptivecards.io/content/adaptive-card-50.png"
+					},
+					{
+						"type": "TextBlock",
+						"text": "Hello **Adaptive Cards!**"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.OpenUrl",
+						"title": "Learn more",
+						"url": "http://adaptivecards.io"
+					},
+					{
+						"type": "Action.OpenUrl",
+						"title": "GitHub",
+						"url": "http://github.com/Microsoft/AdaptiveCards"
+					}
+				]
+			};
+
+			ACUITestApp.renderCard(card, renderingAdaptiveCardFinishedCallback);
+		}
+		</script>
+
+	</head>
+	<body>
+		<h1>Adaptive Cards UI Test App</h1>
+
+		<p>To run tests see the <a href="./README.md">README file</a></p>
+
+		<div class="wrapper">
+			<div class="testCasesDiv">
+
+				<ul id="testCaseList"></ul>
+			</div>
+			<div class="main">
+
+				<div class="renderedCardDiv" id="renderedCardDiv">
+					<div id="renderedCardSpace"> </div>
+				</div>
+
+				<div id="retrievedInputsDiv"></div>
+			</div>
+		</div>
+
+	</body>
+
+</html>

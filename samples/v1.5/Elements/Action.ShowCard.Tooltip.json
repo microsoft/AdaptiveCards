@@ -1,0 +1,31 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Our new product is awesome!",
+			"wrap": true,
+			"size": "ExtraLarge"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Terms and Conditions",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "Here's some fine print for you to read. Don't break any laws! We will also not break any laws!",
+						"wrap": true,
+						"size": "Small"
+					}
+				]
+			},
+			"tooltip": "Click here to view the details of our terms and conditions."
+		}
+	]
+}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1130"
+   LastUpgradeVersion = "1250"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -44,6 +44,16 @@
                BlueprintIdentifier = "F423C08D1EE1FB6100905679"
                BuildableName = "ADCIOSVisualizerTests.xctest"
                BlueprintName = "ADCIOSVisualizerTests"
+               ReferencedContainer = "container:ADCIOSVisualizer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F423C0981EE1FB6100905679"
+               BuildableName = "ADCIOSVisualizerUITests.xctest"
+               BlueprintName = "ADCIOSVisualizerUITests"
                ReferencedContainer = "container:ADCIOSVisualizer.xcodeproj">
             </BuildableReference>
          </TestableReference>

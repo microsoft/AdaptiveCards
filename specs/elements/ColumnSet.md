@@ -10,9 +10,9 @@
 | **style** | `ContainerStyle?` | No | Style hint for `ColumnSet`. | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column set in pixels, like `"80px"`. | 1.2 |
-| **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal alignment of the ColumnSet. | 1.0 |
+| **horizontalAlignment** | `HorizontalAlignment?` | No | Controls the horizontal alignment of the ColumnSet. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -67,9 +67,9 @@ Style hint for `ColumnSet`.
 
 ## horizontalAlignment
 
-Controls the horizontal alignment of the ColumnSet.
+Controls the horizontal alignment of the ColumnSet. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left.
 
-* **Type**: `HorizontalAlignment`
+* **Type**: `HorizontalAlignment?`
 * **Required**: No
 * **Allowed values**:
   * `"left"`
@@ -91,15 +91,16 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `FactSet`
   * `Image`
   * `ImageSet`
+  * `Media`
+  * `RichTextBlock`
+  * `Table`
+  * `TextBlock`
   * `Input.ChoiceSet`
   * `Input.Date`
   * `Input.Number`
   * `Input.Text`
   * `Input.Time`
   * `Input.Toggle`
-  * `Media`
-  * `RichTextBlock`
-  * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 
