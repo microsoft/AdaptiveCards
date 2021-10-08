@@ -314,7 +314,7 @@
             2293
           ]
         },
-	"rtl": {
+        "rtl": {
           "anyOf": [
             {
               "type": "boolean"
@@ -677,7 +677,7 @@
             2293
           ]
         },
-	"rtl?": {
+        "rtl?": {
           "anyOf": [
             {
               "type": "boolean"
@@ -1960,7 +1960,7 @@
           "enum": [
             "compact",
             "expanded",
-	    "filtered"
+	  "filtered"
           ]
         },
         {
