@@ -1959,8 +1959,7 @@
         {
           "enum": [
             "compact",
-            "expanded",
-		  	"filtered"
+            "expanded"
           ]
         },
         {
