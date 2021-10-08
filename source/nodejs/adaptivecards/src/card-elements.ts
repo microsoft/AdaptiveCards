@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition, ISeparationDefinition,
@@ -3474,6 +3474,9 @@ export class ChoiceSetInput extends Input {
 
     isValid(): boolean {
         if (this._textInput) {
+            if (this.value === "" || this.value === this.placeholder) {
+                return true;
+            }
             for (let choice of this.choices) {
                 if (this.value === choice.value) {
                     return true;
