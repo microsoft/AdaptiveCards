@@ -6,7 +6,7 @@
     </PropertyGroup>
     <ItemGroup Condition="'$(TargetPlatformIdentifier)' == 'UAP'">
         <Reference Include="$(MSBuildThisFileDirectory)..\..\lib\native\AdaptiveCards.ObjectModel.Uwp.winmd">
-            <Implementation>AdaptiveCards.Rendering.Uwp.dll</Implementation>
+            <Implementation>AdaptiveCards.ObjectModel.Uwp.dll</Implementation>
         </Reference>
         <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(AdaptiveCards-Platform)\native\AdaptiveCards.ObjectModel.Uwp.dll" />
     </ItemGroup>
