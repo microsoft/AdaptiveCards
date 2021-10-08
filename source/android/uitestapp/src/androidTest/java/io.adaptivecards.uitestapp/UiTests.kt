@@ -31,6 +31,7 @@ import android.R.attr.y
 import android.R.attr.x
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
+import org.junit.Ignore
 
 
 @RunWith(AndroidJUnit4::class)
@@ -185,7 +186,7 @@ class UiTests {
         // Click again on the choiceset
         TestHelpers.findInputInValidatedContainer("chosenAnimal").perform(ViewActions.scrollTo(), ViewActions.click());
 
-        Thread.sleep(1000)
+        Thread.sleep(3000)
 
         TestHelpers.selectPopupOption("Zebra White")
 
@@ -207,10 +208,7 @@ class UiTests {
         // Select and option to remove popup
         TestHelpers.selectPopupOption("Mexican Parrotlet")
 
-        val device: UiDevice = UiDevice.getInstance(getInstrumentation())
-        device.click(1, 20)
-
-        Thread.sleep(1000)
+        Thread.sleep(3000)
 
         // Click again on the choiceset and type "stygobromid", as there's only one result it
         // should have not appeared in the "parrot" query but it should still show up to verify
