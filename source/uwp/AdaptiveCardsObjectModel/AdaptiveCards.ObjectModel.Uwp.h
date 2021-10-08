@@ -4204,11 +4204,13 @@ typedef IVector<ABI::AdaptiveCards::ObjectModel::Uwp::AdaptiveToggleVisibilityTa
 
 
 
+#pragma external_header (push)
 #pragma warning (push)
 #pragma warning (disable:4668) 
 #pragma warning (disable:4001) 
 #pragma once 
 #pragma warning (pop)
+#pragma external_header (pop)
 namespace ABI {
     namespace AdaptiveCards {
         namespace ObjectModel {
@@ -20131,11 +20133,13 @@ interface __FIVector_1_AdaptiveCards__CObjectModel__CUwp__CAdaptiveToggleVisibil
 
 
 
+#pragma external_header (push)
 #pragma warning (push)
 #pragma warning (disable:4668) 
 #pragma warning (disable:4001) 
 #pragma once 
 #pragma warning (pop)
+#pragma external_header (pop)
 
 
 /*

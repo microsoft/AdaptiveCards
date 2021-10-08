@@ -670,6 +670,16 @@ namespace AdaptiveCards
                 Boolean ExpectedVisibility();
                 Boolean IsStretchable();
 			}
+
+			// TODO: reevalute if we need WholeItemsPanel, TileControl, ElementTagContent, InputValue in .idl
+			// TODO: perhaps we need to move it to internal namespace only?
+			// runtimeclass InputValue : IAdaptiveInputValue
+			// {
+			// 	AdaptiveCards.ObjectModel.WinUI3.IAdaptiveInputElement InputElement {get; };
+			// 	Windows.UI.Xaml.UIElement UiErrorMessage;
+			// 	String SerializedUserInput {get; };
+
+			// }
         }
     }
 }

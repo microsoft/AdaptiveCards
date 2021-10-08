@@ -979,6 +979,17 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                      &clickToken);
     }
 
+    void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement)
+    {
+        // TODO: is ! enough? no need for == nullptr?
+        if (!uiElement)
+        {
+            return;
+        }
+        // TODO: Don't we need a revoker?
+        uiElement.Tapped([](IInspectable*, rtxaml::Input::TappedRoutedEventArgs const& args) { args.Handled(true); });
+    }
+
     HRESULT SetAutoImageSize(_In_ IFrameworkElement* imageControl, _In_ IInspectable* parentElement, _In_ IBitmapSource* imageSource, bool setVisible)
     {
         INT32 pixelHeight;
@@ -1626,6 +1637,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                            rtxaml::UIElement& inputLayout,
                                            rtxaml::Controls::Border& validationBorderOut)
     {
+        //TODO: Make sure this function works properly
         // Create a stack panel for the input and related controls
         /*ComPtr<IStackPanel> inputStackPanel =
             XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));*/

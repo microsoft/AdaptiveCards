@@ -484,15 +484,16 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 
     void HandleInlineAction(_In_ IAdaptiveRenderContext* renderContext,
                             _In_ IAdaptiveRenderArgs* renderArgs,
-                            _In_ ITextBox* textBox,
+                            _In_ IUIElement* textInputUIElement,
                             _In_ IUIElement* textBoxParentContainer,
+                            bool isMultilineTextBox,
                             _In_ IAdaptiveActionElement* inlineAction,
                             _COM_Outptr_ IUIElement** textBoxWithInlineAction)
     {
         ComPtr<IUIElement> localTextBoxContainer(textBoxParentContainer);
         ComPtr<IAdaptiveActionElement> localInlineAction(inlineAction);
 
-        ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
         THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -505,8 +506,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             return;
         }
 
-        if ((actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Submit) ||
-            (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute))
+        if ((actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Submit) ||
+            (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Execute))
         {
             THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
         }
@@ -540,7 +541,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
         UINT spacingSize;
-        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing::Default, &spacingSize));
+        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Default, &spacingSize));
 
         auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0, {0}, false);
 
@@ -568,7 +569,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
 
             ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
+                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
 
@@ -643,19 +644,20 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         THROW_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
 
-        boolean isMultiLine;
-        THROW_IF_FAILED(textBox->get_AcceptsReturn(&isMultiLine));
-
-        if (!isMultiLine)
+        if (!isMultilineTextBox)
         {
-            auto localTextBox = to_winrt(textBox);
-            auto keyDownEventToken = localTextBox.KeyDown(
-                [actionInvoker, localInlineAction](auto&, rtxaml::Input::KeyRoutedEventArgs const& args)
-                { HandleKeydownForInlineAction(args, to_winrt(actionInvoker), to_winrt(localInlineAction)); });
+            EventRegistrationToken keyDownEventToken;
+            THROW_IF_FAILED(textInputUIElement->add_KeyDown(
+                Callback<IKeyEventHandler>(
+                    [actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT
+                    { return HandleKeydownForInlineAction(args, actionInvoker.Get(), localInlineAction.Get()); })
+                    .Get(),
+                &keyDownEventToken));
         }
 
         THROW_IF_FAILED(xamlGrid.CopyTo(textBoxWithInlineAction));
     }
+
     rtxaml::UIElement WrapInTouchTarget(rtom::IAdaptiveCardElement adaptiveCardElement,
                                         rtxaml::UIElement elementToWrap,
                                         rtom::IAdaptiveActionElement action,
@@ -800,7 +802,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         return button;
     }
 
-
     void WireButtonClickToAction(rtxaml::Controls::Button button, rtom::IAdaptiveActionElement action, rtrender::AdaptiveRenderContext renderContext)
     {
         /* ComPtr<IButton> localButton(button);
@@ -894,7 +895,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             THROW_IF_FAILED(localUiElement.CopyTo(outUiElement));*/
         }
     }
-
 
     void BuildActions(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
                       winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> const& children,
@@ -1184,7 +1184,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         return actionControl;
     }
 
-     rtxaml::UIElement BuildActionSetHelper(rtom::AdaptiveCard const& adaptiveCard,
+    rtxaml::UIElement BuildActionSetHelper(rtom::AdaptiveCard const& adaptiveCard,
                                            rtom::AdaptiveActionSet const& adaptiveActionSet,
                                            winrt::Windows::Foundation::Collections::IVector<rtom::IAdaptiveActionElement> const& children,
                                            rtrender::AdaptiveRenderContext const& renderContext,
@@ -1526,10 +1526,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                                                                      actionsPanelAsFrameworkElement.Get()));*/
         XamlHelpers::SetStyleFromResourceDictionary(renderContext, {L"Adapative.Actions"}, *actionsPanel);
 
-      /*  ComPtr<IStackPanel> actionSet =
-            XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        ComPtr<IPanel> actionSetAsPanel;
-        actionSet.As(&actionSetAsPanel);*/
+        /*  ComPtr<IStackPanel> actionSet =
+              XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+          ComPtr<IPanel> actionSetAsPanel;
+          actionSet.As(&actionSetAsPanel);*/
         rtxaml::Controls::StackPanel actionPanel;
 
         // Add buttons and show cards to panel
@@ -1538,8 +1538,6 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 
         return actionPanel;
     }
-
- 
 
     rtxaml::Controls::Button CreateAppropriateButton(rtom::IAdaptiveActionElement const& action)
     {

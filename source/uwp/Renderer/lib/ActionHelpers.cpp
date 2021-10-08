@@ -528,8 +528,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     void HandleInlineAction(_In_ IAdaptiveRenderContext* renderContext,
                             _In_ IAdaptiveRenderArgs* renderArgs,
-                            _In_ ITextBox* textBox,
+                            _In_ IUIElement* textInputUIElement,
                             _In_ IUIElement* textBoxParentContainer,
+                            bool isMultilineTextBox,
                             _In_ IAdaptiveActionElement* inlineAction,
                             _COM_Outptr_ IUIElement** textBoxWithInlineAction)
     {
@@ -683,20 +684,14 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         THROW_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
 
-        boolean isMultiLine;
-        THROW_IF_FAILED(textBox->get_AcceptsReturn(&isMultiLine));
-
-        if (!isMultiLine)
+        if (!isMultilineTextBox)
         {
-            ComPtr<ITextBox> localTextBox(textBox);
-            ComPtr<IUIElement> textBoxAsUIElement;
-            THROW_IF_FAILED(localTextBox.As(&textBoxAsUIElement));
-
             EventRegistrationToken keyDownEventToken;
-            THROW_IF_FAILED(textBoxAsUIElement->add_KeyDown(
-                Callback<IKeyEventHandler>([actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT {
-                    return HandleKeydownForInlineAction(args, actionInvoker.Get(), localInlineAction.Get());
-                }).Get(),
+            THROW_IF_FAILED(textInputUIElement->add_KeyDown(
+                Callback<IKeyEventHandler>(
+                    [actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT
+                    { return HandleKeydownForInlineAction(args, actionInvoker.Get(), localInlineAction.Get()); })
+                    .Get(),
                 &keyDownEventToken));
         }
 

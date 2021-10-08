@@ -4,12 +4,21 @@
 	"version": "1.0",
 	"body": [
 		{
+<<<<<<< HEAD:source/winappsdk/AdaptiveCardTestApp/Expected/SourceCards/v1.0.Elements.Input.Number.72ab426.json
 			"type": "Input.Number",
 			"id": "number",
 			"placeholder": "Enter a number",
 			"min": 1,
 			"max": 10,
 			"value": 3
+=======
+			"type": "Input.Text",
+			"id": "id0",
+			"style": "password",
+			"label": "Input.Text With Password Style",
+			"regex": "^.{8,20}$",
+			"errorMessage": "Password must be between 8 and 20 characters"
+>>>>>>> 02e515e70 ([UWP] Input.Text password style support (#6479)):samples/v1.5/Elements/Input.Text.PasswordStyle.json
 		}
 	],
 	"actions": [

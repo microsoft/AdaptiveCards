@@ -372,12 +372,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                            ABI::Windows::UI::Xaml::IUIElement** inputLayout,
                                            ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
 
-    void XamlHelpers::HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInput,
-                                                     winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
-                                                     bool hasTypeSpecificValidation,
-                                                     winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
-                                                     winrt::Windows::UI::Xaml::UIElement& inputLayout,
-                                                     winrt::Windows::UI::Xaml::Controls::Border& validationBorderOut);
+    void HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInput,
+                                        winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
+                                        bool hasTypeSpecificValidation,
+                                        winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                                        winrt::Windows::UI::Xaml::UIElement& inputLayout,
+                                        winrt::Windows::UI::Xaml::Controls::Border& validationBorderOut);
 
     template<typename TXamlControl>
     HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
@@ -399,6 +399,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     }
 
     HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
+    void AddHandledTappedEvent(winrt::Windows::UI::Xaml::UIElement const& uiElement);
 
     void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
                                _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage* backgroundImage,

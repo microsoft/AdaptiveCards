@@ -144,13 +144,25 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
          ComPtr<IAdaptiveInputElement> adaptiveChoiceSetInputAsAdaptiveInput;
          RETURN_IF_FAILED(localAdaptiveChoiceSetInput.As(&adaptiveChoiceSetInputAsAdaptiveInput));*/
 
-        ComPtr<IUIElement> inputLayout;
-        ComPtr<IBorder> validationBorder;
-        RETURN_IF_FAILED(::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(
-            adaptiveChoiceSetInputAsAdaptiveInput.Get(), comboBoxAsUIElement.Get(), false, renderContext, &inputLayout, &validationBorder));
+        /*ComPtr<IUIElement> inputLayout;
+        ComPtr<IBorder> validationBorder;*/
+        rtxaml::UIElement inputLayout{nullptr};
+        rtxaml::Controls::Border validationBorder{};
 
-        ComPtr<ISelector> comboBoxAsSelector;
-        RETURN_IF_FAILED(comboBox.As(&comboBoxAsSelector));
+        ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(
+            adaptiveChoiceSetInput, comboBox, false, renderContext, inputLayout, validationBorder);
+
+       /* RETURN_IF_FAILED(::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(
+            adaptiveChoiceSetInputAsAdaptiveInput.Get(), comboBoxAsUIElement.Get(), false, renderContext, &inputLayout, &validationBorder));*/
+       /* ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(
+            adaptiveChoiceSetInput, comboBox, false, renderContext, inputLayout, validationBorder);*/
+
+       /* ComPtr<ISelector> comboBoxAsSelector;
+        RETURN_IF_FAILED(comboBox.As(&comboBoxAsSelector));*/
+        if (const auto comboBoxAsSelector = comboBox.try_as<rtxaml::Controls::Primitives::Selector>())
+        {
+
+        }
 
         // Create the InputValue and add it to the context
         ComPtr<CompactChoiceSetInputValue> input;
