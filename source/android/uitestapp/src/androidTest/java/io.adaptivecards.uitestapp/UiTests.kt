@@ -125,6 +125,8 @@ class UiTests {
         // Click on the filtered choiceset, delete all text and write "braz" to try to find brazillian
         TestHelpers.setTextInInput(TestHelpers.findInputInValidatedContainer("chosenAnimal"), "braz")
 
+        Thread.sleep(1000)
+
         TestHelpers.selectPopupOption("Brazilian Tulipwood")
 
         TestHelpers.clickOnElementWithText("OK")
@@ -183,6 +185,8 @@ class UiTests {
         // Click again on the choiceset
         TestHelpers.findInputInValidatedContainer("chosenAnimal").perform(ViewActions.scrollTo(), ViewActions.click());
 
+        Thread.sleep(1000)
+
         TestHelpers.selectPopupOption("Zebra White")
 
         TestHelpers.clickOnElementWithText("OK")
@@ -203,7 +207,7 @@ class UiTests {
         // Select and option to remove popup
         TestHelpers.selectPopupOption("Mexican Parrotlet")
 
-        Thread.sleep(1000);
+        Thread.sleep(1000)
 
         // Click again on the choiceset and type "stygobromid", as there's only one result it
         // should have not appeared in the "parrot" query but it should still show up to verify
