@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AdaptiveExpressions" Version="4.11.*" />
-    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.8.0" />
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.9.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.*" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.*" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.*" />
