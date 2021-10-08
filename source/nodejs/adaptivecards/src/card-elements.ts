@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition, ISeparationDefinition,
@@ -3373,8 +3373,9 @@ export class ChoiceSetInput extends Input {
 
                 for (let choice of this.choices) {
                     let option = document.createElement("option");
-                    option.value = <string>choice.value;
-                    option.text = <string>choice.title;
+                    // To fix https://stackoverflow.com/questions/29882361/show-datalist-labels-but-submit-the-actual-value
+                    // value is mapped to choice.title other than choice.value
+                    option.value = <string>choice.title;
                     option.setAttribute("aria-label", <string>choice.title);
 
                     dataList.appendChild(option);
@@ -3473,6 +3474,9 @@ export class ChoiceSetInput extends Input {
 
     isValid(): boolean {
         if (this._textInput) {
+            if (this.value === "" || this.value === this.placeholder) {
+                return true;
+            }
             for (let choice of this.choices) {
                 if (this.value === choice.value) {
                     return true;
@@ -3491,6 +3495,13 @@ export class ChoiceSetInput extends Input {
                 return this._selectElement.selectedIndex > 0 ? this._selectElement.value : undefined;
             }
             else if (this._textInput) {
+                for (let choice of this.choices)
+                {
+                    if (choice.title && this._textInput.value === choice.title)
+                    {
+                        return choice.value;
+                    }
+                }
                 return this._textInput.value;
             }
             else if (this._toggleInputs && this._toggleInputs.length > 0) {
