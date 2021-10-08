@@ -203,6 +203,8 @@ class UiTests {
         // Select and option to remove popup
         TestHelpers.selectPopupOption("Mexican Parrotlet")
 
+        Thread.sleep(1000);
+
         // Click again on the choiceset and type "stygobromid", as there's only one result it
         // should have not appeared in the "parrot" query but it should still show up to verify
         // that options are not accidentally deleted when searching
