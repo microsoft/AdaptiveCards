@@ -186,7 +186,7 @@ class UiTests {
         // Click again on the choiceset
         TestHelpers.findInputInValidatedContainer("chosenAnimal").perform(ViewActions.scrollTo(), ViewActions.click());
 
-        Thread.sleep(3000)
+        Thread.sleep(5000)
 
         TestHelpers.selectPopupOption("Zebra White")
 
