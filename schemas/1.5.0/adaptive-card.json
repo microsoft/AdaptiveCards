@@ -314,6 +314,18 @@
             2293
           ]
         },
+	"rtl": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description":  "When `true` content in this Adaptive Card should be presented right to left. When 'false' content in this Adaptive Card should be presented left to right. If unset, the default platform behavior will apply.",
+          "version": "1.5"
+        },
         "speak": {
           "type": "string",
           "description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
@@ -447,7 +459,7 @@
               "type": "null"
             }
           ],
-          "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
+          "description": "When `true` content in this column should be presented right to left. When 'false' content in this column should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
           "version": "1.5"
         },
         "separator": {
@@ -665,7 +677,7 @@
             2293
           ]
         },
-        "rtl?": {
+	"rtl?": {
           "anyOf": [
             {
               "type": "boolean"
@@ -1947,7 +1959,8 @@
         {
           "enum": [
             "compact",
-            "expanded"
+            "expanded",
+	    "filtered"
           ]
         },
         {
