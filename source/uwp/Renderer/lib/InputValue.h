@@ -35,20 +35,19 @@ namespace AdaptiveCards::Rendering::Uwp
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_validationError;
     };
 
-    // Base class for input value types that use ITextBox (Input.Text and Input.Number)
+    // Base class for AdaptiveTextInput
     class TextInputBase : public InputValue
     {
     public:
         TextInputBase() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveInputElement* adaptiveInputElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
+                                       _In_ ABI::Windows::UI::Xaml::IUIElement* uiTextInputElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
-        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
-
     protected:
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITextBox> m_textBoxElement;
+        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput> m_adaptiveTextInput;
     };
 
     // Input value for Input.Text
@@ -60,22 +59,38 @@ namespace AdaptiveCards::Rendering::Uwp
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
     private:
-        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
+        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput> m_adaptiveTextInput;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITextBox> m_textBoxElement;
+    };
+
+    class PasswordInputValue : public TextInputValue
+    {
+    public:
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveTextInput* adaptiveTextInput,
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IPasswordBox* uiPasswordElement,
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
+
+    private:
+        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+
+    protected:
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::IPasswordBox> m_passwordElement;
     };
 
     // Input value for Input.Number
-    class NumberInputValue : public TextInputBase
+    class NumberInputValue : public InputValue
     {
     public:
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveNumberInput* adaptiveNumberInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
+        IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
+
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
-
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITextBox> m_textBoxElement;
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveNumberInput> m_adaptiveNumberInput;
     };
 
