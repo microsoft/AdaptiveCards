@@ -1,1 +1,0 @@
-../ACRImageProperties.h
