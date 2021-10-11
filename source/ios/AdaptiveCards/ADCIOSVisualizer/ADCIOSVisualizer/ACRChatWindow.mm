@@ -7,7 +7,6 @@
 
 #import "ACRChatWindow.h"
 #import "ADCResolver.h"
-#import <AdaptiveCards/ACFramework.h>
 #import <Foundation/Foundation.h>
 
 @implementation ACRChatWindow {

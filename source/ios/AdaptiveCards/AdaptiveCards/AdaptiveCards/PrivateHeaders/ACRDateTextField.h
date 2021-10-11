@@ -7,8 +7,8 @@
 
 #import "ACRIBaseInputHandler.h"
 #import "ACRTextField.h"
-#import "BaseInputElement.h"
-#import "SharedAdaptiveCard.h"
+#import <Adaptivecards/BaseInputElement.h>
+#import <Adaptivecards/SharedAdaptiveCard.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRDateTextField : ACRTextField<ACRIBaseInputHandler>

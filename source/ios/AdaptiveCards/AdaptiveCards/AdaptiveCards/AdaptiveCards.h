@@ -64,7 +64,6 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import "ACRRenderer.h"
 #import "ACRRichTextBlockRenderer.h"
 #import "ACRTableCellRenderer.h"
-#import "ACRTableCellView.h"
 #import "ACRTableRenderer.h"
 #import "ACRTableRow.h"
 #import "ACRTableView.h"
