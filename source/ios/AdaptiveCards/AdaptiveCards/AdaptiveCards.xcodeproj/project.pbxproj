@@ -193,7 +193,6 @@
 		6BFCA141264F54B500195CA7 /* ACRTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFCA13B264F54B100195CA7 /* ACRTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFCA142264F54B500195CA7 /* ACRTableRow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFCA13C264F54B200195CA7 /* ACRTableRow.mm */; };
 		6BFCA143264F54B500195CA7 /* ACRTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFCA13D264F54B300195CA7 /* ACRTableView.mm */; };
-		6BFCA144264F54B500195CA7 /* ACRTableCellView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFCA13E264F54B400195CA7 /* ACRTableCellView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFCA145264F54B500195CA7 /* ACRTableCellView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFCA13F264F54B500195CA7 /* ACRTableCellView.mm */; };
 		6BFCA1482653270200195CA7 /* ACRTableCellRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFCA1462653270200195CA7 /* ACRTableCellRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFCA1492653270200195CA7 /* ACRTableCellRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFCA1472653270200195CA7 /* ACRTableCellRenderer.mm */; };
@@ -222,6 +221,9 @@
 		6BFF24062714E26900183C59 /* ACRToggleInputDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF24052714E26900183C59 /* ACRToggleInputDataSource.h */; };
 		6BFF24082714E30B00183C59 /* ACRShowCardTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF24072714E30B00183C59 /* ACRShowCardTarget.h */; };
 		6BFF240A2714E33000183C59 /* ACRToggleVisibilityTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF24092714E33000183C59 /* ACRToggleVisibilityTarget.h */; };
+		6BFF240C2714E3D100183C59 /* ACRSeparator.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF240B2714E3D100183C59 /* ACRSeparator.h */; };
+		6BFF240E2714E42800183C59 /* ACRTableCellView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF240D2714E42800183C59 /* ACRTableCellView.h */; };
+		6BFF24102714E46300183C59 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF240F2714E46300183C59 /* ACRImageSetUICollectionView.h */; };
 		6BFF99C325FFF53E0028069F /* AuthCardButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99B925FFF53D0028069F /* AuthCardButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFF99C425FFF53E0028069F /* ExecuteAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99BA25FFF53D0028069F /* ExecuteAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFF99C525FFF53E0028069F /* AuthCardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF99BB25FFF53D0028069F /* AuthCardButton.cpp */; };
@@ -256,7 +258,6 @@
 		CA1218C921C4509400152EA8 /* ToggleVisibilityAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */; };
 		DD278A02932F65F8BDD1EA5D /* Pods_AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255F5D3143215497D4067E21 /* Pods_AdaptiveCards.framework */; };
 		EC367F912F6036B68C5BBFDB /* Pods_AdaptiveCards_AdaptiveCardsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */; };
-		F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */; };
 		F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */; };
 		F401A87F1F1045CA006D7AF2 /* ACRContentHoldingUIView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A87D1F1045CA006D7AF2 /* ACRContentHoldingUIView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -387,7 +388,6 @@
 		F4D0694A205B27EA003645E4 /* ACRViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4D06947205B27E9003645E4 /* ACRViewController.mm */; };
 		F4D0694B205B27EA003645E4 /* ACRViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D06948205B27E9003645E4 /* ACRViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */; };
-		F4D33EA71F06F44C00941E44 /* ACRSeparator.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D33EA61F06F44C00941E44 /* ACRSeparator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4D402111F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D4020D1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4D402121F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4D4020E1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm */; };
 		F4D402131F7DAC2C00D0356B /* ACOHostConfigParseResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F4D4020F1F7DAC2C00D0356B /* ACOHostConfigParseResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -649,7 +649,6 @@
 		6BFCA13B264F54B100195CA7 /* ACRTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTableView.h; sourceTree = "<group>"; };
 		6BFCA13C264F54B200195CA7 /* ACRTableRow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTableRow.mm; sourceTree = "<group>"; };
 		6BFCA13D264F54B300195CA7 /* ACRTableView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTableView.mm; sourceTree = "<group>"; };
-		6BFCA13E264F54B400195CA7 /* ACRTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTableCellView.h; sourceTree = "<group>"; };
 		6BFCA13F264F54B500195CA7 /* ACRTableCellView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTableCellView.mm; sourceTree = "<group>"; };
 		6BFCA1462653270200195CA7 /* ACRTableCellRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTableCellRenderer.h; sourceTree = "<group>"; };
 		6BFCA1472653270200195CA7 /* ACRTableCellRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTableCellRenderer.mm; sourceTree = "<group>"; };
@@ -678,6 +677,9 @@
 		6BFF24052714E26900183C59 /* ACRToggleInputDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACRToggleInputDataSource.h; path = PrivateHeaders/ACRToggleInputDataSource.h; sourceTree = "<group>"; };
 		6BFF24072714E30B00183C59 /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACRShowCardTarget.h; path = PrivateHeaders/ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6BFF24092714E33000183C59 /* ACRToggleVisibilityTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACRToggleVisibilityTarget.h; path = PrivateHeaders/ACRToggleVisibilityTarget.h; sourceTree = "<group>"; };
+		6BFF240B2714E3D100183C59 /* ACRSeparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACRSeparator.h; path = PrivateHeaders/ACRSeparator.h; sourceTree = "<group>"; };
+		6BFF240D2714E42800183C59 /* ACRTableCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACRTableCellView.h; path = PrivateHeaders/ACRTableCellView.h; sourceTree = "<group>"; };
+		6BFF240F2714E46300183C59 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACRImageSetUICollectionView.h; path = PrivateHeaders/ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
 		6BFF99B925FFF53D0028069F /* AuthCardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AuthCardButton.h; path = ../../../../shared/cpp/ObjectModel/AuthCardButton.h; sourceTree = "<group>"; };
 		6BFF99BA25FFF53D0028069F /* ExecuteAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExecuteAction.h; path = ../../../../shared/cpp/ObjectModel/ExecuteAction.h; sourceTree = "<group>"; };
 		6BFF99BB25FFF53D0028069F /* AuthCardButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AuthCardButton.cpp; path = ../../../../shared/cpp/ObjectModel/AuthCardButton.cpp; sourceTree = "<group>"; };
@@ -718,7 +720,6 @@
 		CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityTarget.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp; sourceTree = "<group>"; };
 		CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityAction.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp; sourceTree = "<group>"; };
 		E3DBB3CD3C02321AED9AEF65 /* Pods_AdaptiveCards_AdaptiveCardsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AdaptiveCards_AdaptiveCardsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
 		F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetRenderer.h; sourceTree = "<group>"; };
 		F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetRenderer.mm; sourceTree = "<group>"; };
@@ -866,7 +867,6 @@
 		F4D06947205B27E9003645E4 /* ACRViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRViewController.mm; sourceTree = "<group>"; };
 		F4D06948205B27E9003645E4 /* ACRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRViewController.h; sourceTree = "<group>"; };
 		F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRSeparator.mm; sourceTree = "<group>"; };
-		F4D33EA61F06F44C00941E44 /* ACRSeparator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRSeparator.h; sourceTree = "<group>"; };
 		F4D4020D1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOAdaptiveCardParseResult.h; sourceTree = "<group>"; };
 		F4D4020E1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOAdaptiveCardParseResult.mm; sourceTree = "<group>"; };
 		F4D4020F1F7DAC2C00D0356B /* ACOHostConfigParseResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOHostConfigParseResult.h; sourceTree = "<group>"; };
@@ -1179,7 +1179,7 @@
 			children = (
 				F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */,
 				F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */,
-				F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */,
+				6BFF240F2714E46300183C59 /* ACRImageSetUICollectionView.h */,
 				F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */,
 			);
 			name = ImageSet;
@@ -1192,7 +1192,7 @@
 				6BFCA14B265452E100195CA7 /* ACRTableRenderer.mm */,
 				6BFCA1462653270200195CA7 /* ACRTableCellRenderer.h */,
 				6BFCA1472653270200195CA7 /* ACRTableCellRenderer.mm */,
-				6BFCA13E264F54B400195CA7 /* ACRTableCellView.h */,
+				6BFF240D2714E42800183C59 /* ACRTableCellView.h */,
 				6BFCA13F264F54B500195CA7 /* ACRTableCellView.mm */,
 				6BFCA13A264F54B000195CA7 /* ACRTableRow.h */,
 				6BFCA13C264F54B200195CA7 /* ACRTableRow.mm */,
@@ -1562,7 +1562,7 @@
 				F4FE45681F196F3D0071D9E5 /* ACRContentStackView.h */,
 				F4FE45691F196F3D0071D9E5 /* ACRContentStackView.mm */,
 				F4C1F5ED1F2BB2810018CB78 /* ACRIContentHoldingView.h */,
-				F4D33EA61F06F44C00941E44 /* ACRSeparator.h */,
+				6BFF240B2714E3D100183C59 /* ACRSeparator.h */,
 				F4D33EA41F06F41B00941E44 /* ACRSeparator.mm */,
 			);
 			name = Layouts;
@@ -1654,6 +1654,7 @@
 				6BFF23F92714C0F000183C59 /* ACORefreshPrivate.h in Headers */,
 				F4F44B9C204A169D00A2F24C /* ACRErrors.h in Headers */,
 				F4F44B9A204A164100A2F24C /* ACRInputToggleRenderer.h in Headers */,
+				6BFF240C2714E3D100183C59 /* ACRSeparator.h in Headers */,
 				F4F44B99204A162900A2F24C /* ACRInputTimeRenderer.h in Headers */,
 				F4F44B9B204A165F00A2F24C /* ACRIBaseInputHandler.h in Headers */,
 				F4F44B93204A155B00A2F24C /* ACRFactSetRenderer.h in Headers */,
@@ -1707,6 +1708,7 @@
 				6BFF24082714E30B00183C59 /* ACRShowCardTarget.h in Headers */,
 				F4071C7D1FCCBAEF00AF4FEA /* json.h in Headers */,
 				F4071C7C1FCCBAEF00AF4FEA /* json-forwards.h in Headers */,
+				6BFF24102714E46300183C59 /* ACRImageSetUICollectionView.h in Headers */,
 				6B696CDA23202B1B00E1D607 /* ACRTargetBuilderDirector.h in Headers */,
 				6B2242A82233442C000ACDA1 /* RichTextBlock.h in Headers */,
 				6B096D4E225431D0006CC034 /* ACRRichTextBlockRenderer.h in Headers */,
@@ -1715,14 +1717,12 @@
 				6BFF23F32714C0F000183C59 /* ACOHostConfigPrivate.h in Headers */,
 				F4CA74A12016B3B9002041DF /* ACRTapGestureRecognizerEventHandler.h in Headers */,
 				6BFF24002714CA7600183C59 /* ACRChoiceSetViewDataSource.h in Headers */,
-				F4D33EA71F06F44C00941E44 /* ACRSeparator.h in Headers */,
 				6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */,
 				F429793E1F3155EF00E89914 /* ACRTextField.h in Headers */,
 				6BFF23FE2714C0F000183C59 /* ACOActionOverflowPrivate.h in Headers */,
 				6B2242A42233439E000ACDA1 /* TextElementProperties.h in Headers */,
 				F427411C1EF8A25200399FBB /* ACRRegistration.h in Headers */,
 				F49683541F6CA24600DF0D3A /* ACRRenderResult.h in Headers */,
-				F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */,
 				F4F44BA1204CED2400A2F24C /* ACRCustomRenderer.h in Headers */,
 				6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */,
 				6BFF23F02714C0F000183C59 /* ACRViewPrivate.h in Headers */,
@@ -1775,12 +1775,12 @@
 				6BFCA1482653270200195CA7 /* ACRTableCellRenderer.h in Headers */,
 				6BFCA140264F54B500195CA7 /* ACRTableRow.h in Headers */,
 				6B8C765726449B09009548FA /* TableRow.h in Headers */,
-				6BFCA144264F54B500195CA7 /* ACRTableCellView.h in Headers */,
 				6B25D3E226138E3700A47AFB /* ACOEnums.h in Headers */,
 				6B25D3EB2613D83700A47AFB /* ACORenderContext.h in Headers */,
 				6BFF23FC2714C0F000183C59 /* ACOMediaEventPrivate.h in Headers */,
 				6B250FB2253F5F8F007FFCFB /* ACRTargetBuilder.h in Headers */,
 				6B8C76432641D8D6009548FA /* InternalId.h in Headers */,
+				6BFF240E2714E42800183C59 /* ACRTableCellView.h in Headers */,
 				6BDE5C4226FEA7DC003A1DDB /* ACROverflowTarget.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 				6BFF23FB2714C0F000183C59 /* ACOTokenExchangeResourcePrivate.h in Headers */,
