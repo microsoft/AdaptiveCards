@@ -35,8 +35,9 @@ namespace AdaptiveCards::Rendering::Uwp::ActionHelpers
 
     void HandleInlineAction(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
                             _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderArgs* renderArgs,
-                            _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* textBox,
+                            _In_ ABI::Windows::UI::Xaml::IUIElement* textInputUIElement,
                             _In_ ABI::Windows::UI::Xaml::IUIElement* textBoxParentContainer,
+                            bool isMultilineTextBox,
                             _In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* inlineAction,
                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBoxWithInlineAction);
 

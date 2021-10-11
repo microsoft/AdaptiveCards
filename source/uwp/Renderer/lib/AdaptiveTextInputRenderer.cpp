@@ -25,18 +25,15 @@ namespace AdaptiveCards::Rendering::Uwp
     CATCH_RETURN;
 
     HRESULT AdaptiveTextInputRenderer::HandleLayoutAndValidation(IAdaptiveTextInput* adaptiveTextInput,
-                                                                 ITextBox* textBox,
+                                                                 IUIElement* inputUIElement,
                                                                  _In_ IAdaptiveRenderContext* renderContext,
                                                                  _In_ IAdaptiveRenderArgs* renderArgs,
-                                                                 IUIElement** textInputLayout)
+                                                                 IUIElement** textInputLayout,
+                                                                 IBorder** validationBorderOut)
     {
-        ComPtr<ITextBox> localTextBox(textBox);
-        ComPtr<IUIElement> textBoxAsUIElement;
-        localTextBox.As(&textBoxAsUIElement);
-
         // The text box may need to go into a number of parent containers to handle validation and inline actions.
         // textBoxParentContainer represents the current parent container.
-        ComPtr<IUIElement> textBoxParentContainer = textBoxAsUIElement;
+        ComPtr<IUIElement> textBoxParentContainer = inputUIElement;
 
         // If there's any validation on this input, put the input inside a border. We don't use
         // XamlHelpers::HandleInputLayoutAndValidation validation border because that would wrap any inline action as
@@ -53,7 +50,7 @@ namespace AdaptiveCards::Rendering::Uwp
         ComPtr<IBorder> validationBorder;
         if (regex.IsValid() || isRequired)
         {
-            RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(textBoxAsUIElement.Get(), renderContext, &validationBorder));
+            RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(inputUIElement, renderContext, &validationBorder));
             RETURN_IF_FAILED(validationBorder.As(&textBoxParentContainer));
         }
 
@@ -63,9 +60,17 @@ namespace AdaptiveCards::Rendering::Uwp
 
         if (inlineAction != nullptr)
         {
+            boolean isMultiline;
+            RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiline));
+
+            ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle style;
+            RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&style));
+
+            isMultiline &= style != (ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle::Password);
+
             ComPtr<IUIElement> textBoxWithInlineAction;
             ActionHelpers::HandleInlineAction(
-                renderContext, renderArgs, textBox, textBoxParentContainer.Get(), inlineAction.Get(), &textBoxWithInlineAction);
+                renderContext, renderArgs, inputUIElement, textBoxParentContainer.Get(), isMultiline, inlineAction.Get(), &textBoxWithInlineAction);
             textBoxParentContainer = textBoxWithInlineAction;
         }
 
@@ -86,35 +91,16 @@ namespace AdaptiveCards::Rendering::Uwp
         RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
             textInputAsAdaptiveInput.Get(), textBoxParentContainer.Get(), regex.IsValid(), renderContext, &inputLayout, nullptr));
 
-        // Create the InputValue and add it to the context
-        ComPtr<TextInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<TextInputValue>(&input, adaptiveTextInput, textBox, validationBorder.Get()));
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
-
         RETURN_IF_FAILED(inputLayout.CopyTo(textInputLayout));
+        RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                              _In_ IAdaptiveRenderContext* renderContext,
-                                              _In_ IAdaptiveRenderArgs* renderArgs,
-                                              _COM_Outptr_ IUIElement** textInputControl) noexcept
-    try
+    HRESULT AdaptiveTextInputRenderer::RenderTextBox(_In_ IAdaptiveTextInput* adaptiveTextInput,
+                                                     _In_ IAdaptiveRenderContext* renderContext,
+                                                     _In_ IAdaptiveRenderArgs* renderArgs,
+                                                     _COM_Outptr_ IUIElement** textInputControl)
     {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
-        {
-            renderContext->AddWarning(
-                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
-            return S_OK;
-        }
-
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveTextInput> adaptiveTextInput;
-        RETURN_IF_FAILED(cardElement.As(&adaptiveTextInput));
-
         ComPtr<ITextBox> textBox =
             XamlHelpers::CreateABIClass<ITextBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBox));
 
@@ -169,12 +155,98 @@ namespace AdaptiveCards::Rendering::Uwp
 
         RETURN_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
+        ComPtr<IUIElement> textBoxAsUIElement;
+        RETURN_IF_FAILED(textBox.As(&textBoxAsUIElement));
+
+        ComPtr<IBorder> validationBorder;
+        RETURN_IF_FAILED(HandleLayoutAndValidation(
+            adaptiveTextInput, textBoxAsUIElement.Get(), renderContext, renderArgs, textInputControl, &validationBorder));
+
+        ComPtr<TextInputValue> inputValue;
+        RETURN_IF_FAILED(
+            MakeAndInitialize<TextInputValue>(&inputValue, adaptiveTextInput, textBox.Get(), validationBorder.Get()));
+        RETURN_IF_FAILED(renderContext->AddInputValue(inputValue.Get(), renderArgs));
+
         ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
         RETURN_IF_FAILED(textBox.As(&textBoxAsFrameworkElement));
         RETURN_IF_FAILED(
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBoxAsFrameworkElement.Get()));
 
-        RETURN_IF_FAILED(HandleLayoutAndValidation(adaptiveTextInput.Get(), textBox.Get(), renderContext, renderArgs, textInputControl));
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTextInputRenderer::RenderPasswordBox(_In_ IAdaptiveTextInput* adaptiveTextInput,
+                                                         _In_ IAdaptiveRenderContext* renderContext,
+                                                         _In_ IAdaptiveRenderArgs* renderArgs,
+                                                         _COM_Outptr_ IUIElement** textInputControl)
+    {
+        ComPtr<IPasswordBox> passwordBox =
+            XamlHelpers::CreateABIClass<IPasswordBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_PasswordBox));
+
+        HString textValue;
+        RETURN_IF_FAILED(adaptiveTextInput->get_Value(textValue.GetAddressOf()));
+        RETURN_IF_FAILED(passwordBox->put_Password(textValue.Get()));
+
+        UINT32 maxLength;
+        RETURN_IF_FAILED(adaptiveTextInput->get_MaxLength(&maxLength));
+        RETURN_IF_FAILED(passwordBox->put_MaxLength(maxLength));
+
+        ComPtr<IPasswordBox2> passwordBox2;
+        RETURN_IF_FAILED(passwordBox.As(&passwordBox2));
+
+        HString placeHolderText;
+        RETURN_IF_FAILED(adaptiveTextInput->get_Placeholder(placeHolderText.GetAddressOf()));
+        RETURN_IF_FAILED(passwordBox2->put_PlaceholderText(placeHolderText.Get()));
+
+        ComPtr<IUIElement> textBoxAsUIElement;
+        RETURN_IF_FAILED(passwordBox.As(&textBoxAsUIElement));
+
+        ComPtr<IBorder> validationBorder;
+        RETURN_IF_FAILED(HandleLayoutAndValidation(
+            adaptiveTextInput, textBoxAsUIElement.Get(), renderContext, renderArgs, textInputControl, &validationBorder));
+
+        ComPtr<PasswordInputValue> inputValue;
+        RETURN_IF_FAILED(
+            MakeAndInitialize<PasswordInputValue>(&inputValue, adaptiveTextInput, passwordBox.Get(), validationBorder.Get()));
+        RETURN_IF_FAILED(renderContext->AddInputValue(inputValue.Get(), renderArgs));
+
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTextInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
+                                              _In_ IAdaptiveRenderContext* renderContext,
+                                              _In_ IAdaptiveRenderArgs* renderArgs,
+                                              _COM_Outptr_ IUIElement** textInputControl) noexcept
+    try
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
+        {
+            renderContext->AddWarning(
+                ABI::AdaptiveCards::ObjectModel::Uwp::WarningStatusCode::InteractivityNotSupported,
+                HStringReference(L"Text Input was stripped from card because interactivity is not supported").Get());
+            return S_OK;
+        }
+
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveTextInput> adaptiveTextInput;
+        RETURN_IF_FAILED(cardElement.As(&adaptiveTextInput));
+
+        ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle textInputStyle;
+        RETURN_IF_FAILED(adaptiveTextInput->get_TextInputStyle(&textInputStyle));
+
+        ComPtr<IUIElement> renderedTextInputControl;
+        if (textInputStyle == ABI::AdaptiveCards::ObjectModel::Uwp::TextInputStyle::Password)
+        {
+            RenderPasswordBox(adaptiveTextInput.Get(), renderContext, renderArgs, &renderedTextInputControl);
+        }
+        else
+        {
+            RenderTextBox(adaptiveTextInput.Get(), renderContext, renderArgs, &renderedTextInputControl);
+        }
+
+        RETURN_IF_FAILED(renderedTextInputControl.CopyTo(textInputControl));
 
         return S_OK;
     }
