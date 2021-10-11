@@ -7,7 +7,7 @@
 
 #import "ACOBaseCardElement.h"
 #import "ACRIBaseInputHandler.h"
-#import <AdaptiveCards/ChoiceInput.h>
+#import "ChoiceInput.h"
 #import "ChoiceSetInput.h"
 #import "HostConfig.h"
 #import <UIKit/UIKit.h>
