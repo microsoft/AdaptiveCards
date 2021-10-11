@@ -5,7 +5,7 @@
         <version>1.0.0</version>
         <authors>Microsoft</authors>
         <summary>Adaptive Cards library for UWP</summary>
-        <description>Used to render Adaptive Cards into UWP XAML or to work with the object model for C++ projects</description>
+        <description>Used to render Adaptive Cards into UWP XAML</description>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>adaptivecards;adaptive-cards</tags>
         <projectUrl>https://adaptivecards.io</projectUrl>
@@ -14,7 +14,7 @@
         <copyright>© Microsoft Corporation. All rights reserved.</copyright>
 
         <dependencies>
-            <dependency id="AdaptiveCards.ObjectModel.Uwp" version="3.0.0" />
+            <dependency id="AdaptiveCards.ObjectModel.Uwp" version="1.0.0" />
         </dependencies>
 
     </metadata>
