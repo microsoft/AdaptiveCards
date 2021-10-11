@@ -4,6 +4,11 @@
 	"description": "Style hint for `Input.ChoiceSet`.",
 	"values": [
 		"compact",
-		"expanded"
+		"expanded",
+		{
+			"value": "filtered",
+			"description": "Allows users to filter choices in a choice set.",
+			"version": "1.5"
+		}
 	]
 }

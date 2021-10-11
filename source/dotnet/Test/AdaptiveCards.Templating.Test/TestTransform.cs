@@ -10947,6 +10947,44 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestTemplateEscapeDoubleQuotes()
+        {
+            string jsonTemplate = "{"
+     + "\"type\": \"AdaptiveCard\","
+     + "\"version\": \"1.0\","
+     + "\"$data\": {"
+     +            "\"ResultSnippet\": \"Hello\","
+     +            "\"ResultSnippetEmpty\": \"\""
+     +           "},"
+     + "\"body\": ["
+     +     "{"
+     +        "\"type\": \"TextBlock\","
+     +        "\"$when\": \"${ResultSnippet == \\\"Hello\\\"}\","
+     +        "\"text\": \"This TextBlock should be present\""
+     +    "},"
+     +     "{"
+     +        "\"type\": \"TextBlock\","
+     +        "\"$when\": \"${ResultSnippetEmpty != \\\"\\\"}\","
+     +        "\"text\": \"This TextBlock should not be present\""
+     +    "}"
+     + "]" + "}";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            string cardJson = transformer.Expand(null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""This TextBlock should be present""
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
         public void TestNullValueWithoutSubstitution()
         {
             string jsonTemplate = @"{
@@ -12657,7 +12695,7 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
-        public void TestWhenWithArrayWithPropoerCommanRemoval()
+        public void TestWhenWithArrayWithProperCommaRemoval()
         {
             string jsonTemplate =
                 @"{

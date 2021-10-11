@@ -174,42 +174,19 @@ HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputE
     return m_adaptiveInputElement.CopyTo(inputElement);
 }
 
-HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adaptiveInput,
-                                              _In_ ITextBox* uiTextBoxElement,
+HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
+                                              _In_ IUIElement* uiTextBoxElement,
                                               _In_ IBorder* validationBorder)
-{
-    {
-        m_textBoxElement = uiTextBoxElement;
-
-        ComPtr<IUIElement> textBoxAsUIElement;
-        RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
-
-        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(adaptiveInput, textBoxAsUIElement.Get(), validationBorder));
-
-        return S_OK;
-    }
-}
-
-HRESULT TextInputBase::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
-{
-    return m_textBoxElement->get_Text(serializedUserInput);
-}
-
-HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
-                                               _In_ ITextBox* uiTextBoxElement,
-                                               _In_ IBorder* validationBorder)
 {
     m_adaptiveTextInput = adaptiveTextInput;
 
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveTextInput.As(&textInputAsAdaptiveInput));
 
-    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
-
-    return S_OK;
+    return InputValue::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder);
 }
 
-HRESULT TextInputValue::IsValueValid(_Out_ boolean* isInputValid)
+HRESULT TextInputBase::IsValueValid(_Out_ boolean* isInputValid)
 {
     // Call the base class to validate isRequired
     boolean isBaseValid;
@@ -239,16 +216,64 @@ HRESULT TextInputValue::IsValueValid(_Out_ boolean* isInputValid)
     return S_OK;
 }
 
+HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
+                                               _In_ ITextBox* uiTextBoxElement,
+                                               _In_ IBorder* validationBorder)
+{
+    m_textBoxElement = uiTextBoxElement;
+
+    ComPtr<IUIElement> textBoxAsUIElement;
+    RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
+
+    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(adaptiveTextInput, textBoxAsUIElement.Get(), validationBorder));
+
+    return S_OK;
+}
+
+HRESULT TextInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+{
+    return m_textBoxElement->get_Text(serializedUserInput);
+}
+
+HRESULT PasswordInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
+                                                   _In_ IPasswordBox* uiPasswordElement,
+                                                   _In_ IBorder* validationBorder)
+{
+    m_passwordElement = uiPasswordElement;
+
+    ComPtr<IUIElement> passwordAsUIElement;
+    RETURN_IF_FAILED(m_passwordElement.As(&passwordAsUIElement));
+
+    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(adaptiveTextInput, passwordAsUIElement.Get(), validationBorder));
+
+    return S_OK;
+}
+
+IFACEMETHODIMP AdaptiveCards::Rendering::Uwp::PasswordInputValue::get_CurrentValue(HSTRING* serializedUserInput)
+{
+    return m_passwordElement->get_Password(serializedUserInput);
+}
+
 HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveNumberInput* adaptiveNumberInput,
                                                  _In_ ITextBox* uiTextBoxElement,
                                                  _In_ IBorder* validationBorder)
 {
     m_adaptiveNumberInput = adaptiveNumberInput;
+    m_textBoxElement = uiTextBoxElement;
 
-    Microsoft::WRL::ComPtr<IAdaptiveInputElement> numberInputAsAdaptiveInput;
+    ComPtr<IAdaptiveInputElement> numberInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveNumberInput.As(&numberInputAsAdaptiveInput));
-    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(numberInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
+
+    ComPtr<IUIElement> textBoxAsUIElement;
+    RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
+
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(numberInputAsAdaptiveInput.Get(), textBoxAsUIElement.Get(), validationBorder));
     return S_OK;
+}
+
+HRESULT NumberInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+{
+    return m_textBoxElement->get_Text(serializedUserInput);
 }
 
 HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
@@ -722,19 +747,22 @@ HRESULT FilteredChoiceSetInputValue::GetSelectedChoice(IAdaptiveChoiceInput** ad
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_Choices(&choices));
 
     ComPtr<IAdaptiveChoiceInput> selectedChoice;
-    IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(choices.Get(), [&selectedChoice, text](IAdaptiveChoiceInput* choice) {
-        HString titleHString;
-        RETURN_IF_FAILED(choice->get_Title(titleHString.GetAddressOf()));
-
-        std::string title = HStringToUTF8(titleHString.Get());
-
-        if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
+    IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
+        choices.Get(),
+        [&selectedChoice, text](IAdaptiveChoiceInput* choice)
         {
-            selectedChoice = choice;
-        }
+            HString titleHString;
+            RETURN_IF_FAILED(choice->get_Title(titleHString.GetAddressOf()));
 
-        return S_OK;
-    });
+            std::string title = HStringToUTF8(titleHString.Get());
+
+            if (!ParseUtil::ToLowercase(text).compare(ParseUtil::ToLowercase(title)))
+            {
+                selectedChoice = choice;
+            }
+
+            return S_OK;
+        });
 
     RETURN_IF_FAILED(selectedChoice.CopyTo(adaptiveChoiceInput));
 

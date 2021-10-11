@@ -16,6 +16,7 @@
   - Fact
   - ImageSet
   - Table
+  - TableCell
 - Actions:
   - Action.OpenUrl
   - Action.Submit
