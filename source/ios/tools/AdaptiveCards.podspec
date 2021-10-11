@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
 
   spec.version          = '2.8.0'
   
-  spec.license          = { :type => 'Adaptive Cards Binary EULA', :file => 'EULA-Non-Windows.txt' } 
+  spec.license          = { :type => 'Adaptive Cards Binary EULA', :file => 'source/EULA-Non-Windows.txt' } 
   
   spec.homepage         = 'https://adaptivecards.io'
   
@@ -12,15 +12,24 @@ Pod::Spec.new do |spec|
   
   spec.summary          = 'Adaptive Cards are a new way for developers to exchange card content in a common and consistent way'
   
-  spec.source           = { :http => 'https://adaptivecardsblob.blob.core.windows.net/adaptivecardsiosblobs/AdaptiveCards.framework.zip' }
+  spec.source       = { :git => 'https://github.com/microsoft/AdaptiveCards.git', :tag => 'dotnet-v2.7.2' }
 
-  spec.vendored_frameworks = 'AdaptiveCards.xcframework'
+  spec.source_files           = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/**/*.{h,m,mm}', 'source/shared/cpp/ObjectModel/**/*.{h,cpp}', 'source/shared/cpp/ObjectModel/json/**/*.{h}'
 
-  spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
-
-  spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
-  
   spec.platform         = :ios, '13'
+
+  spec.frameworks = 'AVFoundation', 'AVKit', 'CoreGraphics', 'QuartzCore', 'UIKit' 
+
+  spec.xcconfig = {
+       'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
+       'CLANG_CXX_LIBRARY' => 'libc++'
+  }
+
+  spec.script_phase = { :name => 'Writing to files', :script => 'mkdir -p Headers/json', :execution_position => :before_compile }
+
+  spec.header_mappings_dir = 'source/shared/cpp/ObjectModel/json'
+
+  spec.preserve_paths = 'source/shared/cpp/ObjectModel/json'
 
   spec.dependency 'MicrosoftFluentUI', '~> 0.2.6'
 end
