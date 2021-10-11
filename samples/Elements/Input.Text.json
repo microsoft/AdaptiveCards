@@ -1,0 +1,34 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Text",
+			"id": "defaultInputId",
+			"label": "Default text input:",
+			"maxLength": 500
+		},
+		{
+			"type": "Input.Text",
+			"id": "multilineInputId",
+			"label": "Multiline text input:",
+			"maxLength": 500,
+			"isMultiline": true
+		},
+		{
+			"type": "Input.Text",
+			"id": "prefilledInputId",
+			"label": "Pre-filled value:",
+			"maxLength": 500,
+			"isMultiline": true,
+			"value": "This value was pre-filled"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}
