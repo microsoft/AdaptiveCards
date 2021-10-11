@@ -5,7 +5,7 @@
 //  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#import "ACOBaseActionElementPrivate.h"
+#import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import "ACRView.h"
 #import <Foundation/Foundation.h>
 #import "ACRTargetBuilder.h"
