@@ -25,34 +25,30 @@ import { AdaptiveCard } from "adaptivecards-react";
 Basic usage:
 
 ```js
-  var card = {
+var card = {
     "type": "AdaptiveCard",
     "version": "1.0",
     "body": [
-      {
+        {
         "type": "TextBlock",
         "text": "Here is a ninja cat"
-      },
-      {
+        },
+        {
         "type": "TextBlock",
         "text": "Here is another ninja cat"
-      },
-      {
+        },
+        {
         "type": "Image",
         "url": "http://adaptivecards.io/content/cats/1.png"
-      }
+        }
     ]
-  };
+};
 
-  var hostConfig = {
+var hostConfig = {
     fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
-  };
+};
 
-  return (
-    <div className="App">
-      <AdaptiveCard payload={card} hostConfig={hostConfig} />
-    </div>
-  );
+<AdaptiveCard payload={card} hostConfig={hostConfig} />
 ```
 
 Non-interactible:
