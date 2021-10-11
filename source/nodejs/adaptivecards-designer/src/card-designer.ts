@@ -249,7 +249,7 @@ export class CardDesigner extends Designer.DesignContext {
             let paletteItemContainer = document.createElement('div');
             paletteItemContainer.className = "acd-palette-item-container";
 
-            for (var i = 0; i < categorizedTypes[category].length; i++) {
+            for (let i = 0; i < categorizedTypes[category].length; i++) {
                 this.addPaletteItem(categorizedTypes[category][i], paletteItemContainer);
             }
 
@@ -342,6 +342,10 @@ export class CardDesigner extends Designer.DesignContext {
 
             let errorPane = document.getElementById("errorPane");
             errorPane.innerHTML = "";
+
+            if(this.targetVersion.toString() == "1.4" && (this.hostContainer.name == "Microsoft Teams - Dark" || this.hostContainer.name == "Microsoft Teams - Light")){
+                errorPane.appendChild(this.renderErrorPaneElement("[Warning] The selected Target Version (" + this.targetVersion.toString() + ") is only supported by bot sent card. For user sent cards please use version 1.3"));
+            }
 
             if (this.targetVersion.compareTo(this.hostContainer.targetVersion) > 0 && Shared.GlobalSettings.showTargetVersionMismatchWarning) {
                 errorPane.appendChild(this.renderErrorPaneElement("[Warning] The selected Target Version (" + this.targetVersion.toString() + ") is greater than the version supported by " + this.hostContainer.name + " (" + this.hostContainer.targetVersion.toString() + ")"));

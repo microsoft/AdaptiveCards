@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import React, { createContext, useCallback, useRef, useState } from 'react';
-import defaultHostConfigJson from '../assets/default-host-config.json';
+import defaultHostConfigJson from './assets/default-host-config.json';
 
 interface Variant {
   text: string;

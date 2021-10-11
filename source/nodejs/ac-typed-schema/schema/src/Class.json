@@ -23,10 +23,10 @@
 			"type": "string",
 			"description": "Class that this class extends from"
 		},
-    "shorthand": {
-      "type": "string",
-      "description": "Name of one of the properties that represents a shorthand version of this class"
-    },
+		"shorthand": {
+			"type": "string",
+			"description": "Name of one of the properties that represents a shorthand version of this class"
+		},
 		"$schema": {
 			"type": "uri",
 			"description": "JSON schema for the JSON file"

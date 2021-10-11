@@ -4,13 +4,13 @@
 #pragma once
 
 #include "pch.h"
-#include "BaseCardElement.h"
+#include "CollectionCoreElement.h"
 #include "TableColumnDefinition.h"
 #include "TableRow.h"
 
 namespace AdaptiveCards
 {
-    class Table : public BaseCardElement
+    class Table : public CollectionCoreElement
     {
     public:
         Table();
@@ -21,6 +21,7 @@ namespace AdaptiveCards
         virtual ~Table() = default;
 
         Json::Value SerializeToJsonValue() const override;
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
         bool GetShowGridLines() const;
         void SetShowGridLines(bool value);

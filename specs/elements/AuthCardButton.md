@@ -2,7 +2,7 @@
 
 # AuthCardButton
 
-#### Introduced in version 1.4
+**Introduced in version 1.4**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

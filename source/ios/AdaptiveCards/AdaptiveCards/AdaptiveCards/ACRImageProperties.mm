@@ -27,6 +27,7 @@
         if (!acoElem or !acoConfig) {
             self.contentSize = CGSizeZero;
             self.acrImageSize = ACRImageSizeAuto;
+            self.height = ACRHeightAuto;
             self.acrHorizontalAlignment = ACRLeft;
         } else {
             std::shared_ptr<BaseCardElement> elem = [acoElem element];
@@ -44,10 +45,13 @@
 
             self.acrImageSize = acrImageSize;
             self.contentSize = [acoConfig getImageSizeAsCGSize:acrImageSize width:self.pixelWidth height:self.pixelHeight];
+
             if (image) {
                 [self updateContentSize:image.size];
             }
+
             self.acrHorizontalAlignment = getACRHorizontalAlignment(imgElem->GetHorizontalAlignment().value_or(HorizontalAlignment::Left));
+            self.height = GetACRHeight(imgElem->GetHeight());
         }
     }
     return self;

@@ -4,6 +4,7 @@ package io.adaptivecards.renderer.input.customcontrols;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
 
@@ -42,6 +43,23 @@ public class ValidatedAutoCompleteTextView extends AppCompatAutoCompleteTextView
         if (m_isUsingCustomInputs)
         {
             setBackground(ContextCompat.getDrawable(context, R.drawable.adaptive_choiceset_compact_background));
+        }
+    }
+
+    @Override
+    public boolean enoughToFilter()
+    {
+        return true;
+    }
+
+    @Override
+    protected void onFocusChanged(boolean focused, int direction,
+                                  Rect previouslyFocusedRect)
+    {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+        if (focused)
+        {
+             performFiltering(getText(), 0);
         }
     }
 

@@ -25,22 +25,22 @@ add_library( # Sets the name of the library.
              # file are automatically included.
              ../../shared/cpp/ObjectModel/jsoncpp.cpp
              ../../shared/cpp/ObjectModel/ActionParserRegistration.cpp
-             ../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp
              ../../shared/cpp/ObjectModel/ActionSet.cpp
+             ../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.cpp
              ../../shared/cpp/ObjectModel/AuthCardButton.cpp
              ../../shared/cpp/ObjectModel/Authentication.cpp
-             ../../shared/cpp/ObjectModel/BaseActionElement.cpp
              ../../shared/cpp/ObjectModel/BackgroundImage.cpp
+             ../../shared/cpp/ObjectModel/BaseActionElement.cpp
              ../../shared/cpp/ObjectModel/BaseCardElement.cpp
              ../../shared/cpp/ObjectModel/BaseElement.cpp
              ../../shared/cpp/ObjectModel/BaseInputElement.cpp
              ../../shared/cpp/ObjectModel/ChoiceInput.cpp
              ../../shared/cpp/ObjectModel/ChoiceSetInput.cpp
+             ../../shared/cpp/ObjectModel/CollectionCoreElement.cpp
              ../../shared/cpp/ObjectModel/Column.cpp
              ../../shared/cpp/ObjectModel/ColumnSet.cpp
-             ../../shared/cpp/ObjectModel/CollectionTypeElement.cpp
              ../../shared/cpp/ObjectModel/Container.cpp
              ../../shared/cpp/ObjectModel/DateInput.cpp
              ../../shared/cpp/ObjectModel/DateTimePreparsedToken.cpp
@@ -72,6 +72,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/SemanticVersion.cpp
              ../../shared/cpp/ObjectModel/SharedAdaptiveCard.cpp
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp
+             ../../shared/cpp/ObjectModel/StyledCollectionElement.cpp
              ../../shared/cpp/ObjectModel/SubmitAction.cpp
              ../../shared/cpp/ObjectModel/Table.cpp
              ../../shared/cpp/ObjectModel/TableCell.cpp
@@ -86,8 +87,8 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp
              ../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp
              ../../shared/cpp/ObjectModel/TokenExchangeResource.cpp
-             ../../shared/cpp/ObjectModel/UnknownElement.cpp
              ../../shared/cpp/ObjectModel/UnknownAction.cpp
+             ../../shared/cpp/ObjectModel/UnknownElement.cpp
              ../../shared/cpp/ObjectModel/Util.cpp
              src/main/cpp/objectmodel_wrap.cpp
              )

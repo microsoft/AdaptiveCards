@@ -7,8 +7,11 @@ import android.content.res.Resources;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Filter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -50,9 +54,12 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
@@ -440,11 +447,29 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             boolean m_mustWrap = false;
 
+            // m_items contains the items currently being displayed as suggestions
+            // m_originalItemsList contains the items provided by the card author when the element was created
+            List<String> m_items, m_originalItemsList;
+
             FilteredChoiceSetAdapter(Context context, int resource,
                                      Vector<String> items, boolean mustWrap)
             {
                 super(context, resource, items);
                 m_mustWrap = mustWrap;
+                m_items = items;
+                m_originalItemsList = new ArrayList<>(items);
+            }
+
+            @Override
+            public int getCount()
+            {
+                return m_items.size();
+            }
+
+            @Override
+            public String getItem(int pos)
+            {
+                return m_items.get(pos);
             }
 
             @NonNull
@@ -463,6 +488,75 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
                 return view;
             }
+
+            @NonNull
+            @Override
+            public Filter getFilter() {
+                return m_substringFilter;
+            }
+
+            Filter m_substringFilter = new Filter() {
+
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+
+                    FilterResults filterResults = new FilterResults();
+
+                    // Due to the time it takes for evaluating all options, this part of the code has
+                    // to be synchronized, otherwise the worker thread that calls the publishResults
+                    // function will throw an illegalstateexception or a concurrentmodificationexception
+                    synchronized (filterResults)
+                    {
+                        List<String> filteredSuggestions = new ArrayList<>();
+
+                        // isEmpty compares against null and 0-length strings
+                        if (!TextUtils.isEmpty(constraint))
+                        {
+                            String lowerCaseConstraint = constraint.toString().toLowerCase();
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                            {
+                                Predicate<String> bySubstring = choice -> choice.toLowerCase().contains(lowerCaseConstraint);
+                                filteredSuggestions = m_originalItemsList.stream().filter(bySubstring).collect(Collectors.toList());
+                            }
+                            else
+                            {
+                                for (String choice : m_originalItemsList)
+                                {
+                                    if (choice.toLowerCase().contains(lowerCaseConstraint))
+                                    {
+                                        filteredSuggestions.add(choice);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            filteredSuggestions = m_originalItemsList;
+                        }
+
+                        filterResults.values = filteredSuggestions;
+                        filterResults.count = filteredSuggestions.size();
+
+                        return filterResults;
+                    }
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults filterResults)
+                {
+                    if (filterResults != null && filterResults.count > 0)
+                    {
+                        m_items = (ArrayList<String>) filterResults.values;
+                        notifyDataSetChanged();
+                    }
+                    else
+                    {
+                        notifyDataSetInvalidated();
+                    }
+                }
+            };
+
         }
 
         autoCompleteTextView.setAdapter(new FilteredChoiceSetAdapter(context,
@@ -474,6 +568,22 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         {
             autoCompleteTextView.setText(titleList.get(valueIndex));
         }
+
+        autoCompleteTextView.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View v, MotionEvent event){
+                autoCompleteTextView.showDropDown();
+                return false;
+            }
+        });
+
+        autoCompleteTextView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                autoCompleteTextView.showDropDown();
+                return false;
+            }
+        });
 
         autoCompleteTextView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
