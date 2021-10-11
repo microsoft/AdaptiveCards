@@ -59,13 +59,3 @@ steps:
         workingDir: source/nodejs/${{ target_package }}
         publishEndpoint: npmjs.com
       condition: and(succeeded(), eq(variables['Build.Reason'], 'Manual'))
-
-    - bash: |
-       git config --global user.email "adaptivecardscore@microsoft.com"
-       git config --global user.name "adaptivecards"
-       git push --tags
-      workingDirectory: source/android/adaptivecards
-      displayName: 'Push git tag'
-
-
-
