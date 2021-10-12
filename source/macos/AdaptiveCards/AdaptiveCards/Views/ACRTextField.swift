@@ -64,7 +64,7 @@ class ACRTextField: NSTextField {
         } else {
             leftPadding += config.leftPadding
         }
-        customCell.setupSpacing(rightPadding: config.rightPadding, leftPadding: leftPadding, yPadding: config.yPadding, focusRingCornerRadius: config.focusRingCornerRadius, borderWidth: config.borderWidth, borderColor: config.borderColor, wantsClearButton: wantsClearButton, isNumericField: textFieldMode == .number)
+        customCell.setupSpacing(rightPadding: config.rightPadding, leftPadding: leftPadding, yPadding: config.yPadding, focusRingCornerRadius: config.focusRingCornerRadius, wantsClearButton: wantsClearButton, isNumericField: textFieldMode == .number)
         cell = customCell
         font = config.font
         if wantsClearButton {
@@ -74,6 +74,8 @@ class ACRTextField: NSTextField {
         // Add inintial backgound color to text box
         wantsLayer = true
         layer?.backgroundColor = config.backgroundColor.cgColor
+        layer?.borderWidth = config.borderWidth
+        layer?.borderColor = config.borderColor.cgColor
         setupTrackingArea()
     }
     
@@ -151,6 +153,25 @@ class ACRTextField: NSTextField {
         self.layer?.backgroundColor = config.backgroundColor.cgColor
     }
     
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        if textFieldMode != .dateTime {
+            layer?.borderColor = config.activeBorderColor.cgColor
+        }
+    }
+    
+    override func textDidBeginEditing(_ notification: Notification) {
+        if textFieldMode != .dateTime {
+            layer?.borderColor = config.activeBorderColor.cgColor
+        }
+        return super.textDidBeginEditing(notification)
+    }
+    
+    override func textDidEndEditing(_ notification: Notification) {
+        layer?.borderColor = config.borderColor.cgColor
+        return super.textDidEndEditing(notification)
+    }
+    
     private func updateClearButton() {
         clearButton.isHidden = isEmpty
     }
@@ -171,18 +192,14 @@ class ACRTextField: NSTextField {
     private var leftPadding: CGFloat = 0
     private var yPadding: CGFloat = 0
     private var focusRingCornerRadius: CGFloat = 0
-    private var borderWidth: CGFloat = 0.1
-    private var borderColor: NSColor = .black
     private var wantsClearButton = false
     private var isNumericField = false
 
-    func setupSpacing(rightPadding: CGFloat = 0, leftPadding: CGFloat = 0, yPadding: CGFloat = 0, focusRingCornerRadius: CGFloat = 0, borderWidth: CGFloat = 0.1, borderColor: NSColor = .black, wantsClearButton: Bool, isNumericField: Bool) {
+    func setupSpacing(rightPadding: CGFloat = 0, leftPadding: CGFloat = 0, yPadding: CGFloat = 0, focusRingCornerRadius: CGFloat = 0, wantsClearButton: Bool, isNumericField: Bool) {
         self.leftPadding = leftPadding
         self.rightPadding = rightPadding
         self.yPadding = yPadding
         self.focusRingCornerRadius = focusRingCornerRadius
-        self.borderWidth = borderWidth
-        self.borderColor = borderColor
         self.wantsClearButton = wantsClearButton
         self.isNumericField = isNumericField
     }
@@ -202,15 +219,11 @@ class ACRTextField: NSTextField {
 
     override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
         controlView.layer?.cornerRadius = focusRingCornerRadius
-        controlView.layer?.borderWidth = borderWidth
-        controlView.layer?.borderColor = borderColor.cgColor
         super.drawInterior(withFrame: titleRect(forBounds: cellFrame), in: controlView)
     }
 
     override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
         controlView.layer?.cornerRadius = focusRingCornerRadius
-        controlView.layer?.borderWidth = borderWidth
-        controlView.layer?.borderColor = borderColor.cgColor
         super.select(withFrame: titleRect(forBounds: rect), in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
     }
     

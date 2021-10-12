@@ -137,25 +137,26 @@ public struct ChoiceSetButtonConfig {
     }
 }
 public struct InputFieldConfig {
-    public static let `default` = InputFieldConfig(height: 20, leftPadding: 0, rightPadding: 0, yPadding: 0, focusRingCornerRadius: 0, borderWidth: 0.3, wantsClearButton: false, clearButtonImage: nil, calendarImage: nil, clockImage: nil, font: .systemFont(ofSize: 12), highlightedColor: .lightGray, backgroundColor: .white, borderColor: .darkGray)
-    public static let darkDefault = InputFieldConfig(height: 20, leftPadding: 0, rightPadding: 0, yPadding: 0, focusRingCornerRadius: 0, borderWidth: 0.3, wantsClearButton: false, clearButtonImage: nil, calendarImage: nil, clockImage: nil, font: .systemFont(ofSize: 12), highlightedColor: .darkGray, backgroundColor: NSColor(white: 0.11, alpha: 1), borderColor: .lightGray)
+    public static let `default` = InputFieldConfig(height: 20, leftPadding: 0, rightPadding: 0, yPadding: 0, focusRingCornerRadius: 0, borderWidth: 0.3, wantsClearButton: false, clearButtonImage: nil, calendarImage: nil, clockImage: nil, font: .systemFont(ofSize: 12), highlightedColor: .lightGray, backgroundColor: .white, borderColor: .darkGray, activeBorderColor: .darkGray)
+    public static let darkDefault = InputFieldConfig(height: 20, leftPadding: 0, rightPadding: 0, yPadding: 0, focusRingCornerRadius: 0, borderWidth: 0.3, wantsClearButton: false, clearButtonImage: nil, calendarImage: nil, clockImage: nil, font: .systemFont(ofSize: 12), highlightedColor: .darkGray, backgroundColor: NSColor(white: 0.11, alpha: 1), borderColor: .lightGray, activeBorderColor: .lightGray)
     
-    let height: CGFloat
-    let leftPadding: CGFloat
-    let rightPadding: CGFloat
-    let yPadding: CGFloat
-    let focusRingCornerRadius: CGFloat
-    let borderWidth: CGFloat
-    let wantsClearButton: Bool
-    let clearButtonImage: NSImage?
-    let calendarImage: NSImage?
-    let clockImage: NSImage?
-    let font: NSFont
-    let highlightedColor: NSColor
-    let backgroundColor: NSColor
-    let borderColor: NSColor
+    public let height: CGFloat
+    public let leftPadding: CGFloat
+    public let rightPadding: CGFloat
+    public let yPadding: CGFloat
+    public let focusRingCornerRadius: CGFloat
+    public let borderWidth: CGFloat
+    public let wantsClearButton: Bool
+    public let clearButtonImage: NSImage?
+    public let calendarImage: NSImage?
+    public let clockImage: NSImage?
+    public let font: NSFont
+    public let highlightedColor: NSColor
+    public let backgroundColor: NSColor
+    public let borderColor: NSColor
+    public let activeBorderColor: NSColor
     
-    public init(height: CGFloat, leftPadding: CGFloat, rightPadding: CGFloat, yPadding: CGFloat, focusRingCornerRadius: CGFloat, borderWidth: CGFloat, wantsClearButton: Bool, clearButtonImage: NSImage?, calendarImage: NSImage?, clockImage: NSImage?, font: NSFont, highlightedColor: NSColor, backgroundColor: NSColor, borderColor: NSColor) {
+    public init(height: CGFloat, leftPadding: CGFloat, rightPadding: CGFloat, yPadding: CGFloat, focusRingCornerRadius: CGFloat, borderWidth: CGFloat, wantsClearButton: Bool, clearButtonImage: NSImage?, calendarImage: NSImage?, clockImage: NSImage?, font: NSFont, highlightedColor: NSColor, backgroundColor: NSColor, borderColor: NSColor, activeBorderColor: NSColor) {
         self.height = height
         self.leftPadding = leftPadding
         self.rightPadding = rightPadding
@@ -170,5 +171,6 @@ public struct InputFieldConfig {
         self.highlightedColor = highlightedColor
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
+        self.activeBorderColor = activeBorderColor
     }
 }

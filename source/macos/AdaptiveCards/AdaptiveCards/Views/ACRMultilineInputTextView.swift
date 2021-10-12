@@ -131,9 +131,11 @@ extension ACRMultilineInputTextView: InputHandlingViewProtocol {
 extension ACRMultilineInputTextView: ACRTextViewResponderDelegate {
     func textViewDidBecomeFirstResponder() {
         scrollView.disableScroll = false
+        layer?.borderColor = config.activeBorderColor.cgColor
     }
     
     func textViewDidResignFirstResponder() {
         scrollView.disableScroll = true
+        layer?.borderColor = config.borderColor.cgColor
     }
 }

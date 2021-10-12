@@ -10,7 +10,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     private var items: [String] = []
     private var configs: [String] = []
     private var hostConfigString = sampleHostConfig // default config string
-    private let webexConfig: String = "webex_light_config.json"
+    private let webexConfig: String = "webex_rebranded_light.json"
     private var darkTheme = false
     private var buttonConfig: ButtonConfig = .default
     private var checkButtonConfig: ChoiceSetButtonConfig?
@@ -64,8 +64,6 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         }
         setupButtonConfig()
         setupInputFieldConfig()
-        setupRadioButton()
-        setupCheckButton()
         switch AdaptiveCard.parseHostConfig(from: hostConfigString) {
         case .success(let config):
             let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme, buttonConfig: buttonConfig, supportsSchemeV1_3: false, hyperlinkColorConfig: .default, inputFieldConfig: inputFieldConfig, checkBoxButtonConfig: checkButtonConfig, radioButtonConfig: radioButtonConfig))
@@ -167,12 +165,12 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             let clearButtonimage = NSImage(named: "cancel_16_w")
             let calendarImage = NSImage(named: "calendar-month-dark")
             let clockImage = NSImage(named: "recents_20_w")
-            inputFieldConfig = InputFieldConfig(height: 26, leftPadding: 8, rightPadding: 8, yPadding: 1, focusRingCornerRadius: 8, borderWidth: 0.3, wantsClearButton: true, clearButtonImage: clearButtonimage, calendarImage: calendarImage, clockImage: clockImage, font: .systemFont(ofSize: 14), highlightedColor: NSColor(red: 1, green: 1, blue: 1, alpha: 0.11), backgroundColor: NSColor(red: 0.148, green: 0.148, blue: 0.148, alpha: 1), borderColor: NSColor(red: 1, green: 1, blue: 1, alpha: 0.9))
+            inputFieldConfig = InputFieldConfig(height: 32, leftPadding: 8, rightPadding: 8, yPadding: 1, focusRingCornerRadius: 8, borderWidth: 1, wantsClearButton: true, clearButtonImage: clearButtonimage, calendarImage: calendarImage, clockImage: clockImage, font: .systemFont(ofSize: 14), highlightedColor: NSColor(red: 1, green: 1, blue: 1, alpha: 0.07), backgroundColor: NSColor(red: 0, green: 0, blue: 0, alpha: 1), borderColor: NSColor(red: 1, green: 1, blue: 1, alpha: 0.4), activeBorderColor: NSColor(red: 0.19, green: 0.38, blue: 0.77, alpha: 1))
         } else {
             let clearButtonimage = NSImage(named: "cancel_16")
             let calendarImage = NSImage(named: "calendar-month-light")
             let clockImage = NSImage(named: "recents_20")
-            inputFieldConfig = InputFieldConfig(height: 26, leftPadding: 8, rightPadding: 8, yPadding: 1, focusRingCornerRadius: 8, borderWidth: 0.3, wantsClearButton: true, clearButtonImage: clearButtonimage, calendarImage: calendarImage, clockImage: clockImage, font: .systemFont(ofSize: 14), highlightedColor: NSColor(red: 0, green: 0, blue: 0, alpha: 0.11), backgroundColor: NSColor(red: 1, green: 1, blue: 1, alpha: 1), borderColor: NSColor(red: 0, green: 0, blue: 0, alpha: 0.3))
+            inputFieldConfig = InputFieldConfig(height: 32, leftPadding: 8, rightPadding: 8, yPadding: 1, focusRingCornerRadius: 8, borderWidth: 1, wantsClearButton: true, clearButtonImage: clearButtonimage, calendarImage: calendarImage, clockImage: clockImage, font: .systemFont(ofSize: 14), highlightedColor: NSColor(red: 0, green: 0, blue: 0, alpha: 0.07), backgroundColor: NSColor(red: 1, green: 1, blue: 1, alpha: 1), borderColor: NSColor(red: 0, green: 0, blue: 0, alpha: 0.3), activeBorderColor: NSColor(red: 0.38, green: 0.61, blue: 0.97, alpha: 1))
         }
     }
     
