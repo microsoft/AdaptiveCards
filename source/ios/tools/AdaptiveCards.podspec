@@ -34,7 +34,7 @@ Pod::Spec.new do |spec|
 
   spec.project_header_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/PrivateHeaders/*.h'
 
-  spec.resource_bundles = {'AdaptiveCards' => ['source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Resources/**/*.{png, xib, svg}']}
+  spec.resource_bundles = {'AdaptiveCards' => ['source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/Resources/**/*']}
 
   spec.dependency 'MicrosoftFluentUI', '~> 0.2.6'
 end
