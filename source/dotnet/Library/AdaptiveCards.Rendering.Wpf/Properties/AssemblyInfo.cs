@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Windows;
 
 #if DELAY_SIGN
-[assembly: AssemblyKeyFileAttribute(@"../25StrongName.snk")]
+[assembly: AssemblyKeyFileAttribute(@"../../../../25StrongName.snk")]
 [assembly: AssemblyDelaySignAttribute(true)]
 #endif
 [assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
