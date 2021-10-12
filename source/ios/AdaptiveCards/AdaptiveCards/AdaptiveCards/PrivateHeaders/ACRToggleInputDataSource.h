@@ -9,8 +9,8 @@
 #import "ACRColumnSetView.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRIBaseInputHandler.h"
-#import "HostConfig.h"
-#import "ToggleInput.h"
+#import <Adaptivecards/HostConfig.h>
+#import <Adaptivecards/ToggleInput.h>
 
 @interface ACRToggleInputDataSource : NSObject <ACRIBaseInputHandler>
 
