@@ -17,8 +17,12 @@ class InputDateRendererTest: XCTestCase {
     func testRendererSetsValue() {
         let val: String = "2000-10-12"
         inputDate = .make(value: val)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
 
         let inputDateField = renderDateInput()
+        XCTAssertEqual(inputDateField.datePickerCalendar.dateValue, dateFormatter.date(from: val))
+        XCTAssertEqual(inputDateField.datePickerTextfield.dateValue, dateFormatter.date(from: val))
         XCTAssertEqual(inputDateField.dateValue, val)
     }
 
@@ -87,6 +91,17 @@ class InputDateRendererTest: XCTestCase {
         let inputDateField = renderDateInput()
         XCTAssertNil(inputDateField.dateValue)
         XCTAssertEqual(inputDateField.textField.stringValue, "")
+    }
+    
+    func testCurrentDateInPopOverDefault() {
+        inputDate = .make()
+        
+        let inputDateField = renderDateInput()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        XCTAssertEqual(dateFormatter.string(from: inputDateField.datePickerCalendar.dateValue), dateFormatter.string(from: Date()))
+        XCTAssertEqual(dateFormatter.string(from: inputDateField.datePickerTextfield.dateValue), dateFormatter.string(from: Date()))
     }
 
     private func renderDateInput() -> ACRDateField {

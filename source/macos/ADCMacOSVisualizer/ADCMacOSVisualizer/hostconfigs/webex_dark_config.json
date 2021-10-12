@@ -235,7 +235,7 @@
         }
     },
     "actions": {
-        "maxActions": 5,
+        "maxActions": 20,
         "buttonSpacing": 8,
         "showCard": {
             "actionMode": "Inline",
@@ -245,7 +245,7 @@
         "style": "emphasis",
         "preExpandSingleShowCardAction": false,
         "actionsOrientation": "Horizontal",
-        "actionAlignment": "stretch",
+        "actionAlignment": "left",
         "iconPlacement": "leftOfTitle"
     },
     "adaptiveCard": {

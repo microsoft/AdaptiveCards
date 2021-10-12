@@ -17,8 +17,12 @@ class InputTimeRendererTest: XCTestCase {
     func testRendererSetsValue() {
         let val: String = "15:30:32"
         inputTime = .make(value: val)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
 
         let inputTimeField = renderTimeInput()
+        XCTAssertEqual(inputTimeField.datePickerCalendar.dateValue, dateFormatter.date(from: "15:30"))
+        XCTAssertEqual(inputTimeField.datePickerTextfield.dateValue, dateFormatter.date(from: "15:30"))
         XCTAssertEqual(inputTimeField.dateValue, "15:30")
     }
 
@@ -88,7 +92,17 @@ class InputTimeRendererTest: XCTestCase {
         XCTAssertNil(inputTimeField.dateValue)
         XCTAssertEqual(inputTimeField.textField.stringValue, "")
     }
-
+    
+    func testCurrentTimeInPopOverDefault() {
+        inputTime = .make()
+        
+        let inputTimeField = renderTimeInput()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        XCTAssertEqual(dateFormatter.string(from: inputTimeField.datePickerCalendar.dateValue), dateFormatter.string(from: Date()))
+        XCTAssertEqual(dateFormatter.string(from: inputTimeField.datePickerTextfield.dateValue), dateFormatter.string(from: Date()))
+    }
 
     private func renderTimeInput() -> ACRDateField {
         let view = inputTimeRenderer.render(element: inputTime, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
