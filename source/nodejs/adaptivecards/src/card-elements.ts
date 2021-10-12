@@ -5671,6 +5671,33 @@ export class BackgroundImage extends SerializableObject {
     }
 }
 
+export class TBD extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(Versions.v1_6, "type");
+    static readonly timerProperty = new NumProperty(Versions.v1_6, "timer");
+
+    @property(TBD.typeProperty)
+    type?: string;
+
+    @property(TBD.timerProperty)
+    timerProperty?: number;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return "TBD";
+    }
+
+    protected internalParse(source: any, context: BaseSerializationContext) {
+        return super.internalParse(source, context);
+    }
+
+    isValid(): boolean {
+        return true;
+    }
+}
+
 export class Container extends ContainerBase {
     //#region Schema
 
@@ -6939,6 +6966,12 @@ export class AdaptiveCard extends ContainerWithActions {
             }
         },
         Versions.v1_0);
+
+    static readonly TBDProperty = new SerializableObjectProperty(
+        Versions.v1_6,
+        "TBD",
+        BackgroundImage);
+
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
     static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
@@ -6968,6 +7001,11 @@ export class AdaptiveCard extends ContainerWithActions {
 
     @property(AdaptiveCard.authenticationProperty)
     authentication?: Authentication;
+
+    @property(AdaptiveCard.TBDProperty)
+    get TBD(): TBD {
+        return this.getValue(AdaptiveCard.TBDProperty);
+    }
 
     //#endregion
 
