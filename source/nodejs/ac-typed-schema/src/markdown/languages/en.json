@@ -223,5 +223,12 @@
 	"The background image isn't stretched. It is repeated first in the x axis then in the y axis as many times as necessary to cover the entire container. Both **horizontalAlignment** and **verticalAlignment** are honored (defaults are **left** and **top**).": "The background image isn't stretched. It is repeated first in the x axis then in the y axis as many times as necessary to cover the entire container. Both **horizontalAlignment** and **verticalAlignment** are honored (defaults are **left** and **top**).",
 	"Determines whether the action should be displayed as a button or in the overflow menu.": "Determines whether the action should be displayed as a button or in the overflow menu.",
 	"Action is displayed as a button.": "Action is displayed as a button.",
-	"Action is placed in an overflow menu (typically a popup menu under a `...` button).": "Action is placed in an overflow menu (typically a popup menu under a `...` button)."
+	"Action is placed in an overflow menu (typically a popup menu under a `...` button).": "Action is placed in an overflow menu (typically a popup menu under a `...` button).",
+	"Represents a cell within a row of a Table element.": "Represents a cell within a row of a Table element.",
+	"When `true` content in this Adaptive Card should be presented right to left. When 'false' content in this Adaptive Card should be presented left to right. If unset, the default platform behavior will apply.": "When `true` content in this Adaptive Card should be presented right to left. When 'false' content in this Adaptive Card should be presented left to right. If unset, the default platform behavior will apply.",
+	"When `true` content in this column should be presented right to left. When 'false' content in this column should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.": "When `true` content in this column should be presented right to left. When 'false' content in this column should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
+	"The card elements to render inside the `TableCell`.": "The card elements to render inside the `TableCell`.",
+	"An Action that will be invoked when the `TableCell` is tapped or selected. `Action.ShowCard` is not supported.": "An Action that will be invoked when the `TableCell` is tapped or selected. `Action.ShowCard` is not supported.",
+	"Style hint for `TableCell`.": "Style hint for `TableCell`.",
+	"Allows users to filter choices in a choice set.": "Allows users to filter choices in a choice set."
 }
