@@ -5,11 +5,11 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCardParseResult.h"
-#import "ACORemoteResourceInformation.h"
-#import "ACRIBaseInputHandler.h"
-#import "ACORefresh.h"
-#import "ACOAuthentication.h"
+#import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
+#import <AdaptiveCards/ACORemoteResourceInformation.h>
+#import <AdaptiveCards/ACRIBaseInputHandler.h>
+#import <AdaptiveCards/ACORefresh.h>
+#import <AdaptiveCards/ACOAuthentication.h>
 #import <Foundation/Foundation.h>
 
 @interface ACOAdaptiveCard : NSObject

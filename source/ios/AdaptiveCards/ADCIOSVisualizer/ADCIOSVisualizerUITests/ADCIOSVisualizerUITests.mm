@@ -7,7 +7,7 @@
 //
 
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <XCTest/XCTest.h>
 #include <string>
 

@@ -5,7 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRChatWindow : NSObject <UITableViewDataSource, UITableViewDelegate>
