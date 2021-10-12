@@ -8,7 +8,7 @@
 #import <AdaptiveCards/ACOBaseActionElementPrivate.h>
 #import "ACRView.h"
 #import <Foundation/Foundation.h>
-#import "ACRTargetBuilder.h"
+#import <AdaptiveCards/ACRTargetBuilder.h>
 
 // protocol all TargetBuild should implement
 @interface ACRTargetBuilderDirector : NSObject

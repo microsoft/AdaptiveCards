@@ -4,18 +4,18 @@
 //  Copyfight © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACORenderContext.h"
+#import <AdaptiveCards/ACORenderContext.h>
 #import "ACOVisibilityManager.h"
 #import "ACRErrors.h"
-#import "ACRIBaseCardElementRenderer.h"
-#import "ACRSeparator.h"
-#import "ACRViewPrivate.h"
-#import "BaseCardElement.h"
-#import "StyledCollectionElement.h"
-#import "RichTextElementProperties.h"
-#import "TextBlock.h"
-#import "TextRun.h"
-#import "UnknownAction.h"
+#import <AdaptiveCards/ACRIBaseCardElementRenderer.h>
+#import <AdaptiveCards/ACRSeparator.h>
+#import <AdaptiveCards/ACRViewPrivate.h>
+#import <AdaptiveCards/BaseCardElement.h>
+#import <AdaptiveCards/StyledCollectionElement.h>
+#import <AdaptiveCards/RichTextElementProperties.h>
+#import <AdaptiveCards/TextBlock.h>
+#import <AdaptiveCards/TextRun.h>
+#import <AdaptiveCards/UnknownAction.h>
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;

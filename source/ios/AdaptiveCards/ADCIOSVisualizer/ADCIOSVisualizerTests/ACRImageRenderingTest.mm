@@ -13,7 +13,7 @@
 #import "AdaptiveCards/ACRImageProperties.h"
 #import "AdaptiveCards/Image.h"
 #import "AdaptiveCards/UtiliOS.h"
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
