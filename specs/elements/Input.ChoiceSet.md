@@ -45,7 +45,7 @@
 * **Allowed values**:
   * `"compact"`
   * `"expanded"`
-
+  * `"filtered"`: Added in version 1.5. Allows users to filter choices in a choice set.
 
 ## fallback
 
