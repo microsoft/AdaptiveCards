@@ -5,10 +5,10 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import "ACRChoiceSetViewDataSourceCompactStyle.h"
+#import <AdaptiveCards/ACRChoiceSetViewDataSourceCompactStyle.h>
 #import "ACOBundle.h"
 #import "ACRActionDelegate.h"
-#import "ACRChoiceSetViewDataSource.h"
+#import <AdaptiveCards/ACRChoiceSetViewDataSource.h>
 #import "ACRView.h"
 #import <Foundation/Foundation.h>
 

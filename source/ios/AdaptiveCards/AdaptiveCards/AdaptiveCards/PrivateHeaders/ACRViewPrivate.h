@@ -6,16 +6,16 @@
 //
 //
 
-#import "ACRErrors.h"
-#import "ACOInputResults.h"
-#import "ACRTargetBuilderDirector.h"
-#import "ACRView.h"
-#import "ActionParserRegistration.h"
-#import "BackgroundImage.h"
-#import "StyledCollectionElement.h"
-#import "Image.h"
-#import "SharedAdaptiveCard.h"
-#import "ACRRegistration.h"
+#import <AdaptiveCards/ACRErrors.h>
+#import <AdaptiveCards/ACOInputResults.h>
+#import <AdaptiveCards/ACRTargetBuilderDirector.h>
+#import <AdaptiveCards/ACRView.h>
+#import <AdaptiveCards/ActionParserRegistration.h>
+#import <AdaptiveCards/BackgroundImage.h>
+#import <AdaptiveCards/StyledCollectionElement.h>
+#import <AdaptiveCards/Image.h>
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/ACRRegistration.h>
 
 using namespace AdaptiveCards;
 

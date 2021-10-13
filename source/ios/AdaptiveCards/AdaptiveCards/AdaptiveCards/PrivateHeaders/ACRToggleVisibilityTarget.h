@@ -8,7 +8,7 @@
 #import "ACRBaseTarget.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRView.h"
-#import "ToggleVisibilityAction.h"
+#import <AdaptiveCards/ToggleVisibilityAction.h>
 
 #import <UIKit/UIKit.h>
 

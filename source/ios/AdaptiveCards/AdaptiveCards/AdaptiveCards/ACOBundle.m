@@ -6,6 +6,7 @@
 //
 
 #import "ACOBundle.h"
+#import "ACRView.h"
 
 @implementation ACOBundle {
     NSBundle *_bundle;
@@ -27,7 +28,15 @@
 #ifdef SWIFT_PACKAGE
         self->_bundle = SWIFTPM_MODULE_BUNDLE;
 #else
-        self->_bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+        NSBundle *bundle = [NSBundle bundleForClass:[ACRView class]];
+        if (bundle) {
+            NSURL *url = [bundle URLForResource:@"AdaptiveCards" withExtension:@"bundle"];
+            if (url) {
+                self->_bundle = [NSBundle bundleWithURL:url];
+            } else {
+                self->_bundle = bundle;
+            }
+        }
 #endif
     }
     return self;
