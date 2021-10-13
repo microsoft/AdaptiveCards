@@ -5,7 +5,7 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACRContainerRenderer.h"
+#import <AdaptiveCards/ACRContainerRenderer.h>
 
 @interface ACRTableCellRenderer : ACRContainerRenderer
 
