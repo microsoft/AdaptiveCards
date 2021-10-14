@@ -6970,7 +6970,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly TBDProperty = new SerializableObjectProperty(
         Versions.v1_6,
         "TBD",
-        BackgroundImage);
+        TBD, 
+        true);
 
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
@@ -7003,9 +7004,7 @@ export class AdaptiveCard extends ContainerWithActions {
     authentication?: Authentication;
 
     @property(AdaptiveCard.TBDProperty)
-    get TBD(): TBD {
-        return this.getValue(AdaptiveCard.TBDProperty);
-    }
+    TBD?: TBD;
 
     //#endregion
 
