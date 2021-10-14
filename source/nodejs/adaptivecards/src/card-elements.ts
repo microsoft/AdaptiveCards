@@ -5727,7 +5727,7 @@ export class Container extends ContainerBase {
     private _items: CardElement[] = [];
     private _renderedItems: CardElement[] = [];
 
-    private insertItemAt(
+    protected insertItemAt(
         item: CardElement,
         index: number,
         forceInsert: boolean) {
@@ -6103,6 +6103,52 @@ export class Container extends ContainerBase {
 
     set bleed(value: boolean) {
         this.setBleed(value);
+    }
+}
+
+export class CarouselPage extends Container {
+    //#region Schema
+
+    //#endregion
+
+    static bannedElementList : Set<any>;
+
+    private prepopulateBannedElementList()
+    {
+        if (CarouselPage.bannedElementList === undefined)
+        {
+            CarouselPage.bannedElementList = new Set([TextInput, Media]);
+        }
+    }
+
+    protected internalParse(source: any, context: SerializationContext) {
+        super.internalParse(source, context);
+
+        this.clear();
+        this.setShouldFallback(false);
+        this.prepopulateBannedElementList();
+
+        let jsonItems = source[this.getItemsCollectionPropertyName()];
+
+        if (Array.isArray(jsonItems)) {
+            for (let item of jsonItems) {
+                let element = context.parseElement(this, item, !this.isDesignMode());
+
+                if (CarouselPage.bannedElementList.has(typeof item))
+                {
+                    // TODO: throw a warning or something to log
+                    continue;
+                }
+
+                if (element) {
+                    super.insertItemAt(element, -1, true);
+                }
+            }
+        }
+    }
+
+    getJsonTypeName(): string {
+        return "CarouselPage";
     }
 }
 
@@ -6970,7 +7016,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly TBDProperty = new SerializableObjectProperty(
         Versions.v1_6,
         "TBD",
-        TBD, 
+        TBD,
         true);
 
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
@@ -7474,6 +7520,7 @@ GlobalRegistry.defaultElements.register("Image", Image);
 GlobalRegistry.defaultElements.register("ImageSet", ImageSet);
 GlobalRegistry.defaultElements.register("Media", Media, Versions.v1_1);
 GlobalRegistry.defaultElements.register("FactSet", FactSet);
+GlobalRegistry.defaultElements.register("CarouselPage", CarouselPage, Versions.v1_2);
 GlobalRegistry.defaultElements.register("ColumnSet", ColumnSet);
 GlobalRegistry.defaultElements.register("ActionSet", ActionSet, Versions.v1_2);
 GlobalRegistry.defaultElements.register("Input.Text", TextInput);
