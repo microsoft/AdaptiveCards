@@ -1,1 +1,1 @@
-../ACRChoiceSetViewDataSourceCompactStyle.h
+ACRChoiceSetViewDataSourceCompactStyle.h
