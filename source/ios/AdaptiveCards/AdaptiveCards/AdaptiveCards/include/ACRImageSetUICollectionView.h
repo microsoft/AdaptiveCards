@@ -1,1 +1,1 @@
-../ACRImageSetUICollectionView.h
+ACRImageSetUICollectionView.h

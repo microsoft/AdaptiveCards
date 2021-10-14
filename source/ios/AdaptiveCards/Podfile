@@ -1,5 +1,5 @@
 use_frameworks!
-pod 'MicrosoftFluentUI', '~> 0.2.6'
+pod 'MicrosoftFluentUI', '~> 0.1.9'
 target 'AdaptiveCards' do
   project './AdaptiveCards/AdaptiveCards.xcodeproj'
   target 'AdaptiveCardsTests' do
