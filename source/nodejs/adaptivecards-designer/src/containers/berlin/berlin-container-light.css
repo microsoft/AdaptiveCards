@@ -13,42 +13,99 @@
 	font-size: 14px;
 }
 
-.ac-input.ac-choiceSetInput-expanded.ac-input-validation-failed .ac-input.ac-choiceSetInput-multiSelect.ac-input-validation-failed .ac-input.ac-toggleInput.ac-input-validation-failed {
+.ac-input.ac-choiceSetInput-expanded.ac-input-validation-failed,
+ .ac-input.ac-choiceSetInput-multiSelect.ac-input-validation-failed,
+ .ac-input.ac-toggleInput.ac-input-validation-failed {
 	outline: rgba(196, 43, 28, 1);
 }
 
-.ac-input.ac-choiceSetInput-expanded  .ac-input.ac-choiceSetInput-multiSelect {
+.ac-input.ac-choiceSetInput-expanded ,
+ .ac-input.ac-choiceSetInput-multiSelect {
 	line-height: 22px;
 }
 
 .ac-input.ac-input-required {
 }
 
-.ac-input.ac-dateInput .ac-input.ac-timeInput .ac-input.ac-textInput .ac-input.ac-numberInput .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact {
-	background: rgba(255, 255, 255, 0.7);
-	border: 1px solid;
-	border-color: rgba(0, 0, 0, 0.0578);
-	border-image-source: linear-gradient(180deg, rgba(0, 0, 0, 0.0578) 90.58%, rgba(0, 0, 0, 0.1622) 100%);
-	border-image-slice: 1;
-	border-radius: 3px;
-	height: 30px;
-	padding: 4px 11px;
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact {
+	background:linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)) padding-box, linear-gradient(180deg, rgba(0, 0, 0, 0.0578) 90.58%, rgba(0, 0, 0, 0.1622) 100%) border-box;
+	border:1px solid transparent;
+	border-radius:3px;
+	display:inline-block;
+	height:30px;
+	outline:none;
+	padding:4px 11px;
 }
 
-.ac-input.ac-dateInput: disabled .ac-input.ac-timeInput: disabled .ac-input.ac-textInput: disabled .ac-input.ac-numberInput: disabled .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact: disabled {
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact:disabled {
 	background:  rgba(249, 249, 249, 0.3);
 	border-color:  rgba(0, 0, 0, 0.4458);
 }
 
-.ac-input.ac-dateInput:focus .ac-input.ac-timeInput:focus .ac-input.ac-textInput:focus .ac-input.ac-numberInput:focus .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact:focus {
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact:focus {
 	outline: 1px solid rgba(0, 0, 0, 0.8956);
 }
 
-.ac-input.ac-dateInput:hover .ac-input.ac-timeInput:hover .ac-input.ac-textInput:hover .ac-input.ac-numberInput:hover .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact:hover {
-	background: rgba(249, 249, 249, 0.5);
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact:hover {
+	background:linear-gradient(rgba(249, 249, 249, 0.5), rgba(249, 249, 249, 0.5)) padding-box, linear-gradient(180deg, rgba(0, 0, 0, 0.0578) 90.58%, rgba(0, 0, 0, 0.1622) 100%) border-box;
 }
 
-.ac-input.ac-dateInput.ac-input-validation-failed .ac-input.ac-timeInput.ac-input-validation-failed .ac-input.ac-textInput.ac-input-validation-failed .ac-input.ac-numberInput.ac-input-validation-failed .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact.ac-input-validation-failed {
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact.ac-input-validation-failed {
+	border: rgba(196, 43, 28, 1);
+}
+
+.ac-input.ac-dateInput,
+ .ac-input.ac-timeInput,
+ .ac-input.ac-textInput,
+ .ac-input.ac-numberInput {
+	background:linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)) padding-box, linear-gradient(180deg, rgba(0, 0, 0, 0.0578) 90.58%, rgba(0, 0, 0, 0.1622) 100%) border-box;
+	border:1px solid transparent;
+	border-radius:3px;
+	display:inline-block;
+	height:30px;
+	outline:none;
+	padding:4px 11px;
+}
+
+.ac-input.ac-dateInput:disabled,
+ .ac-input.ac-timeInput:disabled,
+ .ac-input.ac-textInput:disabled,
+ .ac-input.ac-numberInput:disabled {
+	background:  rgba(249, 249, 249, 0.3);
+	border-color:  rgba(0, 0, 0, 0.4458);
+}
+
+.ac-input.ac-dateInput:focus,
+ .ac-input.ac-timeInput:focus,
+ .ac-input.ac-textInput:focus,
+ .ac-input.ac-numberInput:focus,
+ .ac-input.ac-dateInput:focus-visible,
+ .ac-input.ac-timeInput:focus-visible,
+ .ac-input.ac-textInput:focus-visible,
+ .ac-input.ac-numberInput:focus-visible,
+ .ac-input.ac-dateInput:active,
+ .ac-input.ac-timeInput:active,
+ .ac-input.ac-textInput:active,
+ .ac-input.ac-numberInput:active {
+	border-bottom:2px solid rgba(0, 103, 192, 1);
+	border-radius:4px;
+	background:linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) padding-box, linear-gradient(180deg, rgba(0, 0, 0, 0.0578) 96.87%, #0067C0 96.89%) border-box;
+	outline:none;
+	--focus-outline-color:none;
+}
+
+
+.ac-input.ac-dateInput:hover,
+ .ac-input.ac-timeInput:hover,
+ .ac-input.ac-textInput:hover,
+ .ac-input.ac-numberInput:hover {
+	background:linear-gradient(rgba(249, 249, 249, 0.5), rgba(249, 249, 249, 0.5)) padding-box, linear-gradient(180deg, rgba(0, 0, 0, 0.0578) 90.58%, rgba(0, 0, 0, 0.1622) 100%) border-box;
+}
+
+.ac-input.ac-dateInput.ac-input-validation-failed,
+ .ac-input.ac-timeInput.ac-input-validation-failed,
+ .ac-input.ac-textInput.ac-input-validation-failed,
+ .ac-input.ac-numberInput.ac-input-validation-failed {
 	border: rgba(196, 43, 28, 1);
 }
 
@@ -158,5 +215,3 @@ input[type='radio']:hover {
 	background-color: rgba(0, 0, 0, 0.0578);
 	border-color: rgba(0, 0, 0, 0.4458);
 }
-	
-	
