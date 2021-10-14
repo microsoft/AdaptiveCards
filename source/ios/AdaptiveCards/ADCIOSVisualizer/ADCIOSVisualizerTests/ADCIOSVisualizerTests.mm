@@ -22,7 +22,7 @@
 #import "CustomActionNewType.h"
 #import "CustomActionOpenURLRenderer.h"
 #import "MockRenderer.h"
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
