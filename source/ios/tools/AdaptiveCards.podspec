@@ -38,6 +38,6 @@ Pod::Spec.new do |spec|
 
   spec.exclude_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/include/**/*'
 
-  spec.dependency 'MicrosoftFluentUI', '~> 0.2.6'
+  spec.dependency 'MicrosoftFluentUI', '~> 0.1.9'
 end
 
