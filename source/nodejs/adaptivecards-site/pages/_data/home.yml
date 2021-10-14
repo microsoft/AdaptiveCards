@@ -28,8 +28,8 @@ en:
       href: https://docs.microsoft.com/adaptive-cards/sdk/rendering-cards/react-native/getting-started
   releases_title: Releases
   releases:
-    - title: v1.3
-      href: https://github.com/microsoft/AdaptiveCards/releases/tag/2020.07
+    - title: v1.5
+      href: https://github.com/microsoft/AdaptiveCards/releases/tag/21.10
       fa: fas fa-download
       tag: 
       tag_class: ac-blue
