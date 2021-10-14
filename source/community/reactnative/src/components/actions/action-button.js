@@ -102,15 +102,16 @@ export class ActionButton extends React.Component {
 	 * @description Invoked for the any action button selected
 	 */
 	onActionButtonTapped = () => {
-		switch (this.payload.type) {
+		let actionPayload = { ... this.payload };
+		switch (actionPayload.type) {
 			case Constants.ActionSubmit:
-				this.onSubmitExecuteActionCalled();
-				break;
 			case Constants.ActionExecute:
-				this.onSubmitExecuteActionCalled();
-				break;
-			case Constants.ActionOpenUrl:
-				this.onOpenURLCalled();
+				actionPayload.data = this.getMergeObject();
+				/*
+				 actionPayload already has `ignoreInputValidation` but to support 
+				 backward compatibility we are passing it explicitly
+				**/
+				this.onExecuteAction(actionPayload, actionPayload.ignoreInputValidation);
 				break;
 			case Constants.ActionShowCard:
 				this.changeShowCardState();
@@ -120,7 +121,7 @@ export class ActionButton extends React.Component {
 				break;
 			default:
 				//Invoked for the custom action type.
-				this.onExecuteAction(this.payload);
+				this.onExecuteAction(actionPayload);
 				break;
 		}
 	}
@@ -136,19 +137,7 @@ export class ActionButton extends React.Component {
 			else
 				mergedObject["actionData"] = this.data;
 		}
-		return mergedObject
-	}
-
-	/**
-	 * @description Invoked for the action type Constants.ActionSubmit and Constants.ActionExecute
-	 */
-	onSubmitExecuteActionCalled() {
-		const { type, verb = "", title = "", ignoreInputValidation } = this.payload;
-		var actionObject = { "type": type, "title": title, "data": this.getMergeObject() };
-		if (this.payload.type == Constants.ActionExecute) {
-			actionObject["verb"] = verb
-		}
-		this.onExecuteAction(actionObject, ignoreInputValidation);
+		return mergedObject;
 	}
 
 	/**
@@ -156,12 +145,6 @@ export class ActionButton extends React.Component {
 	 */
 	onToggleActionCalled() {
 		this.toggleVisibilityForElementWithID(this.payload.targetElements);
-	}
-
-
-	onOpenURLCalled = () => {
-		let actionObject = { "type": this.payload.type, "url": this.payload.url };
-		this.onExecuteAction(actionObject);
 	}
 
 	changeShowCardState = () => {
@@ -190,15 +173,15 @@ export class ActionButton extends React.Component {
 	getButtonStyles = () => {
 		let computedStyles = [this.styleConfig.button,
 		this.styleConfig.actionIconFlex, styles.button];
-		if(this.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
-			if(this.props.isFirst && this.props.isLast) {
+		if (this.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+			if (this.props.isFirst && this.props.isLast) {
 				//Only one lement...Margin not required
-			} else if(this.props.isFirst) {
-				computedStyles.push({marginRight: 5})
-			} else if(this.props.isLast) {
-				computedStyles.push({marginLeft: 5})
+			} else if (this.props.isFirst) {
+				computedStyles.push({ marginRight: 5 })
+			} else if (this.props.isLast) {
+				computedStyles.push({ marginLeft: 5 })
 			} else {
-				computedStyles.push({marginRight:5, marginLeft: 5})
+				computedStyles.push({ marginRight: 5, marginLeft: 5 })
 			}
 		}
 

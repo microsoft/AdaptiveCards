@@ -19,6 +19,7 @@ import AdaptiveCard from '../adaptive-card';
 import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
+import { Grey300 } from '../utils/constants';
 import * as Constants from './constants';
 import { CustomActionRenderer } from './custom-action-renderer';
 import { CustomTextBlockRenderer } from './custom-text-block';
@@ -62,6 +63,15 @@ export default class Renderer extends React.Component {
     customThemeConfig = {
         button: {
             backgroundColor: '#66BB6A'
+        },
+        input: {
+            placeholderTextColor: Grey300
+        },
+        inputDate: {
+            placeholderTextColor: Grey300
+        },
+        inputTime: {
+            placeholderTextColor: Grey300
         }
     }
 

@@ -79,16 +79,7 @@ export class RichTextBlock extends React.Component {
      * @param {object} selectAction - select action for the text run
      */
     onClickHandle(selectAction) {
-        if (selectAction.type === Constants.ActionSubmit) {
-            let actionObject = { "type": Constants.ActionSubmit, "title": selectAction.title, "data": selectAction.data };
-            this.onExecuteAction(actionObject);
-        } else if (selectAction.type === Constants.ActionExecute) {
-            let actionObject = { "type": Constants.ActionExecute, "verb": selectAction.verb, "title": selectAction.title, "data": selectAction.data };
-            this.onExecuteAction(actionObject);
-        } else if (selectAction.type === Constants.ActionOpenUrl && !Utils.isNullOrEmpty(selectAction.url)) {
-            let actionObject = { "type": Constants.ActionOpenUrl, "url": selectAction.url };
-            this.onExecuteAction(actionObject);
-        }
+        this.onExecuteAction({ ...selectAction });
     }
 
     /**
@@ -103,7 +94,7 @@ export class RichTextBlock extends React.Component {
         paragraph.inlines && paragraph.inlines.forEach((textRun, index) => {
             if (textRun.type.toLowerCase() == Constants.TextRunString) {
                 if (textRun.selectAction) {
-                    _links.push({text: textRun.text, onClick: () => {this.onClickHandle(textRun.selectAction)}})
+                    _links.push({ text: textRun.text, onClick: () => { this.onClickHandle(textRun.selectAction) } })
                 }
 
                 index > 0 && textRunElements.push(<Text key={"white-sapce-text" + index}>{" "}</Text>);
@@ -135,7 +126,7 @@ export class RichTextBlock extends React.Component {
 
     render() {
         if (!this.payload.paragraphs) {
-            this.payload.paragraphs = [{"inlines": this.payload.inlines}];
+            this.payload.paragraphs = [{ "inlines": this.payload.inlines }];
         }
 
         return (<InputContextConsumer>
@@ -158,8 +149,8 @@ const styles = StyleSheet.create({
         width: Constants.FullWidth
     },
     underlineStyle: {
-		textDecorationLine: 'underline',
-	},
+        textDecorationLine: 'underline',
+    },
     italic: {
         fontStyle: 'italic'
     },
@@ -169,11 +160,11 @@ const styles = StyleSheet.create({
 });
 
 /// props: {index: number, numberofLines: number, paragraph: the actual paragraph object, thisArg: 'this' of the parent RichTextBlock component}
-function ParagraphElement (props) {
+function ParagraphElement(props) {
     /// Empty React components just for the purpose of providing screen reader focus to hyperlinks
     /// These are positioned on the lines which contain links using absolute positioning.
     const [accContainers, setAccContainers] = React.useState(undefined);
-    
+
     /// Ref to List of links: Array of {text: string, onClick: () => void}
     const _links = React.useRef([]);
     /// Function to resolve the promise linksSetPromise
@@ -181,8 +172,8 @@ function ParagraphElement (props) {
     /// Promise that is resolved once we have obtained the list of links.
     const _linksSetPromise = React.useRef(undefined);
 
-    if(!_resolveLinksSetPromise.current) {
-        const linksSetPromise = new Promise(function(resolve, reject) {
+    if (!_resolveLinksSetPromise.current) {
+        const linksSetPromise = new Promise(function (resolve, reject) {
             _resolveLinksSetPromise.current = resolve;
         });
         _linksSetPromise.current = linksSetPromise;
@@ -205,8 +196,8 @@ function ParagraphElement (props) {
         // Concatenation of all the lines rendered.
         let concatenated_string = '';
         lines.forEach((line, index) => {
-        cumulative_len.push(cumulative_len[index] + line.text.length);
-        concatenated_string += line.text;
+            cumulative_len.push(cumulative_len[index] + line.text.length);
+            concatenated_string += line.text;
         });
 
         /// array of JSX.Element
@@ -217,22 +208,22 @@ function ParagraphElement (props) {
             const end = start + link.text.length - 1;
             const sIdx = indexLte(cumulative_len, start);
             const eIdx = indexLte(cumulative_len, end);
-            const style = {height: lines[eIdx].y - lines[sIdx].y + lines[eIdx].height, width: lines[sIdx].width, position: 'absolute', top: 1+lines[sIdx].y, left: lines[sIdx].x};
+            const style = { height: lines[eIdx].y - lines[sIdx].y + lines[eIdx].height, width: lines[sIdx].width, position: 'absolute', top: 1 + lines[sIdx].y, left: lines[sIdx].x };
 
             // The link just spans a single line
             // This is slightly inaccurate, because it assumes each character occupies the same width, but this is the best we can do.
             if (sIdx === eIdx) {
-                style.left = lines[sIdx].x + (lines[sIdx].width * (start - cumulative_len[sIdx])/lines[sIdx].text.length);
-                style.width = lines[sIdx].width * (link.text.length)/lines[sIdx].text.length;
+                style.left = lines[sIdx].x + (lines[sIdx].width * (start - cumulative_len[sIdx]) / lines[sIdx].text.length);
+                style.width = lines[sIdx].width * (link.text.length) / lines[sIdx].text.length;
             }
 
             _accViews.push((
-                <Text key={"__Acc_View_rtb" + index} 
+                <Text key={"__Acc_View_rtb" + index}
                     style={style}
                     accessibilityLabel={link.text}
                     accessibilityRole='link'
                     accessible={true}
-                    onPress={() => {link.onClick()}}>{' '}</Text>));
+                    onPress={() => { link.onClick() }}>{' '}</Text>));
 
         });
         setAccContainers(_accViews);
@@ -263,13 +254,13 @@ function indexLte(array, key) {
     let low = 0;
     let high = array.length - 1;
     while (low < high) {
-        const m = Math.floor((low + high)/2);
+        const m = Math.floor((low + high) / 2);
         if (key === array[m]) {
             return m;
         } else if (key < array[m]) {
-            high = m-1;
+            high = m - 1;
         } else {
-            low = m+1;
+            low = m + 1;
         }
     }
 

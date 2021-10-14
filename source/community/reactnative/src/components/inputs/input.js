@@ -87,6 +87,7 @@ export class Input extends React.Component {
 									accessible={true}
 									accessibilityLabel={this.payload.altText}
 									placeholder={placeholder}
+									placeholderTextColor={this.styleConfig?.input?.placeholderTextColor}
 									multiline={isMultiline}
 									maxLength={maxLength}
 									underlineColorAndroid={Constants.TransparentString}
@@ -116,11 +117,13 @@ export class Input extends React.Component {
 	getComputedStyles = (showErrors) => {
 		const { isMultiline } = this;
 
-		let inputComputedStyles = [this.styleConfig.input, styles.input];
+		// remove placeholderTextColor from styles object before using
+		const { placeholderTextColor, ...stylesObject } = this.styleConfig.input;
+		let inputComputedStyles = [stylesObject, styles.input];
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
-		this.props.isError && showErrors && this.isRequired ?
+		this.props.isError && showErrors ?
 			inputComputedStyles.push(this.styleConfig.borderAttention) :
 			inputComputedStyles.push(this.styleConfig.inputBorderColor);
 
@@ -219,6 +222,7 @@ export class Input extends React.Component {
 								accessible={true}
 								accessibilityLabel={payload.altText}
 								placeholder={placeholder}
+								placeholderTextColor={this.styleConfig?.input?.placeholderTextColor}
 								multiline={isMultiline}
 								maxLength={maxLength}
 								returnKeyLabel={'submit'}
@@ -291,29 +295,10 @@ export class Input extends React.Component {
 		if (this.isMultiline && action != Constants.InlineAction)
 			return;
 		this.setState({ showInlineActionErrors: true });
-		if (!this.props.isError && this.inlineAction.type === Constants.ActionSubmit) {
-			let actionObject = {
-				"type": Constants.ActionSubmit,
-				"title": this.inlineAction.title,
-				"data": this.state.text
-			};
-			onExecuteAction(actionObject, true);
-		} else if (!this.props.isError && this.inlineAction.type === Constants.ActionExecute) {
-			let actionObject = {
-				"type": Constants.ActionExecute,
-				"verb": this.inlineAction.verb,
-				"title": this.inlineAction.title,
-				"data": this.state.text
-			};
-			onExecuteAction(actionObject, true);
-		} else if (!this.props.isError && this.inlineAction.type === Constants.ActionOpenUrl) {
-			if (!Utils.isNullOrEmpty(this.inlineAction.url)) {
-				let actionObject = {
-					"type": Constants.ActionOpenUrl,
-					"url": this.inlineAction.url
-				};
-				onExecuteAction(actionObject, true);
-			}
+		if (!this.props.isError) {
+			let actionPayload = { ...this.inlineAction }
+			actionPayload.data = this.state.text;
+			onExecuteAction(actionPayload, true);
 		}
 	}
 }
@@ -354,5 +339,3 @@ const styles = StyleSheet.create({
 		backgroundColor: Constants.TransparentString
 	},
 });
-
-

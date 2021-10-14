@@ -80,7 +80,11 @@ export class InputText extends React.Component {
 	 * @description validate the text in the textInput field based on style of the textInput.
 	 */
 	validate = () => {
-		let isError = true;
+		let isError = false;
+		if (this.isRequired) {
+			isError = true;
+		}
+		
 		let text = this.state.text.trim();
 		if (text) {
 			if (Utils.isNullOrEmpty(this.regex)) {
@@ -122,6 +126,8 @@ export class InputText extends React.Component {
 	 */
 	handleBlur = () => {
 		if (this.isRequired)
+			this.validate();
+		else if (this.regex)
 			this.validate();
 	}
 }

@@ -31,15 +31,17 @@ export class PickerInput extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.placeHolder = Constants.EmptyString;
+		this.placeholderTextColor = props.placeholderTextColor;
 		this.type = Constants.EmptyString;
 		this.modalButtonText = Constants.DoneString;
 		this.label = Constants.EmptyString;
 		this.parseHostConfig();
 
-		this.isRequired = this.payload.isRequired || false;
+		this.errorMessage = this.payload.errorMessage || Constants.ErrorMessage;
 
 		this.state = {
-			isError: this.isRequired && !this.props.value
+			isRequired: this.payload.isRequired || false,
+			isError: (this.payload.isRequired || false) && !this.props.value
 		}
 	}
 
@@ -54,7 +56,11 @@ export class PickerInput extends React.Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		return { isError: this.isRequired && !nextProps.value }
+		if(!!nextProps.value) {
+			return { isError: prevState.isRequired && !nextProps.value };
+		}
+
+		return prevState;
 	}
 
 	render() {
@@ -83,7 +89,7 @@ export class PickerInput extends React.Component {
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
 					<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
-						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
+						<InputLabel configManager={this.props.configManager} isRequired={this.state.isRequired} label={label} />
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}
 							accessibilityLabel={Platform.OS === 'android' ? (this.payload.altText || this.props.value || placeholder) : undefined}
 							accessibilityRole='button'>
@@ -92,13 +98,13 @@ export class PickerInput extends React.Component {
 								accessible={true}
 								importantForAccessibility={'no-hide-descendants'}
 								accessibilityLabel={this.payload.altText || this.props.value || placeholder}
-								pointerEvents='none'
-								style={this.getComputedStyles(showErrors)}>
+								pointerEvents='none'>
 								<TextInput
-									style={[this.props.style, this.styleConfig.defaultFontConfig]}
+									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
 									autoCorrect={false}
 									placeholder={placeholder}
+									placeholderTextColor={this.placeholderTextColor}
 									textContentType={Constants.NoneString}
 									underlineColorAndroid={Constants.TransparentString}
 									value={this.props.value}>
@@ -143,8 +149,10 @@ export class PickerInput extends React.Component {
 	 * @param showErrors show errors based on this flag.
 	 */
 	getComputedStyles = (showErrors) => {
-		let computedStyles = [];
-		if (this.state.isError && showErrors && this.isRequired) {
+		// remove placeholderTextColor from styles object before using
+		const { placeholderTextColor, ...stylesObject } = this.props.style;
+		let computedStyles = [stylesObject, this.styleConfig.defaultFontConfig];
+		if (this.state.isError && showErrors && this.state.isRequired) {
 			computedStyles.push(this.styleConfig.borderAttention);
 			computedStyles.push({ borderWidth: 1 });
 		}

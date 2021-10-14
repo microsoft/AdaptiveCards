@@ -5,6 +5,7 @@ import DataBindingPayloads from './payloads/data-binding';
 
 // sample scenarios
 const calendarReminderPayload = require('./payloads/scenarios/calendar-reminder.json');
+const fieldValidationPayload = require('./payloads/scenarios/field-validation.json');
 const flightUpdatePayload = require('./payloads/scenarios/flight-update.json');
 const inputFormPayload = require('./payloads/scenarios/input-form.json');
 const flightItineraryPayload = require('./payloads/scenarios/flight-itinerary.json');
@@ -42,6 +43,11 @@ const AdaptiveCardScenarios = [{
     json: calendarReminderPayload,
     tags: getTags(calendarReminderPayload),
     icon: require('./assets/calendar.png')
+}, {
+    title: 'Field validations',
+    json: fieldValidationPayload,
+    tags: getTags(fieldValidationPayload),
+    icon: require('./assets/form.png')
 }, {
     title: 'Flight update',
     json: flightUpdatePayload,

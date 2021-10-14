@@ -109,6 +109,7 @@ export class TimeInput extends React.Component {
 					json={this.payload}
 					style={this.props.configManager.styleConfig.inputTime}
 					value={this.state.value}
+					placeholderTextColor={this.props.configManager.styleConfig?.inputTime?.placeholderTextColor}
 					format={"HH:mm"}
 					showPicker={this.showTimePicker}
 					modalVisible={this.state.modalVisible}

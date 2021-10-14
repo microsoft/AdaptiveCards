@@ -47,6 +47,7 @@ export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
 export const BlackColor = '#000000';
 export const LightBlack = "#404040";
+export const Grey300 = '#ACACAC';
 export const buttonDefaultColor = "#1D9BF6";
 export const BackgroundDisabledColor = "rgba(0,0,0,.3)";
 

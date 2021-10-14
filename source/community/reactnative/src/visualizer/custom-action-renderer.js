@@ -38,15 +38,6 @@ export class CustomActionRenderer extends React.Component {
         );
     };
 
-    /**
-     * @description Invoked for the any action button selected
-     */
-	onActionButtonTapped = (url, data) => {
-        //We can construct any object values and we can handle it in the renderer.js file
-		let actionObject = { "type": "Custom Action", "url": url, "data": data };
-		this.onExecuteAction(actionObject);
-	}
-
     render() {
         let payload = this.props.json;
 
@@ -62,7 +53,7 @@ export class CustomActionRenderer extends React.Component {
                     return <View style={styles.textContainer}>
                         <ButtonComponent
                             style={{ flexGrow: 1 }}
-                            onPress={() => this.onActionButtonTapped(payload.url, payload.data)}>
+                            onPress={() => this.onExecuteAction({ ...payload })}>
                             {this.buttonContent(payload.title)}
                         </ButtonComponent>
                         <Text>{payload.rating}</Text>

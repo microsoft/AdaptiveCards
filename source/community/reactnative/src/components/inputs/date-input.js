@@ -105,6 +105,7 @@ export class DateInput extends React.Component {
 					json={this.payload}
 					style={this.props.configManager.styleConfig.inputDate}
 					value={this.state.value}
+					placeholderTextColor={this.props.configManager.styleConfig?.inputDate?.placeholderTextColor}
 					showPicker={this.showDatePicker}
 					modalVisible={this.state.modalVisible}
 					handleModalClose={this.handleModalClose}

@@ -29,18 +29,12 @@ export class SelectAction extends React.Component {
 	 * @description Invoked on tapping the button component
 	 */
 	onClickHandle() {
-		const { type, verb = "", title = "", data } = this.payload;
-		switch (type) {
-			case Constants.ActionSubmit:
-				this.onExecuteAction({ type, title, data });
-				break;
-			case Constants.ActionExecute:
-				this.onExecuteAction({ type, verb, title, data });
-				break;
+		let actionPayload = { ... this.payload };
+		switch (actionPayload.type) {
 			case Constants.ActionOpenUrl:
 				if (!Utils.isNullOrEmpty(this.props.selectActionData.url)) {
-					let actionObject = { "type": Constants.ActionOpenUrl, "url": this.props.selectActionData.url };
-					this.onExecuteAction(actionObject);
+					actionPayload.url = this.props.selectActionData.url;
+					this.onExecuteAction(actionPayload);
 				}
 				break;
 			case Constants.ActionToggleVisibility:
@@ -48,9 +42,9 @@ export class SelectAction extends React.Component {
 				break;
 			default:
 				//As per the AC schema, ShowCard action type is not supported by selectAction.
-				if (this.payload.type != Constants.ActionShowCard) {
-					//Invoked for the custom action type. 
-					this.onExecuteAction(this.payload);
+				if (actionPayload.type != Constants.ActionShowCard) {
+					//Pass complete payload for all other types. 
+					this.onExecuteAction(actionPayload);
 				}
 				break;
 		}

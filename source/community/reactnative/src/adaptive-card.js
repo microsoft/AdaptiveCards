@@ -77,10 +77,12 @@ export default class AdaptiveCard extends React.Component {
 	}
 
 	toggleVisibilityForElementWithID = (idArray) => {
-		this.toggleCardModelObject(this.cardModel, [...idArray]);
-		this.setState({
-			cardModel: this.cardModel,
-		})
+		if (idArray?.length > 0) { // crash guard : check if array is valid
+			this.toggleCardModelObject(this.cardModel, [...idArray]);
+			this.setState({
+				cardModel: this.cardModel,
+			});
+		}
 	}
 
 	/**

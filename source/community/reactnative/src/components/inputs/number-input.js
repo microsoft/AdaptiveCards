@@ -19,6 +19,7 @@ export class NumberInput extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.styleValue = Enums.InputTextStyle.Number;
+		this.isRequired = this.payload.isRequired || false;
 
 		this.parse();
 		this.state = {
@@ -97,6 +98,11 @@ export class NumberInput extends React.Component {
 	 * @param {Integer} value
 	 */
 	isInvalid = (numberValue) => {
+		// if value field empty and not a required field
+		if(!numberValue && !this.isRequired) {
+			return false;
+		}
+
 		if (NUM_REGEX.test(numberValue)) {
 			var parsedValue = parseFloat(numberValue);
 			if (parsedValue < this.min || parsedValue > this.max) {

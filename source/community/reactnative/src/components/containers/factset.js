@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
 	textContainer: {
 		flexDirection: Constants.FlexRow,
 		backgroundColor: 'transparent',
+		marginVertical: 2 // TODO :: This property will be supported via HostConfig in future and removed from here
 	},
 	valueTextStyle: {
 		paddingLeft: 5,

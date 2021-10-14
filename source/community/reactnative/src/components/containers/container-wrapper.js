@@ -94,9 +94,9 @@ export class ContainerWrapper extends React.PureComponent {
         // container BG style
         let backgroundStyle;
         const styleDefinition = hostConfig.containerStyles.getStyleByName(this.payload["style"], hostConfig.containerStyles.getStyleByName("default"));
-        //we won't apply the background color for the container which has backgroundImage. Even we won't apply color if its parent container having backgroundImage
-        const hasBackgroundImage = !Utils.isNullOrEmpty(this.payload.backgroundImage) || (this.payload.parent && !Utils.isNullOrEmpty(this.payload.parent.backgroundImage)) || (!Utils.isNullOrEmpty(this.props.hasBackgroundImage))
-        if (!hasBackgroundImage && !Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
+        // If needed, we will use this hasBackgroundImage in the future. so commenting out the below line
+        // const hasBackgroundImage = !Utils.isNullOrEmpty(this.payload.backgroundImage) || (this.payload.parent && !Utils.isNullOrEmpty(this.payload.parent.backgroundImage)) || (!Utils.isNullOrEmpty(this.props.hasBackgroundImage))
+        if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
             backgroundStyle = { backgroundColor: this.payload["style"] !== undefined ? Utils.hexToRGB(styleDefinition.backgroundColor) : "transparent" };
         }
         computedStyles.push(backgroundStyle);
