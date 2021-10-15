@@ -7,8 +7,8 @@
 
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
-#import "ACOWarning.h"
-#import "ACRActionDelegate.h"
+#import <AdaptiveCards/ACOWarning.h>
+#import <AdaptiveCards/ACRActionDelegate.h>
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 

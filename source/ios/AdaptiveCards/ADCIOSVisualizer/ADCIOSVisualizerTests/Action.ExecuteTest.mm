@@ -6,7 +6,7 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
 #import "AdaptiveCards/ACOBaseActionElementPrivate.h"
