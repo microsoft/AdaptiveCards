@@ -8,9 +8,9 @@
 #import "ACOBaseCardElement.h"
 #import "ACREnums.h"
 #import "ACOHostConfig.h"
-#import "HostConfig.h"
-#import "TextBlock.h"
-#import "ACORenderContext.h"
+#import <AdaptiveCards/HostConfig.h>
+#import <AdaptiveCards/TextBlock.h>
+#import <AdaptiveCards/ACORenderContext.h>
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;

@@ -8,8 +8,8 @@
 #import "ACRBaseTarget.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRView.h"
-#import "SharedAdaptiveCard.h"
-#import "ShowCardAction.h"
+#import <AdaptiveCards/SharedAdaptiveCard.h>
+#import <AdaptiveCards/ShowCardAction.h>
 #import <UIKit/UIKit.h>
 
 @interface ACRShowCardTarget : ACRBaseTarget
