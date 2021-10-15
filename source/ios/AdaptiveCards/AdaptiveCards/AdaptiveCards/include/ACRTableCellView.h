@@ -1,1 +1,1 @@
-../ACRTableCellView.h
+../PrivateHeaders/ACRTableCellView.h
