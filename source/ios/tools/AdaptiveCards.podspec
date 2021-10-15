@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
   spec.name             = 'AdaptiveCards'
 
-  spec.version          = '2.8.0'
+  spec.version          = '2.8.1'
   
   spec.license          = { :type => 'Adaptive Cards Binary EULA', :file => 'source/EULA-Non-Windows.txt' } 
   
@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
   
   spec.summary          = 'Adaptive Cards are a new way for developers to exchange card content in a common and consistent way'
   
-  spec.source       = { :git => 'https://github.com/microsoft/AdaptiveCards.git', :tag => 'ios-v2.8.0' }
+  spec.source       = { :git => 'https://github.com/microsoft/AdaptiveCards.git', :tag => 'ios-v2.8.1' }
 
   spec.source_files           = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/**/*.{h,m,mm}' 
 
@@ -26,7 +26,7 @@ Pod::Spec.new do |spec|
     }
   end
 
-  spec.platform         = :ios, '13'
+  spec.platform         = :ios, '12'
 
   spec.frameworks = 'AVFoundation', 'AVKit', 'CoreGraphics', 'QuartzCore', 'UIKit' 
 
@@ -38,6 +38,6 @@ Pod::Spec.new do |spec|
 
   spec.exclude_files = 'source/ios/AdaptiveCards/AdaptiveCards/AdaptiveCards/include/**/*'
 
-  spec.dependency 'MicrosoftFluentUI', '~> 0.2.6'
+  spec.dependency 'MicrosoftFluentUI', '~> 0.1.9'
 end
 
