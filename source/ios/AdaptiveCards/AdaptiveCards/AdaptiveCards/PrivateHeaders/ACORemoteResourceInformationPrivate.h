@@ -4,8 +4,8 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#import "ACORemoteResourceInformation.h"
-#import "RemoteResourceInformation.h"
+#import <AdaptiveCards/ACORemoteResourceInformation.h>
+#import <AdaptiveCards/RemoteResourceInformation.h>
 
 @interface ACORemoteResourceInformation ()
 

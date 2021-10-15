@@ -6,7 +6,7 @@
 //
 
 #import "ACRContentStackView.h"
-#import "AdaptiveCards.h"
+#import "ACRView.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
