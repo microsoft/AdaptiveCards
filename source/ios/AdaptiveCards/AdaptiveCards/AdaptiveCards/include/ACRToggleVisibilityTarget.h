@@ -1,1 +1,1 @@
-../ACRToggleVisibilityTarget.h
+../PrivateHeaders/ACRToggleVisibilityTarget.h
