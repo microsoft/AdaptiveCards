@@ -9,7 +9,6 @@ twitter: jpthepm
 We are excited to announce the release of Adaptive Cards 1.5!
 
 This release contains some highly requested asks from our community as well as improvements to accessibility. One of our most requested features has been support for a Table element and we are happy to support this in Adaptive Cards 1.5!
-**Note: XAML release for 1.5 will come next week**
 
 ## New features
 
