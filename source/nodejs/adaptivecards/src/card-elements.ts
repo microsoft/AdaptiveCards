@@ -7140,6 +7140,17 @@ export class AdaptiveCard extends ContainerWithActions {
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = super.internalRender();
 
+        let elem : HTMLDivElement;
+        elem = document.createElement("div");
+        if (elem !== undefined)
+        {
+        elem.innerHTML = "<div class=\"AdaptiveCardCarousel\"> <div>your content 1</div> <div>your content 2</div> <div>your content 3</div> </div>";
+        }
+
+        if (renderedElement !== undefined){
+            renderedElement?.append(elem);
+        }
+
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
             // be shorter than its content (otherwise the overflow truncation
