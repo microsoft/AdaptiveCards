@@ -12,7 +12,7 @@
 #import "UtiliOS.h"
 
 @implementation ACRTextView {
-    BOOL isShowingPlaceholder;
+    BOOL _isShowingPlaceholder;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element
@@ -39,11 +39,11 @@
     _placeholderText = [[NSString alloc] initWithCString:inputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
     if (inputBlck->GetValue().size()) {
         self.text = [[NSString alloc] initWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
-        isShowingPlaceholder = NO;
+        _isShowingPlaceholder = NO;
     } else if ([_placeholderText length]) {
         self.text = _placeholderText;
         self.textColor = _placeholderColor;
-        isShowingPlaceholder = YES;
+        _isShowingPlaceholder = YES;
     }
 
     self.isRequired = inputBlck->GetIsRequired();
@@ -100,7 +100,7 @@
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    dictionary[self.id] = isShowingPlaceholder ? @"" : self.text;
+    dictionary[self.id] = _isShowingPlaceholder ? @"" : self.text;
 }
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView * _Nullable)view {
@@ -139,7 +139,7 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    if (isShowingPlaceholder) {
+    if (_isShowingPlaceholder) {
         textView.text = @"";
         if (@available(iOS 13.0, *)) {
             textView.textColor = [UIColor labelColor];
@@ -147,7 +147,7 @@
             // Fallback on earlier versions
             textView.textColor = [UIColor blackColor];
         }
-        isShowingPlaceholder = NO;
+        _isShowingPlaceholder = NO;
     }
     [textView becomeFirstResponder];
 }
@@ -156,7 +156,7 @@
     if (![textView.text length]) {
         textView.text = _placeholderText;
         textView.textColor = _placeholderColor;
-        isShowingPlaceholder = YES;
+        _isShowingPlaceholder = YES;
     }
     [textView resignFirstResponder];
 }
@@ -182,7 +182,7 @@
 - (void)setPlaceholderColor:(UIColor *)placeholderColor
 {
     _placeholderColor = placeholderColor;
-    if (isShowingPlaceholder) {
+    if (_isShowingPlaceholder) {
         self.textColor = placeholderColor;
     }
 }
