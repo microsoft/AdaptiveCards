@@ -8,3 +8,15 @@
 - Do we want CarouselPage to be a CardElement?
 - There are some properties that seem "extra", for example, should we care for spacing, separator, isVisible, bleed among others?
 - 
+
+
+## Divided Work
+
+### Joseph
+- Dot dot dot on the bottom
+- Fixing arrows to show < >
+- Fixing arrow always showing
+
+### Alberto
+- Fixing first page to show on start
+- Removing separators between pages
