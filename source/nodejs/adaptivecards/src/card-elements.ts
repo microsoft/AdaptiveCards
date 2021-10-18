@@ -7187,6 +7187,7 @@ export class AdaptiveCard extends ContainerWithActions {
             // anchor.href = href ? href : "";
             // anchor.target = "_blank";
             anchor.onclick = (e) => {
+                this.plusSlides(-1);
             }
 
             //this.selectAction.setupElementForAccessibility(anchor);
@@ -7199,6 +7200,7 @@ export class AdaptiveCard extends ContainerWithActions {
             // anchor.href = href ? href : "";
             // anchor.target = "_blank";
             anchor_next.onclick = (e) => {
+                this.plusSlides(1);
             }
 
             //this.selectAction.setupElementForAccessibility(anchor);
