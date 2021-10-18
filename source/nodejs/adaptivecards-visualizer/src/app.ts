@@ -10,6 +10,7 @@ import { ToastContainer } from "./containers/toast";
 import { TimelineContainer } from "./containers/timeline";
 import { OutlookContainer } from "./containers/outlook";
 import { BotFrameworkImageContainer } from "./containers/bf-image";
+import { VivaConnectionsContainer } from "./containers/viva-connections";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 
 
