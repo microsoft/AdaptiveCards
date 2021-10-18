@@ -6108,16 +6108,18 @@ export class Container extends ContainerBase {
 }
 
 export class CarouselPage extends Container {
-    private _carouselPages: Container[] = [];
-    private _renderedCarouselPages: Container[];
     //#region Schema
 
     //#endregion
 
-    protected internalRender(): HTMLElement | undefined { 
+    protected internalRender(): HTMLElement | undefined {
 
         let element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-carouselPage");
+
+        this.spacing = Enums.Spacing.None;
+        this.separator = false;
+
         let renderedElement = super.internalRender();
         Utils.appendChild(element, renderedElement);
         if (GlobalSettings.useAdvancedCardBottomTruncation) {
@@ -6125,25 +6127,6 @@ export class CarouselPage extends Container {
             element.style.minHeight = '-webkit-min-content';
         }
         return element;
-        /*
-        if (eleme !== undefined)
-        {
-            elem.innerHTML = //"<div class=\"AdaptiveCardCarousel\"> <div>your content 1</div> <div>your content 2</div> <div>your content 3</div> </div>";
-            "<!-- Slideshow container -->" + 
-            "<div class=\"mySlides\">" +
-            "    <div class=\"numbertext\">1 / 3</div>" +
-            "    <div class=\"text\">Caption Text</div>" + 
-            "</div>" + 
-            "<div class=\"mySlides fade\">" +
-            "    <div class=\"numbertext\">3 / 3</div>" + 
-            "    <div class=\"text\">Caption Three</div>" +
-            "</div>" +
-
-            "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>" +
-            "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>" +
-            "</div>";
-        }
-        */
     }
     static bannedElementList : Set<any>;
 
@@ -7208,33 +7191,33 @@ export class AdaptiveCard extends ContainerWithActions {
             renderedElement.appendChild(anchor_next);
         }
         /*
-            "<!-- Slideshow container -->" + 
+            "<!-- Slideshow container -->" +
             "<div class=\"mySlides\">" +
             "    <div class=\"numbertext\">1 / 3</div>" +
-            "    <div class=\"text\">Caption Text</div>" + 
-            "</div>" + 
+            "    <div class=\"text\">Caption Text</div>" +
+            "</div>" +
             "<div class=\"mySlides fade\">" +
-            "    <div class=\"numbertext\">3 / 3</div>" + 
+            "    <div class=\"numbertext\">3 / 3</div>" +
             "    <div class=\"text\">Caption Three</div>" +
             "</div>" +
 
             "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>" +
-            "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>" 
+            "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>"
         */
         return renderedElement;
     }
 
     private slideIndex = 0;
     // Next/previous controls
-    private plusSlides(n : number) : void { 
+    private plusSlides(n : number) : void {
         this.showSlides(this.slideIndex += n);
     }
-    
+
     // Thumbnail image controls
-    private currentSlide(n : number) : void { 
+    private currentSlide(n : number) : void {
         this.showSlides(this.slideIndex = n);
     }
-    
+
     private showSlides(n : number) : void {
         var i : number;
         var slides = document.getElementsByClassName("ac-carouselPage");
