@@ -5775,6 +5775,7 @@ export class Container extends ContainerBase {
             element.dir = this.rtl ? "rtl" : "ltr";
         }
 
+        //element.classList.add(hostConfig.makeCssClassName("ac-container"));
         element.classList.add(hostConfig.makeCssClassName("ac-container"));
         element.style.display = "flex";
         element.style.flexDirection = "column";
@@ -7234,17 +7235,19 @@ export class AdaptiveCard extends ContainerWithActions {
     
     private showSlides(n : number) : void {
         var i : number;
-        var slides = document.getElementsByClassName("mySlides");
+        var slides = document.getElementsByClassName("ac-carouselPage");
         var dots = document.getElementsByClassName("dot");
         if (n > slides.length) {this.slideIndex = 1}
         if (n < 1) {this.slideIndex = slides.length}
         for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+            var htmlElem : HTMLElement = slides[i] as HTMLElement;
+            htmlElem.style.display = "none";
         }
         for (i = 0; i < dots.length; i++) {
             dots[i].className = dots[i].className.replace(" active", "");
         }
-        slides[this.slideIndex-1].style.display = "block";
+        var htmlElem : HTMLElement = slides[this.slideIndex-1] as HTMLElement;
+        htmlElem.style.display = "block";
         dots[this.slideIndex-1].className += " active";
     }
     protected getHasBackground(): boolean {
