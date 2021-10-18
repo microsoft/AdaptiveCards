@@ -42,7 +42,8 @@
 	  	{
 	  		 "type": "Image",
 	  		"url": "https://adaptivecards.io/content/cats/3.png",
-	  		"altText": "That's a cool cat!"
+	  		"altText": "That's a cool cat!",
+	  		"size": "medium"
 	  	}
 		]
 	  }

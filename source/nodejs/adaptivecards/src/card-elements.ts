@@ -6107,10 +6107,43 @@ export class Container extends ContainerBase {
 }
 
 export class CarouselPage extends Container {
+    private _carouselPages: Container[] = [];
+    private _renderedCarouselPages: Container[];
     //#region Schema
 
     //#endregion
 
+    protected internalRender(): HTMLElement | undefined { 
+
+        let element = document.createElement("div");
+        element.className = this.hostConfig.makeCssClassName("ac-carouselPage");
+        let renderedElement = super.internalRender();
+        Utils.appendChild(element, renderedElement);
+        if (GlobalSettings.useAdvancedCardBottomTruncation) {
+            // See comment in Container.internalRender()
+            element.style.minHeight = '-webkit-min-content';
+        }
+        return element;
+        /*
+        if (eleme !== undefined)
+        {
+            elem.innerHTML = //"<div class=\"AdaptiveCardCarousel\"> <div>your content 1</div> <div>your content 2</div> <div>your content 3</div> </div>";
+            "<!-- Slideshow container -->" + 
+            "<div class=\"mySlides\">" +
+            "    <div class=\"numbertext\">1 / 3</div>" +
+            "    <div class=\"text\">Caption Text</div>" + 
+            "</div>" + 
+            "<div class=\"mySlides fade\">" +
+            "    <div class=\"numbertext\">3 / 3</div>" + 
+            "    <div class=\"text\">Caption Three</div>" +
+            "</div>" +
+
+            "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>" +
+            "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>" +
+            "</div>";
+        }
+        */
+    }
     static bannedElementList : Set<any>;
 
     private prepopulateBannedElementList()
@@ -7136,20 +7169,8 @@ export class AdaptiveCard extends ContainerWithActions {
 
         super.internalToJSON(target, context);
     }
-
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = super.internalRender();
-
-        let elem : HTMLDivElement;
-        elem = document.createElement("div");
-        if (elem !== undefined)
-        {
-        elem.innerHTML = "<div class=\"AdaptiveCardCarousel\"> <div>your content 1</div> <div>your content 2</div> <div>your content 3</div> </div>";
-        }
-
-        if (renderedElement !== undefined){
-            renderedElement?.append(elem);
-        }
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
@@ -7158,9 +7179,74 @@ export class AdaptiveCard extends ContainerWithActions {
             renderedElement.style.removeProperty("minHeight");
         }
 
+        if (renderedElement) {
+            let anchor = document.createElement("a");
+            anchor.classList.add(this.hostConfig.makeCssClassName("prev"));
+            // let href = this.selectAction.getHref();
+            // anchor.href = href ? href : "";
+            // anchor.target = "_blank";
+            anchor.onclick = (e) => {
+            }
+
+            //this.selectAction.setupElementForAccessibility(anchor);
+            anchor.text = "&#10094";
+            renderedElement.appendChild(anchor);
+
+            let anchor_next = document.createElement("a");
+            anchor_next.classList.add(this.hostConfig.makeCssClassName("next"));
+            // let href = this.selectAction.getHref();
+            // anchor.href = href ? href : "";
+            // anchor.target = "_blank";
+            anchor_next.onclick = (e) => {
+            }
+
+            //this.selectAction.setupElementForAccessibility(anchor);
+            anchor_next.text = "&#10095";
+            renderedElement.appendChild(anchor_next);
+        }
+        /*
+            "<!-- Slideshow container -->" + 
+            "<div class=\"mySlides\">" +
+            "    <div class=\"numbertext\">1 / 3</div>" +
+            "    <div class=\"text\">Caption Text</div>" + 
+            "</div>" + 
+            "<div class=\"mySlides fade\">" +
+            "    <div class=\"numbertext\">3 / 3</div>" + 
+            "    <div class=\"text\">Caption Three</div>" +
+            "</div>" +
+
+            "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>" +
+            "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>" 
+        */
         return renderedElement;
     }
 
+    private slideIndex = 0;
+    // Next/previous controls
+    private plusSlides(n : number) : void { 
+        this.showSlides(this.slideIndex += n);
+    }
+    
+    // Thumbnail image controls
+    private currentSlide(n : number) : void { 
+        this.showSlides(this.slideIndex = n);
+    }
+    
+    private showSlides(n : number) : void {
+        var i : number;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {this.slideIndex = 1}
+        if (n < 1) {this.slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[this.slideIndex-1].style.display = "block";
+        dots[this.slideIndex-1].className += " active";
+    }
     protected getHasBackground(): boolean {
         return true;
     }
