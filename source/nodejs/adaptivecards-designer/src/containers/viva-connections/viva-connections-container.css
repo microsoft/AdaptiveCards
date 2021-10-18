@@ -291,3 +291,11 @@
 .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact option:checked {
   background-color: #f3f2f1;
 }
+
+.vivaConnectionsContainer {
+  boxShadow: 0 0 5px 0 rgba(0,0,0,.4);
+  minHeight: 0;
+  maxWidth: 375px;
+  minWidth: 320px;
+  borderRadius: 10px;
+}
