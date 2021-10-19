@@ -37,7 +37,7 @@ function isObjectEmpty(obj: any) {
 	if (!obj) {
 		return true;
 	}
-	for (var key in obj) {
+	for (let key in obj) {
 		return false;
 	}
 	return true;
@@ -114,7 +114,7 @@ class Transformer {
 		}
 
 		if (!isObjectEmpty(this._implementationsOf)) {
-			for (var key in this._implementationsOf) {
+			for (let key in this._implementationsOf) {
 
 				var anyOfValue = [];
 
@@ -136,7 +136,7 @@ class Transformer {
 		}
 
 		if (!isObjectEmpty(this._extendables)) {
-			for (var key in this._extendables) {
+			for (let key in this._extendables) {
 				answer.definitions["Extendable." + key] = this._extendables[key];
 			}
 		}
@@ -358,7 +358,7 @@ class Transformer {
 
 	private toCaseInsensitiveRegex(enumValue: string) {
 		var answer = "";
-		for (var i = 0; i < enumValue.length; i++) {
+		for (let i = 0; i < enumValue.length; i++) {
 			var c = enumValue.charAt(i);
 			answer += `[${c.toLowerCase()}|${c.toUpperCase()}]`;
 		}

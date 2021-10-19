@@ -183,12 +183,16 @@
       <Link>LinkedTestCards\Input.Text.ErrorMessage.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\..\samples\v1.5\Scenarios\InputFormWithLabels.json">
-      <Link>LinkedTestCards\InputFormWithLabels.json</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\..\samples\ConsolidatedElementSamples\Input.Toggle.json">
       <Link>LinkedTestCards\Input.Toggle.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\samples\v1.5\Test\PrimarySecondaryShowCards.json">
+      <Link>LinkedTestCards\PrimarySecondaryShowCards.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\samples\v1.5\Elements\Input.Text.PasswordStyle.json">
+      <Link>LinkedTestCards\Input.Text.PasswordStyle.json</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="UWPUITestApp_TemporaryKey.pfx" />

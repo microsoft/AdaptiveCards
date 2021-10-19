@@ -18,6 +18,8 @@ using namespace AdaptiveCards;
 
 @implementation ACOBaseActionElement {
     std::shared_ptr<BaseActionElement> _elem;
+    NSString *_tooltip;
+    NSString *_inlineTooltip;
 }
 
 - (instancetype)init
@@ -187,6 +189,40 @@ using namespace AdaptiveCards;
     }
 
     return key;
+}
+
+- (NSString *)tooltip
+{
+    if (_tooltip && _tooltip.length) {
+        return _tooltip;
+    }
+
+    if (_elem && !_elem->GetTooltip().empty()) {
+        _tooltip = [NSString stringWithCString:_elem->GetTooltip().c_str() encoding:NSUTF8StringEncoding];
+        return _tooltip;
+    }
+
+    return nil;
+}
+
+- (void)setTooltip:(NSString *)tooltip
+{
+    if (tooltip) {
+        _tooltip = [tooltip copy];
+    }
+}
+
+- (NSString *)inlineTooltip
+{
+    if (self.tooltip) {
+        if (!_inlineTooltip) {
+            _inlineTooltip = [self.tooltip copy];
+        }
+    } else if (self.title) {
+        _inlineTooltip = self.title;
+    }
+
+    return _inlineTooltip;
 }
 
 @end

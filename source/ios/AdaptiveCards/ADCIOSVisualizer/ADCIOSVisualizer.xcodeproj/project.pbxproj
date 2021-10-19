@@ -7,14 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		30860BC220C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		30860BC420C9B5C9009F9D99 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B055763233EC53D000EE24A /* RichTextBlock.json */; };
-		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		6B1509FE22FC98AE00046B3A /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 6B1509FD22FC98AE00046B3A /* samples */; };
 		6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */; };
 		6B150A042302415000046B3A /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A032302415000046B3A /* sample.json */; };
-		6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0523033D6B00046B3A /* filebrowserHostConfig.json */; };
 		6B150A0F23034F2800046B3A /* Feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0923034F2800046B3A /* Feedback.json */; };
 		6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0A23034F2800046B3A /* Input.ChoiceSet.json */; };
 		6B150A1123034F2800046B3A /* FoodOrder.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A0B23034F2800046B3A /* FoodOrder.json */; };
@@ -53,7 +52,6 @@
 		6B182BB525DF5FB700629A39 /* person_w1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA225DF5FB700629A39 /* person_w1.png */; };
 		6B182BB625DF5FB700629A39 /* person_m1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA325DF5FB700629A39 /* person_m1.png */; };
 		6B182BB725DF5FB700629A39 /* location_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA425DF5FB700629A39 /* location_gray.png */; };
-		6B182BB825DF5FB700629A39 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA525DF5FB700629A39 /* sample.json */; };
 		6B182BB925DF5FB700629A39 /* car.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA625DF5FB700629A39 /* car.png */; };
 		6B182BBA25DF5FB700629A39 /* Action.Scrolling.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA725DF5FB700629A39 /* Action.Scrolling.json */; };
 		6B182BBB25DF5FB700629A39 /* power_point.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B182BA825DF5FB700629A39 /* power_point.png */; };
@@ -67,8 +65,8 @@
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
 		6B250FC9253FB0CE007FFCFB /* ACRCustomSubmitTargetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */; };
-		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
-		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B268FE320CEF19400D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		6B268FE520CEF89100D99C1B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
 		6B37723F26015FA30024E527 /* Action.Execute.Auth.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B37723E26015FA30024E527 /* Action.Execute.Auth.json */; };
 		6B5E9CBD24B663CA00757882 /* Adaptive1.0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */; };
@@ -93,6 +91,8 @@
 		6BFF998525F941BE0028069F /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
 		6BFF9A12260132800028069F /* Action.ExecuteTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF9A11260132800028069F /* Action.ExecuteTest.mm */; };
 		6BFF9A18260155240028069F /* Action.Execute.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BFF9A17260155240028069F /* Action.Execute.json */; };
+		A10F512B165C52FC9C82CC5B /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B3F74BE29E1CF92C4FAFB8C /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework */; };
+		BE8EE3DDAB612EEC230F0437 /* Pods_ADCIOSVisualizer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C74931A3EA41F6932989B5B /* Pods_ADCIOSVisualizer.framework */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
 		F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
 		F423C07D1EE1FB6100905679 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C07C1EE1FB6100905679 /* ViewController.m */; };
@@ -139,6 +139,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0B3F74BE29E1CF92C4FAFB8C /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		22BA9248EFA6A7D9C9C282A2 /* Pods-Fluent-ADCIOSVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fluent-ADCIOSVisualizer.release.xcconfig"; path = "Target Support Files/Pods-Fluent-ADCIOSVisualizer/Pods-Fluent-ADCIOSVisualizer.release.xcconfig"; sourceTree = "<group>"; };
+		36F7320180C4837D5F18C111 /* Pods-Fluent-ADCIOSVisualizerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fluent-ADCIOSVisualizerUITests.release.xcconfig"; path = "Target Support Files/Pods-Fluent-ADCIOSVisualizerUITests/Pods-Fluent-ADCIOSVisualizerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		3A6C0778EC0F075B01F8D22B /* Pods-Fluent-ADCIOSVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fluent-ADCIOSVisualizer.debug.xcconfig"; path = "Target Support Files/Pods-Fluent-ADCIOSVisualizer/Pods-Fluent-ADCIOSVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
+		5651E02964EBFDCF8375CE96 /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		569410F5613D607C5A3B1413 /* Pods-ADCIOSVisualizerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizerUITests.debug.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6B055763233EC53D000EE24A /* RichTextBlock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RichTextBlock.json; sourceTree = "<group>"; };
 		6B1509FD22FC98AE00046B3A /* samples */ = {isa = PBXFileReference; lastKnownFileType = folder; name = samples; path = ../../../../samples; sourceTree = "<group>"; };
 		6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AdaptiveFileBrowserSource.mm; sourceTree = "<group>"; };
@@ -202,6 +208,8 @@
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B37723E26015FA30024E527 /* Action.Execute.Auth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.Auth.json; sourceTree = "<group>"; };
 		6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
+		6B6A389527067B1800BAD3D2 /* FluentUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FluentUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B6A389727067B2E00BAD3D2 /* Pods_AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B70AB87256490CC0095D925 /* Image.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.SelectAction.json; sourceTree = "<group>"; };
 		6B92A7F4267D15DA00CAE3BF /* ACRInputTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputTest.mm; sourceTree = "<group>"; };
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -225,7 +233,12 @@
 		6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActionSet.Inputs.Tests.json; sourceTree = "<group>"; };
 		6BFF9A11260132800028069F /* Action.ExecuteTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Action.ExecuteTest.mm; sourceTree = "<group>"; };
 		6BFF9A17260155240028069F /* Action.Execute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.json; sourceTree = "<group>"; };
-		F423C0721EE1FB6100905679 /* AdaptiveCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = AdaptiveCards.app; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C74931A3EA41F6932989B5B /* Pods_ADCIOSVisualizer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADCIOSVisualizer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4AE7CE62B15FF33461CE4D2 /* Pods-ADCIOSVisualizerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizerUITests.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer.release.xcconfig"; sourceTree = "<group>"; };
+		E0D9B344ECC7442086CA0C7A /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		ED56B4B7308EE7B480ABD5CA /* Pods-Fluent-ADCIOSVisualizerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fluent-ADCIOSVisualizerUITests.debug.xcconfig"; path = "Target Support Files/Pods-Fluent-ADCIOSVisualizerUITests/Pods-Fluent-ADCIOSVisualizerUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F423C0781EE1FB6100905679 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F423C0791EE1FB6100905679 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -250,6 +263,7 @@
 		F4F44B74203FE73D00A2F24C /* CustomInputNumberRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomInputNumberRenderer.h; sourceTree = "<group>"; };
 		F4F44BA8204CF98900A2F24C /* CustomProgressBarRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomProgressBarRenderer.h; sourceTree = "<group>"; };
 		F4F44BA9204CF98900A2F24C /* CustomProgressBarRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomProgressBarRenderer.mm; sourceTree = "<group>"; };
+		F6E8AB850C2EEB024550B8CC /* Pods-ADCIOSVisualizer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADCIOSVisualizer.debug.xcconfig"; path = "Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -258,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */,
+				BE8EE3DDAB612EEC230F0437 /* Pods_ADCIOSVisualizer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +293,7 @@
 				6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */,
 				6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */,
 				6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */,
+				A10F512B165C52FC9C82CC5B /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,14 +388,36 @@
 		6BF339E120A66A3F00DA5973 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B6A389727067B2E00BAD3D2 /* Pods_AdaptiveCards.framework */,
+				6B6A389527067B1800BAD3D2 /* FluentUI.framework */,
 				6B1D8B9D268AC2B6005DB234 /* CoreGraphics.framework */,
 				6B980935215AE8780024B79B /* AdaptiveCards.framework */,
 				6B980933215AE6EC0024B79B /* UIKit.framework */,
 				6B980930215AE4310024B79B /* CoreGraphics.framework */,
 				6B2D8604211143BD008DD972 /* AdaptiveCards.framework */,
 				6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */,
+				8C74931A3EA41F6932989B5B /* Pods_ADCIOSVisualizer.framework */,
+				0B3F74BE29E1CF92C4FAFB8C /* Pods_ADCIOSVisualizer_ADCIOSVisualizerUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B5EC4766DE4C87DF736F4F38 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F6E8AB850C2EEB024550B8CC /* Pods-ADCIOSVisualizer.debug.xcconfig */,
+				D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */,
+				5651E02964EBFDCF8375CE96 /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig */,
+				E0D9B344ECC7442086CA0C7A /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig */,
+				569410F5613D607C5A3B1413 /* Pods-ADCIOSVisualizerUITests.debug.xcconfig */,
+				C4AE7CE62B15FF33461CE4D2 /* Pods-ADCIOSVisualizerUITests.release.xcconfig */,
+				3A6C0778EC0F075B01F8D22B /* Pods-Fluent-ADCIOSVisualizer.debug.xcconfig */,
+				22BA9248EFA6A7D9C9C282A2 /* Pods-Fluent-ADCIOSVisualizer.release.xcconfig */,
+				ED56B4B7308EE7B480ABD5CA /* Pods-Fluent-ADCIOSVisualizerUITests.debug.xcconfig */,
+				36F7320180C4837D5F18C111 /* Pods-Fluent-ADCIOSVisualizerUITests.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
 			sourceTree = "<group>";
 		};
 		F423C0691EE1FB6100905679 = {
@@ -396,13 +434,14 @@
 				F423C0731EE1FB6100905679 /* Products */,
 				6BF339E120A66A3F00DA5973 /* Frameworks */,
 				6BAC0F2A228B42EB00E42DEB /* Recovered References */,
+				B5EC4766DE4C87DF736F4F38 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
 		F423C0731EE1FB6100905679 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F423C0721EE1FB6100905679 /* AdaptiveCards.app */,
+				F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */,
 				F423C08E1EE1FB6100905679 /* ADCIOSVisualizerTests.xctest */,
 				F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */,
 			);
@@ -488,10 +527,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F423C0A21EE1FB6100905679 /* Build configuration list for PBXNativeTarget "ADCIOSVisualizer" */;
 			buildPhases = (
+				17112FDF2CDA3218CB5E1D68 /* [CP] Check Pods Manifest.lock */,
 				F423C06E1EE1FB6100905679 /* Sources */,
 				F423C06F1EE1FB6100905679 /* Frameworks */,
 				F423C0701EE1FB6100905679 /* Resources */,
 				F423C0D51EE1FE3A00905679 /* Embed Frameworks */,
+				ACDC4A93930665EB832037BA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -499,7 +540,7 @@
 			);
 			name = ADCIOSVisualizer;
 			productName = ADCIOSVisualizer;
-			productReference = F423C0721EE1FB6100905679 /* AdaptiveCards.app */;
+			productReference = F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F423C08D1EE1FB6100905679 /* ADCIOSVisualizerTests */ = {
@@ -524,9 +565,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F423C0A81EE1FB6100905679 /* Build configuration list for PBXNativeTarget "ADCIOSVisualizerUITests" */;
 			buildPhases = (
+				E7D1BAA0A3924660C4C1D1C3 /* [CP] Check Pods Manifest.lock */,
 				F423C0951EE1FB6100905679 /* Sources */,
 				F423C0961EE1FB6100905679 /* Frameworks */,
 				F423C0971EE1FB6100905679 /* Resources */,
+				7151D08A1D6834C366376AD0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -544,7 +587,7 @@
 		F423C06A1EE1FB6100905679 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1030;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					F423C0711EE1FB6100905679 = {
@@ -594,18 +637,18 @@
 				6B150A36230354F200046B3A /* Image.Size.json in Resources */,
 				6B150A1123034F2800046B3A /* FoodOrder.json in Resources */,
 				6B70AB88256490CC0095D925 /* Image.SelectAction.json in Resources */,
-				6B268FE520CEF89100D99C1B /* (null) in Resources */,
+				6B268FE520CEF89100D99C1B /* BuildFile in Resources */,
 				6B150A37230354F200046B3A /* ColumnSet.Spacing.json in Resources */,
 				6B182BBC25DF5FB700629A39 /* Conflict.png in Resources */,
 				6B1509FE22FC98AE00046B3A /* samples in Resources */,
 				6B182BB425DF5FB700629A39 /* filebrowserHostConfig.json in Resources */,
-				6B268FE320CEF19400D99C1B /* (null) in Resources */,
+				6B268FE320CEF19400D99C1B /* BuildFile in Resources */,
 				6B182BBB25DF5FB700629A39 /* power_point.png in Resources */,
 				6B182BB325DF5FB700629A39 /* SmallVerticalLineGray.png in Resources */,
 				6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */,
 				6B37723F26015FA30024E527 /* Action.Execute.Auth.json in Resources */,
 				6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */,
-				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
+				6B14FC5D2113BC2200A11CC5 /* BuildFile in Resources */,
 				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
 				6B150A40230354F200046B3A /* Image.json in Resources */,
 				6B150A042302415000046B3A /* sample.json in Resources */,
@@ -613,7 +656,7 @@
 				6B182BBA25DF5FB700629A39 /* Action.Scrolling.json in Resources */,
 				6B182BCF25E5AD3500629A39 /* image_3.png in Resources */,
 				6BFF9A18260155240028069F /* Action.Execute.json in Resources */,
-				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
+				30860BC220C9B5C9009F9D99 /* BuildFile in Resources */,
 				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
 				6B9FAF4F25D70AAB00D1A791 /* AdditionalProperties.json in Resources */,
 				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,
@@ -635,7 +678,6 @@
 				6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */,
 				6B150A22230353AB00046B3A /* TextBlock.Markdown.json in Resources */,
 				6B182BBD25DF5FB700629A39 /* LocationGreen_A.png in Resources */,
-				6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */,
 				6B182BB525DF5FB700629A39 /* person_w1.png in Resources */,
 				6B182BB225DF5FB700629A39 /* LocationBlue_B.png in Resources */,
 				6B182BAE25DF5FB700629A39 /* SeaTacMap.png in Resources */,
@@ -644,7 +686,6 @@
 				6B5E9CBD24B663CA00757882 /* Adaptive1.0.png in Resources */,
 				6B150A1323034F2800046B3A /* ActivityUpdate.json in Resources */,
 				6B150A21230353AB00046B3A /* TextBlock.DateTimeFormatting.json in Resources */,
-				6B182BB825DF5FB700629A39 /* sample.json in Resources */,
 				6B182BBF25DF5FB700629A39 /* CircleBlue_flight.png in Resources */,
 				6B150A3D230354F200046B3A /* Column.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
@@ -655,7 +696,7 @@
 				6B182BD325E5D7D400629A39 /* bg_image.png in Resources */,
 				6B150A1223034F2800046B3A /* Restaurant.json in Resources */,
 				6B150A0F23034F2800046B3A /* Feedback.json in Resources */,
-				30860BC420C9B5C9009F9D99 /* (null) in Resources */,
+				30860BC420C9B5C9009F9D99 /* BuildFile in Resources */,
 				6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */,
 				6B150A27230353AB00046B3A /* TextBlock.HorizontalAlignment.json in Resources */,
 			);
@@ -676,6 +717,89 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		17112FDF2CDA3218CB5E1D68 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ADCIOSVisualizer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7151D08A1D6834C366376AD0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MicrosoftFluentUI/FluentUI.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FluentUI.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ACDC4A93930665EB832037BA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MicrosoftFluentUI/FluentUI.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FluentUI.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ADCIOSVisualizer/Pods-ADCIOSVisualizer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E7D1BAA0A3924660C4C1D1C3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F423C06E1EE1FB6100905679 /* Sources */ = {
@@ -783,6 +907,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -843,6 +968,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -873,7 +999,9 @@
 		};
 		F423C0A31EE1FB6100905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F6E8AB850C2EEB024550B8CC /* Pods-ADCIOSVisualizer.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -890,7 +1018,9 @@
 		};
 		F423C0A41EE1FB6100905679 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D7181A8AD0E889C79FE0E50B /* Pods-ADCIOSVisualizer.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -935,7 +1065,9 @@
 		};
 		F423C0A91EE1FB6100905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5651E02964EBFDCF8375CE96 /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UBF8T346G9;
 				INFOPLIST_FILE = ADCIOSVisualizerUITests/Info.plist;
@@ -948,7 +1080,9 @@
 		};
 		F423C0AA1EE1FB6100905679 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E0D9B344ECC7442086CA0C7A /* Pods-ADCIOSVisualizer-ADCIOSVisualizerUITests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = UBF8T346G9;
 				INFOPLIST_FILE = ADCIOSVisualizerUITests/Info.plist;

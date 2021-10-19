@@ -1,4 +1,5 @@
 - Card Configuration:
+    - HostConfig
     - AdaptiveCardConfig
     - ActionsConfig
     - ContainerStylesConfig

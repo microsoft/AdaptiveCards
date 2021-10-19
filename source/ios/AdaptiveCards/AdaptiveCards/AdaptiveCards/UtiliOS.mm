@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseCardElementRenderer.h"
+#import "ACRBaseTarget.h"
 #import "ACRColumnSetView.h"
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
@@ -578,6 +579,9 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
                                         UIButton *button, NSObject **target)
 {
     *target = [director build:action forButton:button];
+    if (action.tooltip && target) {
+        [((ACRBaseTarget *)*target) addGestureRecognizer:button toolTipText:action.tooltip];
+    }
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
@@ -596,6 +600,24 @@ void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action)
     if (![action isEnabled]) {
         recipientView.accessibilityTraits |= UIAccessibilityTraitNotEnabled;
     }
+}
+
+NSString *configureForAccessibilityLabel(ACOBaseActionElement *action, NSString *contentString)
+{
+    NSMutableArray<NSString *> *accessibilityLabels = [[NSMutableArray alloc] init];
+    if (action.title) {
+        [accessibilityLabels addObject:action.title];
+    } else {
+        if (contentString) {
+            [accessibilityLabels addObject:contentString];
+        }
+    }
+
+    if (action.tooltip) {
+        [accessibilityLabels addObject:action.tooltip];
+    }
+
+    return [accessibilityLabels componentsJoinedByString:@", "];
 }
 
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)

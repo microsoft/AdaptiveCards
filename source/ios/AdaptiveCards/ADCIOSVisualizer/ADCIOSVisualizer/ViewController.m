@@ -9,9 +9,7 @@
 #import "ACRChatWindow.h"
 #import "ACRCustomSubmitTargetBuilder.h"
 #import "ADCResolver.h"
-#import "AdaptiveCards/ACRAggregateTarget.h"
 #import "AdaptiveCards/ACRButton.h"
-#import "AdaptiveCards/ACROverflowTarget.h"
 #import "AdaptiveFileBrowserSource.h"
 #import "CustomActionNewType.h"
 #import "CustomActionOpenURLRenderer.h"
@@ -447,6 +445,7 @@ CGFloat kFileBrowserWidth = 0;
 
 - (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
                     alertController:(UIAlertController *)alert
+                      additionalData:(NSDictionary *)additionalData
 {
     // [Option 1] the easiest way is to just present the alert view. It's prepared and presentable ready.
     //    [self presentViewController: alert];

@@ -5,43 +5,38 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Specify the type of text being requested"
+			"text": "Specify the type of text being requested:",
+			"style": "heading"
 		},
 		{
 			"type": "Input.Text",
 			"id": "myComment",
-			"placeholder": "text",
+			"label": "style: text",
 			"style": "text"
-		},
-		{
-			"type": "TextBlock",
-			"text": "style: email"
 		},
 		{
 			"type": "Input.Text",
 			"id": "myEmail",
-			"placeholder": "email",
+			"label": "style: email",
 			"style": "email"
-		},
-		{
-			"type": "TextBlock",
-			"text": "style: tel"
 		},
 		{
 			"type": "Input.Text",
 			"id": "myTel",
-			"placeholder": "tel",
+			"label": "style: tel",
 			"style": "tel"
-		},
-		{
-			"type": "TextBlock",
-			"text": "style: url"
 		},
 		{
 			"type": "Input.Text",
 			"id": "myUrl",
-			"placeholder": "url",
+			"label": "style: url",
 			"style": "url"
+		},
+		{
+			"type": "Input.Text",
+			"id": "myPassword",
+			"label": "style: password",
+			"style": "password"
 		}
 	],
 	"actions": [

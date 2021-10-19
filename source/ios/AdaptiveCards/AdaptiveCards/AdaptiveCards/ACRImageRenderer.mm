@@ -11,7 +11,7 @@
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRImageProperties.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRTapGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
 #import "ACRView.h"
 #import "Enums.h"
@@ -124,16 +124,25 @@
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     // instantiate and add tap gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:view
-                                                                  actionElement:acoSelectAction
-                                                                     hostConfig:acoConfig];
+    ACRBaseTarget *target = [ACRTapGestureRecognizerFactory addTapGestureRecognizerToUIView:viewGroup
+                                                                                   rootView:rootView
+                                                                              recipientView:view
+                                                                              actionElement:acoSelectAction
+                                                                                 hostConfig:acoConfig];
+    if (target && acoSelectAction.inlineTooltip) {
+        [target addGestureRecognizer:view toolTipText:acoSelectAction.inlineTooltip];
+    }
+
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
 
     view.isAccessibilityElement = YES;
-    NSString *stringForAccessiblilityLabel = [NSString stringWithCString:imgElem->GetAltText().c_str() encoding:NSUTF8StringEncoding];
+    NSMutableString *stringForAccessiblilityLabel = [NSMutableString stringWithCString:imgElem->GetAltText().c_str() encoding:NSUTF8StringEncoding];
+    NSString *toolTipAccessibilityLabel = configureForAccessibilityLabel(acoSelectAction, nil);
+    if (toolTipAccessibilityLabel) {
+        [stringForAccessiblilityLabel appendString:toolTipAccessibilityLabel];
+    }
+
     if (stringForAccessiblilityLabel.length) {
         view.accessibilityLabel = stringForAccessiblilityLabel;
     }

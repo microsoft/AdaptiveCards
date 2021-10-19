@@ -60,7 +60,7 @@ export class OutlookContainer extends HostContainer {
             if (typeof source["resources"] === "object") {
                 var actionResources = source["resources"]["actions"] as Array<any>;
 
-                for (var i = 0; i < actionResources.length; i++) {
+                for (let i = 0; i < actionResources.length; i++) {
                     let action = this.actionsRegistry.createInstance(actionResources[i]["type"], context.targetVersion);
 
                     if (action) {
@@ -105,7 +105,7 @@ export class OutlookContainer extends HostContainer {
             if (rootCard) {
                 var actionArray = rootCard["resources"]["actions"] as Array<Adaptive.Action>;
 
-                for (var i = 0; i < actionArray.length; i++) {
+                for (let i = 0; i < actionArray.length; i++) {
                     if (actionArray[i].id == actionId) {
                         actionArray[i].execute();
 
