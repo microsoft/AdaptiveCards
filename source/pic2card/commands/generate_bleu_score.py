@@ -42,6 +42,7 @@ python -m commands.generate_bleu_score.py --images_path=/image_path \
 """
 # pylint: disable=too-many-locals
 # pylint: disable=too-many-statements
+# pylint: disable=consider-using-with
 
 import argparse
 import base64

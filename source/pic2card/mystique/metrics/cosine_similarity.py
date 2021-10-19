@@ -1,6 +1,9 @@
 """Module to Calculate Cosine similarity between the testing and
    generated card json
 """
+# pylint: disable=consider-using-with
+# pylint: disable=import-error
+
 import os
 import re
 import argparse

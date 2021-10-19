@@ -4,6 +4,8 @@ Do inference using the tf-serve service.
 We have loaded the saved model into the tf-serve
 """
 # pylint: disable=no-value-for-parameter
+# pylint: disable=consider-using-with
+
 import os
 import base64
 import click

@@ -1,4 +1,6 @@
 """ resources for api """
+# pylint: disable=consider-using-with
+
 import sys
 import os
 import io

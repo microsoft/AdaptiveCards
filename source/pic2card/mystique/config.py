@@ -138,3 +138,27 @@ LINE_ALIGNMENT_THRESHOLD = {"minimum": 0.20, "maximum": 0.75}
 # Multi Process flag to run card-layout and properties extraction as a
 # parallel or sequential tasks, True by default
 MULTI_PROC = True
+
+# synthetic module config values
+CANVAS_COLOR = {
+    "WHITE": [255, 255, 255],
+    "GREY": [211, 211, 211],
+    "CYAN": [238, 238, 175],
+    "ROSE": [255, 228, 255],
+    "GOLD": [0, 255, 255],
+}
+BACKGROUND_COLOR = "WHITE"
+ELEMENT_COUNT_THRESHOLD = 5
+BULK_IMAGES_NEEDED = 10
+ELEMENTS_DIR = os.path.join(
+    os.path.dirname(__file__), "../data/synthetic/card_elements/"
+)
+GENERATED_IMG_DIR = os.path.join(
+    os.path.dirname(__file__), "../data/synthetic/generated_dataset/"
+)
+GENERATED_ANNOTATION_DIR = os.path.join(
+    os.path.dirname(__file__), "../data/synthetic/generated_annotations/"
+)
+GENERATED_ZIP_DIR = os.path.join(
+    os.path.dirname(__file__), "../data/synthetic/generated_zipfiles/"
+)
