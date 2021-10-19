@@ -7252,15 +7252,15 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         // set all dots to be unactive
-        // for (i = 0; i < dots.length; i++) {
-            // dots[i].className = dots[i].className.replace(" active", "");
-        // }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
 
         let carouselPageToShow : HTMLElement = slides[this.slideIndex] as HTMLElement;
         if (carouselPageToShow !== undefined)
         {
             carouselPageToShow.style.display = "block";
-            // dots[this.slideIndex].className += " active";
+            dots[this.slideIndex].className += " active";
         }
     }
     protected getHasBackground(): boolean {
