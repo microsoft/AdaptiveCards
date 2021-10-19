@@ -13,6 +13,7 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
 import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
+import { runInThisContext } from "vm";
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -6108,16 +6109,18 @@ export class Container extends ContainerBase {
 }
 
 export class CarouselPage extends Container {
-    private _carouselPages: Container[] = [];
-    private _renderedCarouselPages: Container[];
     //#region Schema
 
     //#endregion
 
-    protected internalRender(): HTMLElement | undefined { 
+    protected internalRender(): HTMLElement | undefined {
 
         let element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-carouselPage");
+
+        this.spacing = Enums.Spacing.None;
+        this.separator = false;
+
         let renderedElement = super.internalRender();
         Utils.appendChild(element, renderedElement);
         if (GlobalSettings.useAdvancedCardBottomTruncation) {
@@ -6125,25 +6128,6 @@ export class CarouselPage extends Container {
             element.style.minHeight = '-webkit-min-content';
         }
         return element;
-        /*
-        if (eleme !== undefined)
-        {
-            elem.innerHTML = //"<div class=\"AdaptiveCardCarousel\"> <div>your content 1</div> <div>your content 2</div> <div>your content 3</div> </div>";
-            "<!-- Slideshow container -->" + 
-            "<div class=\"mySlides\">" +
-            "    <div class=\"numbertext\">1 / 3</div>" +
-            "    <div class=\"text\">Caption Text</div>" + 
-            "</div>" + 
-            "<div class=\"mySlides fade\">" +
-            "    <div class=\"numbertext\">3 / 3</div>" + 
-            "    <div class=\"text\">Caption Three</div>" +
-            "</div>" +
-
-            "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>" +
-            "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>" +
-            "</div>";
-        }
-        */
     }
     static bannedElementList : Set<any>;
 
@@ -7186,6 +7170,9 @@ export class AdaptiveCard extends ContainerWithActions {
         if (renderedElement && bCarousel) {
             var anchor = document.createElement("a");
             anchor.classList.add(this.hostConfig.makeCssClassName("prev"));
+
+            this.showFirstSlide(renderedElement);
+
             anchor.onclick = (e) => {
                 this.plusSlides(-1);
             }
@@ -7219,31 +7206,62 @@ export class AdaptiveCard extends ContainerWithActions {
 
     private slideIndex = 0;
     // Next/previous controls
-    private plusSlides(n : number) : void { 
+    private plusSlides(n : number) : void {
         this.showSlides(this.slideIndex += n);
     }
-    
+
     // Thumbnail image controls
-    private currentSlide(n : number) : void { 
+    private currentSlide(n : number) : void {
         this.showSlides(this.slideIndex = n);
     }
-    
+
+    private showFirstSlide(renderedCard : HTMLElement) : void {
+        let slides = renderedCard.getElementsByClassName("ac-carouselPage");
+
+        // assuming n will never be smaller than -slides.length
+        if (slides.length > 0) {
+
+            // hide all carousel pages
+            for (let i = 0; i < slides.length; i++) {
+                let carouselPage : HTMLElement = slides[i] as HTMLElement;
+                carouselPage.style.display = "none";
+            }
+
+            let carouselPageToShow : HTMLElement = slides[this.slideIndex] as HTMLElement;
+            if (carouselPageToShow !== undefined)
+            {
+                carouselPageToShow.style.display = "block";
+            }
+        }
+    }
+
     private showSlides(n : number) : void {
-        var i : number;
-        var slides = document.getElementsByClassName("ac-carouselPage");
-        var dots = document.getElementsByClassName("dot");
-        if (n > slides.length) {this.slideIndex = 1}
-        if (n < 1) {this.slideIndex = slides.length}
+        let i : number;
+        let slides = document.getElementsByClassName("ac-carouselPage");
+        let dots = document.getElementsByClassName("dot");
+
+        // assuming n will never be smaller than -slides.length
+        if (slides.length > 0) {
+            this.slideIndex = (n + slides.length) % slides.length;
+        }
+
+        // hide all carousel pages
         for (i = 0; i < slides.length; i++) {
-            var htmlElem : HTMLElement = slides[i] as HTMLElement;
-            htmlElem.style.display = "none";
+            let carouselPage : HTMLElement = slides[i] as HTMLElement;
+            carouselPage.style.display = "none";
         }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
+
+        // set all dots to be unactive
+        // for (i = 0; i < dots.length; i++) {
+            // dots[i].className = dots[i].className.replace(" active", "");
+        // }
+
+        let carouselPageToShow : HTMLElement = slides[this.slideIndex] as HTMLElement;
+        if (carouselPageToShow !== undefined)
+        {
+            carouselPageToShow.style.display = "block";
+            // dots[this.slideIndex].className += " active";
         }
-        var htmlElem : HTMLElement = slides[this.slideIndex-1] as HTMLElement;
-        htmlElem.style.display = "block";
-        dots[this.slideIndex-1].className += " active";
     }
     protected getHasBackground(): boolean {
         return true;
