@@ -88,7 +88,7 @@
 .ac-container {
   border: none !important;
 }
-.ac-image.ac-selectable {
+.ac-image.ac-selectable, .ac-container.ac-selectable {
   cursor: pointer;
 }
 .ac-container iframe {
@@ -125,8 +125,8 @@
   box-sizing: border-box;
 }
 .ac-input.ac-choiceSetInput-multiSelect input[type=checkbox]:before, .ac-input.ac-toggleInput input[type=checkbox]:before {
-  content: \E73E;
-  font-family: Fluent MDL2 Hybrid Icons;
+  content: "\E73E";
+  font-family: 'Fluent MDL2 Hybrid Icons';
   font-size: 16px;
   border-radius: 2px;
   color: transparent;
@@ -201,8 +201,8 @@
 }
 .ac-input.ac-choiceSetInput-expanded input[type=radio]:checked:after, .ac-input.ac-choiceSetInput-expanded input[type=radio]:hover:after {
   content: " ";
-  mask: url("data:image/svg+xml;%3Csvg width=20 height=20 viewBox=0 0 20 20 fill=none xmlns=http://www.w3.org/2000/svg%3E%3Ccircle cx=10 cy=10 r=6 fill=%23212121/%3E%3Crect x=0.5 y=0.5 width=19 height=19 rx=9.5 stroke=%23212121/%3E%3C/svg%3E");
-  -webkit-mask: url("data:image/svg+xml;%3Csvg width=20 height=20 viewBox=0 0 20 20 fill=none xmlns=http://www.w3.org/2000/svg%3E%3Ccircle cx=10 cy=10 r=6 fill=%23212121/%3E%3Crect x=0.5 y=0.5 width=19 height=19 rx=9.5 stroke=%23212121/%3E%3C/svg%3E");
+  mask: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='6' fill='%23212121'/%3E%3Crect x='0.5' y='0.5' width='19' height='19' rx='9.5' stroke='%23212121'/%3E%3C/svg%3E");
+  -webkit-mask: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='6' fill='%23212121'/%3E%3Crect x='0.5' y='0.5' width='19' height='19' rx='9.5' stroke='%23212121'/%3E%3C/svg%3E");
   display: block;
   position: relative;
   width: 20px;
@@ -294,9 +294,9 @@
 
 .vivaConnectionsContainer {
   background-color: #ffffff;
-  box-shadow: 0 25px 57px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18)
-  min-height: 0;
-  max-width: 375px;
-  min-width: 320px;
-  border-radius: 10px;
+  border-radius: 8px;
+  box-shadow: 0 25px 57px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18);
+  min-height: 0;
+  min-width: 320px;
+  max-width: 375px;
 }
