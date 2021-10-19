@@ -68,5 +68,8 @@
 			"jsx",
 			"json"
 		]
+	},
+	"dependencies": {
+		"swiper": "^7.0.9"
 	}
 }

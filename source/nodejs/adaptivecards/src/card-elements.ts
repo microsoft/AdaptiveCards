@@ -14,6 +14,7 @@ import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 import { runInThisContext } from "vm";
+import Swiper from 'swiper';
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -5776,8 +5777,7 @@ export class Container extends ContainerBase {
             element.dir = this.rtl ? "rtl" : "ltr";
         }
 
-        //element.classList.add(hostConfig.makeCssClassName("ac-container"));
-        element.classList.add(hostConfig.makeCssClassName("ac-container"));
+        element.classList.add(hostConfig.makeCssClassName("swiper-wrapper"));
         element.style.display = "flex";
         element.style.flexDirection = "column";
 
@@ -6116,7 +6116,7 @@ export class CarouselPage extends Container {
     protected internalRender(): HTMLElement | undefined {
 
         let element = document.createElement("div");
-        element.className = this.hostConfig.makeCssClassName("ac-carouselPage");
+        element.className = this.hostConfig.makeCssClassName("swiper-slide");
 
         this.spacing = Enums.Spacing.None;
         this.separator = false;
@@ -7156,6 +7156,8 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected internalRender(): HTMLElement | undefined {
+        let swiperElement : HTMLElement = document.createElement("div");
+        swiperElement.classList.add(this.hostConfig.makeCssClassName("swiper"));
         let renderedElement = super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
@@ -7166,6 +7168,8 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         var bCarousel : boolean = this.TBD ? true : false;
+
+        bCarousel = false;
 
         if (renderedElement && bCarousel) {
             var anchor = document.createElement("a");
@@ -7203,7 +7207,10 @@ export class AdaptiveCard extends ContainerWithActions {
             this.showFirstSlide(renderedElement);
         }
 
-        return renderedElement;
+        swiperElement.appendChild(renderedElement as Node);
+
+        //return renderedElement;
+        return swiperElement;
     }
 
     private slideIndex = 0;
