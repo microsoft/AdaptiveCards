@@ -47,9 +47,6 @@ To load the designer component you have 2 options:
 <!-- OPTIONAL: markdown-it isn't required but enables out-of-the-box markdown support -->
 <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
-<!-- REQUIRED: monaco-editor is required for the designer to work -->
-<script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
-
 <!-- DESIGNER OPTION A: Card Designer + Standard Hosts 
 	(replace <VERSION> with the version you want to load, or "latest" for latest)
 -->
@@ -59,6 +56,9 @@ To load the designer component you have 2 options:
 	(replace <VERSION> with the version you want to load, or "latest" for latest)
 	<script src="https://unpkg.com/adaptivecards-designer@<VERSION>/dist/adaptivecards-designer-standalone.min.js"></script>
 -->
+
+<!-- REQUIRED: monaco-editor is required for the designer to work -->
+<script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
 <script type="text/javascript">
 	window.onload = function() {
