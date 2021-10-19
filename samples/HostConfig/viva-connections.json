@@ -14,14 +14,13 @@
     "lineColor": "#EDEBE9"
   },
   "imageSizes": {
-    "small": 74,
+    "small": 72,
     "medium": 164,
-    "large": 253
+    "large": 256
   },
   "fontTypes": {
     "default": {
-      "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-			"fontFamily": "'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif",
+      "fontFamily": "'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif",
       "fontSizes": {
         "small": 12,
         "default": 14,
