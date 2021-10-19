@@ -1,8 +1,28 @@
-.berlinInnerContainer {
+.berlin-outer-container {
     border: 1px solid #E6E6E6;
     width: 300px;
     border-radius: 4px;
 	color: white;
+}
+
+.berlin-header {
+    width: 300px;
+    height: 40px;
+}
+
+.berlin-large-container {
+    width: 300px;
+    height: 416px;
+}
+
+.berlin-medium-container {
+    width: 300px;
+    height: 308px;
+}
+
+.berlin-small-container {
+    width: 300px;
+    height: 200px;
 }
 
 .ac-adaptiveCard {
