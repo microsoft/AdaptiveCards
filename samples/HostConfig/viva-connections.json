@@ -21,6 +21,7 @@
   "fontTypes": {
     "default": {
       "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+			"fontFamily": "'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif",
       "fontSizes": {
         "small": 12,
         "default": 14,
@@ -118,7 +119,7 @@
       }
     },
     "accent": {
-      "backgroundColor": "E2E2F6",
+      "backgroundColor": "#E2E2F6",
       "foregroundColors": {
         "default": {
           "default": "#323130",
@@ -151,7 +152,7 @@
       }
     },
     "good": {
-      "backgroundColor": "DFF6DD",
+      "backgroundColor": "#DFF6DD",
       "foregroundColors": {
         "default": {
           "default": "#323130",
@@ -184,7 +185,7 @@
       }
     },
     "attention": {
-      "backgroundColor": "FED9CC",
+      "backgroundColor": "#FED9CC",
       "foregroundColors": {
         "default": {
           "default": "#323130",
@@ -217,7 +218,7 @@
       }
     },
     "warning": {
-      "backgroundColor": "FFF4CE",
+      "backgroundColor": "#FFF4CE",
       "foregroundColors": {
         "default": {
           "default": "#323130",
@@ -284,6 +285,6 @@
       "weight": "Default",
       "wrap": true
     },
-    "spacing": 10
+    "spacing": 8
   }
 }
