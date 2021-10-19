@@ -21,6 +21,7 @@ export interface Props {
   onActionShowCard?: Function;
   onError?: Function;
   style?: object;
+  hostConfig?: object;
 }
 
 const propTypes = {
@@ -38,6 +39,8 @@ const propTypes = {
   onError: PropTypes.func,
   /** JSX styles that will be applied to the card conatiner */
   style: PropTypes.object,
+  /** HostConfig. [More Info](https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config) */
+  hostConfig: PropTypes.object,
 };
 
 const defaultOpenUrlHandler = (action: AdaptiveCards.OpenUrlAction) => {
@@ -59,13 +62,14 @@ export const AdaptiveCard = ({
   onActionShowCard,
   onError,
   style,
+  hostConfig,
 }: Props) => {
   const [error, setError] = useState<Error>();
   const targetRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<AdaptiveCards.AdaptiveCard>(
     new AdaptiveCards.AdaptiveCard()
   );
-  const { hostConfig } = useContext(HostConfigContext);
+  const { hostConfig: hostConfigContext } = useContext(HostConfigContext);
 
   useEffect(setUpMarkdownIt, []);
 
@@ -110,7 +114,7 @@ export const AdaptiveCard = ({
 
   useEffect(() => {
     cardRef.current.hostConfig = new AdaptiveCards.HostConfig(
-      hostConfig.configJson
+      hostConfig?? hostConfigContext.configJson
     );
 
     if (!targetRef.current) {
@@ -119,7 +123,7 @@ export const AdaptiveCard = ({
     const result = cardRef.current.render() as HTMLElement;
     targetRef.current.innerHTML = '';
     targetRef.current.appendChild(result);
-  }, [hostConfig]);
+  }, [hostConfig, hostConfigContext]);
 
   useEffect(() => {
     if (!targetRef.current) {
