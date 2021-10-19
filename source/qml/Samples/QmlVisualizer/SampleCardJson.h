@@ -4331,6 +4331,177 @@ namespace Samples
     ]
 }
 	)";
+
+    const std::string inputElements = R"({
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "version": "1.3",
+        "body": [
+            {
+                "type": "Input.Text",
+                "id": "inputText",
+                "placeholder": "Placeholder text"
+            },
+            {
+                "type": "Input.Text",
+                "placeholder": "Placeholder text",
+                "isMultiline": true,
+                "id": "inputTextMultiLine"
+            },
+            {
+                "type": "Input.Number",
+                "placeholder": "Placeholder text",
+                "id": "inputNumber"
+            },
+            {
+                "type": "Input.Date",
+                "id": "inputDate"
+            },
+            {
+                "type": "Input.Time",
+                "id": "inputTime"
+            },
+            {
+                "type": "Input.ChoiceSet",
+                "choices": [
+                    {
+                        "title": "Choice 1",
+                        "value": "Choice 1"
+                    },
+                    {
+                        "title": "Choice 2",
+                        "value": "Choice 2"
+                    },
+                    {
+                        "title": "Choice 3",
+                        "value": "Choice 3"
+                    },
+                    {
+                        "title": "Choice 4",
+                        "value": "Choice 4"
+                    },
+                    {
+                        "title": "Choice 5",
+                        "value": "Choice 5"
+                    },
+                    {
+                        "title": "Choice 6",
+                        "value": "Choice 6"
+                    }
+                ],
+                "placeholder": "Placeholder text",
+                "id": "inputChoiceSet"
+            },
+            {
+                "type": "Input.ChoiceSet",
+                "choices": [
+                    {
+                        "title": "Choice 1",
+                        "value": "Choice 1"
+                    },
+                    {
+                        "title": "Choice 2",
+                        "value": "Choice 2"
+                    }
+                ],
+                "placeholder": "Placeholder text",
+                "style": "expanded",
+                "id": "radioButton"
+            },
+            {
+                "type": "Input.ChoiceSet",
+                "choices": [
+                    {
+                        "title": "Choice 1",
+                        "value": "Choice 1"
+                    },
+                    {
+                        "title": "Choice 2",
+                        "value": "Choice 2"
+                    }
+                ],
+                "placeholder": "Placeholder text",
+                "isMultiSelect": true,
+                "style": "expanded",
+                "id": "toggleButton"
+            },
+            {
+                "type": "Input.Toggle",
+                "title": "New Input.Toggle",
+                "id": "InputToggle"
+            },
+            {
+                "type": "ActionSet",
+                "actions": [
+                    {
+                        "type": "Action.ShowCard",
+                        "title": "Action.ShowCard",
+                        "card": {
+                            "type": "AdaptiveCard"
+                        }
+                    },
+                    {
+                        "type": "Action.Submit",
+                        "title": "Action.Submit"
+                    },
+                    {
+                        "type": "Action.OpenUrl",
+                        "title": "Action.OpenUrl",
+                        "url": "https://google.com"
+                    }
+                ]
+            },
+            {
+                "type": "ActionSet",
+                "actions": [
+                    {
+                        "type": "Action.ShowCard",
+                        "title": "Action.ShowCard",
+                        "card": {
+                            "type": "AdaptiveCard"
+                        },
+                        "style": "positive"
+                    },
+                    {
+                        "type": "Action.Submit",
+                        "title": "Action.Submit",
+                        "style": "positive"
+                    },
+                    {
+                        "type": "Action.OpenUrl",
+                        "title": "Action.OpenUrl",
+                        "url": "https://google.com",
+                        "style": "positive"
+                    }
+                ]
+            },
+            {
+                "type": "ActionSet",
+                "actions": [
+                    {
+                        "type": "Action.ShowCard",
+                        "title": "Action.ShowCard",
+                        "card": {
+                            "type": "AdaptiveCard"
+                        },
+                        "style": "destructive"
+                    },
+                    {
+                        "type": "Action.Submit",
+                        "title": "Action.Submit",
+                        "style": "destructive"
+                    },
+                    {
+                        "type": "Action.OpenUrl",
+                        "title": "Action.OpenUrl",
+                        "url": "https://google.com",
+                        "style": "destructive"
+                    }
+                ]
+            }
+        ],
+        "id": "togleButton"
+    })";
 }
 
     

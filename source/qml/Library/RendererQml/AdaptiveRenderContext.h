@@ -33,6 +33,8 @@ namespace RendererQml
 
 		std::string GetColor(const AdaptiveCards::ForegroundColor color, bool isSubtle, bool isHighlight, bool isQml = 1);
 
+        std::string GetHexColor(const std::string& color);
+
         std::string GetLang();
         void SetLang(const std::string& lang);
 

@@ -57,7 +57,15 @@ private:
 	static const std::string getImagePath(const std::string& imageName);
 
     std::shared_ptr<AdaptiveCardRenderConfig> getRenderConfig(const bool isDark);
+    template<typename InputConfig>
+    InputConfig getInputFieldConfig(InputConfig inputConfig, const bool isDark);
     InputTextConfig getInputTextConfig(const bool isDark);
+    InputNumberConfig getInputNumberConfig(const bool isDark);
+    InputTimeConfig getInputTimeConfig(const bool isDark);
+    InputChoiceSetDropDownConfig getInputChoiceSetDropDownConfig(const bool isDark);
+    ToggleButtonConfig getToggleButtonConfig(const bool isDark);
+    InputDateConfig getInputDateConfig(const bool isDark);
+    ActionButtonsConfig getActionButtonsConfig(const bool isDark);
 };
 
 #endif // SAMPLECARDMODEL_H

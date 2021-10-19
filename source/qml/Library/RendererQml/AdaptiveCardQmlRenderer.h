@@ -89,7 +89,7 @@ namespace RendererQml
 		template <typename CardElement>
 		static std::shared_ptr<QmlTag> GetNewContainer(CardElement cardElement, std::shared_ptr<AdaptiveRenderContext> context);
 
-		static std::shared_ptr<QmlTag> ListViewTagforTimeInput(const std::string& parent_id, const std::string& id, std::map < std::string, std::map<std::string, std::string>>& properties);
+        static std::shared_ptr<QmlTag> ListViewTagforTimeInput(const std::string& parent_id, const std::string& listView_id, std::map<std::string, std::map<std::string, std::string>>& properties, bool isThirdTag, std::shared_ptr<AdaptiveRenderContext> context);
 		static std::shared_ptr<QmlTag> GetBackgroundImage(std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage, std::shared_ptr<AdaptiveRenderContext> context, const std::string& imgSource);
 
         static void addSubmitActionButtonClickFunc(const std::shared_ptr<AdaptiveRenderContext>& context);
@@ -113,7 +113,6 @@ namespace RendererQml
 		static const std::shared_ptr<QmlTag> addColumnSetElements(std::shared_ptr<AdaptiveCards::ColumnSet> columnSet, std::shared_ptr<QmlTag> uiFrame, std::shared_ptr<AdaptiveRenderContext> context);
 
         static std::shared_ptr<QmlTag> GetIconTag(std::shared_ptr<AdaptiveRenderContext> context);
-        static std::shared_ptr<QmlTag> GetRowWithClearIconTag(const std::string& id, std::shared_ptr<AdaptiveRenderContext> context);
 
         static std::shared_ptr<QmlTag> GetTextBlockMouseArea();
         static std::shared_ptr<QmlTag> getDummyElementforNumberInput(bool isTop);
@@ -123,5 +122,6 @@ namespace RendererQml
 
         static const std::string RemoveBottomMarginValue(std::vector<std::string> showCardsList);
         static std::shared_ptr<QmlTag> GetCalendar(std::shared_ptr<AdaptiveRenderContext> context, const std::string textFieldId, const std::string calendarBoxId, const std::string stringDateFormat, const std::string minimumDate, const std::string maximumDate);
+        static std::shared_ptr<QmlTag> GetClearIconButton(std::shared_ptr<AdaptiveRenderContext> context);
     };
 }

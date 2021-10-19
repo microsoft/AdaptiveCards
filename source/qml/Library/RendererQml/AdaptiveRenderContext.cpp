@@ -191,6 +191,11 @@ namespace RendererQml
 		
 	}
 
+    std::string RendererQml::AdaptiveRenderContext::GetHexColor(const std::string& color)
+    {
+        return Formatter() << "'" << color << "'";
+    }
+
     std::string AdaptiveRenderContext::GetLang()
     {
         return m_lang;

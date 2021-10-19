@@ -37,6 +37,7 @@ SampleCardList::SampleCardList(QObject *parent) : QObject(parent)
 	mCards.append({ QStringLiteral("Toggle Visibility wizard"), QString::fromStdString(Samples::card_ToggleVisibilityWiz) });
 	mCards.append({ QStringLiteral("Background Image"), QString::fromStdString(Samples::card_BackgroundImage) });
 	mCards.append({ QStringLiteral("Bleed Properties"), QString::fromStdString(Samples::card_Bleed) });
+	mCards.append({ QStringLiteral("Input Elements"), QString::fromStdString(Samples::inputElements) });
 
 }
 
