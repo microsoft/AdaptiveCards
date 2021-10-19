@@ -7171,8 +7171,6 @@ export class AdaptiveCard extends ContainerWithActions {
             var anchor = document.createElement("a");
             anchor.classList.add(this.hostConfig.makeCssClassName("prev"));
 
-            this.showFirstSlide(renderedElement);
-
             anchor.onclick = (e) => {
                 this.plusSlides(-1);
             }
@@ -7192,13 +7190,17 @@ export class AdaptiveCard extends ContainerWithActions {
             var dots = document.createElement("div");
             dots.style.textAlign = "center";
             var numberOfItems : number = this.getItemCount();
-            for (var i = 0; i < numberOfItems; i++) {
+            for (let j = 0; j < numberOfItems; j++) {
                 var dot = document.createElement("span");
                 dot.classList.add(this.hostConfig.makeCssClassName("dot"));
-                dot.onclick = (e) => {};
+                dot.onclick = (e) => {
+                    this.showSlides(j)
+                };
                 dots.appendChild(dot);
             }
             renderedElement.appendChild(dots);
+
+            this.showFirstSlide(renderedElement);
         }
 
         return renderedElement;
@@ -7212,11 +7214,12 @@ export class AdaptiveCard extends ContainerWithActions {
 
     // Thumbnail image controls
     private currentSlide(n : number) : void {
-        this.showSlides(this.slideIndex = n);
+        this.showSlides(n);
     }
 
     private showFirstSlide(renderedCard : HTMLElement) : void {
         let slides = renderedCard.getElementsByClassName("ac-carouselPage");
+        let dots = renderedCard.getElementsByClassName("dot");
 
         // assuming n will never be smaller than -slides.length
         if (slides.length > 0) {
@@ -7227,16 +7230,25 @@ export class AdaptiveCard extends ContainerWithActions {
                 carouselPage.style.display = "none";
             }
 
+            // set all dots to be unactive
+            for (var i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+
             let carouselPageToShow : HTMLElement = slides[this.slideIndex] as HTMLElement;
             if (carouselPageToShow !== undefined)
             {
                 carouselPageToShow.style.display = "block";
             }
+            let dot : HTMLElement = dots[this.slideIndex] as HTMLElement;
+            if (dot !== undefined)
+            {
+                dots[this.slideIndex].className += " active";
+            }
         }
     }
 
     private showSlides(n : number) : void {
-        let i : number;
         let slides = document.getElementsByClassName("ac-carouselPage");
         let dots = document.getElementsByClassName("dot");
 
@@ -7246,13 +7258,13 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         // hide all carousel pages
-        for (i = 0; i < slides.length; i++) {
+        for (var i = 0; i < slides.length; i++) {
             let carouselPage : HTMLElement = slides[i] as HTMLElement;
             carouselPage.style.display = "none";
         }
 
         // set all dots to be unactive
-        for (i = 0; i < dots.length; i++) {
+        for (var i = 0; i < dots.length; i++) {
             dots[i].className = dots[i].className.replace(" active", "");
         }
 
