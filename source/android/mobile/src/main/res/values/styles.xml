@@ -13,6 +13,10 @@
         <item name="colorAccent">@color/actionDestructive</item>
     </style>
 
+    <style name="adaptiveActionDefault" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="adaptiveInlineAction">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingLeft">16dp</item>

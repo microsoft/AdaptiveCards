@@ -2,6 +2,7 @@
 <resources>
     <attr name="adaptiveActionPositive" format="reference" />
     <attr name="adaptiveActionDestructive" format="reference" />
+    <attr name="adaptiveActionDefault" format="reference" />
     <attr name="adaptiveInlineAction" format="reference" />
     <attr name="adaptiveInlineActionImage" format="reference" />
     <attr name="adaptiveShowCardAction" format="reference" />

@@ -58,6 +58,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
     {
         boolean isPositiveStyle = style.equalsIgnoreCase("Positive");
         boolean isDestructiveStyle = style.equalsIgnoreCase("Destructive");
+        boolean isDefaultStyle = style.equalsIgnoreCase("Default");
 
         if(isPositiveStyle || isDestructiveStyle)
         {
@@ -89,6 +90,17 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                     button.setTextColor(getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
                     return button;
                 }
+            }
+        }
+
+        if (isDefaultStyle)
+        {
+            Resources.Theme theme = context.getTheme();
+            TypedValue buttonStyle = new TypedValue();
+
+            if(theme.resolveAttribute(R.attr.adaptiveActionDefault, buttonStyle, true))
+            {
+                return createButtonWithTheme(context, buttonStyle.data);
             }
         }
 
