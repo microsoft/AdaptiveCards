@@ -81,7 +81,7 @@
 }
 
 .ac-adaptiveCard {
-  background-color: "#ffffff" !important;
+  background-color: unset !important;
 }
 
 /* quickLookCard */
@@ -293,9 +293,10 @@
 }
 
 .vivaConnectionsContainer {
-  boxShadow: 0 0 5px 0 rgba(0,0,0,.4);
-  minHeight: 0;
-  maxWidth: 375px;
-  minWidth: 320px;
-  borderRadius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 25px 57px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18)
+  min-height: 0;
+  max-width: 375px;
+  min-width: 320px;
+  border-radius: 10px;
 }
