@@ -34,7 +34,9 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         contentView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         contentView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        heightAnchor.constraint(equalToConstant: 100.0).isActive = true
+        let heightConstraint = contentView.heightAnchor.constraint(equalToConstant: 100.0)
+        heightConstraint.priority = .fittingSizeCompression
+        heightConstraint.isActive = true
     }
     
     override func awakeFromNib() {
