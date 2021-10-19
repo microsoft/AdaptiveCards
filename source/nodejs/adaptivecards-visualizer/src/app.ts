@@ -10,7 +10,6 @@ import { ToastContainer } from "./containers/toast";
 import { TimelineContainer } from "./containers/timeline";
 import { OutlookContainer } from "./containers/outlook";
 import { BotFrameworkImageContainer } from "./containers/bf-image";
-import { BerlinContainer } from "./containers/berlin";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 
 
@@ -39,7 +38,7 @@ function renderCard(target: HTMLElement): HTMLElement {
     getSelectedHostContainer().setHostCapabilities(adaptiveCard.hostConfig);
 
     let serializationContext = new Adaptive.SerializationContext();
-
+    
     serializationContext.onParseElement = (element: Adaptive.CardElement, source: any, context: Adaptive.SerializationContext) => {
         getSelectedHostContainer().parseElement(element, source, context);
     }
@@ -183,7 +182,6 @@ function setupContainerPicker() {
     hostContainerOptions.push(new HostContainerOption("Windows Timeline", new TimelineContainer(320, 176, "css/timeline.css")));
     hostContainerOptions.push(new HostContainerOption("Bot Framework Other Channels (Image render)", new BotFrameworkImageContainer(400, "css/bf.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Notifications (Preview)", new ToastContainer(362, "css/toast.css")));
-	hostContainerOptions.push(new HostContainerOption("Berlin (Test)", new BerlinContainer(300, 200, "css/berlin.css")));
 
 	// hostContainerOptions.push(//     new HostContainerOption(//         "All at once", //         new BotFrameworkImageContainer(400, "css/bf.css")));
 
