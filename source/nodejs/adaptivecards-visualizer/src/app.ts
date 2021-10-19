@@ -10,7 +10,6 @@ import { ToastContainer } from "./containers/toast";
 import { TimelineContainer } from "./containers/timeline";
 import { OutlookContainer } from "./containers/outlook";
 import { BotFrameworkImageContainer } from "./containers/bf-image";
-import { VivaConnectionsContainer } from "./containers/viva-connections";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 
 
@@ -179,7 +178,6 @@ function setupContainerPicker() {
 
     hostContainerOptions.push(new HostContainerOption("Bot Framework WebChat", new WebChatContainer("css/webchat.css")));
     hostContainerOptions.push(new HostContainerOption("Microsoft Teams", new TeamsContainer("css/teams.css")));
-    hostContainerOptions.push(new HostContainerOption("Viva Connections", new VivaConnectionsContainer("css/viva-connections-container.css")));
     hostContainerOptions.push(new HostContainerOption("Outlook Actionable Messages", new OutlookContainer("css/outlook.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Timeline", new TimelineContainer(320, 176, "css/timeline.css")));
     hostContainerOptions.push(new HostContainerOption("Bot Framework Other Channels (Image render)", new BotFrameworkImageContainer(400, "css/bf.css")));
