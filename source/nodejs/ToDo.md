@@ -13,10 +13,11 @@
 ## Divided Work
 
 ### Joseph
-- Dot dot dot on the bottom
-- Fixing arrows to show < >
-- Fixing arrow always showing
+-[x] Dot dot dot on the bottom
+-[x] Fixing arrows to show < >
+-[x] Fixing arrow always showing
+-[ ] Hookup event handler for dot
 
 ### Alberto
-- Fixing first page to show on start
-- Removing separators between pages
+- [] Fixing first page to show on start
+- [] Removing separators between pages

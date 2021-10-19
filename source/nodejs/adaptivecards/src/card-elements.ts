@@ -7170,6 +7170,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         super.internalToJSON(target, context);
     }
+
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = super.internalRender();
 
@@ -7180,47 +7181,39 @@ export class AdaptiveCard extends ContainerWithActions {
             renderedElement.style.removeProperty("minHeight");
         }
 
-        if (renderedElement) {
-            let anchor = document.createElement("a");
+        var bCarousel : boolean = this.TBD ? true : false;
+
+        if (renderedElement && bCarousel) {
+            var anchor = document.createElement("a");
             anchor.classList.add(this.hostConfig.makeCssClassName("prev"));
-            // let href = this.selectAction.getHref();
-            // anchor.href = href ? href : "";
-            // anchor.target = "_blank";
             anchor.onclick = (e) => {
                 this.plusSlides(-1);
             }
 
-            //this.selectAction.setupElementForAccessibility(anchor);
-            anchor.text = "&#10094";
+            anchor.innerHTML = "&#10094;";
             renderedElement.appendChild(anchor);
 
-            let anchor_next = document.createElement("a");
+            var anchor_next = document.createElement("a");
             anchor_next.classList.add(this.hostConfig.makeCssClassName("next"));
-            // let href = this.selectAction.getHref();
-            // anchor.href = href ? href : "";
-            // anchor.target = "_blank";
             anchor_next.onclick = (e) => {
                 this.plusSlides(1);
             }
 
-            //this.selectAction.setupElementForAccessibility(anchor);
-            anchor_next.text = "&#10095";
+            anchor_next.innerHTML = "&#10095;";
             renderedElement.appendChild(anchor_next);
-        }
-        /*
-            "<!-- Slideshow container -->" + 
-            "<div class=\"mySlides\">" +
-            "    <div class=\"numbertext\">1 / 3</div>" +
-            "    <div class=\"text\">Caption Text</div>" + 
-            "</div>" + 
-            "<div class=\"mySlides fade\">" +
-            "    <div class=\"numbertext\">3 / 3</div>" + 
-            "    <div class=\"text\">Caption Three</div>" +
-            "</div>" +
 
-            "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>" +
-            "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>" 
-        */
+            var dots = document.createElement("div");
+            dots.style.textAlign = "center";
+            var numberOfItems : number = this.getItemCount();
+            for (var i = 0; i < numberOfItems; i++) {
+                var dot = document.createElement("span");
+                dot.classList.add(this.hostConfig.makeCssClassName("dot"));
+                dot.onclick = (e) => {};
+                dots.appendChild(dot);
+            }
+            renderedElement.appendChild(dots);
+        }
+
         return renderedElement;
     }
 
