@@ -71,17 +71,20 @@ namespace AdaptiveCards
                                             bool isRequired = false);
 
         template<typename T>
+        using DeserializeFn = const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>;
+
+        template<typename T>
         std::shared_ptr<T> DeserializeValue(ParseContext& context,
                                             const Json::Value& json,
                                             AdaptiveCardSchemaKey key,
-                                            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer,
+                                            DeserializeFn<T>& deserializer,
                                             bool isRequired = false);
 
         template<typename T>
         std::shared_ptr<T> GetElementOfType(ParseContext& context,
                                             const Json::Value& json,
                                             AdaptiveCardSchemaKey key,
-                                            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer);
+                                            DeserializeFn<T>& deserializer);
 
         template<typename T>
         std::vector<std::shared_ptr<T>> GetElementCollection(bool isTopToBottomContainer,
@@ -96,7 +99,7 @@ namespace AdaptiveCards
             ParseContext& context,
             const Json::Value& json,
             AdaptiveCardSchemaKey key,
-            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer,
+            DeserializeFn<T>& deserializer,
             bool isRequired = false);
 
         std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(ParseContext& context,
@@ -280,7 +283,7 @@ namespace AdaptiveCards
         std::vector<std::shared_ptr<T>> elements;
         if (elementArray.empty())
         {
-            return std::move(elements);
+            return elements;
         }
 
         const size_t elemSize = elementArray.size();
@@ -336,6 +339,6 @@ namespace AdaptiveCards
             currentIndex++;
         }
 
-        return std::move(elements);
+        return elements;
     }
 }

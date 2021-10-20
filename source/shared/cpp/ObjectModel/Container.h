@@ -3,13 +3,13 @@
 #pragma once
 
 #include "pch.h"
-#include "CollectionTypeElement.h"
+#include "StyledCollectionElement.h"
 
 namespace AdaptiveCards
 {
     class BaseActionElement;
 
-    class Container : public CollectionTypeElement
+    class Container : public StyledCollectionElement
     {
         friend class ContainerParser;
 

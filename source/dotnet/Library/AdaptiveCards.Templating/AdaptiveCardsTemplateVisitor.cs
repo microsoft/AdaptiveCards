@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace AdaptiveCards.Templating
 {
@@ -575,8 +576,7 @@ namespace AdaptiveCards.Templating
             if (HasDataContext())
             {
                 DataContext currentDataContext = GetCurrentDataContext();
-                string templateString = node.GetText();
-                return new AdaptiveCardsTemplateResult(Expand(templateString, currentDataContext.AELMemory, isExpanded, options));
+                return new AdaptiveCardsTemplateResult(Expand(Regex.Unescape(node.GetText()), currentDataContext.AELMemory, isExpanded, options));
             }
 
             return new AdaptiveCardsTemplateResult(node.GetText());
@@ -708,7 +708,7 @@ namespace AdaptiveCards.Templating
         /// <returns><c>true</c> if predicate is evaluated to <c>true</c></returns>
         public static bool IsTrue(string predicate, JToken data)
         {
-            var (value, error) = new ValueExpression(predicate).TryGetValue(data);
+            var (value, error) = new ValueExpression(Regex.Unescape(predicate)).TryGetValue(data);
             if (error == null)
             {
                 return bool.Parse(value as string);

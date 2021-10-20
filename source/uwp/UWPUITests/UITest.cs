@@ -94,10 +94,110 @@ namespace UWPUITests
             Assert.AreEqual("true", TestHelpers.GetInputValue("acceptTerms"));
         }
 
+        [TestMethod]
+        public void SecondaryShowCardTest()
+        {
+            TestHelpers.GoToTestCase("PrimarySecondaryShowCards");
+
+            // We should be able to find the primary show card action and the overflow menu
+            var primaryShowCardAction = TestHelpers.FindByMultiple("Name", "Primary Show Card Action", "ClassName", "Button");
+            Assert.IsNotNull(primaryShowCardAction);
+
+            var overflowMenu = TestHelpers.FindByMultiple("Name", "...", "ClassName", "Button");
+            Assert.IsNotNull(overflowMenu);
+
+            // We should not be able to find either of the show cards
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Primary Show Card"); });
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Secondary Show Card"); });
+
+            // Click the primary show card and validate that the card appears
+            primaryShowCardAction.Click();
+
+            var primaryShowCard = TestHelpers.FindElementByName("Primary Show Card");
+            Assert.IsNotNull(primaryShowCard);
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Secondary Show Card"); });
+
+            // Click the overflow menu and find the secondary show card action
+            overflowMenu.Click();
+
+            var secondaryShowCardAction = TestHelpers.FindPopupByName("Secondary Show Card Action");
+            Assert.IsNotNull(secondaryShowCardAction);
+
+            // Click the secondary action and validate that the card appears
+            secondaryShowCardAction.Click();
+
+            var secondaryShowCard = TestHelpers.FindElementByName("Secondary Show Card");
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Primary Show Card"); });
+
+            // Close the secondary show card and validate the state
+            overflowMenu.Click();
+            secondaryShowCardAction = TestHelpers.FindPopupByName("Secondary Show Card Action");
+            Assert.IsNotNull(secondaryShowCardAction);
+            secondaryShowCardAction.Click();
+
+            primaryShowCardAction = TestHelpers.FindByMultiple("Name", "Primary Show Card Action", "ClassName", "Button");
+            Assert.IsNotNull(primaryShowCardAction);
+
+            overflowMenu = TestHelpers.FindByMultiple("Name", "...", "ClassName", "Button");
+            Assert.IsNotNull(overflowMenu);
+
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Primary Show Card"); });
+            Assert.ThrowsException<Microsoft.Windows.Apps.Test.Foundation.UIObjectNotFoundException>(delegate () { TestHelpers.FindElementByName("Secondary Show Card"); });
+        }
+
+        [TestMethod]
+        public void PasswordTest()
+        {
+            TestHelpers.GoToTestCase("Input.Text.PasswordStyle");
+
+            var passwordBox = TestHelpers.CastTo<Edit>(TestHelpers.FindByMultiple(
+                "Name", "Input.Text With Password Style\r\n",
+                "ClassName", "PasswordBox"));
+
+            Assert.IsTrue(passwordBox.IsPassword);
+
+            passwordBox.SetValue("aNewPassword123!");
+            Assert.AreEqual("●●●●●●●●●●●●●●●●", passwordBox.Value);
+
+            // Submit data
+            TestHelpers.FindElementByName("OK").Click();
+
+            // Verify submitted data
+            Assert.AreEqual("aNewPassword123!", TestHelpers.GetInputValue("id0"));
+        }
+
+        [TestMethod]
+        public void PasswordRegexTest()
+        {
+            TestHelpers.GoToTestCase("Input.Text.PasswordStyle");
+
+            var passwordBox = TestHelpers.CastTo<Edit>(TestHelpers.FindByMultiple(
+                "Name", "Input.Text With Password Style\r\n",
+                "ClassName", "PasswordBox"));
+
+            Assert.IsTrue(passwordBox.IsPassword);
+
+            passwordBox.SetValue("short");
+
+            // Submit data
+            TestHelpers.FindElementByName("OK").Click();
+
+            var errorMessage = TestHelpers.FindElementByName("Password must be between 8 and 20 characters");
+            Assert.IsNotNull(errorMessage);
+
+            passwordBox.SetValue("LOOOONGER!");
+
+            TestHelpers.FindElementByName("OK").Click();
+
+            // Verify submitted data
+            Assert.AreEqual("LOOOONGER!", TestHelpers.GetInputValue("id0"));
+        }
+
         [ClassCleanup]
         public static void TearDown()
         {
             application.Close();
         }
     }
+
 }

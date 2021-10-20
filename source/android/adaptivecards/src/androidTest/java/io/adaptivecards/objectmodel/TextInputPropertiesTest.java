@@ -235,6 +235,7 @@ public class TextInputPropertiesTest
             tests.add(new Pair<>(TextInputStyle.Tel, String.format(inputTextPlaceholderTemplate, "Tel")));
             tests.add(new Pair<>(TextInputStyle.Url, String.format(inputTextPlaceholderTemplate, "Url")));
             tests.add(new Pair<>(TextInputStyle.Email, String.format(inputTextPlaceholderTemplate, "Email")));
+            tests.add(new Pair<>(TextInputStyle.Password, String.format(inputTextPlaceholderTemplate, "Password")));
 
             for (Pair<TextInputStyle, String> test : tests)
             {

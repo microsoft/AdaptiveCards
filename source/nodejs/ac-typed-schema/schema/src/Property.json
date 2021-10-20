@@ -26,10 +26,10 @@
 		"examples": {
 			"type": "any[]",
 			"description": "Examples of this value"
-    },
-    "override": {
-      "type": "boolean",
-      "description": "Set this to true if you're overriding a property from an extended class. This will prevent a warning from being emitted."
-    }
+		},
+		"override": {
+			"type": "boolean",
+			"description": "Set this to true if you're overriding a property from an extended class. This will prevent a warning from being emitted."
+		}
 	}
 }

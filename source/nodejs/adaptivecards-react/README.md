@@ -16,14 +16,39 @@ import * as AdaptiveCard from "adaptivecards-react";
 var AdaptiveCard = require("adaptivecards-react");
 ```
 
+```tsx
+import { AdaptiveCard } from "adaptivecards-react";
+```
+
 ### Usage
 
 Basic usage:
 
 ```js
-<AdaptiveCard
-    payload={card}
-/>
+var card = {
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Here is a ninja cat"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Here is another ninja cat"
+        },
+        {
+            "type": "Image",
+            "url": "http://adaptivecards.io/content/cats/1.png"
+        }
+    ]
+};
+
+var hostConfig = {
+    fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
+};
+
+<AdaptiveCard payload={card} hostConfig={hostConfig} />
 ```
 
 Non-interactible:

@@ -37,28 +37,14 @@
     ACRDateTextField *field = [[ACRDateTextField alloc] initWithTimeDateInput:timeInput dateStyle:NSDateFormatterNoStyle];
 
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:timeInput inputView:field accessibilityItem:field.inputView viewGroup:viewGroup dataSource:nil];
-    field.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;    
+    field.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
     UIView *renderedview = inputLabelView;
 
     if (viewGroup) {
-        if (elem->GetHeight() == HeightType::Stretch) {
-            ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
-            [inputContainer addArrangedSubview:renderedview];
-
-            // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-            UIView *blankTrailingSpace = [[UIView alloc] init];
-            [inputContainer addArrangedSubview:blankTrailingSpace];
-            [inputContainer adjustHuggingForLastElement];
-            [viewGroup addArrangedSubview:inputContainer];
-            renderedview = inputContainer;
-        } else {
-            [viewGroup addArrangedSubview:renderedview];
-        }
+        [viewGroup addArrangedSubview:renderedview];
     }
 
     [inputs addObject:renderedview];
-
-    configVisibility(renderedview, elem);
 
     return renderedview;
 }

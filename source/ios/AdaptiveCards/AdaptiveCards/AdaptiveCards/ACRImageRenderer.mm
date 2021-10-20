@@ -11,7 +11,7 @@
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRImageProperties.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRTapGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
 #import "ACRView.h"
 #import "Enums.h"
@@ -98,6 +98,11 @@
 
     [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
 
+    // added padding to strech for image view because stretching ImageView is not desirable
+    if (imgElem->GetHeight() == HeightType::Stretch) {
+        [viewGroup addArrangedSubview:[viewGroup addPaddingFor:wrappingView]];
+    }
+
     [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingView.topAnchor].active = YES;
@@ -116,30 +121,31 @@
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
     }
 
-    if (imgElem->GetHeight() == HeightType::Stretch && imgElem->GetPixelHeight() == 0) {
-        if ([viewGroup isKindOfClass:[ACRColumnView class]]) {
-            [(ACRColumnView *)viewGroup addPaddingSpace];
-        }
-    }
-
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     // instantiate and add tap gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:view
-                                                                  actionElement:acoSelectAction
-                                                                     hostConfig:acoConfig];
+    ACRBaseTarget *target = [ACRTapGestureRecognizerFactory addTapGestureRecognizerToUIView:viewGroup
+                                                                                   rootView:rootView
+                                                                              recipientView:view
+                                                                              actionElement:acoSelectAction
+                                                                                 hostConfig:acoConfig];
+    if (target && acoSelectAction.inlineTooltip) {
+        [target addGestureRecognizer:view toolTipText:acoSelectAction.inlineTooltip];
+    }
+
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
 
     view.isAccessibilityElement = YES;
-    NSString *stringForAccessiblilityLabel = [NSString stringWithCString:imgElem->GetAltText().c_str() encoding:NSUTF8StringEncoding];
+    NSMutableString *stringForAccessiblilityLabel = [NSMutableString stringWithCString:imgElem->GetAltText().c_str() encoding:NSUTF8StringEncoding];
+    NSString *toolTipAccessibilityLabel = configureForAccessibilityLabel(acoSelectAction, nil);
+    if (toolTipAccessibilityLabel) {
+        [stringForAccessiblilityLabel appendString:toolTipAccessibilityLabel];
+    }
+
     if (stringForAccessiblilityLabel.length) {
         view.accessibilityLabel = stringForAccessiblilityLabel;
     }
-
-    configVisibility(wrappingView, elem);
 
     if (imgElem->GetImageStyle() == ImageStyle::Person) {
         wrappingView.isPersonStyle = YES;
@@ -148,7 +154,7 @@
     if (view && view.image) {
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
         [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:view.image imageView:view];
-    }   
+    }
     return wrappingView;
 }
 

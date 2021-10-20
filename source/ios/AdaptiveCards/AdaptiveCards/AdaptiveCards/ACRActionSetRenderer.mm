@@ -183,13 +183,12 @@
     containingView.contentview = childview;
     containingView.contentWidth = contentWidth;
 
-    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor].active = YES;
-    if (ActionsOrientation::Vertical == adaptiveActionConfig.actionsOrientation) {
-        [containingView.widthAnchor constraintEqualToAnchor:childview.widthAnchor].active = YES;
-    }
-    containingView.translatesAutoresizingMaskIntoConstraints = NO;
-
     containingView.stretch = adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch;
+
+    [containingView preconfigreAutolayout];
+
+    // let layout subview to configure correct constraints when the frame size is available
+    [NSLayoutConstraint activateConstraints:containingView.nonStretchConstraints];
 
     // this step ensures that action set view is added before subviews added by show cards
     [superview insertArrangedSubview:containingView atIndex:stackIndex];
@@ -214,30 +213,30 @@
 
     UIButton *button = nil;
 
-	@try {
-		if ([acoElem meetsRequirements:featureReg] == NO) {
-			@throw [ACOFallbackException fallbackException];
-		}
-		button = [actionRenderer renderButton:rootView
-										inputs:inputs
-									superview:superview
-							baseActionElement:acoElem
-									hostConfig:config];
+    @try {
+        if ([acoElem meetsRequirements:featureReg] == NO) {
+            @throw [ACOFallbackException fallbackException];
+        }
+        button = [actionRenderer renderButton:rootView
+                                       inputs:inputs
+                                    superview:superview
+                            baseActionElement:acoElem
+                                   hostConfig:config];
 
-		configRtl(button, rootView.context);
+        configRtl(button, rootView.context);
 
-		[childview addArrangedSubview:button];
-	} @catch (ACOFallbackException *exception) {
-		handleActionFallbackException(exception, superview, rootView, inputs, acoElem, config,
-										childview);
-		NSUInteger count = [childview.arrangedSubviews count];
-		if (count > numElem) {
-			UIView *view = [childview.arrangedSubviews lastObject];
-			if (view && [view isKindOfClass:[UIButton class]]) {
-				button = (UIButton *)view;
-			}
-		}
-	}
+        [childview addArrangedSubview:button];
+    } @catch (ACOFallbackException *exception) {
+        handleActionFallbackException(exception, superview, rootView, inputs, acoElem, config,
+                                      childview);
+        NSUInteger count = [childview.arrangedSubviews count];
+        if (count > numElem) {
+            UIView *view = [childview.arrangedSubviews lastObject];
+            if (view && [view isKindOfClass:[UIButton class]]) {
+                button = (UIButton *)view;
+            }
+        }
+    }
 
     accumulatedWidth += [button intrinsicContentSize].width;
     accumulatedHeight += [button intrinsicContentSize].height;
