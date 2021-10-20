@@ -53,15 +53,22 @@
             }
         }
     },
-	"foregroundColors": {
+	"containerStyles": {
 		"default": {
-			"default": "#000000E4"
-		},
-		"accent": {
-			"default": "#005FB8"
-		},
-		"dark": {
-			"default": "#0000008C"
+		  "foregroundColors": {
+			"default": {
+			  "default": "#000000",
+			  "subtle": "#000000"
+			},
+			"dark": {
+			  "default": "#000000",
+			  "subtle": "#000000"
+			},
+			"accent": {
+			  "default": "#005FB8",
+			  "subtle": "#005FB8"
+			}
+		  }
 		}
 	},
 	"imageSizes": {
