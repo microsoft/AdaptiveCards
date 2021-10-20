@@ -13,6 +13,7 @@
 @property NSString *placeholderText;
 @property NSUInteger maxLength;
 @property IBInspectable UIColor *borderColor;
+@property IBInspectable UIColor *placeholderColor;
 @property NSPredicate *regexPredicate;
 
 - (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element;
