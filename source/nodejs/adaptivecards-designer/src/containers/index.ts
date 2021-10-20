@@ -12,3 +12,4 @@ export * from "./teams/teams-container";
 export * from "./timeline/timeline-container";
 export * from "./webchat/webchat-container";
 export * from "./berlin/berlin-container";
+export * from "./viva-connections/viva-connections-container";
