@@ -4,8 +4,8 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACOBaseActionElement.h"
-#import "BaseActionElement.h"
+#import <AdaptiveCards/ACOBaseActionElement.h>
+#import <AdaptiveCards/BaseActionElement.h>
 
 using namespace AdaptiveCards;
 

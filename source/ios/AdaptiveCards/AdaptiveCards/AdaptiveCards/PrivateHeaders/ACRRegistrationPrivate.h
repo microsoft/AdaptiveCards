@@ -1,5 +1,5 @@
-#include "ACRRegistration.h"
-#include "FeatureRegistration.h"
+#include <AdaptiveCards/ACRRegistration.h>
+#include <AdaptiveCards/FeatureRegistration.h>
 
 using namespace AdaptiveCards;
 
