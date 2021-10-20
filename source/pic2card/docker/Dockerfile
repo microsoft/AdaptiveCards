@@ -10,6 +10,12 @@
 # Both has it's pros and cons, so we will use based on which fits at particular
 # usecase at hand.
 #
+# To build docker image with TFS support
+#   $ docker build -t imaginea.azurecr.io/imaginea/api_frozen_mystique:v0.6 .
+#
+# To build pic2card with backend TFS service.
+#   $ docker build --build-arg tfs_enable=tfs --build-arg TARGET_API=tfs \
+#      -t ghcr.io/bigthinkcode/pic2card-rcnn:v1.12 .
 #
 ARG TARGET_API=frozen_graph
 
@@ -24,7 +30,7 @@ ADD requirements/requirements-frozen_graph.txt /app/
 ADD requirements/requirements.txt /app/
 RUN printf "\n" >> /app/requirements.txt
 RUN cat /app/requirements-frozen_graph.txt >> /app/requirements.txt
-COPY model/frozen_inference_graph.pb /app/model/
+COPY model/frozen_inference_graph_tf2.pb /app/model/
 
 ## Temp stage to keep project files
 FROM $TARGET_API AS build
@@ -47,19 +53,21 @@ ENV TF_SERVING_URL=http://172.17.0.5:8501 \
     TF_SERVING_MODEL_NAME=mystique \
     PIP_DEFAULT_TIMEOUT=1000 \
     PORT=5050
-COPY --from=build /app /app
-WORKDIR /app
 
 RUN pip install --upgrade pip && \
     apt-get update && \
     apt-get install -y --no-install-recommends libsm6 tesseract-ocr gcc && \
     apt-get clean &&\
-    rm -rf /var/lib/apt/lists/* && \
-    echo "$COMMIT_SHA" > /app/git_commit.md5 && \
-    echo "$BRANCH_NAME" > /app/git_branch_name.txt
+    rm -rf /var/lib/apt/lists/*
 
-RUN pip install -r requirements.txt && \
+COPY --from=build /app /app
+WORKDIR /app
+
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt && \
     rm -rf /root/.cache/pip && \
+    echo "$COMMIT_SHA" > /app/git_commit.md5 && \
+    echo "$BRANCH_NAME" > /app/git_branch_name.txt && \
     echo '#!/bin/bash \n\n\
           gunicorn -w 2 -b 0.0.0.0:$PORT app.api:app \
           "$@"' >> /usr/local/bin/entrypoint.sh &&\

@@ -18,7 +18,6 @@ import pandas as pd
 from mystique.initial_setups import set_graph_and_tensors
 from mystique.detect_objects import ObjectDetection
 from mystique.utils import xml_to_csv
-from mystique.obj_detect.detect_objects_pth import PtObjectDetection
 
 
 @click.command()
@@ -77,8 +76,6 @@ def generate_map(
     # pylint: disable=too-many-function-args, abstract-class-instantiated
     if model_fw == "tf":
         object_detection = ObjectDetection(*set_graph_and_tensors())
-    elif model_fw == "pytorch":
-        object_detection = PtObjectDetection()
 
     data_df = xml_to_csv(test_dir)
     images = np.unique(data_df["filename"].tolist())
