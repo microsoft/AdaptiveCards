@@ -8,7 +8,6 @@ This directory contains all the JS packages for adaptive cards:
 * `adaptivecards-designer` - The drag-drop designer component
 * `adaptivecards-designer-app` - The designer app that consumes the designer component
 * `adaptivecards-site` - The generated website that is currently hosted at adaptivecards.io
-* `adaptivecards-visualizer` - The classic card Visualizer
 * `adaptivecards-react` - React.js library
 
 Removed JS packages:
