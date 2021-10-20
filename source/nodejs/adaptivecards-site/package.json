@@ -20,7 +20,6 @@
 		"adaptivecards": "^2.11.0-alpha.0",
 		"adaptivecards-designer": "^2.4.0-alpha.0",
 		"adaptivecards-templating": "^2.3.0-alpha.0",
-		"adaptivecards-visualizer": "^1.4.0-alpha.0",
 		"change-case": "^3.0.1",
 		"cheerio": "^1.0.0-rc.3",
 		"glob": "^7.1.6",
