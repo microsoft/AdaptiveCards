@@ -215,3 +215,37 @@ input[type='radio']:hover {
 	background-color: rgba(0, 0, 0, 0.0578);
 	border-color: rgba(0, 0, 0, 0.4458);
 }
+
+a.ac-anchor {
+	color:rgba(0, 62, 146, 1);
+	text-decoration:underline;
+}
+
+a.ac-anchor:active {
+	color:rgba(0, 103, 192, 0.8);
+	text-decoration:none;
+}
+
+a.ac-anchor:focus, a.ac-anchor:focus-visible { 
+	border-radius:4px;
+	box-shadow:0 0 0 3px rgba(0, 0, 0, 0.8956);
+	outline:1px solid transparent;
+}
+
+a.ac-anchor:hover {
+	color:rgba(0, 26, 104, 1);
+	text-decoration:none;
+}
+
+.ac-container.ac-selectable, .ac-columnSet.ac-selectable {
+	background-blend-mode:lighten;
+	background-color:rgba(0, 0, 0, 0);
+}
+
+.ac-container.ac-selectable:active, .ac-columnSet.ac-selectable:active {
+	background-color:rgba(0, 0, 0, 0.0241);
+}
+
+.ac-container.ac-selectable:hover, .ac-columnSet.ac-selectable:hover {
+	background-color:rgba(0, 0, 0, 0.0373);
+}
