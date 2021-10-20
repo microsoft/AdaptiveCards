@@ -7165,7 +7165,7 @@ export class AdaptiveCard extends ContainerWithActions {
         let swiper : HTMLElement = document.createElement("div");
         swiper.classList.add("swiper");
         swiper.classList.add("mySwiper");
-        swiper.innerHTML = "<div class=\"swiper-wrapper\"><div class=\"swiper-slide\">Slide 1</div><div class=\"swiper-slide\">Slide 2</div><div class=\"swiper-slide\">Slide 3</div></div><div class=\"swiper-pagination\"></div><div class=\"swiper-button-prev\"></div><div class=\"swiper-button-next\"></div><div class=\"swiper-scrollbar\"></div>";
+        swiper.innerHTML = "<div class=\"swiper-wrapper\"><div class=\"swiper-slide\">Slide 1</div><div class=\"swiper-slide\">Slide 2</div><div class=\"swiper-slide\">Slide 3</div></div><div class=\"swiper-pagination\"></div><div class=\"swiper-button-prev\"></div><div class=\"swiper-button-next\"></div>";
 
         swiper.addEventListener('onload', this.initializeSwiper);
         swiper.addEventListener('click', this.initializeSwiper);
@@ -7220,9 +7220,16 @@ export class AdaptiveCard extends ContainerWithActions {
 
     private initializeSwiper() : void {
         this.swiper = new Swiper.Swiper(".mySwiper", {
+            observer: true,
+            observeParents: true,
+            parallax:true,
+            direction: 'horizontal',
+            loop: true,
+            centeredSlides: true,
+            slidesPerView: 1,
             pagination: {
                 el: ".swiper-pagination",
-                dynamicBullets: true
+                clickable: true,
             },
             navigation: {
                 nextEl: ".swiper-button-next",
