@@ -14,6 +14,7 @@ import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 import { runInThisContext } from "vm";
+import * as Swiper from "swiper";
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -6115,8 +6116,9 @@ export class CarouselPage extends Container {
 
     protected internalRender(): HTMLElement | undefined {
 
-        let element = document.createElement("div");
+        let element : HTMLElement = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-carouselPage");
+        element.classList.add("swiper-slide");
 
         this.spacing = Enums.Spacing.None;
         this.separator = false;
@@ -7155,6 +7157,8 @@ export class AdaptiveCard extends ContainerWithActions {
         super.internalToJSON(target, context);
     }
 
+    swiper : Swiper.Swiper;
+
     protected internalRender(): HTMLElement | undefined {
         let renderedElement = super.internalRender();
 
@@ -7165,116 +7169,53 @@ export class AdaptiveCard extends ContainerWithActions {
             renderedElement.style.removeProperty("minHeight");
         }
 
+        let swiperDiv : HTMLElement = document.createElement("div");
+        swiperDiv.classList.add("swiper");
+        swiperDiv.classList.add("mySwiper");
+        swiperDiv.style.setProperty("display", "flex");
+        swiperDiv.style.setProperty("flex-direction", "column");
+        swiperDiv.style.setProperty("justify-content", "flex-start");
+        swiperDiv.style.setProperty("width", "600px");
+        swiperDiv.style.setProperty("height", "300px");
+
+        if (renderedElement !== undefined) {
+            renderedElement.classList.add("swiper-wrapper");
+            swiperDiv.appendChild(renderedElement);
+        }
+
+        let swiperPagination : HTMLElement = document.createElement("div");
+        swiperPagination.classList.add("swiper-pagination");
+        swiperDiv.appendChild(swiperPagination);
+
+        let swiperNext : HTMLElement = document.createElement("div");
+        swiperNext.classList.add("swiper-button-next");
+        swiperDiv.appendChild(swiperNext);
+
+        let swiperPrev : HTMLElement = document.createElement("div");
+        swiperPrev.classList.add("swiper-button-prev");
+        swiperDiv.appendChild(swiperPrev);
+
+        swiperDiv.addEventListener('onload', this.initializeSwiper);
+        swiperDiv.addEventListener('click', this.initializeSwiper);
+
         var bCarousel : boolean = this.TBD ? true : false;
 
-        if (renderedElement && bCarousel) {
-            var anchor = document.createElement("a");
-            anchor.classList.add(this.hostConfig.makeCssClassName("prev"));
-
-            anchor.onclick = (e) => {
-                this.plusSlides(-1);
-            }
-
-            anchor.innerHTML = "&#10094;";
-            renderedElement.appendChild(anchor);
-
-            var anchor_next = document.createElement("a");
-            anchor_next.classList.add(this.hostConfig.makeCssClassName("next"));
-            anchor_next.onclick = (e) => {
-                this.plusSlides(1);
-            }
-
-            anchor_next.innerHTML = "&#10095;";
-            renderedElement.appendChild(anchor_next);
-
-            var dots = document.createElement("div");
-            dots.style.textAlign = "center";
-            var numberOfItems : number = this.getItemCount();
-            for (let j = 0; j < numberOfItems; j++) {
-                var dot = document.createElement("span");
-                dot.classList.add(this.hostConfig.makeCssClassName("dot"));
-                dot.onclick = (e) => {
-                    this.showSlides(j)
-                };
-                dots.appendChild(dot);
-            }
-            renderedElement.appendChild(dots);
-
-            this.showFirstSlide(renderedElement);
-        }
-
-        return renderedElement;
+        return swiperDiv;
     }
 
-    private slideIndex = 0;
-    // Next/previous controls
-    private plusSlides(n : number) : void {
-        this.showSlides(this.slideIndex += n);
+    private initializeSwiper() : void {
+        this.swiper = new Swiper.Swiper(".mySwiper", {
+            pagination: {
+                el: ".swiper-pagination",
+                dynamicBullets: true
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev"
+            }
+        });
     }
 
-    // Thumbnail image controls
-    private currentSlide(n : number) : void {
-        this.showSlides(n);
-    }
-
-    private showFirstSlide(renderedCard : HTMLElement) : void {
-        let slides = renderedCard.getElementsByClassName("ac-carouselPage");
-        let dots = renderedCard.getElementsByClassName("dot");
-
-        // assuming n will never be smaller than -slides.length
-        if (slides.length > 0) {
-
-            // hide all carousel pages
-            for (let i = 0; i < slides.length; i++) {
-                let carouselPage : HTMLElement = slides[i] as HTMLElement;
-                carouselPage.style.display = "none";
-            }
-
-            // set all dots to be unactive
-            for (var i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-
-            let carouselPageToShow : HTMLElement = slides[this.slideIndex] as HTMLElement;
-            if (carouselPageToShow !== undefined)
-            {
-                carouselPageToShow.style.display = "block";
-            }
-            let dot : HTMLElement = dots[this.slideIndex] as HTMLElement;
-            if (dot !== undefined)
-            {
-                dots[this.slideIndex].className += " active";
-            }
-        }
-    }
-
-    private showSlides(n : number) : void {
-        let slides = document.getElementsByClassName("ac-carouselPage");
-        let dots = document.getElementsByClassName("dot");
-
-        // assuming n will never be smaller than -slides.length
-        if (slides.length > 0) {
-            this.slideIndex = (n + slides.length) % slides.length;
-        }
-
-        // hide all carousel pages
-        for (var i = 0; i < slides.length; i++) {
-            let carouselPage : HTMLElement = slides[i] as HTMLElement;
-            carouselPage.style.display = "none";
-        }
-
-        // set all dots to be unactive
-        for (var i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-
-        let carouselPageToShow : HTMLElement = slides[this.slideIndex] as HTMLElement;
-        if (carouselPageToShow !== undefined)
-        {
-            carouselPageToShow.style.display = "block";
-            dots[this.slideIndex].className += " active";
-        }
-    }
     protected getHasBackground(): boolean {
         return true;
     }
