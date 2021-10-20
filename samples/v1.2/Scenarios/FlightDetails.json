@@ -57,8 +57,7 @@
 							"height": "stretch"
 						}
 					],
-					"width": 45,
-					"height": "stretch"
+					"width": 45
 				},
 				{
 					"type": "Column",
@@ -143,8 +142,7 @@
 														{
 															"type": "TextRun",
 															"text": "Sat, Mar 4, 2017\n",
-															"isSubtle": true,
-															"wrap": true
+															"isSubtle": true
 														},
 														{
 															"type": "TextRun",
@@ -171,8 +169,7 @@
 														{
 															"type": "TextRun",
 															"text": "Sat, Mar 4, 2017\n",
-															"isSubtle": true,
-															"wrap": true
+															"isSubtle": true
 														},
 														{
 															"type": "TextRun",
