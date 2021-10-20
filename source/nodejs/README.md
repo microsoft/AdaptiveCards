@@ -4,13 +4,15 @@ This directory contains all the JS packages for adaptive cards:
 
 * `adaptivecards` - The renderer library
 * `adaptivecards-controls` - A controls library useful for the designer
-* `adaptivecards-fabric` - A set of Fabric UI extensions for the Adaptive Cards JS renderer
 * `adaptivecards-templating` - A JSON-to-JSON templating and data binding library for use with Adaptive Cards
 * `adaptivecards-designer` - The drag-drop designer component
 * `adaptivecards-designer-app` - The designer app that consumes the designer component
 * `adaptivecards-site` - The generated website that is currently hosted at adaptivecards.io
 * `adaptivecards-visualizer` - The classic card Visualizer
 * `adaptivecards-react` - React.js library
+
+Removed JS packages:
+* `adaptivecards-fabric` - A set of Fabric UI extensions for the Adaptive Cards JS renderer. This package has been deprecated, and please migrate to adaptivecards-fluentui. the source code is available in [21.09](https://github.com/microsoft/AdaptiveCards/releases/tag/21.09) or before releases.
 
 ## Bootstrap the repo
 
