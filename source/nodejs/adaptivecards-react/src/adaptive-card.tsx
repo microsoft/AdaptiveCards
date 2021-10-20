@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import * as AdaptiveCards from 'adaptivecards';
-import React, { 
+import React, {
   useContext,
   useCallback,
   useEffect,
@@ -11,7 +11,6 @@ import React, {
 } from 'react';
 import * as PropTypes from 'prop-types';
 import * as markdown from 'markdown-it';
-import HostConfigContext from './host-config-context';
 
 export interface Props {
   payload: object;
@@ -48,11 +47,15 @@ const defaultOpenUrlHandler = (action: AdaptiveCards.OpenUrlAction) => {
 };
 
 const setUpMarkdownIt = () => {
-  AdaptiveCards.AdaptiveCard.onProcessMarkdown = (text, result) => {
-    result.outputHtml = new markdown.default().render(text);
-    result.didProcess = true;
-  };
+  if (!AdaptiveCards.AdaptiveCard.onProcessMarkdown) {
+    AdaptiveCards.AdaptiveCard.onProcessMarkdown = (text, result) => {
+      result.outputHtml = new markdown.default().render(text);
+      result.didProcess = true;
+    };
+  }
 };
+
+setUpMarkdownIt();
 
 export const AdaptiveCard = ({
   payload,
@@ -69,10 +72,6 @@ export const AdaptiveCard = ({
   const cardRef = useRef<AdaptiveCards.AdaptiveCard>(
     new AdaptiveCards.AdaptiveCard()
   );
-  const { hostConfig: hostConfigContext } = useContext(HostConfigContext);
-
-  useEffect(setUpMarkdownIt, []);
-
   const executeAction = useCallback(
     (a: AdaptiveCards.Action) => {
       const type = a.getJsonTypeName();
@@ -113,17 +112,8 @@ export const AdaptiveCard = ({
   }, [executeAction]);
 
   useEffect(() => {
-    cardRef.current.hostConfig = new AdaptiveCards.HostConfig(
-      hostConfig?? hostConfigContext.configJson
-    );
-
-    if (!targetRef.current) {
-      return;
-    }
-    const result = cardRef.current.render() as HTMLElement;
-    targetRef.current.innerHTML = '';
-    targetRef.current.appendChild(result);
-  }, [hostConfig, hostConfigContext]);
+    cardRef.current.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
+  }, [hostConfig]);
 
   useEffect(() => {
     if (!targetRef.current) {
@@ -142,7 +132,7 @@ export const AdaptiveCard = ({
         setError(cardRenderError);
       }
     }
-  }, [payload, onError]);
+  }, [hostConfig, payload, onError]);
 
   if (error) {
     return <div style={{ color: 'red' }}>{error.message}</div>;
