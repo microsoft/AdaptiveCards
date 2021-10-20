@@ -7161,6 +7161,19 @@ export class AdaptiveCard extends ContainerWithActions {
     swiper : Swiper.Swiper;
 
     protected internalRender(): HTMLElement | undefined {
+
+        let swiper : HTMLElement = document.createElement("div");
+        swiper.classList.add("swiper");
+        swiper.classList.add("mySwiper");
+        swiper.innerHTML = "<div class=\"swiper-wrapper\"><div class=\"swiper-slide\">Slide 1</div><div class=\"swiper-slide\">Slide 2</div><div class=\"swiper-slide\">Slide 3</div></div><div class=\"swiper-pagination\"></div><div class=\"swiper-button-prev\"></div><div class=\"swiper-button-next\"></div><div class=\"swiper-scrollbar\"></div>";
+
+        swiper.addEventListener('onload', this.initializeSwiper);
+        swiper.addEventListener('click', this.initializeSwiper);
+
+        return swiper;
+
+        /*
+
         let renderedElement = super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
@@ -7202,6 +7215,7 @@ export class AdaptiveCard extends ContainerWithActions {
         var bCarousel : boolean = this.TBD ? true : false;
 
         return swiperDiv;
+        */
     }
 
     private initializeSwiper() : void {
