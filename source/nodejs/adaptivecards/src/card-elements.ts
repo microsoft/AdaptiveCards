@@ -6119,6 +6119,7 @@ export class CarouselPage extends Container {
         let element : HTMLElement = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-carouselPage");
         element.classList.add("swiper-slide");
+        element.style.display = "block";
 
         this.spacing = Enums.Spacing.None;
         this.separator = false;
