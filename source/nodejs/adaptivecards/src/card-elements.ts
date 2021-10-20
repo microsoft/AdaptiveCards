@@ -6135,7 +6135,7 @@ export class CarouselPage extends Container {
     {
         if (CarouselPage.bannedElementList === undefined)
         {
-            CarouselPage.bannedElementList = new Set([TextInput, Media]);
+            CarouselPage.bannedElementList = new Set(["Input.Text", "Input.Number", "Input.ChoiceSet", "Input.Date", "Input.Time", "Media"]);
         }
     }
 
@@ -6152,7 +6152,7 @@ export class CarouselPage extends Container {
             for (let item of jsonItems) {
                 let element = context.parseElement(this, item, !this.isDesignMode());
 
-                if (CarouselPage.bannedElementList.has(typeof item))
+                if (CarouselPage.bannedElementList.has(item.type))
                 {
                     // TODO: throw a warning or something to log
                     continue;
