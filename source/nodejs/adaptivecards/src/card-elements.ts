@@ -7161,19 +7161,6 @@ export class AdaptiveCard extends ContainerWithActions {
     swiper : Swiper.Swiper;
 
     protected internalRender(): HTMLElement | undefined {
-
-        let swiper : HTMLElement = document.createElement("div");
-        swiper.classList.add("swiper");
-        swiper.classList.add("mySwiper");
-        swiper.innerHTML = "<div class=\"swiper-wrapper\"><div class=\"swiper-slide\">Slide 1</div><div class=\"swiper-slide\">Slide 2</div><div class=\"swiper-slide\">Slide 3</div></div><div class=\"swiper-pagination\"></div><div class=\"swiper-button-prev\"></div><div class=\"swiper-button-next\"></div>";
-
-        swiper.addEventListener('onload', this.initializeSwiper);
-        swiper.addEventListener('click', this.initializeSwiper);
-
-        return swiper;
-
-        /*
-
         let renderedElement = super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
@@ -7182,6 +7169,68 @@ export class AdaptiveCard extends ContainerWithActions {
             // logic would never get triggered)
             renderedElement.style.removeProperty("minHeight");
         }
+
+
+		let anotherDiv : HTMLElement = document.createElement("div");
+
+		anotherDiv.innerHTML = "<div class=\"swiper mySwiper\">" +
+		"<div class=\"swiper-wrapper\">" +
+		  "<div class=\"swiper-slide\">Slide 1</div>" +
+		  "<div class=\"swiper-slide\">Slide 2</div>" +
+		  "<div class=\"swiper-slide\">Slide 3</div>" +
+		  "<div class=\"swiper-slide\">Slide 4</div>" +
+		  "<div class=\"swiper-slide\">Slide 5</div>" +
+		  "<div class=\"swiper-slide\">Slide 6</div>" +
+		  "<div class=\"swiper-slide\">Slide 7</div>" +
+		  "<div class=\"swiper-slide\">Slide 8</div>" +
+		  "<div class=\"swiper-slide\">Slide 9</div>" +
+		"</div>" +
+		"<div class=\"swiper-button-next\"></div>" +
+		"<div class=\"swiper-button-prev\"></div>" +
+		"<div class=\"swiper-pagination\"></div>" +
+	  "</div>";
+
+	  /*
+        let swiper : HTMLElement = document.createElement("div");
+        swiper.classList.add("swiper");
+		swiper.classList.add("mySwiper");
+
+		swiper.innerHTML = "<div class=\"swiper-wrapper\">" +
+			"<div class=\"swiper-slide\">Slide 1</div>" +
+			"<div class=\"swiper-slide\">Slide 2</div>" +
+			"<div class=\"swiper-slide\">Slide 3</div>" +
+			"</div>"+
+			"<div class=\"swiper-button-next\"></div>" +
+			"<div class=\"swiper-button-prev\"></div>" +
+			"<div class=\"swiper-pagination\"></div>";
+
+		anotherDiv.appendChild(swiper);
+*/
+
+		let button : HTMLElement = document.createElement("button");
+		button.setAttribute("type", "button");
+		button.innerText = "Click me!";
+
+		button.click = function(){
+			var swiper = new Swiper.Swiper(".mySwiper", {
+				pagination: {
+				  el: ".swiper-pagination",
+				},
+				navigation: {
+				  nextEl: ".swiper-button-next",
+				  prevEl: ".swiper-button-prev",
+				},
+			  });
+		};
+
+        button.addEventListener("click", this.initializeSwiper);
+
+		anotherDiv.appendChild(button);
+
+		renderedElement?.append(anotherDiv);
+
+		return renderedElement;
+		/*
 
         let swiperDiv : HTMLElement = document.createElement("div");
         swiperDiv.classList.add("swiper");
@@ -7215,27 +7264,19 @@ export class AdaptiveCard extends ContainerWithActions {
         var bCarousel : boolean = this.TBD ? true : false;
 
         return swiperDiv;
-        */
+		*/
     }
 
     private initializeSwiper() : void {
-        this.swiper = new Swiper.Swiper(".mySwiper", {
-            observer: true,
-            observeParents: true,
-            parallax:true,
-            direction: 'horizontal',
-            loop: true,
-            centeredSlides: true,
-            slidesPerView: 1,
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev"
-            }
-        });
+		var swiper = new Swiper.Swiper(".mySwiper", {
+			pagination: {
+			  el: ".swiper-pagination",
+			},
+			navigation: {
+			  nextEl: ".swiper-button-next",
+			  prevEl: ".swiper-button-prev",
+			},
+		  });
     }
 
     protected getHasBackground(): boolean {
