@@ -7260,16 +7260,15 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private initializeSwiper() : void {
-        this.swiper = new Swiper.Swiper(".mySwiper", {
-            pagination: {
-                el: ".swiper-pagination",
-                dynamicBullets: true
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev"
-            }
-        });
+        if (this.swiper == undefined) {
+            this.swiper = new Swiper.Swiper(".swiper", {
+                pagination: {
+                    el: ".swiper-pagination",
+                    dynamicBullets: true
+                }
+                
+            });
+        }
     }
 
     protected getHasBackground(): boolean {
