@@ -7215,6 +7215,7 @@ export class AdaptiveCard extends ContainerWithActions {
         if (bCarousel) {
             let swiper : HTMLElement = document.createElement("div");
             swiper.classList.add(this.hostConfig.makeCssClassName("swiper"));
+			swiper.classList.add("mySwiper");
 
             swiper.addEventListener('onload', this.initializeSwiper);
             swiper.addEventListener('click', this.initializeSwiper);
@@ -7230,11 +7231,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
             swiper.appendChild(swiperWrapper as HTMLElement);
 
-            var swiperPagination : HTMLElement = document.createElement("div");
-            swiperPagination.classList.add("swiper-pagination");
-            swiper.appendChild(swiperPagination);
-
-            let swiperNext : HTMLElement = document.createElement("div");
+			let swiperNext : HTMLElement = document.createElement("div");
             swiperNext.classList.add("swiper-button-next");
             swiper.appendChild(swiperNext);
 
@@ -7242,11 +7239,12 @@ export class AdaptiveCard extends ContainerWithActions {
             swiperPrev.classList.add("swiper-button-prev");
             swiper.appendChild(swiperPrev);
 
-            let swiperScroll : HTMLElement = document.createElement("div");
-            swiperScroll.classList.add("swiper-scrollbar");
-            swiper.appendChild(swiperScroll);
+            var swiperPagination : HTMLElement = document.createElement("div");
+            swiperPagination.classList.add("swiper-pagination");
+            swiper.appendChild(swiperPagination);
+
             return swiper;
-        } else { 
+        } else {
             let renderedElement = super.internalRender();
 
             if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
@@ -7261,12 +7259,15 @@ export class AdaptiveCard extends ContainerWithActions {
 
     private initializeSwiper() : void {
         if (this.swiper == undefined) {
-            this.swiper = new Swiper.Swiper(".swiper", {
+            this.swiper = new Swiper.Swiper(".mySwiper", {
+				loop: true,
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				  },
                 pagination: {
-                    el: ".swiper-pagination",
-                    dynamicBullets: true
+                    el: ".swiper-pagination"
                 }
-                
             });
         }
     }
