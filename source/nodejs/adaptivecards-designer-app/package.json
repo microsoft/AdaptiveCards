@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-designer-app",
-	"version": "0.5.3",
+	"version": "0.6.0-alpha.0",
 	"description": "Adaptive Card designer app",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -31,8 +31,8 @@
 		"webpack-dev-server": "^3.11.2"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.10.0",
-		"adaptivecards-designer": "^2.3.0",
-		"adaptivecards-templating": "^2.2.0"
+		"adaptivecards": "^2.11.0-alpha.0",
+		"adaptivecards-designer": "^2.4.0-alpha.0",
+		"adaptivecards-templating": "^2.3.0-alpha.0"
 	}
 }
