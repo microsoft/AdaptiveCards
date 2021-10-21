@@ -796,6 +796,38 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::ObjectModel::WinUI3::E
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
+bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::IAdaptiveFeatureRegistration const& featureRegistration)
+{
+    winrt::Windows::Foundation::Collections::IVector<rtom::AdaptiveRequirement> requirements = cardElement.Requirements();
+    bool meetsRequirementsLocal = true;
+
+    for (auto req : requirements)
+    {
+        //winrt::hstring name = req.Name();
+        winrt::hstring registrationVersion = featureRegistration.Get(req.Name());
+
+        if (registrationVersion.empty())
+        {
+            meetsRequirementsLocal = false;
+        }
+        else
+        {
+            std::string requirementVersionString = HStringToUTF8(req.Version());
+            if (requirementVersionString != "*")
+            {
+                SemanticVersion requirementSemanticVersion(requirementVersionString);
+                SemanticVersion registrationSemanticVersion(HStringToUTF8(registrationVersion));
+                if (registrationSemanticVersion < requirementSemanticVersion)
+                {
+                    meetsRequirementsLocal = false;
+                }
+            }
+        }
+    }
+
+    return meetsRequirementsLocal;
+}
+
 HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement,
                           _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration* featureRegistration,
                           _Out_ bool* meetsRequirements)

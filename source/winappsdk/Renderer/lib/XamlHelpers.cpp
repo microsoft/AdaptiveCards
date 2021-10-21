@@ -474,6 +474,35 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
+    void RenderFallback(rtom::IAdaptiveCardElement currentElement,
+                        rtrender::AdaptiveRenderContext renderContext,
+                        rtrender::AdaptiveRenderArgs renderArgs,
+                        winrt::com_ptr<rtxaml::IUIElement> result,
+                        winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement)
+    {
+        auto elementRenderers = renderContext.ElementRenderers();
+        auto elementFallback = currentElement.FallbackType();
+        winrt::hstring elementType = currentElement.ElementTypeString();
+
+        bool fallbackHandled = false;
+
+        switch (elementFallback)
+        {
+        case rtom::FallbackType::Content:
+        {
+            auto fallbackElement = currentElement.FallbackContent();
+
+            winrt::hstring fallbackElementType = fallbackElement.ElementTypeString();
+
+            WarnForFallbackContentElement(renderContext, elementType, fallbackElementType);
+
+
+        }
+
+        }
+
+    }
+
     HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
                            _In_ IAdaptiveRenderContext* renderContext,
                            _In_ IAdaptiveRenderArgs* renderArgs,

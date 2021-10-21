@@ -45,6 +45,13 @@ namespace AdaptiveCards::Rendering::WinUI3
             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* context,
             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
             std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback) noexcept;
+		
+		void BuildPanelChildren(
+            winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& children,
+			rtxaml::Controls::Panel ParentPanel,
+            rtrender::AdaptiveRenderContext context,
+            rtrender::AdaptiveRenderArgs renderArgs,
+            std::function<void(rtxaml::UIElement child)> childCreatedCallback);
 
         HRESULT BuildImage(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* adaptiveCardElement,
                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,

@@ -377,6 +377,8 @@ HRESULT MeetsRequirements(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiv
                           _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFeatureRegistration* featureRegistration,
                           _Out_ bool* meetsRequirements);
 
+bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::IAdaptiveFeatureRegistration const& featureRegistration);
+
 HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage* backgroundImageElement,
                                _Out_ BOOL* isValid);
 

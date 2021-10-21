@@ -83,6 +83,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
         ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
+        //winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
         RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
             containerAsContainerBase.Get(), containerBorder.Get(), renderContext, renderArgs, &containerStyle));
 
@@ -94,8 +95,10 @@ namespace AdaptiveCards::Rendering::WinUI3
         RETURN_IF_FAILED(containerPanel.As(&containerPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         RETURN_IF_FAILED(adaptiveContainer->get_Items(&childItems));
+        /*RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
+            childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));*/
         RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
-            childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
+            childItems.Get(), containerPanelAsPanel.Get(), renderContext, renderArgs, [](IUIElement*) {}));
 
         // If we changed the context's rtl setting, set it back after rendering the children
         if (updatedRtl)
@@ -127,7 +130,8 @@ namespace AdaptiveCards::Rendering::WinUI3
             ComPtr<IPanel> rootAsPanel;
             RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
 
-            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
+            /*XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());*/
+            XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, renderArgs);
 
             // Add rootElement to containerBorder
             ComPtr<IUIElement> rootAsUIElement;
