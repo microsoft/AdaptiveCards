@@ -11,7 +11,7 @@ This directory contains all the JS packages for adaptive cards:
 * `adaptivecards-react` - React.js library
 
 Removed JS packages:
-* `adaptivecards-fabric` - A set of Fabric UI extensions for the Adaptive Cards JS renderer. This package has been deprecated, and please migrate to adaptivecards-fluentui. the source code is available in [21.09](https://github.com/microsoft/AdaptiveCards/releases/tag/21.09) or before releases.
+* `adaptivecards-fabric` - A set of Fabric UI extensions for the Adaptive Cards JS renderer. This package has been deprecated. Please migrate to [`adaptivecards-fluentui`](https://www.npmjs.com/package/adaptivecards-fluentui). The source code is available in [21.09](https://github.com/microsoft/AdaptiveCards/releases/tag/21.09) or before releases.
 
 ## Bootstrap the repo
 
