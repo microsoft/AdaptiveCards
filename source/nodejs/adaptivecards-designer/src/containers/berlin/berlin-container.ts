@@ -5,92 +5,65 @@ import { HostContainer } from "../host-container";
 import * as hostConfigLight from "../../hostConfigs/berlin-light.json";
 import * as hostConfigDark from "../../hostConfigs/berlin-dark.json";
 
-abstract class BaseBerlinContainer extends HostContainer {
-    public renderTo(hostElement: HTMLElement) {
-        this.cardHost.classList.add("berlin-card");
-        let outerFrame = document.createElement("div");
-        outerFrame.classList.add("berlin-outer-container");
-        outerFrame.classList.add(this.getAdditionalClassName());
+enum ContainerSize {
+	Small = "Small",
+	Medium = "Medium",
+	Large = "Large"
+};
 
-        let header = document.createElement("div");
-        header.className = "berlin-header";
-        outerFrame.appendChild(header);
+enum ColorTheme {
+	Light = "Light",
+	Dark = "Dark"
+};
 
-        let frame = document.createElement("div");
-        frame.className = "berlin-inner-container";
-        frame.appendChild(this.cardHost);
+export class BerlinContainer extends HostContainer {
+	private readonly _containerSize: ContainerSize;
+	private readonly _colorTheme: ColorTheme;
 
-        outerFrame.appendChild(frame);
-        hostElement.appendChild(outerFrame);
-    }
-    get targetVersion(): Adaptive.Version {
-        return Adaptive.Versions.v1_5;
-    }
+	constructor(size: ContainerSize, theme: ColorTheme) {
+		super(`Berlin - ${theme} - ${size} (Test)`,
+			`containers/berlin-container-${theme.toLowerCase()}.css`);
+		this._containerSize = size;
+		this._colorTheme = theme;
+	}
 
-    abstract getAdditionalClassName(): string;
-}
+	public renderTo(hostElement: HTMLElement) {
+		this.cardHost.classList.add("berlin-card");
+		const outerFrame = document.createElement("div");
+		outerFrame.classList.add("berlin-outer-container");
+		outerFrame.classList.add(`berlin-${this._containerSize.toLowerCase()}-container`);
 
+		const header = document.createElement("div");
+		header.className = "berlin-header";
+		outerFrame.appendChild(header);
 
-abstract class LightBerlinContainer extends BaseBerlinContainer {
-    public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfigLight);
-    }
-}
+		const frame = document.createElement("div");
+		frame.className = "berlin-inner-container";
+		frame.appendChild(this.cardHost);
 
-export class LightBerlinLargeContainer extends LightBerlinContainer {
-    getAdditionalClassName(): string {
-        return "berlin-large-container";
-    }
-}
+		outerFrame.appendChild(frame);
+		hostElement.appendChild(outerFrame);
+	}
 
-export class LightBerlinSmallContainer extends LightBerlinContainer {
-    getAdditionalClassName(): string {
-        return "berlin-small-container";
-    }
-}
+	public getHostConfig(): Adaptive.HostConfig {
+		return new Adaptive.HostConfig((this._colorTheme === ColorTheme.Light) ? hostConfigLight : hostConfigDark);
+	}
 
-export class LightBerlinMediumContainer extends LightBerlinContainer {
-    getAdditionalClassName(): string {
-        return "berlin-medium-container";
-    }
-}
-
-abstract class DarkBerlinContainer extends BaseBerlinContainer {
 	public getBackgroundColor(): string {
-        return "#201E1F";
-    }
+		return this._colorTheme === ColorTheme.Light ? "#D2D2D2" : "#616161";
+	}
 
-	public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfigDark);
-    }
-}
+	get targetVersion(): Adaptive.Version {
+		return Adaptive.Versions.v1_5;
+	}
 
-export class DarkBerlinLargeContainer extends DarkBerlinContainer {
-    getAdditionalClassName(): string {
-        return "berlin-large-container";
-    }
-
-	public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfigDark);
-    }
-}
-
-export class DarkBerlinSmallContainer extends DarkBerlinContainer {
-    getAdditionalClassName(): string {
-        return "berlin-small-container";
-    }
-
-	public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfigDark);
-    }
-}
-
-export class DarkBerlinMediumContainer extends DarkBerlinContainer {
-    getAdditionalClassName(): string {
-        return "berlin-medium-container";
-    }
-
-	public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfigDark);
-    }
+	public static allContainers(): BerlinContainer[] {
+		let containers: BerlinContainer[] = [];
+		for (const size in ContainerSize) {
+			for (const theme in ColorTheme) {
+				containers.push(new BerlinContainer(size as ContainerSize, theme as ColorTheme));
+			}
+		}
+		return containers;
+	}
 }
