@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-extras",
-	"version": "0.1.2",
+	"version": "0.2.0-alpha.0",
 	"description": "Adaptive Card Extras",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -28,7 +28,7 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.10.0"
+		"adaptivecards": "^2.11.0-alpha.0"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
