@@ -8,9 +8,7 @@ interface HostConfig {
   hostConfig: object;
 }
 
-const HostConfigContext = createContext<HostConfig>({ hostConfig: null });
-
-export default HostConfigContext;
+export const HostConfigContext = createContext<HostConfig>({ hostConfig: null });
 
 export type PropsWithoutHostConfig = Omit<Props, 'hostConfig'>;
 
