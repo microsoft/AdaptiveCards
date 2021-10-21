@@ -43,7 +43,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             multilineView.setId(inputBlock.getId())
             multilineView.setVisibilty(to: inputBlock.getIsVisible())
             if let placeholderString = inputBlock.getPlaceholder() {
-                multilineView.setPlaceholder(placeholder: placeholderString)
+                multilineView.setPlaceholder(placeholderString)
             }
             if let valueString = inputBlock.getValue(), !valueString.isEmpty {
                 multilineView.setValue(value: valueString, maximumLen: inputBlock.getMaxLength())

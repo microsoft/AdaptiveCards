@@ -66,9 +66,9 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         addTrackingArea(trackingArea)
     }
     
-    func setPlaceholder(placeholder: String) {
+    func setPlaceholder(_ placeholder: String) {
         let placeholderValue = NSMutableAttributedString(string: placeholder)
-        placeholderValue.addAttributes([.foregroundColor: NSColor.placeholderTextColor, .font: config.font], range: NSRange(location: 0, length: placeholderValue.length))
+        placeholderValue.addAttributes([.foregroundColor: config.placeholderTextColor, .font: config.font], range: NSRange(location: 0, length: placeholderValue.length))
         // 2 is added as extra padding to match single line input text element
         textView.placeholderLeftPadding = config.leftPadding + 2
         textView.placeholderAttrString = placeholderValue
