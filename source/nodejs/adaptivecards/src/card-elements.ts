@@ -15,6 +15,7 @@ import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 import { runInThisContext } from "vm";
 import * as Swiper from "swiper";
+import 'swiper/css'
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -5765,6 +5766,54 @@ export class Container extends ContainerBase {
         super.applyBackground();
     }
 
+    protected carouselRender(): HTMLElement | undefined {
+        let swiperWrapper : HTMLElement = document.createElement("div");
+        swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
+
+        //swiperWrapper.style.display = "flex";
+        //swiperWrapper.style.flexDirection = "column";
+
+        if (GlobalSettings.useAdvancedCardBottomTruncation) {
+            // Forces the container to be at least as tall as its content.
+            //
+            // Fixes a quirk in Chrome where, for nested flex elements, the
+            // inner element's height would never exceed the outer element's
+            // height. This caused overflow truncation to break -- containers
+            // would always be measured as not overflowing, since their heights
+            // were constrained by their parents as opposed to truly reflecting
+            // the height of their content.
+            //
+            // See the "Browser Rendering Notes" section of this answer:
+            // https://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
+            swiperWrapper.style.minHeight = '-webkit-min-content';
+        }
+
+        //switch (this.getEffectiveVerticalContentAlignment()) {
+        //    case Enums.VerticalAlignment.Center:
+        //        swiperWrapper.style.justifyContent = "center";
+        //        break;
+        //    case Enums.VerticalAlignment.Bottom:
+        //        swiperWrapper.style.justifyContent = "flex-end";
+        //        break;
+        //    default:
+        //        swiperWrapper.style.justifyContent = "flex-start";
+        //        break;
+        //}
+
+        if (this._items.length > 0) {
+            for (let item of this._items) {
+                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
+
+                if (renderedItem) {
+                    Utils.appendChild(swiperWrapper, renderedItem);
+
+                    this._renderedItems.push(item);
+                }
+            }
+        }
+        return swiperWrapper;
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._renderedItems = [];
 
@@ -6116,21 +6165,23 @@ export class CarouselPage extends Container {
 
     protected internalRender(): HTMLElement | undefined {
 
-        let element : HTMLElement = document.createElement("div");
-        element.className = this.hostConfig.makeCssClassName("ac-carouselPage");
-        element.classList.add("swiper-slide");
-        element.style.display = "block";
+        let swiperSlide : HTMLElement = document.createElement("div");
+        swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
 
-        this.spacing = Enums.Spacing.None;
-        this.separator = false;
+        //let element : HTMLElement = document.createElement("div");
+        //element.style.display = "block";
+
+        //this.spacing = Enums.Spacing.None;
+        //this.separator = false;
 
         let renderedElement = super.internalRender();
-        Utils.appendChild(element, renderedElement);
-        if (GlobalSettings.useAdvancedCardBottomTruncation) {
-            // See comment in Container.internalRender()
-            element.style.minHeight = '-webkit-min-content';
-        }
-        return element;
+        Utils.appendChild(swiperSlide, renderedElement);
+        //if (GlobalSettings.useAdvancedCardBottomTruncation) {
+        //    // See comment in Container.internalRender()
+        //    element.style.minHeight = '-webkit-min-content';
+        //}
+        //return element;
+        return swiperSlide;
     }
     static bannedElementList : Set<any>;
 
@@ -7161,114 +7212,57 @@ export class AdaptiveCard extends ContainerWithActions {
     swiper : Swiper.Swiper;
 
     protected internalRender(): HTMLElement | undefined {
-        let renderedElement = super.internalRender();
-
-        if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
-            // Unlike containers, the root card element should be allowed to
-            // be shorter than its content (otherwise the overflow truncation
-            // logic would never get triggered)
-            renderedElement.style.removeProperty("minHeight");
-        }
-
-
-		let anotherDiv : HTMLElement = document.createElement("div");
-
-		anotherDiv.innerHTML = "<div class=\"swiper mySwiper\">" +
-		"<div class=\"swiper-wrapper\">" +
-		  "<div class=\"swiper-slide\">Slide 1</div>" +
-		  "<div class=\"swiper-slide\">Slide 2</div>" +
-		  "<div class=\"swiper-slide\">Slide 3</div>" +
-		  "<div class=\"swiper-slide\">Slide 4</div>" +
-		  "<div class=\"swiper-slide\">Slide 5</div>" +
-		  "<div class=\"swiper-slide\">Slide 6</div>" +
-		  "<div class=\"swiper-slide\">Slide 7</div>" +
-		  "<div class=\"swiper-slide\">Slide 8</div>" +
-		  "<div class=\"swiper-slide\">Slide 9</div>" +
-		"</div>" +
-		"<div class=\"swiper-button-next\"></div>" +
-		"<div class=\"swiper-button-prev\"></div>" +
-		"<div class=\"swiper-pagination\"></div>" +
-	  "</div>";
-
-	  /*
-        let swiper : HTMLElement = document.createElement("div");
-        swiper.classList.add("swiper");
-		swiper.classList.add("mySwiper");
-
-		swiper.innerHTML = "<div class=\"swiper-wrapper\">" +
-			"<div class=\"swiper-slide\">Slide 1</div>" +
-			"<div class=\"swiper-slide\">Slide 2</div>" +
-			"<div class=\"swiper-slide\">Slide 3</div>" +
-			"</div>"+
-			"<div class=\"swiper-button-next\"></div>" +
-			"<div class=\"swiper-button-prev\"></div>" +
-			"<div class=\"swiper-pagination\"></div>";
-
-		anotherDiv.appendChild(swiper);
-*/
-
-		let button : HTMLElement = document.createElement("button");
-		button.setAttribute("type", "button");
-		button.innerText = "Click me!";
-
-		button.click = function(){
-			var swiper = new Swiper.Swiper(".mySwiper", {
-				pagination: {
-				  el: ".swiper-pagination",
-				},
-				navigation: {
-				  nextEl: ".swiper-button-next",
-				  prevEl: ".swiper-button-prev",
-				},
-			  });
-		};
-
-        button.addEventListener("click", this.initializeSwiper);
-
-		anotherDiv.appendChild(button);
-
-		renderedElement?.append(anotherDiv);
-
-		return renderedElement;
-		/*
-
-        let swiperDiv : HTMLElement = document.createElement("div");
-        swiperDiv.classList.add("swiper");
-        swiperDiv.classList.add("mySwiper");
-        swiperDiv.style.setProperty("display", "flex");
-        swiperDiv.style.setProperty("flex-direction", "column");
-        swiperDiv.style.setProperty("justify-content", "flex-start");
-        swiperDiv.style.setProperty("width", "600px");
-        swiperDiv.style.setProperty("height", "300px");
-
-        if (renderedElement !== undefined) {
-            renderedElement.classList.add("swiper-wrapper");
-            swiperDiv.appendChild(renderedElement);
-        }
-
-        let swiperPagination : HTMLElement = document.createElement("div");
-        swiperPagination.classList.add("swiper-pagination");
-        swiperDiv.appendChild(swiperPagination);
-
-        let swiperNext : HTMLElement = document.createElement("div");
-        swiperNext.classList.add("swiper-button-next");
-        swiperDiv.appendChild(swiperNext);
-
-        let swiperPrev : HTMLElement = document.createElement("div");
-        swiperPrev.classList.add("swiper-button-prev");
-        swiperDiv.appendChild(swiperPrev);
-
-        swiperDiv.addEventListener('onload', this.initializeSwiper);
-        swiperDiv.addEventListener('click', this.initializeSwiper);
 
         var bCarousel : boolean = this.TBD ? true : false;
+        if (bCarousel) {
+            let swiper : HTMLElement = document.createElement("div");
+            swiper.classList.add(this.hostConfig.makeCssClassName("swiper"));
 
-        return swiperDiv;
-		*/
+            swiper.addEventListener('onload', this.initializeSwiper);
+            swiper.addEventListener('click', this.initializeSwiper);
+
+            let swiperWrapper : HTMLElement = super.carouselRender() as HTMLElement;
+
+            if (GlobalSettings.useAdvancedCardBottomTruncation && swiperWrapper) {
+                // Unlike containers, the root card element should be allowed to
+                // be shorter than its content (otherwise the overflow truncation
+                // logic would never get triggered)
+                swiperWrapper.style.removeProperty("minHeight");
+            }
+
+            swiper.appendChild(swiperWrapper as HTMLElement);
+
+            var swiperPagination : HTMLElement = document.createElement("div");
+            swiperPagination.classList.add("swiper-pagination");
+            swiper.appendChild(swiperPagination);
+
+            let swiperNext : HTMLElement = document.createElement("div");
+            swiperNext.classList.add("swiper-button-next");
+            swiper.appendChild(swiperNext);
+
+            let swiperPrev : HTMLElement = document.createElement("div");
+            swiperPrev.classList.add("swiper-button-prev");
+            swiper.appendChild(swiperPrev);
+
+            let swiperScroll : HTMLElement = document.createElement("div");
+            swiperScroll.classList.add("swiper-scrollbar");
+            swiper.appendChild(swiperScroll);
+            return swiper;
+        } else { 
+            let renderedElement = super.internalRender();
+
+            if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
+                // Unlike containers, the root card element should be allowed to
+                // be shorter than its content (otherwise the overflow truncation
+                // logic would never get triggered)
+                renderedElement.style.removeProperty("minHeight");
+            }
+            return renderedElement;
+        }
     }
 
     private initializeSwiper() : void {
-		var swiper = new Swiper.Swiper(".mySwiper", {
+		var swiper = new Swiper.Swiper(".swiper", {
 			pagination: {
 			  el: ".swiper-pagination",
 			},
