@@ -6,6 +6,7 @@ const v12TestCases: string[] = [];
 const v13TestCases: string[] = ["Elements/Input.Text.ErrorMessage"];
 const v14TestCases: string[] = [];
 const v15TestCases: string[] = [];
+const v16TestCases: string[] = ["Elements/Carousel", "Elements/Carousel.ScenarioCards"];
 
 function fixTestCases(list: string[], versionNumber: string) {
     const fixedTestCasesList: string[] = [];
@@ -31,7 +32,8 @@ export function getTestCasesList() {
         fixTestCases(v12TestCases, "1.2"),
         fixTestCases(v13TestCases, "1.3"),
         fixTestCases(v14TestCases, "1.4"),
-        fixTestCases(v15TestCases, "1.5"));
+        fixTestCases(v15TestCases, "1.5"),
+        fixTestCases(v16TestCases, "1.6"));
 
     return testCasesList;
 }
