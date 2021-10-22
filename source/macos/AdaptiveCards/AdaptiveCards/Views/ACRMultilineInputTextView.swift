@@ -17,7 +17,7 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         BundleUtils.loadNibNamed("ACRMultilineInputTextView", owner: self)
         textView.allowsUndo = true
         setupViews()
-        setupConstaints()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -28,7 +28,7 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         addSubview(contentView)
     }
     
-    private func setupConstaints() {
+    private func setupConstraints() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
@@ -53,8 +53,8 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         textView.isAutomaticTextReplacementEnabled = false
         textView.smartInsertDeleteEnabled = false
         textView.font = config.font
-        // 2 is added as extra padding to match single line input text element
-        textView.textContainer?.lineFragmentPadding = config.leftPadding + 2
+        textView.textContainer?.lineFragmentPadding = 0
+        textView.textContainerInset = NSSize(width: config.multilineFieldInsets.left, height: config.multilineFieldInsets.top)
         wantsLayer = true
         layer?.borderColor = config.borderColor.cgColor
         layer?.borderWidth = config.borderWidth
@@ -69,8 +69,8 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     func setPlaceholder(_ placeholder: String) {
         let placeholderValue = NSMutableAttributedString(string: placeholder)
         placeholderValue.addAttributes([.foregroundColor: config.placeholderTextColor, .font: config.font], range: NSRange(location: 0, length: placeholderValue.length))
-        // 2 is added as extra padding to match single line input text element
-        textView.placeholderLeftPadding = config.leftPadding + 2
+        textView.placeholderLeftPadding = config.multilineFieldInsets.left
+        textView.placeholderTopPadding = config.multilineFieldInsets.top
         textView.placeholderAttrString = placeholderValue
     }
     

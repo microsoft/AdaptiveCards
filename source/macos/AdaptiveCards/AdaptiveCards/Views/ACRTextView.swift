@@ -4,6 +4,7 @@ class ACRTextView: NSTextView, SelectActionHandlingProtocol {
     weak var responderDelegate: ACRTextViewResponderDelegate?
     var placeholderAttrString: NSAttributedString?
     var placeholderLeftPadding: CGFloat?
+    var placeholderTopPadding: CGFloat?
     var target: TargetHandler?
     
     override var intrinsicContentSize: NSSize {
@@ -37,7 +38,7 @@ class ACRTextView: NSTextView, SelectActionHandlingProtocol {
         super.draw(dirtyRect)
 
         guard string.isEmpty else { return }
-        placeholderAttrString?.draw(in: dirtyRect.insetBy(dx: placeholderLeftPadding ?? 5, dy: 0))
+        placeholderAttrString?.draw(in: dirtyRect.insetBy(dx: placeholderLeftPadding ?? 5, dy: placeholderTopPadding ?? 0))
     }
     
     override func resignFirstResponder() -> Bool {
