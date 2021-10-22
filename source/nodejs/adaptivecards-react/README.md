@@ -22,7 +22,7 @@ import { AdaptiveCard } from "adaptivecards-react";
 
 ### Usage
 
-Basic usage:
+- Basic usage:
 
 ```js
 var card = {
@@ -51,11 +51,17 @@ var hostConfig = {
 <AdaptiveCard payload={card} hostConfig={hostConfig} />
 ```
 
-Non-interactible:
+
+- react [context](https://reactjs.org/docs/context.html):
+
+Context provides a way to pass data through the component tree without having to pass props down manually at every level.
 
 ```js
-<AdaptiveCardView
-    payload={card}
-    style={{ pointerEvents: 'none' }}
-/>
+import {ProvidesHostConfigContext, AdaptiveCardUsingHostConfigContext } from "adaptivecards-react";
+
+      <ProvidesHostConfigContext hostConfig={hostConfig} >
+        <...>
+            <AdaptiveCardUsingHostConfigContext payload={card}/>
+        </...>    
+      </ProvidesHostConfigContext>
 ```
