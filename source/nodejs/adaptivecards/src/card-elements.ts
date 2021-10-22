@@ -18,6 +18,7 @@ import Swiper, {A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrol
 import { PaginationOptions } from "../../node_modules/swiper/types/modules/pagination";
 import { NavigationOptions } from "../../node_modules/swiper/types/modules/navigation";
 import { S_IWUSR } from "constants";
+import 'swiper/css';
 
 // eslint-disable-next-line no-var
 var swiper: Swiper | undefined;

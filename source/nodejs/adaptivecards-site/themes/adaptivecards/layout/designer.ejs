@@ -323,30 +323,3 @@
 <div style="display: flex; flex-direction: column; height: 100%; ">
 	<div id="designerRootHost"></div>
 </div>
-
-<button onclick="InstantiateSwiper()">Click me!</button>
-
-
-
-  <!-- Initialize Swiper -->
-  <script>
-	  function InstantiateSwiper(){
-	new Swiper(".mySwiper", {
-		loop: true,
-		autoplay: {
-			delay: 2000,
-		},
-	keyboard: {
-    	enabled: true,
-    	onlyInViewport: false,
-	},
-	  pagination: {
-		el: ".swiper-pagination",
-	  },
-	  navigation: {
-		nextEl: ".swiper-button-next",
-		prevEl: ".swiper-button-prev",
-	  },
-	});
-}
-  </script>
