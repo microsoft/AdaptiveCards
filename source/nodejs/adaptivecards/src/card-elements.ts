@@ -15,6 +15,7 @@ import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 import { runInThisContext } from "vm";
 import * as Swiper from "swiper";
+import 'swiper/css'
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -7207,7 +7208,7 @@ export class AdaptiveCard extends ContainerWithActions {
         super.internalToJSON(target, context);
     }
 
-    swiper : Swiper.Swiper;
+    gSwiper : Swiper.Swiper;
 
     protected internalRender(): HTMLElement | undefined {
 
@@ -7260,15 +7261,15 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private initializeSwiper() : void {
-        if (this.swiper == undefined) {
-            this.swiper = new Swiper.Swiper(".swiper", {
-                pagination: {
-                    el: ".swiper-pagination",
-                    dynamicBullets: true
-                }
-                
-            });
-        }
+		var gSwiper = new Swiper.Swiper(".swiper", {
+			pagination: {
+			  el: ".swiper-pagination",
+			},
+			navigation: {
+			  nextEl: ".swiper-button-next",
+			  prevEl: ".swiper-button-prev",
+			},
+		  });
     }
 
     protected getHasBackground(): boolean {
