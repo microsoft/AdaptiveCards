@@ -14,7 +14,23 @@ import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 import { runInThisContext } from "vm";
-import * as Swiper from "swiper";
+import Swiper, {A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrollbar, SwiperOptions} from "swiper";
+import { PaginationOptions } from "../../node_modules/swiper/types/modules/pagination";
+import { NavigationOptions } from "../../node_modules/swiper/types/modules/navigation";
+import { S_IWUSR } from "constants";
+
+// eslint-disable-next-line no-var
+var swiper: Swiper | undefined;
+
+Swiper.use([
+    Navigation,
+    Pagination,
+    Scrollbar,
+    A11y,
+    History,
+    Keyboard,
+    Autoplay
+]);
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -7207,18 +7223,20 @@ export class AdaptiveCard extends ContainerWithActions {
         super.internalToJSON(target, context);
     }
 
-    swiper : Swiper.Swiper;
+    // swiper : Swiper;
+	static swiperContainer: HTMLElement;
+	static pagination: HTMLElement;
+	static prevElementDiv: HTMLElement;
+	static nextElementDiv: HTMLElement;
 
     protected internalRender(): HTMLElement | undefined {
 
         var bCarousel : boolean = this.TBD ? true : false;
         if (bCarousel) {
-            let swiper : HTMLElement = document.createElement("div");
-            swiper.classList.add(this.hostConfig.makeCssClassName("swiper"));
-			swiper.classList.add("mySwiper");
 
-            swiper.addEventListener('onload', this.initializeSwiper);
-            swiper.addEventListener('click', this.initializeSwiper);
+			AdaptiveCard.swiperContainer = document.createElement("div");
+            AdaptiveCard.swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
+			AdaptiveCard.swiperContainer.classList.add("mySwiper");
 
             let swiperWrapper : HTMLElement = super.carouselRender() as HTMLElement;
 
@@ -7229,21 +7247,24 @@ export class AdaptiveCard extends ContainerWithActions {
                 swiperWrapper.style.removeProperty("minHeight");
             }
 
-            swiper.appendChild(swiperWrapper as HTMLElement);
+            AdaptiveCard.swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
-			let swiperNext : HTMLElement = document.createElement("div");
-            swiperNext.classList.add("swiper-button-next");
-            swiper.appendChild(swiperNext);
+			AdaptiveCard.nextElementDiv = document.createElement("div");
+            AdaptiveCard.nextElementDiv.classList.add("swiper-button-next");
+            AdaptiveCard.swiperContainer.appendChild(AdaptiveCard.nextElementDiv);
 
-            let swiperPrev : HTMLElement = document.createElement("div");
-            swiperPrev.classList.add("swiper-button-prev");
-            swiper.appendChild(swiperPrev);
+			AdaptiveCard.prevElementDiv = document.createElement("div");
+            AdaptiveCard.prevElementDiv.classList.add("swiper-button-prev");
 
-            var swiperPagination : HTMLElement = document.createElement("div");
-            swiperPagination.classList.add("swiper-pagination");
-            swiper.appendChild(swiperPagination);
+            AdaptiveCard.swiperContainer.appendChild(AdaptiveCard.prevElementDiv);
 
-            return swiper;
+			AdaptiveCard.pagination = document.createElement("div");
+            AdaptiveCard.pagination.classList.add("swiper-pagination");
+            AdaptiveCard.swiperContainer.appendChild(AdaptiveCard.pagination);
+
+            this.initializeSwiper();
+
+            return AdaptiveCard.swiperContainer;
         } else {
             let renderedElement = super.internalRender();
 
@@ -7258,18 +7279,26 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private initializeSwiper() : void {
-        if (this.swiper == undefined) {
-            this.swiper = new Swiper.Swiper(".mySwiper", {
+
+		// if (swiper === undefined)
+		//{
+			let paginationOpts: PaginationOptions = {
+				el: AdaptiveCard.pagination
+			};
+
+			let navigationOpts: NavigationOptions = {
+				prevEl: AdaptiveCard.prevElementDiv,
+				nextEl: AdaptiveCard.nextElementDiv
+			}
+
+			const swiperOptions: SwiperOptions = {
 				loop: true,
-				navigation: {
-					nextEl: '.swiper-button-next',
-					prevEl: '.swiper-button-prev',
-				  },
-                pagination: {
-                    el: ".swiper-pagination"
-                }
-            });
-        }
+				pagination: paginationOpts,
+				navigation: navigationOpts,
+			};
+
+			swiper = new Swiper(AdaptiveCard.swiperContainer, swiperOptions);
+		//}
     }
 
     protected getHasBackground(): boolean {
