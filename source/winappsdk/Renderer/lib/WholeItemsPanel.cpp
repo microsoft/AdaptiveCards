@@ -23,49 +23,29 @@ using namespace ABI::Windows::UI::Xaml::Media;
 static const float OutsidePanelY = -1000.0f;
 namespace AdaptiveCards::Rendering::WinUI3
 {
-    HRESULT WholeItemsPanel::RuntimeClassInitialize()
-    {
-        ComPtr<IPanelFactory> spFactory;
-        ComPtr<IInspectable> spInnerInspectable;
-        ComPtr<IPanel> spInnerPanel;
-        RETURN_IF_FAILED(
-            Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Panel).Get(), &spFactory));
-        RETURN_IF_FAILED(spFactory->CreateInstance(static_cast<IWholeItemsPanel*>(this),
-                                                   spInnerInspectable.GetAddressOf(),
-                                                   spInnerPanel.GetAddressOf()));
-        RETURN_IF_FAILED(SetComposableBasePointers(spInnerInspectable.Get(), spFactory.Get()));
-
-        return S_OK;
-    }
-
     // IFrameworkElementOverrides
-    HRESULT WholeItemsPanel::MeasureOverride(Size availableSize, __RPC__out Size* returnValue)
+    winrt::Windows::Foundation::Size WholeItemsPanel::MeasureOverride(winrt::Windows::Foundation::Size& availableSize)
     {
         unsigned int count{};
         float currentHeight{};
         float maxDesiredWidth{};
         bool visible{true};
 
-        ComPtr<IVector<UIElement*>> spChildren;
-        ComPtr<IPanel> spThisAsPanel;
-        RETURN_IF_FAILED(QueryInterface(__uuidof(IPanel), reinterpret_cast<void**>(spThisAsPanel.GetAddressOf())));
-        RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
-        RETURN_IF_FAILED(spChildren->get_Size(&count));
+        auto children = this->Children();
+        count = children.Size();
 
-        const Size noVerticalLimit{availableSize.Width, numeric_limits<float>::infinity()};
+        const winrt::Windows::Foundation::Size noVerticalLimit{availableSize.Width, numeric_limits<float>::infinity()};
 
         m_visibleCount = count;
-        for (unsigned int i{}; i < count; ++i)
-        {
-            ComPtr<IUIElement> spChild;
-            RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
 
-            RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
+        for (int i = 0; i < count; i++)
+        {
+            auto child = children.GetAt(i);
+            child.Measure(noVerticalLimit);
 
             if (visible)
             {
-                Size childSize;
-                RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
+                winrt::Windows::Foundation::Size childSize = child.DesiredSize();
 
                 float newHeight = currentHeight + childSize.Height;
 
@@ -80,29 +60,26 @@ namespace AdaptiveCards::Rendering::WinUI3
                     //    2.2 If the child is a text block: only if it cannot meet its minlines constraint (default is
                     //    1) 2.3 If the child is a image or a shape (circular cropped image):
                     //            - stretched images might be resized
-                    ComPtr<IPanel> spChildAsPanel;
-                    if (SUCCEEDED(spChild.As(&spChildAsPanel)))
+
+                    if (auto childAsPanel = child.try_as<rtxaml::Controls::Panel>())
                     {
                         m_isTruncated = true;
 
                         // There is a tricky scenario here: a subgroup might have asked for more size than available while
                         // Still being able to reduce its size, for example if it has a minSize which can be respected
-                        if (keepItem == false)
+                        if (!keepItem)
                         {
-                            Size remainingSpace = {availableSize.Width, static_cast<float>(availableHeightForItem)};
-                            RETURN_IF_FAILED(spChild->Measure(remainingSpace));
-                            bool isChildTruncated = false;
-                            RETURN_IF_FAILED(IsAnySubgroupTruncated(spChildAsPanel.Get(), &isChildTruncated));
-                            keepItem = !isChildTruncated;
-                            m_isTruncated = !keepItem;
+                            winrt::Windows::Foundation::Size remainingSpace = {availableSize.Width, static_cast<float>(availableHeightForItem)};
+
+                            child.Measure(remainingSpace);
+
+                            m_isTruncated = IsAnySubgroupTruncated(childAsPanel);
                         }
                     }
-                    ComPtr<ITextBlock> spTextBlock;
-                    if (SUCCEEDED(spChild.As(&spTextBlock)))
+                    if (auto childAsTextBlock = child.try_as<rtxaml::Controls::TextBlock>())
                     {
-                        TextWrapping currentWrap = TextWrapping::TextWrapping_Wrap;
-                        RETURN_IF_FAILED(spTextBlock->get_TextWrapping(&currentWrap));
-                        if (currentWrap == TextWrapping::TextWrapping_NoWrap)
+                        rtxaml::TextWrapping currentWrap = rtxaml::TextWrapping::Wrap;
+                        if (childAsTextBlock.TextWrapping() == rtxaml::TextWrapping::NoWrap)
                         {
                             // If the text already does not wrap, it should not be displayed
                             // Unless it is the first item of the group
@@ -114,11 +91,11 @@ namespace AdaptiveCards::Rendering::WinUI3
                             // In order to do this, we remove the wrapping:
                             //   1. if the textblock has a min lines constraint, this will remain as it is implemented with MinHeight
                             //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
-                            const Size noLimit{numeric_limits<float>::infinity(), numeric_limits<float>::infinity()};
-                            RETURN_IF_FAILED(spTextBlock->put_TextWrapping(TextWrapping::TextWrapping_NoWrap));
-                            RETURN_IF_FAILED(spChild->Measure(noLimit));
-                            RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
-                            RETURN_IF_FAILED(spTextBlock->put_TextWrapping(currentWrap));
+                            winrt::Windows::Foundation::Size noLimit{numeric_limits<float>::infinity(), numeric_limits<float>::infinity()};
+                            childAsTextBlock.TextWrapping(rtxaml::TextWrapping::NoWrap);
+                            childAsTextBlock.Measure(noLimit);
+                            childSize = childAsTextBlock.DesiredSize();
+                            currentWrap = childAsTextBlock.TextWrapping();
 
                             // If the single line fits, let's keep the textblock
                             // In any case, we keep the first item of the first group
@@ -134,55 +111,26 @@ namespace AdaptiveCards::Rendering::WinUI3
 
                                     // Text did not reach its minHeight property and we have to clear it otherwise
                                     // ellipses won't be displayed correctly...
-                                    ComPtr<IFrameworkElementStatics> spFrameworkElementStatics;
-                                    ComPtr<IDependencyProperty> spMinHeightProperty;
-                                    ComPtr<IDependencyObject> spChildAsDO;
-                                    RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(
-                                        HStringReference(RuntimeClass_Windows_UI_Xaml_FrameworkElement).Get(), &spFrameworkElementStatics));
-                                    RETURN_IF_FAILED(spFrameworkElementStatics->get_MinHeightProperty(
-                                        spMinHeightProperty.GetAddressOf()));
-                                    RETURN_IF_FAILED(spChild.As(&spChildAsDO));
-                                    RETURN_IF_FAILED(spChildAsDO->ClearValue(spMinHeightProperty.Get()));
+                                    rtxaml::IFrameworkElementStatics frameworkElementStatics;
+                                    child.ClearValue(frameworkElementStatics.MinHeightProperty());
                                 }
                                 else
                                 {
                                     keepItem = false;
                                     // we must measure it a last time as we have changed its properties
                                     // if we keep it, it will be measured again with the exact remaining space
-                                    RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
+                                   child.Measure(noVerticalLimit);
+
                                 }
                             }
                             m_isTruncated = !keepItem;
                         }
                     }
-                    ComPtr<IImage> spImage;
-                    if (SUCCEEDED(spChild.As(&spImage)))
+                    if (auto childAsImage = child.try_as<rtxaml::Controls::Image>())
                     {
-                        // it's an inline image
-                        // If the image is stretched, it might be adapted to the available size
-                        ComPtr<IFrameworkElement> spChildFE;
-                        RETURN_IF_FAILED(spChild.As(&spChildFE));
-                        if (!HasExplicitSize(spChildFE.Get()))
+                        if (!HasExplicitSize(childAsImage))
                         {
-                            // Image has no explicit size: we will try to resize it uniformly
-                            RETURN_IF_FAILED(spImage->put_Stretch(ABI::Windows::UI::Xaml::Media::Stretch::Stretch_Uniform));
-                            keepItem = true;
-                            m_isTruncated = false;
-                        }
-                        else
-                        {
-                            // Image has host specified desired size, cannot stretch. It is definitely truncated
-                            m_isTruncated = true;
-                        }
-                    }
-                    ComPtr<IShape> spShape;
-                    if (SUCCEEDED(spChild.As(&spShape)))
-                    {
-                        ComPtr<IFrameworkElement> spChildFE;
-                        RETURN_IF_FAILED(spChild.As(&spChildFE));
-                        if (!HasExplicitSize(spChildFE.Get()))
-                        {
-                            RETURN_IF_FAILED(LayoutCroppedImage(spShape.Get(), availableSize.Width, availableSize.Height - currentHeight));
+                            childAsImage.Stretch(rtxaml::Media::Stretch::Uniform);
                             keepItem = true;
                             m_isTruncated = false;
                         }
@@ -191,14 +139,25 @@ namespace AdaptiveCards::Rendering::WinUI3
                             m_isTruncated = true;
                         }
                     }
-
+                    if (auto childAsShape = child.try_as<winrt::Windows::UI::Xaml::Shapes::Shape>())
+                    {
+                        if (!HasExplicitSize(childAsShape))
+                        {
+                            LayoutCroppedImage(childAsShape, availableSize.Width, availableSize.Height - currentHeight);
+                            keepItem = true;
+                            m_isTruncated = false;
+                        }
+                        else
+                        {
+                            m_isTruncated = true;
+                        }
+                    }
                     if (keepItem)
                     {
                         // Let's simply give the child the remaining space
                         availableSize.Height = availableSize.Height - currentHeight;
-
-                        RETURN_IF_FAILED(spChild->Measure(availableSize));
-                        RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
+                        child.Measure(availableSize);
+                        childSize = child.DesiredSize();
 
                         m_visibleCount = i + 1;
                         currentHeight = max((currentHeight + childSize.Height), availableSize.Height);
@@ -218,6 +177,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         }
 
         m_calculatedSize = currentHeight;
+
         if (m_visibleCount == count)
         {
             m_allElementsRendered = true;
@@ -231,17 +191,16 @@ namespace AdaptiveCards::Rendering::WinUI3
         if (availableSize.Width == numeric_limits<float>::infinity())
         {
             // We use the calculated max desired width of children
-            *returnValue = {maxDesiredWidth, currentHeight};
+            return {maxDesiredWidth, currentHeight};
         }
         else
         {
             // Otherwise we match the fixed width of the container
-            *returnValue = {availableSize.Width, currentHeight};
+            return {availableSize.Width, currentHeight};
         }
-        return S_OK;
     }
 
-    HRESULT WholeItemsPanel::ArrangeOverride(Size finalSize, __RPC__out Size* returnValue)
+    winrt::Windows::Foundation::Size WholeItemsPanel::ArrangeOverride(winrt::Windows::Foundation::Size const& finalSize)
     {
         float currentHeight{};
         ComPtr<IVector<UIElement*>> children;
@@ -420,7 +379,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             THROW_IF_FAILED(tagContent->put_IsStretchable(true));
 
             THROW_IF_FAILED(tagContent.As(&tagAsInspectable));
-            THROW_IF_FAILED(elementAsFrameworkElement->put_Tag(tagAsInspectable.Get()));
+            //THROW_IF_FAILED(elementAsFrameworkElement->put_Tag(tagAsInspectable.Get()));
         }
 
         ++m_stretchableItemCount;
@@ -451,55 +410,37 @@ namespace AdaptiveCards::Rendering::WinUI3
         m_verticalContentAlignment = verticalContentAlignment;
     }
 
-    _Check_return_ HRESULT WholeItemsPanel::IsAnySubgroupTruncated(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* pPanel,
-                                                                   _Out_ bool* childTruncated)
+    bool WholeItemsPanel::IsAnySubgroupTruncated(rtxaml::Controls::Panel panel)
     {
-        *childTruncated = false;
-        ComPtr<IVector<UIElement*>> spChildren;
-        unsigned int size = 0;
-        RETURN_IF_FAILED(pPanel->get_Children(spChildren.GetAddressOf()));
-        RETURN_IF_FAILED(spChildren->get_Size(&size));
-        for (unsigned int i = 0; i < size; ++i)
+        bool childTruncated = false;
+        auto children = panel.Children();
+        uint32_t size = children.Size();
+       
+        for (auto child: children)
         {
-            ComPtr<IUIElement> spChild;
-            ComPtr<IWholeItemsPanel> spWholeItemPanel;
-            boolean isChildTruncated = false;
-            RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
             // Subgroups (columns) are implemented with WholeItemsPanel
-            if (SUCCEEDED(spChild.As(&spWholeItemPanel)))
+            if (auto childAsWholeItemPanel = child.as<rtrender::WholeItemsPanel>())
             {
-                RETURN_IF_FAILED(spWholeItemPanel->IsTruncated(&isChildTruncated));
-                if (isChildTruncated)
+                if (childAsWholeItemPanel.IsTruncated())
                 {
-                    // No need to continue the iteration
-                    *childTruncated = true;
-                    return S_OK;
+                    return true;
                 }
             }
         }
-        return S_OK;
+        return false;
     }
 
     // As shapes (used for circular cropping) don't resize as a stretched image, we need do to more
     // things manually. Here, we'll resize the shape to fit the smallest dimension
     // (ideally, we should inherit from Ellipse but it is not possible)
-    _Check_return_ HRESULT WholeItemsPanel::LayoutCroppedImage(_In_ IShape* pShape, _In_ double availableWidth, _In_ double availableHeight)
+    void WholeItemsPanel::LayoutCroppedImage(rtxaml::Shapes::Shape const& shape, double availableWidth, double availableHeight)
     {
-        ComPtr<IFrameworkElement> spFrameworkElement;
-        ABI::Windows::UI::Xaml::VerticalAlignment valign;
-        ABI::Windows::UI::Xaml::HorizontalAlignment halign;
-        Thickness margins;
-        RETURN_IF_FAILED(pShape->QueryInterface(spFrameworkElement.GetAddressOf()));
-        RETURN_IF_FAILED(spFrameworkElement->get_HorizontalAlignment(&halign));
-        RETURN_IF_FAILED(spFrameworkElement->get_VerticalAlignment(&valign));
-        RETURN_IF_FAILED(spFrameworkElement->get_Margin(&margins));
+        rtxaml::Thickness margins = shape.Margin();
         const double effectiveAvailableWidth = availableWidth - margins.Left - margins.Right;
         const double effectiveAvailableHeight = availableHeight - margins.Top - margins.Bottom;
         const double minSize = min(effectiveAvailableWidth, effectiveAvailableHeight);
-        RETURN_IF_FAILED(spFrameworkElement->put_Width(minSize));
-        RETURN_IF_FAILED(spFrameworkElement->put_Height(minSize));
-
-        return S_OK;
+        shape.Width(effectiveAvailableWidth);
+        shape.Height(effectiveAvailableHeight);
     }
 
     void WholeItemsPanel::AppendText(_In_ HSTRING hText, _Inout_ std::wstring& buffer)
@@ -600,13 +541,8 @@ namespace AdaptiveCards::Rendering::WinUI3
         return S_OK;
     }
 
-    bool WholeItemsPanel::HasExplicitSize(_In_ IFrameworkElement* element)
+    bool WholeItemsPanel::HasExplicitSize(rtxaml::FrameworkElement const& element)
     {
-        DOUBLE definedImageHeight;
-        element->get_Height(&definedImageHeight);
-        DOUBLE definedImageWidth;
-        element->get_Height(&definedImageWidth);
-
-        return !isnan(definedImageHeight) || !isnan(definedImageWidth);
+        return !isnan(element.Height()) || !isnan(element.Width());
     }
 }

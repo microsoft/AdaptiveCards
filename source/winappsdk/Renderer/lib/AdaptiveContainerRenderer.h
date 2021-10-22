@@ -19,6 +19,10 @@ namespace AdaptiveCards::Rendering::WinUI3
                               _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                               _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                               _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+
+        rtxaml::UIElement Render(rtom::IAdaptiveCardElement cardElement,
+                                 rtrender::AdaptiveRenderContext renderContext,
+                                 rtrender::AdaptiveRenderArgs renderArgs); 
     };
 
     ActivatableClass(AdaptiveContainerRenderer);

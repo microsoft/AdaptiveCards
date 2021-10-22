@@ -2,30 +2,31 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinUI3.h"
+#include "WholeItemsPanel.g.h"
 #include <windows.ui.xaml.shapes.h>
 
 namespace AdaptiveCards::Rendering::WinUI3
 {
-    class DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel
-        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinUI3::IWholeItemsPanel,
+    struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public rtxaml::Controls::PanelT<WholeItemsPanel, ITypePeek>
+
+      /*  : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinUI3::IWholeItemsPanel,
                                               ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
+                                              Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>*/
     {
-        AdaptiveRuntimeStringClass(WholeItemsPanel);
 
     public:
-        HRESULT STDMETHODCALLTYPE RuntimeClassInitialize();
 
         // IFrameworkElementOverrides
-        virtual HRESULT STDMETHODCALLTYPE MeasureOverride(
-            /* [in] */ ABI::Windows::Foundation::Size availableSize,
-            /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
+        //virtual HRESULT STDMETHODCALLTYPE MeasureOverride(
+        //    /* [in] */ ABI::Windows::Foundation::Size availableSize,
+        //    /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
+        winrt::Windows::Foundation::Size MeasureOverride(winrt::Windows::Foundation::Size& availableSize);
 
-        virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(
-            /* [in] */ ABI::Windows::Foundation::Size finalSize,
-            /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
+        winrt::Windows::Foundation::Size ArrangeOverride(winrt::Windows::Foundation::Size const& finalSize);
+        //virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(
+        //    /* [in] */ ABI::Windows::Foundation::Size finalSize,
+        //    /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
 
         virtual HRESULT STDMETHODCALLTYPE OnApplyTemplate(void);
 
@@ -71,11 +72,9 @@ namespace AdaptiveCards::Rendering::WinUI3
         // If true, avoid vertical whitespace before and after the render.
         bool m_adaptiveHeight = false;
 
-        _Check_return_ HRESULT IsAnySubgroupTruncated(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* pPanel, _Out_ bool* childTruncated);
+        bool IsAnySubgroupTruncated(rtxaml::Controls::Panel pPanel);
 
-        static _Check_return_ HRESULT LayoutCroppedImage(_In_ ABI::Windows::UI::Xaml::Shapes::IShape* pShape,
-                                                         _In_ double availableWidth,
-                                                         _In_ double availableHeight);
+        static void LayoutCroppedImage(rtxaml::Shapes::Shape const& shape, double availableWidth, double availableHeight);
 
         static void AppendText(_In_ HSTRING hText, _Inout_ std::wstring& buffer);
 
@@ -84,8 +83,6 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         static _Check_return_ HRESULT GetAltAsString(_In_ ABI::Windows::UI::Xaml::IUIElement* pElement, _Out_ HSTRING* pResult);
 
-        static bool HasExplicitSize(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
+        static bool HasExplicitSize(rtxaml::FrameworkElement const& element);
     };
-
-    ActivatableClass(WholeItemsPanel);
 }

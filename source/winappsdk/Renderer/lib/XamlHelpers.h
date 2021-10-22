@@ -368,11 +368,10 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** renderedElement);
 
     
-    void RenderFallback(rtom::IAdaptiveCardElement currentElement,
+    winrt::com_ptr<rtxaml::IUIElement> RenderFallback(rtom::IAdaptiveCardElement currentElement,
                         rtrender::AdaptiveRenderContext renderContext,
                         rtrender::AdaptiveRenderArgs renderArgs,
-                        winrt::com_ptr<rtxaml::IUIElement> result,
-                        winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement)
+                        winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement);
 
     void GetSeparationConfigForElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,

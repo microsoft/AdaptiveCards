@@ -474,17 +474,18 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
-    void RenderFallback(rtom::IAdaptiveCardElement currentElement,
+    winrt::com_ptr<rtxaml::IUIElement> RenderFallback(rtom::IAdaptiveCardElement currentElement,
                         rtrender::AdaptiveRenderContext renderContext,
                         rtrender::AdaptiveRenderArgs renderArgs,
-                        winrt::com_ptr<rtxaml::IUIElement> result,
                         winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement)
     {
+
         auto elementRenderers = renderContext.ElementRenderers();
         auto elementFallback = currentElement.FallbackType();
         winrt::hstring elementType = currentElement.ElementTypeString();
 
         bool fallbackHandled = false;
+        winrt::com_ptr<rtxaml::IUIElement> fallbackControl;
 
         switch (elementFallback)
         {
@@ -496,10 +497,51 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
             WarnForFallbackContentElement(renderContext, elementType, fallbackElementType);
 
+            auto fallbackElementRenderer = elementRenderers.Get(fallbackElementType);
 
+            bool shouldPerformFallBack = true;
+
+            if (fallbackElementRenderer)
+            {
+
+                fallbackControl = winrt::make_self<rtxaml::IUIElement>(fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs));
+
+                shouldPerformFallBack = false;
+
+                if (renderedElement)
+                {
+                    renderedElement = winrt::make_self<rtom::IAdaptiveCardElement>(fallbackElement);
+                }
+            }
+
+            if (shouldPerformFallBack)
+            {
+                return RenderFallback(fallbackElement, renderContext, renderArgs, renderedElement);
+            }
+            fallbackHandled = true;
+            break;
+        }
+        case rtom::FallbackType::Drop:
+        {
+            XamlHelpers::WarnForFallbackDrop(renderContext, elementType);
+            fallbackHandled = true;
+            break;
+        }
+        case rtom::FallbackType::None:
+        default:
+        {
+            break;
+        }
         }
 
+        if (!fallbackHandled)
+        {
+            if (!renderArgs.AncestorHasFallback())
+            {
+                renderContext.AddWarning(rtom::WarningStatusCode::NoRendererForType, L"No Renderer found for type: " + elementType);
+            }
         }
+        return fallbackControl;
 
     }
 
