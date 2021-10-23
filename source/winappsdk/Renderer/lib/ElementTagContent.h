@@ -65,14 +65,13 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     struct ElementTagContent: public ElementTagContentT<ElementTagContent>
     {
         ElementTagContent() = default;
+        property<bool> ExpectedVisibility;
+        property<bool> IsStretchable;
 
         rtxaml::UIElement Separator() { return m_separator; }
         rtxaml::Controls::Panel ParentPanel() { return m_parentPanel; }
         rtxaml::Controls::ColumnDefinition ColumnDefinition() { return m_columnDefinition; }
         rtom::IAdaptiveCardElement CardElement() { return m_cardElement;  }
-
-        property<bool> ExpectedVisibility;
-        property<bool> IsStretchable;
 
         private:
             rtxaml::UIElement m_separator;

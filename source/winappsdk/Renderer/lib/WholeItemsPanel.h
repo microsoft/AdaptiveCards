@@ -29,21 +29,22 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         //    /* [in] */ ABI::Windows::Foundation::Size finalSize,
         //    /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
 
-        virtual HRESULT STDMETHODCALLTYPE OnApplyTemplate(void);
+        virtual void OnApplyTemplate(void);
 
-        virtual HRESULT STDMETHODCALLTYPE GetAltText(__RPC__out HSTRING* pResult) noexcept;
+        virtual winrt::hstring GetAltText();
 
         // Method used inside the component to reduce the number of temporary allocations
-        _Check_return_ HRESULT AppendAltText(_Inout_ std::wstring& buffer);
+       /* _Check_return_ HRESULT AppendAltText(_Inout_ std::wstring& buffer);*/
+        void AppendAltText(std::wstring& buffer);
 
         void SetMainPanel(bool value);
         void SetAdaptiveHeight(bool value);
         static void SetBleedMargin(UINT bleedMargin);
 
-        virtual HRESULT STDMETHODCALLTYPE IsAllContentClippedOut(__RPC__out boolean* pResult);
-        virtual HRESULT STDMETHODCALLTYPE IsTruncated(__RPC__out boolean* pResult);
+        virtual bool IsAllContentClippedOut() { return ((m_measuredCount > 0) && (m_visibleCount == 0)); }
+        virtual bool IsTruncated() { return m_isTruncated; }
 
-        void AddElementToStretchablesList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
+        void AddElementToStretchablesList(rtxaml::UIElement const& element);
         bool IsUIElementInStretchableList(rtxaml::UIElement const& element);
         void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment);
 
@@ -77,12 +78,12 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         static void LayoutCroppedImage(rtxaml::Shapes::Shape const& shape, double availableWidth, double availableHeight);
 
-        static void AppendText(_In_ HSTRING hText, _Inout_ std::wstring& buffer);
+        static void AppendText(winrt::hstring const& text, std::wstring& buffer);
 
-        static _Check_return_ HRESULT AppendAltTextToUIElement(_In_ ABI::Windows::UI::Xaml::IUIElement* pUIElement,
-                                                               _Inout_ std::wstring& buffer);
+        static void AppendAltTextToUIElement(rtxaml::UIElement const& pUIElement,
+                                                               std::wstring& buffer);
 
-        static _Check_return_ HRESULT GetAltAsString(_In_ ABI::Windows::UI::Xaml::IUIElement* pElement, _Out_ HSTRING* pResult);
+        static winrt::hstring GetAltAsString(rtxaml::UIElement const& element);
 
         static bool HasExplicitSize(rtxaml::FrameworkElement const& element);
     };

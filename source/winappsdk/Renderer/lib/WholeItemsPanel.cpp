@@ -263,16 +263,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         // But we allow the items to slightly expand above the panel because we explicitly set negative
         // margins for text on the first line of a tile. Additionally, leave at least as much space on all
         // sides as specified by s_bleedMargin.
-       /* ComPtr<IFrameworkElement> spThisAsIFrameworkElement;
-        Thickness margin;
-        RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIFrameworkElement)));
-        RETURN_IF_FAILED(spThisAsIFrameworkElement->get_Margin(&margin));
-        Microsoft::WRL::ComPtr<IRectangleGeometry> spClip;
-        RETURN_IF_FAILED(
-            Windows::Foundation::ActivateInstance(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry).Get(), &spClip));
-        ComPtr<IUIElement> spThisAsIUIElement;
-        RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
-        RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));*/
 
         rtxaml::Thickness margin = this->Margin();
         rtxaml::Media::RectangleGeometry clip;
@@ -289,59 +279,35 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         return {finalSize.Width, finalSize.Height};
     }
 
-    HRESULT WholeItemsPanel::OnApplyTemplate(void)
+    void WholeItemsPanel::OnApplyTemplate(void)
     {
         // Nothing special to do here
-        return S_OK;
     }
 
     // Method used inside the component to reduce the number of temporary allocations
-    _Check_return_ HRESULT WholeItemsPanel::AppendAltText(_Inout_ std::wstring& buffer)
+    void WholeItemsPanel::AppendAltText(std::wstring& buffer)
     {
-        ComPtr<IPanel> spThisAsPanel;
-        ComPtr<IVector<UIElement*>> spChildren;
-        RETURN_IF_FAILED(QueryInterface(__uuidof(IPanel), reinterpret_cast<void**>(spThisAsPanel.GetAddressOf())));
-        RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
-
-        unsigned int count = m_visibleCount;
+        uint32_t count = m_visibleCount;
+        auto children = this->Children();
         if (m_adaptiveHeight)
         {
             // If we are rendering stuff in adaptive height mode, we don't
             // care which of them are visible or not.
-            RETURN_IF_FAILED(spChildren->get_Size(&count));
+            count = children.Size();
         }
 
-        for (unsigned int i = 0; i < count; i++)
+        for (uint32_t i = 0; i < count; i++)
         {
-            ComPtr<IUIElement> spChild;
-            RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
-            RETURN_IF_FAILED(AppendAltTextToUIElement(spChild.Get(), buffer));
+            AppendAltTextToUIElement(children.GetAt(i), buffer);
+
         }
-
-        return S_OK;
     }
 
-    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING* pResult) noexcept
+    winrt::hstring WholeItemsPanel::GetAltText()
     {
-        try
-        {
-            wstring buffer;
-            RETURN_IF_FAILED(AppendAltText(buffer));
-            return WindowsCreateString(buffer.c_str(), static_cast<unsigned int>(buffer.length()), pResult);
-        }
-        CATCH_RETURN();
-    }
-
-    HRESULT WholeItemsPanel::IsAllContentClippedOut(__RPC__out boolean* pResult)
-    {
-        *pResult = ((m_measuredCount > 0) && (m_visibleCount == 0));
-        return S_OK;
-    }
-
-    HRESULT WholeItemsPanel::IsTruncated(__RPC__out boolean* pResult)
-    {
-        *pResult = m_isTruncated;
-        return S_OK;
+        wstring buffer;
+        AppendAltText(buffer);
+        return {buffer.c_str()};
     }
 
     void WholeItemsPanel::SetAdaptiveHeight(bool value) { m_adaptiveHeight = value; }
@@ -356,44 +322,31 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
     void WholeItemsPanel::SetMainPanel(bool value) { m_isMainPanel = value; }
 
-    void WholeItemsPanel::AddElementToStretchablesList(_In_ IUIElement* element)
+    // Not sure if I did everything right here..
+    void WholeItemsPanel::AddElementToStretchablesList(rtxaml::UIElement const& element)
     {
-        ComPtr<IUIElement> localElement(element);
-        ComPtr<IFrameworkElement> elementAsFrameworkElement;
-        THROW_IF_FAILED(localElement.As(&elementAsFrameworkElement));
-
-        ComPtr<IInspectable> tagAsInspectable;
-        THROW_IF_FAILED(elementAsFrameworkElement->get_Tag(&tagAsInspectable));
-
-        ComPtr<IElementTagContent> elementTagContent;
-        if (tagAsInspectable != nullptr)
+        if (const auto elementAsFrameworkElement = element.try_as<rtxaml::FrameworkElement>())
         {
-            THROW_IF_FAILED(tagAsInspectable.As(&elementTagContent));
-            THROW_IF_FAILED(elementTagContent->put_IsStretchable(true));
+            if (const auto tag = elementAsFrameworkElement.Tag())
+            {
+                if (const auto tagAsElementTagContent = tag.try_as<rtrender::implementation::ElementTagContent>())
+                {
+                    tagAsElementTagContent->IsStretchable(true);
+                }
+                else
+                {
+                    auto tagContent = winrt::make_self<rtrender::implementation::ElementTagContent>();
+                    tagContent->IsStretchable(true);
+                    // not sure if it works, or we'll have to go to projection and then convert to IINspectible
+                    elementAsFrameworkElement.Tag(*tagContent);
+                }
+            }
         }
-        else
-        {
-            ComPtr<IElementTagContent> tagContent;
-            THROW_IF_FAILED(MakeAndInitialize<ElementTagContent>(&tagContent));
-
-            THROW_IF_FAILED(tagContent->put_IsStretchable(true));
-
-            THROW_IF_FAILED(tagContent.As(&tagAsInspectable));
-            //THROW_IF_FAILED(elementAsFrameworkElement->put_Tag(tagAsInspectable.Get()));
-        }
-
         ++m_stretchableItemCount;
     }
 
     bool WholeItemsPanel::IsUIElementInStretchableList(rtxaml::UIElement const& element)
     {
-        /*ComPtr<IUIElement> localUIElement(element);
-        ComPtr<IFrameworkElement> uiElementAsFrameworkElement;
-        THROW_IF_FAILED(localUIElement.As(&uiElementAsFrameworkElement));
-
-        ComPtr<IInspectable> tagAsInspectable;
-        THROW_IF_FAILED(uiElementAsFrameworkElement->get_Tag(&tagAsInspectable));*/
-
         if (const auto elementAsFrameworkElement = element.try_as<rtxaml::FrameworkElement>())
         {
             if (const auto tag = elementAsFrameworkElement.Tag())
@@ -404,6 +357,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 }
             }
         }
+        // else - do we throw?
+        // potentially, we should never reach here
 
         return false;
     }
@@ -446,102 +401,71 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         shape.Height(effectiveAvailableHeight);
     }
 
-    void WholeItemsPanel::AppendText(_In_ HSTRING hText, _Inout_ std::wstring& buffer)
+    void WholeItemsPanel::AppendText(winrt::hstring const& text, std::wstring& buffer)
     {
         if (buffer.length() > 0)
         {
             buffer.push_back(L'\n');
         }
-        buffer.append(WindowsGetStringRawBuffer(hText, nullptr));
+        buffer.append(text.c_str());
     }
 
-    _Check_return_ HRESULT WholeItemsPanel::GetAltAsString(_In_ IUIElement* pElement, _Out_ HSTRING* pResult)
+    winrt::hstring WholeItemsPanel::GetAltAsString(rtxaml::UIElement const& element)
     {
-        *pResult = nullptr;
-        ComPtr<IDependencyObject> spDependencyObject;
-        if (SUCCEEDED(pElement->QueryInterface(spDependencyObject.GetAddressOf())))
+        if (const auto dependencyObject = element.try_as<rtxaml::DependencyObject>())
         {
-            ComPtr<Automation::IAutomationPropertiesStatics> automationStatics;
-            RETURN_IF_FAILED(
-                ::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                       &automationStatics));
-            RETURN_IF_FAILED(automationStatics->GetName(spDependencyObject.Get(), pResult));
+            auto automationStatics = *winrt::make_self<rtxaml::Automation::IAutomationPropertiesStatics>();
+            return automationStatics.GetName(dependencyObject);
         }
-        return S_OK;
+
+        // We shouldn't reach here
+        return L"";
     }
 
     // Creates the Alt Text
-    _Check_return_ HRESULT WholeItemsPanel::AppendAltTextToUIElement(_In_ IUIElement* pUIElement, _Inout_ std::wstring& buffer)
+    void WholeItemsPanel::AppendAltTextToUIElement(rtxaml::UIElement const& element, std::wstring& buffer)
     {
-        ComPtr<ITextBlock> spTextBlock;
 
-        if (SUCCEEDED(pUIElement->QueryInterface(spTextBlock.GetAddressOf())))
+        if (const auto textBlock = element.try_as<rtxaml::Controls::TextBlock>())
         {
-            HString hText;
-            RETURN_IF_FAILED(spTextBlock->get_Text(hText.GetAddressOf()));
-            AppendText(hText.Get(), buffer);
-            return S_OK;
+            AppendText(textBlock.Text(), buffer);
+
         }
-
-        ComPtr<IWholeItemsPanel> spWholeItemsPanel;
-        if (SUCCEEDED(pUIElement->QueryInterface(spWholeItemsPanel.GetAddressOf())))
+        else if (const auto wholeItemsPanel = element.try_as<rtrender::implementation::WholeItemsPanel>())
         {
-            // This cast is safe because WinRT only does aggregation
-            WholeItemsPanel* pPanelNoRef = reinterpret_cast<WholeItemsPanel*>(spWholeItemsPanel.Get());
-            RETURN_IF_FAILED(pPanelNoRef->AppendAltText(buffer));
-            return S_OK;
+            wholeItemsPanel->AppendAltText(buffer);
+
         }
-
-        ComPtr<IImage> spImage;
-        if (SUCCEEDED(pUIElement->QueryInterface(spImage.GetAddressOf())))
+        else if (const auto image = element.try_as<rtxaml::Controls::Image>())
         {
-            HString hAltText;
-            RETURN_IF_FAILED(GetAltAsString(pUIElement, hAltText.GetAddressOf()));
-            if (*hAltText.GetRawBuffer(nullptr))
+            auto altText = GetAltAsString(element);
+            if (!altText.empty())
             {
-                AppendText(hAltText.Get(), buffer);
+                AppendText(altText, buffer);
             }
-            return S_OK;
         }
-
-        ComPtr<IShape> spShape;
-        if (SUCCEEDED(pUIElement->QueryInterface(spShape.GetAddressOf())))
+        else if (const auto shape = element.try_as<rtxaml::Shapes::Shape>())
         {
-            HString hAltText;
-            RETURN_IF_FAILED(GetAltAsString(pUIElement, hAltText.GetAddressOf()));
-            if (*hAltText.GetRawBuffer(nullptr))
+            auto altText = GetAltAsString(element);
+            if (!altText.empty())
             {
-                AppendText(hAltText.Get(), buffer);
+                AppendText(altText, buffer);
             }
-            return S_OK;
         }
-
-        ComPtr<IPanel> spPanel;
-        if (SUCCEEDED(pUIElement->QueryInterface(spPanel.GetAddressOf())))
+        else if (const auto panel = element.try_as<rtxaml::Controls::Panel>())
         {
-            ComPtr<IVector<UIElement*>> spChildren;
-            RETURN_IF_FAILED(spPanel->get_Children(spChildren.GetAddressOf()));
-            unsigned int count;
-            RETURN_IF_FAILED(spChildren->get_Size(&count));
-            for (unsigned int i = 0; i < count; i++)
+            for (auto child : panel.Children())
             {
-                ComPtr<IUIElement> spChild;
-                RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
-                RETURN_IF_FAILED(AppendAltTextToUIElement(spChild.Get(), buffer));
+                AppendAltTextToUIElement(child, buffer);
             }
-            return S_OK;
         }
-
-        ComPtr<IBorder> spBorder;
-        if (SUCCEEDED(pUIElement->QueryInterface(spBorder.GetAddressOf())))
+        else if (const auto border = element.try_as<rtxaml::Controls::Border>())
         {
-            ComPtr<IUIElement> spChild;
-            RETURN_IF_FAILED(spBorder->get_Child(spChild.GetAddressOf()));
-            RETURN_IF_FAILED(AppendAltTextToUIElement(spChild.Get(), buffer));
-            return S_OK;
+            if (const auto child = border.Child())
+            {
+                AppendAltTextToUIElement(child, buffer);
+            }
         }
-
-        return S_OK;
     }
 
     bool WholeItemsPanel::HasExplicitSize(rtxaml::FrameworkElement const& element)
