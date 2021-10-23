@@ -7273,9 +7273,6 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
-
-		// if (swiper === undefined)
-		//{
 			let paginationOpts: PaginationOptions = {
 				el: paginationElement
 			};
@@ -7292,7 +7289,6 @@ export class AdaptiveCard extends ContainerWithActions {
 			};
 
 			swiper = new Swiper(swiperContainer, swiperOptions);
-		//}
     }
 
     protected getHasBackground(): boolean {
