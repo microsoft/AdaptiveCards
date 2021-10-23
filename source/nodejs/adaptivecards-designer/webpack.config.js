@@ -91,23 +91,19 @@ module.exports = (env, argv) => {
 				},
 				{
 					from: 'src/adaptivecards-designer.css',
-					to: '.',
-					flatten: true
+					to: './[name][ext]'
 				},
 				{
 					from: 'src/containers/**/*.css',
-					to: 'containers/',
-					flatten: true
+					to: 'containers/[name][ext]'
 				},
 				{
 					from: 'src/containers/**/*.png',
-					to: 'containers/',
-					flatten: true
+					to: 'containers/[name][ext]'
 				},
 				{
 					from: 'src/containers/**/*.jpg',
-					to: 'containers/',
-					flatten: true
+					to: 'containers/[name][ext]'
 				}],
 				options: {
 					concurrency: 8
