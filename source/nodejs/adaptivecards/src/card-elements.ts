@@ -7224,22 +7224,16 @@ export class AdaptiveCard extends ContainerWithActions {
         super.internalToJSON(target, context);
     }
 
-    // swiper : Swiper;
-	static swiperContainer: HTMLElement;
-	static pagination: HTMLElement;
-	static prevElementDiv: HTMLElement;
-	static nextElementDiv: HTMLElement;
-
     protected internalRender(): HTMLElement | undefined {
 
         var bCarousel : boolean = this.TBD ? true : false;
         if (bCarousel) {
 
-			AdaptiveCard.swiperContainer = document.createElement("div");
-            AdaptiveCard.swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
-			AdaptiveCard.swiperContainer.classList.add("mySwiper");
+            let swiperContainer: HTMLElement = document.createElement("div");
+            swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
+			swiperContainer.classList.add("mySwiper");
 
-            let swiperWrapper : HTMLElement = super.carouselRender() as HTMLElement;
+            let swiperWrapper: HTMLElement = super.carouselRender() as HTMLElement;
 
             if (GlobalSettings.useAdvancedCardBottomTruncation && swiperWrapper) {
                 // Unlike containers, the root card element should be allowed to
@@ -7248,24 +7242,23 @@ export class AdaptiveCard extends ContainerWithActions {
                 swiperWrapper.style.removeProperty("minHeight");
             }
 
-            AdaptiveCard.swiperContainer.appendChild(swiperWrapper as HTMLElement);
+            swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
-			AdaptiveCard.nextElementDiv = document.createElement("div");
-            AdaptiveCard.nextElementDiv.classList.add("swiper-button-next");
-            AdaptiveCard.swiperContainer.appendChild(AdaptiveCard.nextElementDiv);
+			let nextElementDiv: HTMLElement = document.createElement("div");
+            nextElementDiv.classList.add("swiper-button-next");
+            swiperContainer.appendChild(nextElementDiv);
 
-			AdaptiveCard.prevElementDiv = document.createElement("div");
-            AdaptiveCard.prevElementDiv.classList.add("swiper-button-prev");
+			let prevElementDiv: HTMLElement = document.createElement("div");
+            prevElementDiv.classList.add("swiper-button-prev");
+            swiperContainer.appendChild(prevElementDiv);
 
-            AdaptiveCard.swiperContainer.appendChild(AdaptiveCard.prevElementDiv);
+			let pagination: HTMLElement = document.createElement("div");
+            pagination.classList.add("swiper-pagination");
+            swiperContainer.appendChild(pagination);
 
-			AdaptiveCard.pagination = document.createElement("div");
-            AdaptiveCard.pagination.classList.add("swiper-pagination");
-            AdaptiveCard.swiperContainer.appendChild(AdaptiveCard.pagination);
+            this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination);
 
-            this.initializeSwiper();
-
-            return AdaptiveCard.swiperContainer;
+            return swiperContainer;
         } else {
             let renderedElement = super.internalRender();
 
@@ -7279,17 +7272,17 @@ export class AdaptiveCard extends ContainerWithActions {
         }
     }
 
-    private initializeSwiper() : void {
+    private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
 
 		// if (swiper === undefined)
 		//{
 			let paginationOpts: PaginationOptions = {
-				el: AdaptiveCard.pagination
+				el: paginationElement
 			};
 
 			let navigationOpts: NavigationOptions = {
-				prevEl: AdaptiveCard.prevElementDiv,
-				nextEl: AdaptiveCard.nextElementDiv
+				prevEl: prevElement,
+				nextEl: nextElement
 			}
 
 			const swiperOptions: SwiperOptions = {
@@ -7298,7 +7291,7 @@ export class AdaptiveCard extends ContainerWithActions {
 				navigation: navigationOpts,
 			};
 
-			swiper = new Swiper(AdaptiveCard.swiperContainer, swiperOptions);
+			swiper = new Swiper(swiperContainer, swiperOptions);
 		//}
     }
 
