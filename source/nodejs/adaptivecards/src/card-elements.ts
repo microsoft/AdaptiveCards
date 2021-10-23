@@ -4775,7 +4775,7 @@ class OverflowAction extends Action {
 
             contextMenu.popup(this.renderedElement);
         }
-	}
+   }
 }
 
 class ActionCollection {
@@ -5604,7 +5604,7 @@ export abstract class ContainerBase extends StylableCardElementContainer {
     }
 
     isBleeding(): boolean {
-		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
+      return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 }
 
@@ -5849,24 +5849,23 @@ export class Container extends ContainerBase {
     }
 
     private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
-			let paginationOpts: PaginationOptions = {
-				el: paginationElement
-			};
+         let paginationOpts: PaginationOptions = {
+            el: paginationElement
+         };
 
-			let navigationOpts: NavigationOptions = {
-				prevEl: prevElement,
-				nextEl: nextElement
-			}
+         let navigationOpts: NavigationOptions = {
+            prevEl: prevElement,
+            nextEl: nextElement
+         }
 
-			const swiperOptions: SwiperOptions = {
-				loop: true,
-				pagination: paginationOpts,
-				navigation: navigationOpts,
-			};
+         const swiperOptions: SwiperOptions = {
+            loop: true,
+            pagination: paginationOpts,
+            navigation: navigationOpts,
+         };
 
-			swiper = new Swiper(swiperContainer, swiperOptions);
+         swiper = new Swiper(swiperContainer, swiperOptions);
     }
-
 
     protected internalRender(): HTMLElement | undefined {
         this._renderedItems = [];
