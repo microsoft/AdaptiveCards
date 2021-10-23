@@ -3,12 +3,13 @@
 #pragma once
 
 #include "WholeItemsPanel.g.h"
-#include <windows.ui.xaml.shapes.h>
+//#include <windows.ui.xaml.shapes.h>
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public rtxaml::Controls::PanelT<WholeItemsPanel, ITypePeek>
-
+    /* struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public
+     * rtxaml::Controls::PanelT<WholeItemsPanel, ITypePeek>*/
+    struct DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public WholeItemsPanelT<WholeItemsPanel, ITypePeek>
       /*  : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinUI3::IWholeItemsPanel,
                                               ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
@@ -16,12 +17,12 @@ namespace AdaptiveCards::Rendering::WinUI3
     {
 
     public:
-
+        WholeItemsPanel() = default;
         // IFrameworkElementOverrides
         //virtual HRESULT STDMETHODCALLTYPE MeasureOverride(
         //    /* [in] */ ABI::Windows::Foundation::Size availableSize,
         //    /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size* returnValue);
-        winrt::Windows::Foundation::Size MeasureOverride(winrt::Windows::Foundation::Size& availableSize);
+        winrt::Windows::Foundation::Size MeasureOverride(winrt::Windows::Foundation::Size const& availableSize);
 
         winrt::Windows::Foundation::Size ArrangeOverride(winrt::Windows::Foundation::Size const& finalSize);
         //virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(
@@ -43,7 +44,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         virtual HRESULT STDMETHODCALLTYPE IsTruncated(__RPC__out boolean* pResult);
 
         void AddElementToStretchablesList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
-        bool IsUIElementInStretchableList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
+        bool IsUIElementInStretchableList(rtxaml::UIElement const& element);
         void SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment);
 
         // ITypePeek method
@@ -52,10 +53,10 @@ namespace AdaptiveCards::Rendering::WinUI3
     private:
         static UINT s_bleedMargin;
 
-        unsigned int m_visibleCount{};
-        unsigned int m_measuredCount{};
+        uint32_t m_visibleCount{};
+        uint32_t m_measuredCount{};
 
-        unsigned int m_stretchableItemCount{};
+        uint32_t m_stretchableItemCount{};
         float m_calculatedSize{};
         bool m_allElementsRendered{};
         ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment m_verticalContentAlignment{};
@@ -84,5 +85,12 @@ namespace AdaptiveCards::Rendering::WinUI3
         static _Check_return_ HRESULT GetAltAsString(_In_ ABI::Windows::UI::Xaml::IUIElement* pElement, _Out_ HSTRING* pResult);
 
         static bool HasExplicitSize(rtxaml::FrameworkElement const& element);
+    };
+}
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct WholeItemsPanel : WholeItemsPanelT<WholeItemsPanel, implementation::WholeItemsPanel>
+    {
     };
 }

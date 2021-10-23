@@ -21,10 +21,10 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Media;
 
 static const float OutsidePanelY = -1000.0f;
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
     // IFrameworkElementOverrides
-    winrt::Windows::Foundation::Size WholeItemsPanel::MeasureOverride(winrt::Windows::Foundation::Size& availableSize)
+    winrt::Windows::Foundation::Size WholeItemsPanel::MeasureOverride(winrt::Windows::Foundation::Size const& availableSize)
     {
         unsigned int count{};
         float currentHeight{};
@@ -35,10 +35,11 @@ namespace AdaptiveCards::Rendering::WinUI3
         count = children.Size();
 
         const winrt::Windows::Foundation::Size noVerticalLimit{availableSize.Width, numeric_limits<float>::infinity()};
+        auto measuredAvailableSize{availableSize};
 
         m_visibleCount = count;
 
-        for (int i = 0; i < count; i++)
+        for (uint32_t i = 0; i < count; i++)
         {
             auto child = children.GetAt(i);
             child.Measure(noVerticalLimit);
@@ -49,9 +50,9 @@ namespace AdaptiveCards::Rendering::WinUI3
 
                 float newHeight = currentHeight + childSize.Height;
 
-                if (newHeight > availableSize.Height)
+                if (newHeight > measuredAvailableSize.Height)
                 {
-                    const double availableHeightForItem = availableSize.Height - currentHeight;
+                    const double availableHeightForItem = measuredAvailableSize.Height - currentHeight;
                     bool keepItem = m_isMainPanel && (i == 0); // by default, only keep the first item in the main panel.
 
                     // Item does not fit
@@ -69,7 +70,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                         // Still being able to reduce its size, for example if it has a minSize which can be respected
                         if (!keepItem)
                         {
-                            winrt::Windows::Foundation::Size remainingSpace = {availableSize.Width, static_cast<float>(availableHeightForItem)};
+                            winrt::Windows::Foundation::Size remainingSpace = {measuredAvailableSize.Width, static_cast<float>(availableHeightForItem)};
 
                             child.Measure(remainingSpace);
 
@@ -143,7 +144,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                     {
                         if (!HasExplicitSize(childAsShape))
                         {
-                            LayoutCroppedImage(childAsShape, availableSize.Width, availableSize.Height - currentHeight);
+                            LayoutCroppedImage(childAsShape, measuredAvailableSize.Width, measuredAvailableSize.Height - currentHeight);
                             keepItem = true;
                             m_isTruncated = false;
                         }
@@ -155,12 +156,12 @@ namespace AdaptiveCards::Rendering::WinUI3
                     if (keepItem)
                     {
                         // Let's simply give the child the remaining space
-                        availableSize.Height = availableSize.Height - currentHeight;
-                        child.Measure(availableSize);
+                        measuredAvailableSize.Height = measuredAvailableSize.Height - currentHeight;
+                        child.Measure(measuredAvailableSize);
                         childSize = child.DesiredSize();
 
                         m_visibleCount = i + 1;
-                        currentHeight = max((currentHeight + childSize.Height), availableSize.Height);
+                        currentHeight = max((currentHeight + childSize.Height), measuredAvailableSize.Height);
                         maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
                     }
                     else
@@ -188,7 +189,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         }
 
         // If inside an infinity/auto width container
-        if (availableSize.Width == numeric_limits<float>::infinity())
+        if (measuredAvailableSize.Width == numeric_limits<float>::infinity())
         {
             // We use the calculated max desired width of children
             return {maxDesiredWidth, currentHeight};
@@ -196,21 +197,18 @@ namespace AdaptiveCards::Rendering::WinUI3
         else
         {
             // Otherwise we match the fixed width of the container
-            return {availableSize.Width, currentHeight};
+            return {measuredAvailableSize.Width, currentHeight};
         }
     }
 
     winrt::Windows::Foundation::Size WholeItemsPanel::ArrangeOverride(winrt::Windows::Foundation::Size const& finalSize)
     {
-        float currentHeight{};
-        ComPtr<IVector<UIElement*>> children;
+        float currentHeight {0.0f};
+        float extraPaddingPerItem {0.0f};
 
-        ComPtr<IPanel> spThisAsPanel;
-        RETURN_IF_FAILED(QueryInterface(__uuidof(IPanel), reinterpret_cast<void**>(spThisAsPanel.GetAddressOf())));
-        RETURN_IF_FAILED(spThisAsPanel->get_Children(children.GetAddressOf()));
-        RETURN_IF_FAILED(children->get_Size(&m_measuredCount));
+        auto children = this->Children();
+        m_measuredCount = children.Size();
 
-        float extraPaddingPerItem{};
         if (m_stretchableItemCount != 0)
         {
             extraPaddingPerItem = floor((finalSize.Height - m_calculatedSize) / m_stretchableItemCount);
@@ -227,20 +225,17 @@ namespace AdaptiveCards::Rendering::WinUI3
             }
         }
 
-        for (unsigned int i = 0; i < m_measuredCount; ++i)
+        for (uint32_t i = 0; i < m_measuredCount; ++i)
         {
-            ComPtr<IUIElement> child;
-            RETURN_IF_FAILED(children->GetAt(i, child.GetAddressOf()));
-
-            Size childSize;
-            RETURN_IF_FAILED(child->get_DesiredSize(&childSize));
+            auto child = children.GetAt(i);
+            auto childSize = child.DesiredSize();
 
             if (i < m_visibleCount)
             {
                 float childHeight = childSize.Height;
                 float newHeight = currentHeight + childSize.Height;
 
-                if (m_allElementsRendered && IsUIElementInStretchableList(child.Get()))
+                if (m_allElementsRendered && IsUIElementInStretchableList(child))
                 {
                     childHeight += extraPaddingPerItem;
                     newHeight += extraPaddingPerItem;
@@ -250,16 +245,17 @@ namespace AdaptiveCards::Rendering::WinUI3
                     childHeight = finalSize.Height - currentHeight;
                     newHeight = finalSize.Height;
                 }
-                const Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width does not respect Text alignment
-                RETURN_IF_FAILED(child->Arrange(rc));
+                const winrt::Windows::Foundation::Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width does not respect Text alignment
+
+                child.Arrange(rc);
 
                 currentHeight = newHeight;
             }
             else
             {
                 // Arrange the child outside the panel
-                const Rect rc = {0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height};
-                RETURN_IF_FAILED(child->Arrange(rc));
+                const winrt::Windows::Foundation::Rect rc = {0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height};
+                child.Arrange(rc);
             }
         }
 
@@ -267,7 +263,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         // But we allow the items to slightly expand above the panel because we explicitly set negative
         // margins for text on the first line of a tile. Additionally, leave at least as much space on all
         // sides as specified by s_bleedMargin.
-        ComPtr<IFrameworkElement> spThisAsIFrameworkElement;
+       /* ComPtr<IFrameworkElement> spThisAsIFrameworkElement;
         Thickness margin;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIFrameworkElement)));
         RETURN_IF_FAILED(spThisAsIFrameworkElement->get_Margin(&margin));
@@ -276,17 +272,21 @@ namespace AdaptiveCards::Rendering::WinUI3
             Windows::Foundation::ActivateInstance(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry).Get(), &spClip));
         ComPtr<IUIElement> spThisAsIUIElement;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
-        RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
+        RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));*/
 
-        const DOUBLE bleedMargin = static_cast<DOUBLE>(s_bleedMargin);
+        rtxaml::Thickness margin = this->Margin();
+        rtxaml::Media::RectangleGeometry clip;
+
+        const double bleedMargin = static_cast<double>(s_bleedMargin);
         float x0 = static_cast<float>(-max(margin.Left, bleedMargin));
         float y0 = static_cast<float>(-max(margin.Top, bleedMargin));
         float x1 = static_cast<float>(max(margin.Left, bleedMargin) + finalSize.Width + max(margin.Right, bleedMargin));
         float y1 = static_cast<float>(max(margin.Top, bleedMargin) + finalSize.Height + max(margin.Bottom, bleedMargin));
-        RETURN_IF_FAILED(spClip->put_Rect({x0, y0, x1, y1}));
+        clip.Rect({x0, y0, x1, y1});
 
-        *returnValue = {finalSize.Width, finalSize.Height};
-        return S_OK;
+        this->Clip(clip);
+
+        return {finalSize.Width, finalSize.Height};
     }
 
     HRESULT WholeItemsPanel::OnApplyTemplate(void)
@@ -385,24 +385,27 @@ namespace AdaptiveCards::Rendering::WinUI3
         ++m_stretchableItemCount;
     }
 
-    bool WholeItemsPanel::IsUIElementInStretchableList(_In_ IUIElement* element)
+    bool WholeItemsPanel::IsUIElementInStretchableList(rtxaml::UIElement const& element)
     {
-        ComPtr<IUIElement> localUIElement(element);
+        /*ComPtr<IUIElement> localUIElement(element);
         ComPtr<IFrameworkElement> uiElementAsFrameworkElement;
         THROW_IF_FAILED(localUIElement.As(&uiElementAsFrameworkElement));
 
         ComPtr<IInspectable> tagAsInspectable;
-        THROW_IF_FAILED(uiElementAsFrameworkElement->get_Tag(&tagAsInspectable));
+        THROW_IF_FAILED(uiElementAsFrameworkElement->get_Tag(&tagAsInspectable));*/
 
-        boolean isStretchable = false;
-        if (tagAsInspectable != nullptr)
+        if (const auto elementAsFrameworkElement = element.try_as<rtxaml::FrameworkElement>())
         {
-            ComPtr<AdaptiveCards::Rendering::WinUI3::IElementTagContent> tagContent;
-            THROW_IF_FAILED(tagAsInspectable.As(&tagContent));
-            THROW_IF_FAILED(tagContent->get_IsStretchable(&isStretchable));
+            if (const auto tag = elementAsFrameworkElement.Tag())
+            {
+                if (const auto tagAsElementTagContent = tag.try_as<rtrender::ElementTagContent>())
+                {
+                    return tagAsElementTagContent.IsStretchable();
+                }
+            }
         }
 
-        return isStretchable;
+        return false;
     }
 
     void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment)

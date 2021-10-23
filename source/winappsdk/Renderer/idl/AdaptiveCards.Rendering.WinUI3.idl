@@ -652,10 +652,23 @@ namespace AdaptiveCards
 
             runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
             {
+				WholeItemsPanel();
                 String GetAltText();
                 Boolean IsAllContentClippedOut();
                 Boolean IsTruncated();
             }
+			
+			runtimeclass ElementTagContent
+			{
+				Windows.UI.Xaml.Controls.ColumnDefinition ColumnDefinition {get; };
+				AdaptiveCards.ObjectModel.WinUI3.IAdaptiveCardElement CardElement {get; };
+				Windows.UI.Xaml.UIElement Separator {get; };
+                Windows.UI.Xaml.Controls.Panel ParentPanel { get; };
+
+				ElementTagContent();
+                Boolean ExpectedVisibility();
+                Boolean IsStretchable();
+			}
         }
     }
 }
