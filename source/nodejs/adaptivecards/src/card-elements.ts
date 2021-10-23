@@ -5783,9 +5783,11 @@ export class Container extends ContainerBase {
     }
 
     protected carouselRender(): HTMLElement | undefined {
+        let swiperContainer: HTMLElement = document.createElement("div");
+        swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
+
         let swiperWrapper : HTMLElement = document.createElement("div");
         swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
-
         //swiperWrapper.style.display = "flex";
         //swiperWrapper.style.flexDirection = "column";
 
@@ -5827,8 +5829,44 @@ export class Container extends ContainerBase {
                 }
             }
         }
-        return swiperWrapper;
+
+        swiperContainer.appendChild(swiperWrapper as HTMLElement);
+
+        let nextElementDiv: HTMLElement = document.createElement("div");
+        nextElementDiv.classList.add("swiper-button-next");
+        swiperContainer.appendChild(nextElementDiv);
+
+        let prevElementDiv: HTMLElement = document.createElement("div");
+        prevElementDiv.classList.add("swiper-button-prev");
+        swiperContainer.appendChild(prevElementDiv);
+
+        let pagination: HTMLElement = document.createElement("div");
+        pagination.classList.add("swiper-pagination");
+        swiperContainer.appendChild(pagination);
+
+        this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+        return swiperContainer;
     }
+
+    private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
+			let paginationOpts: PaginationOptions = {
+				el: paginationElement
+			};
+
+			let navigationOpts: NavigationOptions = {
+				prevEl: prevElement,
+				nextEl: nextElement
+			}
+
+			const swiperOptions: SwiperOptions = {
+				loop: true,
+				pagination: paginationOpts,
+				navigation: navigationOpts,
+			};
+
+			swiper = new Swiper(swiperContainer, swiperOptions);
+    }
+
 
     protected internalRender(): HTMLElement | undefined {
         this._renderedItems = [];
@@ -7224,42 +7262,8 @@ export class AdaptiveCard extends ContainerWithActions {
         super.internalToJSON(target, context);
     }
 
-    // swiper : Swiper;
-	private swiperContainer: HTMLElement;
-	private pagination: HTMLElement;
-	private prevElementDiv: HTMLElement;
-	private nextElementDiv: HTMLElement;
-
     protected internalRender(): HTMLElement | undefined {
-        var renderedElement = undefined;
-        var bCarousel : boolean = this.TBD ? true : false;
-        if (bCarousel) {
-			this.swiperContainer = document.createElement("div"); 
-            this.swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
-			this.swiperContainer.classList.add("mySwiper");
-
-            let swiperWrapper : HTMLElement = super.carouselRender() as HTMLElement;
-
-            this.swiperContainer.appendChild(swiperWrapper as HTMLElement);
-
-			this.nextElementDiv = document.createElement("div");
-            this.nextElementDiv.classList.add("swiper-button-next");
-            this.swiperContainer.appendChild(this.nextElementDiv);
-
-			this.prevElementDiv = document.createElement("div");
-            this.prevElementDiv.classList.add("swiper-button-prev");
-
-            this.swiperContainer.appendChild(this.prevElementDiv);
-
-			this.pagination = document.createElement("div");
-            this.pagination.classList.add("swiper-pagination");
-            this.swiperContainer.appendChild(this.pagination);
-
-            this.initializeSwiper();
-            renderedElement = this.swiperContainer;
-        } else {
-            let renderedElement = super.internalRender();
-        }
+        var renderedElement = this.TBD ? super.carouselRender() : super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
@@ -7269,25 +7273,6 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedElement;
-    }
-
-    private initializeSwiper() : void {
-        let paginationOpts: PaginationOptions = {
-            el: this.pagination
-        };
-
-        let navigationOpts: NavigationOptions = {
-            prevEl: this.prevElementDiv,
-            nextEl: this.nextElementDiv
-        }
-
-        const swiperOptions: SwiperOptions = {
-            loop: true,
-            pagination: paginationOpts,
-            navigation: navigationOpts,
-        };
-
-        swiper = new Swiper(this.swiperContainer, swiperOptions);
     }
 
     protected getHasBackground(): boolean {
