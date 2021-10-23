@@ -5788,7 +5788,7 @@ export class Container extends ContainerBase {
 
         let swiperWrapper : HTMLElement = document.createElement("div");
         swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
-        //swiperWrapper.style.display = "flex";
+        swiperWrapper.style.display = "flex";
         //swiperWrapper.style.flexDirection = "column";
 
         if (GlobalSettings.useAdvancedCardBottomTruncation) {
