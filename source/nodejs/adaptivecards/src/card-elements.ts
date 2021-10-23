@@ -7231,22 +7231,14 @@ export class AdaptiveCard extends ContainerWithActions {
 	private nextElementDiv: HTMLElement;
 
     protected internalRender(): HTMLElement | undefined {
-
+        var renderedElement = undefined;
         var bCarousel : boolean = this.TBD ? true : false;
         if (bCarousel) {
-
 			this.swiperContainer = document.createElement("div"); 
             this.swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
 			this.swiperContainer.classList.add("mySwiper");
 
             let swiperWrapper : HTMLElement = super.carouselRender() as HTMLElement;
-
-            if (GlobalSettings.useAdvancedCardBottomTruncation && swiperWrapper) {
-                // Unlike containers, the root card element should be allowed to
-                // be shorter than its content (otherwise the overflow truncation
-                // logic would never get triggered)
-                swiperWrapper.style.removeProperty("minHeight");
-            }
 
             this.swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
@@ -7264,19 +7256,19 @@ export class AdaptiveCard extends ContainerWithActions {
             this.swiperContainer.appendChild(this.pagination);
 
             this.initializeSwiper();
-
-            return this.swiperContainer;
+            renderedElement = this.swiperContainer;
         } else {
             let renderedElement = super.internalRender();
-
-            if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
-                // Unlike containers, the root card element should be allowed to
-                // be shorter than its content (otherwise the overflow truncation
-                // logic would never get triggered)
-                renderedElement.style.removeProperty("minHeight");
-            }
-            return renderedElement;
         }
+
+        if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
+            // Unlike containers, the root card element should be allowed to
+            // be shorter than its content (otherwise the overflow truncation
+            // logic would never get triggered)
+            renderedElement.style.removeProperty("minHeight");
+        }
+
+        return renderedElement;
     }
 
     private initializeSwiper() : void {
