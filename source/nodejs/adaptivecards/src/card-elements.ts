@@ -14,10 +14,10 @@ import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
 import Swiper, {A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrollbar, SwiperOptions} from "swiper";
-import { PaginationOptions } from "../../node_modules/swiper/types/modules/pagination";
-import { NavigationOptions } from "../../node_modules/swiper/types/modules/navigation";
-import { S_IWUSR } from "constants";
-import  "swiper/css";
+// import { PaginationOptions } from "../../node_modules/swiper/types/modules/pagination";
+// import { NavigationOptions } from "../../node_modules/swiper/types/modules/navigation";
+// import { S_IWUSR } from "constants";
+// import  "swiper/css";
 
 Swiper.use([
     Navigation,
