@@ -382,6 +382,8 @@ bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::
 HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage* backgroundImageElement,
                                _Out_ BOOL* isValid);
 
+bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImageElement);
+
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::WinUI3::RenderedAdaptiveCard*,
                                                                                  ABI::AdaptiveCards::Rendering::WinUI3::AdaptiveActionEventArgs*>>
     ActionEventSource;

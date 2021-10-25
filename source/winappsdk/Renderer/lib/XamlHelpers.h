@@ -303,6 +303,18 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         panel->SetVerticalContentAlignment(verticalContentAlignment);
     }
 
+    template<typename T>
+    void SetVerticalContentAlignmentToChildren(T container, rtom::VerticalContentAlignment verticalContentAlignment)
+    {
+        winrt::com_ptr<T> localContainer = winrt::make_self<T>(container);
+
+        if (const winrt::com_ptr<rtrender::implementation::WholeItemsPanel> containerAsPanel = localContainer.try_as<rtrender::implementation::WholeItemsPanel>())
+        {
+            auto panel = *containerAsPanel;
+            panel.VerticalAlignment(verticalContentAlignment);
+        }
+    }
+
     HRESULT RenderInputLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
@@ -353,6 +365,11 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage* backgroundImage,
                                _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs);
+
+    void ApplyBackgroundToRoot(rtxaml::Controls::Panel const& rootPanel,
+                               rtom::AdaptiveBackgroundImage const& backgroundImage,
+                               rtrender::AdaptiveRenderContext const& renderContext,
+                               rtrender::AdaptiveRenderArgs const& renderArgs);
 
     HRESULT AddRenderedControl(_In_ ABI::Windows::UI::Xaml::IUIElement* newControl,
                                _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,

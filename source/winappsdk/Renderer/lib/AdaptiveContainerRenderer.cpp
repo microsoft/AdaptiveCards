@@ -191,112 +191,143 @@ namespace AdaptiveCards::Rendering::WinUI3
             RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&containerPanel));*/
             rtrender::WholeItemsPanel containerPanel = winrt::make<rtrender::WholeItemsPanel>();
 
-            ComPtr<IFrameworkElement> containerPanelAsFrameWorkElement;
-            RETURN_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
+         /*   ComPtr<IFrameworkElement> containerPanelAsFrameWorkElement;
+            RETURN_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));*/
 
             // Get any RTL setting set on either the current context or on this container. Any value set on the
             // container should be set on the context to apply to all children
+           /* renderContext.Rtl()
             ComPtr<IReference<bool>> previousContextRtl;
-            RETURN_IF_FAILED(renderContext->get_Rtl(&previousContextRtl));
-            ComPtr<IReference<bool>> currentRtl = previousContextRtl;
+            RETURN_IF_FAILED(renderContext->get_Rtl(&previousContextRtl));*/
+            //ComPtr<IReference<bool>> currentRtl = previousContextRtl;
+            auto previousContextRtl = renderContext.Rtl();
+            auto currentRtl = previousContextRtl;
+            auto containerRtl = adaptiveContainer.Rtl();
 
-            ComPtr<IReference<bool>> containerRtl;
-            RETURN_IF_FAILED(adaptiveContainer->get_Rtl(&containerRtl));
+            /*ComPtr<IReference<bool>> containerRtl;
+            RETURN_IF_FAILED(adaptiveContainer->get_Rtl(&containerRtl));*/
 
             bool updatedRtl = false;
             if (containerRtl != nullptr)
             {
                 currentRtl = containerRtl;
-                RETURN_IF_FAILED(renderContext->put_Rtl(currentRtl.Get()));
+                //RETURN_IF_FAILED(renderContext->put_Rtl(currentRtl.Get()));
+                renderContext.Rtl(currentRtl);
                 updatedRtl = true;
             }
 
             if (currentRtl)
             {
-                boolean rtlValue;
-                RETURN_IF_FAILED(currentRtl->get_Value(&rtlValue));
+                boolean rtlValue = currentRtl.GetBoolean();
+                containerPanel.FlowDirection(rtlValue ? rtxaml::FlowDirection::RightToLeft : rtxaml::FlowDirection::LeftToRight);
+                /*RETURN_IF_FAILED(currentRtl->get_Value(&rtlValue));*/
 
-                RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft :
-                                                                                                FlowDirection_LeftToRight));
+               /* RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft :
+                                                                                                FlowDirection_LeftToRight));*/
             }
 
             // Assign vertical alignment to strech so column will stretch and respect vertical content alignment
-            ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType containerHeightType{};
-            RETURN_IF_FAILED(cardElement->get_Height(&containerHeightType));
-            if (containerHeightType == ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType::Auto)
+            /*ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType containerHeightType{};
+            RETURN_IF_FAILED(cardElement->get_Height(&containerHeightType));*/
+
+            if (cardElement.Height() == rtom::HeightType::Auto)
             {
-                RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Stretch));
+                //RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Stretch));
+                containerPanel.VerticalAlignment(rtxaml::VerticalAlignment::Stretch);
             }
 
-            ComPtr<IAdaptiveContainerBase> containerAsContainerBase;
-            RETURN_IF_FAILED(adaptiveContainer.As(&containerAsContainerBase));
 
-            UINT32 containerMinHeight{};
-            RETURN_IF_FAILED(containerAsContainerBase->get_MinHeight(&containerMinHeight));
+           /* ComPtr<IAdaptiveContainerBase> containerAsContainerBase;
+            RETURN_IF_FAILED(adaptiveContainer.As(&containerAsContainerBase));*/
+
+            //UINT32 containerMinHeight{};
+            //RETURN_IF_FAILED(containerAsContainerBase->get_MinHeight(&containerMinHeight));
+
+            uint32_t containerMinHeight = adaptiveContainer.MinHeight();
+
+
             if (containerMinHeight > 0)
             {
-                RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_MinHeight(containerMinHeight));
+                /*RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_MinHeight(containerMinHeight));*/
+                containerPanel.MinHeight(containerMinHeight);
             }
 
             ComPtr<IBorder> containerBorder =
                 XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
+            // TODO: Convert to FULL WINRT
             ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
             // winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle;
-            RETURN_IF_FAILED(XamlHelpers::HandleStylingAndPadding(
-                containerAsContainerBase.Get(), containerBorder.Get(), renderContext, renderArgs, &containerStyle));
+            XamlHelpers::HandleStylingAndPadding(to_wrl(adaptiveContainer.as<rtom::IAdaptiveContainerBase>()).Get(),
+                                                 containerBorder.Get(),
+                                                 to_wrl(renderContext).Get(),
+                                                 to_wrl(renderArgs).Get(),
+                                                 &containerStyle);
 
-            ComPtr<IFrameworkElement> parentElement;
-            RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
+           /* ComPtr<IFrameworkElement> parentElement;
+            RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));*/
+            auto parentElement = renderArgs.ParentElement();
             auto newRenderArgs =
-                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, parentElement.Get(), renderArgs);
+                winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, parentElement, renderArgs);
 
-            ComPtr<IPanel> containerPanelAsPanel;
+          /*  ComPtr<IPanel> containerPanelAsPanel;
             RETURN_IF_FAILED(containerPanel.As(&containerPanelAsPanel));
             ComPtr<IVector<IAdaptiveCardElement*>> childItems;
-            RETURN_IF_FAILED(adaptiveContainer->get_Items(&childItems));
+            RETURN_IF_FAILED(adaptiveContainer->get_Items(&childItems));*/
             /*RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
                 childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));*/
-            RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
-                childItems.Get(), containerPanelAsPanel.Get(), renderContext, renderArgs, [](IUIElement*) {}));
+            /*RETURN_IF_FAILED(XamlBuilder::BuildPanelChildren(
+                childItems.Get(), containerPanelAsPanel.Get(), renderContext, renderArgs, [](IUIElement*) {}));*/
+            auto childItems = adaptiveContainer.Items();
+            XamlBuilder::BuildPanelChildren(childItems,
+                                            containerPanel.as<rtxaml::Controls::Panel>(),
+                                            renderContext,
+                                            renderArgs,
+                                            [](rtxaml::UIElement) {});
 
             // If we changed the context's rtl setting, set it back after rendering the children
             if (updatedRtl)
             {
-                RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
+                //RETURN_IF_FAILED(renderContext->put_Rtl(previousContextRtl.Get()));
+                renderContext.Rtl(previousContextRtl);
             }
 
-            ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> verticalContentAlignmentReference;
-            RETURN_IF_FAILED(adaptiveContainer->get_VerticalContentAlignment(&verticalContentAlignmentReference));
+           //ComPtr<IReference<ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment>> verticalContentAlignmentReference;
+            //to_wrl(adaptiveContainer)->get_VerticalContentAlignment(&verticalContentAlignmentReference);
+           auto verticalContentAlignmentReference = adaptiveContainer.VerticalContentAlignment();
+            rtom::VerticalContentAlignment verticalContentAlignment =
+                rtom::VerticalContentAlignment::Top;
 
-            ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment verticalContentAlignment =
-                ABI::AdaptiveCards::ObjectModel::WinUI3::VerticalContentAlignment::Top;
             if (verticalContentAlignmentReference != nullptr)
             {
-                verticalContentAlignmentReference->get_Value(&verticalContentAlignment);
+                verticalContentAlignment = verticalContentAlignmentReference.Value();
             }
 
-            XamlHelpers::SetVerticalContentAlignmentToChildren(containerPanel.Get(), verticalContentAlignment);
+            XamlHelpers::SetVerticalContentAlignmentToChildren(containerPanel,
+                                                               verticalContentAlignment);
 
             // Check if backgroundImage defined
-            ComPtr<IAdaptiveBackgroundImage> backgroundImage;
+           /* ComPtr<IAdaptiveBackgroundImage> backgroundImage;
             BOOL backgroundImageIsValid;
             RETURN_IF_FAILED(adaptiveContainer->get_BackgroundImage(&backgroundImage));
-            RETURN_IF_FAILED(IsBackgroundImageValid(backgroundImage.Get(), &backgroundImageIsValid));
-            if (backgroundImageIsValid)
+            RETURN_IF_FAILED(IsBackgroundImageValid(backgroundImage.Get(), &backgroundImageIsValid));*/
+            auto backgroundImage = adaptiveContainer.BackgroundImage();
+
+            if (IsBackgroundImageValid(backgroundImage))
             {
                 ComPtr<IGrid> rootElement =
                     XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
                 ComPtr<IPanel> rootAsPanel;
-                RETURN_IF_FAILED(rootElement.As(&rootAsPanel));
+                rootElement.As(&rootAsPanel);
 
+                // Convert to WINRT
                 /*XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());*/
-                XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, renderArgs);
+                XamlHelpers::ApplyBackgroundToRoot(rootAsPanel.Get(), to_wrl(backgroundImage).Get(), to_wrl(renderContext).Get(), to_wrl(renderArgs).Get());
 
                 // Add rootElement to containerBorder
                 ComPtr<IUIElement> rootAsUIElement;
-                RETURN_IF_FAILED(rootElement.As(&rootAsUIElement));
-                RETURN_IF_FAILED(containerBorder->put_Child(rootAsUIElement.Get()));
+                rootElement.As(&rootAsUIElement);
+                containerBorder->put_Child(rootAsUIElement.Get())
 
                 // Add containerPanel to rootElement
                 ComPtr<IFrameworkElement> containerPanelAsFElement;

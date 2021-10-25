@@ -638,7 +638,7 @@ namespace AdaptiveCards
             {
                 AdaptiveTableRenderer();
             };
-            runtimeclass TileControl
+            runtimeclass TileControl : Windows.UI.Xaml.Controls.ContentControl
             {
                 TileControl();
 

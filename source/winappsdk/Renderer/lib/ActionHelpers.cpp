@@ -176,6 +176,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             auto childRenderArgs =
                 winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, buttonContentsStackPanel, nullptr);
 
+            /*auto childRenderArgsTo = to_wrl(childRenderArgs);*/
+
             ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
             THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
 
@@ -184,7 +186,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
             if (elementRenderer != nullptr)
             {
-                elementRenderer->Render(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+                elementRenderer->Render(adaptiveCardElement.Get(), renderContext, to_wrl(childRenderArgs).Get(), &buttonIcon);
                 if (buttonIcon == nullptr)
                 {
                     XamlHelpers::SetContent(localButton.Get(), title.Get());
@@ -1205,7 +1207,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                                                       return S_OK;
                                                   });
 
-        RETURN_IF_FAILED(renderArgs->put_AllowAboveTitleIconPlacement(allActionsHaveIcons));
+        renderArgs.AllowAboveTitleIconPlacement(allActionsHaveIcons);
 
         ComPtr<IStackPanel> showCardsStackPanel =
             XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
@@ -1237,17 +1239,17 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                     if (currentButtonIndex != lastPrimaryActionIndex)
                     {
                         // If we have fewer than the maximum number of actions and this action's mode is primary, make a button
-                        RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
-                                                                       adaptiveActionSet,
-                                                                       action.Get(),
+                        RETURN_IF_FAILED(CreateActionButtonInActionSet(to_winrt(adaptiveCard),
+                                                                       to_winrt(adaptiveActionSet),
+                                                                       to_winrt(action.Get()),
                                                                        true,
                                                                        currentButtonIndex,
-                                                                       actionsPanel.Get(),
-                                                                       showCardsPanel.Get(),
-                                                                       columnDefinitions.Get(),
+                                                                       to_winrt(actionsPanel.Get()),
+                                                                       to_winrt(showCardsPanel.Get()),
+                                                                       to_winrt(columnDefinitions.Get()),
                                                                        nullptr,
-                                                                       renderContext,
-                                                                       renderArgs,
+                                                                       to_winrt(renderContext),
+                                                                       to_wrl(renderArgs).Get(),
                                                                        &actionControl));
 
                         currentButtonIndex++;
@@ -1271,7 +1273,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                     if (overflowButton == nullptr)
                     {
                         // Create a button for the overflow menu if it doesn't exist yet
-                        RETURN_IF_FAILED(CreateFlyoutButton(renderContext, renderArgs, &overflowButton));
+                        RETURN_IF_FAILED(CreateFlyoutButton(renderContext, to_wrl(renderArgs).Get(), &overflowButton));
                     }
 
                     // Add a flyout item to the overflow menu

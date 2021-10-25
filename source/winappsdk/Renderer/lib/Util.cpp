@@ -899,6 +899,17 @@ HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAd
     return S_OK;
 }
 
+bool IsBackgroundImageValid(rtom::AdaptiveBackgroundImage backgroundImageElement)
+{
+    // what is the reason to create impl?
+    auto backgroundImage = winrt::make_self<rtom::AdaptiveBackgroundImage>(backgroundImageElement);
+    if (backgroundImage != NULL)
+    {
+        return !backgroundImage->Url().empty();
+    }
+    return false;
+}
+
 void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                       _In_ HSTRING urlString,
                       _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url)

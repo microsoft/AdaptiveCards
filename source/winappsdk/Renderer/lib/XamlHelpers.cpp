@@ -474,6 +474,89 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
+    void ApplyBackgroundToRoot(rtxaml::Controls::Panel const& rootPanel,
+        rtom::AdaptiveBackgroundImage const& backgroundImage,
+        rtrender::AdaptiveRenderContext const& renderContext,
+        rtrender::AdaptiveRenderArgs const& renderArgs)
+    {
+        // In order to reuse the image creation code paths, we simply create an adaptive card
+        // image element and then build that into xaml and apply to the root.
+       /* ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
+            HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));*/
+        rtom::AdaptiveImage adaptiveImage;
+
+       /* HString url;
+        THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
+        THROW_IF_FAILED(adaptiveImage->put_Url(url.Get()));*/
+        adaptiveImage.Url(backgroundImage.Url());
+
+        auto adaptiveCardElement = adaptiveImage.as<rtom::IAdaptiveCardElement>();
+        auto elementRenderers = renderContext.ElementRenderers();
+        //ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+        //THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+
+        //ComPtr<IAdaptiveElementRenderer> elementRenderer;
+        //THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
+
+        auto elementRenderer = elementRenderers.Get(L"Image");
+
+        
+        if (elementRenderer != nullptr)
+        {
+            auto background = elementRenderer.Render(adaptiveCardElement, renderContext, renderArgs);
+            if (background == nullptr)
+            {
+                return;
+            }
+            else
+            {
+                auto xamlImage = background.as<rtxaml::Controls::Image>();
+
+                rtom::BackgroundImageFillMode fillMode = backgroundImage.FillMode();
+
+                // Creates the background image for all fill modes
+                ComPtr<TileControl> tileControl;
+                THROW_IF_FAILED(MakeAndInitialize<TileControl>(&tileControl));
+
+                // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
+                ComPtr<IControl> tileControlAsControl;
+                THROW_IF_FAILED(tileControl.As(&tileControlAsControl));
+                THROW_IF_FAILED(tileControlAsControl->put_IsEnabled(false));
+
+                THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
+
+                ComPtr<IFrameworkElement> rootElement;
+                THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
+                THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
+
+                THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
+
+                ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
+                THROW_IF_FAILED(tileControl.As(&backgroundAsFrameworkElement));
+
+                XamlHelpers::AppendXamlElementToPanel(backgroundAsFrameworkElement.Get(), rootPanel);
+
+                // The overlay applied to the background image is determined by a resouce, so create
+                // the overlay if that resources exists
+                ComPtr<IResourceDictionary> resourceDictionary;
+                THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
+                ComPtr<IBrush> backgroundOverlayBrush;
+                if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IBrush>(resourceDictionary.Get(),
+                                                                                          c_BackgroundImageOverlayBrushKey,
+                                                                                          &backgroundOverlayBrush)))
+                {
+                    ComPtr<IShape> overlayRectangle =
+                        XamlHelpers::CreateABIClass<IShape>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
+                    THROW_IF_FAILED(overlayRectangle->put_Fill(backgroundOverlayBrush.Get()));
+
+                    ComPtr<IUIElement> overlayRectangleAsUIElement;
+                    THROW_IF_FAILED(overlayRectangle.As(&overlayRectangleAsUIElement));
+                    XamlHelpers::AppendXamlElementToPanel(overlayRectangle.Get(), rootPanel);
+                }
+            }
+        }
+    }
+
     winrt::com_ptr<rtxaml::IUIElement> RenderFallback(rtom::IAdaptiveCardElement currentElement,
                         rtrender::AdaptiveRenderContext renderContext,
                         rtrender::AdaptiveRenderArgs renderArgs,

@@ -3,75 +3,72 @@
 #pragma once
 
 #include "pch.h"
+#include "TileControl.g.h"
 
-using namespace Microsoft::WRL;
-using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::WinUI3;
-using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
-using namespace ABI::Windows::Foundation::Collections;
-
-using namespace ABI::Windows::Foundation;
-using namespace ABI::Windows::UI::Xaml;
-using namespace ABI::Windows::UI::Xaml::Shapes;
-using namespace ABI::Windows::UI::Xaml::Controls;
-using namespace ABI::Windows::UI::Xaml::Media;
-
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class DECLSPEC_UUID("0F485063-EF2A-400E-A946-73E00EDFAC83") TileControl
-        : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveCards::Rendering::WinUI3::ITileControl,
-                                              ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>,
-                                              Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IContentControlFactory>>
+    struct DECLSPEC_UUID("0F485063-EF2A-400E-A946-73E00EDFAC83") TileControl : public TileControlT<TileControl, ITypePeek>
     {
-        AdaptiveRuntimeStringClass(TileControl);
 
+        TileControl();
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        //HRESULT RuntimeClassInitialize() noexcept;
 
-        virtual HRESULT STDMETHODCALLTYPE put_BackgroundImage(_In_ IAdaptiveBackgroundImage* value);
-        virtual HRESULT STDMETHODCALLTYPE put_RootElement(_In_ IFrameworkElement* value);
-        virtual HRESULT STDMETHODCALLTYPE get_ResolvedImage(_COM_Outptr_ IUIElement** value);
-        virtual HRESULT STDMETHODCALLTYPE put_ImageSize(_In_ ABI::Windows::Foundation::Size value);
+        void BackgroundImage(rtom::AdaptiveBackgroundImage const& adaptiveBackgroundImage) { m_adaptiveBackgroundImage = adaptiveBackgroundImage; }
+        void RootElement(rtxaml::FrameworkElement const& rootElement) { m_rootElement = rootElement; }
+        rtxaml::UIElement ResolvedImage() { return m_resolvedImage; }
+        void ImageSize(winrt::Windows::Foundation::Size const& imageSize) { m_imageSize = imageSize; }
 
-        virtual HRESULT STDMETHODCALLTYPE LoadImageBrush(_In_ IUIElement* image);
+        void LoadImageBrush(rtxaml::UIElement const& image);
 
         // IFrameworkElementOverrides overrides
-        virtual HRESULT STDMETHODCALLTYPE OnApplyTemplate();
-        virtual HRESULT STDMETHODCALLTYPE MeasureOverride(_In_ Size availableSize, _Out_ Size* pReturnValue);
-        virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(_In_ Size arrangeBounds, _Out_ Size* pReturnValue);
+        void OnApplyTemplate();
+
+        winrt::Windows::Foundation::Size MeasureOverride(winrt::Windows::Foundation::Size const& availableSize);
+        winrt::Windows::Foundation::Size ArrangeOverride(winrt::Windows::Foundation::Size const& arrangeBounds);
 
         // not implemented
-        virtual HRESULT STDMETHODCALLTYPE get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** /*value*/)
-        {
-            return E_NOTIMPL;
-        }
-        virtual HRESULT STDMETHODCALLTYPE get_RootElement(_Outptr_ IFrameworkElement** /*value*/) { return E_NOTIMPL; }
-        virtual HRESULT STDMETHODCALLTYPE put_ResolvedImage(_In_ IUIElement* /*value*/) { return E_NOTIMPL; }
-        virtual HRESULT STDMETHODCALLTYPE get_ImageSize(_Out_ ABI::Windows::Foundation::Size* /*value*/)
-        {
-            return E_NOTIMPL;
-        }
+        //void get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** /*value*/)
+        //{
+        //    return E_NOTIMPL;
+        //}
+        //void get_RootElement(_Outptr_ IFrameworkElement** /*value*/) { return E_NOTIMPL; }
+        //void put_ResolvedImage(rtxaml::UIElement const& /*value*/) { return E_NOTIMPL; }
+        //void get_ImageSize(_Out_ ABI::Windows::Foundation::Size* /*value*/)
+        //{
+        //    return E_NOTIMPL;
+        //}
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
         void RefreshContainerTile();
-        HRESULT ExtractBackgroundImageData(_Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::BackgroundImageFillMode* fillMode,
-                                           _Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment* hAlignment,
-                                           _Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::VAlignment* vAlignment);
+        void ExtractBackgroundImageData(rtom::BackgroundImageFillMode& fillMode,
+                                           rtom::HAlignment& hAlignment,
+                                           rtom::VAlignment& vAlignment);
+
+        void ImageOpened(const IInspectable& sender, const rtxaml::RoutedEventArgs& args);
 
         // Fields
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_rootElement;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_resolvedImage;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICanvas> m_containerElement;
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IImageBrush> m_brushXaml;
+        rtxaml::FrameworkElement m_rootElement;
+        rtxaml::UIElement m_resolvedImage;
+        rtxaml::Controls::Canvas m_containerElement;
+        rtxaml::Media::ImageBrush m_brushXaml;
 
-        Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage> m_adaptiveBackgroundImage;
-        ABI::Windows::Foundation::Size m_imageSize{};
-        ABI::Windows::Foundation::Size m_containerSize{};
-        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Shapes::IRectangle>> m_xamlChildren;
+        rtom::AdaptiveBackgroundImage m_adaptiveBackgroundImage;
+        winrt::Windows::Foundation::Size m_imageSize{};
+        winrt::Windows::Foundation::Size m_containerSize{};
+        std::vector<rtxaml::Shapes::IRectangle> m_xamlChildren;
+
+        // Revokers
+        rtxaml::Media::Imaging::BitmapImage::ImageOpened_revoker m_imageOpenedRevoker;
     };
-    ActivatableClass(TileControl);
+}
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct TileControl : TileControlT<TileControl, implementation::TileControl>
+    {
+    };
 }

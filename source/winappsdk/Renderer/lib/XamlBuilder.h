@@ -46,7 +46,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
             std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback) noexcept;
 		
-		void BuildPanelChildren(
+		static void BuildPanelChildren(
             winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& children,
 			rtxaml::Controls::Panel ParentPanel,
             rtrender::AdaptiveRenderContext context,
