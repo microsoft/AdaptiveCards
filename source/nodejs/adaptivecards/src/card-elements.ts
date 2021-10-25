@@ -13,6 +13,21 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
 import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
+import Swiper, {A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrollbar, SwiperOptions} from "swiper";
+import { PaginationOptions } from "../../node_modules/swiper/types/modules/pagination";
+import { NavigationOptions } from "../../node_modules/swiper/types/modules/navigation";
+import { S_IWUSR } from "constants";
+import  "swiper/css";
+
+Swiper.use([
+    Navigation,
+    Pagination,
+    Scrollbar,
+    A11y,
+    History,
+    Keyboard,
+    Autoplay
+]);
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -5671,6 +5686,33 @@ export class BackgroundImage extends SerializableObject {
     }
 }
 
+export class Display extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(Versions.v1_6, "type");
+    static readonly timerProperty = new NumProperty(Versions.v1_6, "timer");
+
+    @property(Display.typeProperty)
+    type?: string;
+
+    @property(Display.timerProperty)
+    timerProperty?: number;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return "Display";
+    }
+
+    protected internalParse(source: any, context: BaseSerializationContext) {
+        return super.internalParse(source, context);
+    }
+
+    isValid(): boolean {
+        return true;
+    }
+}
+
 export class Container extends ContainerBase {
     //#region Schema
 
@@ -6944,6 +6986,12 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
     static readonly authenticationProperty = new SerializableObjectProperty(Versions.v1_4, "authentication", Authentication, true);
 
+    static readonly displayProperty = new SerializableObjectProperty(
+        Versions.v1_6,
+        "display",
+        Display,
+        true);
+
     @property(AdaptiveCard.versionProperty)
     version: Version;
 
@@ -6968,6 +7016,9 @@ export class AdaptiveCard extends ContainerWithActions {
 
     @property(AdaptiveCard.authenticationProperty)
     authentication?: Authentication;
+
+    @property(AdaptiveCard.displayProperty)
+    display?: Display;
 
     //#endregion
 
