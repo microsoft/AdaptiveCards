@@ -110,77 +110,27 @@ std::shared_ptr<AdaptiveCards::HostConfig> SampleCardModel::getHostConfig()
 
 QString SampleCardModel::generateQml(const QString& cardQml)
 {
-    std::map<std::string, std::string> urls;
-
     std::shared_ptr<int> imgCounter{ 0 };
 
     std::shared_ptr<AdaptiveCards::ParseResult> mainCard = AdaptiveCards::AdaptiveCard::DeserializeFromString(cardQml.toStdString(), "2.0");
-    std::shared_ptr<RenderedQmlAdaptiveCard> result = renderer_ptr->RenderCard(mainCard->GetAdaptiveCard());
+    std::map<int, std::string> urls = GetImageUrls(mainCard->GetAdaptiveCard(), std::map<int, std::string>());
+    auto [result, contentIndexes] = renderer_ptr->RenderCard(mainCard->GetAdaptiveCard(), 0);
     const auto generatedQml = result->GetResult();
 	
     //SYNCHRONOUS
     ImageDownloader::clearImageFolder();
-	
-	generatedQml->Transform([&urls](QmlTag& genQml)
-	{
-		if (genQml.GetElement() == "Frame" && genQml.HasProperty("readonly property bool hasBackgroundImage"))
-		{
-            auto url = genQml.GetProperty("property var imgSource");
-            urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
 
-            //Temp
-            char* imgUrl = ImageDownloader::Convert(url);
-            const std::string imageName = genQml.GetId() + ".jpg";
+    for (auto& x : urls) {
+        auto [contentNumber, url] = x;
+        const std::string imageName = Formatter() << contentNumber << ".jpg";
 
-            if (ImageDownloader::download_jpeg(imageName, imgUrl))
-            {
-                genQml.Property("property var imgSource", "\"" + getImagePath(imageName) + "\"");
-            }
-            else
-            {
-                printf("!! Failed to download file!");
-            }
-            //Temp            
-		}
-		else if (genQml.GetElement() == "Image" && genQml.HasProperty("readonly property bool isImage"))
-		{
-            auto url = genQml.GetProperty("source");
-            urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
+        char* imgUrl = ImageDownloader::Convert(url);
 
-            //Temp
-            char* imgUrl = ImageDownloader::Convert(url);
-            const std::string imageName = genQml.GetId() + ".jpg";
-
-            if (ImageDownloader::download_jpeg(imageName, imgUrl))
-            {
-                genQml.Property("source", "\"" + getImagePath(imageName) + "\"");
-            }
-            else
-            {
-                printf("!! Failed to download file!");
-            }
-            //Temp 
-		}
-		else if (genQml.GetElement() == "Button" && genQml.HasProperty("readonly property bool hasIconUrl"))
-		{
-            auto url = genQml.GetProperty("property var imgSource");
-            urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
-
-            //Temp
-            char* imgUrl = ImageDownloader::Convert(url);
-            const std::string imageName = genQml.GetId() + ".jpg";
-
-            if (ImageDownloader::download_jpeg(imageName, imgUrl))
-            {
-                genQml.Property("property var imgSource", "\"" + getImagePath(imageName) + "\"");
-            }
-            else
-            {
-                printf("!! Failed to download file!");
-            }
-            //Temp 
-		}
-	});
+        if (!ImageDownloader::download_jpeg(imageName, imgUrl))
+        {
+            printf("!! Failed to download file!");
+        }
+    }
 
 	//ASYNCHRONOUS
 	/*generatedQml->Transform([&urls](QmlTag& genQml)
@@ -295,15 +245,138 @@ void SampleCardModel::actionSubmitButtonClicked(const QString& title, const QStr
     emit sendCardResponseToQml(output);
 }
 
-const std::string SampleCardModel::getImagePath(const std::string& imageName)
+std::pair<std::map<int, std::string>, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCard>>> SampleCardModel::GetCardImageUrls(std::shared_ptr<AdaptiveCards::BaseCardElement> cardElement, std::map<int, std::string> urls, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCard>> showCards)
 {
-	std::string file_path = __FILE__;
-	std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-    dir_path.append("\\Images\\" + imageName);
-	std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
-	dir_path = std::string("file:/") + dir_path;
+    int contentIndex = urls.size();
+    if (cardElement->GetElementType() == AdaptiveCards::CardElementType::TextInput)
+    {
+        auto textInput = std::dynamic_pointer_cast<AdaptiveCards::TextInput>(cardElement);
+        auto action = textInput->GetInlineAction();
+        if (action && !action->GetIconUrl().empty() && !action->GetIconUrl().rfind("data:image", 0) == 0)
+        {
+            urls[contentIndex] = action->GetIconUrl();
+            contentIndex++;
+        }
+    }
+    else if (cardElement->GetElementType() == AdaptiveCards::CardElementType::Image)
+    {
+        auto image = std::dynamic_pointer_cast<AdaptiveCards::Image>(cardElement);
+        if (!image->GetUrl().empty() && !image->GetUrl().rfind("data:image", 0) == 0)
+        {
+            urls[contentIndex] = image->GetUrl();
+            contentIndex++;
+        }
+    }
+    else if (cardElement->GetElementType() == AdaptiveCards::CardElementType::ImageSet)
+    {
+        auto imageSet = std::dynamic_pointer_cast<AdaptiveCards::ImageSet>(cardElement);
+        auto images = imageSet->GetImages();
+        for (auto& image : images)
+        {
+            if (!image->GetUrl().empty() && !image->GetUrl().rfind("data:image", 0) == 0)
+            {
+                urls[contentIndex] = image->GetUrl();
+                contentIndex++;
+            }
+        }
+    }
+    else if (cardElement->GetElementType() == AdaptiveCards::CardElementType::ActionSet)
+    {
+        auto actionSet = std::dynamic_pointer_cast<AdaptiveCards::ActionSet>(cardElement);
+        auto actions = actionSet->GetActions();
+        std::tie(urls, showCards) = GetActionImageUrls(actions, urls, showCards);
+    }
+    else if (cardElement->GetElementType() == AdaptiveCards::CardElementType::ColumnSet)
+    {
+        auto columnSet = std::dynamic_pointer_cast<AdaptiveCards::ColumnSet>(cardElement);
+        auto columns = columnSet->GetColumns();
+        for (auto& column : columns)
+        {
+            std::tie(urls, showCards) = GetCardImageUrls(column, urls, showCards);
+        }
+    }
+    else if (cardElement->GetElementType() == AdaptiveCards::CardElementType::Column)
+    {
+        auto column = std::dynamic_pointer_cast<AdaptiveCards::Column>(cardElement);
+        if (column->GetBackgroundImage() && !column->GetBackgroundImage()->GetUrl().rfind("data:image", 0) == 0)
+        {
+            urls[contentIndex] = column->GetBackgroundImage()->GetUrl();
+            contentIndex++;
+        }
+        auto body = column->GetItems();
+        for (auto& item : body)
+        {
+            std::tie(urls, showCards) = GetCardImageUrls(item, urls, showCards);
+        }
+    }
+    else if (cardElement->GetElementType() == AdaptiveCards::CardElementType::Container)
+    {
+        auto container = std::dynamic_pointer_cast<AdaptiveCards::Container>(cardElement);
+        if (container->GetBackgroundImage() && !container->GetBackgroundImage()->GetUrl().rfind("data:image", 0) == 0)
+        {
+            urls[contentIndex] = container->GetBackgroundImage()->GetUrl();
+            contentIndex++;
+        }
+        auto body = container->GetItems();
+        for (auto& item : body)
+        {
+            std::tie(urls, showCards) = GetCardImageUrls(item, urls, showCards);
+        }
+    }
+    else if (cardElement->GetElementType() == AdaptiveCards::CardElementType::AdaptiveCard)
+    {
+        auto card = std::dynamic_pointer_cast<AdaptiveCards::AdaptiveCard>(cardElement);
+        urls = GetImageUrls(card, urls);
+    }
 
-	return dir_path;
+    return std::make_pair(urls, showCards);
+}
+
+std::pair<std::map<int, std::string>, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCard>>> SampleCardModel::GetActionImageUrls(std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> actions, std::map<int, std::string> urls, std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCard>> showCards)
+{
+    auto contentIndex = urls.size();
+    for (auto& action : actions)
+    {
+        if (!action->GetIconUrl().empty() && !action->GetIconUrl().rfind("data:image", 0) == 0)
+        {
+            urls[contentIndex] = action->GetIconUrl();
+            contentIndex++;
+        }
+
+        if (Utils::IsInstanceOfSmart<AdaptiveCards::ShowCardAction>(action))
+        {
+            auto showCardAction = std::dynamic_pointer_cast<AdaptiveCards::ShowCardAction>(action);
+            showCards.emplace_back(showCardAction->GetCard());
+        }
+    }
+
+    return std::make_pair(urls, showCards);
+}
+
+std::map<int, std::string> SampleCardModel::GetImageUrls(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, std::map<int, std::string> urls)
+{
+    auto contentIndex = urls.size();
+    std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCard>> showCards;
+
+    if (card->GetBackgroundImage() && !card->GetBackgroundImage()->GetUrl().rfind("data:image", 0) == 0)
+    {
+        urls[contentIndex] = card->GetBackgroundImage()->GetUrl();
+        contentIndex++;
+    }
+    auto body = card->GetBody();
+    for (auto& item : body)
+    {
+        std::tie(urls, showCards) = GetCardImageUrls(item, urls, showCards);
+    }
+
+    auto actions = card->GetActions();
+    std::tie(urls, showCards) = GetActionImageUrls(actions, urls, showCards);
+
+    for (auto& showCard : showCards)
+    {
+        urls = GetImageUrls(showCard, urls);
+    }
+    return urls;
 }
 
 std::shared_ptr<AdaptiveCardRenderConfig> SampleCardModel::getRenderConfig(const bool isDark)

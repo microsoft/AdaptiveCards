@@ -13,6 +13,16 @@ namespace RendererQml
         return m_isDark;
     }
 
+    CardConfig AdaptiveCardRenderConfig::getCardConfig() const
+    {
+        return m_cardConfig;
+    }
+
+    void AdaptiveCardRenderConfig::setCardConfig(CardConfig config)
+    {
+        m_cardConfig = config;
+    }
+
     InputTextConfig AdaptiveCardRenderConfig::getInputTextConfig() const
     {
         return m_textInputConfig;

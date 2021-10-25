@@ -45,6 +45,10 @@ namespace RendererQml
         const int getButtonCounter();
         const int getSelectActionCounter();
 
+        const int getContentIndex();
+        void setContentIndex(int contentCounter);
+        void incrementContentIndex();
+
         void setCardRootId(const std::string& rootId);
         const std::string getCardRootId();
 
@@ -122,6 +126,7 @@ namespace RendererQml
         int m_SelectActionCounter{ 0 };
         int m_DefaultIdCounter{ 0 };
         int m_ActionSetCounter{ 0 };
+        int m_ContentIndex{ 0 };
 
     };
 }

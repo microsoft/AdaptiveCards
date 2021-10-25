@@ -236,6 +236,21 @@ namespace RendererQml
         return ++m_SelectActionCounter;
     }
 
+    const int RendererQml::AdaptiveRenderContext::getContentIndex()
+    {
+        return m_ContentIndex;
+    }
+
+    void RendererQml::AdaptiveRenderContext::setContentIndex(int contentIndex)
+    {
+        m_ContentIndex = contentIndex;
+    }
+
+    void RendererQml::AdaptiveRenderContext::incrementContentIndex()
+    {
+        m_ContentIndex++;
+    }
+
     void AdaptiveRenderContext::setCardRootId(const std::string& rootId)
     {
         m_CardRootId = rootId;

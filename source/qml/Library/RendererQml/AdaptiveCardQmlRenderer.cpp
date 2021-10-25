@@ -17,7 +17,7 @@ namespace RendererQml
 		SetRenderConfig(renderConfig);
 	}
 
-	std::shared_ptr<RenderedQmlAdaptiveCard> AdaptiveCardQmlRenderer::RenderCard(std::shared_ptr<AdaptiveCards::AdaptiveCard> card)
+	std::pair<std::shared_ptr<RenderedQmlAdaptiveCard>, int> AdaptiveCardQmlRenderer::RenderCard(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, int contentIndex)
 	{
 		std::shared_ptr<RenderedQmlAdaptiveCard> output;
 		auto context = std::make_shared<AdaptiveRenderContext>(GetHostConfig(), GetElementRenderers(), GetRenderConfig());
@@ -34,7 +34,7 @@ namespace RendererQml
 			context->AddWarning(AdaptiveWarning(Code::RenderException, e.what()));
 		}
 
-		return output;
+		return std::make_pair(output, context->getContentIndex());
 	}
 
     void AdaptiveCardQmlRenderer::SetObjectTypes()
@@ -63,6 +63,7 @@ namespace RendererQml
 
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::AdaptiveCardRender(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, std::shared_ptr<AdaptiveRenderContext> context, bool isChildCard)
     {
+        auto cardConfig = context->GetRenderConfig()->getCardConfig();
         context->setDefaultIdName("defaultId");
 		int margin = context->GetConfig()->GetSpacing().paddingSpacing;
 
@@ -84,6 +85,7 @@ namespace RendererQml
 		uiCard->Property("border.color", isChildCard? " bgColor" : "'#B2B2B2'");
         uiCard->AddFunctions("MouseArea{anchors.fill: parent;onClicked: adaptiveCard.nextItemInFocusChain().forceActiveFocus();}");
         uiCard->Property("activeFocusOnTab", "false");
+        uiCard->Property("radius", Formatter() << (isChildCard ? 0 : cardConfig.cardRadius));
 
         const auto hasBackgroundImage = card->GetBackgroundImage() != nullptr;
 		if (hasBackgroundImage)
@@ -91,7 +93,7 @@ namespace RendererQml
 			auto uiFrame = std::make_shared<QmlTag>("Frame");
             uiFrame->Property("id", Formatter() << uiCard->GetId() << "_frame");
 			uiFrame->Property("readonly property bool hasBackgroundImage", "true");
-            uiFrame->Property("property var imgSource", card->GetBackgroundImage()->GetUrl(), true);
+            uiFrame->Property("property var imgSource", GetImagePath(context, card->GetBackgroundImage()->GetUrl()), true);
 			uiFrame->Property("anchors.fill", "parent");
 			uiFrame->Property("background", AdaptiveCardQmlRenderer::GetBackgroundImage(card->GetBackgroundImage(), context, "parent.imgSource")->ToString());
 			uiCard->Property("clip", "true");
@@ -512,6 +514,7 @@ namespace RendererQml
             scrollViewTag->Property("width", "parent.width");
             scrollViewTag->Property("height", Formatter() << input->GetId() << ".visible ? " << textConfig.multiLineTextHeight << " : 0");
             scrollViewTag->Property("ScrollBar.vertical.interactive", "true");
+            scrollViewTag->Property("visible", input->GetIsVisible() ? "true" : "false");
 
             uiTextInput = std::make_shared<QmlTag>("TextArea");
             uiTextInput->Property("id", input->GetId());
@@ -556,6 +559,7 @@ namespace RendererQml
             inputWrapper->Property("height", Formatter() << textConfig.height);
             inputWrapper->Property("width", "parent.width");
             inputWrapper->Property("color", context->GetHexColor(textConfig.backgroundColorNormal));
+            inputWrapper->Property("visible", input->GetIsVisible() ? "true" : "false");
 
             uiTextInput = std::make_shared<QmlTag>("TextField");
             uiTextInput->Property("id", input->GetId());
@@ -700,6 +704,7 @@ namespace RendererQml
         numberInputRow->Property("id", Formatter() << inputId << "_input_row");
         numberInputRow->Property("width", "parent.width");
         numberInputRow->Property("height", Formatter() << numberConfig.height);
+        numberInputRow->Property("visible", input->GetIsVisible() ? "true" : "false");
 
         auto numberInputRectangle = std::make_shared<QmlTag>("Rectangle");
         numberInputRectangle->Property("id", Formatter() << inputId << "_input");
@@ -1036,6 +1041,7 @@ namespace RendererQml
         checkbox->Property("onHoveredChanged", Formatter() << checkbox->GetId() << ".colorChange(" << checkbox->GetId() << ", false)");
         checkbox->Property("onActiveFocusChanged", Formatter() << checkbox->GetId() << ".colorChange(" << checkbox->GetId() << ", false)");
         checkbox->Property("onCheckedChanged", Formatter() << checkbox->GetId() << ".colorChange(" << checkbox->GetId() << ", false)");
+        checkbox->Property("visible", input->GetIsVisible() ? "true" : "false");
 
         checkbox->Property("Component.onCompleted", Formatter() << "{\n"
             << checkbox->GetId() << ".colorChange(" << checkbox->GetId() << ", false);}\n"
@@ -1088,6 +1094,7 @@ namespace RendererQml
 		else
 		{
             uiChoiceSet = GetButtonGroup(choiceSet, context);
+            uiChoiceSet->Property("visible", input->GetIsVisible() ? "true" : "false");
             context->addToInputElementList(origionalElementId, (uiChoiceSet->GetId() + ".getSelectedValues()"));
 		}
 
@@ -1467,6 +1474,7 @@ namespace RendererQml
         }
 
         uiButton->Property("contentItem", uiText->ToString());
+        uiButton->Property("visible", checkbox.isVisible ? "true" : "false");
 
         return uiButton;
 	}
@@ -1627,6 +1635,7 @@ namespace RendererQml
         uiDateInputWrapper->Property("color", context->GetHexColor(dateInputConfig.backgroundColorNormal));
         uiDateInputWrapper->Property("border.color", Formatter() << input->GetId() << ".activeFocus? " << context->GetHexColor(dateInputConfig.borderColorOnFocus) << " : " << context->GetHexColor(dateInputConfig.borderColorNormal));
         uiDateInputWrapper->Property("border.width", Formatter() << dateInputConfig.borderWidth);
+        uiDateInputWrapper->Property("visible", input->GetIsVisible() ? "true" : "false");
         uiDateInputWrapper->AddFunctions(Formatter() << "function colorChange(isPressed){\n"
             "if (isPressed)  color = " << context->GetHexColor(dateInputConfig.backgroundColorOnPressed) << ";\n"
             "else color = " << input->GetId() << ".activeFocus ? " << context->GetHexColor(dateInputConfig.backgroundColorOnPressed) << " : " << input->GetId() << ".hovered ? " << context->GetHexColor(dateInputConfig.backgroundColorOnHovered) << " : " << context->GetHexColor(dateInputConfig.backgroundColorNormal) << "}"
@@ -1998,7 +2007,7 @@ namespace RendererQml
 		uiImage->Property("id", Formatter() << image->GetId() << "_img");
 		uiImage->Property("readonly property bool isImage", "true");
         uiImage->Property("cache", "false");
-		uiImage->Property("source", image->GetUrl(), true);
+		uiImage->Property("source", GetImagePath(context, image->GetUrl()), true);
 		uiImage->Property("anchors.fill", "parent");
 		uiImage->Property("visible", "parent.visible");
 
@@ -2138,6 +2147,7 @@ namespace RendererQml
         uiTimeInputWrapper->Property("color", context->GetHexColor(timeConfig.backgroundColorNormal));
         uiTimeInputWrapper->Property("border.color", Formatter() << input->GetId() << ".activeFocus? " << context->GetHexColor(timeConfig.borderColorOnFocus) << " : " << context->GetHexColor(timeConfig.borderColorNormal));
         uiTimeInputWrapper->Property("border.width", Formatter() << timeConfig.borderWidth);
+        uiTimeInputWrapper->Property("visible", input->GetIsVisible() ? "true" : "false");
         uiTimeInputWrapper->AddFunctions(Formatter() << "function colorChange(isPressed){\n"
             "if (isPressed)  color = " << context->GetHexColor(timeConfig.backgroundColorOnPressed) << ";\n"
             "else color = " << uiTimeComboBox->GetId() << ".activeFocus ? " << context->GetHexColor(timeConfig.backgroundColorOnPressed) << " : " << id << ".hovered ? " << context->GetHexColor(timeConfig.backgroundColorOnHovered) << " : " << context->GetHexColor(timeConfig.backgroundColorNormal) << "}"
@@ -2806,7 +2816,7 @@ namespace RendererQml
         if (hasBackgroundImage)
         {
             uiContainer->Property("readonly property bool hasBackgroundImage", "true");
-            uiContainer->Property("property var imgSource", cardElement->GetBackgroundImage()->GetUrl(), true);
+            uiContainer->Property("property var imgSource", GetImagePath(context, cardElement->GetBackgroundImage()->GetUrl()), true);
 			auto backgroundImg = AdaptiveCardQmlRenderer::GetBackgroundImage(cardElement->GetBackgroundImage(), context, id + ".imgSource");
             backgroundRect->AddChild(backgroundImg);
         }
@@ -2928,6 +2938,28 @@ namespace RendererQml
     {
         if (context->GetConfig()->GetSupportsInteractivity())
         {
+            ActionButtonConfig buttonConfig;
+
+            //TODO: Add border color and style: default/positive/destructive
+            if (!Utils::IsNullOrWhitespace(action->GetStyle()) && !Utils::CaseInsensitiveCompare(action->GetStyle(), "default"))
+            {
+                if (Utils::CaseInsensitiveCompare(action->GetStyle(), "positive"))
+                {
+                    buttonConfig = context->GetRenderConfig()->getActionButtonsConfig().positiveColorConfig;
+                }
+                else if (Utils::CaseInsensitiveCompare(action->GetStyle(), "destructive"))
+                {
+                    buttonConfig = context->GetRenderConfig()->getActionButtonsConfig().destructiveColorConfig;
+                }
+                else
+                {
+                    buttonConfig = context->GetRenderConfig()->getActionButtonsConfig().primaryColorConfig;
+                }
+            }
+            else
+            {
+                buttonConfig = context->GetRenderConfig()->getActionButtonsConfig().primaryColorConfig;
+            }
             const auto config = context->GetConfig();
             const auto actionsConfig = config->GetActions();
             const std::string buttonId = Formatter() << "button_auto_" << context->getButtonCounter();
@@ -2937,6 +2969,10 @@ namespace RendererQml
 
             auto buttonElement = std::make_shared<QmlTag>("Button");
             buttonElement->Property("id", buttonId);
+            buttonElement->Property("width", "(parent.width > implicitWidth) ? implicitWidth : parent.width");
+            buttonElement->Property("horizontalPadding", Formatter() << buttonConfig.horizotalPadding);
+            buttonElement->Property("verticalPadding", Formatter() << buttonConfig.verticalPadding);
+            buttonElement->Property("height", Formatter() << buttonConfig.buttonHeight);
             buttonElement->Property("Keys.onPressed", "{if(event.key === Qt.Key_Return){down=true;event.accepted=true;}}");
             buttonElement->Property("Keys.onReleased", Formatter() << "{if(event.key === Qt.Key_Return){down=false;" << buttonId << ".onReleased();event.accepted=true;}}");
 
@@ -2950,31 +2986,40 @@ namespace RendererQml
 			const std::string bgRectangleId = Formatter() << buttonId << "_bg";
             bgRectangle->Property("id", bgRectangleId);
             bgRectangle->Property("anchors.fill", "parent");
-            bgRectangle->Property("radius", Formatter() << buttonId << ".height / 2");
+            bgRectangle->Property("radius", Formatter() << buttonConfig.buttonRadius);
 
             //Add button content item
+            int textSpacing = 2 * buttonConfig.horizotalPadding - 2;
+            if (!action->GetIconUrl().empty())
+            {
+                textSpacing += buttonConfig.imageSize + buttonConfig.iconTextSpacing;
+            }
+            if (isShowCardButton)
+            {
+                textSpacing += buttonConfig.iconWidth + buttonConfig.iconTextSpacing;
+            }
             auto contentItem = std::make_shared<QmlTag>("Item");
             auto contentLayout = std::make_shared<QmlTag>(isIconLeftOfTitle ? "Row" : "Column");
             contentLayout->Property("id", Formatter() << buttonId << (isIconLeftOfTitle ? "_row" : "_col"));
-            contentLayout->Property("spacing", "5");
-            contentLayout->Property("leftPadding", "5");
-            contentLayout->Property("rightPadding", "5");
+            contentLayout->Property("spacing", Formatter() << buttonConfig.iconTextSpacing);
+            contentLayout->Property("padding", "0");
+            contentLayout->Property("height", Formatter() << "parent.height");
 
             contentItem->AddChild(contentLayout);
-            contentItem->Property("implicitHeight", Formatter() << contentLayout->GetId() << ".implicitHeight");
+            contentItem->Property("height", "parent.height");
             contentItem->Property("implicitWidth", Formatter() << contentLayout->GetId() << ".implicitWidth");
 
             //Add button icon
             if (!action->GetIconUrl().empty())
             {
 				buttonElement->Property("readonly property bool hasIconUrl", "true");
-                buttonElement->Property("property var imgSource", action->GetIconUrl(), true);
+                buttonElement->Property("property var imgSource", GetImagePath(context, action->GetIconUrl()), true);
 
                 auto contentImage = std::make_shared<QmlTag>("Image");
                 contentImage->Property("id", Formatter() << buttonId << "_img");
                 contentImage->Property("cache", "false");
-                contentImage->Property("height", Formatter() << fontSize);
-                contentImage->Property("width", Formatter() << fontSize);
+                contentImage->Property("height", Formatter() << buttonConfig.imageSize);
+                contentImage->Property("width", Formatter() << buttonConfig.imageSize);
                 contentImage->Property("fillMode", "Image.PreserveAspectFit");
 
                 if (isIconLeftOfTitle)
@@ -2993,53 +3038,35 @@ namespace RendererQml
 
             //Add content Text
             auto textLayout = std::make_shared<QmlTag>("Row");
-            textLayout->Property("spacing", "5");
+            textLayout->Property("spacing", Formatter() << buttonConfig.iconTextSpacing);
+            textLayout->Property("padding", "0");
+            textLayout->Property("height", Formatter() << "parent.height");
 
 			const std::string contentTextId = buttonId + "_contentText";
             auto contentText = std::make_shared<QmlTag>("Text");
 			contentText->Property("id", contentTextId);
+            contentText->Property("anchors.verticalCenter", "parent.verticalCenter");
+            contentText->Property("width", Formatter() << "implicitWidth < " << buttonId << ".width - " << textSpacing << " ? implicitWidth : (" << buttonId << ".width - " << textSpacing << " > 1 ? " << buttonId << ".width - " << textSpacing << " : 1)");
             if (!action->GetTitle().empty())
             {
                 contentText->Property("text", action->GetTitle(), true);
             }
             contentText->Property("font.pixelSize", Formatter() << fontSize);
-
-            ActionButtonColorConfig colorConfig;
-
-            //TODO: Add border color and style: default/positive/destructive
-            if (!Utils::IsNullOrWhitespace(action->GetStyle()) && !Utils::CaseInsensitiveCompare(action->GetStyle(), "default"))
-            {
-                if (Utils::CaseInsensitiveCompare(action->GetStyle(), "positive"))
-                {
-                    colorConfig = context->GetRenderConfig()->getActionButtonsConfig().positiveColorConfig;
-                }
-                else if (Utils::CaseInsensitiveCompare(action->GetStyle(), "destructive"))
-                {
-                    colorConfig = context->GetRenderConfig()->getActionButtonsConfig().destructiveColorConfig;
-                }
-                else
-                {
-                    colorConfig = context->GetRenderConfig()->getActionButtonsConfig().primaryColorConfig;
-                }
-            }
-            else
-            {
-                colorConfig = context->GetRenderConfig()->getActionButtonsConfig().primaryColorConfig;
-            }
+            contentText->Property("elide", "Text.ElideRight");
 
             bgRectangle->Property("border.width", Formatter() << buttonId << ".activeFocus ? 2 : 1");
 
             if (isShowCardButton)
             {
-                bgRectangle->Property("border.color", Formatter() << buttonId << ".activeFocus ? " << context->GetHexColor(colorConfig.borderColorFocussed) << " : " << context->GetHexColor(colorConfig.borderColorNormal));
-                bgRectangle->Property("color", Formatter() << "(" << buttonId << ".showCard || " << buttonId << ".down )? " << context->GetHexColor(colorConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(colorConfig.buttonColorHovered) << " : " << context->GetHexColor(colorConfig.buttonColorNormal));
-                contentText->Property("color", Formatter() << "( " << buttonId << ".showCard || " << buttonId << ".hovered || " << buttonId << ".down) ? " << context->GetHexColor(colorConfig.textColorHovered) << " : " << context->GetHexColor(colorConfig.textColorNormal));
+                bgRectangle->Property("border.color", Formatter() << buttonId << ".activeFocus ? " << context->GetHexColor(buttonConfig.borderColorFocussed) << " : " << context->GetHexColor(buttonConfig.borderColorNormal));
+                bgRectangle->Property("color", Formatter() << "(" << buttonId << ".showCard || " << buttonId << ".down )? " << context->GetHexColor(buttonConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(buttonConfig.buttonColorHovered) << " : " << context->GetHexColor(buttonConfig.buttonColorNormal));
+                contentText->Property("color", Formatter() << "( " << buttonId << ".showCard || " << buttonId << ".hovered || " << buttonId << ".down) ? " << context->GetHexColor(buttonConfig.textColorHovered) << " : " << context->GetHexColor(buttonConfig.textColorNormal));
             }
             else
             {
-                bgRectangle->Property("border.color", Formatter() << buttonId << ".activeFocus ? " << context->GetHexColor(colorConfig.borderColorFocussed) << " : " << context->GetHexColor(colorConfig.borderColorNormal));
-                bgRectangle->Property("color", Formatter() << buttonId << ".down ? " << context->GetHexColor(colorConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(colorConfig.buttonColorHovered) << " : " << context->GetHexColor(colorConfig.buttonColorNormal));
-                contentText->Property("color", Formatter() << "( " << buttonId << ".hovered || " << buttonId << ".down )? " << context->GetHexColor(colorConfig.textColorHovered) << " : " << context->GetHexColor(colorConfig.textColorNormal));
+                bgRectangle->Property("border.color", Formatter() << buttonId << ".activeFocus ? " << context->GetHexColor(buttonConfig.borderColorFocussed) << " : " << context->GetHexColor(buttonConfig.borderColorNormal));
+                bgRectangle->Property("color", Formatter() << buttonId << ".down ? " << context->GetHexColor(buttonConfig.buttonColorPressed) << " : (" << buttonId << ".hovered ) ? " << context->GetHexColor(buttonConfig.buttonColorHovered) << " : " << context->GetHexColor(buttonConfig.buttonColorNormal));
+                contentText->Property("color", Formatter() << "( " << buttonId << ".hovered || " << buttonId << ".down )? " << context->GetHexColor(buttonConfig.textColorHovered) << " : " << context->GetHexColor(buttonConfig.textColorNormal));
             }
 
             textLayout->AddChild(contentText);
@@ -3136,6 +3163,7 @@ namespace RendererQml
         for (const auto& componentElement : context->getShowCardLoaderComponentList())
         {
             auto subContext = std::make_shared<AdaptiveRenderContext>(context->GetConfig(), context->GetElementRenderers(), context->GetRenderConfig());
+            subContext->setContentIndex(context->getContentIndex());
 
             // Add parent input input elements to the child card
             for (const auto& inputElement : context->getInputElementList())
@@ -3155,6 +3183,8 @@ namespace RendererQml
                 const auto showCardComponent = GetComponent(componentElement.first, uiCard);
                 context->getCardRootElement()->AddChild(showCardComponent);
             }
+
+            context->setContentIndex(subContext->getContentIndex());
         }
     }
 
@@ -3926,5 +3956,18 @@ namespace RendererQml
         clearIcon->Property("Keys.onReturnPressed", "onClicked()");
 
         return clearIcon;
+    }
+
+    const std::string RendererQml::AdaptiveCardQmlRenderer::GetImagePath(std::shared_ptr<AdaptiveRenderContext> context, const std::string url)
+    {
+        auto contentNumber = context->getContentIndex();
+        context->incrementContentIndex();
+        const std::string imageName = Formatter() << contentNumber << ".jpg";
+        std::string file_path = __FILE__;
+        std::string dir_path = file_path.substr(0, file_path.rfind("\\Library"));
+        dir_path.append("\\Samples\\QmlVisualizer\\Images\\" + imageName);
+        std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
+        dir_path = std::string("file:/") + dir_path;
+        return dir_path;
     }
 }
