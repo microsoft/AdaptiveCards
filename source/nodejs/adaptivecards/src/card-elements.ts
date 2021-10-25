@@ -5742,7 +5742,7 @@ export class Container extends ContainerBase {
     private _items: CardElement[] = [];
     private _renderedItems: CardElement[] = [];
 
-    private insertItemAt(
+    protected insertItemAt(
         item: CardElement,
         index: number,
         forceInsert: boolean) {
@@ -5776,6 +5776,98 @@ export class Container extends ContainerBase {
         }
 
         super.applyBackground();
+    }
+
+    protected carouselRender(): HTMLElement | undefined {
+        let swiperContainer: HTMLElement = document.createElement("div");
+        swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
+
+        let swiperWrapper : HTMLElement = document.createElement("div");
+        swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
+        swiperWrapper.style.display = "flex";
+        //swiperWrapper.style.flexDirection = "column";
+
+        if (GlobalSettings.useAdvancedCardBottomTruncation) {
+            // Forces the container to be at least as tall as its content.
+            //
+            // Fixes a quirk in Chrome where, for nested flex elements, the
+            // inner element's height would never exceed the outer element's
+            // height. This caused overflow truncation to break -- containers
+            // would always be measured as not overflowing, since their heights
+            // were constrained by their parents as opposed to truly reflecting
+            // the height of their content.
+            //
+            // See the "Browser Rendering Notes" section of this answer:
+            // https://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
+            swiperWrapper.style.minHeight = '-webkit-min-content';
+        }
+
+        //switch (this.getEffectiveVerticalContentAlignment()) {
+        //    case Enums.VerticalAlignment.Center:
+        //        swiperWrapper.style.justifyContent = "center";
+        //        break;
+        //    case Enums.VerticalAlignment.Bottom:
+        //        swiperWrapper.style.justifyContent = "flex-end";
+        //        break;
+        //    default:
+        //        swiperWrapper.style.justifyContent = "flex-start";
+        //        break;
+        //}
+
+        if (this._items.length > 0) {
+            for (let item of this._items) {
+                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
+
+                if (renderedItem) {
+                    Utils.appendChild(swiperWrapper, renderedItem);
+
+                    this._renderedItems.push(item);
+                }
+            }
+        }
+
+        swiperContainer.appendChild(swiperWrapper as HTMLElement);
+
+        let nextElementDiv: HTMLElement = document.createElement("div");
+        nextElementDiv.classList.add("swiper-button-next");
+        swiperContainer.appendChild(nextElementDiv);
+
+        let prevElementDiv: HTMLElement = document.createElement("div");
+        prevElementDiv.classList.add("swiper-button-prev");
+        swiperContainer.appendChild(prevElementDiv);
+
+        let pagination: HTMLElement = document.createElement("div");
+        pagination.classList.add("swiper-pagination");
+        swiperContainer.appendChild(pagination);
+
+        this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+        return swiperContainer;
+    }
+
+    private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
+        /*
+        let paginationOpts: PaginationOptions = {
+            el: paginationElement
+         };
+
+         let navigationOpts: NavigationOptions = {
+            prevEl: prevElement,
+            nextEl: nextElement
+         }
+         */
+
+         const swiperOptions: SwiperOptions = {
+            loop: true,
+            pagination: {
+                el: paginationElement
+            },
+            navigation: {
+                prevEl: prevElement,
+                nextEl: nextElement
+            },
+         };
+
+         new Swiper(swiperContainer, swiperOptions);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -6570,6 +6662,63 @@ export class ColumnSet extends ContainerBase {
     }
 }
 
+export class CarouselPage extends Container {
+    //#region Schema
+
+    //#endregion
+
+    protected internalRender(): HTMLElement | undefined {
+
+        let swiperSlide : HTMLElement = document.createElement("div");
+        swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
+
+        let renderedElement = super.internalRender();
+        Utils.appendChild(swiperSlide, renderedElement);
+
+        return swiperSlide;
+    }
+
+    static unSupportedElementList : Set<any>;
+
+    private prepopulateBannedElementList()
+    {
+        if (CarouselPage.unSupportedElementList === undefined)
+        {
+            CarouselPage.unSupportedElementList = new Set([TextInput, Media]);
+        }
+    }
+
+    protected internalParse(source: any, context: SerializationContext) {
+        super.internalParse(source, context);
+
+        this.clear();
+        this.setShouldFallback(false);
+        this.prepopulateBannedElementList();
+
+        let jsonItems = source[this.getItemsCollectionPropertyName()];
+
+        if (Array.isArray(jsonItems)) {
+            for (let item of jsonItems) {
+                let element = context.parseElement(this, item, !this.isDesignMode());
+
+                if (CarouselPage.unSupportedElementList.has(typeof item))
+                {
+                    // TODO: throw a warning or something to log
+                    continue;
+                }
+
+                if (element) {
+                    super.insertItemAt(element, -1, true);
+                }
+            }
+        }
+    }
+
+    getJsonTypeName(): string {
+        return "CarouselPage";
+    }
+}
+
 function raiseImageLoadedEvent(image: Image) {
     let card = image.getRootElement() as AdaptiveCard;
     let onImageLoadedHandler = (card && card.onImageLoaded) ? card.onImageLoaded : AdaptiveCard.onImageLoaded;
@@ -7106,7 +7255,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected internalRender(): HTMLElement | undefined {
-        let renderedElement = super.internalRender();
+        let renderedElement = this.display ? super.carouselRender() : super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
@@ -7490,6 +7639,7 @@ GlobalRegistry.defaultElements.register("Media", Media, Versions.v1_1);
 GlobalRegistry.defaultElements.register("FactSet", FactSet);
 GlobalRegistry.defaultElements.register("ColumnSet", ColumnSet);
 GlobalRegistry.defaultElements.register("ActionSet", ActionSet, Versions.v1_2);
+GlobalRegistry.defaultElements.register("CarouselPage", CarouselPage, Versions.v1_6);
 GlobalRegistry.defaultElements.register("Input.Text", TextInput);
 GlobalRegistry.defaultElements.register("Input.Date", DateInput);
 GlobalRegistry.defaultElements.register("Input.Time", TimeInput);
