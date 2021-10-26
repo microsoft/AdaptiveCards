@@ -13,17 +13,11 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
 import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
-import { runInThisContext } from "vm";
 import Swiper, {A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrollbar, SwiperOptions} from "swiper";
-import { PaginationOptions } from "../../node_modules/swiper/types/modules/pagination";
-import { NavigationOptions } from "../../node_modules/swiper/types/modules/navigation";
 import { S_IWUSR } from "constants";
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-// eslint-disable-next-line no-var
-var swiper: Swiper | undefined;
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 Swiper.use([
     Navigation,
@@ -5692,22 +5686,22 @@ export class BackgroundImage extends SerializableObject {
     }
 }
 
-export class TBD extends SerializableObject {
+export class Display extends SerializableObject {
     //#region Schema
 
     static readonly typeProperty = new StringProperty(Versions.v1_6, "type");
     static readonly timerProperty = new NumProperty(Versions.v1_6, "timer");
 
-    @property(TBD.typeProperty)
+    @property(Display.typeProperty)
     type?: string;
 
-    @property(TBD.timerProperty)
+    @property(Display.timerProperty)
     timerProperty?: number;
 
     //#endregion
 
     protected getSchemaKey(): string {
-        return "TBD";
+        return "Display";
     }
 
     protected internalParse(source: any, context: BaseSerializationContext) {
@@ -5851,22 +5845,18 @@ export class Container extends ContainerBase {
     }
 
     private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
-         let paginationOpts: PaginationOptions = {
-            el: paginationElement
-         };
-
-         let navigationOpts: NavigationOptions = {
-            prevEl: prevElement,
-            nextEl: nextElement
-         }
-
          const swiperOptions: SwiperOptions = {
             loop: true,
-            pagination: paginationOpts,
-            navigation: navigationOpts,
+            pagination: {
+                el: paginationElement
+             },
+            navigation: {
+                prevEl: prevElement,
+                nextEl: nextElement
+             },
          };
 
-         swiper = new Swiper(swiperContainer, swiperOptions);
+         new Swiper(swiperContainer, swiperOptions);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -7139,16 +7129,16 @@ export class AdaptiveCard extends ContainerWithActions {
         },
         Versions.v1_0);
 
-    static readonly TBDProperty = new SerializableObjectProperty(
-        Versions.v1_6,
-        "TBD",
-        TBD,
-        true);
-
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
     static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
     static readonly authenticationProperty = new SerializableObjectProperty(Versions.v1_4, "authentication", Authentication, true);
+
+    static readonly DisplayProperty = new SerializableObjectProperty(
+        Versions.v1_6,
+        "display",
+        Display,
+        true);
 
     @property(AdaptiveCard.versionProperty)
     version: Version;
@@ -7175,8 +7165,8 @@ export class AdaptiveCard extends ContainerWithActions {
     @property(AdaptiveCard.authenticationProperty)
     authentication?: Authentication;
 
-    @property(AdaptiveCard.TBDProperty)
-    TBD?: TBD;
+    @property(AdaptiveCard.DisplayProperty)
+    Display?: Display;
 
     //#endregion
 
@@ -7264,7 +7254,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected internalRender(): HTMLElement | undefined {
-        var renderedElement = this.TBD ? super.carouselRender() : super.internalRender();
+        var renderedElement = this.Display ? super.carouselRender() : super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
