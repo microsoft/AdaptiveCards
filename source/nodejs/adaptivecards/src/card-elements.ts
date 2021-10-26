@@ -5828,13 +5828,13 @@ export class Container extends ContainerBase {
 
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
-        let nextElementDiv: HTMLElement = document.createElement("div");
-        nextElementDiv.classList.add("swiper-button-next");
-        swiperContainer.appendChild(nextElementDiv);
-
-        let prevElementDiv: HTMLElement = document.createElement("div");
+        let prevElementDiv: HTMLElement = document.createElement("button");
         prevElementDiv.classList.add("swiper-button-prev");
         swiperContainer.appendChild(prevElementDiv);
+
+        let nextElementDiv: HTMLElement = document.createElement("button");
+        nextElementDiv.classList.add("swiper-button-next");
+        swiperContainer.appendChild(nextElementDiv);
 
         let pagination: HTMLElement = document.createElement("div");
         pagination.classList.add("swiper-pagination");
@@ -5854,6 +5854,13 @@ export class Container extends ContainerBase {
                 prevEl: prevElement,
                 nextEl: nextElement
              },
+            a11y: {
+                enabled: true
+            },
+            keyboard: {
+                enabled: true,
+                onlyInViewport: true
+            }
          };
 
          new Swiper(swiperContainer, swiperOptions);
@@ -6227,13 +6234,13 @@ export class CarouselPage extends Container {
         //return element;
         return swiperSlide;
     }
-    static bannedElementList : Set<any>;
+    static unsupportedElementsList : Set<any>;
 
     private prepopulateBannedElementList()
     {
-        if (CarouselPage.bannedElementList === undefined)
+        if (CarouselPage.unsupportedElementsList === undefined)
         {
-            CarouselPage.bannedElementList = new Set([TextInput, Media]);
+            CarouselPage.unsupportedElementsList = new Set([TextInput, Media]);
         }
     }
 
@@ -6250,7 +6257,7 @@ export class CarouselPage extends Container {
             for (let item of jsonItems) {
                 let element = context.parseElement(this, item, !this.isDesignMode());
 
-                if (CarouselPage.bannedElementList.has(typeof item))
+                if (CarouselPage.unsupportedElementsList.has(typeof item))
                 {
                     // TODO: throw a warning or something to log
                     continue;
