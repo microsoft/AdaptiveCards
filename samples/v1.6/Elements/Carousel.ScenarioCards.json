@@ -2,10 +2,9 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.6",
-	"TBD": {
+	"display": {
 	  "type": "carousel",
-	  "timer": 5000,
-	  "someOtherCarouselProperty": true
+	  "timer": 5000
 	},
 	"body": [
 	{
@@ -91,8 +90,8 @@
 	  				}
 	  			]
 	  		}
-	  	
-	  
+
+
 	  ]
 	},
 	{
@@ -256,7 +255,7 @@
 	    		}
 	    	]
 	    }
-	
+
 	    ]
 	},
     {
