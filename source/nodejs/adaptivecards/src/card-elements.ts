@@ -19,6 +19,8 @@ import { PaginationOptions } from "../../node_modules/swiper/types/modules/pagin
 import { NavigationOptions } from "../../node_modules/swiper/types/modules/navigation";
 import { S_IWUSR } from "constants";
 import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 // eslint-disable-next-line no-var
 var swiper: Swiper | undefined;

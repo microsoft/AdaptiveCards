@@ -1054,7 +1054,7 @@ a.default-ac-anchor:visited:active {
     vertical-align: middle;
     cursor: pointer;
     font-family: "Segoe UI", sans-serif;
-    font-size: 28px;
+    font-size: 14px;
     font-weight: 600;
     padding: 4px 10px 5px 10px;
     -webkit-user-select: none;
@@ -1110,7 +1110,7 @@ a.default-ac-anchor:visited:active {
     -webkit-font-smoothing: antialiased;
     display: inline-block;
     font-family: 'FabricMDL2Icons';
-    font-size: 28px;
+    font-size: 10px;
     font-style: normal;
     font-weight: 900;
     margin: auto 0px auto 6px;
@@ -1123,7 +1123,7 @@ a.default-ac-anchor:visited:active {
 
 .default-ac-input {
     font-family: "Segoe UI", sans-serif;
-    font-size: 28px;
+    font-size: 14px;
     color: black;
 }
 
