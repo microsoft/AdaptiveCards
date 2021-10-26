@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-aaf-testapp",
-	"version": "0.1.2",
+	"version": "0.2.0-alpha.0",
 	"description": "AAF JavaScript Runtime test application",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -22,6 +22,6 @@
 		"webpack-dev-server": "^3.11.2"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.10.0"
+		"adaptivecards": "^2.11.0-alpha.0"
 	}
 }

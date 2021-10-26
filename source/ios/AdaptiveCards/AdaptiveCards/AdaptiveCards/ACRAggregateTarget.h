@@ -6,9 +6,9 @@
 //
 
 #import "ACRIContentHoldingView.h"
-#import "ACOInputResults.h"
+#import <AdaptiveCards/ACOInputResults.h>
 #import "ACRView.h"
-#import "ACRBaseTarget.h"
+#import <AdaptiveCards/ACRBaseTarget.h>
 #import <UIKit/UIKit.h>
 
 // keys used in retrieving values from properties that are dispatced by

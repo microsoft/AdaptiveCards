@@ -32,16 +32,13 @@
 		<meta name="twitter:domain" content="adaptivecards.io">
 	<% } %>
 
-	<% if(is_current("visualizer")) { %>
-		<%- hashed_asset("css/w3.css") %>
-		<%- hashed_asset("visualizer/css/visualizer.css") %>
-	<% } else if(!is_current("designer")) { %>
+	<% if(!is_current("designer")) { %>
 		<%- hashed_asset("node_modules/@fortawesome/fontawesome-free/css/all.min.css") %>
 		<%- hashed_asset("node_modules/highlightjs/styles/default.css") %>
 
 		<%- hashed_asset("css/w3.css") %>
-		<%- hashed_asset("css/extracted.css") %> 
-		<%- hashed_asset("visualizer/css/outlook.css") %>
+		<%- hashed_asset("css/extracted.css") %>
+        <%- hashed_asset("css/outlook.css") %>
 		<%- hashed_asset("css/style.css") %>
 	<% } %>
 

@@ -52,6 +52,11 @@ var customAssets = [
 			return "schemas/" + p.split("/").slice(-2).join("/");
 		}
     },
+    {
+        // CSS used for samples on the site
+        path: "node_modules/adaptivecards-designer/dist/containers/outlook-container.css",
+	    dest: function (p) { return "css/outlook.css"; }
+	},
 	{
         // designer module (hashing not working for CSS files; the designer expects certain filenames)
         path: "node_modules/adaptivecards-designer/dist/containers/*.*",
@@ -64,27 +69,6 @@ var customAssets = [
 		dest: function (p) { return p; },
 		noHash: true
     },
-    {
-        // visualizer script
-        path: "node_modules/adaptivecards-visualizer/dist/adaptivecards-visualizer.min.js",
-        dest: function (p) { return "visualizer/adaptivecards-visualizer.min.js"; }
-    },
-    {
-        // visualizer css
-        path: "node_modules/adaptivecards-visualizer/css/*.css",
-        dest: function (p) { return "visualizer/css/" + path.basename(p); }
-    },
-    {
-        // visualizer assets
-        path: "node_modules/adaptivecards-visualizer/assets/*",
-        dest: function (p) { return "visualizer/assets/" + path.basename(p); }
-    },
-    {
-        // visualizer monaco loader
-        path: "node_modules/adaptivecards-visualizer/src/monaco-loader.js",
-		dest: function (p) { return "visualizer/monaco-loader.js" },
-		noHash: true
-	},
 	{
         // site CSS
         path: "themes/adaptivecards/source/css/*.css",

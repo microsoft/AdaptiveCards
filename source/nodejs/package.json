@@ -4,7 +4,6 @@
 	"private": true,
 	"scripts": {
 		"start:designer": "lerna run start --scope=adaptivecards-designer --stream",
-		"start:visualizer": "lerna run start --scope=adaptivecards-visualizer --stream",
 		"start:designer-app": "lerna run start --scope=adaptivecards-designer-app --stream",
 		"start:all": "lerna run --parallel watch && lerna run --parallel start",
 		"audit-all": "lerna-audit"

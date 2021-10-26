@@ -4,8 +4,8 @@
 //
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
-#import "ACRBaseTarget.h"
-#import "ACRIContentHoldingView.h"
+#import <AdaptiveCards/ACRBaseTarget.h>
+#import <AdaptiveCards/ACRIContentHoldingView.h>
 #import "ACRTapGestureRecognizerEventHandler.h"
 #import "ACRView.h"
 #import <Foundation/Foundation.h>
