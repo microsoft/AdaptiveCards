@@ -28,7 +28,7 @@ export class BerlinContainer extends HostContainer {
 	}
 
 	public renderTo(hostElement: HTMLElement) {
-		this.cardHost.classList.add("berlin-card");
+		this.cardHost.classList.add(`berlin-${this._containerSize.toLowerCase()}-card`);
 		const outerFrame = document.createElement("div");
 		outerFrame.classList.add("berlin-outer-container");
 		outerFrame.classList.add(`berlin-${this._containerSize.toLowerCase()}-container`);
