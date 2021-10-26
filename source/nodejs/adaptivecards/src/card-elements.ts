@@ -16,6 +16,8 @@ import { MenuItem, PopupMenu } from "./controls";
 import Swiper, {A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrollbar, SwiperOptions} from "swiper";
 import { S_IWUSR } from "constants";
 import  "swiper/css";
+import  "swiper/css/pagination";
+import  "swiper/css/navigation";
 
 Swiper.use([
     Navigation,
