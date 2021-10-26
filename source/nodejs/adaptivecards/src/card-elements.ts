@@ -13,6 +13,25 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
 import { CardObjectRegistry, GlobalRegistry } from "./registry";
 import { Strings } from "./strings";
 import { MenuItem, PopupMenu } from "./controls";
+import { runInThisContext } from "vm";
+import Swiper, {A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrollbar, SwiperOptions} from "swiper";
+import { PaginationOptions } from "../../node_modules/swiper/types/modules/pagination";
+import { NavigationOptions } from "../../node_modules/swiper/types/modules/navigation";
+import { S_IWUSR } from "constants";
+import 'swiper/css';
+
+// eslint-disable-next-line no-var
+var swiper: Swiper | undefined;
+
+Swiper.use([
+    Navigation,
+    Pagination,
+    Scrollbar,
+    A11y,
+    History,
+    Keyboard,
+    Autoplay
+]);
 
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
@@ -4756,7 +4775,7 @@ class OverflowAction extends Action {
 
             contextMenu.popup(this.renderedElement);
         }
-	}
+   }
 }
 
 class ActionCollection {
@@ -5585,7 +5604,7 @@ export abstract class ContainerBase extends StylableCardElementContainer {
     }
 
     isBleeding(): boolean {
-		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
+      return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 }
 
@@ -5671,6 +5690,33 @@ export class BackgroundImage extends SerializableObject {
     }
 }
 
+export class TBD extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(Versions.v1_6, "type");
+    static readonly timerProperty = new NumProperty(Versions.v1_6, "timer");
+
+    @property(TBD.typeProperty)
+    type?: string;
+
+    @property(TBD.timerProperty)
+    timerProperty?: number;
+
+    //#endregion
+
+    protected getSchemaKey(): string {
+        return "TBD";
+    }
+
+    protected internalParse(source: any, context: BaseSerializationContext) {
+        return super.internalParse(source, context);
+    }
+
+    isValid(): boolean {
+        return true;
+    }
+}
+
 export class Container extends ContainerBase {
     //#region Schema
 
@@ -5700,7 +5746,7 @@ export class Container extends ContainerBase {
     private _items: CardElement[] = [];
     private _renderedItems: CardElement[] = [];
 
-    private insertItemAt(
+    protected insertItemAt(
         item: CardElement,
         index: number,
         forceInsert: boolean) {
@@ -5734,6 +5780,91 @@ export class Container extends ContainerBase {
         }
 
         super.applyBackground();
+    }
+
+    protected carouselRender(): HTMLElement | undefined {
+        let swiperContainer: HTMLElement = document.createElement("div");
+        swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
+
+        let swiperWrapper : HTMLElement = document.createElement("div");
+        swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
+        swiperWrapper.style.display = "flex";
+        //swiperWrapper.style.flexDirection = "column";
+
+        if (GlobalSettings.useAdvancedCardBottomTruncation) {
+            // Forces the container to be at least as tall as its content.
+            //
+            // Fixes a quirk in Chrome where, for nested flex elements, the
+            // inner element's height would never exceed the outer element's
+            // height. This caused overflow truncation to break -- containers
+            // would always be measured as not overflowing, since their heights
+            // were constrained by their parents as opposed to truly reflecting
+            // the height of their content.
+            //
+            // See the "Browser Rendering Notes" section of this answer:
+            // https://stackoverflow.com/questions/36247140/why-doesnt-flex-item-shrink-past-content-size
+            swiperWrapper.style.minHeight = '-webkit-min-content';
+        }
+
+        //switch (this.getEffectiveVerticalContentAlignment()) {
+        //    case Enums.VerticalAlignment.Center:
+        //        swiperWrapper.style.justifyContent = "center";
+        //        break;
+        //    case Enums.VerticalAlignment.Bottom:
+        //        swiperWrapper.style.justifyContent = "flex-end";
+        //        break;
+        //    default:
+        //        swiperWrapper.style.justifyContent = "flex-start";
+        //        break;
+        //}
+
+        if (this._items.length > 0) {
+            for (let item of this._items) {
+                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
+
+                if (renderedItem) {
+                    Utils.appendChild(swiperWrapper, renderedItem);
+
+                    this._renderedItems.push(item);
+                }
+            }
+        }
+
+        swiperContainer.appendChild(swiperWrapper as HTMLElement);
+
+        let nextElementDiv: HTMLElement = document.createElement("div");
+        nextElementDiv.classList.add("swiper-button-next");
+        swiperContainer.appendChild(nextElementDiv);
+
+        let prevElementDiv: HTMLElement = document.createElement("div");
+        prevElementDiv.classList.add("swiper-button-prev");
+        swiperContainer.appendChild(prevElementDiv);
+
+        let pagination: HTMLElement = document.createElement("div");
+        pagination.classList.add("swiper-pagination");
+        swiperContainer.appendChild(pagination);
+
+        this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+        return swiperContainer;
+    }
+
+    private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
+         let paginationOpts: PaginationOptions = {
+            el: paginationElement
+         };
+
+         let navigationOpts: NavigationOptions = {
+            prevEl: prevElement,
+            nextEl: nextElement
+         }
+
+         const swiperOptions: SwiperOptions = {
+            loop: true,
+            pagination: paginationOpts,
+            navigation: navigationOpts,
+         };
+
+         swiper = new Swiper(swiperContainer, swiperOptions);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -6076,6 +6207,72 @@ export class Container extends ContainerBase {
 
     set bleed(value: boolean) {
         this.setBleed(value);
+    }
+}
+
+export class CarouselPage extends Container {
+    //#region Schema
+
+    //#endregion
+
+    protected internalRender(): HTMLElement | undefined {
+
+        let swiperSlide : HTMLElement = document.createElement("div");
+        swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
+
+        //let element : HTMLElement = document.createElement("div");
+        //element.style.display = "block";
+
+        //this.spacing = Enums.Spacing.None;
+        //this.separator = false;
+
+        let renderedElement = super.internalRender();
+        Utils.appendChild(swiperSlide, renderedElement);
+        //if (GlobalSettings.useAdvancedCardBottomTruncation) {
+        //    // See comment in Container.internalRender()
+        //    element.style.minHeight = '-webkit-min-content';
+        //}
+        //return element;
+        return swiperSlide;
+    }
+    static bannedElementList : Set<any>;
+
+    private prepopulateBannedElementList()
+    {
+        if (CarouselPage.bannedElementList === undefined)
+        {
+            CarouselPage.bannedElementList = new Set([TextInput, Media]);
+        }
+    }
+
+    protected internalParse(source: any, context: SerializationContext) {
+        super.internalParse(source, context);
+
+        this.clear();
+        this.setShouldFallback(false);
+        this.prepopulateBannedElementList();
+
+        let jsonItems = source[this.getItemsCollectionPropertyName()];
+
+        if (Array.isArray(jsonItems)) {
+            for (let item of jsonItems) {
+                let element = context.parseElement(this, item, !this.isDesignMode());
+
+                if (CarouselPage.bannedElementList.has(typeof item))
+                {
+                    // TODO: throw a warning or something to log
+                    continue;
+                }
+
+                if (element) {
+                    super.insertItemAt(element, -1, true);
+                }
+            }
+        }
+    }
+
+    getJsonTypeName(): string {
+        return "CarouselPage";
     }
 }
 
@@ -6939,6 +7136,13 @@ export class AdaptiveCard extends ContainerWithActions {
             }
         },
         Versions.v1_0);
+
+    static readonly TBDProperty = new SerializableObjectProperty(
+        Versions.v1_6,
+        "TBD",
+        TBD,
+        true);
+
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
     static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
@@ -6968,6 +7172,9 @@ export class AdaptiveCard extends ContainerWithActions {
 
     @property(AdaptiveCard.authenticationProperty)
     authentication?: Authentication;
+
+    @property(AdaptiveCard.TBDProperty)
+    TBD?: TBD;
 
     //#endregion
 
@@ -7055,7 +7262,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected internalRender(): HTMLElement | undefined {
-        let renderedElement = super.internalRender();
+        var renderedElement = this.TBD ? super.carouselRender() : super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
@@ -7437,6 +7644,7 @@ GlobalRegistry.defaultElements.register("Image", Image);
 GlobalRegistry.defaultElements.register("ImageSet", ImageSet);
 GlobalRegistry.defaultElements.register("Media", Media, Versions.v1_1);
 GlobalRegistry.defaultElements.register("FactSet", FactSet);
+GlobalRegistry.defaultElements.register("CarouselPage", CarouselPage, Versions.v1_2);
 GlobalRegistry.defaultElements.register("ColumnSet", ColumnSet);
 GlobalRegistry.defaultElements.register("ActionSet", ActionSet, Versions.v1_2);
 GlobalRegistry.defaultElements.register("Input.Text", TextInput);
