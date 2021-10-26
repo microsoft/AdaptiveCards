@@ -28,7 +28,7 @@
 		"dts": "dts-generator --prefix adaptivecards-ui-testapp --project . --out dist/adaptivecards-ui-testapp.d.ts",
 		"lint": "eslint src/**/*.ts",
 		"iterate": "webpack --cache --mode=production --progress && npm run dts",
-		"release": "npm run build && webpack --mode=production && npm run dts"
+		"release": "npm run build && webpack --mode=production"
 	},
 	"dependencies": {
 		"adaptivecards-controls": "^0.10.0-alpha.0",

@@ -28,7 +28,7 @@
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --prefix adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "eslint src/*.ts",
-		"release": "npm run clean && concurrently \"npm:build\" \"webpack --mode=production\" && concurrently \"npm:test\" \"npm:dts\"",
+		"release": "npm run clean && concurrently \"npm:build\" \"webpack --mode=production\" && concurrently \"npm:dts\"",
 		"docs": "npx typedoc"
 	},
 	"repository": {
@@ -54,13 +54,22 @@
 	},
 	"jest": {
 		"rootDir": "src",
+		"roots": [
+			"<rootDir>"
+		],
 		"transform": {
 			"^.+\\.tsx?$": "ts-jest"
 		},
 		"moduleNameMapper": {
 			"\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/css_stub.ts"
 		},
+		"modulePaths": [
+			"<rootDir>"
+		],
 		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+		"moduleDirectories": [
+			"node_modules"
+		],
 		"moduleFileExtensions": [
 			"ts",
 			"tsx",
@@ -68,5 +77,8 @@
 			"jsx",
 			"json"
 		]
+	},
+	"dependencies": {
+		"swiper": "^7.0.9"
 	}
 }
