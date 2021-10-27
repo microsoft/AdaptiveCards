@@ -134,11 +134,10 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     }
     
     private func setupConstraints() {
-        // To display the curved border which is drawn in ACRTextField, 2px additional space is needed
-        textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2).isActive = true
+        textField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         textField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         textField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -2).isActive = true
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         iconButton.leadingAnchor.constraint(equalTo: textField.leadingAnchor, constant: config.inputFieldConfig.leftPadding).isActive = true
         iconButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
@@ -228,8 +227,8 @@ extension NSPopover {
 }
 
 @IBDesignable class NSButtonWithImageSpacing: NSButton {
-    @IBInspectable var verticalImagePadding: CGFloat = 2
-    @IBInspectable var horizontalImagePadding: CGFloat = 3
+    @IBInspectable var verticalImagePadding: CGFloat = 1
+    @IBInspectable var horizontalImagePadding: CGFloat = 1
     
     override func draw(_ drawRect: NSRect) {
         // Reset the bounds after drawing is complete

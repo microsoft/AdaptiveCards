@@ -527,6 +527,7 @@
 		81A94A7025FF80D60018213A /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A6F25FF80D60018213A /* arrowdown.png */; };
 		81A94A7925FF86E70018213A /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A7725FF86E70018213A /* attachment.png */; };
 		81A94A7A25FF86E70018213A /* arrowup.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A7825FF86E70018213A /* arrowup.png */; };
+		81AED8EE27262B360045B1E8 /* ACRButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AED8ED27262B360045B1E8 /* ACRButtonTests.swift */; };
 		81AFEA7626281B9400DD47E0 /* ACRNumericTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AFEA7526281B9400DD47E0 /* ACRNumericTextFieldTests.swift */; };
 		81C0371B26047C1E00B33324 /* ACRBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C0371A26047C1E00B33324 /* ACRBackgroundImageView.swift */; };
 		81C037242604AB9D00B33324 /* BackgroundImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */; };
@@ -1101,6 +1102,7 @@
 		81A94A6F25FF80D60018213A /* arrowdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowdown.png; sourceTree = "<group>"; };
 		81A94A7725FF86E70018213A /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attachment.png; sourceTree = "<group>"; };
 		81A94A7825FF86E70018213A /* arrowup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowup.png; sourceTree = "<group>"; };
+		81AED8ED27262B360045B1E8 /* ACRButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRButtonTests.swift; sourceTree = "<group>"; };
 		81AFEA7526281B9400DD47E0 /* ACRNumericTextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRNumericTextFieldTests.swift; sourceTree = "<group>"; };
 		81C0371A26047C1E00B33324 /* ACRBackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRBackgroundImageView.swift; sourceTree = "<group>"; };
 		81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageViewTests.swift; sourceTree = "<group>"; };
@@ -1883,6 +1885,7 @@
 				816F6F0626D6E2CB00D34030 /* ACRChoiceSetButtonTests.swift */,
 				8107117B26E208E5001A7BC2 /* MultiLineInputTextViewTests.swift */,
 				81980D8B26E66938002CD350 /* ACRChoiceSetViewTests.swift */,
+				81AED8ED27262B360045B1E8 /* ACRButtonTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2408,6 +2411,7 @@
 				299DE17C26048FBB00605DAD /* ActionsRendererTests.swift in Sources */,
 				28CE1A6B25E4B67B00BFCFD9 /* FakeFactSet.swift in Sources */,
 				2910CF0C2600C6C9000910C8 /* FakeActionSet.swift in Sources */,
+				81AED8EE27262B360045B1E8 /* ACRButtonTests.swift in Sources */,
 				08C86F48260E0843005252B0 /* ACRViewTests.swift in Sources */,
 				281950432703141500B0D790 /* HostConfigUtilsTests.swift in Sources */,
 				082D914425D6DC7A000226C4 /* FakeTextBlock.swift in Sources */,

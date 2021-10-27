@@ -25,6 +25,11 @@ class ACRButton: FlatButton, ImageHoldingView {
     
     init(frame: NSRect = .zero, wantsChevron: Bool = false, wantsIcon: Bool = false, iconPosition: NSControl.ImagePosition = .imageLeft, style: ActionStyle = .default, buttonConfig: ButtonConfig = .default) {
         super.init(frame: frame)
+        font = buttonConfig.font
+        contentInsets = buttonConfig.buttonContentInsets
+        // In case the config images for chevron are present, make them config ones, or take the default image
+        chevronUpIcon = buttonConfig.chevronUpImage ?? chevronUpIcon
+        chevronDownIcon = buttonConfig.chevronDownImage ?? chevronDownIcon
         showsChevron = wantsChevron
         showsIcon = wantsIcon
         imagePosition = wantsIcon ? iconPosition : .noImage

@@ -134,7 +134,7 @@ open class FlatButton: NSButton, CALayerDelegate {
     }
     open var showsChevron: Bool = false {
         didSet {
-            drawsChevron("arrowdown")
+            drawsChevron(chevIcon: chevronDownIcon)
         }
     }
     open var showsIcon: Bool = false {
@@ -161,8 +161,10 @@ open class FlatButton: NSButton, CALayerDelegate {
     }
     
     public var iconImageSize: NSSize = NSSize(width: 16, height: 16)
-    public var chevronImageSize: NSSize = NSSize(width: 14, height: 14)
-    private let horizontalInternalSpacing: CGFloat = 6
+    public var chevronImageSize: NSSize = NSSize(width: 16, height: 14)
+    public var chevronUpIcon: NSImage? = BundleUtils.getImage("arrowup", ofType: "png")
+    public var chevronDownIcon: NSImage? = BundleUtils.getImage("arrowdown", ofType: "png")
+    private let horizontalInternalSpacing: CGFloat = 5
     private let verticalInternalSpacing: CGFloat = 3
     private var currentTrackingArea: NSTrackingArea?
 
@@ -219,7 +221,7 @@ open class FlatButton: NSButton, CALayerDelegate {
         setupTitle()
         setupImage()
         setupTrackingArea()
-        drawsChevron("arrowdown")
+        drawsChevron(chevIcon: chevronDownIcon)
     }
     
     internal func setupTitle() {
@@ -373,9 +375,9 @@ open class FlatButton: NSButton, CALayerDelegate {
         positionTitleAndImage()
     }
     
-    private func drawsChevron(_ nameOfFile: String) {
+    private func drawsChevron(chevIcon: NSImage?) {
+        guard let chevIcon = chevIcon else { return }
         guard showsChevron else { return }
-        guard let chevIcon = BundleUtils.getImage(nameOfFile, ofType: "png") else { return }
         let maskLayer = CALayer()
         chevIcon.size = chevronImageSize
         let chevIconSize = chevIcon.size
@@ -432,7 +434,7 @@ open class FlatButton: NSButton, CALayerDelegate {
             containerLayer.animate(color: isOn ? selectedIconColor.cgColor : NSColor.clear.cgColor, keyPath: "shadowColor", duration: duration)
         }
         
-        drawsChevron(state == .on ? "arrowup" : "arrowdown")
+        drawsChevron(chevIcon: (state == .on ? chevronUpIcon : chevronDownIcon))
     }
 
     // MARK: Interaction
