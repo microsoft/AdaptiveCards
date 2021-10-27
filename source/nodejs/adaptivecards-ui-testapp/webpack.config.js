@@ -76,14 +76,12 @@ module.exports = (env, argv) => {
 				patterns: [
 				{
 					from: 'src/adaptivecards-ui-testapp.css',
-					to: '.',
-					flatten: true
+					to: './[name][ext]'
 				},
 				{
 					from: '../../../samples/',
-					to: './samples/',
-					context: '.',
-					flatten: false
+					to: './samples/[name][ext]',
+					context: '.'
 				}],
 				options: {
 					concurrency: 8

@@ -58,6 +58,11 @@ module.exports = {
                 "format": ["PascalCase"]
             },
             {
+                "selector": "interface",
+                "format": ["PascalCase"],
+                "prefix": ["I"]
+            },
+            {
                 "selector": "typeLike",
                 "format": ["PascalCase"]
             }
@@ -128,14 +133,6 @@ module.exports = {
                     "delimiter": "semi",
                     "requireLast": false
                 }
-            }
-        ],
-
-        // enforce consistent itf naming (require `I` prefix)
-        "@typescript-eslint/interface-name-prefix": [
-            "error",
-            {
-                "prefixWithI": "always"
             }
         ],
 
