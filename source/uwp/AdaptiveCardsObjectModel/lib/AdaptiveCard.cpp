@@ -95,6 +95,12 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         Height = static_cast<winrt::AdaptiveCards::ObjectModel::Uwp::HeightType>(sharedAdaptiveCard->GetHeight());
         MinHeight = sharedAdaptiveCard->GetMinHeight();
 
+        auto rtl = sharedAdaptiveCard->GetRtl();
+        if (rtl.has_value())
+        {
+            Rtl = rtl.value();
+        }
+
         auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
         if (backgroundImage && !backgroundImage->GetUrl().empty())
         {

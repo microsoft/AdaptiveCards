@@ -186,7 +186,7 @@ namespace AdaptiveCards::Rendering::Uwp
                                                                       m_mergedResourceDictionary.Get(),
                                                                       m_actionSentimentResourceDictionary.Get(),
                                                                       renderedCard.Get()));
-
+         
             // This path is used for synchronous Xaml card rendering, so we don't want
             // to manually download the image assets and instead just want xaml to do
             // that automatically

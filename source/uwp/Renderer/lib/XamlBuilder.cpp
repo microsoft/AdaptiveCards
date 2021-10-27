@@ -83,6 +83,8 @@ namespace AdaptiveCards::Rendering::Uwp
                 CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), xamlBuilder, &bodyElementContainer, &rootElement));
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
+            FlowDirection fl;
+            RETURN_IF_FAILED(rootAsFrameworkElement->get_FlowDirection(&fl));
 
             UINT32 cardMinHeight{};
             RETURN_IF_FAILED(adaptiveCard->get_MinHeight(&cardMinHeight));
@@ -92,6 +94,7 @@ namespace AdaptiveCards::Rendering::Uwp
             }
 
             ComPtr<IAdaptiveActionElement> selectAction;
+
             RETURN_IF_FAILED(adaptiveCard->get_SelectAction(&selectAction));
 
             // Create a new IUIElement pointer to house the root element decorated with select action
@@ -305,6 +308,19 @@ namespace AdaptiveCards::Rendering::Uwp
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
             rootAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment::VerticalAlignment_Stretch);
         }
+
+        ComPtr<IReference<bool>> contextRtl;
+        RETURN_IF_FAILED(renderContext->get_Rtl(&contextRtl));
+
+        if (contextRtl != nullptr)
+        {
+            boolean rtlValue;
+            ComPtr<IFrameworkElement> rootAsFrameworkElement;
+            RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
+            RETURN_IF_FAILED(contextRtl->get_Value(&rtlValue));
+            rootAsFrameworkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft : FlowDirection_LeftToRight);
+        }
+
 
         ComPtr<IUIElement> rootUIElement;
         RETURN_IF_FAILED(rootElement.As(&rootUIElement));
