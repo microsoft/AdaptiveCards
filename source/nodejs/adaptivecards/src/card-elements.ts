@@ -6253,28 +6253,7 @@ export class CarouselPage extends Container {
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
-        // this.clear();
         this.setShouldFallback(false);
-
-        /*
-        let jsonItems = source[this.getItemsCollectionPropertyName()];
-
-        if (Array.isArray(jsonItems)) {
-            for (let item of jsonItems) {
-                let element = context.parseElement(this, item, !this.isDesignMode());
-
-                if (CarouselPage.unsupportedElementsList.has(typeof item))
-                {
-                    // TODO: throw a warning or something to log
-                    continue;
-                }
-
-                if (element) {
-                    super.insertItemAt(element, -1, true);
-                }
-            }
-        }
-        */
     }
 
     getJsonTypeName(): string {
