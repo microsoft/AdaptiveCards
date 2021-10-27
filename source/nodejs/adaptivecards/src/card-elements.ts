@@ -693,6 +693,20 @@ export abstract class CardElement extends CardObject {
     get parent(): CardElement | undefined {
         return <CardElement>this._parent;
     }
+
+    isInCarouselCard(): boolean {
+        let inCarouselCard: boolean = false;
+
+        if (this._isInCarouselCard !== undefined) {
+            inCarouselCard = this._isInCarouselCard;
+        }
+        else if (this.parent !== undefined) {
+            inCarouselCard = this.parent.isInCarouselCard();
+            this._isInCarouselCard = inCarouselCard;
+        }
+
+        return inCarouselCard;
+    }
 }
 
 export class ActionProperty extends PropertyDefinition {
@@ -5779,6 +5793,8 @@ export class Container extends ContainerBase {
     }
 
     protected carouselRender(): HTMLElement | undefined {
+        let cardLevelContainer: HTMLElement = document.createElement("div");
+
         let swiperContainer: HTMLElement = document.createElement("div");
         swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
 
@@ -5828,20 +5844,23 @@ export class Container extends ContainerBase {
 
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
-        let nextElementDiv: HTMLElement = document.createElement("div");
-        nextElementDiv.classList.add("swiper-button-next");
-        swiperContainer.appendChild(nextElementDiv);
-
-        let prevElementDiv: HTMLElement = document.createElement("div");
+        let prevElementDiv: HTMLElement = document.createElement("button");
         prevElementDiv.classList.add("swiper-button-prev");
         swiperContainer.appendChild(prevElementDiv);
+
+        let nextElementDiv: HTMLElement = document.createElement("button");
+        nextElementDiv.classList.add("swiper-button-next");
+        swiperContainer.appendChild(nextElementDiv);
 
         let pagination: HTMLElement = document.createElement("div");
         pagination.classList.add("swiper-pagination");
         swiperContainer.appendChild(pagination);
 
         this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination);
-        return swiperContainer;
+
+        cardLevelContainer.appendChild(swiperContainer);
+
+        return cardLevelContainer;
     }
 
     private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
@@ -5854,6 +5873,13 @@ export class Container extends ContainerBase {
                 prevEl: prevElement,
                 nextEl: nextElement
              },
+            a11y: {
+                enabled: true
+            },
+            keyboard: {
+                enabled: true,
+                onlyInViewport: true
+            }
          };
 
          new Swiper(swiperContainer, swiperOptions);
@@ -6227,40 +6253,12 @@ export class CarouselPage extends Container {
         //return element;
         return swiperSlide;
     }
-    static bannedElementList : Set<any>;
-
-    private prepopulateBannedElementList()
-    {
-        if (CarouselPage.bannedElementList === undefined)
-        {
-            CarouselPage.bannedElementList = new Set([TextInput, Media]);
-        }
-    }
+    static unsupportedElementsList : Set<string>;
 
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
-        this.clear();
         this.setShouldFallback(false);
-        this.prepopulateBannedElementList();
-
-        let jsonItems = source[this.getItemsCollectionPropertyName()];
-
-        if (Array.isArray(jsonItems)) {
-            for (let item of jsonItems) {
-                let element = context.parseElement(this, item, !this.isDesignMode());
-
-                if (CarouselPage.bannedElementList.has(typeof item))
-                {
-                    // TODO: throw a warning or something to log
-                    continue;
-                }
-
-                if (element) {
-                    super.insertItemAt(element, -1, true);
-                }
-            }
-        }
     }
 
     getJsonTypeName(): string {
@@ -6801,6 +6799,10 @@ export abstract class ContainerWithActions extends Container {
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
+        this.parseActions(source, context);
+    }
+
+    protected parseActions(source: any, context: SerializationContext) {
         this._actionCollection.parse(source["actions"], context);
     }
 
@@ -6808,6 +6810,36 @@ export abstract class ContainerWithActions extends Container {
         super.internalToJSON(target, context);
 
         this._actionCollection.toJSON(target, "actions", context);
+    }
+
+    protected carouselRender(): HTMLElement | undefined {
+        let element = super.carouselRender();
+
+        if (element) {
+            let renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation, false);
+
+            if (renderedActions) {
+                Utils.appendChild(
+                    element,
+                    renderSeparation(
+                        this.hostConfig,
+                        {
+                            spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing)
+                        },
+                        Enums.Orientation.Horizontal));
+                Utils.appendChild(element, renderedActions);
+            }
+
+            if (this.renderIfEmpty) {
+                return element;
+            }
+            else {
+                return element.children.length > 0 ? element : undefined;
+            }
+        }
+        else {
+            return undefined;
+        }
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -7134,7 +7166,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
     static readonly authenticationProperty = new SerializableObjectProperty(Versions.v1_4, "authentication", Authentication, true);
 
-    static readonly DisplayProperty = new SerializableObjectProperty(
+    static readonly displayProperty = new SerializableObjectProperty(
         Versions.v1_6,
         "display",
         Display,
@@ -7165,8 +7197,8 @@ export class AdaptiveCard extends ContainerWithActions {
     @property(AdaptiveCard.authenticationProperty)
     authentication?: Authentication;
 
-    @property(AdaptiveCard.DisplayProperty)
-    Display?: Display;
+    @property(AdaptiveCard.displayProperty)
+    display?: Display;
 
     //#endregion
 
@@ -7234,6 +7266,23 @@ export class AdaptiveCard extends ContainerWithActions {
         return "body";
     }
 
+    private createCarouselPageInstance(source: any, context: SerializationContext): CarouselPage | undefined {
+        return context.parseCardObject<CarouselPage>(
+            this,
+            source,
+            [], // Forbidden types not supported for elements for now
+            !this.isDesignMode(),
+            (typeName: string) => {
+                return !typeName || typeName === "CarouselPage" ? new CarouselPage() : undefined;
+            },
+            (typeName: string, errorType: Enums.TypeErrorType) => {
+                context.logParseEvent(
+                    undefined,
+                    Enums.ValidationEvent.ElementTypeNotAllowed,
+                    Strings.errors.elementTypeNotAllowed(typeName));
+            });
+    }
+
     protected internalParse(source: any, context: SerializationContext) {
         this._fallbackCard = undefined;
 
@@ -7244,7 +7293,31 @@ export class AdaptiveCard extends ContainerWithActions {
             this._fallbackCard.addItem(fallbackElement);
         }
 
+        // Parse all properties to determine if the card is a carousel card
         super.internalParse(source, context);
+
+        // The AdaptiveCard is a carousel card if the display property has set the type as such
+        this._isInCarouselCard = (this.display !== undefined && this.display.type === "carousel");
+
+        // If the card is a carousel card then follow a similar parsing process as ColumnSet
+        if (this._isInCarouselCard)
+        {
+            // Delete the previously parsed items
+            super.clear();
+            let carouselPages = source["body"];
+
+            if (Array.isArray(carouselPages)) {
+                for (let page of carouselPages) {
+                    let carouselPage = this.createCarouselPageInstance(page, context);
+
+                    if (carouselPage) {
+                        super.insertItemAt(carouselPage, -1, true);
+                    }
+                }
+            }
+
+            super.parseActions(source, context);
+        }
     }
 
     protected internalToJSON(target: PropertyBag, context: SerializationContext) {
@@ -7254,7 +7327,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected internalRender(): HTMLElement | undefined {
-        var renderedElement = this.Display ? super.carouselRender() : super.internalRender();
+        var renderedElement = this.display ? super.carouselRender() : super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
@@ -7553,11 +7626,21 @@ export class SerializationContext extends BaseSerializationContext {
         return result;
     }
 
-    parseElement(parent: CardElement | undefined, source: any, allowFallback: boolean): CardElement | undefined {
+    parseElement(
+        parent: CardElement | undefined,
+        source: any,
+        allowFallback: boolean): CardElement | undefined {
+
+        let forbiddenTypes: string[] = [];
+        if (parent?.isInCarouselCard())
+        {
+            forbiddenTypes = Array.from(GlobalRegistry.forbiddenCarouselElements.values());
+        }
+
         return this.parseCardObject<CardElement>(
             parent,
             source,
-            [], // Forbidden types not supported for elements for now
+            forbiddenTypes, // Forbidden types not supported for elements for now
             allowFallback,
             (typeName: string) => {
                 return this.elementRegistry.createInstance(typeName, this.targetVersion);
@@ -7583,10 +7666,17 @@ export class SerializationContext extends BaseSerializationContext {
         source: any,
         forbiddenActionTypes: string[],
         allowFallback: boolean): Action | undefined {
+
+        let forbiddenTypes: string[] = [];
+        if (parent.isInCarouselCard())
+        {
+            forbiddenTypes = Array.from(GlobalRegistry.forbiddenCarouselActions.values()).concat(forbiddenActionTypes);
+        }
+
         return this.parseCardObject<Action>(
             parent,
             source,
-            forbiddenActionTypes,
+            forbiddenTypes,
             allowFallback,
             (typeName: string) => {
                 return this.actionRegistry.createInstance(typeName, this.targetVersion);
@@ -7651,3 +7741,15 @@ GlobalRegistry.defaultActions.register(SubmitAction.JsonTypeName, SubmitAction);
 GlobalRegistry.defaultActions.register(ShowCardAction.JsonTypeName, ShowCardAction);
 GlobalRegistry.defaultActions.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
 GlobalRegistry.defaultActions.register(ExecuteAction.JsonTypeName, ExecuteAction, Versions.v1_4);
+
+GlobalRegistry.forbiddenCarouselElements.add("Media");
+GlobalRegistry.forbiddenCarouselElements.add("ActionSet");
+GlobalRegistry.forbiddenCarouselElements.add("Input.Text");
+GlobalRegistry.forbiddenCarouselElements.add("Input.Date");
+GlobalRegistry.forbiddenCarouselElements.add("Input.Time");
+GlobalRegistry.forbiddenCarouselElements.add("Input.Number");
+GlobalRegistry.forbiddenCarouselElements.add("Input.ChoiceSet");
+GlobalRegistry.forbiddenCarouselElements.add("Input.Toggle");
+
+GlobalRegistry.forbiddenCarouselActions.add(ShowCardAction.JsonTypeName);
+GlobalRegistry.forbiddenCarouselActions.add(ToggleVisibilityAction.JsonTypeName);
