@@ -1,0 +1,30 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.6",
+	"display": {
+	  "type": "carousel",
+	  "timer": 5000
+	},
+	"body": [
+	  {
+		"type": "CarouselPage",
+		"id": "firstCarouselPage",
+		"items": [
+	  	 {
+	  		"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "No element should be shown below"
+				},
+				{
+					"type": "Input.Text",
+					"id": "NoShow"
+				}
+			]
+	  	}
+		]
+	  }
+    ]
+}
