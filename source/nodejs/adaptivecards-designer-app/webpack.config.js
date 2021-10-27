@@ -1,7 +1,6 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -45,12 +44,10 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
-			//new CleanWebpackPlugin(['dist']),
 			new CopyWebpackPlugin({
 				patterns: [{
 					from: 'node_modules/adaptivecards-designer/src/containers/*',
-					to: 'containers/',
-					flatten: true
+					to: 'containers/[name][ext]'
 				}]
 			}),
 			new HtmlWebpackPlugin({
