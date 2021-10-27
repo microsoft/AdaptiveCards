@@ -83,8 +83,6 @@ namespace AdaptiveCards::Rendering::Uwp
                 CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), xamlBuilder, &bodyElementContainer, &rootElement));
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
-            FlowDirection fl;
-            RETURN_IF_FAILED(rootAsFrameworkElement->get_FlowDirection(&fl));
 
             UINT32 cardMinHeight{};
             RETURN_IF_FAILED(adaptiveCard->get_MinHeight(&cardMinHeight));
@@ -94,7 +92,6 @@ namespace AdaptiveCards::Rendering::Uwp
             }
 
             ComPtr<IAdaptiveActionElement> selectAction;
-
             RETURN_IF_FAILED(adaptiveCard->get_SelectAction(&selectAction));
 
             // Create a new IUIElement pointer to house the root element decorated with select action
