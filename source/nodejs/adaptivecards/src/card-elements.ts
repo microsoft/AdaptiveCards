@@ -5814,6 +5814,18 @@ export class Container extends ContainerBase {
         //        break;
         //}
 
+        let prevElementDiv: HTMLElement = document.createElement("div");
+        prevElementDiv.classList.add("swiper-button-prev");
+        swiperContainer.appendChild(prevElementDiv);
+
+        let nextElementDiv: HTMLElement = document.createElement("div");
+        nextElementDiv.classList.add("swiper-button-next");
+        swiperContainer.appendChild(nextElementDiv);
+
+        let pagination: HTMLElement = document.createElement("div");
+        pagination.classList.add("swiper-pagination");
+        swiperContainer.appendChild(pagination);
+
         if (this._items.length > 0) {
             for (let item of this._items) {
                 let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
@@ -5828,18 +5840,6 @@ export class Container extends ContainerBase {
 
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
-        let nextElementDiv: HTMLElement = document.createElement("div");
-        nextElementDiv.classList.add("swiper-button-next");
-        swiperContainer.appendChild(nextElementDiv);
-
-        let prevElementDiv: HTMLElement = document.createElement("div");
-        prevElementDiv.classList.add("swiper-button-prev");
-        swiperContainer.appendChild(prevElementDiv);
-
-        let pagination: HTMLElement = document.createElement("div");
-        pagination.classList.add("swiper-pagination");
-        swiperContainer.appendChild(pagination);
-
         this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination);
         return swiperContainer;
     }
@@ -5848,7 +5848,8 @@ export class Container extends ContainerBase {
          const swiperOptions: SwiperOptions = {
             loop: true,
             pagination: {
-                el: paginationElement
+                el: paginationElement,
+                clickable : true
              },
             navigation: {
                 prevEl: prevElement,
