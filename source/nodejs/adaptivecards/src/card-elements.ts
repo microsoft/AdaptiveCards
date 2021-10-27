@@ -5793,6 +5793,8 @@ export class Container extends ContainerBase {
     }
 
     protected carouselRender(): HTMLElement | undefined {
+        let cardLevelContainer: HTMLElement = document.createElement("div");
+
         let swiperContainer: HTMLElement = document.createElement("div");
         swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
 
@@ -5855,7 +5857,10 @@ export class Container extends ContainerBase {
         swiperContainer.appendChild(pagination);
 
         this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination);
-        return swiperContainer;
+
+        cardLevelContainer.appendChild(swiperContainer);
+
+        return cardLevelContainer;
     }
 
     private initializeSwiper(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
@@ -6794,6 +6799,10 @@ export abstract class ContainerWithActions extends Container {
     protected internalParse(source: any, context: SerializationContext) {
         super.internalParse(source, context);
 
+        this.parseActions(source, context);
+    }
+
+    protected parseActions(source: any, context: SerializationContext) {
         this._actionCollection.parse(source["actions"], context);
     }
 
@@ -6801,6 +6810,36 @@ export abstract class ContainerWithActions extends Container {
         super.internalToJSON(target, context);
 
         this._actionCollection.toJSON(target, "actions", context);
+    }
+
+    protected carouselRender(): HTMLElement | undefined {
+        let element = super.carouselRender();
+
+        if (element) {
+            let renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation, false);
+
+            if (renderedActions) {
+                Utils.appendChild(
+                    element,
+                    renderSeparation(
+                        this.hostConfig,
+                        {
+                            spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing)
+                        },
+                        Enums.Orientation.Horizontal));
+                Utils.appendChild(element, renderedActions);
+            }
+
+            if (this.renderIfEmpty) {
+                return element;
+            }
+            else {
+                return element.children.length > 0 ? element : undefined;
+            }
+        }
+        else {
+            return undefined;
+        }
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -7276,6 +7315,8 @@ export class AdaptiveCard extends ContainerWithActions {
                     }
                 }
             }
+
+            super.parseActions(source, context);
         }
     }
 
