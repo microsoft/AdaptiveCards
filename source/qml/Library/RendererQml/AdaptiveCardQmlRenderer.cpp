@@ -514,6 +514,8 @@ namespace RendererQml
             scrollViewTag->Property("width", "parent.width");
             scrollViewTag->Property("height", Formatter() << input->GetId() << ".visible ? " << textConfig.multiLineTextHeight << " : 0");
             scrollViewTag->Property("ScrollBar.vertical.interactive", "true");
+            scrollViewTag->Property("ScrollBar.horizontal.interactive", "false");
+            scrollViewTag->Property("ScrollBar.horizontal.visible", "false");
             scrollViewTag->Property("visible", input->GetIsVisible() ? "true" : "false");
 
             uiTextInput = std::make_shared<QmlTag>("TextArea");
@@ -602,7 +604,7 @@ namespace RendererQml
 
         if (!input->GetPlaceholder().empty())
         {
-            uiTextInput->Property("placeholderText", input->GetPlaceholder(), true);
+            uiTextInput->Property("placeholderText", Formatter() << "activeFocus? \"\" : " << "\"" << input->GetPlaceholder() << "\"");
         }
 
         //TODO: Add stretch property
@@ -3235,10 +3237,18 @@ namespace RendererQml
 
         if (!submitDataJson.empty() && submitDataJson != "null")
         {
-            submitDataJson = Utils::Replace(submitDataJson, "\"", "\\\"");
-            function << "var parmStr = \"" << submitDataJson << "\";\n";
-            function << "paramJson = JSON.parse(parmStr);\n";
+            if (submitDataJson.front() == '{' && submitDataJson.back() == '}')
+            {
+                submitDataJson = Utils::Replace(submitDataJson, "\"", "\\\"");
+                function << "var parmStr = \"" << submitDataJson << "\";\n";
+                function << "paramJson = JSON.parse(parmStr);\n";
+            }
+            else
+            {
+                function << "paramJson[\"data\"] = " << submitDataJson << ";\n";
+            }
         }
+
 
         for(const auto& element : context->getInputElementList())
         {
@@ -3310,7 +3320,7 @@ namespace RendererQml
 			uiImage->Property("height", "parent.height");
 			uiImage->Property("fillMode", "Image.TileVertically");
 			uiImage->Property("anchors." + Utils::GetHorizontalAnchors(horizontalAlignment), "parent." + Utils::GetHorizontalAnchors(horizontalAlignment));
-			uiImage->Property("verticalAlignment", "Qt.AlignTop");
+			uiImage->Property("verticalAlignment", Utils::GetVerticalAlignment(verticalAlignment));
 			break;
 		case AdaptiveCards::ImageFillMode::Cover:
 		default:
@@ -3960,6 +3970,11 @@ namespace RendererQml
 
     const std::string RendererQml::AdaptiveCardQmlRenderer::GetImagePath(std::shared_ptr<AdaptiveRenderContext> context, const std::string url)
     {
+        if (url.rfind("data:image", 0) == 0)
+        {
+            return url;
+        }
+
         auto contentNumber = context->getContentIndex();
         context->incrementContentIndex();
         const std::string imageName = Formatter() << contentNumber << ".jpg";
