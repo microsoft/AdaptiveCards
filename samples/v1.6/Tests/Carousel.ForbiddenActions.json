@@ -67,6 +67,103 @@
 					]
 				}
 			]
+		},
+		{
+			"type": "CarouselPage",
+			"id": "thirdCarouselPage",
+			"items": [
+				{
+					"type": "TextBlock",
+					"wrap": true,
+					"text": "This card has Containers & Columns with SelectActions that should not be honoured"
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"wrap": true,
+							"text": "This is a container with ShowCard action"
+						}
+					],
+					"selectAction": {
+						"type": "Action.ShowCard",
+						"title": "Action.ShowCard",
+						"card": {
+							"type": "AdaptiveCard",
+							"body": [
+								{
+									"type": "TextBlock",
+									"text": "What do you think?"
+								}
+							]
+						}
+					}
+				},
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"wrap": true,
+							"text": "This is a container with ToggleVisibility action"
+						}
+					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"title": "Show!",
+						"targetElements": ["id1" ]
+					}
+				},
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"wrap": true,
+									"text": "This is a container with ShowCard action"
+								}
+							],
+							"selectAction": {
+								"type": "Action.ShowCard",
+								"title": "Action.ShowCard",
+								"card": {
+									"type": "AdaptiveCard",
+									"body": [
+										{
+											"type": "TextBlock",
+											"text": "What do you think?"
+										}
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"wrap": true,
+									"text": "This is a container with ToggleVisibility action"
+								}
+							],
+							"selectAction": {
+								"type": "Action.ToggleVisibility",
+								"title": "Show!",
+								"targetElements": ["id1" ]
+							}
+						}
+					]
+				}
+			]
 		}
 	],
 	"actions": [
