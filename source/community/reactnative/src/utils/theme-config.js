@@ -6,6 +6,7 @@ export class ThemeConfig {
     constructor(obj = {}) {
         this.button = new Config(ThemeElement.Button, obj);
         this.input = new Config(ThemeElement.Input, obj);
+        this.inputLabel = new Config(ThemeElement.InputLabel, obj);
         this.inputDate = new Config(ThemeElement.InputDate, obj);
         this.inputTime = new Config(ThemeElement.InputTime, obj);
         this.radioButton = new Config(ThemeElement.RadioButton, obj);
@@ -71,6 +72,11 @@ export const defaultThemeConfig = {
         backgroundColor: Constants.WhiteColor,
         borderRadius: 5,
         borderWidth: 1
+    },
+    inputLabel: {
+        fontSize: 14,
+        fontWeight: '400',
+        color: Constants.Grey900
     },
     inputDate: {
         width: Constants.FullWidth,
@@ -165,7 +171,7 @@ export const defaultThemeConfig = {
     /// (Input.Toggle) Based on React-Native props of the same name that can be passed to switch.
     switch: {
         trackColor: undefined, /// Object of type {true: color; false: color} (See RN Docs)
-        thumbColor: undefined, 
+        thumbColor: undefined, /// Object of type {true: color; false: color}
         ios_backgroundColor: undefined
     },
 }

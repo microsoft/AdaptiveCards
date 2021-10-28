@@ -84,7 +84,7 @@ export class ToggleInput extends React.Component {
 							>
 								<Switch
 									trackColor={this.props.configManager.themeConfig.switch[Platform.OS].trackColor}
-									thumbColor={this.props.configManager.themeConfig.switch[Platform.OS].thumbColor}
+									thumbColor={toggleValue ? this.props.configManager.themeConfig.switch[Platform.OS].thumbColor?.true : this.props.configManager.themeConfig.switch[Platform.OS].thumbColor?.false }
 									ios_backgroundColor={this.props.configManager.themeConfig.switch[Platform.OS].ios_backgroundColor}
 									accessible={false}
 									importantForAccessibility='no-hide-descendants'
@@ -95,7 +95,7 @@ export class ToggleInput extends React.Component {
 									}}>
 								</Switch>
 								<View style={styles.titleContainer} importantForAccessibility='no-hide-descendants'>
-									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title}/>
+									<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} applyStyleConfig={false}/>
 								</View>
 							</View>
 						)

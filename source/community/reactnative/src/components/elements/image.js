@@ -275,6 +275,10 @@ export class Img extends React.Component {
 	}
 
 	render() {
+		this.payload = this.props.json;
+		this.hostConfig = this.props.configManager.hostConfig;
+		this.styleConfig = this.props.configManager.styleConfig;
+		
 		this.parseHostConfig();
 
 		if (!this.type || !Utils.isValidImageURI(this.payload.url)) {

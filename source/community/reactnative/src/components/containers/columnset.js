@@ -83,6 +83,8 @@ export class ColumnSet extends React.PureComponent {
 	}
 
 	render() {
+		this.hostConfig = this.props.configManager.hostConfig;
+		this.payload = this.props.json;
 		let containerRender = this.internalRenderer();
 		return containerRender;
 	}

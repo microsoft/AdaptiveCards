@@ -37,7 +37,8 @@ export default class Renderer extends React.Component {
     };
 
     state = {
-        isJSONVisible: false
+        isJSONVisible: false,
+        forceUpdate: 0,
     }
 
     customHostConfig = {
@@ -67,6 +68,11 @@ export default class Renderer extends React.Component {
         input: {
             placeholderTextColor: Grey300
         },
+        inputLabel: {
+            fontSize: 13,
+            lineHeight: 18,
+            color: '#6E6E6E'
+        },
         inputDate: {
             placeholderTextColor: Grey300
         },
@@ -78,6 +84,7 @@ export default class Renderer extends React.Component {
     constructor(props) {
         super(props);
         this.payload = props.payload;
+        this.template = props.payload; // Creating a copy to store the template.
         this.dataJson = props?.dataJson;
         this.onModalClose = props.onModalClose;
     }
@@ -97,19 +104,21 @@ export default class Renderer extends React.Component {
 
     bindPayloadWithData() {
         if(this.payload && this.dataJson) {
-            this.payload = this.getTemplatePayload(this.payload, this.dataJson);
+            this.payload = this.getTemplatePayload(this.template, this.dataJson);
             return;
         }
 
         // Create a Template instance from the template payload
-        var template = new ACData.Template(this.payload);
+        var template = new ACData.Template(this.template);
 
         // Create a data binding context, and set its $root property to the
         // data object to bind the template to
         var context = {
             $root: {
                 "name": "Matt",
-                "photo": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                "photo": this.state.forceUpdate %2 === 0 ?
+                    "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                    : "https://i.pinimg.com/originals/22/28/af/2228afa177aa08b6664c76bd9d7ec56c.jpg",
                 "manager": {
                     "name": "Thomas",
                     "title": "PM Lead"
@@ -131,11 +140,13 @@ export default class Renderer extends React.Component {
                 ],
                 "stockName": "Microsoft Corp (NASDAQ: MSFT)",
                 "stockValue": "75.30",
-                "title": "Publish Adaptive Card Schema",
+                "title": "Publish Adaptive Card " + this.state.forceUpdate.toString(),
                 "description": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
                 "creator": {
                     "name": "Matt Hidinger",
-                    "profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                    "profileImage": this.state.forceUpdate %2 === 0 ?
+                    "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                    : "https://i.pinimg.com/originals/22/28/af/2228afa177aa08b6664c76bd9d7ec56c.jpg"
                 },
                 "createdUtc": "2017-02-14T06:08:39Z",
                 "viewUrl": "https://adaptivecards.io",
@@ -143,7 +154,7 @@ export default class Renderer extends React.Component {
                     { "key": "Board", "value": "Adaptive Cards" },
                     { "key": "List", "value": "Backlog" },
                     { "key": "Assigned to", "value": "Matt Hidinger" },
-                    { "key": "Due date", "value": "Not set" }
+                    { "key": "Due date", "value": this.state.forceUpdate.toString() }
                 ],
                 "cafeName": "Cafe 34",
                 "cafeDescription": "Open Mon-Fri from 9am - 2pm",
@@ -209,6 +220,11 @@ export default class Renderer extends React.Component {
                     <Text style={styles.title}>Adaptive Card</Text>
                     <Button title={isJSONVisible ? 'Card' : 'Json'} onPress={this.toggleJSONView} />
                 </View>
+                {
+                    this.props.isDataBinding && <Button title='Force update' onPress={() => {
+                        this.setState({forceUpdate: Date.now()});
+                    }} />
+                }
                 {isJSONVisible ?
                     <ScrollView contentContainerStyle={styles.jsonContainer}>
                         <Text style={{ fontFamily: 'Courier New' }}>
@@ -218,6 +234,7 @@ export default class Renderer extends React.Component {
                     :
                     <AdaptiveCard
                         payload={this.payload}
+                        updateKey={this.state.forceUpdate}
                         onExecuteAction={this.onExecuteAction}
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}

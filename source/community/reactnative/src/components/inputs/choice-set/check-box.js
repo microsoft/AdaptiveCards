@@ -19,6 +19,7 @@ const IMAGE_COLOR_PROPERTY = "tintColor";
 const TEXT_COLOR_PROPERTY = "color";
 const styles = StyleSheet.create({
 	contentStyle: {
+		marginVertical: 3,
 		alignItems: Constants.CenterString
 	},
 	labelStyle: {

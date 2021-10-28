@@ -122,6 +122,10 @@ export class Container extends React.Component {
 	}
 
 	render() {
+		this.payload = this.props.json;
+		this.selectionActionData = this.props.json.selectAction;
+		this.hostConfig = this.props.configManager.hostConfig;
+		this.styleConfig = this.props.configManager.styleConfig;
 		let containerRender = this.internalRenderer();
 		return containerRender;
 	}

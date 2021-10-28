@@ -48,6 +48,7 @@ export const WhiteColor = 'white';
 export const BlackColor = '#000000';
 export const LightBlack = "#404040";
 export const Grey300 = '#ACACAC';
+export const Grey900 = '#333333';
 export const buttonDefaultColor = "#1D9BF6";
 export const BackgroundDisabledColor = "rgba(0,0,0,.3)";
 

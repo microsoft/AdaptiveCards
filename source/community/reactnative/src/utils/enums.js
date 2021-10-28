@@ -177,6 +177,7 @@ export const ElementType = Object.freeze({
 
 export const ThemeElement = Object.freeze({
 	Input: "input",
+	InputLabel: "inputLabel",
 	Button: "button",
 	InputDate: "inputDate",
 	InputTime: "inputTime",

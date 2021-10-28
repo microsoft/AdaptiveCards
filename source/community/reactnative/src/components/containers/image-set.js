@@ -63,6 +63,7 @@ export class ImageSet extends React.PureComponent {
 	}
 
 	render() {
+		this.payload = this.props.json;
 		let containerRender = this.internalRenderer(this.props.json);
 		return containerRender;
 	}

@@ -76,6 +76,26 @@ export default class AdaptiveCard extends React.Component {
 
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.updateKey !== this.props.updateKey) {
+			inputArray = {};
+			resourceInformationArray = [];
+
+			this.payload = this.props.payload;
+			if (this.props.isActionShowCard)
+				this.cardModel = this.props.payload;
+			else
+				this.cardModel = ModelFactory.createElement(this.props.payload, undefined, this.hostConfig);
+			// Input elements with its identifier and value
+
+			this.setState({
+				showErrors: false,
+				payload: this.payload,
+				cardModel: this.cardModel
+			});
+		}
+	}
+
 	toggleVisibilityForElementWithID = (idArray) => {
 		if (idArray?.length > 0) { // crash guard : check if array is valid
 			this.toggleCardModelObject(this.cardModel, [...idArray]);
@@ -321,6 +341,7 @@ export default class AdaptiveCard extends React.Component {
 // AdaptiveCard.propTypes
 AdaptiveCard.propTypes = {
 	payload: PropTypes.object.isRequired,
+	updateKey: PropTypes.number, // A "key" that can be used to signal that payload has changed.
 	hostConfig: PropTypes.object,
 	themeConfig: PropTypes.object,
 	onExecuteAction: PropTypes.func,

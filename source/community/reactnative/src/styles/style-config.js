@@ -49,6 +49,9 @@ export class StyleConfig {
 			input: {
 				...this.themeConfig.input[Platform.OS]
 			},
+			inputLabel: {
+				...this.themeConfig.inputLabel[Platform.OS]
+			},
 			defaultPositiveButtonBackgroundColor: {
 				backgroundColor: this.hostConfig.containerStyles.default.foregroundColors.accent.default,
 			},

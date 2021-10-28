@@ -23,6 +23,7 @@ export class ContainerWrapper extends React.PureComponent {
     }
 
     render() {
+        this.payload = this.props.json;
         const receivedStyles = this.props.style;
         const computedStyles = this.getComputedStyles();
 

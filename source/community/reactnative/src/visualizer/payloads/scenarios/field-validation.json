@@ -75,7 +75,16 @@
         {
           "type": "Container",
           "items": [
-              {
+            {
+                "type": "Input.Text",
+                "placeholder": "Default Value Input.Text",
+                "id": "defaultTextInput",
+                "isRequired": true,
+                "errorMessage": "Required text input with default value",
+                "label": "Text Field with Default Value",
+                "value": "This is default value"
+            },
+            {
                   "type": "Input.Text",
                   "placeholder": "Required text input",
                   "id": "requiredInput",

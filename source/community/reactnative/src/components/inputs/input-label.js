@@ -20,17 +20,25 @@ export default class InputLabel extends React.Component {
 		this.isRequired = props.isRequired || false;
 		this.hostConfig = props.configManager.hostConfig;
 		this.altText = props.altText;
+		this.applyStyleConfig = props.applyStyleConfig;
 	}
 
 	render() {
-		const { label, wrap, style } = this;
+		const { label, wrap, style, applyStyleConfig } = this;
+
+		// NOTE :: Do not apply label styles on Toggle, other Input's labels style is picked from themeconfig
+		let computedStyle = style;
+		if (typeof applyStyleConfig !== 'boolean' || applyStyleConfig) {
+			computedStyle = this.props.configManager.styleConfig.inputLabel;
+		}
+
 		let inputLabel = null;
 		if (label != Constants.EmptyString) {
 			if (typeof label == Constants.TypeString) {
 				inputLabel = (
 					<Label
 						text={label}
-						style={[this.props.configManager.styleConfig.defaultFontConfig, style]}
+						style={[this.props.configManager.styleConfig.defaultFontConfig, computedStyle]}
 						configManager={this.props.configManager}
 						wrap={wrap}
 						altText={this.props.altText} />

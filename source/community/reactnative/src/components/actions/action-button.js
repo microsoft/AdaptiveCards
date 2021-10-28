@@ -152,6 +152,7 @@ export class ActionButton extends React.Component {
 	}
 
 	parsePayload() {
+		this.payload = this.props.json;
 		this.title = this.payload.title;
 		this.altText = this.payload.altText || this.title;
 		this.type = this.payload.type;

@@ -28,7 +28,7 @@ export class InputText extends React.Component {
 
 		this.state = {
 			isError: this.isRequired,
-			text: Constants.EmptyString,
+			text:  this.payload.value ? this.payload.value : Constants.EmptyString
 		}
 	}
 
