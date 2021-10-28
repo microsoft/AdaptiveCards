@@ -5,17 +5,17 @@
     width: 300px;
     border-radius: 4px;
     color: white;
-	position: relative;
+    position: relative;
 }
 
 .berlin-header {
     height: 40px;
-	width: 300px;
-	position: absolute;
-	z-index: 1;
-	display: flex;
-	justify-content: space-around;
-	border: 1px dashed green
+    width: 300px;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    justify-content: space-around;
+    border: 1px dashed green
 }
 
 .berlin-large-container {
@@ -33,7 +33,9 @@
     height: 204px;
 }
 
+
 /* berlin-large/medium/small-container  4px(top+bottom padding+margin) berlin-outer-container border*/
+
 .berlin-large-card {
     height: 416px;
 }
@@ -49,8 +51,8 @@
 .ac-adaptiveCard {
     border: 0px;
     height: 100%;
-	padding: 48px 24px 24px 24px !important;
-	border-radius: 4px !important;
+    padding: 48px 24px 24px 24px !important;
+    border-radius: 4px !important;
 }
 
 .ac-input {
