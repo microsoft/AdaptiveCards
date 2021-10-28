@@ -37,11 +37,20 @@ export class BerlinContainer extends HostContainer {
 		header.className = "berlin-header";
 		outerFrame.appendChild(header);
 
-		const frame = document.createElement("div");
-		frame.className = "berlin-inner-container";
-		frame.appendChild(this.cardHost);
+		const headerText = document.createElement("p");
+		headerText.innerHTML = "Berlin Header";
+		header.appendChild(headerText);
 
-		outerFrame.appendChild(frame);
+		const moreButton = document.createElement("button");
+		moreButton.className = "berlin-header-add-button";
+		moreButton.innerHTML = "...";
+		header.appendChild(moreButton);
+
+		const innerFrame = document.createElement("div");
+		innerFrame.className = "berlin-inner-container";
+		innerFrame.appendChild(this.cardHost);
+
+		outerFrame.appendChild(innerFrame);
 		hostElement.appendChild(outerFrame);
 	}
 

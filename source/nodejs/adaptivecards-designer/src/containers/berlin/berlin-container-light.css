@@ -1,6 +1,8 @@
 .ac-adaptiveCard {
     border: 0px;
     height: 100%;
+	padding: 48px 24px 24px 24px !important;
+	border-radius: 4px !important;
 }
 
 .berlin-outer-container {
@@ -13,34 +15,40 @@
 
 .berlin-header {
     height: 40px;
+	width: 300px;
+	position: absolute;
+	z-index: 1;
+	display: flex;
+	justify-content: space-around;
+	border: 1px dashed green
 }
 
 .berlin-large-container {
-    width: 300px;
-    height: 416px;
+    width: 304px;
+    height: 420px;
 }
 
 .berlin-medium-container {
-    width: 300px;
-    height: 308px;
+    width: 304px;
+    height: 312px;
 }
 
 .berlin-small-container {
-    width: 300px;
-    height: 200px;
+    width: 304px;
+    height: 204px;
 }
 
-/* berlin-large/medium/small-container - 40px reserved for berlin-header - 4px(top+bottom padding+margin) berlin-outer-container border*/
+/* berlin-large/medium/small-container  4px(top+bottom padding+margin) berlin-outer-container border*/
 .berlin-large-card {
-    height: 372px;
+    height: 416px;
 }
 
 .berlin-medium-card {
-    height: 264px;
+    height: 308px;
 }
 
 .berlin-small-card {
-    height: 156px;
+    height: 200px;
 }
 
 .ac-input {
