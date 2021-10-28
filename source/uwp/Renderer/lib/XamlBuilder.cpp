@@ -318,7 +318,6 @@ namespace AdaptiveCards::Rendering::Uwp
             rootAsFrameworkElement->put_FlowDirection(rtlValue ? FlowDirection_RightToLeft : FlowDirection_LeftToRight);
         }
 
-
         ComPtr<IUIElement> rootUIElement;
         RETURN_IF_FAILED(rootElement.As(&rootUIElement));
         *rootElementResult = rootUIElement.Detach();
