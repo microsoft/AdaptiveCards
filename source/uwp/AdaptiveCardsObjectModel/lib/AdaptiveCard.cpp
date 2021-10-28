@@ -136,6 +136,10 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         adaptiveCard->SetHeight(static_cast<::AdaptiveCards::HeightType>(Height.get()));
         adaptiveCard->SetLanguage(HStringToUTF8(Language));
         adaptiveCard->SetMinHeight(MinHeight);
+        if (const auto rtl = Rtl.get())
+        {
+            adaptiveCard->SetRtl(rtl.Value());
+        }
 
         auto adaptiveBackgroundImage =
             peek_innards<implementation::AdaptiveBackgroundImage>(BackgroundImage.get());
