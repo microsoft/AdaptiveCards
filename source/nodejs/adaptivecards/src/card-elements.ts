@@ -5796,12 +5796,10 @@ export class Container extends ContainerBase {
         let cardLevelContainer: HTMLElement = document.createElement("div");
 
         let swiperContainer: HTMLElement = document.createElement("div");
-        swiperContainer.classList.add(this.hostConfig.makeCssClassName("swiper"));
-        swiperContainer.classList.add(this.hostConfig.makeCssClassName("ac-carousel"));
+        swiperContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
 
         let swiperWrapper : HTMLElement = document.createElement("div");
-        swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
-        swiperWrapper.className = this.hostConfig.makeCssClassName("ac-carousel-card-container");
+        swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper", "ac-carousel-card-container");
         swiperWrapper.style.display = "flex";
 
         if (GlobalSettings.useAdvancedCardBottomTruncation) {
@@ -5834,36 +5832,25 @@ export class Container extends ContainerBase {
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
         let prevElementDiv: HTMLElement = document.createElement("div");
-        prevElementDiv.classList.add(this.hostConfig.makeCssClassName("swiper-button-prev", ));
-        prevElementDiv.classList.add("ac-carousel-left");
+        prevElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-prev", "ac-carousel-left");
         swiperContainer.appendChild(prevElementDiv);
 
         let nextElementDiv: HTMLElement = document.createElement("div");
-        nextElementDiv.classList.add(this.hostConfig.makeCssClassName("swiper-button-next"));
-        nextElementDiv.classList.add("ac-carousel-right");
+        nextElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-next", "ac-carousel-right");
         swiperContainer.appendChild(nextElementDiv);
 
         let pagination: HTMLElement = document.createElement("div");
-        pagination.classList.add(this.hostConfig.makeCssClassName("swiper-pagination"));
-        pagination.classList.add("ac-carousel-pagination");
+        pagination.className = this.hostConfig.makeCssClassName("swiper-pagination", "ac-carousel-pagination");
         swiperContainer.appendChild(pagination);
 
-        this.initializeCarouselControl(swiperContainer,
-                                        nextElementDiv,
-                                        prevElementDiv,
-                                        pagination,
-                                        displayProperties);
+        this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
 
         cardLevelContainer.appendChild(swiperContainer);
 
         return cardLevelContainer;
     }
 
-    private initializeCarouselControl(swiperContainer: HTMLElement,
-                                    nextElement: HTMLElement,
-                                    prevElement: HTMLElement,
-                                    paginationElement: HTMLElement,
-                                    displayProperties: Display) : void {
+    private initializeCarouselControl(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement, displayProperties: Display) : void {
          const swiperOptions: SwiperOptions = {
             loop: true,
             autoplay: {
