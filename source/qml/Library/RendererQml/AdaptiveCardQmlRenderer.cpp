@@ -464,14 +464,14 @@ namespace RendererQml
         }
 
 		std::string text = TextUtils::ApplyTextFunctions(textBlock->GetText(), context->GetLang());
-		text = Utils::HandleEscapeSequences(text);
-
+        text = Utils::HandleEscapeSequences(text);
+		
 		const std::string linkColor = context->GetColor(AdaptiveCards::ForegroundColor::Accent, false, false);
 
 		//CSS Property for underline, striketrhough,etc
 		const std::string textDecoration = "none";
 		text = Utils::MarkdownUrlToHtml(text, linkColor, textDecoration);
-		
+
 		uiTextBlock->Property("text", text, true);
 
 		//MouseArea to Change Cursor on Hovering Links
@@ -633,42 +633,7 @@ namespace RendererQml
                 uiContainer->Property("width", "parent.width");
                 const auto actionsConfig = context->GetConfig()->GetActions();
 
-                auto buttonElement = context->Render(input->GetInlineAction());
-                buttonElement->RemoveProperty("background");
-                buttonElement->RemoveProperty("contentItem");
-
-                // Append the icon to the button
-                // NOTE: always using icon size since it's difficult
-                // to match icon's height with text's height
-                auto bgRectangle = std::make_shared<QmlTag>("Rectangle");
-                bgRectangle->Property("id", Formatter() << buttonElement->GetId() << "_bg");
-                bgRectangle->Property("anchors.fill", "parent");
-                bgRectangle->Property("color", Formatter() << buttonElement->GetId() << ".pressed ? " << context->GetHexColor(textConfig.backgroundColorOnPressed) << " : " << buttonElement->GetId() << ".hovered ? " << context->GetHexColor(textConfig.backgroundColorOnHovered) << " : " << context->GetHexColor(textConfig.backgroundColorNormal));
-                bgRectangle->Property("border.color", context->GetHexColor(textConfig.borderColorOnFocus));
-                bgRectangle->Property("border.width", Formatter() << buttonElement->GetId() << ".activeFocus? " << textConfig.borderWidth << ": 0");
-                buttonElement->Property("background", bgRectangle->ToString());
-
-                if (!input->GetInlineAction()->GetIconUrl().empty())
-                {
-                    buttonElement->Property("height", std::to_string(actionsConfig.iconSize));
-                    buttonElement->Property("width", std::to_string(actionsConfig.iconSize));
-
-                    auto iconItem = std::make_shared<QmlTag>("Item");
-                    iconItem->Property("anchors.fill", "parent");
-                    auto iconImage = std::make_shared<QmlTag>("Image");
-                    iconImage->Property("id", Formatter() << buttonElement->GetId() << "_img");
-                    iconImage->Property("height", std::to_string(actionsConfig.iconSize));
-                    iconImage->Property("width", std::to_string(actionsConfig.iconSize));
-                    iconImage->Property("fillMode", "Image.PreserveAspectFit");
-                    iconImage->Property("cache", "false");
-                    iconImage->Property("source", Formatter() << buttonElement->GetId() + ".imgSource");
-                    iconItem->AddChild(iconImage);
-                    buttonElement->Property("contentItem", iconItem->ToString());
-                }
-                else
-                {
-                    buttonElement->Property("text", input->GetInlineAction()->GetTitle(), true);
-                }
+                auto buttonElement = AdaptiveActionRender(input->GetInlineAction(), context);
 
                 if (input->GetIsMultiline())
                 {
@@ -1962,6 +1927,7 @@ namespace RendererQml
 			auto uiTitle = context->Render(factTitle);
 			uiTitle->Property("Layout.maximumWidth", std::to_string(context->GetConfig()->GetFactSet().title.maxWidth));
 			uiTitle->Property("Component.onCompleted", "parent.setTitleWidth(this)");
+			uiTitle->Property("Layout.fillHeight", "true");
 
 			//uiTitle->Property("spacing", std::to_string(context->GetConfig()->GetFactSet().spacing));
 
@@ -1977,6 +1943,7 @@ namespace RendererQml
 
 			auto uiValue = context->Render(factValue);
 			uiValue->Property("Layout.preferredWidth", "parent.parent.width - parent.titleWidth");
+			uiValue->Property("Layout.fillHeight", "true");
 
 			uiFactSet->AddChild(uiTitle);
 			uiFactSet->AddChild(uiValue);
