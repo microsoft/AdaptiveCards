@@ -44,6 +44,7 @@ namespace winrt::AdaptiveCards::ObjectModel::Uwp::implementation
         property<uint32_t> MinHeight;
         property<Uwp::AdaptiveRefresh> Refresh{nullptr};
         property<Uwp::AdaptiveAuthentication> Authentication{nullptr};
+        property<winrt::Windows::Foundation::IReference<bool>> Rtl;
 
         winrt::Windows::Data::Json::JsonObject ToJson();
         winrt::Windows::Foundation::Collections::IVectorView<winrt::AdaptiveCards::ObjectModel::Uwp::AdaptiveRemoteResourceInformation>
