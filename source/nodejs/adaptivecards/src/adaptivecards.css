@@ -258,7 +258,7 @@ a.ac-anchor:visited:active {
     border-top: 1px solid #F1F1F1;
 }
 
-.swiper {
+.ac-carousel {
     width: 100%;
     height: 100%;
   }
@@ -281,14 +281,54 @@ a.ac-anchor:visited:active {
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
+    padding-left: calc(var(--swiper-navigation-size)/ 44 * 27) !important;
+    padding-right: calc(var(--swiper-navigation-size)/ 44 * 27) !important;
+    padding-bottom: calc(var(--swiper-pagination-bullet-height,var(--swiper-pagination-bullet-size,8px)) + 10px) !important;
 }
 
-.swiper-button-next::after {
-    font-family: 'Segoe Fluent Icons';
-    content: "\EDDA";
+.ac-carousel-right::after {
+    font-size: 12px !important;
+    font-family: 'Segoe Fluent Icons' !important;
+    content: "\EDDA" !important;
 }
 
-.swiper-button-prev::after {
-    font-family: 'Segoe Fluent Icons';
-    content: "\EDD9";
+.ac-carousel-right:hover::after {
+    color: white !important;
+    transition: color 700ms !important;
+}
+
+.ac-carousel-right:hover {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    transition: background-color 700ms;
+}
+
+.ac-carousel-left::after {
+    font-size: 12px !important;
+    font-family: 'Segoe Fluent Icons' !important;
+    content: "\EDD9" !important;
+}
+
+.ac-carousel-left:hover::after {
+    color: white !important;
+    transition: color 700ms !important;
+}
+
+.ac-carousel-left:hover {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    transition: background-color 700ms;
+}
+
+.swiper-button-next,
+.swiper-rtl.swiper-button-prev {
+    right: 0px !important;
+} 
+
+.swiper-button-prev,
+.swiper-rtl.swiper-button-next {
+    left: 0px !important;
+} 
+
+.ac-carousel-pagination.swiper-pagination.swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: 0px !important;
+
 }
