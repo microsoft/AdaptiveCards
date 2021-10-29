@@ -5792,7 +5792,7 @@ export class Container extends ContainerBase {
         super.applyBackground();
     }
 
-    protected carouselRender(): HTMLElement | undefined {
+    protected carouselRender(displayProperties: Display): HTMLElement | undefined {
         let cardLevelContainer: HTMLElement = document.createElement("div");
 
         let swiperContainer: HTMLElement = document.createElement("div");
@@ -5848,16 +5848,27 @@ export class Container extends ContainerBase {
         pagination.classList.add("ac-carousel-pagination");
         swiperContainer.appendChild(pagination);
 
-        this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+        this.initializeCarouselControl(swiperContainer,
+                                        nextElementDiv,
+                                        prevElementDiv,
+                                        pagination,
+                                        displayProperties);
 
         cardLevelContainer.appendChild(swiperContainer);
 
         return cardLevelContainer;
     }
 
-    private initializeCarouselControl(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement) : void {
+    private initializeCarouselControl(swiperContainer: HTMLElement,
+                                    nextElement: HTMLElement,
+                                    prevElement: HTMLElement,
+                                    paginationElement: HTMLElement,
+                                    displayProperties: Display) : void {
          const swiperOptions: SwiperOptions = {
             loop: true,
+            autoplay: {
+                delay: displayProperties.timerProperty
+            },
             pagination: {
                 el: paginationElement
              },
@@ -6804,8 +6815,8 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection.toJSON(target, "actions", context);
     }
 
-    protected carouselRender(): HTMLElement | undefined {
-        let element = super.carouselRender();
+    protected carouselRender(displayProperties: Display): HTMLElement | undefined {
+        let element = super.carouselRender(displayProperties);
 
         if (element) {
             let renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation, false);
@@ -7319,7 +7330,7 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     protected internalRender(): HTMLElement | undefined {
-        var renderedElement = this.display ? super.carouselRender() : super.internalRender();
+        var renderedElement = this.display ? super.carouselRender(this.display) : super.internalRender();
 
         if (GlobalSettings.useAdvancedCardBottomTruncation && renderedElement) {
             // Unlike containers, the root card element should be allowed to
