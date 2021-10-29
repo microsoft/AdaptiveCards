@@ -75,4 +75,8 @@ export class BerlinContainer extends HostContainer {
 		}
 		return containers;
 	}
+
+	get isFixedHeight(): boolean {
+        return true;
+    }
 }
