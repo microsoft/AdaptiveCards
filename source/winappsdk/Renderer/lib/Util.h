@@ -341,6 +341,8 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::Con
                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
 
+winrt::Windows::UI::Color GetBackgroundColorFromStyle(rtom::ContainerStyle const& style, rtrender::AdaptiveHostConfig const& hostConfig);
+
 HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
                                 _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                 _Out_ ABI::Windows::UI::Color* borderColor) noexcept;

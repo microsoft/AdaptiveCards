@@ -356,7 +356,7 @@ namespace AdaptiveCards::Rendering::WinUI3
             // If we don't have a renderer, or if the renderer told us to perform fallback, try falling back
             if (elementRenderer == nullptr || shouldFallback)
             {
-               XamlHelpers::RenderFallback(elem, context, renderArgs, &newControl, &renderedElement));
+               XamlHelpers::RenderFallback(elem, context, renderArgs, newControl, renderedElement);
             }
 
             // If we got a control, add a separator if needed and the control to the parent panel
@@ -377,9 +377,6 @@ namespace AdaptiveCards::Rendering::WinUI3
 
             // Revert the ancestorHasFallback value
             renderArgs->put_AncestorHasFallback(ancestorHasFallback);
-            return hr;
-
-
 
         }
 

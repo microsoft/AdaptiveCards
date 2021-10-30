@@ -238,6 +238,31 @@ try
 }
 CATCH_RETURN();
 
+rtrender::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(rtom::ContainerStyle const& style,
+                                                                       rtrender::AdaptiveHostConfig const& hostConfig)
+{
+    /*ComPtr<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveContainerStylesDefinition> containerStyles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));*/
+    auto containerStyles = hostConfig.ContainerStyles();
+
+    switch (style)
+    {
+    case rtom::ContainerStyle::Accent:
+        return containerStyles.Accent();
+    case rtom::ContainerStyle::Attention:
+        return containerStyles.Attention();
+    case rtom::ContainerStyle::Emphasis:
+        return containerStyles.Emphasis();
+    case rtom::ContainerStyle::Good:
+        return containerStyles.Good();
+    case rtom::ContainerStyle::Warning:
+        return containerStyles.Warning();
+    case rtom::ContainerStyle::Default:
+    default:
+        return containerStyles.Default();
+    }
+}
+
 HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor adaptiveColor,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
@@ -418,6 +443,12 @@ try
     return S_OK;
 }
 CATCH_RETURN();
+
+winrt::Windows::UI::Color GetBackgroundColorFromStyle(rtom::ContainerStyle const& style, rtrender::AdaptiveHostConfig const& hostConfig)
+{
+    auto styleDefinition = GetContainerStyleDefinition(style, hostConfig);
+    return styleDefinition.BackgroundColor();
+}
 
 HRESULT GetBorderColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
                                 _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -803,7 +834,7 @@ bool MeetsRequirements(rtom::IAdaptiveCardElement const& cardElement, rtrender::
 
     for (auto req : requirements)
     {
-        //winrt::hstring name = req.Name();
+        // winrt::hstring name = req.Name();
         winrt::hstring registrationVersion = featureRegistration.Get(req.Name());
 
         if (registrationVersion.empty())

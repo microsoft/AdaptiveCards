@@ -308,7 +308,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     {
         winrt::com_ptr<T> localContainer = winrt::make_self<T>(container);
 
-        if (const winrt::com_ptr<rtrender::implementation::WholeItemsPanel> containerAsPanel = localContainer.try_as<rtrender::implementation::WholeItemsPanel>())
+        if (const winrt::com_ptr<rtrender::implementation::WholeItemsPanel> containerAsPanel =
+                localContainer.try_as<rtrender::implementation::WholeItemsPanel>())
         {
             auto panel = *containerAsPanel;
             panel.VerticalAlignment(verticalContentAlignment);
@@ -384,11 +385,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result,
                            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** renderedElement);
 
-    
-    winrt::com_ptr<rtxaml::IUIElement> RenderFallback(rtom::IAdaptiveCardElement currentElement,
-                        rtrender::AdaptiveRenderContext renderContext,
-                        rtrender::AdaptiveRenderArgs renderArgs,
-                        winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement);
+    winrt::com_ptr<rtxaml::IUIElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
+                                                      rtrender::AdaptiveRenderContext const& renderContext,
+                                                      rtrender::AdaptiveRenderArgs const& renderArgs);
 
     void GetSeparationConfigForElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -412,7 +411,6 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     {
         renderContext.AddWarning(rtom::WarningStatusCode::PerformingFallback, warning);
     }
-
 
     inline HRESULT WarnForFallbackContentElement(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                                  _In_ HSTRING parentElementType,
@@ -445,7 +443,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                               winrt::hstring const& parentElementType,
                                               winrt::hstring const& fallbackElementType)
     {
-        auto warning = L"Performing fallback for element of type \"" + parentElementType + L"\" (fallback element type \"" + fallbackElementType + L"\")";
+        auto warning = L"Performing fallback for element of type \"" + parentElementType +
+            L"\" (fallback element type \"" + fallbackElementType + L"\")";
         WarnFallbackString(renderContext, warning);
     }
 

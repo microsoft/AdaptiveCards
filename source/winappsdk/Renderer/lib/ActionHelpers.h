@@ -121,18 +121,18 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs);
 
-    HRESULT BuildActionSetHelper(
+    /*HRESULT BuildActionSetHelper(
         _In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
         _In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionSet* adaptiveActionSet,
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement*>* children,
         _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
         rtrender::AdaptiveRenderArgs const& renderArgs,
-        _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionSetControl);
+        _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionSetControl);*/
 
-    rtxaml::UIElement BuildActionSetHelper(rtom::AdaptiveCard adaptiveCard,
-                                           rtom::AdaptiveActionSet adaptiveActionSet,
-                                           winrt::Windows::Foundation::Collections::IVector<rtom::IAdaptiveActionElement> children,
-                                           rtrender::AdaptiveRenderContext renderContext,
+    rtxaml::UIElement BuildActionSetHelper(rtom::AdaptiveCard const& adaptiveCard,
+                                           rtom::AdaptiveActionSet const& adaptiveActionSet,
+                                           winrt::Windows::Foundation::Collections::IVector<rtom::IAdaptiveActionElement> const& children,
+                                           rtrender::AdaptiveRenderContext const& renderContext,
                                            rtrender::AdaptiveRenderArgs const& renderArgs);
 
     void BuildActions(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,

@@ -1018,7 +1018,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         }
     }
 
-    HRESULT BuildActions(_In_ IAdaptiveCard* adaptiveCard,
+    /* HRESULT BuildActions(_In_ IAdaptiveCard* adaptiveCard,
                          _In_ IVector<IAdaptiveActionElement*>* children,
                          _In_ IPanel* bodyPanel,
                          bool insertSeparator,
@@ -1049,7 +1049,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
         return S_OK;
-    }
+    }*/
 
     void BuildActions(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveCard const& adaptiveCard,
                       winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement> const& children,
@@ -1101,26 +1101,100 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
     rtxaml::Controls::Button CreateFlyoutButton(rtrender::AdaptiveRenderContext renderContext, rtrender::AdaptiveRenderArgs renderArgs)
     {
         // Create an action button
-       /* ComPtr<IUIElement> overflowButtonAsUIElement;
-        RETURN_IF_FAILED(BuildAction(nullptr, renderContext, renderArgs, true, &overflowButtonAsUIElement));*/
+        /* ComPtr<IUIElement> overflowButtonAsUIElement;
+         RETURN_IF_FAILED(BuildAction(nullptr, renderContext, renderArgs, true, &overflowButtonAsUIElement));*/
+        auto overflowButtonAsUIElement = BuildAction(nullptr, renderContext, renderArgs, true);
 
         // Create a menu flyout for the overflow button
-        ComPtr<IButtonWithFlyout> overflowButtonAsButtonWithFlyout;
-        RETURN_IF_FAILED(overflowButtonAsUIElement.As(&overflowButtonAsButtonWithFlyout));
+        // TODO : is this correct?
+        auto overflowButtonAsButtonWithFlyout = overflowButtonAsUIElement.as<rtxaml::Controls::IButtonWithFlyout>();
+        /* ComPtr<IButtonWithFlyout> overflowButtonAsButtonWithFlyout;
+         RETURN_IF_FAILED(overflowButtonAsUIElement.As(&overflowButtonAsButtonWithFlyout));*/
 
-        ComPtr<IMenuFlyout> overflowFlyout =
-            XamlHelpers::CreateABIClass<IMenuFlyout>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MenuFlyout));
+        /*ComPtr<IMenuFlyout> overflowFlyout =
+            XamlHelpers::CreateABIClass<IMenuFlyout>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MenuFlyout));*/
 
-        ComPtr<IFlyoutBase> overflowFlyoutAsFlyoutBase;
-        RETURN_IF_FAILED(overflowFlyout.As(&overflowFlyoutAsFlyoutBase));
-        RETURN_IF_FAILED(overflowButtonAsButtonWithFlyout->put_Flyout(overflowFlyoutAsFlyoutBase.Get()));
+        rtxaml::Controls::MenuFlyout overflowFlyout{};
+
+        /* ComPtr<IFlyoutBase> overflowFlyoutAsFlyoutBase;
+         RETURN_IF_FAILED(overflowFlyout.As(&overflowFlyoutAsFlyoutBase));*/
+        // RETURN_IF_FAILED(overflowButtonAsButtonWithFlyout->put_Flyout(overflowFlyoutAsFlyoutBase.Get()));
+        overflowButtonAsButtonWithFlyout.Flyout(overflowFlyout);
 
         // Return overflow button
-        ComPtr<IButton> overFlowButtonAsButton;
+        /*ComPtr<IButton> overFlowButtonAsButton;
         RETURN_IF_FAILED(overflowButtonAsUIElement.As(&overFlowButtonAsButton));
-        RETURN_IF_FAILED(overFlowButtonAsButton.CopyTo(overflowButton));
+        RETURN_IF_FAILED(overFlowButtonAsButton.CopyTo(overflowButton));*/
 
-        return S_OK;
+        return overflowButtonAsUIElement.as<rtxaml::Controls::Button>();
+    }
+
+    rtxaml::UIElement AddOverflowFlyoutItem(rtom::IAdaptiveActionElement action,
+                                            rtxaml::Controls::Button overflowButton,
+                                            rtrender::AdaptiveRenderContext renderContext)
+    {
+        // Get the flyout items vector
+        /* ComPtr<IButton> button(overflowButton);
+         ComPtr<IButtonWithFlyout> buttonWithFlyout;
+         RETURN_IF_FAILED(button.As(&buttonWithFlyout));*/
+        auto buttonWithFlyout = overflowButton.as<rtxaml::Controls::IButtonWithFlyout>();
+
+        auto menuFlyout = buttonWithFlyout.Flyout().as<rtxaml::Controls::MenuFlyout>();
+        /*  ComPtr<IFlyoutBase> flyout;
+          RETURN_IF_FAILED(buttonWithFlyout->get_Flyout(&flyout));*/
+
+        /* ComPtr<IMenuFlyout> menuFlyout;
+         RETURN_IF_FAILED(flyout.As(&menuFlyout));*/
+
+        /* ComPtr<IVector<MenuFlyoutItemBase*>> flyoutItems;*/
+        // RETURN_IF_FAILED(menuFlyout->get_Items(&flyoutItems));
+        auto flyoutItems = menuFlyout.Items();
+        // Create a flyout item
+        /*  ComPtr<IMenuFlyoutItem> flyoutItem =
+              XamlHelpers::CreateABIClass<IMenuFlyoutItem>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MenuFlyoutItem));*/
+        rtxaml::Controls::MenuFlyoutItem flyoutItem{};
+
+        // Set the title
+        // HString actionTitle;
+        // RETURN_IF_FAILED(action->get_Title(actionTitle.GetAddressOf()));
+        // RETURN_IF_FAILED(flyoutItem->put_Text(actionTitle.Get()));
+        flyoutItem.Text(action.Title());
+
+        // Set the tooltip
+        /*String tooltip;
+        RETURN_IF_FAILED(action->get_Tooltip(tooltip.GetAddressOf()));*/
+
+        /*ComPtr<IDependencyObject> flyoutItemAsDependencyObject;
+        RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsDependencyObject));*/
+        // SetTooltip(to_winrt(tooltip), to_winrt(flyoutItemAsDependencyObject));
+        SetTooltip(action.Tooltip(), flyoutItem);
+
+        // Hook the menu item up to the action invoker
+        /*ComPtr<IAdaptiveActionElement> actionParam(action);
+        ComPtr<IAdaptiveActionInvoker> actionInvoker;
+        RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
+        EventRegistrationToken clickToken;*/
+
+        // TODO: Which way is better? constructort or winrt::make_self
+        rtom::IAdaptiveActionElement actionParam{action};
+        rtrender::AdaptiveActionInvoker actionInvoker{};
+        /*auto actionParam = *winrt::make_self<rtom::IAdaptiveActionElement>(action);*/
+
+        auto eventToken = flyoutItem.Click([actionParam, actionInvoker](IInspectable const&, rtxaml::RoutedEventArgs const)
+                                           { return actionInvoker.SendActionEvent(actionParam); });
+
+        // Add the new menu item to the vector
+        /* ComPtr<IMenuFlyoutItemBase> flyoutItemAsBase;
+         RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsBase));
+         RETURN_IF_FAILED(flyoutItems->Append(flyoutItemAsBase.Get()));*/
+        flyoutItems.Append(flyoutItem);
+
+        /*ComPtr<IUIElement> flyoutItemAsUIElement;
+        RETURN_IF_FAILED(flyoutItem.As(&flyoutItemAsUIElement));
+        RETURN_IF_FAILED(flyoutItemAsUIElement.CopyTo(flyoutUIItem));*/
+
+        // TODO: We don't need to do this, right? WinRT will cast for us?
+        return flyoutItem.as<rtxaml::UIElement>();
     }
 
     HRESULT AddOverflowFlyoutItem(_In_ IAdaptiveActionElement* action,
@@ -1292,10 +1366,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         return actionControl;
     }
 
-    rtxaml::UIElement BuildActionSetHelper(rtom::AdaptiveCard adaptiveCard,
-                                           rtom::AdaptiveActionSet adaptiveActionSet,
-                                           winrt::Windows::Foundation::Collections::IVector<rtom::IAdaptiveActionElement> children,
-                                           rtrender::AdaptiveRenderContext renderContext,
+     rtxaml::UIElement BuildActionSetHelper(rtom::AdaptiveCard const& adaptiveCard,
+                                           rtom::AdaptiveActionSet const& adaptiveActionSet,
+                                           winrt::Windows::Foundation::Collections::IVector<rtom::IAdaptiveActionElement> const& children,
+                                           rtrender::AdaptiveRenderContext const& renderContext,
                                            rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         /* ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -1488,7 +1562,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                                                                           nullptr,
                                                                           renderContext,
                                                                           renderArgs);
-                        actionControl = peek_innards<rtxaml::UIElement>(actionButton);
+                        actionControl.copy_from(&actionButton);
 
                         currentButtonIndex++;
                     }
@@ -1514,28 +1588,26 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                     }
 
                     // Add a flyout item to the overflow menu
-                    RETURN_IF_FAILED(AddOverflowFlyoutItem(action.Get(), overflowButton.Get(), renderContext, &actionControl));
+                    // RETURN_IF_FAILED(AddOverflowFlyoutItem(action.Get(), overflowButton.Get(), renderContext, &actionControl));
+                    AddOverflowFlyoutItem(action, overflowButton, renderContext);
 
                     // Show card actions in the overflow menu move to the action bar when selected, so we need to keep track
                     // of these so we can make non-visible buttons for them later. They need to go after all the actions we're creating as primary.
-                    if (actionType == ActionType_ShowCard)
+                    if (actionType == rtom::ActionType::ShowCard)
                     {
                         showCardOverflowButtons.emplace_back(std::make_pair(action, actionControl));
                     }
 
                     // If this was supposed to be a primary action but it got overflowed due to max actions, add a warning
-                    if (mode == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionMode::Primary)
+                    if (mode == rtom::ActionMode::Primary)
                     {
-                        renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::MaxActionsExceeded,
-                                                  HStringReference(L"Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed")
-                                                      .Get());
+                        renderContext.AddWarning(rtom::WarningStatusCode::MaxActionsExceeded,
+                                                 {L"Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed"});
                     }
                 }
-
-                return S_OK;
             });
 
-        ComPtr<IUIElement> lastActionOverflowItem;
+        winrt::com_ptr<rtxaml::UIElement> lastActionOverflowItem;
         if (overflowButton != nullptr && showCardOverflowButtons.size() != 0)
         {
             // Show card actions from the overflow menu switch places with the last primary action when invoked.
@@ -1544,26 +1616,25 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
 
             if (lastPrimaryAction != nullptr)
             {
-                RETURN_IF_FAILED(AddOverflowFlyoutItem(lastPrimaryAction.Get(), overflowButton.Get(), renderContext, &lastActionOverflowItem));
-                RETURN_IF_FAILED(lastActionOverflowItem->put_Visibility(Visibility_Collapsed));
+                auto flyoutItem = AddOverflowFlyoutItem(lastPrimaryAction, overflowButton, renderContext);
+                lastActionOverflowItem.copy_from(&flyoutItem);
+                lastActionOverflowItem->Visibility(rtxaml::Visibility::Collapsed);
             }
 
             // Create non-visible primary buttons for all overflow show card actions so they can be moved to the action bar when invoked
             for (auto& overflowShowCard : showCardOverflowButtons)
             {
-                ComPtr<IUIElement> createdButton;
-                RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
-                                                               adaptiveActionSet,
-                                                               overflowShowCard.first.Get(),
-                                                               false,
-                                                               currentButtonIndex,
-                                                               actionsPanel.Get(),
-                                                               showCardsPanel.Get(),
-                                                               columnDefinitions.Get(),
-                                                               overflowShowCard.second.Get(),
-                                                               renderContext,
-                                                               renderArgs,
-                                                               &createdButton));
+                auto createdButton = CreateActionButtonInActionSet(adaptiveCard,
+                                                                   adaptiveActionSet,
+                                                                   overflowShowCard.first,
+                                                                   false,
+                                                                   currentButtonIndex,
+                                                                   *actionsPanel,
+                                                                   showCardsPanel,
+                                                                   columnDefinitions,
+                                                                   overflowShowCard.second,
+                                                                   renderContext,
+                                                                   renderArgs);
                 currentButtonIndex++;
             }
         }
@@ -1571,19 +1642,17 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         // Now that we have the overflow item if needed, we can create the button for the last primary action
         if (lastPrimaryAction != nullptr)
         {
-            ComPtr<IUIElement> createdButton;
-            RETURN_IF_FAILED(CreateActionButtonInActionSet(adaptiveCard,
-                                                           adaptiveActionSet,
-                                                           lastPrimaryAction.Get(),
-                                                           true,
-                                                           currentButtonIndex,
-                                                           actionsPanel.Get(),
-                                                           showCardsPanel.Get(),
-                                                           columnDefinitions.Get(),
-                                                           lastActionOverflowItem.Get(),
-                                                           renderContext,
-                                                           renderArgs,
-                                                           &createdButton));
+            auto createdButton = CreateActionButtonInActionSet(adaptiveCard,
+                                                               adaptiveActionSet,
+                                                               lastPrimaryAction,
+                                                               true,
+                                                               currentButtonIndex,
+                                                               *actionsPanel,
+                                                               showCardsPanel,
+                                                               columnDefinitions,
+                                                               *lastActionOverflowItem,
+                                                               renderContext,
+                                                               renderArgs);
             currentButtonIndex++;
         }
 
@@ -1593,57 +1662,66 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             // If using equal width columns, add another column and assign the it to the overflow button
             if (columnDefinitions != nullptr)
             {
-                ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-                RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
-                RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
+                /* ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
+                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));*/
+                /*  RETURN_IF_FAILED(columnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Star}));
+                  RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));*/
+                rtxaml::Controls::ColumnDefinition columnDefinition{};
+                columnDefinition.Width({1.0, rtxaml::GridUnitType::Star});
+                columnDefinitions.Append(columnDefinition);
 
-                ComPtr<IFrameworkElement> actionFrameworkElement;
-                THROW_IF_FAILED(overflowButton.As(&actionFrameworkElement));
-                THROW_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), currentButtonIndex));
+                /* ComPtr<IFrameworkElement> actionFrameworkElement;
+                 THROW_IF_FAILED(overflowButton.As(&actionFrameworkElement));
+                 THROW_IF_FAILED(gridStatics->SetColumn(actionFrameworkElement.Get(), currentButtonIndex));*/
+                // TODO: No need to convert, right?
+                gridStatics.SetColumn(overflowButton, currentButtonIndex);
             }
 
             // Add the overflow button to the panel
-            XamlHelpers::AppendXamlElementToPanel(overflowButton.Get(), actionsPanel.Get());
+            XamlHelpers::AppendXamlElementToPanel(overflowButton, *actionsPanel);
 
             // Register the overflow button with the render context
-            ComPtr<IUIElement> overflowButtonAsUIElement;
-            overflowButton.As(&overflowButtonAsUIElement);
+            /* ComPtr<IUIElement> overflowButtonAsUIElement;
+             overflowButton.As(&overflowButtonAsUIElement);*/
 
-            auto contextImpl = PeekInnards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
+            auto contextImpl = peek_innards<rtrender::implementation::AdaptiveRenderContext>(renderContext);
 
             if (adaptiveActionSet != nullptr)
             {
-                contextImpl->AddOverflowButton(to_winrt(adaptiveActionSet), to_winrt(overflowButtonAsUIElement));
+                // TODO: no need to .as<rtxaml::UIElement> for overflowButton, correct?
+                contextImpl->AddOverflowButton(adaptiveActionSet, overflowButton);
             }
             else
             {
-                contextImpl->AddOverflowButton(to_winrt(adaptiveCard), to_winrt(overflowButtonAsUIElement));
+                contextImpl->AddOverflowButton(adaptiveCard, overflowButton);
             }
         }
 
         // Reset icon placement value
-        RETURN_IF_FAILED(renderArgs->put_AllowAboveTitleIconPlacement(false));
+        /*  RETURN_IF_FAILED(renderArgs->put_AllowAboveTitleIconPlacement(false));*/
+        renderArgs.AllowAboveTitleIconPlacement(false);
 
-        ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
+        /*ComPtr<IFrameworkElement> actionsPanelAsFrameworkElement;
         RETURN_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
         RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
                                                                      L"Adaptive.Actions",
-                                                                     actionsPanelAsFrameworkElement.Get()));
+                                                                     actionsPanelAsFrameworkElement.Get()));*/
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, {L"Adapative.Actions"}, *actionsPanel);
 
-        ComPtr<IStackPanel> actionSet =
+      /*  ComPtr<IStackPanel> actionSet =
             XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IPanel> actionSetAsPanel;
-        actionSet.As(&actionSetAsPanel);
+        actionSet.As(&actionSetAsPanel);*/
+        rtxaml::Controls::StackPanel actionPanel;
 
         // Add buttons and show cards to panel
-        XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), actionSetAsPanel.Get());
-        XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), actionSetAsPanel.Get());
+        XamlHelpers::AppendXamlElementToPanel(actionsPanel, actionPanel);
+        XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel, actionPanel);
 
-        return actionSetAsPanel.CopyTo(actionSetControl);
+        return actionPanel;
     }
 
-    HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
+    /* HRESULT BuildActionSetHelper(_In_opt_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCard* adaptiveCard,
                                  _In_opt_ IAdaptiveActionSet* adaptiveActionSet,
                                  _In_ IVector<IAdaptiveActionElement*>* children,
                                  _In_ IAdaptiveRenderContext* renderContext,
@@ -1966,9 +2044,9 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), actionSetAsPanel.Get());
 
         return actionSetAsPanel.CopyTo(actionSetControl);
-    }
+    }*/
 
-    void CreateAppropriateButton(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action, ComPtr<IButton>& button)
+   /* void CreateAppropriateButton(ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveActionElement* action, ComPtr<IButton>& button)
     {
         if (action != nullptr)
         {
@@ -1989,7 +2067,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             // Either no action, non-OpenUrl action, or instantiating LinkButton failed. Use standard button.
             button = XamlHelpers::CreateABIClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
         }
-    }
+    }*/
 
     rtxaml::Controls::Button CreateAppropriateButton(rtom::IAdaptiveActionElement const& action)
     {
