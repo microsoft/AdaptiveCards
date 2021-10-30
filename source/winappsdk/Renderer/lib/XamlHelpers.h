@@ -131,6 +131,13 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, HStringReference(resourceName).Get(), style);
     }
 
+    template<typename T>
+    T TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary,
+                                                   const wchar_t* resourceName)
+    {
+        return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, winrt::to_hstring(resourceName), style);
+    }
+
     HRESULT SetSeparatorVisibility(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
 
     HRESULT HandleColumnWidth(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn* column,
@@ -385,9 +392,11 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result,
                            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** renderedElement);
 
-    winrt::com_ptr<rtxaml::IUIElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
-                                                      rtrender::AdaptiveRenderContext const& renderContext,
-                                                      rtrender::AdaptiveRenderArgs const& renderArgs);
+    void RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
+                        rtrender::AdaptiveRenderContext const& renderContext,
+                        rtrender::AdaptiveRenderArgs const& renderArgs,
+                        winrt::com_ptr<rtxaml::UIElement> result,
+                        winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement);
 
     void GetSeparationConfigForElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,

@@ -11,6 +11,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::WinUI3;
+using namespace ABI::AdaptiveCards::ObjectModel::WinUI3;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -22,9 +23,6 @@ using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
-namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
-namespace rtxaml = winrt::Windows::UI::Xaml;
 
 namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 {
@@ -197,17 +195,17 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     }
 
     rtom::ContainerStyle HandleStylingAndPadding(rtom::IAdaptiveContainerBase const& adaptiveContainer,
-                                    rtxaml::Controls::Border const& containerBorder,
-                                    rtrender::AdaptiveRenderContext const& renderContext,
-                                    rtrender::AdaptiveRenderArgs renderArgs)
+                                                 rtxaml::Controls::Border const& containerBorder,
+                                                 rtrender::AdaptiveRenderContext const& renderContext,
+                                                 rtrender::AdaptiveRenderArgs renderArgs)
     {
         rtxaml::UIElement elem{nullptr};
 
         auto localContainerStyle = adaptiveContainer.Style();
-       /* RETURN_IF_FAILED(winrt::to_abi(adaptiveContainer)->get_Style(&localContainerStyle));*/
+        /* RETURN_IF_FAILED(winrt::to_abi(adaptiveContainer)->get_Style(&localContainerStyle));*/
 
-        //ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle parentContainerStyle;
-        //RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
+        // ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle parentContainerStyle;
+        // RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
         auto parentContainerStyle = renderArgs.ContainerStyle();
 
         bool hasExplicitContainerStyle{true};
@@ -221,24 +219,24 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
         auto hostConfig = renderContext.HostConfig();
 
-        //ComPtr<IAdaptiveSpacingConfig> spacingConfig;
-        //RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
+        // ComPtr<IAdaptiveSpacingConfig> spacingConfig;
+        // RETURN_IF_FAILED(hostConfig->get_Spacing(&spacingConfig));
         auto spacingConfig = hostConfig.Spacing();
 
         uint32_t padding = spacingConfig.Padding();
-        //RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
+        // RETURN_IF_FAILED(spacingConfig->get_Padding(&padding));
         double paddingAsDouble = (double)padding;
 
         bool addContainerPadding = renderArgs.AddContainerPadding();
-        //RETURN_IF_FAILED(renderArgs->get_AddContainerPadding(&addContainerPadding));
+        // RETURN_IF_FAILED(renderArgs->get_AddContainerPadding(&addContainerPadding));
 
         // If container style was explicitly assigned, apply background color and padding
         if (hasExplicitContainerStyle)
         {
-            //ABI::Windows::UI::Color backgroundColor;
-            //RETURN_IF_FAILED(GetBackgroundColorFromStyle(localContainerStyle, hostConfig.Get(), &backgroundColor));
-            //ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(backgroundColor);
-            //RETURN_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
+            // ABI::Windows::UI::Color backgroundColor;
+            // RETURN_IF_FAILED(GetBackgroundColorFromStyle(localContainerStyle, hostConfig.Get(), &backgroundColor));
+            // ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(backgroundColor);
+            // RETURN_IF_FAILED(containerBorder->put_Background(backgroundColorBrush.Get()));
             auto backgroundColor = GetBackgroundColorFromStyle(localContainerStyle, hostConfig);
 
             // If the container style doesn't match its parent apply padding.
@@ -247,40 +245,36 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         if (addContainerPadding)
         {
-            //Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
-            //RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
+            // Thickness paddingThickness = {paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble};
+            // RETURN_IF_FAILED(containerBorder->put_Padding(paddingThickness));
             containerBorder.Padding({paddingAsDouble, paddingAsDouble, paddingAsDouble, paddingAsDouble});
         }
 
         // Find out which direction(s) we bleed in, and apply a negative margin to cause the
         // container to bleed
-        //ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection bleedDirection;
-        //RETURN_IF_FAILED(adaptiveContainer->get_BleedDirection(&bleedDirection));
+        // ABI::AdaptiveCards::ObjectModel::WinUI3::BleedDirection bleedDirection;
+        // RETURN_IF_FAILED(adaptiveContainer->get_BleedDirection(&bleedDirection));
         auto bleedDirection = adaptiveContainer.BleedDirection();
 
         rtxaml::Thickness marginThickness{0};
         if (bleedDirection != rtom::BleedDirection::None)
         {
-            if ((bleedDirection & rtom::BleedDirection::Left) !=
-                rtom::BleedDirection::None)
+            if ((bleedDirection & rtom::BleedDirection::Left) != rtom::BleedDirection::None)
             {
                 marginThickness.Left = -paddingAsDouble;
             }
 
-            if ((bleedDirection & rtom::BleedDirection::Right) !=
-                rtom::BleedDirection::None)
+            if ((bleedDirection & rtom::BleedDirection::Right) != rtom::BleedDirection::None)
             {
                 marginThickness.Right = -paddingAsDouble;
             }
 
-            if ((bleedDirection & rtom::BleedDirection::Up) !=
-                rtom::BleedDirection::None)
+            if ((bleedDirection & rtom::BleedDirection::Up) != rtom::BleedDirection::None)
             {
                 marginThickness.Top = -paddingAsDouble;
             }
 
-            if ((bleedDirection & rtom::BleedDirection::Down) !=
-                rtom::BleedDirection::None)
+            if ((bleedDirection & rtom::BleedDirection::Down) != rtom::BleedDirection::None)
             {
                 marginThickness.Bottom = -paddingAsDouble;
             }
@@ -433,7 +427,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return columnWidth;
     }
 
-    HRESULT HandleColumnWidth(_In_ IAdaptiveColumn* column, boolean isVisible, _In_ IColumnDefinition* columnDefinition)
+    HRESULT HandleColumnWidth(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn* column,
+                              boolean isVisible,
+                              _In_ IColumnDefinition* columnDefinition)
     {
         HString adaptiveColumnWidth;
         RETURN_IF_FAILED(column->get_Width(adaptiveColumnWidth.GetAddressOf()));
@@ -466,7 +462,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         columnDefinition.Width(CalculateColumnWidth(isVisible, isAuto, isStretch, adaptiveColumnWidth.empty(), pixelWidth, widthAsDouble));
     }
 
-    HRESULT HandleTableColumnWidth(_In_ IAdaptiveTableColumnDefinition* column, _In_ IColumnDefinition* columnDefinition)
+    HRESULT HandleTableColumnWidth(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTableColumnDefinition* column,
+                                   _In_ IColumnDefinition* columnDefinition)
     {
         ComPtr<IReference<UINT32>> width;
         RETURN_IF_FAILED(column->get_Width(&width));
@@ -494,7 +491,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     }
 
     void ApplyBackgroundToRoot(_In_ IPanel* rootPanel,
-                               _In_ IAdaptiveBackgroundImage* backgroundImage,
+                               _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveBackgroundImage* backgroundImage,
                                _In_ IAdaptiveRenderContext* renderContext,
                                _In_ IAdaptiveRenderArgs* renderArgs)
     {
@@ -541,13 +538,13 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         THROW_IF_FAILED(tileControl.As(&tileControlAsControl));
         THROW_IF_FAILED(tileControlAsControl->put_IsEnabled(false));
 
-        THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
+        /* THROW_IF_FAILED(tileControlAsControl->put_BackgroundImage(backgroundImage));
 
-        ComPtr<IFrameworkElement> rootElement;
-        THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
-        THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
+         ComPtr<IFrameworkElement> rootElement;
+         THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
+         THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
 
-        THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
+         THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));*/
 
         ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
         THROW_IF_FAILED(tileControl.As(&backgroundAsFrameworkElement));
@@ -563,13 +560,13 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                                                                   c_BackgroundImageOverlayBrushKey,
                                                                                   &backgroundOverlayBrush)))
         {
-            ComPtr<IShape> overlayRectangle =
+            /*ComPtr<IShape> overlayRectangle =
                 XamlHelpers::CreateABIClass<IShape>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
             THROW_IF_FAILED(overlayRectangle->put_Fill(backgroundOverlayBrush.Get()));
 
             ComPtr<IUIElement> overlayRectangleAsUIElement;
             THROW_IF_FAILED(overlayRectangle.As(&overlayRectangleAsUIElement));
-            XamlHelpers::AppendXamlElementToPanel(overlayRectangle.Get(), rootPanel);
+            XamlHelpers::AppendXamlElementToPanel(overlayRectangle.Get(), rootPanel);*/
         }
     }
 
@@ -583,7 +580,6 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         /* ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
              HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));*/
         rtom::AdaptiveImage adaptiveImage;
-
         /* HString url;
          THROW_IF_FAILED(backgroundImage->get_Url(url.GetAddressOf()));
          THROW_IF_FAILED(adaptiveImage->put_Url(url.Get()));*/
@@ -613,58 +609,66 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                 rtom::BackgroundImageFillMode fillMode = backgroundImage.FillMode();
 
                 // Creates the background image for all fill modes
-                ComPtr<TileControl> tileControl;
-                THROW_IF_FAILED(MakeAndInitialize<TileControl>(&tileControl));
+                /*ComPtr<TileControl> tileControl;
+                THROW_IF_FAILED(MakeAndInitialize<TileControl>(&tileControl));*/
+                auto tileControl = winrt::make<rtrender::implementation::TileControl>();
 
                 // Set IsEnabled to false to avoid generating a tab stop for the background image tile control
-                ComPtr<IControl> tileControlAsControl;
-                THROW_IF_FAILED(tileControl.As(&tileControlAsControl));
-                THROW_IF_FAILED(tileControlAsControl->put_IsEnabled(false));
+                /*  ComPtr<IControl> tileControlAsControl;
+                  THROW_IF_FAILED(tileControl.As(&tileControlAsControl));
+                  THROW_IF_FAILED(tileControlAsControl->put_IsEnabled(false));*/
+                tileControl.IsEnabled(false);
 
-                THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
+                // THROW_IF_FAILED(tileControl->put_BackgroundImage(backgroundImage));
+                tileControl.BackgroundImage(backgroundImage);
 
-                ComPtr<IFrameworkElement> rootElement;
-                THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));
-                THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
+                /*ComPtr<IFrameworkElement> rootElement;
+                THROW_IF_FAILED(rootPanel->QueryInterface(rootElement.GetAddressOf()));*/
+                // THROW_IF_FAILED(tileControl->put_RootElement(rootElement.Get()));
+                tileControl.RootElement(rootPanel);
 
-                THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
+                // THROW_IF_FAILED(tileControl->LoadImageBrush(background.Get()));
+                tileControl.LoadImageBrush(background);
 
-                ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
-                THROW_IF_FAILED(tileControl.As(&backgroundAsFrameworkElement));
+                // ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
+                // THROW_IF_FAILED(tileControl.As(&backgroundAsFrameworkElement));
 
-                XamlHelpers::AppendXamlElementToPanel(backgroundAsFrameworkElement.Get(), rootPanel);
+                XamlHelpers::AppendXamlElementToPanel(tileControl, rootPanel);
 
                 // The overlay applied to the background image is determined by a resouce, so create
                 // the overlay if that resources exists
-                ComPtr<IResourceDictionary> resourceDictionary;
-                THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
-                ComPtr<IBrush> backgroundOverlayBrush;
-                if (SUCCEEDED(XamlHelpers::TryGetResourceFromResourceDictionaries<IBrush>(resourceDictionary.Get(),
-                                                                                          c_BackgroundImageOverlayBrushKey,
-                                                                                          &backgroundOverlayBrush)))
+                /* ComPtr<IResourceDictionary> resourceDictionary;
+                 THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));*/
+                auto resourceDictionary = renderContext.OverrideStyles();
+                if (const auto backgroundOverlayBrush =
+                        XamlHelpers::TryGetResourceFromResourceDictionaries<rtxaml::Media::Brush>(resourceDictionary, c_BackgroundImageOverlayBrushKey))
                 {
-                    ComPtr<IShape> overlayRectangle =
+                    /*ComPtr<IShape> overlayRectangle =
                         XamlHelpers::CreateABIClass<IShape>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Rectangle));
                     THROW_IF_FAILED(overlayRectangle->put_Fill(backgroundOverlayBrush.Get()));
 
                     ComPtr<IUIElement> overlayRectangleAsUIElement;
                     THROW_IF_FAILED(overlayRectangle.As(&overlayRectangleAsUIElement));
-                    XamlHelpers::AppendXamlElementToPanel(overlayRectangle.Get(), rootPanel);
+                    XamlHelpers::AppendXamlElementToPanel(overlayRectangle.Get(), rootPanel);*/
+                    rtxaml::Shapes::Rectangle overlayRectangle;
+                    XamlHelpers::AppendXamlElementToPanel(overlayRectangle, rootPanel);
                 }
             }
         }
     }
 
-    winrt::com_ptr<rtxaml::IUIElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
-                                                      rtrender::AdaptiveRenderContext const& renderContext,
-                                                      rtrender::AdaptiveRenderArgs const& renderArg)
+    void RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
+                        rtrender::AdaptiveRenderContext const& renderContext,
+                        rtrender::AdaptiveRenderArgs const& renderArgs,
+                        winrt::com_ptr<rtxaml::UIElement> result,
+                        winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement)
     {
         auto elementRenderers = renderContext.ElementRenderers();
         auto elementFallback = currentElement.FallbackType();
         winrt::hstring elementType = currentElement.ElementTypeString();
 
         bool fallbackHandled = false;
-        winrt::com_ptr<rtxaml::IUIElement> fallbackControl;
+        winrt::com_ptr<rtxaml::UIElement> fallbackControl;
 
         switch (elementFallback)
         {
@@ -682,20 +686,23 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
             if (fallbackElementRenderer)
             {
-                fallbackControl = winrt::make_self<rtxaml::IUIElement>(
-                    fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs));
+                auto fallBackControlUIElement = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
+                fallbackControl.copy_from(&fallBackControlUIElement);
 
+
+                // TODO: FIGURE OUT HOW TO DO PROPER LOGIC FOR CALLBACK
                 shouldPerformFallBack = false;
 
                 if (renderedElement)
                 {
-                    renderedElement = winrt::make_self<rtom::IAdaptiveCardElement>(fallbackElement);
+                    // TODO: What is better way to do it? why can't I do .copyFrom?
+                    renderedElement = fallbackElement.as<winrt::com_ptr<rtom::IAdaptiveCardElement>>();
                 }
             }
 
             if (shouldPerformFallBack)
             {
-                return RenderFallback(fallbackElement, renderContext, renderArgs, renderedElement);
+                RenderFallback(fallbackElement, renderContext, renderArgs, fallbackControl, renderedElement);
             }
             fallbackHandled = true;
             break;
@@ -720,7 +727,6 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                 renderContext.AddWarning(rtom::WarningStatusCode::NoRendererForType, L"No Renderer found for type: " + elementType);
             }
         }
-        return fallbackControl;
     }
 
     HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
@@ -891,10 +897,66 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
             ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType{};
             RETURN_IF_FAILED(element->get_Height(&heightType));
 
-            ComPtr<ElementTagContent> tagContent;
+            /*ComPtr<ElementTagContent> tagContent;
             RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(
                 &tagContent, element, parentPanel, separator, columnDefinition, isVisible, heightType == HeightType_Stretch));
-            RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));
+            RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));*/
+
+            XamlHelpers::AppendXamlElementToPanel(newControl, parentPanel, heightType);
+
+            childCreatedCallback(newControl);
+        }
+        return S_OK;
+    }
+
+    HRESULT AddRenderedControl(rtxaml::UIElement const& newControl,
+                               rtom::IAdaptiveCardElement const& element,
+                               rtxaml::Controls::Panel const& parentPanel,
+                               rtxaml::UIElement const&separator,
+                               rtxaml::Controls::ColumnDefinition const& columnDefinition,
+                               std::function<void(rtxaml::UIElement const& child)> childCreatedCallback)
+    {
+        if (newControl != nullptr)
+        {
+           /* boolean isVisible;
+            RETURN_IF_FAILED(element->get_IsVisible(&isVisible));*/
+            bool isVisible = element.IsVisible();
+
+            if (!isVisible)
+            {
+                //RETURN_IF_FAILED(newControl->put_Visibility(Visibility_Collapsed));
+                newControl.Visibility(rtxaml::Visibility::Collapsed);
+            }
+
+            /*ComPtr<IUIElement> localControl(newControl);*/
+            //ComPtr<IFrameworkElement> newControlAsFrameworkElement;
+            //RETURN_IF_FAILED(localControl.As(&newControlAsFrameworkElement));
+            auto newControlAsFrameworkElement = newControl.as<rtxaml::FrameworkElement>();
+
+            winrt::hstring id = element.Id();
+            //RETURN_IF_FAILED(element->get_Id(id.GetAddressOf()));
+
+            // TODO: what does it mean for hstring to be valid? to have c_str? to not be empty? both?
+            if (id.c_str() != nullptr)
+            {
+                //RETURN_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
+                newControlAsFrameworkElement.Name(id);
+            }
+
+            /*ABI::AdaptiveCards::ObjectModel::WinUI3::HeightType heightType{};
+            RETURN_IF_FAILED(element->get_Height(&heightType));*/
+            auto heightType = element.Height();
+
+            /*ComPtr<ElementTagContent> tagContent;
+            RETURN_IF_FAILED(MakeAndInitialize<ElementTagContent>(
+                &tagContent, element, parentPanel, separator, columnDefinition, isVisible, heightType == HeightType_Stretch));*/
+            //auto elementTagContent = winrt::make_self<rtrender::implementation::ElementTagContent>(element, parentPanel, separator, columnDefinition, isVisible, heightType == rtom::HeightType::Stretch);
+            // TODO: Fix ElementTagContent constructor
+           /* rtrender::ElementTagContent tagContent(
+                element, parentPanel, separator, columnDefinition, isVisible, heightType == rtom::HeightType::Stretch);*/
+            auto tagContent = winrt::make<rtrender::implementation::ElementTagContent>();
+            //RETURN_IF_FAILED(newControlAsFrameworkElement->put_Tag(tagContent.Get()));
+            newControlAsFrameworkElement.Tag(tagContent);
 
             XamlHelpers::AppendXamlElementToPanel(newControl, parentPanel, heightType);
 
@@ -948,7 +1010,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
         // Prevent an image from being stretched out if it is smaller than the
         // space allocated for it (when in auto mode).
-        ComPtr<IEllipse> localElementAsEllipse;
+        ComPtr<ABI::Windows::UI::Xaml::Shapes::IEllipse> localElementAsEllipse;
         if (SUCCEEDED(localElement.As(&localElementAsEllipse)))
         {
             // don't need to set both width and height when image size is auto since
