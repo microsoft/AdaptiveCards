@@ -4,22 +4,31 @@
 
 #include "ColumnSet.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveColumnSetRenderer
+    struct AdaptiveColumnSetRenderer
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                               ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRenderer>
     {
-        AdaptiveRuntime(AdaptiveColumnSetRenderer);
+        //AdaptiveRuntime(AdaptiveColumnSetRenderer);
+
 
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        /*HRESULT RuntimeClassInitialize() noexcept;*/
+        AdaptiveColumnSetRenderer() = default;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement,
+        /*IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement,
                               _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                               _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;*/
     };
 
     ActivatableClass(AdaptiveColumnSetRenderer);
+}
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveColumnSetRenderer : AdaptiveColumnSetRendererT<AdaptiveColumnSetRenderer, implementation::AdaptiveColumnSetRenderer>
+    {
+    };
 }

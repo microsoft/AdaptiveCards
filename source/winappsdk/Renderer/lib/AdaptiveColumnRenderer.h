@@ -3,23 +3,34 @@
 #pragma once
 
 #include "Column.h"
+#include "AdaptiveColumnRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveColumnRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRenderer>
+    struct AdaptiveColumnRenderer : AdaptiveColumnRendererT<AdaptiveColumnRenderer>
+       /* : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRenderer>*/
     {
-        AdaptiveRuntime(AdaptiveColumnRenderer);
+        // AdaptiveRuntime(AdaptiveColumnRenderer);
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveColumnRenderer() = default;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        /* IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement,
+                               _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
+                               _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
+                               _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;*/
+
+        rtxaml::UIElement Render(rtom::IAdaptiveCardElement const& cardElement,
+                                 rtrender::AdaptiveRenderContext const& renderContext,
+                                 rtrender::AdaptiveRenderArgs const& renderArgs);
     };
 
-    ActivatableClass(AdaptiveColumnRenderer);
+    // ActivatableClass(AdaptiveColumnRenderer);
+}
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveColumnRenderer : AdaptiveColumnRendererT<AdaptiveColumnRenderer, implementation::AdaptiveColumnRenderer>
+    {
+    };
 }

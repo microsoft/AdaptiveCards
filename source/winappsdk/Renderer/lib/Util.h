@@ -282,8 +282,48 @@ void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* 
     }
 }
 
+template<typename T, typename TInterface, typename C>
+void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vector, C iterationCallback)
+{
+   /* Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
+    ComPtr<ABI::Windows::Foundation::Collections::IIterable<T*>> vectorIterable;
+    THROW_IF_FAILED(localVector.As<ABI::Windows::Foundation::Collections::IIterable<T*>>(&vectorIterable));*/
+
+    /*Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IIterator<T*>> vectorIterator;
+    if (FAILED(vectorIterable->First(&vectorIterator)))
+    {
+        return;
+    }
+
+    boolean hasCurrent = false;
+    HRESULT hr = vectorIterator->get_HasCurrent(&hasCurrent);
+    while (SUCCEEDED(hr) && hasCurrent)
+    {
+        Microsoft::WRL::ComPtr<TInterface> current = nullptr;
+        hr = vectorIterator->get_Current(current.GetAddressOf());
+        if (FAILED(hr))
+        {
+            break;
+        }
+
+        iterationCallback(current.Get());
+        hr = vectorIterator->MoveNext(&hasCurrent);
+    }*/
+
+    for (T item : vector)
+    {
+        iterationCallback(item);
+    }
+}
+
 template<typename T, typename C>
 void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
+{
+    IterateOverVector<T, T, C>(vector, iterationCallback);
+}
+
+template<typename T, typename C>
+void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vector, C iterationCallback)
 {
     IterateOverVector<T, T, C>(vector, iterationCallback);
 }
