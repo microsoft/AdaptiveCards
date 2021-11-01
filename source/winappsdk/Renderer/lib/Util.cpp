@@ -262,6 +262,55 @@ rtrender::AdaptiveContainerStyleDefinition GetContainerStyleDefinition(rtom::Con
         return containerStyles.Default();
     }
 }
+winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
+                                                    winrt::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor adaptiveColor,
+                                                    winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
+                                                    bool isSubtle,
+                                                    bool highlight)
+{
+    auto styleDefinition = GetContainerStyleDefinition(containerStyle, hostConfig);
+
+    auto colorsConfig = styleDefinition.ForegroundColors();
+
+    rtrender::AdaptiveColorConfig colorConfig{};
+    switch (adaptiveColor)
+    {
+    case rtom::ForegroundColor::Accent:
+        colorConfig = colorsConfig.Accent();
+        break;
+    case rtom::ForegroundColor::Dark:
+        colorConfig = colorsConfig.Dark();
+        break;
+    case rtom::ForegroundColor::Light:
+        colorConfig = colorsConfig.Light();
+        break;
+    case rtom::ForegroundColor::Good:
+        colorConfig = colorsConfig.Good();
+        break;
+    case rtom::ForegroundColor::Warning:
+        colorConfig = colorsConfig.Warning();
+        break;
+    case rtom::ForegroundColor::Attention:
+        colorConfig = colorsConfig.Attention();
+        break;
+    case rtom::ForegroundColor::Default:
+    default:
+        colorConfig = colorsConfig.Default();
+        break;
+    }
+
+    if (highlight)
+    {
+        auto highlightColorConfig = colorConfig.HighlightColors();
+        return isSubtle ? highlightColorConfig.Subtle() : highlightColorConfig.Default();
+    }
+    else
+    {
+        return isSubtle ? colorConfig.Subtle() : colorConfig.Default();
+    }
+
+
+}
 
 HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor adaptiveColor,

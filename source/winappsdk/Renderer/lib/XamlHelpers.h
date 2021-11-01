@@ -4,6 +4,7 @@
 
 #include "AdaptiveCards.Rendering.WinUI3.h"
 #include "WholeItemsPanel.h"
+#include <type_traits>
 
 namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 {
@@ -132,8 +133,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
     }
 
     template<typename T>
-    T TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary,
-                                                   const wchar_t* resourceName)
+    T TryGetResourceFromResourceDictionaries(rtxaml::ResourceDictionary const& resourceDictionary, const wchar_t* resourceName)
     {
         return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, winrt::to_hstring(resourceName), style);
     }
@@ -243,24 +243,44 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
-    template<typename T> void SetContent(_In_ T* item, _In_ HSTRING contentString, boolean wrap)
+    template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
-        ComPtr<T> localItem(item);
-        ComPtr<IContentControl> contentControl;
-        THROW_IF_FAILED(localItem.As(&contentControl));
+        // TODO: Do I need this here? should it be simply ContentControl? that should be enough, right?
+        static_assert(std::is_base_of<rtxaml::Controls::IContentControl>, T > ::value, "T must inherit from ContenControl");
+        SetContent(item, contentString, false);
+    }
 
-        ComPtr<ITextBlock> content =
-            XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-        THROW_IF_FAILED(content->put_Text(contentString));
+    template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
+    {
+        static_assert(std::is_base_of<rtxaml::Controls::IContentControl>, T > ::value, "T must inherit from ContenControl");
+        rtxaml::Controls::TextBlock content{};
+        content.Text(contentString);
 
         if (wrap)
         {
-            THROW_IF_FAILED(content->put_TextWrapping(TextWrapping::TextWrapping_WrapWholeWords));
+            content.TextWrapping(rtxaml::TextWrapping::WrapWholeWords) :
         }
-        THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+        item.Content(content);
     }
 
-    template<typename T> void SetContent(T* item, HSTRING contentString) { SetContent(item, contentString, false); }
+    // template<typename T> void SetContent(_In_ T* item, _In_ HSTRING contentString, boolean wrap)
+    //{
+    //    ComPtr<T> localItem(item);
+    //    ComPtr<IContentControl> contentControl;
+    //    THROW_IF_FAILED(localItem.As(&contentControl));
+
+    //    ComPtr<ITextBlock> content =
+    //        XamlHelpers::CreateABIClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+    //    THROW_IF_FAILED(content->put_Text(contentString));
+
+    //    if (wrap)
+    //    {
+    //        THROW_IF_FAILED(content->put_TextWrapping(TextWrapping::TextWrapping_WrapWholeWords));
+    //    }
+    //    THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+    //}
+
+    // template<typename T> void SetContent(T* item, HSTRING contentString) { SetContent(item, contentString, false); }
 
     template<typename T>
     void AddRow(_In_ T* item, _In_ ABI::Windows::UI::Xaml::Controls::IGrid* grid, ABI::Windows::UI::Xaml::GridLength rowHeight)
@@ -336,6 +356,10 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                    ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                    ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder);
 
+    winrt::Windows::UI::Xaml::Controls::Border
+    CreateValidationBorder(winrt::Windows::UI::Xaml::UIElement const& childElement,
+                           winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext);
+
     HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInput,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
@@ -347,6 +371,13 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                            ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                            ABI::Windows::UI::Xaml::IUIElement** inputLayout,
                                            ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
+
+    void XamlHelpers::HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::IAdaptiveInputElement const& adaptiveInput,
+                                                     winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
+                                                     bool hasTypeSpecificValidation,
+                                                     winrt::AdaptiveCards::Rendering::AdaptiveRenderContext const& renderContext,
+                                                     winrt::Windows::UI::Xaml::UIElement& inputLayout,
+                                                     winrt::Windows::UI::Xaml::Controls::Border& validationBorderOut);
 
     template<typename TXamlControl>
     HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,

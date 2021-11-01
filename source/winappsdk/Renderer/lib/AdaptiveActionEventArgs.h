@@ -20,3 +20,11 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         property<WinUI3::AdaptiveInputs> Inputs;
     };
 }
+
+// TODO: Do we need this for event args? It doesn't have a ctor in IDL, so probably not
+//namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+//{
+//    struct AdaptiveActionEventArgs : AdaptiveActionEventArgsT<AdaptiveActionEventArgs, implementation::AdaptiveActionEventArgs>
+//    {
+//    };
+//}

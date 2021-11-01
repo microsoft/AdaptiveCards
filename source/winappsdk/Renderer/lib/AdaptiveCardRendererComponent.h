@@ -55,7 +55,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         WinUI3::AdaptiveFeatureRegistration FeatureRegistration();
 
         void SetFixedDimensions(uint32_t desiredWidth, uint32_t desiredHeight);
-        void ResetFixedDimensions();
+        void ResetFixedDimensions() { m_explicitDimensions = false; };
 
         void OverflowMaxActions(bool overflowMaxActions);
         bool OverflowMaxActions();

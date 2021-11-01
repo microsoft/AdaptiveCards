@@ -337,6 +337,13 @@ HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IA
                                   bool highlight,
                                   _Out_ ABI::Windows::UI::Color* uiColor) noexcept;
 
+// TODO: const& for enums?
+winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
+                                                    winrt::AdaptiveCards::ObjectModel::WinUI3::ForegroundColor adaptiveColor,
+                                                    winrt::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle containerStyle,
+                                                    bool isSubtle,
+                                                    bool highlight);
+
 HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle style,
                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;

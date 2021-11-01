@@ -1330,28 +1330,20 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
-    rtxaml::UIElement CreateValidationBorder(rtxaml::UIElement const& childElement, rtrender::AdaptiveRenderContext const& renderContext)
+    rtxaml::Controls::Border XamlHelpers::CreateValidationBorder(rtxaml::UIElement const& childElement,
+                                                                 rtrender::AdaptiveRenderContext const& renderContext)
     {
-        /*ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
         auto hostConfig = renderContext.HostConfig();
 
         auto attentionColor =
             GetColorFromAdaptiveColor(hostConfig, rtom::ForegroundColor::Attention, rtom::ContainerStyle::Default, false, false);
-        /*ABI::Windows::UI::Color attentionColor;
-        RETURN_IF_FAILED(
-            GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));*/
 
         // Create a border in the attention color. The thickness is 0 for now so it won't be visibile until validation is run
-        ComPtr<IBorder> validationBorder;
-        validationBorder = XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+        rtxaml::Controls::Border validationBorder{};
+        validationBorder.BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor));
+        validationBorder.Child(childElement);
 
-        RETURN_IF_FAILED(validationBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
-
-        RETURN_IF_FAILED(validationBorder->put_Child(childElement));
-
-        RETURN_IF_FAILED(validationBorder.CopyTo(elementWithBorder));
-        return S_OK;
+        return validationBorder;
     }
 
     HRESULT HandleLabelAndErrorMessage(_In_ IAdaptiveInputElement* adaptiveInput,
@@ -1627,7 +1619,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
-    HRESULT HandleInputLayoutAndValidation(rtom::IAdaptiveInputElement const& adaptiveInput,
+    void XamlHelpers::HandleInputLayoutAndValidation(rtom::IAdaptiveInputElement const& adaptiveInput,
                                            rtxaml::UIElement const& inputUIElement,
                                            bool hasTypeSpecificValidation,
                                            rtrender::AdaptiveRenderContext const& renderContext,
@@ -1645,6 +1637,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         // The input may need to go into a border to handle validation before being added to the stack panel.
         // inputUIElementParentContainer represents the current parent container.
         /*ComPtr<IUIElement> inputUIElementParentContainer = inputUIElement;*/
+        auto inputUIElementParentContainer = inputUIElement;
 
         // If there's any validation on this input, and the caller has requested a validation border by passing
         // validationBorderOut, put the input inside a border
@@ -1677,28 +1670,36 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         if (validationBorderOut && hasValidation)
         {
             validationBorder = XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
-            RETURN_IF_FAILED(validationBorder.As(&inputUIElementParentContainer));
+            // TODO: Do I need this cast?
+            inputUIElementParentContainer = validationBorder.as<rtxaml::UIElement>();
         }
 
-        XamlHelpers::AppendXamlElementToPanel(inputUIElementParentContainer.Get(), stackPanelAsPanel.Get());
+        XamlHelpers::AppendXamlElementToPanel(inputUIElementParentContainer, inputStackPanel);
 
         // Different input renderers perform stuff differently
         // Input.Text and Input.Number render the border previously so the object received as parameter may be a border
         // Input.Time and Input.Date let this method render the border for them
         // Input.Toggle
-        ComPtr<IUIElement> actualInputUIElement;
+        /* ComPtr<IUIElement> actualInputUIElement;*/
+        rtxaml::UIElement actualInputUIElement{nullptr};
         if (validationBorderOut && hasValidation)
         {
-            RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
+            // RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
+            actualInputUIElement = validationBorder.Child();
         }
         else
         {
             if (hasValidation)
             {
                 // This handles the case when the sent item was a Input.Text or Input.Number as we have to get the actual TextBox from the border
-                if (SUCCEEDED(inputUIElementParentContainer.As(&validationBorder)))
+                /* if (SUCCEEDED(inputUIElementParentContainer.As(&validationBorder)))
+                 {
+                     RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
+                 }*/
+                if (const auto containerAsBorder = inputUIElementParentContainer.try_as<rtxaml::Controls::Border>())
                 {
-                    RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
+                    // TODO: Am I doing this right? can we do it better way?
+                    actualInputUIElement = containerAsBorder.Child();
                 }
                 else
                 {
@@ -1712,29 +1713,49 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
 
         // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
-        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-        RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                 &automationPropertiesStatics));
+        /* ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+         RETURN_IF_FAILED(
+             GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                  &automationPropertiesStatics));*/
+        rtxaml::Automation::IAutomationPropertiesStatics automationPropertiesStatics{};
 
         // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
         // actual element if validations are required. If these properties are set into the border then they are not mentioned.
-        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
-        RETURN_IF_FAILED(actualInputUIElement.As(&inputUIElementAsDependencyObject));
+        /*ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
+        RETURN_IF_FAILED(actualInputUIElement.As(&inputUIElementAsDependencyObject));*/
+        // TODO: Do I need this cast?
+        auto inputUIElementAsDependencyObject = actualInputUIElement.as<rtxaml::DependencyObject>();
 
         // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
         // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
-        RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));
+        /*RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));*/
+        automationPropertiesStatics.SetIsRequiredForForm(inputUIElementAsDependencyObject, isRequired);
 
         // In the case of Input.Toggle we have to define the DescribedBy property to put the title in it
-        ComPtr<IAdaptiveInputElement> localAdaptiveInput(adaptiveInput);
-        ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
-        if (SUCCEEDED(localAdaptiveInput.As(&adaptiveToggleInput)))
+        /* ComPtr<IAdaptiveInputElement> localAdaptiveInput(adaptiveInput);*/
+        // ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
+        /*    if (SUCCEEDED(localAdaptiveInput.As(&adaptiveToggleInput)))*/
+        if (const auto adaptiveToggleInput = adaptiveInput.try_as<rtom::AdaptiveToggleInput>())
         {
-            ComPtr<IContentControl> uiInpuElementAsContentControl;
-            RETURN_IF_FAILED(actualInputUIElement.As(&uiInpuElementAsContentControl));
+            /*ComPtr<IContentControl> uiInpuElementAsContentControl;
+            RETURN_IF_FAILED(actualInputUIElement.As(&uiInpuElementAsContentControl));*/
+            if (const auto uiInputElementAsContentControl = actualInputUIElement.try_as<rtxaml::Controls::ContentControl>())
+            {
+                if (const auto content = uiInputElementAsContentControl.Content())
+                {
+                    if (const auto contentAsDependencyObject = content.try_as<rtxaml::DependencyObject>())
+                    {
+                        if (const auto automationPropertiesStatics5 =
+                                automationPropertiesStatics.try_as<rtxaml::Automation::IAutomationPropertiesStatics5>())
+                        {
+                            auto uiElementDescribers = automationPropertiesStatics5.GetDescribedBy(inputUIElementAsDependencyObject);
+                            uiElementDescribers.Append(contentAsDependencyObject);
+                        }
+                    }
+                }
+            }
 
-            ComPtr<IInspectable> content;
+         /*   ComPtr<IInspectable> content;
             RETURN_IF_FAILED(uiInpuElementAsContentControl->get_Content(content.GetAddressOf()));
 
             ComPtr<IDependencyObject> contentAsDependencyObject;
@@ -1747,16 +1768,18 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
             RETURN_IF_FAILED(automationPropertiesStatics5->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
                                                                           uiElementDescribers.GetAddressOf()));
 
-            RETURN_IF_FAILED(uiElementDescribers->Append(contentAsDependencyObject.Get()));
+            RETURN_IF_FAILED(uiElementDescribers->Append(contentAsDependencyObject.Get()));*/
         }
 
-        RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
+        //RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
+        // TODO: Figure out a better way than two _Out_ params
+        inputLayout = inputStackPanel;
 
         if (validationBorderOut)
         {
-            RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));
+            /*RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));*/
+            validationBorderOut = validationBorder;
         }
 
-        return S_OK;
     }
 }

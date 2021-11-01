@@ -3,44 +3,55 @@
 #pragma once
 
 #include "ChoiceSetInput.h"
+#include "AdaptiveChoiceSetInputRenderer.g.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    class AdaptiveChoiceSetInputRenderer
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveElementRenderer>
+    struct AdaptiveChoiceSetInputRenderer : AdaptiveChoiceSetInputRendererT<AdaptiveChoiceSetInputRenderer>
     {
-        AdaptiveRuntime(AdaptiveChoiceSetInputRenderer);
+        /* AdaptiveRuntime(AdaptiveChoiceSetInputRenderer);*/
 
     public:
-        HRESULT RuntimeClassInitialize() noexcept;
+        // HRESULT RuntimeClassInitialize() noexcept;
+        AdaptiveChoiceSetInputRenderer() = default;
 
-        IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* cardElement,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                              _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;
+        /*IFACEMETHODIMP Render(rtom::AdaptiveCardElement const& cardElement,
+                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept override;*/
+        winrt::Windows::UI::Xaml::UIElement Render(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement,
+                                                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                                                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        static std::vector<std::string> GetChoiceSetValueVector(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput);
-        static bool IsChoiceSelected(std::vector<std::string> selectedValues,
-                                     _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput* choice);
+        static std::vector<std::string> GetChoiceSetValueVector(rtom::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
 
-        HRESULT BuildExpandedChoiceSetInput(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                                            _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                            boolean isMultiSelect,
-                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+        static bool IsChoiceSelected(std::vector<std::string> selectedValues, rtom::AdaptiveChoiceInput const& choice);
 
-        HRESULT BuildCompactChoiceSetInput(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                                           _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                                           _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+        winrt::Windows::UI::Xaml::UIElement BuildExpandedChoiceSetInput(
+            winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput,
+            bool isMultiSelect);
 
-        HRESULT BuildFilteredChoiceSetInput(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                                            _In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** choiceInputSet);
+        winrt::Windows::UI::Xaml::UIElement BuildCompactChoiceSetInput(
+            winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
+
+        winrt::Windows::UI::Xaml::UIElement BuildFilteredChoiceSetInput(
+            winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+            winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+            winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInput const& adaptiveChoiceSetInput);
     };
 
-    ActivatableClass(AdaptiveChoiceSetInputRenderer);
+    /*ActivatableClass(AdaptiveChoiceSetInputRenderer);*/
+}
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+{
+    struct AdaptiveChoiceSetInputRenderer
+        : AdaptiveChoiceSetInputRendererT<AdaptiveChoiceSetInputRenderer, implementation::AdaptiveChoiceSetInputRenderer>
+    {
+    };
 }
