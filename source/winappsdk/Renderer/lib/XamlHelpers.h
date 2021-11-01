@@ -372,10 +372,10 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                            ABI::Windows::UI::Xaml::IUIElement** inputLayout,
                                            ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
 
-    void XamlHelpers::HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::IAdaptiveInputElement const& adaptiveInput,
+    void XamlHelpers::HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInput,
                                                      winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
                                                      bool hasTypeSpecificValidation,
-                                                     winrt::AdaptiveCards::Rendering::AdaptiveRenderContext const& renderContext,
+                                                     winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
                                                      winrt::Windows::UI::Xaml::UIElement& inputLayout,
                                                      winrt::Windows::UI::Xaml::Controls::Border& validationBorderOut);
 
