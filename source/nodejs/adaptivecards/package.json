@@ -20,7 +20,7 @@
 		"src"
 	],
 	"scripts": {
-		"test": "jest --forceExit --runInBand --detectOpenHandles",
+		"test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --forceExit --runInBand --detectOpenHandles",
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
 		"build": "webpack",
@@ -36,16 +36,18 @@
 		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
 	},
 	"devDependencies": {
-		"@types/jest": "^26.0.3",
+		"@types/jest": "^27.0.2",
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
 		"concurrently": "^5.2.0",
+		"cross-env": "^7.0.3",
 		"dts-generator": "^3.0.0",
 		"eslint": "^7.3.1",
 		"html-webpack-plugin": "^5.3.2",
-		"jest": "^26.1.0",
+		"jest": "^27.0.0-next.9",
 		"rimraf": "^3.0.2",
 		"swiper": "^7.2.0",
+		"ts-jest": "^27.0.0-next.12",
 		"typedoc": "^0.22.5",
 		"typedoc-plugin-markdown": "^3.11.2",
 		"typescript": "^4.2.3",
@@ -54,29 +56,28 @@
 		"webpack-dev-server": "^3.11.2"
 	},
 	"jest": {
+		"verbose": true,
+		"preset": "ts-jest/presets/default-esm",
+		"globals": {
+			"ts-jest": {
+				"tsconfig": "./tsconfig.json",
+				"useESM": true
+			}
+		},
 		"rootDir": "src",
-		"roots": [
-			"<rootDir>"
+		"testMatch": [
+			"**/__tests__/**/*.[jt]s?(x)"
 		],
-		"transform": {
-			"^.+\\.tsx?$": "ts-jest"
-		},
+		"testPathIgnorePatterns": [
+			"/node_modules/",
+			".*\\.d\\.ts$"
+		],
 		"moduleNameMapper": {
-			"\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/css_stub.ts"
+			"^swiper/css": "<rootDir>/__mocks__/cssMock.js"
 		},
-		"modulePaths": [
-			"<rootDir>"
-		],
-		"testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-		"moduleDirectories": [
-			"node_modules"
-		],
 		"moduleFileExtensions": [
-			"ts",
-			"tsx",
 			"js",
-			"jsx",
-			"json"
+			"ts"
 		]
 	},
 	"dependencies": {}
