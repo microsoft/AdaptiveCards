@@ -46,5 +46,17 @@
 	  	}
 		]
 	  }
-    ]
+    ],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "See more",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"title": "Another action",
+			"url": "https://adaptivecards.io"
+		}
+	]
 }
