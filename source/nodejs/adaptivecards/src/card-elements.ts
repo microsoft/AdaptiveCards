@@ -5754,6 +5754,8 @@ export class Container extends ContainerBase {
 
     private _items: CardElement[] = [];
     private _renderedItems: CardElement[] = [];
+    private _swiper: Swiper | undefined  = undefined;
+    private _isSwiperInitialized = false;
 
     protected insertItemAt(
         item: CardElement,
@@ -5800,7 +5802,6 @@ export class Container extends ContainerBase {
         let swiperWrapper : HTMLElement = document.createElement("div");
         swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
         swiperWrapper.style.display = "flex";
-        //swiperWrapper.style.flexDirection = "column";
 
         if (GlobalSettings.useAdvancedCardBottomTruncation) {
             // Forces the container to be at least as tall as its content.
@@ -5868,9 +5869,16 @@ export class Container extends ContainerBase {
 
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
+        cardLevelContainer.appendChild(swiperContainer);
+
         this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
 
-        cardLevelContainer.appendChild(swiperContainer);
+        cardLevelContainer.onfocus = () => {
+            if (this._swiper && !this._isSwiperInitialized) { 
+                this._isSwiperInitialized = true;
+                this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
+            }
+        }
 
         return cardLevelContainer;
     }
@@ -5898,7 +5906,7 @@ export class Container extends ContainerBase {
             }
          };
 
-         new Swiper(swiperContainer, swiperOptions);
+         this._swiper = new Swiper(swiperContainer, swiperOptions);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -7486,6 +7494,7 @@ export class AdaptiveCard extends ContainerWithActions {
     get hasVisibleSeparator(): boolean {
         return false;
     }
+
 }
 
 class InlineAdaptiveCard extends AdaptiveCard {
