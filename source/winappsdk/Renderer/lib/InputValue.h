@@ -4,10 +4,17 @@
 
 #include "winrt/AdaptiveCards.Rendering.WinUI3.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+//namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
+//{
+//    struct InputValue : InputValueT<InputValue, implementation::InputValue>
+//    {
+//    };
+//}
+
+namespace winrt::AdaptiveCards::Rendering::WinUI3
 {
     // Base class for input values. The InputValue is responsible for getting the current value and submit time, and also handles input validation.
-    struct DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue : public winrt::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue
+    struct DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue : public IAdaptiveInputValue
     /*: public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
                                           ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveInputValue>*/
     {
@@ -15,11 +22,15 @@ namespace AdaptiveCards::Rendering::WinUI3
         /* HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,
                                         _In_ ABI::Windows::UI::Xaml::IUIElement* uiInputElement,
                                         _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);*/
+      /*  InputValue() { ErrorMessage(nullptr); };*/
         InputValue(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInputElement,
                    winrt::Windows::UI::Xaml::UIElement const& uiInputElement,
                    winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
 
-        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement InputElement() { return m_adaptiveInputElement; };
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement InputElement()
+        {
+            return m_adaptiveInputElement;
+        };
         virtual winrt::hstring SerializedUserInput();
         // TODO: Convert to property
         /*property<winrt::Windows::UI::Xaml::UIElement> uiErrorMessage;*/
@@ -28,6 +39,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         {
             m_validationError = errorMessage;
         };
+        /*property<winrt::Windows::UI::Xaml::UIElement> ErrorMessage;*/
         bool Validate();
         void SetFocus();
         void SetAccessibilityProperties(bool isInputValid);
@@ -74,9 +86,10 @@ namespace AdaptiveCards::Rendering::WinUI3
     protected:
         bool IsValueValid();
         void Initialize(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput const& adaptiveTextInput,
-                           winrt::Windows::UI::Xaml::UIElement const& uiTextInputElement,
-                           winrt::Windows::UI::Xaml::Controls::Border const& validationBorder)
+                        winrt::Windows::UI::Xaml::UIElement const& uiTextInputElement,
+                        winrt::Windows::UI::Xaml::Controls::Border const& validationBorder)
         {
+            // TODO: Is this legal?
             TextInputBase(adaptiveTextInput, uiTextInputElement, validationBorder);
         }
         /* Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITextBox> m_textBoxElement;*/

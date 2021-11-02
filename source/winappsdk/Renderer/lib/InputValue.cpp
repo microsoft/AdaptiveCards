@@ -20,7 +20,7 @@ using namespace ABI::Windows::UI::Xaml::Documents;
 using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace AdaptiveCards::Rendering::WinUI3;
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3
 {
     /*   HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
        {
@@ -53,10 +53,11 @@ namespace AdaptiveCards::Rendering::WinUI3
                            winrt::Windows::UI::Xaml::UIElement const& uiInputElement,
                            winrt::Windows::UI::Xaml::Controls::Border const& validationBorder) :
         m_adaptiveInputElement(adaptiveInputElement),
-        m_uiInputElement(uiInputElement), m_validationBorder(validationBorder)
+        m_uiInputElement(uiInputElement), m_validationBorder(validationBorder), m_validationError(nullptr)
 
         // TODO: Figure out how to fix: no default constructor exists for rtxaml::UIElement
     {
+        auto k = 5;
     }
 
     // HRESULT InputValue::Validate(_Out_ boolean* isInputValid)
@@ -930,7 +931,7 @@ namespace AdaptiveCards::Rendering::WinUI3
 
                 return S_OK;
             });*/
-
+        // TODO: I'm not missing anything here, right? IterateOverVector is not neccessary
         rtom::AdaptiveChoiceInput selectedChoice{nullptr};
         for (auto choice: choices)
         {
