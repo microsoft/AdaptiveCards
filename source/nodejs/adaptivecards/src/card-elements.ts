@@ -5874,8 +5874,9 @@ export class Container extends ContainerBase {
         this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
 
         cardLevelContainer.onfocus = () => {
-            if (this._swiper && !this._isSwiperInitialized) { 
+            if (!this._isSwiperInitialized) {
                 this._isSwiperInitialized = true;
+                this._swiper?.destroy();
                 this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
             }
         }
