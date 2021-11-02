@@ -24,6 +24,8 @@ export class Strings {
         propertyMustBeSet: (propertyName: string) => `Property "${propertyName}" must be set.`,
         actionHttpHeadersMustHaveNameAndValue: () => "All headers of an Action.Http must have their name and value properties set.",
         tooManyActions: (maximumActions: number) => `Maximum number of actions exceeded (${maximumActions}).`,
+        tooLittleTimeDelay: (minAutoplayDelay: number) => `Autoplay Delay is too short (${minAutoplayDelay}).`,
+        tooManyCarouselPages: (maxCarouselPages: number) => `Maximum number of Carousel pages exceeded (${maxCarouselPages}).`,
         columnAlreadyBelongsToAnotherSet: () => "This column already belongs to another ColumnSet.",
         invalidCardType: () => `Invalid or missing card type. Make sure the card's type property is set to "AdaptiveCard".`,
         unsupportedCardVersion: (version: string, maxSupportedVersion: string) => `The specified card version (${version}) is not supported. The maximum supported card version is ${maxSupportedVersion}.`,

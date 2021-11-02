@@ -5729,7 +5729,6 @@ export class Display extends SerializableObject {
 
 export class Container extends ContainerBase {
     //#region Schema
-
     static readonly backgroundImageProperty = new SerializableObjectProperty(
         Versions.v1_0,
         "backgroundImage",
@@ -5830,20 +5829,6 @@ export class Container extends ContainerBase {
         //        break;
         //}
 
-        if (this._items.length > 0) {
-            for (let item of this._items) {
-                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
-
-                if (renderedItem) {
-                    Utils.appendChild(swiperWrapper, renderedItem);
-
-                    this._renderedItems.push(item);
-                }
-            }
-        }
-
-        swiperContainer.appendChild(swiperWrapper as HTMLElement);
-
         let prevElementDiv: HTMLElement = document.createElement("button");
         prevElementDiv.classList.add("swiper-button-prev");
         swiperContainer.appendChild(prevElementDiv);
@@ -5853,8 +5838,35 @@ export class Container extends ContainerBase {
         swiperContainer.appendChild(nextElementDiv);
 
         let pagination: HTMLElement = document.createElement("div");
-        pagination.classList.add("swiper-pagination");
+        pagination.classList.add(this.hostConfig.makeCssClassName("swiper-pagination"));
         swiperContainer.appendChild(pagination);
+
+        const requestedNumberOfPages : number =  Math.min(this._items.length, this.hostConfig.carousel.maxCarouselPages);
+        if (this._items.length > this.hostConfig.carousel.maxCarouselPages) {
+            console.warn(Strings.errors.tooManyCarouselPages);
+        }
+
+        if (this._items.length > 0) { 
+            for (let i = 0; i < requestedNumberOfPages; i++) {
+                let bullet: HTMLElement = document.createElement("span");
+                bullet.classList.add(this.hostConfig.makeCssClassName("swiper-pagination-bullet"));
+                Utils.appendChild(pagination, bullet);
+            }
+        }
+
+        if (this._items.length > 0) {
+            for (let i = 0; i < requestedNumberOfPages; i++) {
+                let item = this._items[i];
+                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
+
+                if (renderedItem) {
+                    Utils.appendChild(swiperWrapper, renderedItem);
+                    this._renderedItems.push(item);
+                }
+            }
+        }
+
+        swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
         this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
 
@@ -5870,7 +5882,8 @@ export class Container extends ContainerBase {
                 delay: displayProperties.timerProperty
             },
             pagination: {
-                el: paginationElement
+                el: paginationElement,
+                clickable : true
              },
             navigation: {
                 prevEl: prevElement,
@@ -6816,6 +6829,11 @@ export abstract class ContainerWithActions extends Container {
     }
 
     protected carouselRender(displayProperties: Display): HTMLElement | undefined {
+        if (displayProperties && displayProperties.timerProperty && 
+            displayProperties.timerProperty < this.hostConfig.carousel.minAutoplayDelay) {
+            console.warn(Strings.errors.tooLittleTimeDelay);
+            displayProperties.timerProperty = this.hostConfig.carousel.minAutoplayDelay;
+        }
         let element = super.carouselRender(displayProperties);
 
         if (element) {
