@@ -224,6 +224,30 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
     }
 
+    template<typename T> void SetToggleValue(T const& item, bool isChecked)
+    {
+        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ToggleButton");
+        auto toggleButton =
+            item.as<winrt::Windows::UI::Xaml::Controls::ToggleButton>(); // TODO: I don't think we need this cast, all
+                                                                         // toggleButton have isChecked() exposed, right?
+        toggleButton.IsChecked(isChecked());
+
+        /*ComPtr<IPropertyValueStatics> propertyValueStatics;
+        ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
+                                                       &propertyValueStatics);
+
+        ComPtr<IPropertyValue> propertyValue;
+        propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
+
+        ComPtr<ABI::Windows::Foundation::IReference<bool>> boolProperty;
+        propertyValue.As(&boolProperty);
+
+        ComPtr<T> localItem(item);
+        ComPtr<IToggleButton> toggleButton;
+        THROW_IF_FAILED(localItem.As(&toggleButton));
+        THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));*/
+    }
+
     template<typename T> void GetToggleValue(_In_ T* item, _Out_ boolean* isChecked)
     {
         ComPtr<T> localItem(item);
@@ -249,7 +273,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
          ComPtr<IToggleButton> toggleButton;
          THROW_IF_FAILED(localItem.As(&toggleButton));*/
         static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ToggleButton");
-        auto toggleButton = item.as<winrt::Windows::UI::Xaml::Controls::ToggleButton>(); // TODO: I don't think we need this cast, all toggleButton have isChecked() exposed, right?
+        auto toggleButton =
+            item.as<winrt::Windows::UI::Xaml::Controls::ToggleButton>(); // TODO: I don't think we need this cast, all
+                                                                         // toggleButton have isChecked() exposed, right?
 
         auto isCheckedRef = toggleButton.IsChecked();
 
@@ -395,12 +421,13 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                            ABI::Windows::UI::Xaml::IUIElement** inputLayout,
                                            ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
 
-    void HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInput,
-                                        winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
-                                        bool hasTypeSpecificValidation,
-                                        winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
-                                        winrt::Windows::UI::Xaml::UIElement& inputLayout,
-                                        winrt::Windows::UI::Xaml::Controls::Border& validationBorderOut);
+    std::tuple<winrt::Windows::UI::Xaml::UIElement, winrt::Windows::UI::Xaml::Controls::Border>
+    HandleInputLayoutAndValidation(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement const& adaptiveInput,
+                                   winrt::Windows::UI::Xaml::UIElement const& inputUIElement,
+                                   bool hasTypeSpecificValidation,
+                                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext);
+    // winrt::Windows::UI::Xaml::UIElement& inputLayout,
+    // winrt::Windows::UI::Xaml::Controls::Border& validationBorderOut);
 
     template<typename TXamlControl>
     HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement* adaptiveInputElement,

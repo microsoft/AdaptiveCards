@@ -987,7 +987,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
             return;
         }
         // TODO: Don't we need a revoker?
-        uiElement.Tapped([](IInspectable*, rtxaml::Input::TappedRoutedEventArgs const& args) { args.Handled(true); });
+        uiElement.Tapped([](IInspectable const&, rtxaml::Input::TappedRoutedEventArgs const& args) { args.Handled(true); });
     }
 
     HRESULT SetAutoImageSize(_In_ IFrameworkElement* imageControl, _In_ IInspectable* parentElement, _In_ IBitmapSource* imageSource, bool setVisible)
@@ -1630,14 +1630,15 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
-    void XamlHelpers::HandleInputLayoutAndValidation(rtom::IAdaptiveInputElement const& adaptiveInput,
-                                           rtxaml::UIElement const& inputUIElement,
-                                           bool hasTypeSpecificValidation,
-                                           rtrender::AdaptiveRenderContext const& renderContext,
-                                           rtxaml::UIElement& inputLayout,
-                                           rtxaml::Controls::Border& validationBorderOut)
+    std::tuple<rtxaml::UIElement, rtxaml::Controls::Border>
+    XamlHelpers::HandleInputLayoutAndValidation(rtom::IAdaptiveInputElement const& adaptiveInput,
+                                                rtxaml::UIElement const& inputUIElement,
+                                                bool hasTypeSpecificValidation,
+                                                rtrender::AdaptiveRenderContext const& renderContext)
+    /* rtxaml::UIElement& inputLayout,
+     rtxaml::Controls::Border& validationBorderOut)*/
     {
-        //TODO: Make sure this function works properly
+        // TODO: Make sure this function works properly
         // Create a stack panel for the input and related controls
         /*ComPtr<IStackPanel> inputStackPanel =
             XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));*/
@@ -1679,7 +1680,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
 
         rtxaml::Controls::Border validationBorder{};
-        if (validationBorderOut && hasValidation)
+        // TODO: revisit this
+        /*if (validationBorderOut && hasValidation)*/
+        if (hasValidation)
         {
             validationBorder = XamlHelpers::CreateValidationBorder(inputUIElement, renderContext);
             // TODO: Do I need this cast?
@@ -1694,7 +1697,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         // Input.Toggle
         /* ComPtr<IUIElement> actualInputUIElement;*/
         rtxaml::UIElement actualInputUIElement{nullptr};
-        if (validationBorderOut && hasValidation)
+        // TODO: revisit this
+        //if (validationBorderOut && hasValidation)
+        if (hasValidation)
         {
             // RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
             actualInputUIElement = validationBorder.Child();
@@ -1767,31 +1772,33 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                 }
             }
 
-         /*   ComPtr<IInspectable> content;
-            RETURN_IF_FAILED(uiInpuElementAsContentControl->get_Content(content.GetAddressOf()));
+            /*   ComPtr<IInspectable> content;
+               RETURN_IF_FAILED(uiInpuElementAsContentControl->get_Content(content.GetAddressOf()));
 
-            ComPtr<IDependencyObject> contentAsDependencyObject;
-            RETURN_IF_FAILED(content.As(&contentAsDependencyObject));
+               ComPtr<IDependencyObject> contentAsDependencyObject;
+               RETURN_IF_FAILED(content.As(&contentAsDependencyObject));
 
-            ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics5;
-            RETURN_IF_FAILED(automationPropertiesStatics.As(&automationPropertiesStatics5));
+               ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics5;
+               RETURN_IF_FAILED(automationPropertiesStatics.As(&automationPropertiesStatics5));
 
-            ComPtr<IVector<DependencyObject*>> uiElementDescribers;
-            RETURN_IF_FAILED(automationPropertiesStatics5->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
-                                                                          uiElementDescribers.GetAddressOf()));
+               ComPtr<IVector<DependencyObject*>> uiElementDescribers;
+               RETURN_IF_FAILED(automationPropertiesStatics5->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
+                                                                             uiElementDescribers.GetAddressOf()));
 
-            RETURN_IF_FAILED(uiElementDescribers->Append(contentAsDependencyObject.Get()));*/
+               RETURN_IF_FAILED(uiElementDescribers->Append(contentAsDependencyObject.Get()));*/
         }
 
-        //RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
+        // RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
         // TODO: Figure out a better way than two _Out_ params
-        inputLayout = inputStackPanel;
+        // TODO: revisit tuple return
+        //inputLayout = inputStackPanel;
 
-        if (validationBorderOut)
-        {
-            /*RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));*/
-            validationBorderOut = validationBorder;
-        }
+        //if (validationBorderOut)
+        //{
+        //    /*RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));*/
+        //    validationBorderOut = validationBorder;
+        //}
 
+        return std::tuple(inputStackPanel, validationBorder);
     }
 }
