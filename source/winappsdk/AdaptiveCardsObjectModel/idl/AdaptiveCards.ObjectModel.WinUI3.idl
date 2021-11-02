@@ -1,13 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-#include <sdkddkver.h>
 
-import "inspectable.idl";
 import "Windows.Foundation.idl";
-import "Windows.UI.Xaml.idl";
 import "Windows.Data.Json.idl";
 
-namespace AdaptiveCards
+namespace AdaptiveCards.ObjectModel.WinUI3
 {
     runtimeclass AdaptiveCardParseResult;
 
@@ -20,15 +17,13 @@ namespace AdaptiveCards
         ExtraLarge
     };
 
-    enum TextWeight
-    {
+    enum TextWeight {
         Lighter = 0,
         Default,
         Bolder,
     };
 
-    enum ForegroundColor
-    {
+    enum ForegroundColor {
         Default = 0,
         Dark,
         Light,
@@ -38,30 +33,26 @@ namespace AdaptiveCards
         Attention
     };
 
-    enum HAlignment
-    {
+    enum HAlignment {
         Left = 0,
         Center,
         Right,
     };
 
-    enum VAlignment
-    {
+    enum VAlignment {
         Top = 0,
         Center,
         Bottom,
     };
 
-    enum BackgroundImageFillMode
-    {
+    enum BackgroundImageFillMode {
         Cover = 0,
         RepeatHorizontally,
         RepeatVertically,
         Repeat
     };
 
-    enum ElementType
-    {
+    enum ElementType {
         Unsupported = 0,
         AdaptiveCard,
         TextBlock,
@@ -88,8 +79,7 @@ namespace AdaptiveCards
         Table,
     };
 
-    enum ActionType
-    {
+    enum ActionType {
         Unsupported = 0,
         ShowCard,
         Submit,
@@ -99,14 +89,12 @@ namespace AdaptiveCards
         Custom
     };
 
-    enum ImageStyle
-    {
+    enum ImageStyle {
         Default = 0,
         Person,
     };
 
-    enum ImageSize
-    {
+    enum ImageSize {
         None = 0,
         Auto,
         Stretch,
@@ -115,14 +103,12 @@ namespace AdaptiveCards
         Large
     };
 
-    enum SeparatorThickness
-    {
+    enum SeparatorThickness {
         Default = 0,
         Thick,
     };
 
-    enum Spacing
-    {
+    enum Spacing {
         Default = 0,
         None,
         Small,
@@ -132,24 +118,20 @@ namespace AdaptiveCards
         Padding
     };
 
-    enum ChoiceSetStyle
-    {
+    enum ChoiceSetStyle {
         Compact = 0,
         Expanded,
         Filtered,
     };
 
-    enum TextInputStyle
-    {
+    enum TextInputStyle {
         Text = 0,
         Tel,
         Url,
         Email,
-        Password,
     };
 
-    enum ContainerStyle
-    {
+    enum ContainerStyle {
         None = 0,
         Default,
         Emphasis,
@@ -159,14 +141,12 @@ namespace AdaptiveCards
         Accent
     };
 
-    enum FontType
-    {
+    enum FontType {
         Default = 0,
         Monospace,
     };
 
-    enum ErrorStatusCode
-    {
+    enum ErrorStatusCode {
         InvalidJson = 0,
         RenderFailed,
         RequiredPropertyMissing,
@@ -175,8 +155,7 @@ namespace AdaptiveCards
         CustomError,
     };
 
-    enum WarningStatusCode
-    {
+    enum WarningStatusCode {
         UnknownElementType = 0,
         UnknownActionElementType,
         UnknownPropertyOnElement,
@@ -197,28 +176,24 @@ namespace AdaptiveCards
         RequiredPropertyMissing,
     };
 
-    enum VerticalContentAlignment
-    {
+    enum VerticalContentAlignment {
         Top = 0,
         Center,
         Bottom
     };
 
-    enum HeightType
-    {
+    enum HeightType {
         Auto = 0,
         Stretch,
     };
 
-    enum IsVisible
-    {
+    enum IsVisible {
         IsVisibleToggle = 0,
         IsVisibleTrue,
         IsVisibleFalse
     };
 
-    enum FallbackType
-    {
+    enum FallbackType {
         None = 0,
         Drop,
         Content,
@@ -233,21 +208,18 @@ namespace AdaptiveCards
         All = Left | Right | Up | Down
     };
 
-    enum AssociatedInputs
-    {
+    enum AssociatedInputs {
         Auto = 0,
         None,
     };
 
-    enum TextStyle
-    {
+    enum TextStyle {
         Default = 0,
         Heading,
         ColumnHeader,
     };
 
-    enum ActionMode
-    {
+    enum ActionMode {
         Primary = 0,
         Secondary,
     };
@@ -285,6 +257,16 @@ namespace AdaptiveCards
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
     };
 
+    /* This type is unused
+    runtimeclass AdaptiveSeparator
+    {
+        AdaptiveSeparator();
+
+        ForegroundColor Color;
+        SeparatorThickness Thickness;
+    };
+    */
+
     interface IAdaptiveTextElement
     {
         Windows.Foundation.IReference<TextSize> Size;
@@ -306,7 +288,8 @@ namespace AdaptiveCards
         Windows.Foundation.IReference<TextStyle> Style;
     };
 
-    [version(1), uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085")] interface IAdaptiveInline {};
+    [version(1), uuid("0AC70C29-FA90-4C28-A6D1-A6EF58126085")]
+    interface IAdaptiveInline {};
 
     runtimeclass AdaptiveTextRun : IAdaptiveInline, IAdaptiveTextElement
     {
@@ -733,9 +716,9 @@ namespace AdaptiveCards
     interface IAdaptiveElementParser
     {
         IAdaptiveCardElement FromJson(Windows.Data.Json.JsonObject inputJson,
-                                      AdaptiveElementParserRegistration elementParsers,
-                                      AdaptiveActionParserRegistration actionParsers,
-                                      Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
+                                        AdaptiveElementParserRegistration elementParsers,
+                                        AdaptiveActionParserRegistration actionParsers,
+                                        Windows.Foundation.Collections.IVector<AdaptiveWarning> warnings);
     };
 
     runtimeclass AdaptiveElementParserRegistration
@@ -771,7 +754,10 @@ namespace AdaptiveCards
         String Label;
     };
 
-    [default_interface] runtimeclass AdaptiveTextBlockParser : IAdaptiveElementParser { AdaptiveTextBlockParser(); };
+    [default_interface] runtimeclass AdaptiveTextBlockParser : IAdaptiveElementParser
+    {
+        AdaptiveTextBlockParser();
+    };
 
     [default_interface] runtimeclass AdaptiveRichTextBlockParser : IAdaptiveElementParser
     {
@@ -780,62 +766,88 @@ namespace AdaptiveCards
 
     [default_interface] runtimeclass AdaptiveImageParser : IAdaptiveElementParser { AdaptiveImageParser(); };
 
-    [default_interface] runtimeclass AdaptiveImageSetParser : IAdaptiveElementParser { AdaptiveImageSetParser(); };
+    [default_interface] runtimeclass AdaptiveImageSetParser : IAdaptiveElementParser
+    {
+        AdaptiveImageSetParser();
+    };
 
-    [default_interface] runtimeclass AdaptiveContainerParser : IAdaptiveElementParser { AdaptiveContainerParser(); };
+    [default_interface] runtimeclass AdaptiveContainerParser : IAdaptiveElementParser
+    {
+        AdaptiveContainerParser();
+    };
 
     [default_interface] runtimeclass AdaptiveColumnParser : IAdaptiveElementParser { AdaptiveColumnParser(); };
 
-    [default_interface] runtimeclass AdaptiveColumnSetParser : IAdaptiveElementParser { AdaptiveColumnSetParser(); };
+    [default_interface] runtimeclass AdaptiveColumnSetParser : IAdaptiveElementParser
+    {
+        AdaptiveColumnSetParser();
+    };
+
+    [default_interface] runtimeclass AdaptiveFactParser : IAdaptiveElementParser { AdaptiveFactParser(); };
 
     [default_interface] runtimeclass AdaptiveChoiceSetInputParser : IAdaptiveElementParser
     {
         AdaptiveChoiceSetInputParser();
     };
 
-    [default_interface] runtimeclass AdaptiveDateInputParser : IAdaptiveElementParser { AdaptiveDateInputParser(); };
+    [default_interface] runtimeclass AdaptiveDateInputParser : IAdaptiveElementParser
+    {
+        AdaptiveDateInputParser();
+    };
 
     [default_interface] runtimeclass AdaptiveNumberInputParser : IAdaptiveElementParser
     {
         AdaptiveNumberInputParser();
     };
 
-    [default_interface] runtimeclass AdaptiveTextInputParser : IAdaptiveElementParser { AdaptiveTextInputParser(); };
+    [default_interface] runtimeclass AdaptiveTextInputParser : IAdaptiveElementParser
+    {
+        AdaptiveTextInputParser();
+    };
 
-    [default_interface] runtimeclass AdaptiveTimeInputParser : IAdaptiveElementParser { AdaptiveTimeInputParser(); };
+    [default_interface] runtimeclass AdaptiveTimeInputParser : IAdaptiveElementParser
+    {
+        AdaptiveTimeInputParser();
+    };
 
     [default_interface] runtimeclass AdaptiveToggleInputParser : IAdaptiveElementParser
     {
         AdaptiveToggleInputParser();
     };
 
-    [default_interface] runtimeclass AdaptiveFactSetParser : IAdaptiveElementParser { AdaptiveFactSetParser(); };
+    [default_interface] runtimeclass AdaptiveFactSetParser : IAdaptiveElementParser
+    {
+        AdaptiveFactSetParser();
+    };
 
     [default_interface] runtimeclass AdaptiveMediaParser : IAdaptiveElementParser { AdaptiveMediaParser(); };
 
-    [default_interface] runtimeclass AdaptiveActionSetParser : IAdaptiveElementParser { AdaptiveActionSetParser(); };
+    [default_interface] runtimeclass AdaptiveActionSetParser : IAdaptiveElementParser
+    {
+        AdaptiveActionSetParser();
+    };
 
-    [default_interface] runtimeclass AdaptiveOpenUrlActionParser : IAdaptiveActionParser
+    [default_interface] runtimeclass AdaptiveOpenUrlActionParser : IAdaptiveElementParser
     {
         AdaptiveOpenUrlActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveShowCardActionParser : IAdaptiveActionParser
+    [default_interface] runtimeclass AdaptiveShowCardActionParser : IAdaptiveElementParser
     {
         AdaptiveShowCardActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveSubmitActionParser : IAdaptiveActionParser
+    [default_interface] runtimeclass AdaptiveSubmitActionParser : IAdaptiveElementParser
     {
         AdaptiveSubmitActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveExecuteActionParser : IAdaptiveActionParser
+    [default_interface] runtimeclass AdaptiveExecuteActionParser : IAdaptiveElementParser
     {
         AdaptiveExecuteActionParser();
     };
 
-    [default_interface] runtimeclass AdaptiveToggleVisibilityActionParser : IAdaptiveActionParser
+    [default_interface] runtimeclass AdaptiveToggleVisibilityActionParser : IAdaptiveElementParser
     {
         AdaptiveToggleVisibilityActionParser();
     };

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinUI3.h"
+#include "winrt/AdaptiveCards.Rendering.WinUI3.h"
 
 namespace AdaptiveCards::Rendering::WinUI3
 {
@@ -19,10 +19,15 @@ namespace AdaptiveCards::Rendering::WinUI3
                    winrt::Windows::UI::Xaml::UIElement const& uiInputElement,
                    winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
 
-        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement InputElement();
-        virtual winrt::hstring SerializedUserInput() = 0;
-        property<winrt::Windows::UI::Xaml::UIElement> uiErrorMessage;
-
+        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement InputElement() { return m_adaptiveInputElement; };
+        virtual winrt::hstring SerializedUserInput();
+        // TODO: Convert to property
+        /*property<winrt::Windows::UI::Xaml::UIElement> uiErrorMessage;*/
+        winrt::Windows::UI::Xaml::UIElement ErrorMessage() { return m_validationError; };
+        void ErrorMessage(winrt::Windows::UI::Xaml::UIElement const& errorMessage)
+        {
+            m_validationError = errorMessage;
+        };
         bool Validate();
         void SetFocus();
         void SetAccessibilityProperties(bool isInputValid);
@@ -39,7 +44,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     protected:
         /*       virtual HRESULT IsValueValid(_Out_ boolean* isInputValid);
                virtual HRESULT SetValidation(boolean isValid);*/
-        virtual bool IsValuedValid();
+        virtual bool IsValueValid();
         virtual void SetValidation(bool isValid);
 
         /* Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveInputElement>
@@ -68,6 +73,12 @@ namespace AdaptiveCards::Rendering::WinUI3
 
     protected:
         bool IsValueValid();
+        void Initialize(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput const& adaptiveTextInput,
+                           winrt::Windows::UI::Xaml::UIElement const& uiTextInputElement,
+                           winrt::Windows::UI::Xaml::Controls::Border const& validationBorder)
+        {
+            TextInputBase(adaptiveTextInput, uiTextInputElement, validationBorder);
+        }
         /* Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITextBox> m_textBoxElement;*/
         winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveTextInput m_adaptiveTextInput;
     };
@@ -82,7 +93,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                        winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
 
     private:
-        winrt::hstring CurrentValue();
+        winrt::hstring CurrentValue() { m_textBoxElement.Text(); };
 
         /* Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextInput> m_adaptiveTextInput;*/
         winrt::Windows::UI::Xaml::Controls::TextBox m_textBoxElement;
@@ -96,7 +107,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                            winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
 
     private:
-        winrt::hstring CurrentValue();
+        winrt::hstring CurrentValue() { return m_passwordElement.Password(); };
 
     protected:
         winrt::Windows::UI::Xaml::Controls::IPasswordBox m_passwordElement;
@@ -114,7 +125,7 @@ namespace AdaptiveCards::Rendering::WinUI3
                          winrt::Windows::UI::Xaml::Controls::TextBox const& uiInputTextBoxElement,
                          winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
 
-        winrt::hstring CurrentValue();
+        winrt::hstring CurrentValue() { return m_textBoxElement.Text(); };
 
     private:
         /*virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;*/
@@ -175,7 +186,7 @@ namespace AdaptiveCards::Rendering::WinUI3
         /* HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveToggleInput* adaptiveTimeInput,
                                         _In_ ABI::Windows::UI::Xaml::Controls::ICheckBox* uiCheckBoxElement,
                                         _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);*/
-        ToggleInputValue(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInput adaptiveTimeInput,
+        ToggleInputValue(winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveToggleInput adaptiveToggleInput,
                          winrt::Windows::UI::Xaml::Controls::CheckBox uiCheckBoxElement,
                          winrt::Windows::UI::Xaml::Controls::Border validationBorder);
 
@@ -245,7 +256,7 @@ namespace AdaptiveCards::Rendering::WinUI3
     private:
         bool IsValueValid();
 
-        winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveChoiceInput GetSelectedChoice();
+        winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceInput GetSelectedChoice();
 
         winrt::Windows::UI::Xaml::Controls::AutoSuggestBox m_autoSuggestBox;
         winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveChoiceSetInput m_adaptiveChoiceSetInput;

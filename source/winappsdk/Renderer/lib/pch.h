@@ -34,6 +34,7 @@
 #include <windows.ui.xaml.markup.h>
 
 #include <winrt/base.h>
+#include <winrt/Windows.Globalization.DateTimeFormatting.h>
 #include <winrt/Windows.System.h>
 #include <winrt/Windows.UI.Core.h>
 #include <winrt/Windows.UI.Xaml.Automation.h>

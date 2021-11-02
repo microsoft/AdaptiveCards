@@ -243,16 +243,39 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
+    template<typename T> bool GetToggleValue(T item)
+    {
+        /* ComPtr<T> localItem(item);
+         ComPtr<IToggleButton> toggleButton;
+         THROW_IF_FAILED(localItem.As(&toggleButton));*/
+        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ToggleButton");
+        auto toggleButton = item.as<winrt::Windows::UI::Xaml::Controls::ToggleButton>(); // TODO: I don't think we need this cast, all toggleButton have isChecked() exposed, right?
+
+        auto isCheckedRef = toggleButton.IsChecked();
+
+        if (isCheckedRef != nullptr)
+        {
+            return isCheckedRef.Value();
+        }
+        else
+        {
+            return false;
+        }
+
+        /*ComPtr<IReference<bool>> isCheckedReference;
+        THROW_IF_FAILED(toggleButton->get_IsChecked(&isCheckedReference));*/
+    }
+
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString)
     {
         // TODO: Do I need this here? should it be simply ContentControl? that should be enough, right?
-        static_assert(std::is_base_of<rtxaml::Controls::IContentControl>, T > ::value, "T must inherit from ContenControl");
+        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ContenControl");
         SetContent(item, contentString, false);
     }
 
     template<typename T> void SetContent(T const& item, winrt::hstring const& contentString, bool wrap)
     {
-        static_assert(std::is_base_of<rtxaml::Controls::IContentControl>, T > ::value, "T must inherit from ContenControl");
+        static_assert(std::is_base_of<winrt::Windows::UI::Xaml::Controls::ToggleButton>, T > ::value, "T must inherit from ContenControl");
         rtxaml::Controls::TextBlock content{};
         content.Text(contentString);
 
