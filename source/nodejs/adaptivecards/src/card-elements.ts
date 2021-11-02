@@ -5841,8 +5841,13 @@ export class Container extends ContainerBase {
         pagination.classList.add(this.hostConfig.makeCssClassName("swiper-pagination"));
         swiperContainer.appendChild(pagination);
 
+        const requestedNumberOfPages : number =  Math.min(this._items.length, this.hostConfig.carousel.maxCarouselPages);
+        if (this._items.length > this.hostConfig.carousel.maxCarouselPages) {
+            console.warn(Strings.errors.tooManyCarouselPages);
+        }
+
         if (this._items.length > 0) { 
-            for (let i = 0; i < this._items.length; i++) {
+            for (let i = 0; i < requestedNumberOfPages; i++) {
                 let bullet: HTMLElement = document.createElement("span");
                 bullet.classList.add(this.hostConfig.makeCssClassName("swiper-pagination-bullet"));
                 Utils.appendChild(pagination, bullet);
@@ -5850,12 +5855,12 @@ export class Container extends ContainerBase {
         }
 
         if (this._items.length > 0) {
-            for (let item of this._items) {
+            for (let i = 0; i < requestedNumberOfPages; i++) {
+                let item = this._items[i];
                 let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
 
                 if (renderedItem) {
                     Utils.appendChild(swiperWrapper, renderedItem);
-
                     this._renderedItems.push(item);
                 }
             }
@@ -6824,6 +6829,11 @@ export abstract class ContainerWithActions extends Container {
     }
 
     protected carouselRender(displayProperties: Display): HTMLElement | undefined {
+        if (displayProperties && displayProperties.timerProperty && 
+            displayProperties.timerProperty < this.hostConfig.carousel.minAutoplayDelay) {
+            console.warn(Strings.errors.tooLittleTimeDelay);
+            displayProperties.timerProperty = this.hostConfig.carousel.minAutoplayDelay;
+        }
         let element = super.carouselRender(displayProperties);
 
         if (element) {
