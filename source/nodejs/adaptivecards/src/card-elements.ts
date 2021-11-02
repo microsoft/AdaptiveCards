@@ -5847,14 +5847,6 @@ export class Container extends ContainerBase {
             console.warn(Strings.errors.tooManyCarouselPages);
         }
 
-        if (this._items.length > 0) { 
-            for (let i = 0; i < requestedNumberOfPages; i++) {
-                let bullet: HTMLElement = document.createElement("span");
-                bullet.classList.add(this.hostConfig.makeCssClassName("swiper-pagination-bullet"));
-                Utils.appendChild(pagination, bullet);
-            }
-        }
-
         if (this._items.length > 0) {
             for (let i = 0; i < requestedNumberOfPages; i++) {
                 let item = this._items[i];
@@ -6263,19 +6255,12 @@ export class CarouselPage extends Container {
         let swiperSlide : HTMLElement = document.createElement("div");
         swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
 
-        //let element : HTMLElement = document.createElement("div");
-        //element.style.display = "block";
-
-        //this.spacing = Enums.Spacing.None;
-        //this.separator = false;
-
         let renderedElement = super.internalRender();
         Utils.appendChild(swiperSlide, renderedElement);
-        //if (GlobalSettings.useAdvancedCardBottomTruncation) {
-        //    // See comment in Container.internalRender()
-        //    element.style.minHeight = '-webkit-min-content';
-        //}
-        //return element;
+        if (GlobalSettings.useAdvancedCardBottomTruncation) {
+            // See comment in Container.internalRender()
+            swiperSlide.style.minHeight = '-webkit-min-content';
+        }
         return swiperSlide;
     }
     static unsupportedElementsList : Set<string>;
