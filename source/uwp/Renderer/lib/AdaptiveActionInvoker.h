@@ -16,7 +16,7 @@ namespace AdaptiveCards::Rendering::Uwp
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(_In_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard* renderResult) noexcept;
 
         IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveActionElement* actionElement);
 
@@ -24,5 +24,16 @@ namespace AdaptiveCards::Rendering::Uwp
         Microsoft::WRL::WeakRef m_weakRenderResult;
     };
 
-    ActivatableClass(AdaptiveActionInvoker);
+    class AdaptiveActionInvokerFactory
+        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionInvokerFactory>
+
+    {
+        IFACEMETHODIMP CreateInstance(ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard* renderResult,
+                                      _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionInvoker** result) override
+        {
+            return Microsoft::WRL::Details::MakeAndInitialize<AdaptiveActionInvoker>(result, renderResult);
+        }
+    };
+
+    ActivatableClassWithFactory(AdaptiveActionInvoker, AdaptiveActionInvokerFactory);
 }

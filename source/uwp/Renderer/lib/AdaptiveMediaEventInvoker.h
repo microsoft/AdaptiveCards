@@ -16,7 +16,7 @@ namespace AdaptiveCards::Rendering::Uwp
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(_In_ AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard* renderResult) noexcept;
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard* renderResult) noexcept;
 
         IFACEMETHODIMP SendMediaClickedEvent(_In_ ABI::AdaptiveCards::ObjectModel::Uwp::IAdaptiveMedia* mediaElement);
 
@@ -24,5 +24,16 @@ namespace AdaptiveCards::Rendering::Uwp
         Microsoft::WRL::WeakRef m_weakRenderResult;
     };
 
-    ActivatableClass(AdaptiveMediaEventInvoker);
+    class AdaptiveMediaEventInvokerFactory
+        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaEventInvokerFactory>
+
+    {
+        IFACEMETHODIMP CreateInstance(ABI::AdaptiveCards::Rendering::Uwp::IRenderedAdaptiveCard* renderResult,
+                                      _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveMediaEventInvoker** result) override
+        {
+            return Microsoft::WRL::Details::MakeAndInitialize<AdaptiveMediaEventInvoker>(result, renderResult);
+        }
+    };
+
+    ActivatableClassWithFactory(AdaptiveMediaEventInvoker, AdaptiveActionInvokerFactory);
 }

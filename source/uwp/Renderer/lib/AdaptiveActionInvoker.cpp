@@ -16,10 +16,10 @@ namespace AdaptiveCards::Rendering::Uwp
 {
     HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
 
-    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept
+    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ IRenderedAdaptiveCard * renderResult) noexcept
     try
     {
-        ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult = renderResult;
         return strongRenderResult.AsWeak(&m_weakRenderResult);
     }
     CATCH_RETURN;
