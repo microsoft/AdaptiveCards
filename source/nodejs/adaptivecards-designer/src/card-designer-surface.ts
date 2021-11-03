@@ -339,12 +339,12 @@ export class CardDesignerSurface {
                 if (verb) {
                     message += ` verb: "${verb}"`;
                 }
-                
+
                 const url = (<Adaptive.OpenUrlAction>action).url;
                 if (url) {
                     message += `\nurl: "${url}"`;
                 }
-                
+
                 const data = (<Adaptive.SubmitActionBase>action).data;
                 if (data) {
                     message += `\nSubmitted data: ${JSON.stringify(data, undefined, 4)}`;
@@ -359,6 +359,11 @@ export class CardDesignerSurface {
         if (this.fixedHeightCard) {
             renderedCard.style.height = "100%";
 
+            // truncate the content if the host container is fixed height
+            if (this.isPreviewMode)
+            {
+                renderedCard.style.overflow = "hidden";
+            }
         }
         this._cardHost.appendChild(renderedCard);
     }
