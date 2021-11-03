@@ -5754,6 +5754,8 @@ export class Container extends ContainerBase {
 
     private _items: CardElement[] = [];
     private _renderedItems: CardElement[] = [];
+    private _swiper: Swiper | undefined  = undefined;
+    private _isSwiperInitialized = false;
 
     protected insertItemAt(
         item: CardElement,
@@ -5800,7 +5802,6 @@ export class Container extends ContainerBase {
         let swiperWrapper : HTMLElement = document.createElement("div");
         swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
         swiperWrapper.style.display = "flex";
-        //swiperWrapper.style.flexDirection = "column";
 
         if (GlobalSettings.useAdvancedCardBottomTruncation) {
             // Forces the container to be at least as tall as its content.
@@ -5846,14 +5847,6 @@ export class Container extends ContainerBase {
             console.warn(Strings.errors.tooManyCarouselPages);
         }
 
-        if (this._items.length > 0) { 
-            for (let i = 0; i < requestedNumberOfPages; i++) {
-                let bullet: HTMLElement = document.createElement("span");
-                bullet.classList.add(this.hostConfig.makeCssClassName("swiper-pagination-bullet"));
-                Utils.appendChild(pagination, bullet);
-            }
-        }
-
         if (this._items.length > 0) {
             for (let i = 0; i < requestedNumberOfPages; i++) {
                 let item = this._items[i];
@@ -5868,9 +5861,17 @@ export class Container extends ContainerBase {
 
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
+        cardLevelContainer.appendChild(swiperContainer);
+
         this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
 
-        cardLevelContainer.appendChild(swiperContainer);
+        cardLevelContainer.onfocus = () => {
+            if (!this._isSwiperInitialized) {
+                this._isSwiperInitialized = true;
+                this._swiper?.destroy();
+                this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
+            }
+        }
 
         return cardLevelContainer;
     }
@@ -5898,7 +5899,7 @@ export class Container extends ContainerBase {
             }
          };
 
-         new Swiper(swiperContainer, swiperOptions);
+         this._swiper = new Swiper(swiperContainer, swiperOptions);
     }
 
     protected internalRender(): HTMLElement | undefined {
@@ -6254,19 +6255,12 @@ export class CarouselPage extends Container {
         let swiperSlide : HTMLElement = document.createElement("div");
         swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
 
-        //let element : HTMLElement = document.createElement("div");
-        //element.style.display = "block";
-
-        //this.spacing = Enums.Spacing.None;
-        //this.separator = false;
-
         let renderedElement = super.internalRender();
         Utils.appendChild(swiperSlide, renderedElement);
-        //if (GlobalSettings.useAdvancedCardBottomTruncation) {
-        //    // See comment in Container.internalRender()
-        //    element.style.minHeight = '-webkit-min-content';
-        //}
-        //return element;
+        if (GlobalSettings.useAdvancedCardBottomTruncation) {
+            // See comment in Container.internalRender()
+            swiperSlide.style.minHeight = '-webkit-min-content';
+        }
         return swiperSlide;
     }
     static unsupportedElementsList : Set<string>;
@@ -7486,6 +7480,7 @@ export class AdaptiveCard extends ContainerWithActions {
     get hasVisibleSeparator(): boolean {
         return false;
     }
+
 }
 
 class InlineAdaptiveCard extends AdaptiveCard {
