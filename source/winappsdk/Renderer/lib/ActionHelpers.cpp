@@ -658,10 +658,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         THROW_IF_FAILED(xamlGrid.CopyTo(textBoxWithInlineAction));
     }
 
-    rtxaml::UIElement WrapInTouchTarget(rtom::IAdaptiveCardElement adaptiveCardElement,
-                                        rtxaml::UIElement elementToWrap,
-                                        rtom::IAdaptiveActionElement action,
-                                        rtrender::AdaptiveRenderContext renderContext,
+    rtxaml::UIElement WrapInTouchTarget(rtom::IAdaptiveCardElement const& adaptiveCardElement,
+                                        rtxaml::UIElement const& elementToWrap,
+                                        rtom::IAdaptiveActionElement const& action,
+                                        rtrender::AdaptiveRenderContext const& renderContext,
                                         bool fullWidth,
                                         const std::wstring& style,
                                         winrt::hstring const& altText,
@@ -869,15 +869,16 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         }
     }
 
-    rtxaml::UIElement HandleSelectAction(rtom::IAdaptiveCardElement adaptiveCardElement,
-                                         rtom::IAdaptiveActionElement selectAction,
-                                         rtrender::AdaptiveRenderContext renderContext,
-                                         rtxaml::UIElement uiElement,
+    rtxaml::UIElement HandleSelectAction(rtom::IAdaptiveCardElement const& adaptiveCardElement,
+                                         rtom::IAdaptiveActionElement const& selectAction,
+                                         rtrender::AdaptiveRenderContext const& renderContext,
+                                         rtxaml::UIElement const& uiElement,
                                          bool supportsInteractivity,
                                          bool fullWidthTouchTarget)
     {
         if (selectAction != nullptr && supportsInteractivity)
         {
+            // TODO: Fix all instances of checking c_str of hstring to .empty()
             // TODO: Does this pass empty hstring or hstring with null c_str?
             return WrapInTouchTarget(
                 adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", {}, true);

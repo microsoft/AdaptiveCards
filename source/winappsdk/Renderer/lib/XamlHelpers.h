@@ -364,6 +364,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                                     _Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* containerStyle);
 
+
+    rtom::ContainerStyle HandleStylingAndPadding(rtom::IAdaptiveContainerBase const& adaptiveContainer,
+                                                 rtxaml::Controls::Border const& containerBorder,
+                                                 rtrender::AdaptiveRenderContext const& renderContext,
+                                                 rtrender::AdaptiveRenderArgs renderArgs);
+
     bool SupportsInteractivity(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig);
 
     bool SupportsInteractivity(rtrender::AdaptiveHostConfig const& hostConfig);

@@ -16,20 +16,18 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveColumnSetRenderer::RuntimeClassInitialize() noexcept
+    /*HRESULT AdaptiveColumnSetRenderer::RuntimeClassInitialize() noexcept
     try
     {
         return S_OK;
     }
-    CATCH_RETURN();
+    CATCH_RETURN();*/
 
-    HRESULT AdaptiveColumnSetRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                              _In_ IAdaptiveRenderContext* renderContext,
-                                              _In_ IAdaptiveRenderArgs* renderArgs,
-                                              _COM_Outptr_ IUIElement** columnSetControl) noexcept
-    try
+    rtxaml::UIElement AdaptiveColumnSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                        rtrender::AdaptiveRenderContext const& renderContext,
+                                                        rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveColumnSet> adaptiveColumnSet;
@@ -55,10 +53,10 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         ComPtr<IFrameworkElement> parentElement;
         RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
-        auto newRenderArgs = winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, parentElement.Get(), renderArgs);
+        auto newRenderArgs =
+            winrt::make<rtrender::implementation::AdaptiveRenderArgs>(containerStyle, parentElement.Get(), renderArgs);
 
-        ComPtr<IGrid> xamlGrid =
-            XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IGrid> xamlGrid = XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IGridStatics> gridStatics;
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
 
@@ -87,91 +85,96 @@ namespace AdaptiveCards::Rendering::WinUI3
         ComPtr<IPanel> gridAsPanel;
         RETURN_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
-        HRESULT hrColumns = IterateOverVectorWithFailure<AdaptiveColumn, IAdaptiveColumn>(columns.Get(), ancestorHasFallback, [&](IAdaptiveColumn* column) {
-            ComPtr<IAdaptiveCardElement> columnAsCardElement;
-            ComPtr<IAdaptiveColumn> localColumn(column);
-            RETURN_IF_FAILED(localColumn.As(&columnAsCardElement));
-
-            ComPtr<IAdaptiveColumn> testColumn;
-            columnAsCardElement.As(&testColumn);
-
-            ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
-            RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
-
-            ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType fallbackType;
-            RETURN_IF_FAILED(columnAsCardElement->get_FallbackType(&fallbackType));
-
-            // Build the Column
-            RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(
-                ancestorHasFallback || fallbackType != ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None));
-
-            ComPtr<IUIElement> xamlColumn;
-            HRESULT hr = columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn);
-            if (hr == E_PERFORM_FALLBACK)
+        HRESULT hrColumns = IterateOverVectorWithFailure<AdaptiveColumn, IAdaptiveColumn>(
+            columns.Get(),
+            ancestorHasFallback,
+            [&](IAdaptiveColumn* column)
             {
-                RETURN_IF_FAILED(
-                    XamlHelpers::RenderFallback(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn, nullptr));
-            }
+                ComPtr<IAdaptiveCardElement> columnAsCardElement;
+                ComPtr<IAdaptiveColumn> localColumn(column);
+                RETURN_IF_FAILED(localColumn.As(&columnAsCardElement));
 
-            RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(ancestorHasFallback));
+                ComPtr<IAdaptiveColumn> testColumn;
+                columnAsCardElement.As(&testColumn);
 
-            // Check the column for nullptr as it may have been dropped due to fallback
-            if (xamlColumn != nullptr)
-            {
-                // If not the first column
-                ComPtr<IUIElement> separator;
-                if (currentColumn > 0)
+                ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
+                RETURN_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
+
+                ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType fallbackType;
+                RETURN_IF_FAILED(columnAsCardElement->get_FallbackType(&fallbackType));
+
+                // Build the Column
+                RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(
+                    ancestorHasFallback || fallbackType != ABI::AdaptiveCards::ObjectModel::WinUI3::FallbackType::None));
+
+                ComPtr<IUIElement> xamlColumn;
+                HRESULT hr = columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn);
+                if (hr == E_PERFORM_FALLBACK)
                 {
-                    // Add Separator to the columnSet
-                    bool needsSeparator;
-                    UINT spacing;
-                    UINT separatorThickness;
-                    ABI::Windows::UI::Color separatorColor;
-                    XamlHelpers::GetSeparationConfigForElement(
-                        columnAsCardElement.Get(), hostConfig.Get(), &spacing, &separatorThickness, &separatorColor, &needsSeparator);
-
-                    if (needsSeparator)
-                    {
-                        // Create a new ColumnDefinition for the separator
-                        ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-                            HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
-                        RETURN_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
-                        RETURN_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
-
-                        separator = XamlHelpers::CreateSeparator(renderContext, spacing, separatorThickness, separatorColor, false);
-                        ComPtr<IFrameworkElement> separatorAsFrameworkElement;
-                        RETURN_IF_FAILED(separator.As(&separatorAsFrameworkElement));
-                        gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
-                        XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
-                    }
+                    RETURN_IF_FAILED(
+                        XamlHelpers::RenderFallback(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn, nullptr));
                 }
 
-                // Determine if the column is auto, stretch, or percentage width, and set the column width appropriately
-                ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+                RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(ancestorHasFallback));
 
-                boolean isVisible;
-                RETURN_IF_FAILED(columnAsCardElement->get_IsVisible(&isVisible));
+                // Check the column for nullptr as it may have been dropped due to fallback
+                if (xamlColumn != nullptr)
+                {
+                    // If not the first column
+                    ComPtr<IUIElement> separator;
+                    if (currentColumn > 0)
+                    {
+                        // Add Separator to the columnSet
+                        bool needsSeparator;
+                        UINT spacing;
+                        UINT separatorThickness;
+                        ABI::Windows::UI::Color separatorColor;
+                        XamlHelpers::GetSeparationConfigForElement(
+                            columnAsCardElement.Get(), hostConfig.Get(), &spacing, &separatorThickness, &separatorColor, &needsSeparator);
 
-                RETURN_IF_FAILED(XamlHelpers::HandleColumnWidth(column, isVisible, columnDefinition.Get()));
+                        if (needsSeparator)
+                        {
+                            // Create a new ColumnDefinition for the separator
+                            ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
+                                HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+                            RETURN_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
+                            RETURN_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
-                RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
+                            separator =
+                                XamlHelpers::CreateSeparator(renderContext, spacing, separatorThickness, separatorColor, false);
+                            ComPtr<IFrameworkElement> separatorAsFrameworkElement;
+                            RETURN_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+                            gridStatics->SetColumn(separatorAsFrameworkElement.Get(), currentColumn++);
+                            XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
+                        }
+                    }
 
-                // Mark the column container with the current column
-                ComPtr<IFrameworkElement> columnAsFrameworkElement;
-                RETURN_IF_FAILED(xamlColumn.As(&columnAsFrameworkElement));
-                gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn++);
+                    // Determine if the column is auto, stretch, or percentage width, and set the column width appropriately
+                    ComPtr<IColumnDefinition> columnDefinition = XamlHelpers::CreateABIClass<IColumnDefinition>(
+                        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
 
-                // Finally add the column container to the grid
-                RETURN_IF_FAILED(XamlHelpers::AddRenderedControl(xamlColumn.Get(),
-                                                                 columnAsCardElement.Get(),
-                                                                 gridAsPanel.Get(),
-                                                                 separator.Get(),
-                                                                 columnDefinition.Get(),
-                                                                 [](IUIElement*) {}));
-            }
-            return S_OK;
-        });
+                    boolean isVisible;
+                    RETURN_IF_FAILED(columnAsCardElement->get_IsVisible(&isVisible));
+
+                    RETURN_IF_FAILED(XamlHelpers::HandleColumnWidth(column, isVisible, columnDefinition.Get()));
+
+                    RETURN_IF_FAILED(columnDefinitions->Append(columnDefinition.Get()));
+
+                    // Mark the column container with the current column
+                    ComPtr<IFrameworkElement> columnAsFrameworkElement;
+                    RETURN_IF_FAILED(xamlColumn.As(&columnAsFrameworkElement));
+                    gridStatics->SetColumn(columnAsFrameworkElement.Get(), currentColumn++);
+
+                    // Finally add the column container to the grid
+                    RETURN_IF_FAILED(XamlHelpers::AddRenderedControl(xamlColumn.Get(),
+                                                                     columnAsCardElement.Get(),
+                                                                     gridAsPanel.Get(),
+                                                                     separator.Get(),
+                                                                     columnDefinition.Get(),
+                                                                     [](IUIElement*) {}));
+                }
+                return S_OK;
+            });
         RETURN_IF_FAILED(hrColumns);
 
         RETURN_IF_FAILED(XamlHelpers::SetSeparatorVisibility(gridAsPanel.Get()));
@@ -225,5 +228,4 @@ namespace AdaptiveCards::Rendering::WinUI3
                                           columnSetControl);
         return S_OK;
     }
-    CATCH_RETURN();
 }

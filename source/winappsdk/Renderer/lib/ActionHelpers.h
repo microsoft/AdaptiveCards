@@ -91,10 +91,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                            bool allowTitleAsTooltip,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
-    rtxaml::UIElement WrapInTouchTarget(rtom::IAdaptiveCardElement adaptiveCardElement,
-                                        rtxaml::UIElement elementToWrap,
-                                        rtom::IAdaptiveActionElement action,
-                                        rtrender::AdaptiveRenderContext renderContext,
+    rtxaml::UIElement WrapInTouchTarget(rtom::IAdaptiveCardElement const& adaptiveCardElement,
+                                        rtxaml::UIElement const& elementToWrap,
+                                        rtom::IAdaptiveActionElement const& action,
+                                        rtrender::AdaptiveRenderContext const& renderContext,
                                         bool fullWidth,
                                         const std::wstring& style,
                                         winrt::hstring const& altText,
@@ -108,10 +108,10 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                             bool fullWidthTouchTarget,
                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** outUiElement);
 
-    rtxaml::UIElement HandleSelectAction(rtom::IAdaptiveCardElement adaptiveCardElement,
-                                         rtom::IAdaptiveActionElement selectAction,
-                                         rtrender::AdaptiveRenderContext renderContext,
-                                         rtxaml::UIElement uiElement,
+    rtxaml::UIElement HandleSelectAction(rtom::IAdaptiveCardElement const& adaptiveCardElement,
+                                         rtom::IAdaptiveActionElement const& selectAction,
+                                         rtrender::AdaptiveRenderContext const& renderContext,
+                                         rtxaml::UIElement const& uiElement,
                                          bool supportsInteractivity,
                                          bool fullWidthTouchTarget);
 
