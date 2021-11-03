@@ -343,68 +343,101 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         autoSuggestBox.GettingFocus([autoSuggestBox](IInspectable const&, rtxaml::Input::GettingFocusEventArgs const& args)
                                     { autoSuggestBox.IsSuggestionListOpen(true); });
 
-        // When the text changes, update the ItemSource with matching items
-        EventRegistrationToken textChangedToken;
-        RETURN_IF_FAILED(autoSuggestBox->add_TextChanged(
-            Callback<ABI::Windows::Foundation::ITypedEventHandler<AutoSuggestBox*, AutoSuggestBoxTextChangedEventArgs*>>(
-                [choices, autoSuggestBoxAsItemsControl](IInspectable* sender, IAutoSuggestBoxTextChangedEventArgs*) -> HRESULT
+        autoSuggestBox.TextChanged(
+            [choices](IInspectable const& sender, rtxaml::Controls::AutoSuggestBoxTextChangedEventArgs const&)
+            {
+                // TODO: is this correct way to do it?
+                if (const auto autoSuggestBox = sender.try_as<rtxaml::Controls::AutoSuggestBox>())
                 {
-                    ComPtr<IInspectable> localSender = sender;
+                    auto currentTextHstring = autoSuggestBox.Text();
+                    std::string currentText = HStringToUTF8(currentTextHstring);
 
-                    ComPtr<IAutoSuggestBox> autoSuggestBox;
-                    RETURN_IF_FAILED(localSender.As(&autoSuggestBox));
+                    winrt::Windows::Foundation::Collections::IVector<winrt::hstring> currentResults{};
 
-                    HString currentTextHstring;
-                    RETURN_IF_FAILED(autoSuggestBox->get_Text(currentTextHstring.GetAddressOf()));
-                    std::string currentText = HStringToUTF8(currentTextHstring.Get());
+                    for (auto input : choices)
+                    {
+                        auto titleHString = input.Title();
+                        std::string title = HStringToUTF8(titleHString);
 
-                    ComPtr<IVector<HSTRING>> currentResults = Microsoft::WRL::Make<Vector<HSTRING>>();
-
-                    IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
-                        choices.Get(),
-                        [currentText, currentResults](IAdaptiveChoiceInput* adaptiveChoiceInput)
+                        if (::AdaptiveCards::ParseUtil::ToLowercase(title).find(
+                                ::AdaptiveCards::ParseUtil::ToLowercase(currentText)) != std::string::npos)
                         {
-                            HString titleHString;
-                            RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(titleHString.GetAddressOf()));
+                            currentResults.Append(titleHString);
+                        }
+                    }
+                    autoSuggestBox.ItemsSource(currentResults);
+                }
+            });
 
-                            std::string title = HStringToUTF8(titleHString.Get());
+        // When the text changes, update the ItemSource with matching items
+        /* EventRegistrationToken textChangedToken;
+         RETURN_IF_FAILED(autoSuggestBox->add_TextChanged(
+             Callback<ABI::Windows::Foundation::ITypedEventHandler<AutoSuggestBox*, AutoSuggestBoxTextChangedEventArgs*>>(
+                 [choices, autoSuggestBoxAsItemsControl](IInspectable* sender, IAutoSuggestBoxTextChangedEventArgs*) -> HRESULT
+                 {
+                     ComPtr<IInspectable> localSender = sender;
 
-                            if (ParseUtil::ToLowercase(title).find(ParseUtil::ToLowercase(currentText)) != std::string::npos)
-                            {
-                                RETURN_IF_FAILED(currentResults->Append(titleHString.Get()));
-                            }
-                            return S_OK;
-                        });
+                     ComPtr<IAutoSuggestBox> autoSuggestBox;
+                     RETURN_IF_FAILED(localSender.As(&autoSuggestBox));
 
-                    ComPtr<IInspectable> currentResultsAsInspectable;
-                    RETURN_IF_FAILED(currentResults.As(&currentResultsAsInspectable));
+                     HString currentTextHstring;
+                     RETURN_IF_FAILED(autoSuggestBox->get_Text(currentTextHstring.GetAddressOf()));
+                     std::string currentText = HStringToUTF8(currentTextHstring.Get());
 
-                    RETURN_IF_FAILED(autoSuggestBoxAsItemsControl->put_ItemsSource(currentResultsAsInspectable.Get()));
-                    return S_OK;
-                })
-                .Get(),
-            &textChangedToken));
+                     ComPtr<IVector<HSTRING>> currentResults = Microsoft::WRL::Make<Vector<HSTRING>>();
 
-        ComPtr<IUIElement> autoSuggestBoxAsUIElement;
-        RETURN_IF_FAILED(autoSuggestBox.As(&autoSuggestBoxAsUIElement));
+                     IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
+                         choices.Get(),
+                         [currentText, currentResults](IAdaptiveChoiceInput* adaptiveChoiceInput)
+                         {
+                             HString titleHString;
+                             RETURN_IF_FAILED(adaptiveChoiceInput->get_Title(titleHString.GetAddressOf()));
 
-        ComPtr<IAdaptiveChoiceSetInput> localChoiceSetInput(adaptiveChoiceSetInput);
-        ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
-        RETURN_IF_FAILED(localChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
+                             std::string title = HStringToUTF8(titleHString.Get());
+
+                             if (ParseUtil::ToLowercase(title).find(ParseUtil::ToLowercase(currentText)) != std::string::npos)
+                             {
+                                 RETURN_IF_FAILED(currentResults->Append(titleHString.Get()));
+                             }
+                             return S_OK;
+                         });
+
+                     ComPtr<IInspectable> currentResultsAsInspectable;
+                     RETURN_IF_FAILED(currentResults.As(&currentResultsAsInspectable));
+
+                     RETURN_IF_FAILED(autoSuggestBoxAsItemsControl->put_ItemsSource(currentResultsAsInspectable.Get()));
+                     return S_OK;
+                 })
+                 .Get(),
+             &textChangedToken));*/
+
+        /* ComPtr<IUIElement> autoSuggestBoxAsUIElement;
+         RETURN_IF_FAILED(autoSuggestBox.As(&autoSuggestBoxAsUIElement));
+
+         ComPtr<IAdaptiveChoiceSetInput> localChoiceSetInput(adaptiveChoiceSetInput);
+         ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
+         RETURN_IF_FAILED(localChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));*/
 
         // Handle input validation
-        ComPtr<IUIElement> inputLayout;
+       /* ComPtr<IUIElement> inputLayout;
         ComPtr<IBorder> validationBorder;
         RETURN_IF_FAILED(::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(
-            choiceSetInputAsAdaptiveInput.Get(), autoSuggestBoxAsUIElement.Get(), true, renderContext, &inputLayout, &validationBorder));
+            choiceSetInputAsAdaptiveInput.Get(), autoSuggestBoxAsUIElement.Get(), true, renderContext, &inputLayout, &validationBorder));*/
+        rtxaml::UIElement inputLayout{nullptr};
+        rtxaml::Controls::Border validationBorder;
+
+        std::tie(inputLayout, validationBorder) = ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(
+            adaptiveChoiceSetInput, autoSuggestBox, true, renderContext);
 
         // Create the InputValue and add it to the context
-        ComPtr<FilteredChoiceSetInputValue> input;
+       /* ComPtr<FilteredChoiceSetInputValue> input;
         RETURN_IF_FAILED(MakeAndInitialize<FilteredChoiceSetInputValue>(
             &input, adaptiveChoiceSetInput, autoSuggestBox.Get(), validationBorder.Get()));
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));*/
+        rtrender::FilteredChoiceSetInputValue input{adaptiveChoiceSetInput, autoSuggestBox, validationBorder};
+        renderContext.AddInputValue(input, renderArgs);
 
-        RETURN_IF_FAILED(inputLayout.CopyTo(choiceInputSet));
-        return S_OK;
+        //RETURN_IF_FAILED(inputLayout.CopyTo(choiceInputSet));
+        return inputLayout;
     }
 }
