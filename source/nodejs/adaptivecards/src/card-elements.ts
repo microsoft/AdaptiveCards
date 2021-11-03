@@ -5729,7 +5729,6 @@ export class Display extends SerializableObject {
 
 export class Container extends ContainerBase {
     //#region Schema
-
     static readonly backgroundImageProperty = new SerializableObjectProperty(
         Versions.v1_0,
         "backgroundImage",
@@ -5755,6 +5754,8 @@ export class Container extends ContainerBase {
 
     private _items: CardElement[] = [];
     private _renderedItems: CardElement[] = [];
+    private _swiper: Swiper | undefined  = undefined;
+    private _isSwiperInitialized = false;
 
     protected insertItemAt(
         item: CardElement,
@@ -5801,7 +5802,6 @@ export class Container extends ContainerBase {
         let swiperWrapper : HTMLElement = document.createElement("div");
         swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper");
         swiperWrapper.style.display = "flex";
-        //swiperWrapper.style.flexDirection = "column";
 
         if (GlobalSettings.useAdvancedCardBottomTruncation) {
             // Forces the container to be at least as tall as its content.
@@ -5830,20 +5830,6 @@ export class Container extends ContainerBase {
         //        break;
         //}
 
-        if (this._items.length > 0) {
-            for (let item of this._items) {
-                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
-
-                if (renderedItem) {
-                    Utils.appendChild(swiperWrapper, renderedItem);
-
-                    this._renderedItems.push(item);
-                }
-            }
-        }
-
-        swiperContainer.appendChild(swiperWrapper as HTMLElement);
-
         let prevElementDiv: HTMLElement = document.createElement("button");
         prevElementDiv.classList.add("swiper-button-prev");
         swiperContainer.appendChild(prevElementDiv);
@@ -5853,12 +5839,39 @@ export class Container extends ContainerBase {
         swiperContainer.appendChild(nextElementDiv);
 
         let pagination: HTMLElement = document.createElement("div");
-        pagination.classList.add("swiper-pagination");
+        pagination.classList.add(this.hostConfig.makeCssClassName("swiper-pagination"));
         swiperContainer.appendChild(pagination);
+
+        const requestedNumberOfPages : number =  Math.min(this._items.length, this.hostConfig.carousel.maxCarouselPages);
+        if (this._items.length > this.hostConfig.carousel.maxCarouselPages) {
+            console.warn(Strings.errors.tooManyCarouselPages);
+        }
+
+        if (this._items.length > 0) {
+            for (let i = 0; i < requestedNumberOfPages; i++) {
+                let item = this._items[i];
+                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
+
+                if (renderedItem) {
+                    Utils.appendChild(swiperWrapper, renderedItem);
+                    this._renderedItems.push(item);
+                }
+            }
+        }
+
+        swiperContainer.appendChild(swiperWrapper as HTMLElement);
+
+        cardLevelContainer.appendChild(swiperContainer);
 
         this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
 
-        cardLevelContainer.appendChild(swiperContainer);
+        cardLevelContainer.onfocus = () => {
+            if (!this._isSwiperInitialized) {
+                this._isSwiperInitialized = true;
+                this._swiper?.destroy();
+                this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
+            }
+        }
 
         return cardLevelContainer;
     }
@@ -5871,7 +5884,8 @@ export class Container extends ContainerBase {
                 pauseOnMouseEnter: true
             },
             pagination: {
-                el: paginationElement
+                el: paginationElement,
+                clickable : true
              },
             navigation: {
                 prevEl: prevElement,
@@ -5886,16 +5900,16 @@ export class Container extends ContainerBase {
             }
         };
 
-        let swiper: Swiper = new Swiper(swiperContainer, swiperOptions);
+        this._swiper = new Swiper(swiperContainer, swiperOptions);
 
         // While the 'pauseOnMouseEnter' option should resume autoplay on
         // mouse exit it doesn't do it, so adding custom events to handle it
         swiperContainer.onmouseenter = function(){
-            swiper.autoplay.stop();
+            this._swiper.autoplay.stop();
         };
 
         swiperContainer.onmouseleave = function(){
-            swiper.autoplay.start();
+            this._swiper.autoplay.start();
         };
     }
 
@@ -6252,19 +6266,12 @@ export class CarouselPage extends Container {
         let swiperSlide : HTMLElement = document.createElement("div");
         swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
 
-        //let element : HTMLElement = document.createElement("div");
-        //element.style.display = "block";
-
-        //this.spacing = Enums.Spacing.None;
-        //this.separator = false;
-
         let renderedElement = super.internalRender();
         Utils.appendChild(swiperSlide, renderedElement);
-        //if (GlobalSettings.useAdvancedCardBottomTruncation) {
-        //    // See comment in Container.internalRender()
-        //    element.style.minHeight = '-webkit-min-content';
-        //}
-        //return element;
+        if (GlobalSettings.useAdvancedCardBottomTruncation) {
+            // See comment in Container.internalRender()
+            swiperSlide.style.minHeight = '-webkit-min-content';
+        }
         return swiperSlide;
     }
     static unsupportedElementsList : Set<string>;
@@ -6827,6 +6834,11 @@ export abstract class ContainerWithActions extends Container {
     }
 
     protected carouselRender(displayProperties: Display): HTMLElement | undefined {
+        if (displayProperties && displayProperties.timerProperty &&
+            displayProperties.timerProperty < this.hostConfig.carousel.minAutoplayDelay) {
+            console.warn(Strings.errors.tooLittleTimeDelay);
+            displayProperties.timerProperty = this.hostConfig.carousel.minAutoplayDelay;
+        }
         let element = super.carouselRender(displayProperties);
 
         if (element) {
@@ -7479,6 +7491,7 @@ export class AdaptiveCard extends ContainerWithActions {
     get hasVisibleSeparator(): boolean {
         return false;
     }
+
 }
 
 class InlineAdaptiveCard extends AdaptiveCard {
