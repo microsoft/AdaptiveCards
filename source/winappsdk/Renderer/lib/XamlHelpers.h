@@ -140,6 +140,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
     HRESULT SetSeparatorVisibility(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
 
+    void SetSeparatorVisibility(rtxaml::Controls::Panel const& parentPanel);
+
     HRESULT HandleColumnWidth(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveColumn* column,
                               boolean isVisible,
                               _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition);
@@ -364,7 +366,6 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                     _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                                     _Out_ ABI::AdaptiveCards::ObjectModel::WinUI3::ContainerStyle* containerStyle);
 
-
     rtom::ContainerStyle HandleStylingAndPadding(rtom::IAdaptiveContainerBase const& adaptiveContainer,
                                                  rtxaml::Controls::Border const& containerBorder,
                                                  rtrender::AdaptiveRenderContext const& renderContext,
@@ -474,17 +475,22 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                _In_ ABI::Windows::UI::Xaml::Controls::IColumnDefinition* columnDefinition,
                                std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback);
 
+    void AddRenderedControl(rtxaml::UIElement const& newControl,
+                            rtom::IAdaptiveCardElement const& element,
+                            rtxaml::Controls::Panel const& parentPanel,
+                            rtxaml::UIElement const& separator,
+                            rtxaml::Controls::ColumnDefinition const& columnDefinition,
+                            std::function<void(rtxaml::UIElement const& child)> childCreatedCallback);
+
     HRESULT RenderFallback(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* currentElement,
                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                            _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result,
                            _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement** renderedElement);
 
-    void RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
-                        rtrender::AdaptiveRenderContext const& renderContext,
-                        rtrender::AdaptiveRenderArgs const& renderArgs,
-                        winrt::com_ptr<rtxaml::UIElement> result,
-                        winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement);
+    std::tuple<rtxaml::UIElement, rtom::IAdaptiveCardElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
+                                                                             rtrender::AdaptiveRenderContext const& renderContext,
+                                                                             rtrender::AdaptiveRenderArgs const& renderArgs);
 
     void GetSeparationConfigForElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* element,
                                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -492,6 +498,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                                        _Out_ UINT* separatorThickness,
                                        _Out_ ABI::Windows::UI::Color* separatorColor,
                                        _Out_ bool* needsSeparator);
+
+    bool NeedsSeparator(rtom::IAdaptiveCardElement const& cardElement);
 
     inline HRESULT WarnFallbackString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                                       const std::string& warning)

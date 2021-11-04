@@ -193,6 +193,50 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
+    void XamlHelpers::SetSeparatorVisibility(rtxaml::Controls::Panel const& parentPanel)
+    {
+        // Iterate over the elements in a container and ensure that the correct separators are marked as visible
+
+        auto children = parentPanel.Children();
+
+        bool foundPreviousVisibleElement = false;
+
+        for (auto child : children)
+        {
+            if (const auto childAsFrameworkElement = child.try_as<rtxaml::FrameworkElement>())
+            {
+                auto tag = childAsFrameworkElement.Tag();
+                if (tag)
+                {
+                    if (const auto elementTagContent = tag.try_as<rtrender::ElementTagContent>())
+                    {
+                        auto separator = elementTagContent.Separator();
+                        auto visibility = child.Visibility();
+                        auto expectedVisibility = elementTagContent.ExpectedVisibility();
+
+                        if (separator)
+                        {
+                            if (!expectedVisibility || !foundPreviousVisibleElement)
+                            {
+                                // If the element is collapsed, or if it's the first
+                                // visible element, collapse the separator Images are
+                                // hidden while they are retrieved, we shouldn't hide
+                                // the separator
+                                separator.Visibility(rtxaml::Visibility::Collapsed);
+                            }
+                            else
+                            {
+                                separator.Visibility(rtxaml::Visibility::Visible);
+                            }
+                        }
+
+                        foundPreviousVisibleElement |= (visibility == rtxaml::Visibility::Visible);
+                    }
+                }
+            }
+        }
+    }
+
     rtom::ContainerStyle HandleStylingAndPadding(rtom::IAdaptiveContainerBase const& adaptiveContainer,
                                                  rtxaml::Controls::Border const& containerBorder,
                                                  rtrender::AdaptiveRenderContext const& renderContext,
@@ -656,18 +700,20 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
     }
 
-    void RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
-                        rtrender::AdaptiveRenderContext const& renderContext,
-                        rtrender::AdaptiveRenderArgs const& renderArgs,
-                        winrt::com_ptr<rtxaml::UIElement> result,
-                        winrt::com_ptr<rtom::IAdaptiveCardElement> renderedElement)
+    std::tuple<rtxaml::UIElement, rtom::IAdaptiveCardElement> RenderFallback(rtom::IAdaptiveCardElement const& currentElement,
+                                                                             rtrender::AdaptiveRenderContext const& renderContext,
+                                                                             rtrender::AdaptiveRenderArgs const& renderArgs)
     {
+        // TODO: still not sure I'm doing this right...
         auto elementRenderers = renderContext.ElementRenderers();
         auto elementFallback = currentElement.FallbackType();
         winrt::hstring elementType = currentElement.ElementTypeString();
 
         bool fallbackHandled = false;
-        winrt::com_ptr<rtxaml::UIElement> fallbackControl;
+        /*winrt::com_ptr<rtxaml::UIElement> fallbackControl;*/
+        rtxaml::UIElement fallbackControl{nullptr};
+        rtom::IAdaptiveCardElement renderedElement;
+        rtxaml::UIElement result{nullptr};
 
         switch (elementFallback)
         {
@@ -685,22 +731,32 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
             if (fallbackElementRenderer)
             {
-                auto fallBackControlUIElement = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
-                fallbackControl.copy_from(&fallBackControlUIElement);
+                fallbackControl = fallbackElementRenderer.Render(fallbackElement, renderContext, renderArgs);
 
                 // TODO: FIGURE OUT HOW TO DO PROPER LOGIC FOR CALLBACK
-                shouldPerformFallBack = false;
-
-                if (renderedElement)
-                {
-                    // TODO: What is better way to do it? why can't I do .copyFrom?
-                    renderedElement = fallbackElement.as<winrt::com_ptr<rtom::IAdaptiveCardElement>>();
-                }
+                // shouldPerformFallBack = false;
+                // TODO: what is the proper logic here?
+                renderedElement = fallbackElement;
+                // if (renderedElement)
+                //{
+                //    // TODO: What is better way to do it? why can't I do .copyFrom?
+                //    /*renderedElement = fallbackElement.as<winrt::com_ptr<rtom::IAdaptiveCardElement>>();*/
+                //    renderedElement = fallbackElement;
+                //}
             }
-
-            if (shouldPerformFallBack)
+            // if (hr == E_PERFORM_FALLBACK)
+            // TODO: I assume the correct check here is this. We didn't get anything returned from render, so we try to renderfallback
+            if (fallbackControl == nullptr)
             {
-                RenderFallback(fallbackElement, renderContext, renderArgs, fallbackControl, renderedElement);
+                // RenderFallback(fallbackElement, renderContext, renderArgs, fallbackControl, renderedElement);
+                std::tie(fallbackControl, renderedElement) = RenderFallback(fallbackElement, renderContext, renderArgs);
+            }
+            else
+            {
+                // Check the non-fallback return value from the render call
+                // RETURN_IF_FAILED(hr);
+
+                // TODO: what do we do here?
             }
             fallbackHandled = true;
             break;
@@ -718,13 +774,23 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         }
         }
 
-        if (!fallbackHandled)
+        if (fallbackHandled)
+        {
+            // TODO: refactor
+            result = fallbackControl;
+        }
+        else
         {
             if (!renderArgs.AncestorHasFallback())
             {
                 renderContext.AddWarning(rtom::WarningStatusCode::NoRendererForType, L"No Renderer found for type: " + elementType);
             }
+            else
+            {
+                // TODO: perform callback
+            }
         }
+        return std::tuple(result, renderedElement);
     }
 
     HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
@@ -863,6 +929,40 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         *separatorColor = localColor;
     }
 
+    bool NeedsSeparator(rtom::IAdaptiveCardElement const& cardElement)
+    {
+        /* ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing elementSpacing;
+         THROW_IF_FAILED(cardElement->get_Spacing(&elementSpacing));*/
+
+        auto elementSpacing = cardElement.Spacing();
+
+        auto hasSeparator = cardElement.Separator();
+        /*  UINT localSpacing;
+          THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, elementSpacing, &localSpacing));
+
+          boolean hasSeparator;
+          THROW_IF_FAILED(cardElement->get_Separator(&hasSeparator));
+
+          ABI::Windows::UI::Color localColor = {0};
+          UINT localThickness = 0;
+          if (hasSeparator)
+          {
+              ComPtr<IAdaptiveSeparatorConfig> separatorConfig;
+              THROW_IF_FAILED(hostConfig->get_Separator(&separatorConfig));
+
+              THROW_IF_FAILED(separatorConfig->get_LineColor(&localColor));
+              THROW_IF_FAILED(separatorConfig->get_LineThickness(&localThickness));
+          }
+
+          *needsSeparator = hasSeparator || (elementSpacing != ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing::None);
+
+          *spacing = localSpacing;
+          *separatorThickness = localThickness;
+          *separatorColor = localColor;*/
+
+        return hasSeparator || (elementSpacing != rtom::Spacing::None);
+    }
+
     HRESULT AddRenderedControl(_In_ IUIElement* newControl,
                                _In_ IAdaptiveCardElement* element,
                                _In_ IPanel* parentPanel,
@@ -907,12 +1007,12 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         return S_OK;
     }
 
-    HRESULT AddRenderedControl(rtxaml::UIElement const& newControl,
-                               rtom::IAdaptiveCardElement const& element,
-                               rtxaml::Controls::Panel const& parentPanel,
-                               rtxaml::UIElement const& separator,
-                               rtxaml::Controls::ColumnDefinition const& columnDefinition,
-                               std::function<void(rtxaml::UIElement const& child)> childCreatedCallback)
+    void AddRenderedControl(rtxaml::UIElement const& newControl,
+                            rtom::IAdaptiveCardElement const& element,
+                            rtxaml::Controls::Panel const& parentPanel,
+                            rtxaml::UIElement const& separator,
+                            rtxaml::Controls::ColumnDefinition const& columnDefinition,
+                            std::function<void(rtxaml::UIElement const& child)> childCreatedCallback)
     {
         if (newControl != nullptr)
         {
@@ -961,7 +1061,6 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
 
             childCreatedCallback(newControl);
         }
-        return S_OK;
     }
 
     HRESULT AddHandledTappedEvent(_In_ IUIElement* uiElement)
@@ -987,7 +1086,8 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
             return;
         }
         // TODO: Don't we need a revoker?
-        uiElement.Tapped([](IInspectable const&, rtxaml::Input::TappedRoutedEventArgs const& args) { args.Handled(true); });
+        uiElement.Tapped([](IInspectable const&, rtxaml::Input::TappedRoutedEventArgs const& args)
+                         { args.Handled(true); });
     }
 
     HRESULT SetAutoImageSize(_In_ IFrameworkElement* imageControl, _In_ IInspectable* parentElement, _In_ IBitmapSource* imageSource, bool setVisible)
@@ -1698,7 +1798,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         /* ComPtr<IUIElement> actualInputUIElement;*/
         rtxaml::UIElement actualInputUIElement{nullptr};
         // TODO: revisit this
-        //if (validationBorderOut && hasValidation)
+        // if (validationBorderOut && hasValidation)
         if (hasValidation)
         {
             // RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
@@ -1791,9 +1891,9 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
         // RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
         // TODO: Figure out a better way than two _Out_ params
         // TODO: revisit tuple return
-        //inputLayout = inputStackPanel;
+        // inputLayout = inputStackPanel;
 
-        //if (validationBorderOut)
+        // if (validationBorderOut)
         //{
         //    /*RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));*/
         //    validationBorderOut = validationBorder;
