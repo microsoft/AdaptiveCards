@@ -106,7 +106,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3
                        winrt::Windows::UI::Xaml::Controls::Border const& validationBorder);
 
     private:
-        winrt::hstring CurrentValue() { m_textBoxElement.Text(); };
+        winrt::hstring CurrentValue() { return m_textBoxElement.Text(); };
 
         /* Microsoft::WRL::ComPtr<ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextInput> m_adaptiveTextInput;*/
         winrt::Windows::UI::Xaml::Controls::TextBox m_textBoxElement;

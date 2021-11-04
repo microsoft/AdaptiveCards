@@ -42,6 +42,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         // ComPtr<WholeItemsPanel> gridContainer;
         // RETURN_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&gridContainer));
+
         auto gridContainer = winrt::make<rtrender::implementation::WholeItemsPanel>();
 
         /*ComPtr<IUIElement> gridContainerAsUIElement;

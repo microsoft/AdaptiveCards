@@ -474,7 +474,11 @@ namespace AdaptiveCards
             {
                 AdaptiveCards.ObjectModel.WinUI3.IAdaptiveInputElement InputElement { get; };
                 String CurrentValue { get; };
-                Windows.UI.Xaml.UIElement ErrorMessage { get; set; }
+                Windows.UI.Xaml.UIElement ErrorMessage
+                {
+                    get;
+                    set;
+                };
                 Boolean Validate();
                 void SetFocus();
             };
