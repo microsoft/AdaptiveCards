@@ -1706,7 +1706,7 @@
       ]
     },
     "AuthCardButton": {
-      "description": "Defines a button as displayed when prompting a user to authenticate. This maps to the cardAction type defined by the Bot Framework (https://github.com/microsoft/botframework-obi/blob/jeffders/adaptiveCards2/protocols/botframework-activity/botframework-activity.md#card-action).",
+      "description": "Defines a button as displayed when prompting a user to authenticate. This maps to the cardAction type defined by the Bot Framework (https://docs.microsoft.com/en-us/dotnet/api/microsoft.bot.schema.cardaction).",
       "version": "1.4",
       "properties": {
         "type": {
@@ -1734,7 +1734,7 @@
       ]
     },
     "Authentication": {
-      "description": "Defines authentication information associated with a card. This maps to the OAuthCard type defined by the Bot Framework (https://github.com/microsoft/botframework-obi/blob/jeffders/adaptiveCards2/protocols/botframework-activity/botframework-cards.md#oauth-card)",
+      "description": "Defines authentication information associated with a card. This maps to the OAuthCard type defined by the Bot Framework (https://docs.microsoft.com/en-us/dotnet/api/microsoft.bot.schema.oauthcard)",
       "version": "1.4",
       "properties": {
         "type": {
@@ -1826,7 +1826,7 @@
       "additionalProperties": false
     },
     "TokenExchangeResource": {
-      "description": "Defines information required to enable on-behalf-of single sign-on user authentication. Maps to the TokenExchangeResource type defined by the Bot Framework (https://github.com/microsoft/botframework-obi/blob/jeffders/adaptiveCards2/protocols/botframework-activity/botframework-cards.md#TokenExchangeResource)",
+      "description": "Defines information required to enable on-behalf-of single sign-on user authentication. Maps to the TokenExchangeResource type defined by the Bot Framework (https://docs.microsoft.com/en-us/dotnet/api/microsoft.bot.schema.tokenexchangeresource)",
       "version": "1.4",
       "properties": {
         "type": {
