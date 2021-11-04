@@ -16,7 +16,6 @@ Since Adaptive Cards are hosted directly within the Windows OS we had implementa
 
 To run the test project, see the [AdaptiveCardTestApp](AdaptiveCardTestApp/README.md) folder
 
-<<<<<<< HEAD
 ## Testing
 
 The UWP Renderer currently supports the following type of testing:
@@ -25,7 +24,6 @@ The UWP Renderer currently supports the following type of testing:
 | --- | --- | --- |
 | Unit tests | UWPUnitTests | [Location](./UWPUnitTests) |
 | UI tests | UWPUITests | [Location](./UWPUITests) |
-=======
 ## How to add a new NuGet package
 
 Due to limitations in our build system and Test infrastructure libraries used for UI tests, the process to add new NuGet packages has changed. The new process requires us to push any NuGet packages to a new NuGet feed called `AdaptiveCards-public` where we can have packages that come from any number of sources.
@@ -88,4 +86,3 @@ UserName: An error was encountered when fetching 'PUT https://pkgs.dev.azure.com
 >     FullyQualifiedErrorId : NativeCommandError
 > 
 >  Pushing took too long. You can change the default timeout of 300 seconds by using the -Timeout <seconds> option with the push command.
->>>>>>> main
