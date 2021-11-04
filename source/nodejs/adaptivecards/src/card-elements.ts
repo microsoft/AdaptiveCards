@@ -5849,21 +5849,7 @@ export class Container extends ContainerBase {
 
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
-<<<<<<< HEAD
-        let prevElementDiv: HTMLElement = document.createElement("div");
-        prevElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-prev", "ac-carousel-left");
-        swiperContainer.appendChild(prevElementDiv);
-
-        let nextElementDiv: HTMLElement = document.createElement("div");
-        nextElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-next", "ac-carousel-right");
-        swiperContainer.appendChild(nextElementDiv);
-
-        let pagination: HTMLElement = document.createElement("div");
-        pagination.className = this.hostConfig.makeCssClassName("swiper-pagination", "ac-carousel-pagination");
-        swiperContainer.appendChild(pagination);
-=======
         cardLevelContainer.appendChild(swiperContainer);
->>>>>>> feature/carousel
 
         this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
 
@@ -5871,7 +5857,7 @@ export class Container extends ContainerBase {
             if (!this._isSwiperInitialized) {
                 this._isSwiperInitialized = true;
                 this._swiper?.destroy();
-                this.initializeSwiper(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
+                this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
             }
         }
 
