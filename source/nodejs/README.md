@@ -46,8 +46,16 @@ The JS Renderer currently supports the following type of testing:
 
 | Type | Project | Location |
 | --- | --- | --- |
+| Unit tests | adaptivecards/\_\_tests\_\_ | [Location](./adaptivecards/src/__tests__/)
 | Unit tests | unit-tests | [Location](./tests/unit-tests) |
 
-To run the tests:
+### To run adaptivecards/\_\_tests\_\_
+1. `cd adaptivecards`
+2. Build the project: `npm run build`
+3. `npm test`
+
+### To run unit-tests:
 1. `cd tests/unit-tests`
 2. `npm run build-and-test`
+
+### To run ui tests

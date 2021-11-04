@@ -177,3 +177,5 @@ The iOS Renderer currently supports the following type of testing:
 | Type | Project | Location |
 | --- | --- | --- |
 | Unit tests | AdaptiveCardsTests | [Location](./AdaptiveCards/AdaptiveCards/AdaptiveCardsTests/) | 
+| Unit tests | ADCIOSVisualizerTests | [Location](./AdaptiveCards/ADCIOSVisualizer/ADCIOSVisualizerTests) |
+| UI tests | ADCIOSVisualizerUITests | [Location](./AdaptiveCards/ADCIOSVisualizer/ADCIOSVisualizerUITests) |
