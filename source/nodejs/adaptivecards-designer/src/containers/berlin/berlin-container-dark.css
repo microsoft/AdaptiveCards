@@ -1,33 +1,57 @@
 .berlin-outer-container {
     border: 1px solid #E6E6E6;
+    padding: 1px 1px;
     background-color: #201E1F;
     width: 300px;
     border-radius: 4px;
     color: white;
+    position: relative;
 }
 
 .berlin-header {
-    width: 300px;
     height: 40px;
+    width: 300px;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    justify-content: space-around;
+    border: 1px dashed green
 }
 
 .berlin-large-container {
-    width: 300px;
-    height: 416px;
+    width: 304px;
+    height: 420px;
 }
 
 .berlin-medium-container {
-    width: 300px;
-    height: 308px;
+    width: 304px;
+    height: 312px;
 }
 
 .berlin-small-container {
-    width: 300px;
+    width: 304px;
+    height: 204px;
+}
+
+
+/* berlin-large/medium/small-container  4px(top+bottom padding+margin) berlin-outer-container border*/
+
+.berlin-large-card {
+    height: 416px;
+}
+
+.berlin-medium-card {
+    height: 308px;
+}
+
+.berlin-small-card {
     height: 200px;
 }
 
 .ac-adaptiveCard {
     border: 0px;
+    padding: 48px 24px 24px 24px !important;
+    border-radius: 4px !important;
 }
 
 .ac-input {
