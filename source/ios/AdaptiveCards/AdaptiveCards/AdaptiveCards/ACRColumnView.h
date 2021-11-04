@@ -4,11 +4,14 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import "ACRContentStackView.h"
+#import "ACOVisibilityManager.h"
 #import "ACRColumnSetView.h"
+#import "ACRContentStackView.h"
 #import "ACRIBaseInputHandler.h"
 
-@interface ACRColumnView : ACRContentStackView
+@class ACRSeparator;
+
+@interface ACRColumnView : ACRContentStackView <ACOIVisibilityManagerFacade>
 
 typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
     ACRColumnWidthPriorityStretch = 249,
@@ -16,12 +19,11 @@ typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
     ACRColumnWidthPriorityAuto,
 };
 
-@property NSString *columnWidth;
+@property (nonatomic) NSString *columnWidth;
 @property CGFloat pixelWidth;
 @property CGFloat relativeWidth;
+@property ACRHeightType heightType;
 @property BOOL hasMoreThanOneRelativeWidth;
-@property BOOL hasStretchableView;
-@property BOOL hasPaddingView;
 @property BOOL isLastColumn;
 @property NSMutableArray<ACRIBaseInputHandler> *inputHandlers;
 @property (weak) ACRColumnSetView *columnsetView;

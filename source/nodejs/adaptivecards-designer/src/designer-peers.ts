@@ -705,7 +705,7 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
         input.placeholder = "(not set)";
         input.choices.push(new Adaptive.Choice("(not set)", "none"));
 
-        for (var i = 0; i < context.designContext.hostContainer.actionsRegistry.getItemCount(); i++) {
+        for (let i = 0; i < context.designContext.hostContainer.actionsRegistry.getItemCount(); i++) {
             let actionType = context.designContext.hostContainer.actionsRegistry.getItemAt(i).typeName;
             let excludeAction = true;
 
@@ -1274,7 +1274,7 @@ export abstract class DesignerPeer extends DraggableElement {
         designerSurface.appendChild(this.renderedElement);
 
         if (processChildren) {
-            for (var i = 0; i < this.getChildCount(); i++) {
+            for (let i = 0; i < this.getChildCount(); i++) {
                 this.getChildAt(i).addElementsToDesignerSurface(designerSurface, processChildren);
             }
         }
@@ -1284,7 +1284,7 @@ export abstract class DesignerPeer extends DraggableElement {
         this.renderedElement.parentNode.removeChild(this.renderedElement);
 
         if (processChildren) {
-            for (var i = 0; i < this.getChildCount(); i++) {
+            for (let i = 0; i < this.getChildCount(); i++) {
                 this.getChildAt(i).removeElementsFromDesignerSurface(processChildren);
             }
         }
@@ -1383,17 +1383,17 @@ export class ActionPeer extends DesignerPeer {
         "mode",
         "Mode",
         [
-            { targetVersion: Adaptive.Versions.v1_5, name: "Primary", value: Adaptive.ActionMode.Primary },
-            { targetVersion: Adaptive.Versions.v1_5, name: "Secondary", value: Adaptive.ActionMode.Secondary }
+            { targetVersion: Adaptive.Versions.v1_5, name: "Primary", value: Adaptive.ActionMode?.Primary },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Secondary", value: Adaptive.ActionMode?.Secondary }
         ]);
     static readonly styleProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_2,
         "style",
         "Style",
         [
-            { targetVersion: Adaptive.Versions.v1_2, name: "Default", value: Adaptive.ActionStyle.Default },
-            { targetVersion: Adaptive.Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle.Positive },
-            { targetVersion: Adaptive.Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle.Destructive }
+            { targetVersion: Adaptive.Versions.v1_2, name: "Default", value: Adaptive.ActionStyle?.Default },
+            { targetVersion: Adaptive.Versions.v1_2, name: "Positive", value: Adaptive.ActionStyle?.Positive },
+            { targetVersion: Adaptive.Versions.v1_2, name: "Destructive", value: Adaptive.ActionStyle?.Destructive }
         ]);
     static readonly iconUrlProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "iconUrl", "Icon URL");
     static readonly tooltipProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "tooltip", "Tooltip");
@@ -1682,8 +1682,10 @@ export class CardElementPeer extends DesignerPeer {
             }
         }
 
+        let itemCount = 0;
         if (this.cardElement instanceof Adaptive.CardElementContainer) {
-            for (var i = 0; i < this.cardElement.getItemCount(); i++) {
+            itemCount = this.cardElement.getItemCount();
+            for (let i = 0; i < itemCount; i++) {
                 let existingPeer = this.findCardElementChild(this.cardElement.getItemAt(i));
 
                 if (!existingPeer) {
@@ -1698,7 +1700,7 @@ export class CardElementPeer extends DesignerPeer {
             }
         }
 
-        for (var i = 0; i < this.cardElement.getActionCount(); i++) {
+        for (let i = 0; i < this.cardElement.getActionCount(); i++) {
             let existingPeer = this.findActionChild(this.cardElement.getActionAt(i));
 
             if (!existingPeer) {
@@ -1707,7 +1709,7 @@ export class CardElementPeer extends DesignerPeer {
                         this.designerSurface,
                         this,
                         this.cardElement.getActionAt(i)),
-                    i);
+                        itemCount + i);
             }
         }
 
@@ -1744,7 +1746,7 @@ export class CardElementPeer extends DesignerPeer {
             let targetChild: DesignerPeer = null;
             let insertAfter: boolean;
 
-            for (var i = 0; i < this.getChildCount(); i++) {
+            for (let i = 0; i < this.getChildCount(); i++) {
                 let rect = this.getChildAt(i).getBoundingRect();
 
                 if (rect.isInside(insertionPoint)) {
@@ -1922,7 +1924,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
         let availableActions: Adaptive.ITypeRegistration<Adaptive.Action>[] = [];
 
-        for (var i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
+        for (let i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
             let typeRegistration = context.hostContainer.actionsRegistry.getItemAt(i);
 
             if (typeRegistration.schemaVersion.compareTo(context.targetVersion) <= 0) {
@@ -2248,7 +2250,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 
         let availableActions: Adaptive.ITypeRegistration<Adaptive.Action>[] = [];
 
-        for (var i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
+        for (let i = 0; i < context.hostContainer.actionsRegistry.getItemCount(); i++) {
             let typeRegistration = context.hostContainer.actionsRegistry.getItemAt(i);
 
             if (typeRegistration.schemaVersion.compareTo(context.targetVersion) <= 0) {
@@ -2684,7 +2686,16 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
     static readonly defaultValueProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "defaultValue", "Default value");
     static readonly placeholderProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "placeholder", "Placeholder");
     static readonly isMultiselectProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isMultiSelect", "Allow multi selection");
-    static readonly isCompactProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isCompact", "Compact style");
+    static readonly styleProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_0,
+        "style",
+        "Style",
+        [
+            { targetVersion: Adaptive.Versions.v1_0, name: "Compact", value: "compact" },
+            { targetVersion: Adaptive.Versions.v1_0, name: "Expanded", value: "expanded" },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Filtered", value: "filtered" }
+        ],
+        true);
     static readonly wrapProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_2, "wrap", "Wrap");
     static readonly choicesProperty = new NameValuePairPropertyEditor(
         Adaptive.Versions.v1_0,
@@ -2704,7 +2715,7 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
             defaultCategory,
             ChoiceSetInputPeer.placeholderProperty,
             ChoiceSetInputPeer.isMultiselectProperty,
-            ChoiceSetInputPeer.isCompactProperty,
+            ChoiceSetInputPeer.styleProperty,
             ChoiceSetInputPeer.defaultValueProperty);
 
         propertySheet.add(

@@ -22,12 +22,12 @@ export class BuildModelOptions {
 export function buildModel(options: BuildModelOptions) {
 
 	var schemaFolder = options.schema;
-	var toc = yaml.safeLoad(fs.readFileSync(options.toc));
+	var toc = yaml.load(fs.readFileSync(options.toc));
 	var items = [];
 
 	var schema: Schema = Schema.fromFolder(schemaFolder);
 
-	for (var index in toc) {
+	for (let index in toc) {
 		var rootObj = toc[index];
 
 		var root = {
@@ -36,7 +36,7 @@ export function buildModel(options: BuildModelOptions) {
 			schema: schema
 		};
 
-		for (var definitionIndex in rootObj[root.title]) {
+		for (let definitionIndex in rootObj[root.title]) {
 
 			var name = rootObj[root.title][definitionIndex];
 			var objSchema = schema.getType(name);
@@ -86,6 +86,6 @@ export function buildModel(options: BuildModelOptions) {
 }
 
 function getObjectName(obj) {
-	for (var property in obj)
+	for (let property in obj)
 		return property;
 }

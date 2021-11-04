@@ -41,7 +41,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Authentication.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ExecuteAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Inline.cpp" />
@@ -79,6 +79,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SemanticVersion.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\StyledCollectionElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Table.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TableCell.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.cpp" />
@@ -120,7 +121,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
-    <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionCoreElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Inline.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\InternalId.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
@@ -150,6 +152,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\StyledCollectionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Table.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TableCell.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TableColumnDefinition.h" />

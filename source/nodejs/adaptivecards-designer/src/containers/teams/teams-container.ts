@@ -43,7 +43,7 @@ abstract class BaseTeamsContainer extends HostContainer {
     }
 
     get targetVersion(): Adaptive.Version {
-        return Adaptive.Versions.v1_2;
+        return Adaptive.Versions.v1_4;
     }
 }
 

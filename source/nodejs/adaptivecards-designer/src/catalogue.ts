@@ -2,23 +2,6 @@ import * as Adaptive from "adaptivecards";
 import { Downloader } from "./downloader";
 
 export class CatalogueEntry {
-    static createEmptyCardEntry(): CatalogueEntry {
-        let result = new CatalogueEntry("Blank card", "");
-        result._cardPayload = JSON.stringify(
-            {
-                type: "AdaptiveCard",
-                $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
-                version: "1.0",
-                body: [
-                ]
-            }
-        );
-        result._cardPayloadDownloaded = true;
-        result._sampleDataDownloaded = true;
-
-        return result;
-    }
-
     private _cardPayload: string;
     private _cardPayloadDownloaded: boolean = false;
     private _sampleData: string;
@@ -134,9 +117,7 @@ export class SampleCatalogue {
             entries = Array.isArray(input["entries"]) ? input["entries"] : null;
         }
 
-        this._entries = [
-            CatalogueEntry.createEmptyCardEntry()
-        ];
+        this._entries = [];
 
         if (entries != null) {
             for (let entry of entries) {
@@ -167,7 +148,7 @@ export class SampleCatalogue {
             let downloader = new Downloader(this.url);
             downloader.onError = () => {
                 if (this._entries.length === 0) {
-                    this._entries = [ CatalogueEntry.createEmptyCardEntry() ];
+                    this._entries = [];
                 }
                 
                 this.downloaded();

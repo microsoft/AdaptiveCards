@@ -1,0 +1,24 @@
+{
+	"name": "ui-tests",
+	"version": "0.1.0",
+	"description": "Builds the ui tests.",
+	"author": "AdaptiveCards",
+	"license": "MIT",
+	"main": "index.js",
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"clean": "rimraf lib dist",
+		"build": "tsc",
+		"lint": "eslint src/*.ts",
+		"test": "npm run build && jest ./lib/*"
+	},
+	"devDependencies": {
+		"vkbeautify": "^0.99.3",
+		"selenium-webdriver": "^4.0.0-beta.4"
+	},
+	"dependencies": {
+		"@types/selenium-webdriver": "^4.0.15"
+	}
+}

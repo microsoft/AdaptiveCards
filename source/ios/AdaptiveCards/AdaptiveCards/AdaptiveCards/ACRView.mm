@@ -763,7 +763,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     }
 }
 
-- (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view
+- (void)updatePaddingMap:(std::shared_ptr<StyledCollectionElement> const &)collection view:(UIView *)view
 {
     if (view && collection && collection->GetPadding()) {
         NSNumber *key = [NSNumber numberWithUnsignedLongLong:collection->GetInternalId().Hash()];
@@ -776,7 +776,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 {
     const CardElementType type = element->GetElementType();
     if (type == CardElementType::Container || type == CardElementType::ColumnSet || type == CardElementType::Column) {
-        std::shared_ptr<CollectionTypeElement> collection = std::dynamic_pointer_cast<CollectionTypeElement>(element);
+        std::shared_ptr<StyledCollectionElement> collection = std::dynamic_pointer_cast<StyledCollectionElement>(element);
         if (view && collection && collection->GetStyle() != card->GetStyle()) {
             NSNumber *key = [NSNumber numberWithUnsignedLongLong:collection->GetInternalId().Hash()];
             _paddingMap[[key stringValue]] = view;
@@ -869,6 +869,13 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 {
     if (imageView.image) {
         self->_imageViewMap[key] = imageView.image;
+    }
+}
+
+- (void)setContext:(ACORenderContext *)context
+{
+    if (context) {
+        _context = context;
     }
 }
 

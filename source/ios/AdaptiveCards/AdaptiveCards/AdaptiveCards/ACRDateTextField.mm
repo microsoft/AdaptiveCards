@@ -55,6 +55,7 @@ using namespace AdaptiveCards;
 
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
+
         self.isRequired = elem->GetIsRequired();
 
         DateTimePreparser preparser;
@@ -123,7 +124,6 @@ using namespace AdaptiveCards;
         self.placeholder = placeHolderStr;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleRoundedRect;
-        self.backgroundColor = UIColor.groupTableViewBackgroundColor;
         self.delegate = self;
 
         if (date) {
@@ -137,7 +137,7 @@ using namespace AdaptiveCards;
                                                                                 target:self
                                                                                 action:@selector(dismiss)];
         UIToolbar *bar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, picker.frame.size.width, 44)];
-        [bar setBarStyle:UIBarStyleBlackOpaque];
+        [bar setBarStyle:UIBarStyleBlack];
 
         bar.items = @[ button ];
         button.tintColor = [UIColor blackColor];

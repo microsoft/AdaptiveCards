@@ -61,6 +61,11 @@
 				2293
 			]
 		},
+		"rtl": {
+			"type": "boolean?",
+			"description":  "When `true` content in this Adaptive Card should be presented right to left. When 'false' content in this Adaptive Card should be presented left to right. If unset, the default platform behavior will apply.",
+			"version": "1.5"
+		},
 		"speak": {
 			"type": "string",
 			"description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."

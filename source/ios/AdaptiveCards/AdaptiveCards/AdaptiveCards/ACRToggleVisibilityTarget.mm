@@ -8,6 +8,7 @@
 #import "ACRToggleVisibilityTarget.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACOVisibilityManager.h"
 #import "ACRRendererPrivate.h"
 #import "ACRView.h"
 #import "BaseActionElement.h"
@@ -34,38 +35,37 @@
 
 - (void)doSelectAction
 {
+    NSMutableSet<id<ACOIVisibilityManagerFacade>> *facades = [[NSMutableSet alloc] init];
     for (const auto &target : _action->GetTargetElements()) {
         NSString *hashString = [NSString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
         NSUInteger tag = hashString.hash;
         UIView *view = [_rootView viewWithTag:tag];
+        BOOL bHide = NO;
 
-        NSMutableString *hashStringForSeparator = [NSMutableString stringWithCString:target->GetElementId().c_str() encoding:NSUTF8StringEncoding];
-        [hashStringForSeparator appendString:@"-separator"];
-        NSUInteger separatorTag = hashStringForSeparator.hash;
-        UIView *separator = [_rootView viewWithTag:separatorTag];
+        id<ACOIVisibilityManagerFacade> facade = [_rootView.context retrieveVisiblityManagerWithTag:view.tag];
+        [facades addObject:facade];
 
         AdaptiveCards::IsVisible toggleEnum = target->GetIsVisible();
         if (toggleEnum == AdaptiveCards::IsVisibleToggle) {
-            BOOL isHidden = view.hidden;
-            view.hidden = !isHidden;
-            if (separator) {
-                separator.hidden = view.hidden;
-            }
+            BOOL isHidden = view.isHidden;
+            bHide = !isHidden;
         } else if (toggleEnum == AdaptiveCards::IsVisibleTrue) {
-            if (view.hidden == YES) {
-                view.hidden = NO;
-            }
-            if (separator && separator.hidden == YES) {
-                separator.hidden = NO;
-            }
+            bHide = NO;
         } else {
-            if (view.hidden == NO) {
-                view.hidden = YES;
-            }
-            if (separator && separator.hidden == NO) {
-                separator.hidden = YES;
+            bHide = YES;
+        }
+
+        if (facade) {
+            if (bHide) {
+                [facade hideView:view];
+            } else {
+                [facade unhideView:view];
             }
         }
+    }
+
+    for (id<ACOIVisibilityManagerFacade> viewToUpdateVisibility in facades) {
+        [viewToUpdateVisibility updatePaddingVisibility];
     }
 
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:[[ACOBaseActionElement alloc] initWithBaseActionElement:_action]];

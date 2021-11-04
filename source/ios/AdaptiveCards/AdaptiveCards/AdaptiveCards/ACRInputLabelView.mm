@@ -9,6 +9,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRInputLabelViewPrivate.h"
+#import "ACRQuickReplyView.h"
 #import "UtiliOS.h"
 
 @implementation ACRInputLabelView
@@ -111,7 +112,7 @@
         self.isAccessibilityElement = NO;
         inputView.accessibilityLabel = self.label.text;
         self.inputAccessibilityItem = inputView;
-
+        self.inputAccessibilityItem.accessibilityIdentifier = [NSString stringWithUTF8String:inputBlck->GetId().c_str()];
         if (inputView != accessibilityItem) {
             self.inputAccessibilityItem = accessibilityItem;
             self.inputAccessibilityItem.accessibilityLabel = inputView.accessibilityLabel;
@@ -119,6 +120,10 @@
 
         self.inputAccessibilityItem.isAccessibilityElement = YES;
         self.labelText = self.inputAccessibilityItem.accessibilityLabel;
+
+        if (HeightType::Stretch == inputBlck->GetHeight() && [inputView isKindOfClass:[ACRQuickReplyView class]]) {
+            [self.stack addArrangedSubview:[(ACRColumnView *)viewGroup addPaddingFor:self]];
+        }
 
         self.shouldGroupAccessibilityChildren = NO;
 
@@ -176,6 +181,7 @@
                 self.errorMessage.hidden = NO;
                 self.errorMessage.isAccessibilityElement = NO;
                 self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
+                self.inputAccessibilityItem.accessibilityIdentifier = self.id;
             }
         } else {
             if (self.hasErrorMessage) {

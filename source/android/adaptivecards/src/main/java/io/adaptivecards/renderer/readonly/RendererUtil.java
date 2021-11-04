@@ -7,8 +7,13 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import java.util.ArrayDeque;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -122,17 +127,27 @@ public class RendererUtil
     }
 
     // Class to replace ul and li tags
-    public static class UlTagHandler implements Html.TagHandler
+    public static class UlTagHandler implements Html.TagHandler, ContentHandler
     {
         private int tagNumber = 0;
         private boolean orderedList = false;
+        private ContentHandler defaultContentHandler = null;
+        private Editable text = null;
+        private ArrayDeque<Boolean> tagStatusQueue = new ArrayDeque<>();
 
-        @Override
-        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader)
+        private String getAttribute(String attributeName, Attributes attributes)
         {
+            return attributes.getValue(attributeName);
+        }
+
+        public boolean handleTag(boolean opening, String tag, Editable output, Attributes attributes)
+        {
+            boolean tagWasHandled = false;
+
             if (tag.equals("ul") && !opening)
             {
                 output.append("\n");
+                tagWasHandled = true;
             }
 
             if (tag.equals("listItem") && opening)
@@ -148,13 +163,121 @@ public class RendererUtil
                 {
                     output.append("\n• ");
                 }
+                tagWasHandled = true;
             }
 
             if (tag.equals("ol") && opening)
             {
                 orderedList = true;
-                tagNumber = 1;
+                String tagNumberString = getAttribute("start", attributes);
+
+                int retrievedTagNumber = 1;
+                if (tagNumberString != null)
+                {
+                    retrievedTagNumber = Integer.parseInt(tagNumberString);
+                }
+
+                tagNumber = retrievedTagNumber;
+                tagWasHandled = true;
             }
+
+            return tagWasHandled;
+        }
+
+        @Override
+        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader)
+        {
+            if (defaultContentHandler == null)
+            {
+                // save input text
+                text = output;
+
+                // store default XMLReader object
+                defaultContentHandler = xmlReader.getContentHandler();
+
+                // replace content handler with our own that forwards to calls to default when needed
+                xmlReader.setContentHandler(this);
+
+                // handle endElement() callback for <inject/> tag
+                tagStatusQueue.addLast(Boolean.FALSE);
+            }
+        }
+
+        // ContentHandler override methods
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
+        {
+            boolean isHandled = handleTag(true, localName, text, attributes);
+            tagStatusQueue.addLast(isHandled);
+
+            if (!isHandled)
+            {
+                defaultContentHandler.startElement(uri, localName, qName, attributes);
+            }
+        }
+
+        @Override
+        public void endElement(String uri, String localName, String qName) throws SAXException
+        {
+            if (!tagStatusQueue.removeLast())
+            {
+                defaultContentHandler.endElement(uri, localName, qName);
+            }
+
+            handleTag(false, localName, text, (Attributes)null);
+        }
+
+        @Override
+        public void setDocumentLocator(Locator locator)
+        {
+            defaultContentHandler.setDocumentLocator(locator);
+        }
+
+        @Override
+        public void startDocument() throws SAXException
+        {
+            defaultContentHandler.startDocument();
+        }
+
+        @Override
+        public void endDocument() throws SAXException
+        {
+            defaultContentHandler.endDocument();
+        }
+
+        @Override
+        public void startPrefixMapping(String prefix, String uri) throws SAXException
+        {
+            defaultContentHandler.startPrefixMapping(prefix, uri);
+        }
+
+        @Override
+        public void endPrefixMapping(String prefix) throws SAXException
+        {
+            defaultContentHandler.endPrefixMapping(prefix);
+        }
+
+        @Override
+        public void characters(char[] chars, int start, int length) throws SAXException {
+            defaultContentHandler.characters(chars, start, length);
+        }
+
+        @Override
+        public void ignorableWhitespace(char[] chars, int start, int length) throws SAXException
+        {
+            defaultContentHandler.ignorableWhitespace(chars, start, length);
+        }
+
+        @Override
+        public void processingInstruction(String target, String data) throws SAXException
+        {
+            defaultContentHandler.processingInstruction(target, data);
+        }
+
+        @Override
+        public void skippedEntity(String name) throws SAXException
+        {
+            defaultContentHandler.skippedEntity(name);
         }
     }
 

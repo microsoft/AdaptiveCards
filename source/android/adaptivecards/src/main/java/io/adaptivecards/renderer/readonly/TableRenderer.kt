@@ -41,7 +41,7 @@ object TableRenderer : BaseCardElementRenderer() {
                 clipToPadding = false
             }
             val rowStyle = ContainerRenderer.computeContainerStyle(row.GetStyle(), renderArgs.containerStyle)
-            ContainerRenderer.applyContainerStyle(rowStyle, rowLayout, hostConfig)
+            ContainerRenderer.applyContainerStyle(rowStyle, renderArgs.containerStyle, rowLayout, hostConfig)
 
             for (j in table.GetColumns().indices) {
                 val cell = row.GetCells().getOrNull(j) ?: break

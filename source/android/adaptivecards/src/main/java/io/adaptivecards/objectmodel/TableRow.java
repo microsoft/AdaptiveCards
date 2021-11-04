@@ -95,4 +95,14 @@ public class TableRow extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TableRow_SetStyle(swigCPtr, this, value.swigValue());
   }
 
+  public static TableRow DeserializeTableRowFromString(ParseContext context, String root) {
+    long cPtr = AdaptiveCardObjectModelJNI.TableRow_DeserializeTableRowFromString(ParseContext.getCPtr(context), context, root);
+    return (cPtr == 0) ? null : new TableRow(cPtr, true);
+  }
+
+  public static TableRow DeserializeTableRow(ParseContext context, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.TableRow_DeserializeTableRow(ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
+    return (cPtr == 0) ? null : new TableRow(cPtr, true);
+  }
+
 }

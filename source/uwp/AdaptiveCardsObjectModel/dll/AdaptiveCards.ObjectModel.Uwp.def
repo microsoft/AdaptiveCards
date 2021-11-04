@@ -1,0 +1,6 @@
+LIBRARY "AdaptiveCards.ObjectModel.Uwp.dll"
+
+EXPORTS
+    DllGetClassObject           PRIVATE
+    DllCanUnloadNow             PRIVATE
+    DllGetActivationFactory     PRIVATE

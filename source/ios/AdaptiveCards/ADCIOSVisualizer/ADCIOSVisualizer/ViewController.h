@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ACVTableViewController.h"
-#import <AdaptiveCards/ACFramework.h>
+#import <AdaptiveCards/AdaptiveCards.h>
 
 @interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer, UITextViewDelegate>
 
@@ -28,5 +28,7 @@
 @property ACRView *curView;
 @property UIScrollView *scrView;
 @property UITableView *chatWindow;
+
+@property UILabel *retrievedInputsTextView;
 
 @end

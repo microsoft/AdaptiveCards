@@ -48,5 +48,6 @@
     - "alert": presentable-ready alert controller. Client can just use its view controller to present this. Or client can grab "menuItems" to prepare its own overflow menu
  */
 - (BOOL)onDisplayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
-                    alertController:(UIAlertController *)alert;
+                    alertController:(UIAlertController *)alert
+                      additionalData:(NSDictionary *)additionalData;
 @end

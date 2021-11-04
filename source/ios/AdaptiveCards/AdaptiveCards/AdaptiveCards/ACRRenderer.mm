@@ -97,17 +97,6 @@ using namespace AdaptiveCards;
         [verticalView configureForSelectAction:acoSelectAction rootView:rootView];
     }
 
-    if (adaptiveCard->GetMinHeight() > 0) {
-        [NSLayoutConstraint constraintWithItem:rootView
-                                     attribute:NSLayoutAttributeHeight
-                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                        toItem:nil
-                                     attribute:NSLayoutAttributeNotAnAttribute
-                                    multiplier:1
-                                      constant:adaptiveCard->GetMinHeight()]
-            .active = YES;
-    }
-
     auto backgroundImageProperties = adaptiveCard->GetBackgroundImage();
     if ((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         ObserverActionBlock observerAction =
@@ -132,13 +121,12 @@ using namespace AdaptiveCards;
 
     [rootView addBaseCardElementListToConcurrentQueue:body registration:[ACRRegistration getInstance]];
 
-    UIView *leadingBlankSpace = nil;
-    if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
-        adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
-        leadingBlankSpace = [verticalView addPaddingSpace];
-    }
-
     [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
+
+    [verticalView configureLayoutAndVisibility:GetACRVerticalContentAlignment(adaptiveCard->GetVerticalContentAlignment())
+                                     minHeight:adaptiveCard->GetMinHeight()
+                                    heightType:GetACRHeight(adaptiveCard->GetHeight())
+                                          type:ACRColumn];
 
     [[rootView card] setInputs:inputs];
 
@@ -179,17 +167,16 @@ using namespace AdaptiveCards;
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
-    UIView *prevStretchableElem = nil, *curStretchableElem = nil;
+    UIView *renderedView = nil;
 
     auto firstelem = elems.begin();
 
     for (const auto &elem : elems) {
         ACRSeparator *separator = nil;
-        if (*firstelem != elem && curStretchableElem) {
+        if (*firstelem != elem && renderedView) {
             separator = [ACRSeparator renderSeparation:elem
                                           forSuperview:view
                                         withHostConfig:[config getHostConfig]];
-            configSeparatorVisibility(separator, elem);
         }
 
         ACRBaseCardElementRenderer *renderer =
@@ -207,47 +194,17 @@ using namespace AdaptiveCards;
                 @throw [ACOFallbackException fallbackException];
             }
 
-            curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+            renderedView = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
 
-            if (separator && !curStretchableElem) {
+            [view updateLayoutAndVisibilityOfRenderedView:renderedView acoElement:acoElem separator:separator rootView:rootView];
+
+            if (separator && !renderedView) {
                 [(ACRContentStackView *)view removeViewFromContentStackView:separator];
-            }
-
-            if (elem->GetHeight() == HeightType::Stretch && curStretchableElem) {
-                // vertical stretch works in the following way:
-                // an ui element that will be stretched will be contained in a new superview.
-                // additional trailing view is added to the superview at the bottom
-                // uistackview for ColumnSet will have distribution set to fill
-                // this ensures all columns will have same height, thus making the space available for
-                // stretch.
-                // when a smaller column is expanded, the trailing views in its subviews will fill up the
-                // space, by setting the heights of the superviews of the trailing views same as below,
-                // filler space occupies the same space.
-                if (prevStretchableElem) {
-                    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
-                                                                                        attribute:NSLayoutAttributeHeight
-                                                                                        relatedBy:NSLayoutRelationEqual
-                                                                                           toItem:prevStretchableElem
-                                                                                        attribute:NSLayoutAttributeHeight
-                                                                                       multiplier:1
-                                                                                         constant:0];
-                    heightConstraint.priority = UILayoutPriorityDefaultLow;
-                    heightConstraint.active = YES;
-                }
-
-                if ([view isKindOfClass:[ACRColumnView class]]) {
-                    ACRColumnView *columnView = (ACRColumnView *)view;
-                    columnView.hasStretchableView = YES;
-                }
-
-                prevStretchableElem = curStretchableElem;
             }
         } @catch (ACOFallbackException *e) {
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
     }
-
-    [view toggleVisibilityOfFirstView];
 
     return view;
 }

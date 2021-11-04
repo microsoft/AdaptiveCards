@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using AdaptiveCards.ObjectModel.Uwp;
+using AdaptiveCards.Rendering.Uwp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
-using System.Threading.Tasks;
-using UWPTestLibrary;
-using AdaptiveCards.Rendering.Uwp;
+using Windows.UI.Xaml;
 
 namespace UWPUnitTests
 {
@@ -32,10 +33,47 @@ namespace UWPUnitTests
 
             card.Body.Add(media);
 
-            var renderedCard = await RenderInDispatcher(card);
+            var renderedCard = await RenderOnUIThread(card);
 
             Assert.AreEqual(0, renderedCard.Warnings.Count);
             Assert.AreEqual(0, renderedCard.Errors.Count);
+        }
+
+
+        [TestMethod]
+        public async Task CardLevelRTLTest()
+        {
+            // Rtl = false
+            await VerifyCardLevelRTL(false);
+            // Rtl = true
+            await VerifyCardLevelRTL(true);
+            // Rtl unset
+            await VerifyCardLevelRTL();
+        }
+        private async Task VerifyCardLevelRTL(bool? expectedRtl = null)
+        {
+            AdaptiveCard card = new AdaptiveCard();
+
+            if (expectedRtl != null)
+            {
+                card.Rtl = expectedRtl;
+            }
+
+            AdaptiveTextBlock tb = new AdaptiveTextBlock();
+            tb.Text = "لكن لا بد أن أوضح لك أن كل هذه الأفكار.";
+            tb.Wrap = true;
+
+            card.Body.Add(tb);
+
+            await RunOnUIThread(() =>
+            {                
+                AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
+                
+                var renderedCard = renderer.RenderAdaptiveCard(card);
+                var rootGrid = renderedCard.FrameworkElement;
+
+                Assert.AreEqual(rootGrid.FlowDirection, expectedRtl.GetValueOrDefault() ? FlowDirection.RightToLeft : FlowDirection.LeftToRight);
+            });
         }
 
         [TestMethod]
@@ -59,7 +97,7 @@ namespace UWPUnitTests
             card.Body.Add(requiredTextInput);
 
             // Required inputs should have labels and error messages
-            var renderedCard = await RenderInDispatcher(card);
+            var renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(2, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.EmptyLabelInRequiredInput));
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
@@ -74,7 +112,7 @@ namespace UWPUnitTests
             card.Body.Add(regexTextInput);
 
             // Input with regex should have an error message
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(1, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
 
@@ -88,7 +126,7 @@ namespace UWPUnitTests
             card.Body.Add(maxLengthTextInput);
 
             // MaxLength is enforced by the control, so no error message is required. Don't expect any warnings.
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(0, renderedCard.Warnings.Count);
 
             // Create required date input
@@ -101,7 +139,7 @@ namespace UWPUnitTests
             card.Body.Add(requiredDateInput);
 
             // Required inputs should have labels and error messages
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(2, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.EmptyLabelInRequiredInput));
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
@@ -118,7 +156,7 @@ namespace UWPUnitTests
             card.Body.Add(minMaxDateInput);
 
             // min and max are enforced by the control, so no error message is required. Don't expect any warnings.
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(0, renderedCard.Warnings.Count);
 
             // Create required time input
@@ -131,7 +169,7 @@ namespace UWPUnitTests
             card.Body.Add(requiredTimeInput);
 
             // Required inputs should have labels and error messages
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(2, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.EmptyLabelInRequiredInput));
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
@@ -148,7 +186,7 @@ namespace UWPUnitTests
             card.Body.Add(minMaxTimeInput);
 
             // Date inputs with min and max should have an error message
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(1, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
 
@@ -162,7 +200,7 @@ namespace UWPUnitTests
             card.Body.Add(requiredNumberInput);
 
             // Required inputs should have labels and error messages
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(2, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.EmptyLabelInRequiredInput));
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
@@ -179,7 +217,7 @@ namespace UWPUnitTests
             card.Body.Add(minMaxNumberInput);
 
             // Number inputs with min and max should have an error message
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(1, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
 
@@ -194,7 +232,7 @@ namespace UWPUnitTests
             card.Body.Add(requiredCompactChoiceSetInput);
 
             // Required inputs should have labels and error messages
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(2, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.EmptyLabelInRequiredInput));
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
@@ -210,7 +248,7 @@ namespace UWPUnitTests
             card.Body.Add(requiredExpandedChoiceSetInput);
 
             // Required inputs should have labels and error messages
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(2, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.EmptyLabelInRequiredInput));
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
@@ -227,7 +265,7 @@ namespace UWPUnitTests
             card.Body.Add(requiredMultiSelectChoiceSetInput);
 
             // Required inputs should have labels and error messages
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(2, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.EmptyLabelInRequiredInput));
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
@@ -242,7 +280,7 @@ namespace UWPUnitTests
             card.Body.Add(requiredToggleInput);
 
             // Required inputs should have labels and error messages
-            renderedCard = await RenderInDispatcher(card);
+            renderedCard = await RenderOnUIThread(card);
             Assert.AreEqual(2, renderedCard.Warnings.Count);
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.EmptyLabelInRequiredInput));
             Assert.IsTrue(FindWarning(renderedCard, WarningStatusCode.MissingValidationErrorMessage));
@@ -261,21 +299,70 @@ namespace UWPUnitTests
             return false;
         }
 
-        public async Task<RenderedAdaptiveCard> RenderInDispatcher(AdaptiveCard card)
+        [TestMethod]
+        public async Task MaxActionsWarnings()
+        {
+            AdaptiveCard card = new AdaptiveCard
+            {
+                Version = "1.5"
+            };
+
+            AdaptiveSubmitAction action1 = new AdaptiveSubmitAction();
+            card.Actions.Add(action1);
+            AdaptiveSubmitAction action2 = new AdaptiveSubmitAction();
+            card.Actions.Add(action2);
+            AdaptiveSubmitAction action3 = new AdaptiveSubmitAction();
+            card.Actions.Add(action3);
+
+            AdaptiveHostConfig hostConfig = new AdaptiveHostConfig();
+            hostConfig.Actions.MaxActions = 2;
+
+            var renderedCard = await RenderOnUIThread(card, hostConfig, false);
+
+            Assert.AreEqual(1, renderedCard.Warnings.Count);
+            Assert.AreEqual(0, renderedCard.Errors.Count);
+
+            Assert.AreEqual("Some actions were not rendered due to exceeding the maximum number of actions allowed", renderedCard.Warnings[0].Message);
+
+            renderedCard = await RenderOnUIThread(card, hostConfig, true);
+
+            Assert.AreEqual(1, renderedCard.Warnings.Count);
+            Assert.AreEqual(0, renderedCard.Errors.Count);
+
+            Assert.AreEqual("Some actions were moved to an overflow menu due to exceeding the maximum number of actions allowed", renderedCard.Warnings[0].Message);
+
+        }
+
+        public async Task<RenderedAdaptiveCard> RenderOnUIThread(AdaptiveCard card, AdaptiveHostConfig hostConfig = null, bool overflowMaxActions = false)
         {
             RenderedAdaptiveCard renderedCard = null;
 
             // Need to move the test to the UI Thread to render the card
+            await RunOnUIThread(() =>
+            {
+                AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
+
+                if (hostConfig != null)
+                {
+                    renderer.HostConfig = hostConfig;
+                }
+
+                renderer.OverflowMaxActions = overflowMaxActions;
+                renderedCard = renderer.RenderAdaptiveCard(card);
+            });
+
+            return renderedCard;
+        }
+
+        public static async Task RunOnUIThread(Action action)
+        {
             var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
             Exception dispatcherException = null;
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 try
                 {
-
-                    var renderer = new AdaptiveCardRenderer();
-
-                    renderedCard = renderer.RenderAdaptiveCard(card);
+                    action();
                 }
                 catch (Exception e)
                 {
@@ -291,8 +378,6 @@ namespace UWPUnitTests
                 // Rethrow any exceptions that may have happened within the dispatcher
                 throw dispatcherException;
             }
-
-            return renderedCard;
         }
     }
 }

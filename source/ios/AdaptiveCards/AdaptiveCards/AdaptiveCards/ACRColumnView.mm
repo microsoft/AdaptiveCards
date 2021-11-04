@@ -5,9 +5,16 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRColumnView.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOFillerSpaceManager.h"
+#import "ACRView.h"
 
 @implementation ACRColumnView
+
+- (void)setColumnWidth:(NSString *)columnWidth
+{
+    _columnWidth = columnWidth;
+}
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
@@ -16,7 +23,6 @@
     self.isLastColumn = NO;
     self.inputHandlers = [[NSMutableArray<ACRIBaseInputHandler> alloc] init];
 }
-
 - (void)addArrangedSubview:(UIView *)view
 {
     [self configureWidthOfView:view];

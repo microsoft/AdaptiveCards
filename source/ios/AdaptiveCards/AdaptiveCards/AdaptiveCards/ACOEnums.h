@@ -5,6 +5,8 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 //
+#include <Foundation/Foundation.h>
+
 typedef NS_ENUM(NSInteger, ACRActionType) {
     ACRExecute = 1,
     ACROpenUrl,
@@ -81,8 +83,13 @@ typedef NS_ENUM(NSUInteger, ACRHorizontalAlignment) {
 };
 
 
-typedef NS_ENUM(NSUInteger, ACRVerticalAlignment) {
-    ACRVerticalTop = 0,
-    ACRVerticalCenter,
-    ACRVerticalBottom
+typedef NS_ENUM(NSUInteger, ACRVerticalContentAlignment) {
+    ACRVerticalContentAlignmentTop = 0,
+    ACRVerticalContentAlignmentCenter,
+    ACRVerticalContentAlignmentBottom
+};
+
+typedef NS_ENUM(NSUInteger, ACRHeightType) {
+    ACRHeightAuto = 0,
+    ACRHeightStretch
 };

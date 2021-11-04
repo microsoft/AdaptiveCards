@@ -124,6 +124,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <PackageCertificateKeyFile>PerfApp_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>1A89786FCE0556E7BB8A456028E5167BFA31A6B6</PackageCertificateThumbprint>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
@@ -228,6 +230,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCardsObjectModel\AdaptiveCardsObjectModel.vcxproj">
+      <Project>{29129512-a203-4718-bbed-edaf7f4a02cd}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Renderer\AdaptiveCardRenderer.vcxproj">
       <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
     </ProjectReference>

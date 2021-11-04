@@ -1,0 +1,19 @@
+{
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.5",
+	"body": [
+		{
+			"label": "Please enter your name below:",
+			"type": "Input.Text",
+			"id": "name"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit",
+			"tooltip": "Click here to add your name to the waiting list."
+		}
+	]
+}

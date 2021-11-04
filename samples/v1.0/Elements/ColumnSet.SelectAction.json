@@ -41,7 +41,8 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"url": "https://www.msn.com"
+				"url": "https://www.msn.com",
+				"tooltip": "View a map of Silver Star Mountain"
 			}
 		},
 		{
@@ -78,7 +79,8 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"url": "https://www.AdaptiveCards.io"
+				"url": "https://www.AdaptiveCards.io",
+				"tooltip": "Remodel your kitchen with our new cabinet styles!"
 			}
 		},
 		{
@@ -114,7 +116,8 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"url": "https://www.outlook.com"
+				"url": "https://www.outlook.com",
+				"tooltip": "Watch the newest episode today!"
 			}
 		}
 	],

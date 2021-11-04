@@ -13,10 +13,13 @@ module.exports = buildModel;
 function buildModel(options) {
 
     return new Promise(function (resolve, reject) {
+        const rawSchemaFile = fs.readFileSync(options.schema);
+        const rawSchema = JSON.parse(rawSchemaFile);
 
-        var rawSchema = JSON.parse(fs.readFileSync(options.schema));
-        var toc = yaml.safeLoad(fs.readFileSync(options.toc));
-        var rootDefinition = defaultValue(options.rootDefinition, null);
+        const tocFile = fs.readFileSync(options.toc);
+        const toc = yaml.load(tocFile);
+
+        const rootDefinition = defaultValue(options.rootDefinition, null);
 
         var items = [];
 
@@ -93,7 +96,7 @@ function buildModel(options) {
                         }
 
                         root.children.push(definition);
-                        
+
                     }
 
                     items.push(root);
@@ -129,14 +132,14 @@ function resolveInheritance(derived) {
 
 
 /**
-* @function mergeProperties
-* Recusively takes properties within a schema reference ("the base") and merges the contents of
-* those properties into the derived schema.
-* @param  {object} derived - The schema that contains a reference to the 'base' schema.
-* @param  {object} base - The schema that was being referenced by 'derived'.
-* @return {object} The merged schema with the 'base' schema reference removed since the contents
-* have been merged into 'derived'.
-*/
+ * @function mergeProperties
+ * Recusively takes properties within a schema reference ("the base") and merges the contents of
+ * those properties into the derived schema.
+ * @param  {object} derived - The schema that contains a reference to the 'base' schema.
+ * @param  {object} base - The schema that was being referenced by 'derived'.
+ * @return {object} The merged schema with the 'base' schema reference removed since the contents
+ * have been merged into 'derived'.
+ */
 function mergeProperties(derived, base) {
     for (var name in base) {
         if (base.hasOwnProperty(name)) {

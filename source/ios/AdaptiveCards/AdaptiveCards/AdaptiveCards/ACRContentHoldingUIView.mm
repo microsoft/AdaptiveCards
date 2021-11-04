@@ -41,6 +41,7 @@ using namespace AdaptiveCards;
         _imageView = imageView;
         _viewGroup = viewGroup;
         [self addSubview:imageView];
+        _contentView = imageView;
     }
 
     return self;
@@ -218,4 +219,5 @@ using namespace AdaptiveCards;
     constraint.active = YES;
     return constraint;
 }
+
 @end

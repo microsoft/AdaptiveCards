@@ -14,7 +14,7 @@ export class SchemaClass extends SchemaType {
 		super(sourceObj);
 
 		if (sourceObj.properties) {
-			for (var key in sourceObj.properties) {
+			for (let key in sourceObj.properties) {
 				this._properties.set(key, new SchemaProperty(key, sourceObj.properties[key]));
 			}
 		}

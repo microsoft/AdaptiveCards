@@ -18,6 +18,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <GenerateAppxPackageOnBuild>True</GenerateAppxPackageOnBuild>
     <PackageCertificateThumbprint>571260330A6015C25387D6A440FB552DF3964EA1</PackageCertificateThumbprint>
     <PackageCertificateKeyFile>UWPUITestApp_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
@@ -121,10 +122,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CardPresenter.xaml.cs">
+      <DependentUpon>CardPresenter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCaseListPresenter.xaml.cs">
+      <DependentUpon>TestCaseListPresenter.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -146,23 +153,71 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CardPresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TestCaseListPresenter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.11</Version>
     </PackageReference>
+    <PackageReference Include="MUXAppTestHelpers">
+      <Version>0.0.4</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\samples\v1.0\Scenarios\ActivityUpdate.json">
+      <Link>LinkedTestCards\ActivityUpdate.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\samples\v1.3\Elements\Input.Text.ErrorMessage.json">
+      <Link>LinkedTestCards\Input.Text.ErrorMessage.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\samples\ConsolidatedElementSamples\Input.Toggle.json">
+      <Link>LinkedTestCards\Input.Toggle.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\samples\v1.5\Test\PrimarySecondaryShowCards.json">
+      <Link>LinkedTestCards\PrimarySecondaryShowCards.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\samples\v1.5\Elements\Input.Text.PasswordStyle.json">
+      <Link>LinkedTestCards\Input.Text.PasswordStyle.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="UWPUITestApp_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCardsObjectModel\AdaptiveCardsObjectModel.vcxproj">
+      <Project>{29129512-a203-4718-bbed-edaf7f4a02cd}</Project>
+      <Name>AdaptiveCardsObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Renderer\AdaptiveCardRenderer.vcxproj">
+      <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
+      <Name>AdaptiveCardRenderer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
