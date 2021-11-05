@@ -64,9 +64,6 @@ export abstract class CardObject extends SerializableObject {
     protected _parent?: CardObject;
     protected _renderedElement?: HTMLElement;
 
-    // Propagating property to handle forbidden elements in carousel cards
-    protected _isInCarouselCard?: boolean;
-
     /**
      * Checks if this CardObject contains the given DOM Node.
      * @param node The DOM Node to look for.
