@@ -1030,7 +1030,7 @@ Color GenerateLHoverColor(const Color& originalColor)
 }
 
 
-DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
+winrt::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
 {
     // TODO: investigate the midnight bug. If the timezone will be ahead of UTC we can do -1 day when converting
     SYSTEMTIME systemTime = {(WORD)year, (WORD)month, 0, (WORD)day};
@@ -1044,16 +1044,20 @@ DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
     // Convert to ticks
     FILETIME fileTime;
     SystemTimeToFileTime(&systemTime, &fileTime);
-    DateTime dateTime{(INT64)fileTime.dwLowDateTime + (((INT64)fileTime.dwHighDateTime) << 32)};
+    //DateTime dateTime{(INT64)fileTime.dwLowDateTime + (((INT64)fileTime.dwHighDateTime) << 32)};
 
-    return dateTime;
+    // TODO: should we just get it from fileTime instead of from .UniversalTime?
+    //winrt::clock::from_FILETIME(fileTime);
+    //return winrt::clock::from_FILETIME(winrt::file_time{dateTime.UniversalTime});
+    // TODO: I can remove curly bracket, c++ will call the apropriate constructor anyway. This feels nicer :)
+    return winrt::clock::from_FILETIME({fileTime});
 }
 
 winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day)
 {
-    DateTime dateTime = GetDateTime(year, month, day);
+    /*DateTime dateTime = GetDateTime(year, month, day);
 
-    auto winrtDateTime = winrt::clock::from_FILETIME(winrt::file_time{dateTime.UniversalTime});
+    auto winrtDateTime = winrt::clock::from_FILETIME(winrt::file_time{dateTime.UniversalTime});*/
 
    /* ComPtr<IPropertyValueStatics> factory;
     RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &factory));
@@ -1066,7 +1070,7 @@ winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> Get
 
     *dateTimeReference = localDateTimeReference.Detach();*/
 
-    return winrtDateTime;
+    return GetDateTime(year, month, day);
 }
 
 winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(uint32_t year, uint32_t month, uint32_t day)
