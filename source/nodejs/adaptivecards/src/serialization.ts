@@ -83,6 +83,11 @@ export class Version {
         return 0;
     }
 
+    isVNext(): boolean
+    {
+        return isVersionLessOrEqual(Versions.latest, this);
+    }
+
     get label(): string {
         return this._label ? this._label : this.toString();
     }
@@ -109,7 +114,10 @@ export class Versions {
     static readonly v1_3 = new Version(1, 3);
     static readonly v1_4 = new Version(1, 4);
     static readonly v1_5 = new Version(1, 5);
-    static readonly latest = Versions.v1_5;
+    static readonly v1_6 = new Version(1, 6);
+    static readonly latest = Versions.v1_1;
+    // version over latest is considered "vNext feature"
+    static readonly maxSupportedVersion = Versions.v1_6;
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -479,6 +487,16 @@ export class ValueSetProperty extends PropertyDefinition {
                 if (sourceValue.toLowerCase() === versionedValue.value.toLowerCase()) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
+                    if (targetVersion.isVNext()) {
+                        context.logParseEvent(
+                            sender,
+                            Enums.ValidationEvent.VNextFetureUsed,
+                            Strings.errors.propertyIsVNextFeature(
+                                sourceValue,
+                                this.name,
+                                targetVersion.toString()));
+                    }
+
                     if (targetVersion.compareTo(context.targetVersion) <= 0) {
                         return versionedValue.value;
                     }
@@ -572,6 +590,16 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
             for (let versionedValue of this.values) {
                 if (versionedValue.value === enumValue) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
+
+                    if (targetVersion.isVNext()) {
+                        context.logParseEvent(
+                            sender,
+                            Enums.ValidationEvent.VNextFetureUsed,
+                            Strings.errors.propertyIsVNextFeature(
+                                sourceValue,
+                                this.name,
+                                targetVersion.toString()));
+                    }
 
                     if (targetVersion.compareTo(context.targetVersion) <= 0) {
                         return enumValue;
@@ -839,7 +867,7 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
-    static defaultMaxVersion: Version = Versions.latest;
+    static defaultMaxVersion: Version = Versions.maxSupportedVersion;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
@@ -917,6 +945,16 @@ export abstract class SerializableObject {
                     let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
 
                     if (source.hasOwnProperty(property.name)) {
+                        if (property.targetVersion.isVNext()) {
+                            context.logParseEvent(
+                                this,
+                                Enums.ValidationEvent.VNextFetureUsed,
+                                Strings.errors.propertyIsVNextFeature(
+                                    propertyValue,
+                                    property.name,
+                                    property.targetVersion.toString()));
+                        }
+
                         if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
                             propertyValue = property.parse(this, source, context);
                         }

@@ -177,7 +177,8 @@ export enum ValidationEvent {
     UnsupportedProperty,
     RequiredInputsShouldHaveLabel,
     RequiredInputsShouldHaveErrorMessage,
-    Other
+    Other,
+    VNextFetureUsed,
 }
 
 export enum ContainerFitStatus {

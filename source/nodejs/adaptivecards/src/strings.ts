@@ -32,7 +32,8 @@ export class Strings {
         processMarkdownEventRemoved: () => "The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.",
         elementAlreadyParented: () => "The element already belongs to another container.",
         actionAlreadyParented: () => "The action already belongs to another element.",
-        elementTypeNotStandalone: (typeName: string) => `Elements of type ${typeName} cannot be used as standalone elements.`
+        elementTypeNotStandalone: (typeName: string) => `Elements of type ${typeName} cannot be used as standalone elements.`,
+        propertyIsVNextFeature: (value: any, propertyName: string, supportedInVersion: string) => `Property "${propertyName}" with value "${value}" is supported in version ${supportedInVersion}, and it's vNext feature.`,
     };
     static readonly magicCodeInputCard = {
         tryAgain: () => "That didn't work... let's try again.",
