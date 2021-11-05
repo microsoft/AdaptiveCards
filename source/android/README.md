@@ -39,8 +39,11 @@ If you get a build failure similar to "UnsupportedClassVersionError 52.0" then f
     compile 'io.adaptivecards:adaptivecards-android:1.2.0'
 For more information, please go to http://search.maven.org/ and search adaptivecards-android
 
-# To test
-1. Follow steps 1 and 2 from [To compile](#to-compile) section
-2. Select "mobile" or "mobilechatapp" project
-3. Click "Run" button and select device (physical or virtual)
-    3.1 If running the mobile app, you must copy the samples to the device
+## Testing
+
+The Android Renderer currently supports the following type of testing:
+
+| Type | Project | Location |
+| --- | --- | --- |
+| Unit tests | adaptivecards | [Location](./adaptivecards/src/androidTest/java/io/adaptivecards/objectmodel/) | 
+| UI tests | uitestapp | [Location](./uitestapp/src/androidTest/java/io.adaptivecards.uitestapp) |
