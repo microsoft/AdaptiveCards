@@ -83,7 +83,7 @@ export class Version {
         return 0;
     }
 
-    isVNext(): boolean
+    isVNextFeature(): boolean
     {
         return isVersionLessOrEqual(Versions.latest, this);
     }
@@ -117,6 +117,8 @@ export class Versions {
     static readonly v1_6 = new Version(1, 6);
     static readonly latest = Versions.v1_1;
     // version over latest is considered "vNext feature"
+    // if latest or maxSupportedVersion is changed,
+    // don't forget to update getPreviewMarkDown in ac-typed-schema\src\markdown\generate-markdown.ts
     static readonly maxSupportedVersion = Versions.v1_6;
 }
 
@@ -487,7 +489,7 @@ export class ValueSetProperty extends PropertyDefinition {
                 if (sourceValue.toLowerCase() === versionedValue.value.toLowerCase()) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
-                    if (targetVersion.isVNext()) {
+                    if (targetVersion.isVNextFeature()) {
                         context.logParseEvent(
                             sender,
                             Enums.ValidationEvent.VNextFetureUsed,
@@ -591,7 +593,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                 if (versionedValue.value === enumValue) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
-                    if (targetVersion.isVNext()) {
+                    if (targetVersion.isVNextFeature()) {
                         context.logParseEvent(
                             sender,
                             Enums.ValidationEvent.VNextFetureUsed,
@@ -945,7 +947,7 @@ export abstract class SerializableObject {
                     let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
 
                     if (source.hasOwnProperty(property.name)) {
-                        if (property.targetVersion.isVNext()) {
+                        if (property.targetVersion.isVNextFeature()) {
                             context.logParseEvent(
                                 this,
                                 Enums.ValidationEvent.VNextFetureUsed,

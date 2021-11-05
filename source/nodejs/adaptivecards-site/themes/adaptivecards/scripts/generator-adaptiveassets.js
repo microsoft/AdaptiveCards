@@ -76,6 +76,11 @@ var customAssets = [
         // site JS
         path: "themes/adaptivecards/source/js/*.js",
 		dest: function (p) { return "js/" + path.basename(p) }
+	},
+	{
+        // site /explorer assets
+        path: "themes/adaptivecards/source/explorer/preview.png",
+		dest: function (p) { return "explorer/preview.png" }
 	}
 ];
 

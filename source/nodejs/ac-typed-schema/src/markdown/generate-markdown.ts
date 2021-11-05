@@ -13,6 +13,14 @@ import * as console from "console";
 import * as mdTable from "markdown-table";
 import * as style from "./style";
 
+const getPreviewMarkDown = (version: string) => {
+	if (version === '1.1') {
+		return '![Preview Feature](preview.png "This is a vNext preview feature.")';
+	} else {
+		return '';
+	}
+}
+
 class MarkdownConfig {
     private _locale : string = "en";
     private _i18n : I18n;
@@ -29,7 +37,7 @@ class MarkdownConfig {
     get i18n() {
         return this._i18n;
     }
-    
+
     get locale() {
         return this._locale;
     }
@@ -47,7 +55,7 @@ const __ = markdownConfig.i18n.__;
 export { __ };
 
 export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes, autoLink, includeVersion, elementVersion) {
-	var md = '';
+	var md = getPreviewMarkDown(elementVersion);
 
 	var properties: Map<string, SchemaProperty> = classDefinition.getAllProperties();
 	if (properties !== undefined && properties.size > 0) {
@@ -94,7 +102,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 			var summary = getPropertySummary(property, knownTypes, autoLink, elementVersion);
 
 			var formattedProperty: any = {
-				Property: style.propertyNameSummary(name),
+				Property: style.propertyNameSummary(name) + getPreviewMarkDown(summary.version),
 				Type: summary.formattedType,
 				Required: summary.required,
 				Description: __(summary.description)
