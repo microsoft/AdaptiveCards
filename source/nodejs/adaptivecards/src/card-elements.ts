@@ -19,16 +19,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-Swiper.use([
-    Navigation,
-    Pagination,
-    Scrollbar,
-    A11y,
-    History,
-    Keyboard,
-    Autoplay
-]);
-
 export function renderSeparation(hostConfig: HostConfig, separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement | undefined {
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
         let separator = document.createElement("div");
@@ -4293,6 +4283,11 @@ export abstract class SubmitActionBase extends Action {
         this._originalData = value;
         this._isPrepared = false;
     }
+
+    get currentCarouselPageId(): string | undefined {
+        let root = this.getRootObject() as Container;
+        return root.getCurrentCarouselId();
+    }
 }
 
 export class SubmitAction extends SubmitActionBase {
@@ -5872,6 +5867,15 @@ export class Container extends ContainerBase {
     private initializeCarouselControl(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement, displayProperties: Display) : void {
          const swiperOptions: SwiperOptions = {
             loop: true,
+            modules: [
+                Navigation,
+                Pagination,
+                Scrollbar,
+                A11y,
+                History,
+                Keyboard,
+                Autoplay
+            ],
             autoplay: {
                 delay: displayProperties.timerProperty,
                 pauseOnMouseEnter: true
@@ -6224,6 +6228,14 @@ export class Container extends ContainerBase {
         }
 
         return result;
+    }
+
+    getCurrentCarouselId(): string | undefined {
+         if (this._swiper?.slides?.length) {
+             let activeSlide = this._swiper.slides[this._swiper.activeIndex] as HTMLElement;
+            return activeSlide?.id;
+        }
+        return undefined;
     }
 
     get padding(): PaddingDefinition | undefined {
