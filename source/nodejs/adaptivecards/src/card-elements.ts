@@ -5796,6 +5796,10 @@ export class Container extends ContainerBase {
     protected carouselRender(displayProperties: Display): HTMLElement | undefined {
         let cardLevelContainer: HTMLElement = document.createElement("div");
 
+        let containerForAdorners: HTMLElement = document.createElement("div");
+        containerForAdorners.className = this.hostConfig.makeCssClassName("ac-carousel-container");
+        cardLevelContainer.appendChild(containerForAdorners);
+
         let swiperContainer: HTMLElement = document.createElement("div");
         swiperContainer.className = this.hostConfig.makeCssClassName("swiper", "ac-carousel");
 
@@ -5818,17 +5822,17 @@ export class Container extends ContainerBase {
             swiperWrapper.style.minHeight = '-webkit-min-content';
         }
 
-        let prevElementDiv: HTMLElement = document.createElement("button");
+        let prevElementDiv: HTMLElement = document.createElement("id");
         prevElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-prev", "ac-carousel-left");
-        swiperContainer.appendChild(prevElementDiv);
+        containerForAdorners.appendChild(prevElementDiv);
 
-        let nextElementDiv: HTMLElement = document.createElement("button");
+        let nextElementDiv: HTMLElement = document.createElement("id");
         nextElementDiv.className = this.hostConfig.makeCssClassName("swiper-button-next", "ac-carousel-right");
-        swiperContainer.appendChild(nextElementDiv);
+        containerForAdorners.appendChild(nextElementDiv);
 
         let pagination: HTMLElement = document.createElement("div");
         pagination.className = this.hostConfig.makeCssClassName("swiper-pagination", "ac-carousel-pagination");
-        swiperContainer.appendChild(pagination);
+        containerForAdorners.appendChild(pagination);
 
         const requestedNumberOfPages : number =  Math.min(this._items.length, this.hostConfig.carousel.maxCarouselPages);
         if (this._items.length > this.hostConfig.carousel.maxCarouselPages) {
@@ -5839,6 +5843,7 @@ export class Container extends ContainerBase {
             for (let i = 0; i < requestedNumberOfPages; i++) {
                 let item = this._items[i];
                 let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
+                renderedItem?.classList.add("ac-carousel-page");
 
                 if (renderedItem) {
                     Utils.appendChild(swiperWrapper, renderedItem);
@@ -5849,7 +5854,7 @@ export class Container extends ContainerBase {
 
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
-        cardLevelContainer.appendChild(swiperContainer);
+        containerForAdorners.appendChild(swiperContainer);
 
         this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination, displayProperties);
 
