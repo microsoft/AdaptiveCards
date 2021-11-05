@@ -5913,11 +5913,11 @@ export class Container extends ContainerBase {
         // While the 'pauseOnMouseEnter' option should resume autoplay on
         // mouse exit it doesn't do it, so adding custom events to handle it
         swiperContainer.onmouseenter = function(){
-            swiper.autoplay.stop();
+            swiper.autoplay?.stop();
         };
 
         swiperContainer.onmouseleave = function(){
-            swiper.autoplay.start();
+            swiper.autoplay?.start();
         };
 
         this._swiper = swiper;

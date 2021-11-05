@@ -65,4 +65,9 @@ export class TestUtils {
 
         return textInput;
     }
+
+    // Await for x miliseconds
+    async delay(miliseconds: number): Promise<void> {
+        return new Promise(res => setTimeout(res, miliseconds));
+    }
 }
