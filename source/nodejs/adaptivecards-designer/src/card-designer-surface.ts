@@ -339,7 +339,12 @@ export class CardDesignerSurface {
                 if (verb) {
                     message += ` verb: "${verb}"`;
                 }
-                
+		
+                let carouselPageId = (<Adaptive.ExecuteAction>action).currentCarouselPageId;
+                if (carouselPageId) {
+                    message += `\ncarousel page id: "${carouselPageId}"`;
+                }
+
                 const url = (<Adaptive.OpenUrlAction>action).url;
                 if (url) {
                     message += `\nurl: "${url}"`;
