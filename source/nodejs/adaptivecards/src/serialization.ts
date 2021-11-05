@@ -115,7 +115,7 @@ export class Versions {
     static readonly v1_4 = new Version(1, 4);
     static readonly v1_5 = new Version(1, 5);
     static readonly v1_6 = new Version(1, 6);
-    static readonly latest = Versions.v1_1;
+    static readonly latest = Versions.v1_5;
     // version over latest is considered "vNext feature"
     // if latest or maxSupportedVersion is changed,
     // don't forget to update getPreviewMarkDown in ac-typed-schema\src\markdown\generate-markdown.ts
