@@ -5873,7 +5873,8 @@ export class Container extends ContainerBase {
          const swiperOptions: SwiperOptions = {
             loop: true,
             autoplay: {
-                delay: displayProperties.timerProperty
+                delay: displayProperties.timerProperty,
+                pauseOnMouseEnter: true
             },
             pagination: {
                 el: paginationElement,
@@ -5890,9 +5891,21 @@ export class Container extends ContainerBase {
                 enabled: true,
                 onlyInViewport: true
             }
-         };
+        };
 
-         this._swiper = new Swiper(swiperContainer, swiperOptions);
+        let swiper: Swiper = new Swiper(swiperContainer, swiperOptions);
+
+        // While the 'pauseOnMouseEnter' option should resume autoplay on
+        // mouse exit it doesn't do it, so adding custom events to handle it
+        swiperContainer.onmouseenter = function(){
+            swiper.autoplay.stop();
+        };
+
+        swiperContainer.onmouseleave = function(){
+            swiper.autoplay.start();
+        };
+
+        this._swiper = swiper;
     }
 
     protected internalRender(): HTMLElement | undefined {
