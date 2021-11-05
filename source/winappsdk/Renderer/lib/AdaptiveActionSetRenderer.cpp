@@ -23,22 +23,30 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                                WinUI3::AdaptiveRenderContext const& renderContext,
                                                WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        auto hostConfig = renderContext.HostConfig();
-
-        if (!::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
+        try
         {
-            renderContext.AddWarning(ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
-                                     L"ActionSet was stripped from card because interactivity is not supported");
+            auto hostConfig = renderContext.HostConfig();
 
-            return nullptr;
+            if (!::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
+            {
+                renderContext.AddWarning(ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
+                                         L"ActionSet was stripped from card because interactivity is not supported");
+
+                return nullptr;
+            }
+            else
+            {
+                auto adaptiveActionSet = cardElement.as<ObjectModel::WinUI3::AdaptiveActionSet>();
+                auto actions = adaptiveActionSet.Actions();
+
+                return ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::BuildActionSetHelper(
+                    nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
+            }
         }
-        else
+        catch(winrt::hresult_error const& ex)
         {
-            auto adaptiveActionSet = cardElement.as<ObjectModel::WinUI3::AdaptiveActionSet>();
-            auto actions = adaptiveActionSet.Actions();
-
-            return ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::BuildActionSetHelper(
-                nullptr, adaptiveActionSet, actions, renderContext, renderArgs);
+            // TODO: what do we do here?
+            return nullptr;
         }
     }
 }

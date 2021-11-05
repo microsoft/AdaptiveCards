@@ -493,10 +493,13 @@ ABI::Windows::UI::Color GenerateLHoverColor(const ABI::Windows::UI::Color& origi
 
 ABI::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
 
-HRESULT GetDateTimeReference(unsigned int year,
-                             unsigned int month,
-                             unsigned int day,
-                             _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
+//HRESULT GetDateTimeReference(unsigned int year,
+//                             unsigned int month,
+//                             unsigned int day,
+//                             _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
+winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(unsigned int year,
+                                                                                                  unsigned int month,
+                                                                                                  unsigned int day);
 
 HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* textElement,
                         _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement** copiedTextElement);

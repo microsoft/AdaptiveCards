@@ -1029,14 +1029,17 @@ Color GenerateLHoverColor(const Color& originalColor)
     return hoverColor;
 }
 
+
 DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
 {
+    // TODO: investigate the midnight bug. If the timezone will be ahead of UTC we can do -1 day when converting
     SYSTEMTIME systemTime = {(WORD)year, (WORD)month, 0, (WORD)day};
-
+    
     // Convert to UTC
     TIME_ZONE_INFORMATION timeZone;
     GetTimeZoneInformation(&timeZone);
     TzSpecificLocalTimeToSystemTime(&timeZone, &systemTime, &systemTime);
+    
 
     // Convert to ticks
     FILETIME fileTime;
@@ -1046,7 +1049,27 @@ DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
     return dateTime;
 }
 
-HRESULT GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day, _COM_Outptr_ IReference<DateTime>** dateTimeReference)
+winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day)
+{
+    DateTime dateTime = GetDateTime(year, month, day);
+
+    auto winrtDateTime = winrt::clock::from_FILETIME(winrt::file_time{dateTime.UniversalTime});
+
+   /* ComPtr<IPropertyValueStatics> factory;
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &factory));
+
+    ComPtr<IInspectable> inspectable;
+    RETURN_IF_FAILED(factory->CreateDateTime(dateTime, &inspectable));
+
+    ComPtr<IReference<DateTime>> localDateTimeReference;
+    RETURN_IF_FAILED(inspectable.As(&localDateTimeReference));
+
+    *dateTimeReference = localDateTimeReference.Detach();*/
+
+    return winrtDateTime;
+}
+
+winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(uint32_t year, uint32_t month, uint32_t day)
 {
     DateTime dateTime = GetDateTime(year, month, day);
 

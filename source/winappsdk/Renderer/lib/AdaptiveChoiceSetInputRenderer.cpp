@@ -24,34 +24,43 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
         winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs)
     {
-        auto hostConfig = renderContext.HostConfig();
-        if (!::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
+
+        try
         {
-            renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
-                                     L"ChoiceSet was stripped from card because interactivity is not supported");
+            auto hostConfig = renderContext.HostConfig();
+            if (!::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
+            {
+                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                                         L"ChoiceSet was stripped from card because interactivity is not supported");
+            }
+
+            rtom::ChoiceSetStyle choiceSetStyle;
+
+            bool isMultiSelect;
+
+            if (const auto adaptiveChoiceSetInput = cardElement.try_as<rtom::AdaptiveChoiceSetInput>())
+            {
+                choiceSetStyle = adaptiveChoiceSetInput.ChoiceSetStyle();
+                isMultiSelect = adaptiveChoiceSetInput.IsMultiSelect();
+
+                if (choiceSetStyle == rtom::ChoiceSetStyle::Compact && !isMultiSelect)
+                {
+                    return BuildCompactChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput);
+                }
+                else if (choiceSetStyle == rtom::ChoiceSetStyle::Filtered)
+                {
+                    return BuildFilteredChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput);
+                }
+                else
+                {
+                    return BuildExpandedChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput, isMultiSelect);
+                }
+            }
         }
-
-        rtom::ChoiceSetStyle choiceSetStyle;
-
-        bool isMultiSelect;
-
-        if (const auto adaptiveChoiceSetInput = cardElement.try_as<rtom::AdaptiveChoiceSetInput>())
+        catch (winrt::hresult_error const& ex)
         {
-            choiceSetStyle = adaptiveChoiceSetInput.ChoiceSetStyle();
-            isMultiSelect = adaptiveChoiceSetInput.IsMultiSelect();
-
-            if (choiceSetStyle == rtom::ChoiceSetStyle::Compact && !isMultiSelect)
-            {
-                return BuildCompactChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput);
-            }
-            else if (choiceSetStyle == rtom::ChoiceSetStyle::Filtered)
-            {
-                return BuildFilteredChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput);
-            }
-            else
-            {
-                return BuildExpandedChoiceSetInput(renderContext, renderArgs, adaptiveChoiceSetInput, isMultiSelect);
-            }
+            // TODO: what do we do here?
+            return nullptr;
         }
         return nullptr;
     }
