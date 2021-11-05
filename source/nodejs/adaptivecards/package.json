@@ -37,6 +37,8 @@
 	},
 	"devDependencies": {
 		"concurrently": "^5.2.0",
+		"jest": "^26.1.0",
+		"swiper": "^7.2.0",
 		"typedoc": "^0.22.5",
 		"typedoc-plugin-markdown": "^3.11.2"
 	},
@@ -66,7 +68,5 @@
 			"json"
 		]
 	},
-	"dependencies": {
-		"swiper": "^7.0.9"
-	}
+	"dependencies": {}
 }
