@@ -347,7 +347,7 @@ a.ac-anchor:visited:active {
 
 .ac-carousel-container {
     position: relative;
-    padding-left: 50px !important;
-    padding-right: 50px !important;
-    padding-bottom: 50px !important;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
 }
