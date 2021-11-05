@@ -3,7 +3,8 @@
 	"type": "AdaptiveCard",
 	"version": "1.6",
 	"display": {
-	  "type": "carousel"
+	  "type": "carousel",
+	  "timer": 5000
 	},
 	"body": [
 	{
