@@ -119,9 +119,9 @@ describe('carousels', () => {
 
             let carouselElement = theCard.getItemAt(0) as Carousel;
             expect(carouselElement).toBeDefined();
-            expect(carouselElement.getPageCount()).toEqual(1);
+            expect(carouselElement.getItemCount()).toEqual(1);
 
-            let carouselPage = carouselElement.getPageAt(0);
+            let carouselPage = carouselElement.getItemAt(0) as CarouselPage;
             expect(carouselPage).toBeDefined();
             expect(carouselPage.getItemCount()).toBe(0);
 

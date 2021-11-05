@@ -101,19 +101,11 @@ export class Carousel extends ContainerBase {
     }
 
     getItemCount(): number {
-        return this.getPageCount();
-    }
-
-    getPageCount(): number {
         return this._pages.length;
     }
 
-    getPageAt(index: number): CarouselPage {
-        return this._pages[index];
-    }
-
     getItemAt(index: number): CardElement {
-        return this.getPageAt(index);
+        return this._pages[index];
     }
 
     removeItem(item: CardElement): boolean {
