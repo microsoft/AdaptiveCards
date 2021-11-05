@@ -279,6 +279,10 @@ a.ac-anchor:visited:active {
     background: #007aff !important;
 }
 
+.swiper-slide.swiper-slide-active.ac-carousel-page {
+    visibility: visible;
+}
+
 .swiper-slide.ac-carousel-page {
     text-align: center;
     font-size: 18px;
@@ -297,6 +301,8 @@ a.ac-anchor:visited:active {
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
+
+    visibility: hidden;
 }
 
 .swiper-button-next.ac-carousel-right::after {
