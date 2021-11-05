@@ -1,0 +1,298 @@
+.berlin-outer-container {
+    border: 1px solid #E6E6E6;
+    padding: 1px 1px;
+    background-color: #201E1F;
+    width: 300px;
+    border-radius: 4px;
+    color: white;
+    position: relative;
+}
+
+.berlin-header {
+    height: 40px;
+    width: 300px;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    justify-content: space-around;
+    border: 1px dashed green
+}
+
+.berlin-large-container {
+    width: 304px;
+    height: 420px;
+}
+
+.berlin-medium-container {
+    width: 304px;
+    height: 312px;
+}
+
+.berlin-small-container {
+    width: 304px;
+    height: 204px;
+}
+
+
+/* berlin-large/medium/small-container  4px(top+bottom padding+margin) berlin-outer-container border*/
+
+.berlin-large-card {
+    height: 416px;
+}
+
+.berlin-medium-card {
+    height: 308px;
+}
+
+.berlin-small-card {
+    height: 200px;
+}
+
+.ac-adaptiveCard {
+    border: 0px;
+    padding: 48px 24px 24px 24px !important;
+    border-radius: 4px !important;
+}
+
+.ac-input {
+    color: rgba(255, 255, 255, 1);
+    font-size: 14px;
+}
+
+.ac-input.ac-choiceSetInput-expanded.ac-input-validation-failed,
+.ac-input.ac-choiceSetInput-multiSelect.ac-input-validation-failed,
+.ac-input.ac-toggleInput.ac-input-validation-failed {
+    outline: rgba(255, 153, 164, 1);
+}
+
+.ac-input.ac-choiceSetInput-expanded,
+.ac-input.ac-choiceSetInput-multiSelect {
+    line-height: 22px;
+}
+
+.ac-input.ac-input-required {}
+
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact {
+    background: linear-gradient(rgba(255, 255, 255, 0.0605), rgba(255, 255, 255, 0.0605)) padding-box, linear-gradient(180deg, rgba(255, 255, 255, 0.093) 0%, rgba(255, 255, 255, 0.0698) 9.57%) border-box;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    display: inline-block;
+    height: 30px;
+    outline: none;
+    padding: 4px 11px;
+}
+
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact:disabled {
+    background: rgba(255, 255, 255, 0.0419);
+    border-color: rgba(255, 255, 255, 0.5442);
+}
+
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact:focus {
+    outline: 2px solid rgba(255, 255, 255, 1);
+}
+
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact:hover {
+    background: linear-gradient(rgba(255, 255, 255, 0.0837), rgba(255, 255, 255, 0.0837)) padding-box, linear-gradient(180deg, rgba(255, 255, 255, 0.093) 0%, rgba(255, 255, 255, 0.0698) 9.57%) border-box;
+}
+
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact.ac-input-validation-failed {
+    border: rgba(255, 153, 164, 1);
+}
+
+.ac-input.ac-dateInput,
+.ac-input.ac-timeInput,
+.ac-input.ac-textInput,
+.ac-input.ac-numberInput {
+    background: linear-gradient(rgba(255, 255, 255, 0.0605), rgba(255, 255, 255, 0.0605)) padding-box, linear-gradient(180deg, rgba(255, 255, 255, 0.08) 99.98%, rgba(255, 255, 255, 0.5442) 96.89%, #989898 96.9%) border-box;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    display: inline-block;
+    height: 30px;
+    padding: 4px 11px;
+}
+
+.ac-input.ac-dateInput:hover,
+.ac-input.ac-timeInput:hover,
+.ac-input.ac-textInput:hover,
+.ac-input.ac-numberInput:hover {
+    background: linear-gradient(rgba(255, 255, 255, 0.0837), rgba(255, 255, 255, 0.0837)) padding-box, linear-gradient(180deg, rgba(255, 255, 255, 0.08) 99.98%, rgba(255, 255, 255, 0.5442) 96.89%, #989898 96.9%) border-box;
+}
+
+.ac-input.ac-dateInput:focus,
+.ac-input.ac-timeInput:focus,
+.ac-input.ac-textInput:focus,
+.ac-input.ac-numberInput:focus,
+.ac-input.ac-dateInput:focus-visible,
+.ac-input.ac-timeInput:focus-visible,
+.ac-input.ac-textInput:focus-visible,
+.ac-input.ac-numberInput:focus-visible,
+.ac-input.ac-dateInput:active,
+.ac-input.ac-timeInput:active,
+.ac-input.ac-textInput:active,
+.ac-input.ac-numberInput:active {
+    border-bottom: 2px solid rgba(76, 194, 255, 1);
+    border-radius: 4px;
+    background: linear-gradient(rgba(30, 30, 30, 0.7), rgba(30, 30, 30, 0.7)) padding-box, linear-gradient(180deg, rgba(255, 255, 255, 0.08) 96.89%, #4CC2FF 96.9%) border-box;
+    outline: none;
+    --focus-outline-color: none;
+}
+
+.ac-input.ac-dateInput.ac-input-validation-failed,
+.ac-input.ac-timeInput.ac-input-validation-failed,
+.ac-input.ac-textInput.ac-input-validation-failed,
+.ac-input.ac-numberInput.ac-input-validation-failed {
+    border: rgba(255, 153, 164, 1);
+}
+
+.ac-input.ac-dateInput:disabled,
+.ac-input.ac-timeInput:disabled,
+.ac-input.ac-textInput:disabled,
+.ac-input.ac-numberInput:disabled {
+    background: rgba(255, 255, 255, 0.0419);
+    border-color: rgba(255, 255, 255, 0.5442);
+}
+
+input[type='checkbox'] {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid;
+    border-color: rgba(255, 255, 255, 0.5442);
+    border-radius: 3px;
+    box-shadow: none;
+    font-size: 12px;
+    height: 18px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    text-align: center;
+    width: 18px;
+}
+
+input[type='checkbox']:checked {
+    background-color: rgba(76, 194, 255, 1);
+    border-color: rgba(76, 194, 255, 1);
+}
+
+input[type='checkbox']:checked:after {
+    content: '✔';
+    color: rgba(0, 0, 0, 1);
+}
+
+input[type='checkbox']:checked:hover {
+    background-color: rgba(76, 194, 255, 0.9);
+    border-color: rgba(76, 194, 255, 0.9);
+}
+
+input[type='checkbox']:hover {
+    background-color: rgba(255, 255, 255, 0.0419);
+    border-color: rgba(255, 255, 255, 0.5442);
+}
+
+input[type='radio'] {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid;
+    border-color: rgba(255, 255, 255, 0.5442);
+    border-radius: 999px;
+    box-shadow: none;
+    font-size: 12px;
+    height: 18px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    text-align: center;
+    width: 18px;
+}
+
+input[type='radio']:checked {
+    background-color: rgba(76, 194, 255, 1);
+    border-color: rgba(76, 194, 255, 1);
+}
+
+input[type='radio']:checked:after {
+    content: '•';
+    font-size: 14px;
+    color: rgba(0, 0, 0, 1);
+}
+
+input[type='radio']:checked:hover {
+    background-color: rgba(76, 194, 255, 0.9);
+    border-color: rgba(76, 194, 255, 0.9);
+}
+
+input[type='radio']:hover {
+    background-color: rgba(255, 255, 255, 0.0419);
+    border-color: rgba(255, 255, 255, 0.5442);
+}
+
+.ac-pushButton {
+    background: rgba(76, 194, 255, 1);
+    border-radius: 4px;
+    border-width: 0px;
+    box-shadow: none;
+    color: rgba(0, 0, 0, 1);
+    cursor: pointer;
+    height: 32px;
+    padding: 5px 12px 7px;
+    width: 120px;
+}
+
+.ac-pushButton:active {
+    background: rgba(76, 194, 255, 0.8);
+}
+
+.ac-pushButton:focus {
+    border-color: rgba(255, 255, 255, 1);
+}
+
+.ac-pushButton:hover {
+    background: rgba(76, 194, 255, 0.9);
+}
+
+.ac-pushButton-disabled {
+    background: rgba(255, 255, 255, 0.1581);
+    border-radius: 4px;
+    border-width: 0px;
+    box-shadow: none;
+    color: rgba(0, 0, 0, 1);
+    cursor: pointer;
+    height: 32px;
+    padding: 5px 12px 7px;
+    width: 120px;
+}
+
+a.ac-anchor {
+    color: rgba(153, 235, 255, 1);
+    text-decoration: underline;
+}
+
+a.ac-anchor:active {
+    color: rgba(76, 194, 255, 0.8);
+    text-decoration: none;
+}
+
+a.ac-anchor:focus,
+a.ac-anchor:focus-visible {
+    border-radius: 4px;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 1);
+    outline: 1px solid transparent;
+}
+
+a.ac-anchor:hover {
+    color: rgba(153, 235, 255, 1);
+    text-decoration: none;
+}
+
+.ac-container.ac-selectable,
+.ac-columnSet.ac-selectable {
+    background-blend-mode: lighten;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.ac-container.ac-selectable:active,
+.ac-columnSet.ac-selectable:active {
+    background-color: rgba(255, 255, 255, 0.0419);
+}
+
+.ac-container.ac-selectable:hover,
+.ac-columnSet.ac-selectable:hover {
+    background-color: rgba(255, 255, 255, 0.0605);
+}
