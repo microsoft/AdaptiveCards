@@ -5880,13 +5880,8 @@ export class Container extends ContainerBase {
                 Scrollbar,
                 A11y,
                 History,
-                Keyboard,
-                Autoplay
+                Keyboard
             ],
-            autoplay: {
-                delay: displayProperties.timerProperty,
-                pauseOnMouseEnter: true
-            },
             pagination: {
                 el: paginationElement,
                 clickable : true
@@ -5903,6 +5898,15 @@ export class Container extends ContainerBase {
                 onlyInViewport: true
             }
         };
+
+        if (displayProperties.timerProperty !== undefined) {
+            swiperOptions.modules?.push(Autoplay);
+
+            swiperOptions.autoplay = {
+                delay: displayProperties.timerProperty,
+                pauseOnMouseEnter: true
+            };
+        }
 
         let swiper: Swiper = new Swiper(swiperContainer, swiperOptions);
 

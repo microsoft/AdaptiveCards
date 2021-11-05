@@ -7,7 +7,9 @@ const v13TestCases: string[] = ['Elements/Input.Text.ErrorMessage'];
 const v14TestCases: string[] = [];
 const v15TestCases: string[] = [];
 const v16TestCases: string[] = [
-    'Elements/Carousel', 'Elements/Carousel.ScenarioCards',
+    'Elements/Carousel',
+    'Elements/Carousel.ScenarioCards',
+    'Elements/Carousel.ScenarioCards.Timer',
     'Tests/Carousel.HostConfig'
 ];
 

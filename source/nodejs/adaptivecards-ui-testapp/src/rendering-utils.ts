@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import {getTestCasesList} from "./file-retriever-utils";
-import { Action, AdaptiveCard, HostConfig, IMarkdownProcessingResult, Input } from "adaptivecards";
+import { Action, AdaptiveCard, ExecuteAction, HostConfig, IMarkdownProcessingResult, Input, OpenUrlAction, SubmitAction } from "adaptivecards";
 import * as Remarkable from "remarkable";
 
 
@@ -63,25 +63,33 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
     // Set the adaptive card's event handlers. onExecuteAction is invoked
     // whenever an action is clicked in the card
     adaptiveCard.onExecuteAction = (action: Action) => {
-        const card: AdaptiveCard = adaptiveCard;
-        const inputs: Input[] = card.getAllInputs(true);
-
+        const actionType: string = action.getJsonTypeName();
         let inputsAsJson: string = "";
-        let isFirstInput: boolean = true;
 
-        inputs.forEach((input) => {
-            const inputId: string = input.id;
-            const inputValue: string = input.value;
+        if (actionType === SubmitAction.JsonTypeName || actionType === ExecuteAction.JsonTypeName){
+            const card: AdaptiveCard = adaptiveCard;
+            const inputs: Input[] = card.getAllInputs(true);
 
-            if (!isFirstInput) {
-                inputsAsJson = inputsAsJson.concat(",");
-            }
+            let isFirstInput: boolean = true;
 
-            isFirstInput = false;
-            inputsAsJson = inputsAsJson.concat("\"", inputId, "\":\"", inputValue, "\"");
-        });
+            inputs.forEach((input) => {
+                const inputId: string = input.id;
+                const inputValue: string = input.value;
 
-        inputsAsJson = `{${inputsAsJson}}`;
+                if (!isFirstInput) {
+                    inputsAsJson = inputsAsJson.concat(",");
+                }
+
+                isFirstInput = false;
+                inputsAsJson = inputsAsJson.concat("\"", inputId, "\":\"", inputValue, "\"");
+            });
+
+            inputsAsJson = `{${inputsAsJson}}`;
+        }
+        else if (actionType === OpenUrlAction.JsonTypeName) {
+            const actionAsOpenUrl: OpenUrlAction = action;
+            inputsAsJson = inputsAsJson.concat("{\"url\": \"", actionAsOpenUrl.url, "\"}");
+        }
 
         const retrievedInputsDiv: HTMLElement = document.getElementById("retrievedInputsDiv");
         retrievedInputsDiv.innerHTML = inputsAsJson;
