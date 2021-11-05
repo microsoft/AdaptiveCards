@@ -22,8 +22,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     {
         try
         {
-           /* ComPtr<IAdaptiveHostConfig> hostConfig;
-            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
+            /* ComPtr<IAdaptiveHostConfig> hostConfig;
+             RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
 
             auto hostConfig = renderContext.HostConfig();
             if (!::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SupportsInteractivity(hostConfig))
@@ -31,9 +31,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 /*renderContext->AddWarning(
                     ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
                     HStringReference(L"Date input was stripped from card because interactivity is not supported").Get());*/
-                renderContext.AddWarning(
-                    rtom::WarningStatusCode::InteractivityNotSupported,
-                    L"Date input was stripped from card because interactivity is not supported");
+                renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
+                                         L"Date input was stripped from card because interactivity is not supported");
                 return nullptr;
             }
 
@@ -42,7 +41,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             RETURN_IF_FAILED(cardElement.As(&adaptiveDateInput));*/
             // TODO: is it better to wrap this cast in if (const auto ..) ..?
             auto adaptiveDateInput = adaptiveCardElement.as<rtom::AdaptiveDateInput>();
-
 
             /*ComPtr<ICalendarDatePicker> datePicker = XamlHelpers::CreateABIClass<ICalendarDatePicker>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CalendarDatePicker));*/
@@ -55,18 +53,18 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             datePicker.PlaceholderText(adaptiveDateInput.Placeholder());
 
             // Make the picker stretch full width
-           /* ComPtr<IFrameworkElement> datePickerAsFrameworkElement;
-            RETURN_IF_FAILED(datePicker.As(&datePickerAsFrameworkElement));
-            RETURN_IF_FAILED(datePickerAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
-            RETURN_IF_FAILED(datePickerAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));*/
+            /* ComPtr<IFrameworkElement> datePickerAsFrameworkElement;
+             RETURN_IF_FAILED(datePicker.As(&datePickerAsFrameworkElement));
+             RETURN_IF_FAILED(datePickerAsFrameworkElement->put_HorizontalAlignment(HorizontalAlignment_Stretch));
+             RETURN_IF_FAILED(datePickerAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));*/
             datePicker.HorizontalAlignment(rtxaml::HorizontalAlignment::Stretch);
             datePicker.VerticalAlignment(rtxaml::VerticalAlignment::Top);
 
             /*RETURN_IF_FAILED(datePicker.CopyTo(dateInputControl));*/
 
             // Value
-          /*  HString hstringValue;
-            RETURN_IF_FAILED(adaptiveDateInput->get_Value(hstringValue.GetAddressOf()));*/
+            /*  HString hstringValue;
+              RETURN_IF_FAILED(adaptiveDateInput->get_Value(hstringValue.GetAddressOf()));*/
             std::string value = HStringToUTF8(adaptiveDateInput.Value());
             unsigned int year, month, day;
             if (::AdaptiveCards::DateTimePreparser::TryParseSimpleDate(value, year, month, day))
@@ -76,72 +74,85 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 /*ComPtr<IReference<DateTime>> initialDateTimeReference;
                 RETURN_IF_FAILED(GetDateTimeReference(year, month, day, &initialDateTimeReference));
                 RETURN_IF_FAILED(datePicker->put_Date(initialDateTimeReference.Get()));*/
-              /*  auto initialDateTimeReference = GetDateTimeReference(year, month, day);
-                datePicker.ti*/
-                //datePicker.Date(initialDateTimeReference);
+                /*  auto initialDateTimeReference = GetDateTimeReference(year, month, day);
+                  datePicker.ti*/
+                // datePicker.Date(initialDateTimeReference);
             }
 
             // Min date
-            HString hstringMin;
-            RETURN_IF_FAILED(adaptiveDateInput->get_Min(hstringMin.GetAddressOf()));
-            std::string min = HStringToUTF8(hstringMin.Get());
-            DateTime minDate{};
-            boolean isMinValid{DateTimePreparser::TryParseSimpleDate(min, year, month, day)};
+            /*HString hstringMin;
+            RETURN_IF_FAILED(adaptiveDateInput->get_Min(hstringMin.GetAddressOf()));*/
+            std::string min = HStringToUTF8(adaptiveDateInput.Min());
+            /*  DateTime minDate{};*/
+            winrt::Windows::Foundation::DateTime minDate{};
+            boolean isMinValid = ::AdaptiveCards::DateTimePreparser::TryParseSimpleDate(min, year, month, day);
             if (isMinValid)
             {
                 minDate = GetDateTime(year, month, day);
-                RETURN_IF_FAILED(datePicker->put_MinDate(minDate));
+                /*RETURN_IF_FAILED(datePicker->put_MinDate(minDate));*/
+                datePicker.MinDate(minDate);
             }
 
             // Max date
-            HString hstringMax;
-            RETURN_IF_FAILED(adaptiveDateInput->get_Max(hstringMax.GetAddressOf()));
-            std::string max = HStringToUTF8(hstringMax.Get());
-            if (DateTimePreparser::TryParseSimpleDate(max, year, month, day))
+            /* HString hstringMax;
+             RETURN_IF_FAILED(adaptiveDateInput->get_Max(hstringMax.GetAddressOf()));*/
+            std::string max = HStringToUTF8(adaptiveDateInput.Max());
+            if (::AdaptiveCards::DateTimePreparser::TryParseSimpleDate(max, year, month, day))
             {
-                DateTime maxDate = GetDateTime(year, month, day);
+                auto maxDate = GetDateTime(year, month, day);
                 if (isMinValid)
                 {
-                    if (maxDate.UniversalTime > minDate.UniversalTime)
+                    if (maxDate.time_since_epoch().count() > minDate.time_since_epoch().count())
                     {
-                        RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));
+                        /*RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));*/
+                        datePicker.MaxDate(maxDate);
                     }
                     else
                     {
-                        renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InvalidValue,
-                                                  HStringReference(L"Min value must be less than max in Input.Date").Get());
+                        renderContext.AddWarning(rtom::WarningStatusCode::InvalidValue, L"Min value must be less than max in Input.Date");
                     }
                 }
                 else
                 {
-                    RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));
+                    /*RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));*/
+                    datePicker.MaxDate(maxDate);
                 }
             }
 
-            ComPtr<IAdaptiveInputElement> adapitveDateInputAsAdaptiveInput;
-            RETURN_IF_FAILED(adaptiveDateInput.As(&adapitveDateInputAsAdaptiveInput));
+            /* ComPtr<IAdaptiveInputElement> adapitveDateInputAsAdaptiveInput;
+             RETURN_IF_FAILED(adaptiveDateInput.As(&adapitveDateInputAsAdaptiveInput));
 
-            RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                         L"Adaptive.Input.Date",
-                                                                         datePickerAsFrameworkElement.Get()));
+             RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                          L"Adaptive.Input.Date",
+                                                                          datePickerAsFrameworkElement.Get()));*/
+            ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePicker);
 
-            ComPtr<IUIElement> datePickerAsUIElement;
-            RETURN_IF_FAILED(datePicker.As(&datePickerAsUIElement));
+            /* ComPtr<IUIElement> datePickerAsUIElement;
+             RETURN_IF_FAILED(datePicker.As(&datePickerAsUIElement));*/
 
-            ComPtr<IUIElement> inputLayout;
-            ComPtr<IBorder> validationBorder;
-            RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-                adapitveDateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), false, renderContext, &inputLayout, &validationBorder));
+            // ComPtr<IUIElement> inputLayout;
+            // ComPtr<IBorder> validationBorder;
+            // RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
+            // adapitveDateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), false, renderContext, &inputLayout, &validationBorder));
+            rtxaml::UIElement inputLayout{nullptr};
+            rtxaml::Controls::Border validationBorder{};
+
+            std::tie(inputLayout, validationBorder) =
+                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::HandleInputLayoutAndValidation(adaptiveDateInput, datePicker, false, renderContext);
 
             // Create the InputValue and add it to the context
-            ComPtr<DateInputValue> input;
+            /*ComPtr<DateInputValue> input;
             RETURN_IF_FAILED(
-                MakeAndInitialize<DateInputValue>(&input, adaptiveDateInput.Get(), datePicker.Get(), validationBorder.Get()));
-            RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
+                MakeAndInitialize<DateInputValue>(&input, adaptiveDateInput.Get(), datePicker.Get(), validationBorder.Get()));*/
 
-            RETURN_IF_FAILED(inputLayout.CopyTo(dateInputControl));
+            rtrender::DateInputValue input{adaptiveDateInput, datePicker, validationBorder};
+            /*RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));*/
+            renderContext.AddInputValue(input, renderArgs);
 
-            return nullptr;
+           /* RETURN_IF_FAILED(inputLayout.CopyTo(dateInputControl));*/
+
+            //return nullptr;
+            return inputLayout;
         }
         catch (winrt::hresult_error const& ex)
         {

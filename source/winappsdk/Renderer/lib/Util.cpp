@@ -1073,23 +1073,23 @@ winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> Get
     return GetDateTime(year, month, day);
 }
 
-winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(uint32_t year, uint32_t month, uint32_t day)
-{
-    DateTime dateTime = GetDateTime(year, month, day);
-
-    ComPtr<IPropertyValueStatics> factory;
-    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &factory));
-
-    ComPtr<IInspectable> inspectable;
-    RETURN_IF_FAILED(factory->CreateDateTime(dateTime, &inspectable));
-
-    ComPtr<IReference<DateTime>> localDateTimeReference;
-    RETURN_IF_FAILED(inspectable.As(&localDateTimeReference));
-
-    *dateTimeReference = localDateTimeReference.Detach();
-
-    return S_OK;
-}
+//winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(uint32_t year, uint32_t month, uint32_t day)
+//{
+//    DateTime dateTime = GetDateTime(year, month, day);
+//
+//    ComPtr<IPropertyValueStatics> factory;
+//    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &factory));
+//
+//    ComPtr<IInspectable> inspectable;
+//    RETURN_IF_FAILED(factory->CreateDateTime(dateTime, &inspectable));
+//
+//    ComPtr<IReference<DateTime>> localDateTimeReference;
+//    RETURN_IF_FAILED(inspectable.As(&localDateTimeReference));
+//
+//    *dateTimeReference = localDateTimeReference.Detach();
+//
+//    return S_OK;
+//}
 
 HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* textElement,
                         _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement** copiedTextElement)
