@@ -7340,7 +7340,7 @@ export class SerializationContext extends BaseSerializationContext {
                         result = this.internalParseCardObject<T>(
                             parent,
                             fallback,
-                            new Set<string>(), // definitely not this
+                            forbiddenTypes,
                             true,
                             createInstanceCallback,
                             logParseEvent);
