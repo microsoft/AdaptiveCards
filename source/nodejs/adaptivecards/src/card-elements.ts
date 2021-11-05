@@ -6238,13 +6238,9 @@ export class Container extends ContainerBase {
     }
 
     getCurrentCarouselId(): string | undefined {
-        if (this._swiper) {
-            if (this._swiper.slides.length) { 
-                let activeSlide = this._swiper.slides[this._swiper.activeIndex] as HTMLElement;
-                if (activeSlide) { 
-                    return activeSlide.id;
-                }
-            }
+         if (this._swiper?.slides?.length) {
+             let activeSlide = this._swiper.slides[this._swiper.activeIndex] as HTMLElement;
+            return activeSlide?.id;
         }
         return undefined;
     }

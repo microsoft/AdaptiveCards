@@ -340,7 +340,7 @@ export class CardDesignerSurface {
                     message += ` verb: "${verb}"`;
                 }
 		
-                let carouselPageId = (<Adaptive.ExecuteAction>action).currentCarouselPageId;
+                const carouselPageId = (<Adaptive.ExecuteAction>action).currentCarouselPageId;
                 if (carouselPageId) {
                     message += `\ncarousel page id: "${carouselPageId}"`;
                 }
