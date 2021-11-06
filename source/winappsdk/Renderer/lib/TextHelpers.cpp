@@ -118,12 +118,13 @@ void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
     if (styleProperties.IsStrikethrough())
     {
         // TODO: what is this operator doing for enums? Figure out how to use it properly in winrt
-        textDecorations = winrt::Windows::UI::Text::TextDecorations::Strikethrough;
+        // TODO: find a better way to do it?
+        textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Strikethrough);
     }
 
     if (styleProperties.IsUnderline() || styleProperties.IsInHyperlink())
     {
-        textDecorations |= winrt::Windows::UI::Text::TextDecorations::Underline;
+        textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Underline);
     }
 
     /*RETURN_IF_FAILED(textBlock5->put_TextDecorations(textDecorations));*/
@@ -150,6 +151,26 @@ HRESULT SetStrikethroughAndUnderline(const TextRunStyleParameters& styleProperti
 
     RETURN_IF_FAILED(textElement4->put_TextDecorations(textDecorations));
     return S_OK;
+}
+
+void SetStrikethroughAndUnderline(TextRunStyleParameters const& styleProperties,
+                                     winrt::Windows::UI::Xaml::Documents::TextElement const& textElement)
+{
+   /* ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> localTextElement(textElement);
+    ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement4> textElement4;
+    RETURN_IF_FAILED(localTextElement.As(&textElement4));*/
+
+    winrt::Windows::UI::Text::TextDecorations textDecorations = winrt::Windows::UI::Text::TextDecorations::None;
+    if (styleProperties.IsStrikethrough())
+    {
+        textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Strikethrough);
+    }
+
+    if (styleProperties.IsUnderline() || styleProperties.IsInHyperlink())
+    {
+        textDecorations = EnumBitwiseOR(textDecorations, winrt::Windows::UI::Text::TextDecorations::Underline);
+    }
+    textElement.TextDecorations(textDecorations);
 }
 
 HRESULT SetXamlInlinesWithTextStyleConfig(_In_ IAdaptiveTextElement* textElement,

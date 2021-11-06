@@ -523,6 +523,12 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveT
 
 rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement);
 
+template<typename T>
+inline T EnumBitwiseOR(T a, T b)
+{
+    return static_cast<T>(static_cast<int>(a) | static_cast<int>(b));
+}
+
 namespace AdaptiveCards::Rendering::WinUI3
 {
     struct XamlBuilder;
