@@ -3,10 +3,36 @@
 import { CardElement, Action } from "./card-elements";
 import { SerializableObject, Version, Versions } from "./serialization";
 
+
+/**
+ * Describes whether a certain element can be parsed in a "singleton" context. 
+ * Specifically, is the element allowed to exist as an object in a context where the 
+ * parent expects an Array of elements (e.g. `Carousel` and `AdaptiveCard.body`)
+ * 
+ * @example - Singleton element in a container (note `items` contains an `object` rather than an `Array<object>`)
+ * ```json
+ * {
+ *     "type": "Container",
+ *     "items": {
+ *         "type": "AllowedSingletonElement"
+ *     }
+ * }
+ * ```
+ */
+export enum ElementSingletonBehavior {
+    /** Element only valid in a singleton context. */
+    Only,
+    /** Element is allowed in a singleton context, but not required to be a singleton. */
+    Allowed,
+    /** Element is not allowed to exist in a singleton context. */
+    NotAllowed
+}
+
 export interface ITypeRegistration<T extends SerializableObject> {
     typeName: string,
     objectType: { new(): T },
-    schemaVersion: Version
+    schemaVersion: Version,
+    singletonBehavior: ElementSingletonBehavior
 }
 
 export class CardObjectRegistry<T extends SerializableObject> {
@@ -26,11 +52,11 @@ export class CardObjectRegistry<T extends SerializableObject> {
         for (let key of keys) {
             let typeRegistration = this._items[key];
 
-            target.register(typeRegistration.typeName, typeRegistration.objectType, typeRegistration.schemaVersion);
+            target.register(typeRegistration.typeName, typeRegistration.objectType, typeRegistration.schemaVersion, typeRegistration.singletonBehavior);
         }
     }
 
-    register(typeName: string, objectType: { new(): T }, schemaVersion: Version = Versions.v1_0) {
+    register(typeName: string, objectType: { new(): T }, schemaVersion: Version = Versions.v1_0, singletonBehavior: ElementSingletonBehavior = ElementSingletonBehavior.NotAllowed) {
         let registrationInfo = this.findByName(typeName);
 
         if (registrationInfo !== undefined) {
@@ -40,7 +66,8 @@ export class CardObjectRegistry<T extends SerializableObject> {
             registrationInfo = {
                 typeName: typeName,
                 objectType: objectType,
-                schemaVersion: schemaVersion
+                schemaVersion: schemaVersion,
+                singletonBehavior: singletonBehavior
             }
         }
 
@@ -69,7 +96,6 @@ export class CardObjectRegistry<T extends SerializableObject> {
 export class GlobalRegistry {
     private static _elements?: CardObjectRegistry<CardElement>;
     private static _actions?: CardObjectRegistry<Action>;
-    private static _forbiddenCarouselElements = new Set<string>();
 
     static populateWithDefaultElements(registry: CardObjectRegistry<CardElement>) {
         registry.clear();
@@ -85,9 +111,6 @@ export class GlobalRegistry {
 
     static readonly defaultElements = new CardObjectRegistry<CardElement>();
     static readonly defaultActions = new CardObjectRegistry<Action>();
-    static readonly forbiddenCarouselElements = new Set<string>();
-    static readonly forbiddenCarouselActions = new Set<string>();
-
     static get elements(): CardObjectRegistry<CardElement> {
         if (!GlobalRegistry._elements) {
             GlobalRegistry._elements = new CardObjectRegistry<CardElement>();
