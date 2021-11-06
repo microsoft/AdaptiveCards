@@ -44,7 +44,7 @@
 		"dts-generator": "^3.0.0",
 		"eslint": "^7.3.1",
 		"html-webpack-plugin": "^5.3.2",
-		"jest": "^27.0.0-next.9",
+		"jest": "^27.3.1",
 		"rimraf": "^3.0.2",
 		"swiper": "^7.2.0",
 		"ts-jest": "^27.0.0-next.12",
