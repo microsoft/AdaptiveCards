@@ -7137,7 +7137,7 @@ export class AdaptiveCard extends ContainerWithActions {
     protected get hasBackground(): boolean {
         return true;
     }
-    
+
     onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent) => boolean;
     onExecuteAction?: (action: Action) => void;
     onElementVisibilityChanged?: (element: CardElement) => void;
