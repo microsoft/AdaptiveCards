@@ -252,7 +252,7 @@ export class Carousel extends ContainerBase {
                 this._swiper?.destroy();
                 this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
             }
-        }
+        };
 
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
