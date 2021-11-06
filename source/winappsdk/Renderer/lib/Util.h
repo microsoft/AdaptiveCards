@@ -359,35 +359,52 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTe
                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                        _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept;
 
-HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
-                                _Outptr_ HSTRING* resultFontFamilyName,
-                                _Out_ UINT32* resultSize,
-                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
+//HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
+//                                _Outptr_ HSTRING* resultFontFamilyName,
+//                                _Out_ UINT32* resultSize,
+//                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
+
+winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType);
 
 HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
                                   _Outptr_ HSTRING* resultFontFamilyName) noexcept;
+
+
+uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig,
+                                 rtom::FontType const& fontType,
+                                 rtom::TextSize const& desiredSize);
 
 HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                 ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
                                 ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
                                 _Out_ UINT32* resultSize) noexcept;
 
+winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(rtrender::AdaptiveHostConfig const& hostConfig,
+                                                            rtom::FontType const& fontType,
+                                                            rtom::TextWeight const& desiredWeight);
+
 HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
 
+rtrender::AdaptiveFontTypeDefinition GetFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType);
+
 HRESULT GetFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                     ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
                     _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontTypeDefinition** styleDefinition) noexcept;
 
+uint32_t GetFontSize(rtrender::AdaptiveFontSizesConfig const& sizesConfig, rtom::TextSize const& desiredSize);
+
 HRESULT GetFontSize(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontSizesConfig* sizesConfig,
                     ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
                     _Out_ UINT32* resultSize) noexcept;
+
+uint16_t GetFontWeight(rtrender::AdaptiveFontWeightsConfig const& weightsConfig, rtom::TextWeight const& desiredWeight);
 
 HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontWeightsConfig* weightsConfig,
                       ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
@@ -503,6 +520,8 @@ winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> Get
 
 HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* textElement,
                         _COM_Outptr_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement** copiedTextElement);
+
+rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement);
 
 namespace AdaptiveCards::Rendering::WinUI3
 {

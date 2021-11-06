@@ -308,8 +308,6 @@ winrt::Windows::UI::Color GetColorFromAdaptiveColor(winrt::AdaptiveCards::Render
     {
         return isSubtle ? colorConfig.Subtle() : colorConfig.Default();
     }
-
-
 }
 
 HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
@@ -512,21 +510,37 @@ try
 }
 CATCH_RETURN();
 
-HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
-                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
-                                _Outptr_ HSTRING* resultFontFamilyName,
-                                _Out_ UINT32* resultSize,
-                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
-try
-{
-    RETURN_IF_FAILED(GetFontFamilyFromFontType(hostConfig, fontType, resultFontFamilyName));
-    RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, fontType, desiredSize, resultSize));
-    RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig, fontType, desiredWeight, resultWeight));
-    return S_OK;
-}
-CATCH_RETURN();
+// HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
+//                                _Outptr_ HSTRING* resultFontFamilyName,
+//                                _Out_ UINT32* resultSize,
+//                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
+// try
+//{
+//    RETURN_IF_FAILED(GetFontFamilyFromFontType(hostConfig, fontType, resultFontFamilyName));
+//    RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, fontType, desiredSize, resultSize));
+//    RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig, fontType, desiredWeight, resultWeight));
+//    return S_OK;
+//}
+// CATCH_RETURN();
+
+// HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
+//                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
+//                                _Outptr_ HSTRING* resultFontFamilyName,
+//                                _Out_ UINT32* resultSize,
+//                                _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept
+// try
+//{
+//    RETURN_IF_FAILED(GetFontFamilyFromFontType(hostConfig, fontType, resultFontFamilyName));
+//    RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, fontType, desiredSize, resultSize));
+//    RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig, fontType, desiredWeight, resultWeight));
+//    return S_OK;
+//}
+// CATCH_RETURN();
 
 HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
@@ -560,6 +574,48 @@ try
     return result.CopyTo(resultFontFamilyName);
 }
 CATCH_RETURN();
+
+winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType)
+{
+    try
+    {
+        /*HString result;
+        ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontTypeDefinition* typeDefinition;*/
+
+        // get FontFamily from desired style
+        // RETURN_IF_FAILED(GetFontType(hostConfig, fontType, &typeDefinition));
+        // TODO: rename the function to GetFontTypeDefinition(..)?
+        auto typeDefinition = GetFontType(hostConfig, fontType);
+        auto fontFamily = typeDefinition.FontFamily();
+        // RETURN_IF_FAILED(typeDefinition->get_FontFamily(result.GetAddressOf()));
+        if (fontFamily.empty())
+        {
+            if (fontType == rtom::FontType::Monospace)
+            {
+                // fallback to system default monospace FontFamily
+                fontFamily = UTF8ToHString("Courier New");
+            }
+            else
+            {
+                // fallback to deprecated FontFamily
+                /* RETURN_IF_FAILED(hostConfig->get_FontFamily(result.GetAddressOf()));*/
+                fontFamily = hostConfig.FontFamily();
+                if (fontFamily.empty())
+                {
+                    // fallback to system default FontFamily
+                    /*RETURN_IF_FAILED(UTF8ToHString("Segoe UI", result.GetAddressOf()));*/
+                    fontFamily = UTF8ToHString("Segoe UI");
+                }
+            }
+        }
+        return fontFamily;
+    }
+    catch (winrt::hresult_error const& ex)
+    {
+        // TODO: what do we do here?
+        return L"";
+    }
+}
 
 HRESULT GetFontSizeFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                 ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
@@ -619,6 +675,69 @@ try
 }
 CATCH_RETURN();
 
+uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType, rtom::TextSize const& desiredSize)
+{
+    try
+    {
+        rtrender::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
+        rtrender::AdaptiveFontSizesConfig sizesConfig = fontTypeDefinition.FontSizes();
+        uint32_t result = GetFontSize(sizesConfig, desiredSize);
+
+        // get FontSize from desired style
+        /* RETURN_IF_FAILED(GetFontType(hostConfig, fontType, &fontTypeDefinition));
+         RETURN_IF_FAILED(fontTypeDefinition->get_FontSizes(&sizesConfig));
+         RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));*/
+
+        // TODO: can we still use MAXUINT32?
+        if (result == MAXUINT32)
+        {
+            // get FontSize from Default style
+            /* RETURN_IF_FAILED(GetFontType(hostConfig, ABI::AdaptiveCards::ObjectModel::WinUI3::FontType::Default, &fontTypeDefinition));
+             RETURN_IF_FAILED(fontTypeDefinition->get_FontSizes(&sizesConfig));
+             RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));*/
+            fontTypeDefinition = GetFontType(hostConfig, rtom::FontType::Default);
+            sizesConfig = fontTypeDefinition.FontSizes();
+            result = GetFontSize(sizesConfig, desiredSize);
+
+            if (result == MAXUINT32)
+            {
+                // get deprecated FontSize
+                sizesConfig = hostConfig.FontSizes();
+                result = GetFontSize(sizesConfig, desiredSize);
+
+                if (result == MAXUINT32)
+                {
+                    // set system default FontSize based on desired style
+                    switch (desiredSize)
+                    {
+                    case rtom::TextSize::Small:
+                        return 10;
+                        break;
+                    case rtom::TextSize::Medium:
+                        return 14;
+                        break;
+                    case rtom::TextSize::Large:
+                        return 17;
+                        break;
+                    case rtom::TextSize::ExtraLarge:
+                        return 20;
+                        break;
+                    case rtom::TextSize::Default:
+                    default:
+                        return 12;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    catch (winrt::hresult_error const& ex)
+    {
+        // TODO: what do we do here?
+        return 0;
+    }
+}
+
 HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
@@ -671,6 +790,57 @@ try
 }
 CATCH_RETURN();
 
+winrt::Windows::UI::Text::FontWeight GetFontWeightFromStyle(rtrender::AdaptiveHostConfig const& hostConfig,
+                                                            rtom::FontType const& fontType,
+                                                            rtom::TextWeight const& desiredWeight)
+{
+    try
+    {
+        rtrender::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, fontType);
+        rtrender::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
+        uint16_t result = GetFontWeight(weightConfig, desiredWeight);
+
+        if (result == MAXUINT16)
+        {
+            // get FontWeight from Default style
+            rtrender::AdaptiveFontTypeDefinition fontTypeDefinition = GetFontType(hostConfig, rtom::FontType::Default);
+            rtrender::AdaptiveFontWeightsConfig weightConfig = fontTypeDefinition.FontWeights();
+            uint16_t result = GetFontWeight(weightConfig, desiredWeight);
+
+            if (result == MAXUINT16)
+            {
+                // get deprecated FontWeight
+                weightConfig = hostConfig.FontWeights();
+                uint16_t result = GetFontWeight(weightConfig, desiredWeight);
+
+                if (result == MAXUINT16)
+                {
+                    // set system default FontWeight based on desired style
+                    switch (desiredWeight)
+                    {
+                    case rtom::TextWeight::Lighter:
+                        result = 200;
+                        break;
+                    case rtom::TextWeight::Bolder:
+                        result = 800;
+                        break;
+                    case rtom::TextWeight::Default:
+                    default:
+                        result = 400;
+                        break;
+                    }
+                }
+            }
+        }
+        return {result};
+    }
+    catch (winrt::hresult_error const& ex)
+    {
+        // TODO: what do we do here? return default?
+        return {400};
+    }
+}
+
 HRESULT GetFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                     ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
                     _COM_Outptr_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontTypeDefinition** fontTypeDefinition) noexcept
@@ -692,6 +862,32 @@ try
     return S_OK;
 }
 CATCH_RETURN();
+
+rtrender::AdaptiveFontTypeDefinition GetFontType(rtrender::AdaptiveHostConfig const& hostConfig, rtom::FontType const& fontType)
+{
+    try
+    {
+        /* ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontTypesDefinition* fontTypes;
+         RETURN_IF_FAILED(hostConfig->get_FontTypes(&fontTypes));*/
+        auto fontTypes = hostConfig.FontTypes();
+
+        switch (fontType)
+        {
+        case rtom::FontType::Monospace:
+            return fontTypes.Monospace();
+            break;
+        case rtom::FontType::Default:
+        default:
+            return fontTypes.Default();
+            break;
+        }
+    }
+    catch (winrt::hresult_error const& ex)
+    {
+        // TODO: what do we do here?
+        return nullptr;
+    }
+}
 
 HRESULT GetFontSize(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontSizesConfig* sizesConfig,
                     ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
@@ -721,6 +917,37 @@ try
 }
 CATCH_RETURN();
 
+uint32_t GetFontSize(rtrender::AdaptiveFontSizesConfig const& sizesConfig, rtom::TextSize const& desiredSize)
+{
+    try
+    {
+        switch (desiredSize)
+        {
+        case rtom::TextSize::Small:
+            return sizesConfig.Small();
+            break;
+        case rtom::TextSize::Medium:
+            return sizesConfig.Medium();
+            break;
+        case rtom::TextSize::Large:
+            return sizesConfig.Large();
+            break;
+        case rtom::TextSize::ExtraLarge:
+            return sizesConfig.ExtraLarge();
+            break;
+        case rtom::TextSize::Default:
+        default:
+            return sizesConfig.Default();
+            break;
+        }
+    }
+    catch (winrt::hresult_error const& ex)
+    {
+        // TODO: what do we do here?
+        return 0;
+    }
+}
+
 HRESULT GetFontWeight(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveFontWeightsConfig* weightsConfig,
                       ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
                       _Out_ UINT16* resultWeight) noexcept
@@ -742,6 +969,31 @@ try
     return S_OK;
 }
 CATCH_RETURN();
+
+uint16_t GetFontWeight(rtrender::AdaptiveFontWeightsConfig const& weightsConfig, rtom::TextWeight const& desiredWeight)
+{
+    try
+    {
+        switch (desiredWeight)
+        {
+        case rtom::TextWeight::Lighter:
+            return weightsConfig.Lighter();
+            break;
+        case rtom::TextWeight::Bolder:
+            return weightsConfig.Bolder();
+            break;
+        case rtom::TextWeight::Default:
+        default:
+            return weightsConfig.Default();
+            break;
+        }
+    }
+    catch (winrt::hresult_error const& ex)
+    {
+        // TODO: what do we do here?
+        return 0;
+    }
+}
 
 winrt::Windows::Data::Json::JsonObject StringToJsonObject(const std::string& inputString)
 {
@@ -1029,51 +1281,51 @@ Color GenerateLHoverColor(const Color& originalColor)
     return hoverColor;
 }
 
-
 winrt::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
 {
     // TODO: investigate the midnight bug. If the timezone will be ahead of UTC we can do -1 day when converting
     SYSTEMTIME systemTime = {(WORD)year, (WORD)month, 0, (WORD)day};
-    
+
     // Convert to UTC
     TIME_ZONE_INFORMATION timeZone;
     GetTimeZoneInformation(&timeZone);
     TzSpecificLocalTimeToSystemTime(&timeZone, &systemTime, &systemTime);
-    
 
     // Convert to ticks
     FILETIME fileTime;
     SystemTimeToFileTime(&systemTime, &fileTime);
-    //DateTime dateTime{(INT64)fileTime.dwLowDateTime + (((INT64)fileTime.dwHighDateTime) << 32)};
+    // DateTime dateTime{(INT64)fileTime.dwLowDateTime + (((INT64)fileTime.dwHighDateTime) << 32)};
 
     // TODO: should we just get it from fileTime instead of from .UniversalTime?
-    //winrt::clock::from_FILETIME(fileTime);
-    //return winrt::clock::from_FILETIME(winrt::file_time{dateTime.UniversalTime});
+    // winrt::clock::from_FILETIME(fileTime);
+    // return winrt::clock::from_FILETIME(winrt::file_time{dateTime.UniversalTime});
     // TODO: I can remove curly bracket, c++ will call the apropriate constructor anyway. This feels nicer :)
     return winrt::clock::from_FILETIME({fileTime});
 }
 
-winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day)
+winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(unsigned int year,
+                                                                                                  unsigned int month,
+                                                                                                  unsigned int day)
 {
     /*DateTime dateTime = GetDateTime(year, month, day);
 
     auto winrtDateTime = winrt::clock::from_FILETIME(winrt::file_time{dateTime.UniversalTime});*/
 
-   /* ComPtr<IPropertyValueStatics> factory;
-    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &factory));
+    /* ComPtr<IPropertyValueStatics> factory;
+     RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &factory));
 
-    ComPtr<IInspectable> inspectable;
-    RETURN_IF_FAILED(factory->CreateDateTime(dateTime, &inspectable));
+     ComPtr<IInspectable> inspectable;
+     RETURN_IF_FAILED(factory->CreateDateTime(dateTime, &inspectable));
 
-    ComPtr<IReference<DateTime>> localDateTimeReference;
-    RETURN_IF_FAILED(inspectable.As(&localDateTimeReference));
+     ComPtr<IReference<DateTime>> localDateTimeReference;
+     RETURN_IF_FAILED(inspectable.As(&localDateTimeReference));
 
-    *dateTimeReference = localDateTimeReference.Detach();*/
+     *dateTimeReference = localDateTimeReference.Detach();*/
 
     return GetDateTime(year, month, day);
 }
 
-//winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(uint32_t year, uint32_t month, uint32_t day)
+// winrt::Windows::Foundation::IReference<winrt::Windows::Foundation::DateTime> GetDateTimeReference(uint32_t year, uint32_t month, uint32_t day)
 //{
 //    DateTime dateTime = GetDateTime(year, month, day);
 //
@@ -1131,6 +1383,25 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveT
 
     RETURN_IF_FAILED(localCopiedTextElement.CopyTo(copiedTextElement));
     return S_OK;
+}
+
+rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement)
+{
+    if (textElement != nullptr)
+    {
+        rtom::AdaptiveTextRun textRun;
+
+        // TODO: is this the right way to do it? Or do we need to .Value()?
+        textRun.Color(textElement.Color().Value());
+        textRun.FontType(textElement.FontType());
+        textRun.IsSubtle(textElement.IsSubtle());
+        textRun.Language(textElement.Language());
+        textRun.Size(textElement.Size());
+        textRun.Weight(textElement.Weight());
+        textRun.Text(textElement.Text());
+        return textRun;
+    }
+    return nullptr;
 }
 
 void RegisterDefaultElementRenderers(rtrender::implementation::AdaptiveElementRendererRegistration* registration, XamlBuilder* xamlBuilder)
