@@ -6,7 +6,7 @@
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-   /* ElementTagContent::ElementTagContent(rtom::IAdaptiveCardElement const& cardElement,
+    ElementTagContent::ElementTagContent(rtom::IAdaptiveCardElement const& cardElement,
                                          rtxaml::Controls::Panel const& parentPanel,
                                          rtxaml::UIElement const& separator,
                                          rtxaml::Controls::ColumnDefinition const& columnDefinition,
@@ -19,6 +19,6 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         m_columnDefinition = columnDefinition;
         ExpectedVisibility = expectedVisibility;
         IsStretchable = isStretchable;
-    }*/
+    }
 
 }

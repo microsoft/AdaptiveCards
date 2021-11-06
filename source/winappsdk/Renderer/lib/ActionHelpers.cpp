@@ -493,7 +493,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         ComPtr<IUIElement> localTextBoxContainer(textBoxParentContainer);
         ComPtr<IAdaptiveActionElement> localInlineAction(inlineAction);
 
-        ABI::AdaptiveCards::ObjectModel::Uwp::ActionType actionType;
+        ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType actionType;
         THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -506,8 +506,8 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             return;
         }
 
-        if ((actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Submit) ||
-            (actionType == ABI::AdaptiveCards::ObjectModel::Uwp::ActionType::Execute))
+        if ((actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Submit) ||
+            (actionType == ABI::AdaptiveCards::ObjectModel::WinUI3::ActionType::Execute))
         {
             THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
         }
@@ -541,7 +541,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
         THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
 
         UINT spacingSize;
-        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::Uwp::Spacing::Default, &spacingSize));
+        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveCards::ObjectModel::WinUI3::Spacing::Default, &spacingSize));
 
         auto separator = XamlHelpers::CreateSeparator(renderContext, spacingSize, 0, {0}, false);
 
@@ -569,7 +569,7 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
             THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
 
             ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
-                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_Uwp_AdaptiveImage));
+                HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
 
             THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
 
