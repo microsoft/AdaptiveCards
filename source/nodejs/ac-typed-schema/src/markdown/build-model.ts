@@ -22,7 +22,7 @@ export class BuildModelOptions {
 export function buildModel(options: BuildModelOptions) {
 
 	var schemaFolder = options.schema;
-	var toc = yaml.safeLoad(fs.readFileSync(options.toc));
+	var toc = yaml.load(fs.readFileSync(options.toc));
 	var items = [];
 
 	var schema: Schema = Schema.fromFolder(schemaFolder);

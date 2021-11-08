@@ -51,13 +51,11 @@ module.exports = (env, argv) => {
 					patterns: [
 						{
 							from: 'src/adaptivecards.css',
-							to: '../lib/',
-							flatten: true
+							to: '../lib/[name][ext]'
 						},
 						{
 							from: 'src/adaptivecards.css',
-							to: '../dist/',
-							flatten: true
+							to: '../dist/[name][ext]'
 						}
 					]
 				}

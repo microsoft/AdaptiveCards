@@ -25,6 +25,7 @@ namespace UWPObjectModelTest
                 Speak = "This is a card",
                 Style = ContainerStyle.Emphasis,
                 Version = "1.3",
+                Rtl = true,
                 VerticalContentAlignment = VerticalContentAlignment.Center,
                 Refresh = new AdaptiveRefresh
                 {
@@ -63,6 +64,7 @@ namespace UWPObjectModelTest
             Assert.AreEqual("This is a card", card.Speak);
             Assert.AreEqual(ContainerStyle.Emphasis, card.Style);
             Assert.AreEqual("1.3", card.Version);
+            Assert.AreEqual(true, card.Rtl);
             Assert.AreEqual(VerticalContentAlignment.Center, card.VerticalContentAlignment);
 
             Assert.IsNotNull(card.Refresh);
@@ -126,7 +128,7 @@ namespace UWPObjectModelTest
             Assert.AreEqual("Submit One", card.Actions[0].Title);
             Assert.AreEqual("Submit Two", card.Actions[1].Title);
 
-            string expectedSerialization = "{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"authentication\":{\"buttons\":[{\"image\":\"https://myauthbutton/image.jpg\",\"title\":\"Click here to sign in\",\"type\":\"signIn\",\"value\":\"value\"}],\"connectionName\":\"myConnection\",\"text\":\"Please Authenticate your account\",\"tokenExchangeResource\":{\"id\":\"myTokenId\",\"providerId\":\"myProviderId\",\"uri\":\"https://mytoken.exchange/resource\"}},\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"lang\":\"en\",\"refresh\":{\"action\":{\"type\":\"Action.Execute\"},\"userIds\":[\"user1\",\"user2\"]},\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}";
+            string expectedSerialization = "{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"authentication\":{\"buttons\":[{\"image\":\"https://myauthbutton/image.jpg\",\"title\":\"Click here to sign in\",\"type\":\"signIn\",\"value\":\"value\"}],\"connectionName\":\"myConnection\",\"text\":\"Please Authenticate your account\",\"tokenExchangeResource\":{\"id\":\"myTokenId\",\"providerId\":\"myProviderId\",\"uri\":\"https://mytoken.exchange/resource\"}},\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"lang\":\"en\",\"refresh\":{\"action\":{\"type\":\"Action.Execute\"},\"userIds\":[\"user1\",\"user2\"]},\"rtl\":true,\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}";
 
             var jsonString = card.ToJson().ToString();
             Assert.AreEqual(expectedSerialization, jsonString);

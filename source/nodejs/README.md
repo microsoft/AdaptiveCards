@@ -41,3 +41,37 @@ We use lerna to manage package linking and building.
 ## Adding a new package
 
 1. `npx lerna add <new-package> --scope=<install-target>`
+
+## Testing
+
+The JS Renderer currently supports the following type of testing:
+
+| Type | Project | Location |
+| --- | --- | --- |
+| Unit tests | adaptivecards/\_\_tests\_\_ | [Location](./adaptivecards/src/__tests__/)
+| Unit tests | unit-tests | [Location](./tests/unit-tests) |
+| UI tests | ui-tests | [Location](./tests/ui-tests) |
+
+### To run adaptivecards/\_\_tests\_\_
+1. `cd adaptivecards`
+2. Build the project: `npm run build`
+3. `npm test`
+
+### To run unit-tests:
+1. `cd tests/unit-tests`
+2. `npm run build-and-test`
+
+### To run ui tests
+Pre-requisite 1: adaptivecards-ui-testapp must be executing
+
+0.1 `cd adaptivecards-ui-testapp`
+
+0.2 `npm run build`
+
+0.3 `npm run start`
+
+Pre-requisite 2: Web drivers must be installed, if working with edge it can be downloaded from [here](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) 
+
+1. `cd tests/ui-tests`
+2. `npm run build`
+3. `npm run test`

@@ -28,7 +28,7 @@ export class BerlinContainer extends HostContainer {
 	}
 
 	public renderTo(hostElement: HTMLElement) {
-		this.cardHost.classList.add("berlin-card");
+		this.cardHost.classList.add(`berlin-${this._containerSize.toLowerCase()}-card`);
 		const outerFrame = document.createElement("div");
 		outerFrame.classList.add("berlin-outer-container");
 		outerFrame.classList.add(`berlin-${this._containerSize.toLowerCase()}-container`);
@@ -37,11 +37,20 @@ export class BerlinContainer extends HostContainer {
 		header.className = "berlin-header";
 		outerFrame.appendChild(header);
 
-		const frame = document.createElement("div");
-		frame.className = "berlin-inner-container";
-		frame.appendChild(this.cardHost);
+		const headerText = document.createElement("p");
+		headerText.textContent = "Berlin Header";
+		header.appendChild(headerText);
 
-		outerFrame.appendChild(frame);
+		const moreButton = document.createElement("button");
+		moreButton.className = "berlin-header-add-button";
+		moreButton.textContent = "...";
+		header.appendChild(moreButton);
+
+		const innerFrame = document.createElement("div");
+		innerFrame.className = "berlin-inner-container";
+		innerFrame.appendChild(this.cardHost);
+
+		outerFrame.appendChild(innerFrame);
 		hostElement.appendChild(outerFrame);
 	}
 
@@ -66,4 +75,8 @@ export class BerlinContainer extends HostContainer {
 		}
 		return containers;
 	}
+
+	get isFixedHeight(): boolean {
+        return true;
+    }
 }

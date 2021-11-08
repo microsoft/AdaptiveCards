@@ -1050,23 +1050,16 @@ export const defaultHostConfig: HostConfig = new HostConfig(
         inputs: {
             label: {
                 requiredInputs: {
-                    color: Enums.TextColor.Accent,
-                    size: Enums.TextSize.ExtraLarge,
                     weight: Enums.TextWeight.Bolder,
-                    isSubtle: true,
-                    suffix: " (required)",
-                    suffixColor: Enums.TextColor.Good
+                    suffix: " *",
+                    suffixColor: Enums.TextColor.Attention
                 },
                 optionalInputs: {
-                    color: Enums.TextColor.Warning,
-                    size: Enums.TextSize.Medium,
-                    weight: Enums.TextWeight.Lighter,
-                    isSubtle: false
+                    weight: Enums.TextWeight.Bolder
                 }
             },
             errorMessage: {
-                color: Enums.TextColor.Accent,
-                size: Enums.TextSize.Small,
+                color: Enums.TextColor.Attention,
                 weight: Enums.TextWeight.Bolder
             }
         },
