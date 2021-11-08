@@ -1,7 +1,6 @@
 {
 	"name": "adaptivecards-react-testapp",
 	"version": "0.1.0",
-	"lockfileVersion": 1,
 	"description": "JavaScript Runtime test application for adaptivecards-react",
 	"private": true,
 	"author": "AdaptiveCards",
