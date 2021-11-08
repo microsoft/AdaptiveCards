@@ -409,7 +409,7 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::TextBlockRender(std::shared_ptr<AdaptiveCards::TextBlock> textBlock, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		//LIMITATION: Elide and maximumLineCount property do not work for textFormat:Text.MarkdownText
+		//LIMITATION: Elide and maximumLineCount property do not work for textFormat:Text.RichText
 
 		std::string fontFamily = context->GetConfig()->GetFontFamily(textBlock->GetFontType());
 		int fontSize = context->GetConfig()->GetFontSize(textBlock->GetFontType(), textBlock->GetTextSize());
@@ -420,11 +420,11 @@ namespace RendererQml
 
 		uiTextBlock->Property("width", "parent.width");
 
-		//Does not work for Markdown text
+		//Does not work for Rich text
 		uiTextBlock->Property("elide", "Text.ElideRight");
 
 		uiTextBlock->Property("clip", "true");
-		uiTextBlock->Property("textFormat", "Text.MarkdownText");
+		uiTextBlock->Property("textFormat", "Text.RichText");
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
 
@@ -447,7 +447,7 @@ namespace RendererQml
 			uiTextBlock->Property("visible", "false");
 		}
 
-		//Does not work for Markdown text
+		//Does not work for Rich text
 		if (textBlock->GetMaxLines() > 0)
 		{
 			uiTextBlock->Property("maximumLineCount", std::to_string(textBlock->GetMaxLines()));
@@ -464,13 +464,15 @@ namespace RendererQml
         }
 
 		std::string text = TextUtils::ApplyTextFunctions(textBlock->GetText(), context->GetLang());
-        text = Utils::HandleEscapeSequences(text);
-		
-		const std::string linkColor = context->GetColor(AdaptiveCards::ForegroundColor::Accent, false, false);
 
-		//CSS Property for underline, striketrhough,etc
-		const std::string textDecoration = "none";
-		text = Utils::MarkdownUrlToHtml(text, linkColor, textDecoration);
+        auto markdownParser = std::make_shared<AdaptiveSharedNamespace::MarkDownParser>(text);
+        text = markdownParser->TransformToHtml();
+        text = Utils::HandleEscapeSequences(text);
+
+        const std::string linkColor = context->GetColor(AdaptiveCards::ForegroundColor::Accent, false, false);
+        //CSS Property for underline, striketrhough,etc
+        const std::string textDecoration = "none";
+        text = Utils::FormatHtmlUrl(text, linkColor, textDecoration);
 
 		uiTextBlock->Property("text", text, true);
 
@@ -950,23 +952,25 @@ namespace RendererQml
 
 		uiTextRun.append("'>");
 
+        std::string text = TextUtils::ApplyTextFunctions(textRun->GetText(), context->GetLang());
+        auto markdownParser = std::make_shared<AdaptiveSharedNamespace::MarkDownParser>(text);
+        text = markdownParser->TransformToHtml();
+        text = Utils::HandleEscapeSequences(text);
+        const std::string linkColor = context->GetColor(AdaptiveCards::ForegroundColor::Accent, false, false);
+        //CSS Property for underline, striketrhough,etc
+        std::string textDecoration = "none";
+
+        text = Utils::FormatHtmlUrl(text, linkColor, textDecoration);
+
         if (textRun->GetSelectAction() != nullptr)
         {
-			const std::string linkColor = context->GetColor(AdaptiveCards::ForegroundColor::Accent, false, false);
-			//CSS Property for underline, striketrhough,etc
-			std::string textDecoration = "none";
 			const std::string styleString = Formatter() << "style=\\\"color:" << linkColor << ";" << "text-decoration:" << textDecoration << ";\\\"";
-
             uiTextRun.append(Formatter() << "<a href='" << selectaction << "'" << styleString << " >");
-            std::string text = TextUtils::ApplyTextFunctions(textRun->GetText(), context->GetLang());
-            text = Utils::HandleEscapeSequences(text);
             uiTextRun.append(text);
             uiTextRun.append("</a>");
         }
         else
         {
-            std::string text = TextUtils::ApplyTextFunctions(textRun->GetText(), context->GetLang());
-            text = Utils::HandleEscapeSequences(text);
             uiTextRun.append(text);
         }
 		uiTextRun.append("</span>");
@@ -1236,9 +1240,9 @@ namespace RendererQml
 		model << "[";
 		for (const auto& choice : Choices)
 		{
-			choice_Text = choice.text;
-			choice_Value = choice.value;
-			model << "{ value: '" << Utils::HandleEscapeSequences(choice_Value) << "', text: '" << Utils::HandleEscapeSequences(choice_Text) << "'},\n";
+            choice_Text = choice.text;
+            choice_Value = choice.value;
+            model << "{ value: '" << Utils::HandleEscapeSequences(choice_Value) << "', text: '" << Utils::HandleEscapeSequences(choice_Text) << "'},\n";
 		}
 		model << "]";
 		return model.str();

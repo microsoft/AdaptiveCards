@@ -504,13 +504,13 @@ namespace RendererQml
 
 	std::string Utils::HandleEscapeSequences(std::string& text)
 	{
-		text = Replace(text, "\n", "<br />");
-		text = Replace(text, "\r", "<br />");
-		//Handles tab space in RichText, works for MarkdownText as well
-		text = Replace(text, "\t", "<span style='white-space:pre'>\t</span>");
+        text = Replace(text, "\n", "<br />");
+        text = Replace(text, "\r", "<br />");
+        //Handles tab space in RichText, works for MarkdownText as well
+        text = Replace(text, "\t", "<span style='white-space:pre'>\t</span>");
         text = Replace(text, "'", "&#39;");
-		text = Replace(text, "\"", "&quot;");
-		text = Replace(text, "\\", "&#92;");
+        text = Replace(text, "\"", "&quot;");
+        text = Replace(text, "\\", "&#92;");
 		return text;
 	}
 
@@ -591,10 +591,10 @@ namespace RendererQml
         return Formatter() << "_" << id;
     }
 
-    const std::string Utils::MarkdownUrlToHtml(std::string& text, const std::string& linkColor, const std::string& textDecoration)
+    const std::string Utils::FormatHtmlUrl(std::string& text, const std::string& linkColor, const std::string& textDecoration)
     {
-        static std::regex re("\\[([^\\]]*)\\]\\(([^\\]]*)\\)");
-        static std::string replacement = Formatter() << "<a href=\\\"$2\\\" style=\\\"color:" << linkColor << "; text-decoration: " << textDecoration << ";\\\">$1</a>";
+        std::regex re("<a href=&quot;([^\\<]*)&quot;>([^\\<]*)<\\/a>");
+        std::string replacement = Formatter() << "<a href=\\\"$1\\\" style=\\\"color:" << linkColor << "; text-decoration: " << textDecoration << ";\\\">$2</a>";
         text = std::regex_replace(text, re, replacement);
 
         return text;

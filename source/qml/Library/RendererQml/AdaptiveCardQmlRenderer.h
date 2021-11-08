@@ -31,6 +31,7 @@
 #include "OpenUrlAction.h"
 #include "ShowCardAction.h"
 #include "ToggleVisibilityAction.h"
+#include "MarkDownParser.h"
 
 namespace RendererQml
 {

@@ -118,7 +118,7 @@ namespace RendererQml
         static bool hasNonAlphaNumeric(const std::string& id);
         static const std::string HandleKeywords(const std::string& id);
 
-		static const std::string MarkdownUrlToHtml(std::string& text, const std::string& linkColor, const std::string& textDecoration);
+		static const std::string FormatHtmlUrl(std::string& text, const std::string& linkColor, const std::string& textDecoration);
 
     private:
         Utils() {}
