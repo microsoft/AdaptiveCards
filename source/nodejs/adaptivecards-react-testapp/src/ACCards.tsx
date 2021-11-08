@@ -1,4 +1,6 @@
-import { AdaptiveCard } from 'adaptivecards-react'
+import { AdaptiveCard, AdaptiveCardUsingHostConfigContext } from 'adaptivecards-react'
+import HostConfigDark from './host-conf-dark.json'
+
 
 const card = {
     "type": "AdaptiveCard",
@@ -98,7 +100,13 @@ const card = {
     "version": "1.3"
 };
 
+const CardWithHostConfigFromProperty = () => (<AdaptiveCard payload={card} hostConfig={HostConfigDark} />);
 
-export const AC = () => {
-    return <AdaptiveCard payload={card} />
+const CardWithHostConfigFromContext = () => (<AdaptiveCardUsingHostConfigContext payload={card} />);
+
+export const ACCards = () => {
+    return (<div>
+        <CardWithHostConfigFromProperty />
+        <CardWithHostConfigFromContext />
+    </div>);
 };
