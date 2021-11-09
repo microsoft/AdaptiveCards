@@ -1090,6 +1090,50 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                          { args.Handled(true); });
     }
 
+    void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
+                          winrt::Windows::Foundation::IInspectable const& parentElement,
+                          winrt::Windows::UI::Xaml::Media::Imaging::BitmapSource const& imageSource,
+                          bool setVisible)
+    {
+        int32_t pixelHeight = imageSource.PixelHeight();
+        int32_t pixelWidth = imageSource.PixelWidth();
+
+        double maxHeight = imageControl.MaxHeight();
+        double maxWidth = imageControl.MaxWidth();
+
+        if (const auto parentAsColumnDefinition = parentElement.try_as<rtxaml::Controls::ColumnDefinition>())
+        {
+            double parentWidth = parentAsColumnDefinition.ActualWidth();
+            if (parentWidth >= pixelWidth)
+            {
+                // Make sure to keep the aspect ratio of the image
+                maxWidth = std::min(maxWidth, parentWidth);
+                double aspectRatio = (double)pixelHeight / pixelWidth;
+                maxHeight = maxWidth * aspectRatio;
+            }
+        }
+
+        // Prevent an image from being stretched out if it is smaller than the
+        // space allocated for it (when in auto mode).
+        if (const auto localElementAsEllipse = imageControl.try_as<rtxaml::Shapes::Ellipse>())
+        {
+            // don't need to set both width and height when image size is auto since
+            // we want a circle as shape.
+            // max value for width should be set since adaptive cards is constrained horizontally
+            imageControl.MaxWidth(std::min(maxWidth, static_cast<double>(pixelWidth)));
+        }
+        else
+        {
+            imageControl.MaxHeight(std::min(maxHeight, static_cast<double>(pixelHeight)));
+            imageControl.MaxWidth(std::min(maxWidth, static_cast<double>(pixelWidth)));
+        }
+
+        if (setVisible)
+        {
+            imageControl.Visibility(rtxaml::Visibility::Visible);
+        }
+    }
+
     HRESULT SetAutoImageSize(_In_ IFrameworkElement* imageControl, _In_ IInspectable* parentElement, _In_ IBitmapSource* imageSource, bool setVisible)
     {
         INT32 pixelHeight;

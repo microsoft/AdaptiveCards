@@ -744,6 +744,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                             winrt::Windows::Foundation::AsyncStatus /*status*/) { randomAccessStream.Seek(0); });
                 }
             });
+        m_getStreamOperations.push_back(getStreamOperation);
         // THROW_IF_FAILED(getStreamOperation->put_Completed(
         //    Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<IInputStream*, HttpProgress>>>(
         //        [strongThis, this, bitmapSource, strongImageControl, bitmapImage](
@@ -794,120 +795,149 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     }
 
     template<typename T>
-    void XamlBuilder::SetImageSource(_In_ T* destination, _In_ IImageSource* imageSource, ABI::Windows::UI::Xaml::Media::Stretch /*stretch*/)
+    void XamlBuilder::SetImageSource(T const& destination, rtxaml::Media::ImageSource const& imageSource, rtxaml::Media::Stretch stretch /*stretch*/)
     {
-        THROW_IF_FAILED(destination->put_Source(imageSource));
+        /*THROW_IF_FAILED(destination->put_Source(imageSource));*/
+        destination.Source(imageSource);
     };
 
     template<>
-    void XamlBuilder::SetImageSource<IEllipse>(_In_ IEllipse* destination,
-                                               _In_ IImageSource* imageSource,
-                                               ABI::Windows::UI::Xaml::Media::Stretch stretch)
+    void XamlBuilder::SetImageSource<rtxaml::Shapes::Ellipse>(rtxaml::Shapes::Ellipse const& destination,
+                                                              rtxaml::Media::ImageSource const& imageSource,
+                                                              rtxaml::Media::Stretch stretch)
     {
-        ComPtr<IImageBrush> imageBrush =
-            XamlHelpers::CreateABIClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
-        THROW_IF_FAILED(imageBrush->put_ImageSource(imageSource));
+        /* ComPtr<IImageBrush> imageBrush =
+             XamlHelpers::CreateABIClass<IImageBrush>(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_ImageBrush));
+         THROW_IF_FAILED(imageBrush->put_ImageSource(imageSource));*/
 
-        ComPtr<ITileBrush> tileBrush;
+        rtxaml::Media::ImageBrush imageBrush{};
+        imageBrush.ImageSource(imageSource);
+
+        /*ComPtr<ITileBrush> tileBrush;
         THROW_IF_FAILED(imageBrush.As(&tileBrush));
-        THROW_IF_FAILED(tileBrush->put_Stretch(stretch));
+        THROW_IF_FAILED(tileBrush->put_Stretch(stretch));*/
+        imageBrush.Stretch(stretch);
 
-        ComPtr<IBrush> brush;
-        THROW_IF_FAILED(imageBrush.As(&brush));
+        /* ComPtr<IBrush> brush;
+         THROW_IF_FAILED(imageBrush.As(&brush));*/
 
-        ComPtr<IShape> ellipseAsShape;
+        /*ComPtr<IShape> ellipseAsShape;
         ComPtr<IEllipse> ellipse(destination);
         THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
 
-        THROW_IF_FAILED(ellipseAsShape->put_Fill(brush.Get()));
+        THROW_IF_FAILED(ellipseAsShape->put_Fill(brush.Get()));*/
+        destination.Fill(imageBrush);
     };
 
     template<>
-    void XamlBuilder::SetAutoSize<IEllipse>(IEllipse* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize<rtxaml::Shapes::Ellipse>(rtxaml::Shapes::Ellipse const& destination,
+                                                           IInspectable const& parentElement,
+                                                           IInspectable const& imageContainer,
+                                                           bool isVisible,
+                                                           bool imageFiresOpenEvent)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
-            ComPtr<IInspectable> ellipseShape(imageContainer);
-            ComPtr<IShape> ellipseAsShape;
-            THROW_IF_FAILED(ellipseShape.As(&ellipseAsShape));
+            /* ComPtr<IInspectable> ellipseShape(imageContainer);
+             ComPtr<IShape> ellipseAsShape;
+             THROW_IF_FAILED(ellipseShape.As(&ellipseAsShape));*/
 
-            ComPtr<IBrush> ellipseBrush;
-            THROW_IF_FAILED(ellipseAsShape->get_Fill(&ellipseBrush));
-            ComPtr<IImageBrush> brushAsImageBrush;
-            THROW_IF_FAILED(ellipseBrush.As(&brushAsImageBrush));
+            /*  ComPtr<IBrush> ellipseBrush;
+              THROW_IF_FAILED(ellipseAsShape->get_Fill(&ellipseBrush));
+              ComPtr<IImageBrush> brushAsImageBrush;
+              THROW_IF_FAILED(ellipseBrush.As(&brushAsImageBrush));*/
+            auto ellipseAsShape = imageContainer.as<rtxaml::Shapes::Shape>();
 
-            ComPtr<IEllipse> ellipse(destination);
+            auto ellipseBrush = ellipseAsShape.Fill();
 
-            ComPtr<IUIElement> ellipseAsUIElement;
-            THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
+            auto brushAsImageBrush = ellipseBrush.as<rtxaml::Media::ImageBrush>();
 
-            ComPtr<IFrameworkElement> ellipseAsFrameworkElement;
-            THROW_IF_FAILED(ellipse.As(&ellipseAsFrameworkElement));
+            /* ComPtr<IEllipse> ellipse(destination);
 
-            ComPtr<IImageSource> imageSource;
+             ComPtr<IUIElement> ellipseAsUIElement;
+             THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
+
+             ComPtr<IFrameworkElement> ellipseAsFrameworkElement;
+             THROW_IF_FAILED(ellipse.As(&ellipseAsFrameworkElement));*/
+
+            /*ComPtr<IImageSource> imageSource;
             THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
             ComPtr<IBitmapSource> imageSourceAsBitmap;
-            THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
+            THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));*/
+
+            auto imageSource = brushAsImageBrush.ImageSource();
+            auto imageSourceAsBitmap = imageSource.as<rtxaml::Media::Imaging::BitmapSource>();
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
             {
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                /* THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));*/
+                ellipseAsShape.Visibility(rtxaml::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                ComPtr<IInspectable> localParentElement(parentElement);
+                // TODO: what's the point of eventToken if we don';t save it ?
+                // EventRegistrationToken eventToken;
+                // ComPtr<IInspectable> localParentElement(parentElement);
 
                 // Take a weak reference to the parent to avoid circular references (Parent->Ellipse->ImageBrush->Lambda->(Parent))
-                WeakRef weakParent;
-                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
+                /*WeakRef weakParent;
+                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));*/
 
-                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>(
-                        [ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs*
-                                                                           /*args*/) -> HRESULT
+                auto weakParent = winrt::make_weak(parentElement);
+
+                // THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
+                //    Callback<IRoutedEventHandler>(
+                //        [ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs*
+                //                                                           /*args*/) -> HRESULT
+                // TODO: do we need a revoker/token?
+                brushAsImageBrush.ImageOpened(
+                    [ellipseAsShape, weakParent, isVisible](winrt::Windows::Foundation::IInspectable const& sender,
+                                                            rtxaml::RoutedEventArgs /*args*/) -> void
+                    {
+                        if (isVisible)
                         {
-                            if (isVisible)
+                            /*ComPtr<IImageBrush> lambdaBrushAsImageBrush;
+                            RETURN_IF_FAILED(sender->QueryInterface(IID_PPV_ARGS(&lambdaBrushAsImageBrush)));*/
+                            auto lambdaBrushAsImageBrush = sender.as<rtxaml::Media::ImageBrush>();
+
+                            /*ComPtr<IImageSource> lambdaImageSource;
+                            RETURN_IF_FAILED(lambdaBrushAsImageBrush->get_ImageSource(&lambdaImageSource));
+                            ComPtr<IBitmapSource> lambdaImageSourceAsBitmap;
+                            RETURN_IF_FAILED(lambdaImageSource.As(&lambdaImageSourceAsBitmap));*/
+                            auto lambdaImageSource = lambdaBrushAsImageBrush.ImageSource();
+
+                           /* ComPtr<IInspectable> lambdaParentElement;
+                            RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));*/
+                            auto lambdaParentElement = weakParent.get();
+                            /*if (ellipseAsFrameworkElement.Get() && lambdaParentElement)*/
+                            // TODO: no reason to convert ellipse to framework element, because  FE -> Shape - cast will be successfull if ellipseAsShape is not null
+                            if (ellipseAsShape && lambdaParentElement)
                             {
-                                ComPtr<IImageBrush> lambdaBrushAsImageBrush;
-                                RETURN_IF_FAILED(sender->QueryInterface(IID_PPV_ARGS(&lambdaBrushAsImageBrush)));
-
-                                ComPtr<IImageSource> lambdaImageSource;
-                                RETURN_IF_FAILED(lambdaBrushAsImageBrush->get_ImageSource(&lambdaImageSource));
-                                ComPtr<IBitmapSource> lambdaImageSourceAsBitmap;
-                                RETURN_IF_FAILED(lambdaImageSource.As(&lambdaImageSourceAsBitmap));
-
-                                ComPtr<IInspectable> lambdaParentElement;
-                                RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
-                                if (ellipseAsFrameworkElement.Get() && lambdaParentElement.Get())
-                                {
-                                    RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(ellipseAsFrameworkElement.Get(),
-                                                                                   lambdaParentElement.Get(),
-                                                                                   lambdaImageSourceAsBitmap.Get(),
-                                                                                   isVisible));
-                                }
+                                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetAutoImageSize(ellipseAsShape,
+                                                                                                  lambdaParentElement,
+                                                                                                  lambdaImageSource,
+                                                                                                  isVisible);
                             }
-                            return S_OK;
-                        })
-                        .Get(),
-                    &eventToken));
+                        }
+                    });
             }
             else
             {
-                XamlHelpers::SetAutoImageSize(ellipseAsFrameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
+                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetAutoImageSize(ellipseAsShape, parentElement, lambdaImageSource, isVisible);
             }
         }
     }
 
     template<typename T>
-    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* /* imageContainer */, bool isVisible, bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize(T const& destination, IInspectable const &parentElement, IInspectable const& /* imageContainer */, bool isVisible, bool imageFiresOpenEvent)
     {
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
-            ComPtr<IImage> xamlImage(destination);
-            ComPtr<IFrameworkElement> imageAsFrameworkElement;
+            /*ComPtr<IImage> xamlImage(destination);*/
+            auto xamlImage = destination.as<rtxaml::Controls::Image>();
+           /* ComPtr<IFrameworkElement> imageAsFrameworkElement;
             THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
             ComPtr<IImageSource> imageSource;
             THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
@@ -915,51 +945,61 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
 
             ComPtr<IUIElement> imageAsUIElement;
-            THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
+            THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));*/
+            auto imageSource = xamlImage.Source();
+
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
             {
                 // Collapse the Image control while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+               /* THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));*/
+                xamlImage.Visibility(rtxaml::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                ComPtr<IInspectable> localParentElement(parentElement);
+                /*ComPtr<IInspectable> localParentElement(parentElement);*/
 
                 // Take weak references to the image and parent to avoid circular references between this lambda and
                 // its parents (Parent->Image->Lambda->(Parent and Image))
-                WeakRef weakParent;
-                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
+                /*WeakRef weakParent;
+                THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));*/
+                auto weakParent = winrt::make_weak(parentElement);
 
-                WeakRef weakImage;
-                THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));
-                EventRegistrationToken eventToken;
+               /* WeakRef weakImage;
+                THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));*/
+                auto weakImage = winrt::make_weak(xamlImage);
+               /* EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>(
-                        [weakImage, weakParent, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                /*args*/) -> HRESULT
+                    Callback<IRoutedEventHandler>(*/
+                xamlImage.ImageOpened(
+                    [weakImage, weakParent, imageSource, isVisible](winrt::Windows::Foundation::IInspectable const& /*sender*/,
+                                                                    rtxaml::RoutedEventArgs const&
+                                                                            /*args*/) -> void
+                    {
+                        /*ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
+                        RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));
+
+                        ComPtr<IInspectable> lambdaParentElement;
+                        RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));*/
+
+                        auto lambdaImageAsFrameworkElement = weakImage.get();
+                        auto lambdaParentElement = weakParent.get();
+
+                        if (lambdaImageAsFrameworkElement && lambdaParentElement)
                         {
-                            ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
-                            RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));
-
-                            ComPtr<IInspectable> lambdaParentElement;
-                            RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
-
-                            if (lambdaImageAsFrameworkElement && lambdaParentElement)
-                            {
-                                RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement.Get(),
-                                                                               lambdaParentElement.Get(),
-                                                                               imageSourceAsBitmap.Get(),
-                                                                               isVisible));
-                            }
-                            return S_OK;
-                        })
-                        .Get(),
-                    &eventToken));
+                             ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement,
+                                                                           lambdaParentElement,
+                                                                           imageSource),
+                                                                           isVisible);
+                        }
+                    });
             }
             else
             {
-                XamlHelpers::SetAutoImageSize(imageAsFrameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
+                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetAutoImageSize(imageAsFrameworkElement,
+                                                                                parentElement,
+                                                                                imageSource,
+                                                                                isVisible);
             }
         }
     }

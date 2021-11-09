@@ -159,9 +159,9 @@ namespace AdaptiveCards::Rendering::WinUI3
                 {
                     // If we're done and no one's listening for the images to load, make sure
                     // any outstanding image loads are no longer tracked.
-                    xamlBuilder->m_imageLoadTracker.AbandonOutstandingImages();
+                    xamlBuilder->m_imageLoadTracker->AbandonOutstandingImages();
                 }
-                else if (xamlBuilder->m_imageLoadTracker.GetTotalImagesTracked() == 0)
+                else if (xamlBuilder->m_imageLoadTracker->GetTotalImagesTracked() == 0)
                 {
                     // If there are no images to track, fire the all images loaded
                     // event to signal the xaml is ready
