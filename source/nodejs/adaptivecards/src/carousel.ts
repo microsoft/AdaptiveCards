@@ -274,13 +274,13 @@ export class Carousel extends Container {
 
         this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
 
-        cardLevelContainer.onfocus = () => {
+        cardLevelContainer.addEventListener("focusin", (event) => {
             if (!this._isSwiperInitialized) {
                 this._isSwiperInitialized = true;
                 this._swiper?.destroy();
                 this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
             }
-        };
+        });
 
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
@@ -325,13 +325,14 @@ export class Carousel extends Container {
 
         // While the 'pauseOnMouseEnter' option should resume autoplay on
         // mouse exit it doesn't do it, so adding custom events to handle it
-        swiperContainer.onmouseenter = function () {
-            swiper.autoplay.stop();
-        };
 
-        swiperContainer.onmouseleave = function () {
+        swiperContainer.addEventListener("mouseenter", function(event) {
+            swiper.autoplay.stop();
+        });
+
+        swiperContainer.addEventListener("mouseleave", function(event) {
             swiper.autoplay.start();
-        };
+        });
 
         this._swiper = swiper;
     }
@@ -351,7 +352,7 @@ export class Carousel extends Container {
                     ValidationEvent.ElementTypeNotAllowed,
                     Strings.errors.elementTypeNotAllowed(typeName));
             }
-        )
+        );
     }
 }
 
