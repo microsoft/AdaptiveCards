@@ -60,20 +60,11 @@ describe("Mock function", function() {
         Assert.strictEqual("https://adaptivecards.io", url);
     }));
 
-    test("Test actions are rendered and active below carousel", (async() => {
-        await testUtils.goToTestCase("v1.6/Carousel.HostConfig");
-
-        await testUtils.clickOnActionWithTitle("See more");
-
-        const url: string = await testUtils.getInputFor("url");
-        Assert.strictEqual("https://adaptivecards.io", url);
-    }));
-
     test("Test autoplay is disabled", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
         let firstCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("firstCarouselPage"));
-        let firstCarouselPageVisibility = firstCarouselPage.getCssValue("visibility");
+        let firstCarouselPageVisibility = await firstCarouselPage.getCssValue("visibility");
 
         Assert.strictEqual("visible", firstCarouselPageVisibility);
 
@@ -81,25 +72,29 @@ describe("Mock function", function() {
         await testUtils.delay(5000);
 
         firstCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("firstCarouselPage"));
-        firstCarouselPageVisibility = firstCarouselPage.getCssValue("visibility");
+        firstCarouselPageVisibility = await firstCarouselPage.getCssValue("visibility");
 
         Assert.strictEqual("visible", firstCarouselPageVisibility);
-    }));
+    }), 7000);
 
     test("Test autoplay is applied", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
 
         let firstCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("firstCarouselPage"));
-        let firstCarouselPageVisibility = firstCarouselPage.getCssValue("visibility");
+        let firstCarouselPageVisibility = await firstCarouselPage.getCssValue("visibility");
 
         Assert.strictEqual("visible", firstCarouselPageVisibility);
 
         // Await for 5 seconds and verify no change happened
-        await testUtils.delay(5000);
+        await testUtils.delay(7000);
 
         firstCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("firstCarouselPage"));
-        firstCarouselPageVisibility = firstCarouselPage.getCssValue("visibility");
-
+        firstCarouselPageVisibility = await firstCarouselPage.getCssValue("visibility");
         Assert.strictEqual("hidden", firstCarouselPageVisibility);
-    }));
+
+        const secondCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("theSecondCarouselPage"));
+        const secondCarouselPageVisibility = await secondCarouselPage.getCssValue("visibility");
+
+        Assert.strictEqual("visible", secondCarouselPageVisibility);
+    }), 9000);
 });
