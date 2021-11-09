@@ -297,8 +297,7 @@ export class Carousel extends Container {
                 Scrollbar,
                 A11y,
                 History,
-                Keyboard,
-                Autoplay
+                Keyboard
             ],
             pagination: {
                 el: paginationElement,
@@ -318,6 +317,7 @@ export class Carousel extends Container {
         };
 
         if (this.timer && !this.isDesignMode()) {
+            swiperOptions.modules?.push(Autoplay);
             swiperOptions.autoplay = { delay: this.timer, pauseOnMouseEnter: true };
         }
 

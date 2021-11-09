@@ -9,6 +9,11 @@ describe("Mock function", function() {
     let driver: Webdriver.WebDriver;
     let testUtils: TestUtils.TestUtils;
 
+    // This is a constant value for the wait time between pressing an action and retrieving
+    // the input value. Only use this if you see some test flakiness. Value is given in ms
+    const delayForInputRetrieval: number = 500;
+    const delayForCarouselArrows: number = 1000;
+
     beforeAll(async() => {
         driver = new Webdriver.Builder().withCapabilities(Webdriver.Capabilities.edge()).build();
         await driver.get("http://127.0.0.1:8080/");
@@ -57,8 +62,7 @@ describe("Mock function", function() {
 
         await testUtils.clickOnActionWithTitle("See more");
 
-        // wait half a second to wait for page refresh
-        await testUtils.delay(500);
+        await testUtils.delay(delayForInputRetrieval);
 
         const url: string = await testUtils.getInputFor("url");
         Assert.strictEqual("https://adaptivecards.io", url);
@@ -82,9 +86,37 @@ describe("Mock function", function() {
         await testUtils.assertElementWithIdDoesNotExist("id7");
     }));
 
+    test("Verify left and right buttons in carousel work", (async() => {
+        await testUtils.goToTestCase("v1.6/Carousel.ScenarioCards");
+
+        let firstCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("firstCarouselPage"));
+        let firstCarouselPageVisibility = await firstCarouselPage.getCssValue("visibility");
+
+        Assert.strictEqual("visible", firstCarouselPageVisibility);
+
+        const rightArrow = await testUtils.driver.findElement(Webdriver.By.className("ac-carousel-right"));
+        await rightArrow.click();
+
+        await testUtils.delay(delayForCarouselArrows);
+
+        const secondCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("theSecondCarouselPage"));
+        const secondCarouselPageVisibility = await secondCarouselPage.getCssValue("visibility");
+
+        Assert.strictEqual("visible", secondCarouselPageVisibility);
+
+        const leftArrow = await testUtils.driver.findElement(Webdriver.By.className("ac-carousel-left"));
+        await leftArrow.click();
+
+        await testUtils.delay(delayForCarouselArrows);
+
+        firstCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("firstCarouselPage"));
+        firstCarouselPageVisibility = await firstCarouselPage.getCssValue("visibility");
+
+        Assert.strictEqual("visible", firstCarouselPageVisibility);
+    }));
+
     test("Unsupported actions are not rendered", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.ForbiddenActions");
-
 
         const showCardAction = await testUtils.tryGetActionWithTitle("Action.ShowCard");
         Assert.strictEqual(null, showCardAction);
