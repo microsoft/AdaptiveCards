@@ -703,12 +703,3 @@ input.bigbox {
   transform: scale(2.5);
   transform-origin: left;
 }
-
-/* Preview features */
-
-.ac-schema-version-1-5::after {
-  content: "Preview";
-  color: White;
-  background-color: blue;
-  margin: 2px;
-} 
