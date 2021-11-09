@@ -14,7 +14,11 @@ import * as mdTable from "markdown-table";
 import * as style from "./style";
 
 const getPreviewMarkDown = (version: string) => {
-	return `<span class="ac-schema-version ac-schema-version-${version.replace(/\./, '-')}">${version}</span>`
+	if (version === '1.6') {
+		return '![Preview Feature](preview.png "This is a vNext preview feature.")';
+	} else {
+		return '';
+	}
 }
 
 class MarkdownConfig {
