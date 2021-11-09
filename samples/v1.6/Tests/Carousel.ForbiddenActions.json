@@ -193,7 +193,7 @@
 		},
 		{
 			"type": "Action.ToggleVisibility",
-			"title": "Show!",
+			"title": "Action.ToggleVisibility",
 			"targetElements": [
 				"id1"
 			]

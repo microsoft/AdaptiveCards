@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Assert from "assert";
+import { assert } from "console";
 import * as Webdriver from "selenium-webdriver";
 import * as TestUtils from "./testUtils";
 
@@ -56,10 +57,43 @@ describe("Mock function", function() {
 
         await testUtils.clickOnActionWithTitle("See more");
 
+        // wait half a second to wait for page refresh
+        await testUtils.delay(500);
+
         const url: string = await testUtils.getInputFor("url");
         Assert.strictEqual("https://adaptivecards.io", url);
     }));
 
+    test("Test page limit is honoured", (async() => {
+        await testUtils.goToTestCase("v1.6/Carousel.HostConfig");
+
+        await testUtils.assertElementWithIdDoesNotExist("page10");
+    }));
+
+    test("Unsupported elements are not rendered", (async() => {
+        await testUtils.goToTestCase("v1.6/Carousel.ForbiddenElements");
+
+        await testUtils.assertElementWithIdDoesNotExist("id1");
+        await testUtils.assertElementWithIdDoesNotExist("id2");
+        await testUtils.assertElementWithIdDoesNotExist("id3");
+        await testUtils.assertElementWithIdDoesNotExist("id4");
+        await testUtils.assertElementWithIdDoesNotExist("id5");
+        await testUtils.assertElementWithIdDoesNotExist("id6");
+        await testUtils.assertElementWithIdDoesNotExist("id7");
+    }));
+
+    test("Unsupported actions are not rendered", (async() => {
+        await testUtils.goToTestCase("v1.6/Carousel.ForbiddenActions");
+
+
+        const showCardAction = await testUtils.tryGetActionWithTitle("Action.ShowCard");
+        Assert.strictEqual(null, showCardAction);
+
+        const toggleVisibilityAction = await testUtils.tryGetActionWithTitle("Action.ToggleVisibility");
+        Assert.strictEqual(null, toggleVisibilityAction);
+    }));
+
+    // Giving this test 7 seconds to run
     test("Test autoplay is disabled", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.ScenarioCards");
 
@@ -77,6 +111,7 @@ describe("Mock function", function() {
         Assert.strictEqual("visible", firstCarouselPageVisibility);
     }), 7000);
 
+    // Giving this test 9 seconds to run
     test("Test autoplay is applied", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.ScenarioCards.Timer");
 
@@ -85,7 +120,7 @@ describe("Mock function", function() {
 
         Assert.strictEqual("visible", firstCarouselPageVisibility);
 
-        // Await for 5 seconds and verify no change happened
+        // Await for 5 seconds and verify the first page is now hidden
         await testUtils.delay(7000);
 
         firstCarouselPage = await testUtils.driver.findElement(Webdriver.By.id("firstCarouselPage"));

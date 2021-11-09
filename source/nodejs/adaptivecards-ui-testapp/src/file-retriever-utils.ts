@@ -10,7 +10,9 @@ const v16TestCases: string[] = [
     'Elements/Carousel',
     'Elements/Carousel.ScenarioCards',
     'Elements/Carousel.ScenarioCards.Timer',
-    'Tests/Carousel.HostConfig'
+    'Tests/Carousel.HostConfig',
+    'Tests/Carousel.ForbiddenElements',
+    'Tests/Carousel.ForbiddenActions'
 ];
 
 function fixTestCases(list: string[], versionNumber: string) {
