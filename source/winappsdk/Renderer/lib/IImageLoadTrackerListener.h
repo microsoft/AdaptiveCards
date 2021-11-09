@@ -4,11 +4,12 @@
 
 namespace AdaptiveCards::Rendering::WinUI3
 {
-    struct DECLSPEC_UUID("D940E878-F2E0-4AF7-A844-4D090C7379E3") IImageLoadTrackerListener : public IInspectable
+    struct DECLSPEC_UUID("D940E878-F2E0-4AF7-A844-4D090C7379E3") IImageLoadTrackerListener
+        : public winrt::Windows::Foundation::IInspectable
     {
     public:
-        void AllImagesLoaded();
-        void ImagesLoadingHadError();
+        const virtual void AllImagesLoaded();
+        const virtual void ImagesLoadingHadError();
     };
 
 }

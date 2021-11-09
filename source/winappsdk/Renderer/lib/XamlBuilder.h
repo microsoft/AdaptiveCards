@@ -81,11 +81,23 @@ namespace AdaptiveCards::Rendering::WinUI3
 
         template<typename T>
         void SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent);
+        template<typename T>
+        void SetAutoSize(T const& destination,
+                         IInspectable const& parentElement,
+                         IInspectable const&, /* imageContainer */
+                         bool isVisible,
+                         bool imageFiresOpenEvent);
 
         template<typename T>
         void SetImageSource(T* destination,
                             ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
                             ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
+
+        template<typename T>
+        void SetImageSource(T const& destination,
+                            winrt::Windows::UI::Xaml::Media::ImageSource const& imageSource,
+                            winrt::Windows::UI::Xaml::Media::Stretch stretch = winrt::Windows::UI::Xaml::Media::Stretch::UniformToFill);
+
         template<typename T>
         void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
                                  T* uiElement,
@@ -98,17 +110,20 @@ namespace AdaptiveCards::Rendering::WinUI3
                                  ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
 
         template<typename T>
-        bool XamlBuilder::SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
-                                              T const& uiElement,
-                                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveCardResourceResolvers const& resolvers,
-                                              bool isAutoSize,
-                                              IInspectable const& parentElement,
-                                              IInspectable const& imageContainer,
-                                              bool isVisible,
-                                              winrt::Windows::UI::Xaml::Media::Stretch stretch);
+        bool SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
+                                 T const& uiElement,
+                                 winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveCardResourceResolvers const& resolvers,
+                                 bool isAutoSize,
+                                 winrt::Windows::Foundation::IInspectable const& parentElement,
+                                 winrt::Windows::Foundation::IInspectable const& imageContainer,
+                                 bool isVisible,
+                                 winrt::Windows::UI::Xaml::Media::Stretch stretch = winrt::Windows::UI::Xaml::Media::Stretch::UniformToFill);
 
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, _In_ T* imageControl);
+
+        template<typename T>
+        void PopulateImageFromUrlAsync(winrt::Windows::Foundation::Uri const& imageUrl, T const& imageControl);
 
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();

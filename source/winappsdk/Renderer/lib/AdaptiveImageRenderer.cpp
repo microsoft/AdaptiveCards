@@ -58,7 +58,10 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             return nullptr;
         }
     }
+}
 
+namespace AdaptiveCards::Rendering::WinUI3
+{
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // IMPORTANT! Methods below here are actually XamlBuilder methods. They're defined here because they're only used
@@ -137,7 +140,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         auto backgroundColor = adaptiveImage.BackgroundColor();
         // TODO: we can just use adaptiveImage here?
         auto isVisible = adaptiveCardElement.IsVisible();
-        ComPtr<IFrameworkElement> frameworkElement;
+
+        rtxaml::FrameworkElement frameworkElement{nullptr};
+
         // TODO: Not sure why it's been done this way
         // if (imageStyle == ImageStyle_Person)
         if (imageStyle == rtom::ImageStyle::Person)
@@ -161,6 +166,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
             // ComPtr<IShape> ellipseAsShape;
             // RETURN_IF_FAILED(ellipse.As(&ellipseAsShape));
+            auto ellipseAsShape = ellipse.as<rtxaml::Shapes::Shape>();
+            auto backgrondEllipseAsShape = backgroundEllipse.as<rtxaml::Shapes::Shape>();
 
             /* SetImageOnUIElement(imageUrl.Get(),
                                  ellipse.Get(),
@@ -173,61 +180,68 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                  imageStretch);*/
 
             auto mustHideElement = SetImageOnUIElement(
-                imageUrl, ellipse, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, ellipse, isVisible, &mustHideElement, imageStretch);
+                imageUrl, ellipse, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, ellipseAsShape, isVisible, imageStretch);
 
-            ComPtr<IShape> backgroundEllipseAsShape;
-            RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
+            /* ComPtr<IShape> backgroundEllipseAsShape;
+             RETURN_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));*/
 
-            if (size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::None ||
-                size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Stretch ||
-                size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Auto || hasExplicitMeasurements)
+            if (size == rtom::ImageSize::None || size == rtom::ImageSize::Stretch || size == rtom::ImageSize::Auto || hasExplicitMeasurements)
             {
-                RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
-                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));
+                /* RETURN_IF_FAILED(ellipseAsShape->put_Stretch(imageStretch));
+                 RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(imageStretch));*/
+                ellipse.Stretch(imageStretch);
+                backgroundEllipse.Stretch(imageStretch);
             }
             else
             {
                 // Set the stretch for the ellipse - this is different to the stretch used for the image brush
                 // above. This will force the ellipse to conform to fit within the confines of its parent.
-                Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
+                /*Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
                 RETURN_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
-                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
+                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));*/
+                ellipse.Stretch(rtxaml::Media::Stretch::UniformToFill);
+                backgroundEllipse.Stretch(rtxaml::Media::Stretch::UniformToFill);
             }
 
-            if (backgroundColor.Get() != nullptr)
+            if (!backgroundColor.empty())
             {
                 // Fill the background ellipse with solid color brush
-                ABI::Windows::UI::Color color;
-                RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor.Get()), &color));
-                ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
-                RETURN_IF_FAILED(backgroundEllipseAsShape->put_Fill(backgroundColorBrush.Get()));
+                // ABI::Windows::UI::Color color;
+                // RETURN_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor.Get()), &color));
+                // ComPtr<IBrush> backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
+                // RETURN_IF_FAILED(backgroundEllipseAsShape->put_Fill(backgroundColorBrush.Get()));
 
-                // Create a grid to contain the background color ellipse and the image ellipse
-                ComPtr<IGrid> imageGrid =
-                    XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+                //// Create a grid to contain the background color ellipse and the image ellipse
+                // ComPtr<IGrid> imageGrid =
+                //    XamlHelpers::CreateABIClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
 
-                ComPtr<IPanel> panel;
-                RETURN_IF_FAILED(imageGrid.As(&panel));
+                // ComPtr<IPanel> panel;
+                // RETURN_IF_FAILED(imageGrid.As(&panel));
 
-                XamlHelpers::AppendXamlElementToPanel(backgroundEllipse.Get(), panel.Get());
-                XamlHelpers::AppendXamlElementToPanel(ellipse.Get(), panel.Get());
+                // XamlHelpers::AppendXamlElementToPanel(backgroundEllipse.Get(), panel.Get());
+                // XamlHelpers::AppendXamlElementToPanel(ellipse.Get(), panel.Get());
 
-                RETURN_IF_FAILED(imageGrid.As(&frameworkElement));
+                // RETURN_IF_FAILED(imageGrid.As(&frameworkElement));
+
+                auto color = GetColorFromString(HStringToUTF8(backgroundColor));
             }
             else
             {
-                RETURN_IF_FAILED(ellipse.As(&frameworkElement));
+                /*RETURN_IF_FAILED(ellipse.As(&frameworkElement));*/
+                // TODO: I don't need to cast, do I?
+                frameworkElement = ellipse.as<rtxaml::FrameworkElement>();
             }
         }
         else
         {
-            ComPtr<IImage> xamlImage =
-                XamlHelpers::CreateABIClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
+            /*ComPtr<IImage> xamlImage =
+                XamlHelpers::CreateABIClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));*/
+            rtxaml::Controls::Image xamlImage{};
 
-            if (backgroundColor != nullptr)
+            if (!backgroundColor.empty())
             {
                 // Create a surrounding border with solid color background to contain the image
-                ComPtr<IBorder> border =
+                /*ComPtr<IBorder> border =
                     XamlHelpers::CreateABIClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
                 ABI::Windows::UI::Color color;
@@ -239,19 +253,28 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 RETURN_IF_FAILED(xamlImage.CopyTo(imageAsUiElement.GetAddressOf()));
                 RETURN_IF_FAILED(border->put_Child(imageAsUiElement.Get()));
 
-                RETURN_IF_FAILED(border.As(&frameworkElement));
+                RETURN_IF_FAILED(border.As(&frameworkElement));*/
+                rtxaml::Controls::Border border{};
+                auto color = GetColorFromString(HStringToUTF8(backgroundColor));
+                auto backgroundColorBrush = XamlHelpers::GetSolidColorBrush(color);
+                border.Background(backgroundColorBrush);
+
+                border.Child(xamlImage);
+
+                frameworkElement = border.as<rtxaml::FrameworkElement>();
             }
             else
             {
-                RETURN_IF_FAILED(xamlImage.As(&frameworkElement));
+                /*RETURN_IF_FAILED(xamlImage.As(&frameworkElement));*/
+                frameworkElement = xamlImage.as<rtxaml::FrameworkElement>();
             }
 
             if (isAspectRatioNeeded)
             {
-                xamlImage->put_Stretch(Stretch::Stretch_Fill);
+                xamlImage.Stretch(rtxaml::Media::Stretch::Fill);
             }
 
-            ComPtr<IInspectable> parentElement;
+            /*ComPtr<IInspectable> parentElement;
             RETURN_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
 
             bool mustHideElement{true};
@@ -262,111 +285,121 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                 parentElement.Get(),
                                 frameworkElement.Get(),
                                 isVisible,
-                                &mustHideElement);
+                                &mustHideElement);*/
+            auto parentElement = renderArgs.ParentElement();
+            bool mustHideElement =
+                SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == rtom::ImageSize::Auto), parentElement, frameworkElement, isVisible);
+
+            // SetImageOnUIElement(imageUrl, xamlImage, resourceResolvers, (size == rtom::ImageSize::Auto),
+            // parentElement, frameworkElement, isVisible, &mustHideElement);
         }
 
-        ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
-        RETURN_IF_FAILED(hostConfig->get_ImageSizes(sizeOptions.GetAddressOf()));
+        /* ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
+         RETURN_IF_FAILED(hostConfig->get_ImageSizes(sizeOptions.GetAddressOf()));*/
+
+        auto sizeOptions = hostConfig.ImageSizes();
 
         if (hasExplicitMeasurements)
         {
             if (pixelWidth)
             {
-                if (imageStyle == ImageStyle_Person)
+                if (imageStyle == rtom::ImageStyle::Person)
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_Width(pixelWidth));
+                    frameworkElement.Width(pixelWidth);
                 }
                 else
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_MaxWidth(pixelWidth));
+                    frameworkElement.MaxWidth(pixelWidth);
                 }
             }
 
             if (pixelHeight)
             {
-                if (imageStyle == ImageStyle_Person)
+                if (imageStyle == rtom::ImageStyle::Person)
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_Height(pixelHeight));
+                    frameworkElement.Height(pixelHeight);
                 }
                 else
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(pixelHeight));
+                    frameworkElement.MaxHeight(pixelHeight);
                 }
             }
         }
         else
         {
-            if (size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Small ||
-                size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Medium ||
-                size == ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Large)
+            if (size == rtom::ImageSize::Small || size == rtom::ImageSize::Medium || size == rtom::ImageSize::Large)
             {
-                UINT32 imageSize;
+                uint32_t imageSize;
                 switch (size)
                 {
-                case ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Small:
+                case rtom::ImageSize::Small:
                 {
-                    RETURN_IF_FAILED(sizeOptions->get_Small(&imageSize));
+                    imageSize = sizeOptions.Small();
                     break;
                 }
 
-                case ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Medium:
+                case rtom::ImageSize::Medium:
                 {
-                    RETURN_IF_FAILED(sizeOptions->get_Medium(&imageSize));
+                    imageSize = sizeOptions.Medium();
                     break;
                 }
 
-                case ABI::AdaptiveCards::ObjectModel::WinUI3::ImageSize::Large:
+                case rtom::ImageSize::Large:
                 {
-                    RETURN_IF_FAILED(sizeOptions->get_Large(&imageSize));
-
+                    imageSize = sizeOptions.Large();
                     break;
                 }
                 default:
                 {
-                    return E_UNEXPECTED;
+                    /*return E_UNEXPECTED;*/
+                    // TODO: do we return nullptr here?
+                    return nullptr;
                 }
                 }
 
-                RETURN_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
+                frameworkElement.MaxWidth(imageSize);
 
                 // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
                 // aspect ratio when constrained on both axes.
-                if (imageStyle != ImageStyle_Person)
+                if (imageStyle != rtom::ImageStyle::Person)
                 {
-                    RETURN_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
+                    frameworkElement.MaxHeight(imageSize);
                 }
             }
         }
 
-        ComPtr<IReference<HAlignment>> adaptiveHorizontalAlignmentReference;
-        RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));
+        /* ComPtr<IReference<HAlignment>> adaptiveHorizontalAlignmentReference;
+         RETURN_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignmentReference));*/
+        auto adaptiveHorizontalAlignmentReference = adaptiveImage.HorizontalAlignment();
 
         // If the image doesn't have horizontal alignment set, check the render context for a parent value
         if (adaptiveHorizontalAlignmentReference == nullptr)
         {
-            RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));
+            /* RETURN_IF_FAILED(renderContext->get_HorizontalContentAlignment(&adaptiveHorizontalAlignmentReference));*/
+            adaptiveHorizontalAlignmentReference = renderContext.HorizontalContentAlignment();
         }
 
-        HAlignment adaptiveHorizontalAlignment = ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Left;
+        auto adaptiveHorizontalAlignment = rtom::HAlignment::Left;
         if (adaptiveHorizontalAlignmentReference != nullptr)
         {
-            RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment));
+            /*RETURN_IF_FAILED(adaptiveHorizontalAlignmentReference->get_Value(&adaptiveHorizontalAlignment));*/
+            adaptiveHorizontalAlignment = adaptiveHorizontalAlignmentReference.Value();
         }
 
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Left:
-            RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
+        case rtom::HAlignment::Left:
+            frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Left);
             break;
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Right:
-            RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
+        case rtom::HAlignment::Right:
+            frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Right);
             break;
-        case ABI::AdaptiveCards::ObjectModel::WinUI3::HAlignment::Center:
-            RETURN_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
+        case rtom::HAlignment::Center:
+            frameworkElement.HorizontalAlignment(rtxaml::HorizontalAlignment::Center);
             break;
         }
 
-        RETURN_IF_FAILED(frameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
+        /*RETURN_IF_FAILED(frameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
         RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement.Get()));
 
         ComPtr<IAdaptiveActionElement> selectAction;
@@ -394,14 +427,24 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                                           imageAsUIElement.Get(),
                                           XamlHelpers::SupportsInteractivity(hostConfig.Get()),
                                           true,
-                                          imageControl);
+                                          imageControl);*/
 
-        return S_OK;
+        frameworkElement.VerticalAlignment(rtxaml::VerticalAlignment::Top);
+        XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Image", frameworkElement);
+
+        auto selectAction = adaptiveImage.SelectAction();
+
+        winrt::hstring altText = adaptiveImage.AltText();
+
+        rtxaml::Automation::AutomationProperties::SetName(frameworkElement, altText);
+
+        return ActionHelpers::HandleSelectAction(
+            adaptiveCardElement, selectAction, renderContext, frameworkElement, XamlHelpers::SupportsInteractivity(hostConfig), true);
     }
 
-    /* template<typename T>*/
+    template<typename T>
     bool XamlBuilder::SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
-                                          rtxaml::UIElement const& uiElement,
+                                          T const& uiElement,
                                           rtrender::AdaptiveCardResourceResolvers const& resolvers,
                                           bool isAutoSize,
                                           IInspectable const& parentElement,
@@ -707,8 +750,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
         }
     }
 
-    // template<typename T>
-    void XamlBuilder::PopulateImageFromUrlAsync(winrt::Windows::Foundation::Uri const& imageUrl, rtxaml::UIElement const& imageControl)
+    template<typename T>
+    void XamlBuilder::PopulateImageFromUrlAsync(winrt::Windows::Foundation::Uri const& imageUrl, T const& imageControl)
     {
         winrt::Windows::Web::Http::Filters::HttpBaseProtocolFilter httpBaseProtocolFilter{};
         httpBaseProtocolFilter.AllowUI(false);
@@ -907,53 +950,63 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                             ComPtr<IBitmapSource> lambdaImageSourceAsBitmap;
                             RETURN_IF_FAILED(lambdaImageSource.As(&lambdaImageSourceAsBitmap));*/
                             auto lambdaImageSource = lambdaBrushAsImageBrush.ImageSource();
+                            auto lamdaImageSourceAsBitmap = lambdaImageSource.as<rtxaml::Media::Imaging::BitmapSource>();
 
-                           /* ComPtr<IInspectable> lambdaParentElement;
-                            RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));*/
+                            /* ComPtr<IInspectable> lambdaParentElement;
+                             RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));*/
                             auto lambdaParentElement = weakParent.get();
                             /*if (ellipseAsFrameworkElement.Get() && lambdaParentElement)*/
-                            // TODO: no reason to convert ellipse to framework element, because  FE -> Shape - cast will be successfull if ellipseAsShape is not null
+                            // TODO: no reason to convert ellipse to framework element, because  FE -> Shape - cast will
+                            // be successfull if ellipseAsShape is not null
                             if (ellipseAsShape && lambdaParentElement)
                             {
-                                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetAutoImageSize(ellipseAsShape,
-                                                                                                  lambdaParentElement,
-                                                                                                  lambdaImageSource,
-                                                                                                  isVisible);
+                                rtxaml::FrameworkElement k{nullptr};
+                                IInspectable whatever{};
+                                rtxaml::Media::Imaging::BitmapSource as{nullptr};
+
+
+                                XamlHelpers::SetAutoImageSize(ellipseAsShape,
+                                                              lambdaParentElement,
+                                                              lamdaImageSourceAsBitmap,
+                                                              isVisible);
                             }
                         }
                     });
             }
             else
             {
-                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetAutoImageSize(ellipseAsShape, parentElement, lambdaImageSource, isVisible);
+                XamlHelpers::SetAutoImageSize(ellipseAsShape, parentElement, imageSourceAsBitmap, isVisible);
             }
         }
     }
 
     template<typename T>
-    void XamlBuilder::SetAutoSize(T const& destination, IInspectable const &parentElement, IInspectable const& /* imageContainer */, bool isVisible, bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize(T const& destination,
+                                  IInspectable const& parentElement,
+                                  IInspectable const&, /* imageContainer */
+                                  bool isVisible,
+                                  bool imageFiresOpenEvent)
     {
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
             /*ComPtr<IImage> xamlImage(destination);*/
             auto xamlImage = destination.as<rtxaml::Controls::Image>();
-           /* ComPtr<IFrameworkElement> imageAsFrameworkElement;
-            THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
-            ComPtr<IImageSource> imageSource;
-            THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
-            ComPtr<IBitmapSource> imageSourceAsBitmap;
-            THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
+            /* ComPtr<IFrameworkElement> imageAsFrameworkElement;
+             THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
+             ComPtr<IImageSource> imageSource;
+             THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
+             ComPtr<IBitmapSource> imageSourceAsBitmap;
+             THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
 
-            ComPtr<IUIElement> imageAsUIElement;
-            THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));*/
+             ComPtr<IUIElement> imageAsUIElement;
+             THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));*/
             auto imageSource = xamlImage.Source();
-
 
             // If the image hasn't loaded yet
             if (imageFiresOpenEvent)
             {
                 // Collapse the Image control while the image loads, so that resizing is not noticeable
-               /* THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));*/
+                /* THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));*/
                 xamlImage.Visibility(rtxaml::Visibility::Collapsed);
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
@@ -965,16 +1018,16 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));*/
                 auto weakParent = winrt::make_weak(parentElement);
 
-               /* WeakRef weakImage;
-                THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));*/
+                /* WeakRef weakImage;
+                 THROW_IF_FAILED(imageAsFrameworkElement.AsWeak(&weakImage));*/
                 auto weakImage = winrt::make_weak(xamlImage);
-               /* EventRegistrationToken eventToken;
-                THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>(*/
+                /* EventRegistrationToken eventToken;
+                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
+                     Callback<IRoutedEventHandler>(*/
                 xamlImage.ImageOpened(
                     [weakImage, weakParent, imageSource, isVisible](winrt::Windows::Foundation::IInspectable const& /*sender*/,
                                                                     rtxaml::RoutedEventArgs const&
-                                                                            /*args*/) -> void
+                                                                    /*args*/) -> void
                     {
                         /*ComPtr<IFrameworkElement> lambdaImageAsFrameworkElement;
                         RETURN_IF_FAILED(weakImage.As(&lambdaImageAsFrameworkElement));
@@ -987,7 +1040,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
                         if (lambdaImageAsFrameworkElement && lambdaParentElement)
                         {
-                             ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement,
+                            XamlHelpers::SetAutoImageSize(lambdaImageAsFrameworkElement,
                                                                            lambdaParentElement,
                                                                            imageSource),
                                                                            isVisible);
@@ -996,10 +1049,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             }
             else
             {
-                ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetAutoImageSize(imageAsFrameworkElement,
-                                                                                parentElement,
-                                                                                imageSource,
-                                                                                isVisible);
+                XamlHelpers::SetAutoImageSize(imageAsFrameworkElement, parentElement, imageSource, isVisible);
             }
         }
     }

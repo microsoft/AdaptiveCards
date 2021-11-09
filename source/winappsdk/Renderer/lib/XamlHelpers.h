@@ -571,7 +571,7 @@ namespace AdaptiveCards::Rendering::WinUI3::XamlHelpers
                              bool setVisible);
 
     void SetAutoImageSize(winrt::Windows::UI::Xaml::FrameworkElement const& imageControl,
-                          IInspectable const& parentElement,
+                          winrt::Windows::Foundation::IInspectable const& parentElement,
                           winrt::Windows::UI::Xaml::Media::Imaging::BitmapSource const& imageSource,
                           bool setVisible);
 
