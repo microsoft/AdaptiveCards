@@ -2,27 +2,28 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.WinUI3.h"
+//#include "AdaptiveCards.Rendering.WinUI3.h"
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3
 {
-    struct TrackedImageDetails
+    struct TrackedImageDetails : winrt::implements<TrackedImageDetails, IInspectable>
     {
-        EventRegistrationToken imageOpenedRegistration;
-        EventRegistrationToken imageFailedRegistration;
+        // TODO: add {} for initialization?
+        winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage::ImageOpened_revoker imageOpenedRevoker{};
+        winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage::ImageFailed_revoker imageFailedRevoker{};
     };
 
-    class ImageLoadTracker
+    struct ImageLoadTracker : winrt::implements<ImageLoadTracker, IInspectable>
     {
     public:
         ~ImageLoadTracker();
-        void TrackBitmapImage(_In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapImage* bitmapImage);
-        void MarkFailedLoadBitmapImage(_In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapImage* bitmapImage);
+        void TrackBitmapImage(winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage const& bitmapImage);
+        void MarkFailedLoadBitmapImage(winrt::Windows::UI::Xaml::Media::Imaging::BitmapImage const& bitmapImage);
 
         void AbandonOutstandingImages();
-        HRESULT AddListener(_In_ IImageLoadTrackerListener* listener);
-        HRESULT RemoveListener(_In_ IImageLoadTrackerListener* listener);
+        void AddListener(::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener const& listener);
+        void RemoveListener(::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener const& listener);
         int GetTotalImagesTracked();
 
     private:
@@ -30,13 +31,15 @@ namespace AdaptiveCards::Rendering::WinUI3
         int m_trackedImageCount = 0;
         int m_totalImageCount = 0;
         bool m_hasFailure = false;
-        std::unordered_map<IInspectable*, TrackedImageDetails> m_eventRegistrations;
-        std::set<Microsoft::WRL::ComPtr<IImageLoadTrackerListener>> m_listeners;
+        std::unordered_map<IInspectable, winrt::com_ptr<TrackedImageDetails>> m_eventRevokers;
+        std::set<::AdaptiveCards::Rendering::WinUI3::IImageLoadTrackerListener> m_listeners;
 
-        HRESULT trackedImage_ImageLoaded(_In_ IInspectable* sender, _In_ ABI::Windows::UI::Xaml::IRoutedEventArgs* eventArgs);
-        HRESULT trackedImage_ImageFailed(_In_ IInspectable* sender, _In_ ABI::Windows::UI::Xaml::IExceptionRoutedEventArgs* eventArgs);
-        void ImageLoadResultReceived(_In_ IInspectable* sender);
-        void UnsubscribeFromEvents(_In_ IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails);
+        void TrackedImage_ImageLoaded(IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& eventArgs);
+        void TrackedImage_ImageFailed(IInspectable const& sender, winrt::Windows::UI::Xaml::ExceptionRoutedEventArgs const& eventArgs);
+        void ImageLoadResultReceived(IInspectable const& sender);
+
+        // TODO: Do I need a const ref here? or just ref?
+        void UnsubscribeFromEvents(IInspectable const& bitmapImage, winrt::com_ptr<TrackedImageDetails> const& trackedImageDetails);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
     };

@@ -285,9 +285,9 @@ void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* 
 template<typename T, typename TInterface, typename C>
 void IterateOverVector(winrt::Windows::Foundation::Collections::IVector<T> vector, C iterationCallback)
 {
-   /* Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
-    ComPtr<ABI::Windows::Foundation::Collections::IIterable<T*>> vectorIterable;
-    THROW_IF_FAILED(localVector.As<ABI::Windows::Foundation::Collections::IIterable<T*>>(&vectorIterable));*/
+    /* Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
+     ComPtr<ABI::Windows::Foundation::Collections::IIterable<T*>> vectorIterable;
+     THROW_IF_FAILED(localVector.As<ABI::Windows::Foundation::Collections::IIterable<T*>>(&vectorIterable));*/
 
     /*Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IIterator<T*>> vectorIterator;
     if (FAILED(vectorIterable->First(&vectorIterator)))
@@ -359,7 +359,7 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTe
                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                        _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept;
 
-//HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
+// HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
 //                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
 //                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
 //                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextWeight desiredWeight,
@@ -372,7 +372,6 @@ winrt::hstring GetFontFamilyFromFontType(rtrender::AdaptiveHostConfig const& hos
 HRESULT GetFontFamilyFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
                                   _Outptr_ HSTRING* resultFontFamilyName) noexcept;
-
 
 uint32_t GetFontSizeFromFontType(rtrender::AdaptiveHostConfig const& hostConfig,
                                  rtom::FontType const& fontType,
@@ -506,11 +505,14 @@ void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostC
                       _In_ HSTRING urlString,
                       _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url);
 
+winrt::Windows::Foundation::Uri GetUrlFromString(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
+                                                 winrt::hstring const& urlString);
+
 ABI::Windows::UI::Color GenerateLHoverColor(const ABI::Windows::UI::Color& originalColor);
 
 winrt::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
 
-//HRESULT GetDateTimeReference(unsigned int year,
+// HRESULT GetDateTimeReference(unsigned int year,
 //                             unsigned int month,
 //                             unsigned int day,
 //                             _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
@@ -523,8 +525,7 @@ HRESULT CopyTextElement(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveT
 
 rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& textElement);
 
-template<typename T>
-inline T EnumBitwiseOR(T a, T b)
+template<typename T> inline T EnumBitwiseOR(T a, T b)
 {
     return static_cast<T>(static_cast<int>(a) | static_cast<int>(b));
 }

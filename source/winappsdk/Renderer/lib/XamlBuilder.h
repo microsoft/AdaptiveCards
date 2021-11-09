@@ -45,25 +45,25 @@ namespace AdaptiveCards::Rendering::WinUI3
             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* context,
             _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
             std::function<void(ABI::Windows::UI::Xaml::IUIElement* child)> childCreatedCallback) noexcept;
-		
-		static void BuildPanelChildren(
+
+        static void BuildPanelChildren(
             winrt::Windows::Foundation::Collections::IVector<winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement> const& children,
-			rtxaml::Controls::Panel ParentPanel,
+            rtxaml::Controls::Panel ParentPanel,
             rtrender::AdaptiveRenderContext context,
             rtrender::AdaptiveRenderArgs renderArgs,
             std::function<void(rtxaml::UIElement child)> childCreatedCallback);
 
-        HRESULT BuildImage(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement* adaptiveCardElement,
-                           _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
-                           _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
-                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
+        winrt::Windows::UI::Xaml::UIElement
+        BuildImage(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& adaptiveCardElement,
+                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                   winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
 
     private:
-        ::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker m_imageLoadTracker;
+        winrt::com_ptr<winrt::AdaptiveCards::Rendering::WinUI3::ImageLoadTracker> m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<::AdaptiveCards::Rendering::WinUI3::IXamlBuilderListener>> m_listeners;
-        Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
+        winrt::Windows::Storage::Streams::IRandomAccessStreamStatics m_randomAccessStreamStatics{};
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
-        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT64, UINT64>>> m_copyStreamOperations;
+        std::vector<winrt::Windows::Foundation::IAsyncOperationWithProgress<uint64_t, uint64_t>> m_copyStreamOperations;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT32, UINT32>>> m_writeAsyncOperations;
 
         UINT m_fixedWidth = 0;
@@ -96,6 +96,16 @@ namespace AdaptiveCards::Rendering::WinUI3
                                  bool isVisible,
                                  _Out_ bool* mustHideElement,
                                  ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
+
+        template<typename T>
+        bool XamlBuilder::SetImageOnUIElement(winrt::Windows::Foundation::Uri const& imageUrl,
+                                              T const& uiElement,
+                                              winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveCardResourceResolvers const& resolvers,
+                                              bool isAutoSize,
+                                              IInspectable const& parentElement,
+                                              IInspectable const& imageContainer,
+                                              bool isVisible,
+                                              winrt::Windows::UI::Xaml::Media::Stretch stretch);
 
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, _In_ T* imageControl);

@@ -1269,6 +1269,55 @@ void GetUrlFromString(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostC
     THROW_IF_FAILED(localUrl.CopyTo(url));
 }
 
+winrt::Windows::Foundation::Uri GetUrlFromString(rtrender::AdaptiveHostConfig const& hostConfig, winrt::hstring const& urlString)
+{
+    /*  ComPtr<ABI::Windows::Foundation::IUriRuntimeClassFactory> uriActivationFactory;
+      THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(), &uriActivationFactory));
+
+      ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> localUrl;*/
+
+    // Try to treat URI as absolute
+    /*boolean isUrlRelative = FAILED(uriActivationFactory->CreateUri(urlString, localUrl.GetAddressOf()));*/
+    // bool isUrlRelative = false;
+    /* winrt::Windows::Foundation::IUriRuntimeClassFactory::CreateUri()*/
+
+    // winrt::Windows::Foundation::Uri uri{urlString};
+
+    winrt::Windows::Foundation::Uri uri{nullptr};
+
+    // TODO: We can also use the factory, but we don't need to, right?
+    if (const auto uriFromAbsoluteUri = winrt::Windows::Foundation::Uri{urlString})
+    {
+        return uriFromAbsoluteUri;
+    }
+    else
+    {
+        winrt::hstring imageBaseUrl = hostConfig.ImageBaseUrl();
+
+        if (const auto uriFromRelativeUri = winrt::Windows::Foundation::Uri{imageBaseUrl, urlString})
+        {
+            return uriFromRelativeUri;
+        }
+    }
+    return nullptr;
+
+    // if (const auto absoluteUri = )
+
+    //// Otherwise, try to treat URI as relative
+    // if (isUrlRelative)
+    //{
+    //    HString imageBaseUrl;
+    //    THROW_IF_FAILED(hostConfig->get_ImageBaseUrl(imageBaseUrl.GetAddressOf()));
+
+    //    if (imageBaseUrl.Get() != nullptr)
+    //    {
+    //        THROW_IF_FAILED(uriActivationFactory->CreateWithRelativeUri(imageBaseUrl.Get(), urlString, localUrl.GetAddressOf()));
+    //    }
+    //}
+
+    // THROW_IF_FAILED(localUrl.CopyTo(url));
+}
+
 Color GenerateLHoverColor(const Color& originalColor)
 {
     const double hoverIncrement = 0.25;
