@@ -299,11 +299,11 @@ export class Carousel extends ContainerBase {
         // mouse exit it doesn't do it, so adding custom events to handle it
 
         swiperContainer.addEventListener("mouseenter", function(event) {
-            swiper.autoplay.stop();
+            swiper.autoplay?.stop();
         });
 
         swiperContainer.addEventListener("mouseleave", function(event) {
-            swiper.autoplay.start();
+            swiper.autoplay?.start();
         });
 
         this._swiper = swiper;
