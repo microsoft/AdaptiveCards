@@ -83,7 +83,7 @@ export class Version {
         return 0;
     }
 
-    isVNextFeature(): boolean
+    isPreviewFeature(): boolean
     {
         return isVersionLessOrEqual(Versions.latest, this);
     }
@@ -118,8 +118,20 @@ export class Versions {
     static readonly latest = Versions.v1_5;
     // version over latest is considered "vNext feature"
     // if latest or maxSupportedVersion is changed,
-    // don't forget to update getPreviewMarkDown in ac-typed-schema\src\markdown\generate-markdown.ts
+    // don't forget to update styles .ac-schema-version-1-?::after to add/remove Preview tag from adaptivecards-site\themes\adaptivecards\source\css\style.css
     static readonly maxSupportedVersion = Versions.v1_6;
+}
+
+const LogEventIfVersionIsPreview = (sender: SerializableObject, name: string, value: any, context: BaseSerializationContext, version: Version) => {
+    if (version.isPreviewFeature()) {
+        context.logParseEvent(
+            sender,
+            Enums.ValidationEvent.PreviewFeatureUsed,
+            Strings.errors.propertyIsPreviewFeature(
+                value,
+                name,
+                version.toString()));
+    }
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -489,15 +501,7 @@ export class ValueSetProperty extends PropertyDefinition {
                 if (sourceValue.toLowerCase() === versionedValue.value.toLowerCase()) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
-                    if (targetVersion.isVNextFeature()) {
-                        context.logParseEvent(
-                            sender,
-                            Enums.ValidationEvent.VNextFetureUsed,
-                            Strings.errors.propertyIsVNextFeature(
-                                sourceValue,
-                                this.name,
-                                targetVersion.toString()));
-                    }
+                    LogEventIfVersionIsPreview(sender, sourceValue, this.name, context, targetVersion);
 
                     if (targetVersion.compareTo(context.targetVersion) <= 0) {
                         return versionedValue.value;
@@ -593,15 +597,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                 if (versionedValue.value === enumValue) {
                     let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
-                    if (targetVersion.isVNextFeature()) {
-                        context.logParseEvent(
-                            sender,
-                            Enums.ValidationEvent.VNextFetureUsed,
-                            Strings.errors.propertyIsVNextFeature(
-                                sourceValue,
-                                this.name,
-                                targetVersion.toString()));
-                    }
+                    LogEventIfVersionIsPreview(sender, sourceValue, this.name, context, targetVersion);
 
                     if (targetVersion.compareTo(context.targetVersion) <= 0) {
                         return enumValue;
@@ -947,15 +943,7 @@ export abstract class SerializableObject {
                     let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
 
                     if (source.hasOwnProperty(property.name)) {
-                        if (property.targetVersion.isVNextFeature()) {
-                            context.logParseEvent(
-                                this,
-                                Enums.ValidationEvent.VNextFetureUsed,
-                                Strings.errors.propertyIsVNextFeature(
-                                    propertyValue,
-                                    property.name,
-                                    property.targetVersion.toString()));
-                        }
+                        LogEventIfVersionIsPreview(this, property.name, propertyValue, context, property.targetVersion);
 
                         if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
                             propertyValue = property.parse(this, source, context);
