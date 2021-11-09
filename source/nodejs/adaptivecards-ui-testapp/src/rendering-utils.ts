@@ -69,22 +69,13 @@ export function renderCard(cardJson: any, callbackFunction: Function): void {
         if (actionType === SubmitAction.JsonTypeName || actionType === ExecuteAction.JsonTypeName){
             const card: AdaptiveCard = adaptiveCard;
             const inputs: Input[] = card.getAllInputs(true);
-
-            let isFirstInput: boolean = true;
+            const inputsMap = {};
 
             inputs.forEach((input) => {
-                const inputId: string = input.id;
-                const inputValue: string = input.value;
-
-                if (!isFirstInput) {
-                    inputsAsJson = inputsAsJson.concat(",");
-                }
-
-                isFirstInput = false;
-                inputsAsJson = inputsAsJson.concat("\"", inputId, "\":\"", inputValue, "\"");
+                inputsMap[input.id] = input.value;
             });
 
-            inputsAsJson = `{${inputsAsJson}}`;
+            inputsAsJson = JSON.stringify(inputsMap);
         }
         else if (actionType === OpenUrlAction.JsonTypeName) {
             const actionAsOpenUrl: OpenUrlAction = action;
