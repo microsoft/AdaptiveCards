@@ -14,7 +14,8 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
         property<WinUI3::AdaptiveErrorMessageConfig> ErrorMessage;
         property<WinUI3::AdaptiveLabelConfig> Label;
-        IFACEMETHODIMP put_ErrorMessage(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveErrorMessageConfig* errorMessage);
+        // TODO: reiterate on this. Do we only need a setter or getter, or both?
+        //IFACEMETHODIMP put_ErrorMessage(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveErrorMessageConfig* errorMessage);
     };
 }
 

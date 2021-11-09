@@ -24,3 +24,25 @@ HRESULT HandleMediaClick(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRe
                          _In_ ABI::Windows::Foundation::IUriRuntimeClass* mediaSourceUrl,
                          _In_ HSTRING mimeType,
                          _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveMediaEventInvoker* mediaInvoker);
+
+winrt::Windows::UI::Xaml::Controls::Image
+GetMediaPosterAsImage(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs,
+                      winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia const& adaptiveMedia);
+
+winrt::Windows::UI::Xaml::UIElement
+CreatePosterContainerWithPlayButton(winrt::Windows::UI::Xaml::Controls::Image const& posterImage,
+                                    winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                                    winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
+
+std::tuple<winrt::Windows::Foundation::Uri, winrt::hstring>
+GetMediaSource(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveHostConfig const& hostConfig,
+               winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia const& adaptiveMedia);
+
+void HandleMediaClick(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+                      winrt::AdaptiveCards::ObjectModel::WinUI3::AdaptiveMedia const& adaptiveMedia,
+                      winrt::Windows::UI::Xaml::Controls::MediaElement const& mediaElement,
+                      winrt::Windows::UI::Xaml::UIElement const& posterContainer,
+                      winrt::Windows::Foundation::Uri const& mediaSourceUrl,
+                      winrt::hstring const& mimeType,
+                      winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveMediaEventInvoker const& mediaInvoker);

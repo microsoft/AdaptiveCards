@@ -17,161 +17,175 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Media;
 
-namespace AdaptiveCards::Rendering::WinUI3
+namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    HRESULT AdaptiveMediaRenderer::RuntimeClassInitialize() noexcept
-    try
+    rtxaml::UIElement Render(rtom::IAdaptiveCardElement const& cardElement,
+                             rtrender::AdaptiveRenderContext const& renderContext,
+                             rtrender::AdaptiveRenderArgs const& renderArgs)
     {
-        return S_OK;
-    }
-    CATCH_RETURN();
-
-    HRESULT AdaptiveMediaRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
-                                          _In_ IAdaptiveRenderContext* renderContext,
-                                          _In_ IAdaptiveRenderArgs* renderArgs,
-                                          _COM_Outptr_ IUIElement** mediaControl) noexcept
-    try
-    {
-        ComPtr<IAdaptiveCardElement> localCardElement{adaptiveCardElement};
-        ComPtr<IAdaptiveMedia> adaptiveMedia;
-        RETURN_IF_FAILED(localCardElement.As(&adaptiveMedia));
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        // Get the poster image
-        ComPtr<IImage> posterImage;
-        GetMediaPosterAsImage(renderContext, renderArgs, adaptiveMedia.Get(), &posterImage);
-
-        // If the host doesn't support interactivity we're done here, just return the poster image
-        if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
+        try
         {
-            renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
-                                      HStringReference(L"Media was present in card, but interactivity is not supported").Get());
+            /*ComPtr<IAdaptiveCardElement> localCardElement{adaptiveCardElement};
+            ComPtr<IAdaptiveMedia> adaptiveMedia;
+            RETURN_IF_FAILED(localCardElement.As(&adaptiveMedia));*/
+            auto adaptiveMedia = cardElement.as<rtom::AdaptiveMedia>();
 
-            if (posterImage != nullptr)
+            /*ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));*/
+
+            auto hostConfig = renderContext.HostConfig();
+
+            // Get the poster image
+           /* ComPtr<IImage> posterImage;
+            GetMediaPosterAsImage(renderContext, renderArgs, adaptiveMedia.Get(), &posterImage);*/
+
+            auto posterImage = GetMediaPosterAsImage(renderContext, renderArgs, adaptiveMedia);
+
+            // If the host doesn't support interactivity we're done here, just return the poster image
+            if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
             {
-                RETURN_IF_FAILED(posterImage.CopyTo(mediaControl));
-            }
+                renderContext->AddWarning(
+                    ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::InteractivityNotSupported,
+                    HStringReference(L"Media was present in card, but interactivity is not supported").Get());
 
-            return S_OK;
-        }
+                if (posterImage != nullptr)
+                {
+                    RETURN_IF_FAILED(posterImage.CopyTo(mediaControl));
+                }
 
-        // Put the poster image in a container with a play button
-        ComPtr<IUIElement> posterContainer;
-        CreatePosterContainerWithPlayButton(posterImage.Get(), renderContext, renderArgs, &posterContainer);
-
-        HString altText;
-        RETURN_IF_FAILED(adaptiveMedia->get_AltText(altText.GetAddressOf()));
-
-        ComPtr<IUIElement> touchTargetUIElement;
-        ActionHelpers::WrapInTouchTarget(
-            adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, L"Adaptive.SelectAction", altText.Get(), false, &touchTargetUIElement);
-
-        // Create a panel to hold the poster and the media element
-        ComPtr<IStackPanel> mediaStackPanel =
-            XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-        ComPtr<IPanel> mediaPanel;
-        RETURN_IF_FAILED(mediaStackPanel.As(&mediaPanel));
-
-        XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement.Get(), mediaPanel.Get());
-
-        // Check if this host allows inline playback
-        ComPtr<IAdaptiveMediaConfig> mediaConfig;
-        RETURN_IF_FAILED(hostConfig->get_Media(&mediaConfig));
-
-        boolean allowInlinePlayback;
-        RETURN_IF_FAILED(mediaConfig->get_AllowInlinePlayback(&allowInlinePlayback));
-
-        ComPtr<IAdaptiveMediaEventInvoker> mediaInvoker;
-        RETURN_IF_FAILED(renderContext->get_MediaEventInvoker(&mediaInvoker));
-
-        HString mimeType;
-        ComPtr<IMediaElement> mediaElement;
-        ComPtr<IUriRuntimeClass> mediaSourceUrl;
-        if (allowInlinePlayback)
-        {
-            // Create a media element and set it's source
-            mediaElement =
-                XamlHelpers::CreateABIClass<IMediaElement>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
-
-            GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf(), mimeType.GetAddressOf());
-
-            if (mediaSourceUrl == nullptr)
-            {
-                renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::UnsupportedMediaType,
-                                          HStringReference(L"Unsupported media element dropped").Get());
                 return S_OK;
             }
 
-            // Configure Auto Play and Controls
-            RETURN_IF_FAILED(mediaElement->put_AutoPlay(false));
+            // Put the poster image in a container with a play button
+            ComPtr<IUIElement> posterContainer;
+            CreatePosterContainerWithPlayButton(posterImage.Get(), renderContext, renderArgs, &posterContainer);
 
-            ComPtr<IMediaElement2> mediaElement2;
-            RETURN_IF_FAILED(mediaElement.As(&mediaElement2));
-            RETURN_IF_FAILED(mediaElement2->put_AreTransportControlsEnabled(true));
-            ComPtr<IMediaElement3> mediaElement3;
-            RETURN_IF_FAILED(mediaElement.As(&mediaElement3));
-            ComPtr<IMediaTransportControls> mediaTransportControl;
-            RETURN_IF_FAILED(mediaElement3->get_TransportControls(&mediaTransportControl));
-            RETURN_IF_FAILED(mediaTransportControl->put_IsCompact(true));
-            RETURN_IF_FAILED(mediaTransportControl->put_IsZoomButtonVisible(false));
+            HString altText;
+            RETURN_IF_FAILED(adaptiveMedia->get_AltText(altText.GetAddressOf()));
 
-            ComPtr<IUIElement> mediaUIElement;
-            RETURN_IF_FAILED(mediaElement.As(&mediaUIElement));
+            ComPtr<IUIElement> touchTargetUIElement;
+            ActionHelpers::WrapInTouchTarget(adaptiveCardElement,
+                                             posterContainer.Get(),
+                                             nullptr,
+                                             renderContext,
+                                             true,
+                                             L"Adaptive.SelectAction",
+                                             altText.Get(),
+                                             false,
+                                             &touchTargetUIElement);
 
-            if (posterImage != nullptr)
+            // Create a panel to hold the poster and the media element
+            ComPtr<IStackPanel> mediaStackPanel =
+                XamlHelpers::CreateABIClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+            ComPtr<IPanel> mediaPanel;
+            RETURN_IF_FAILED(mediaStackPanel.As(&mediaPanel));
+
+            XamlHelpers::AppendXamlElementToPanel(touchTargetUIElement.Get(), mediaPanel.Get());
+
+            // Check if this host allows inline playback
+            ComPtr<IAdaptiveMediaConfig> mediaConfig;
+            RETURN_IF_FAILED(hostConfig->get_Media(&mediaConfig));
+
+            boolean allowInlinePlayback;
+            RETURN_IF_FAILED(mediaConfig->get_AllowInlinePlayback(&allowInlinePlayback));
+
+            ComPtr<IAdaptiveMediaEventInvoker> mediaInvoker;
+            RETURN_IF_FAILED(renderContext->get_MediaEventInvoker(&mediaInvoker));
+
+            HString mimeType;
+            ComPtr<IMediaElement> mediaElement;
+            ComPtr<IUriRuntimeClass> mediaSourceUrl;
+            if (allowInlinePlayback)
             {
-                // Set the poster on the media element
-                ComPtr<IImageSource> posterImageSource;
-                RETURN_IF_FAILED(posterImage->get_Source(&posterImageSource));
-                RETURN_IF_FAILED(mediaElement->put_PosterSource(posterImageSource.Get()));
+                // Create a media element and set it's source
+                mediaElement = XamlHelpers::CreateABIClass<IMediaElement>(
+                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_MediaElement));
+
+                GetMediaSource(hostConfig.Get(), adaptiveMedia.Get(), mediaSourceUrl.GetAddressOf(), mimeType.GetAddressOf());
+
+                if (mediaSourceUrl == nullptr)
+                {
+                    renderContext->AddWarning(ABI::AdaptiveCards::ObjectModel::WinUI3::WarningStatusCode::UnsupportedMediaType,
+                                              HStringReference(L"Unsupported media element dropped").Get());
+                    return S_OK;
+                }
+
+                // Configure Auto Play and Controls
+                RETURN_IF_FAILED(mediaElement->put_AutoPlay(false));
+
+                ComPtr<IMediaElement2> mediaElement2;
+                RETURN_IF_FAILED(mediaElement.As(&mediaElement2));
+                RETURN_IF_FAILED(mediaElement2->put_AreTransportControlsEnabled(true));
+                ComPtr<IMediaElement3> mediaElement3;
+                RETURN_IF_FAILED(mediaElement.As(&mediaElement3));
+                ComPtr<IMediaTransportControls> mediaTransportControl;
+                RETURN_IF_FAILED(mediaElement3->get_TransportControls(&mediaTransportControl));
+                RETURN_IF_FAILED(mediaTransportControl->put_IsCompact(true));
+                RETURN_IF_FAILED(mediaTransportControl->put_IsZoomButtonVisible(false));
+
+                ComPtr<IUIElement> mediaUIElement;
+                RETURN_IF_FAILED(mediaElement.As(&mediaUIElement));
+
+                if (posterImage != nullptr)
+                {
+                    // Set the poster on the media element
+                    ComPtr<IImageSource> posterImageSource;
+                    RETURN_IF_FAILED(posterImage->get_Source(&posterImageSource));
+                    RETURN_IF_FAILED(mediaElement->put_PosterSource(posterImageSource.Get()));
+                }
+
+                // Make the media element collapsed until the user clicks
+                RETURN_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
+
+                XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
             }
 
-            // Make the media element collapsed until the user clicks
-            RETURN_IF_FAILED(mediaUIElement->put_Visibility(Visibility_Collapsed));
+            ComPtr<IUIElement> mediaPanelAsUIElement;
+            RETURN_IF_FAILED(mediaPanel.As(&mediaPanelAsUIElement));
 
-            XamlHelpers::AppendXamlElementToPanel(mediaElement.Get(), mediaPanel.Get());
+            ComPtr<IButtonBase> touchTargetAsButtonBase;
+            RETURN_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
+
+            // Take a reference to the mime type string for the lambda (lifetime dictated by localMimeType in the below
+            // lambda)
+            HSTRING lambdaMimeType;
+            WindowsDuplicateString(mimeType.Get(), &lambdaMimeType);
+            ComPtr<IAdaptiveRenderContext> lambdaRenderContext{renderContext};
+
+            EventRegistrationToken clickToken;
+            RETURN_IF_FAILED(touchTargetAsButtonBase->add_Click(
+                Callback<IRoutedEventHandler>(
+                    [touchTargetUIElement, lambdaRenderContext, adaptiveMedia, mediaElement, mediaSourceUrl, lambdaMimeType, mediaInvoker](
+                        IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                    {
+                        // Take ownership of the passed in HSTRING
+                        HString localMimeType;
+                        localMimeType.Attach(lambdaMimeType);
+
+                        // Turn off the button to prevent extra clicks
+                        ComPtr<ABI::Windows::UI::Xaml::Controls::IControl> buttonAsControl;
+                        touchTargetUIElement.As(&buttonAsControl);
+                        RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(false));
+
+                        // Handle the click
+                        return HandleMediaClick(lambdaRenderContext.Get(),
+                                                adaptiveMedia.Get(),
+                                                mediaElement.Get(),
+                                                touchTargetUIElement.Get(),
+                                                mediaSourceUrl.Get(),
+                                                lambdaMimeType,
+                                                mediaInvoker.Get());
+                    })
+                    .Get(),
+                &clickToken));
+
+            RETURN_IF_FAILED(mediaPanelAsUIElement.CopyTo(mediaControl));
+            return S_OK;
         }
-
-        ComPtr<IUIElement> mediaPanelAsUIElement;
-        RETURN_IF_FAILED(mediaPanel.As(&mediaPanelAsUIElement));
-
-        ComPtr<IButtonBase> touchTargetAsButtonBase;
-        RETURN_IF_FAILED(touchTargetUIElement.As(&touchTargetAsButtonBase));
-
-        // Take a reference to the mime type string for the lambda (lifetime dictated by localMimeType in the below
-        // lambda)
-        HSTRING lambdaMimeType;
-        WindowsDuplicateString(mimeType.Get(), &lambdaMimeType);
-        ComPtr<IAdaptiveRenderContext> lambdaRenderContext{renderContext};
-
-        EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(touchTargetAsButtonBase->add_Click(
-            Callback<IRoutedEventHandler>([touchTargetUIElement, lambdaRenderContext, adaptiveMedia, mediaElement, mediaSourceUrl, lambdaMimeType, mediaInvoker](
-                                              IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
-                // Take ownership of the passed in HSTRING
-                HString localMimeType;
-                localMimeType.Attach(lambdaMimeType);
-
-                // Turn off the button to prevent extra clicks
-                ComPtr<ABI::Windows::UI::Xaml::Controls::IControl> buttonAsControl;
-                touchTargetUIElement.As(&buttonAsControl);
-                RETURN_IF_FAILED(buttonAsControl->put_IsEnabled(false));
-
-                // Handle the click
-                return HandleMediaClick(lambdaRenderContext.Get(),
-                                        adaptiveMedia.Get(),
-                                        mediaElement.Get(),
-                                        touchTargetUIElement.Get(),
-                                        mediaSourceUrl.Get(),
-                                        lambdaMimeType,
-                                        mediaInvoker.Get());
-            }).Get(),
-            &clickToken));
-
-        RETURN_IF_FAILED(mediaPanelAsUIElement.CopyTo(mediaControl));
-        return S_OK;
+        catch (winrt::hresult_error const& ex)
+        {
+            // TODO: what do we do here?
+            return nullptr;
+        }
     }
-    CATCH_RETURN();
 }

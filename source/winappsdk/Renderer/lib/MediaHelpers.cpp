@@ -19,10 +19,47 @@ using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::Storage::Streams;
 
-const DOUBLE c_playIconSize = 30;
-const DOUBLE c_playIconCornerRadius = 5;
-const DOUBLE c_playIconOpacity = .5;
-const DOUBLE c_audioHeight = 100;
+const double c_playIconSize = 30;
+const double c_playIconCornerRadius = 5;
+const double c_playIconOpacity = .5;
+const double c_audioHeight = 100;
+
+rtxaml::Controls::Image GetMediaPosterAsImage(rtrender::AdaptiveRenderContext const& renderContext,
+                                              rtrender::AdaptiveRenderArgs const& renderArgs,
+                                              rtom::AdaptiveMedia const& adaptiveMedia)
+{
+    auto posterString = adaptiveMedia.Poster();
+
+    // TODO: is this right? analog of HSTRING: posterString == nullptr???
+    if (posterString.empty())
+    {
+        auto hostConfig = renderContext.HostConfig();
+        auto mediaConfig = hostConfig.Media();
+
+        posterString = mediaConfig.DefaultPoster();
+
+        if (posterString.empty())
+        {
+            return nullptr;
+        }
+    }
+
+    rtom::AdaptiveImage adaptiveImage{};
+    adaptiveImage.Url(posterString);
+
+    auto altText = adaptiveMedia.AltText();
+    adaptiveImage.AltText(altText);
+
+    auto elementRenderers = renderContext.ElementRenderers();
+    auto imageRenderer = elementRenderers.Get(L"Image");
+
+    // TODO: Do I need this cast?
+    auto posterAdaptiveElement = adaptiveImage.as<rtom::IAdaptiveCardElement>();
+    auto posterUiElement = imageRenderer.Render(posterAdaptiveElement, renderContext, renderArgs);
+
+    // TODO: should i try_as and return null if it doesn't work? What do we do in this case?
+    return posterUiElement.as<rtxaml::Controls::Image>();
+}
 
 void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
                            _In_ IAdaptiveRenderArgs* renderArgs,
@@ -50,8 +87,8 @@ void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
         }
     }
 
-    ComPtr<IAdaptiveImage> adaptiveImage =
-        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
+    ComPtr<IAdaptiveImage> adaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
+        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
 
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
 
@@ -73,6 +110,52 @@ void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
     ComPtr<IImage> posterAsImage;
     THROW_IF_FAILED(posterUiElement.As(&posterAsImage));
     THROW_IF_FAILED(posterAsImage.CopyTo(posterImage));
+}
+
+void AddDefaultPlayIcon(rtxaml::Controls::Panel const& posterPanel,
+                        rtrender::AdaptiveHostConfig const& hostConfig,
+                        rtrender::AdaptiveRenderArgs const& renderArgs)
+{
+    // Create a rectangle
+    rtxaml::Shapes::Rectangle rectangle{};
+
+    // Set the size
+    rectangle.Height(c_playIconSize);
+    rectangle.Width(c_playIconSize);
+
+    // Round the corners
+    rectangle.RadiusX(c_playIconCornerRadius);
+    rectangle.RadiusY(c_playIconCornerRadius);
+
+    // Set it's fill and opacity
+    winrt::Windows::UI::Color whiteBrushColor{0xFF, 0xFF, 0xFF, 0xFF};
+
+    auto rectangleBrush = XamlHelpers::GetSolidColorBrush(whiteBrushColor);
+    rectangle.Fill(rectangleBrush);
+    rectangle.Opacity(c_playIconOpacity);
+
+    // Outline it in the Dark color
+    auto containerStyle = renderArgs.ContainerStyle();
+
+    auto darkBrushColor = GetColorFromAdaptiveColor(hostConfig, rtom::ForegroundColor::Dark, containerStyle, false, false);
+    auto darkBrush = XamlHelpers::GetSolidColorBrush(darkBrushColor);
+    rectangle.Stroke(darkBrush);
+
+    // Create a play symbol icon
+    rtxaml::Controls::SymbolIcon playIcon{rtxaml::Controls::Symbol::Play};
+
+    playIcon.Foreground(darkBrush);
+
+    rtxaml::Controls::RelativePanel relativePanelStatics{};
+
+    // TODO: should we just set property directly on rectangle and playIcon?
+    XamlHelpers::AppendXamlElementToPanel(rectangle, posterPanel);
+    relativePanelStatics.SetAlignHorizontalCenterWithPanel(rectangle, true);
+    relativePanelStatics.SetAlignVerticalCenterWithPanel(rectangle, true);
+
+    XamlHelpers::AppendXamlElementToPanel(playIcon, posterPanel);
+    relativePanelStatics.SetAlignHorizontalCenterWithPanel(playIcon, true);
+    relativePanelStatics.SetAlignVerticalCenterWithPanel(playIcon, true);
 }
 
 void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* hostConfig, _In_ IAdaptiveRenderArgs* renderArgs)
@@ -142,11 +225,51 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconAsUIElement.Get(), true));
 }
 
+void AddCustomPlayIcon(rtxaml::Controls::Panel const& posterPanel,
+                       winrt::hstring const& playIconString,
+                       rtrender::AdaptiveRenderContext const& renderContext,
+                       rtrender::AdaptiveRenderArgs const& renderArgs)
+{
+    // Render the custom play icon using the image renderer
+    /*ComPtr<IAdaptiveImage> playIconAdaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
+        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));*/
+
+    rtom::AdaptiveImage playIconAdaptiveImage{};
+
+    playIconAdaptiveImage.Url(playIconString);
+
+    auto elementRenderers = renderContext.ElementRenderers();
+    auto imageRenderer = elementRenderers.Get(L"Image");
+
+    // TODO: do I need this cast?
+    auto playIconImageAsAdaptiveElement = playIconAdaptiveImage.as<rtom::IAdaptiveCardElement>();
+
+    auto playIconUIElement = imageRenderer.Render(playIconImageAsAdaptiveElement, renderContext, renderArgs);
+
+    /*ComPtr<IFrameworkElement> playIconAsFrameworkElement;
+    THROW_IF_FAILED(playIconUIElement.As(&playIconAsFrameworkElement));
+    THROW_IF_FAILED(playIconAsFrameworkElement->put_Height(c_playIconSize));*/
+
+    // TODO: is this the correct way? what if it's nullptr? what do we do?
+    if (playIconUIElement != nullptr)
+    {
+        // Add it to the panel and center it
+        /*ComPtr<IRelativePanelStatics> relativePanelStatics;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel).Get(),
+                                             &relativePanelStatics));*/
+        rtxaml::Controls::RelativePanel relativePanelStatics{};
+
+        XamlHelpers::AppendXamlElementToPanel(playIconUIElement, posterPanel);
+        relativePanelStatics.SetAlignHorizontalCenterWithPanel(playIconUIElement, true);
+        relativePanelStatics.SetAlignVerticalCenterWithPanel(playIconUIElement, true);
+    }
+}
+
 void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
 {
     // Render the custom play icon using the image renderer
-    ComPtr<IAdaptiveImage> playIconAdaptiveImage =
-        XamlHelpers::CreateABIClass<IAdaptiveImage>(HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
+    ComPtr<IAdaptiveImage> playIconAdaptiveImage = XamlHelpers::CreateABIClass<IAdaptiveImage>(
+        HStringReference(RuntimeClass_AdaptiveCards_ObjectModel_WinUI3_AdaptiveImage));
 
     THROW_IF_FAILED(playIconAdaptiveImage->put_Url(playIconString));
 
@@ -173,6 +296,26 @@ void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _I
     XamlHelpers::AppendXamlElementToPanel(playIconUIElement.Get(), posterPanel);
     THROW_IF_FAILED(relativePanelStatics->SetAlignHorizontalCenterWithPanel(playIconUIElement.Get(), true));
     THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconUIElement.Get(), true));
+}
+
+void AddPlayIcon(rtxaml::Controls::Panel const& posterPanel,
+                 rtrender::AdaptiveRenderContext const& renderContext,
+                 rtrender::AdaptiveRenderArgs const& renderArgs)
+{
+    auto hostConfig = renderContext.HostConfig();
+
+    auto mediaConfig = hostConfig.Media();
+
+    winrt::hstring customPlayIconString = mediaConfig.PlayButton();
+
+    if (customPlayIconString.empty())
+    {
+        AddDefaultPlayIcon(posterPanel, hostConfig, renderArgs);
+    }
+    else
+    {
+        AddCustomPlayIcon(posterPanel, customPlayIconString, renderContext, renderArgs);
+    }
 }
 
 void AddPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
@@ -222,6 +365,71 @@ void CreatePosterContainerWithPlayButton(_In_ IImage* posterImage,
     ComPtr<IUIElement> posterRelativePanelAsUIElement;
     THROW_IF_FAILED(posterRelativePanel.As(&posterRelativePanelAsUIElement));
     THROW_IF_FAILED(posterRelativePanelAsUIElement.CopyTo(posterContainer));
+}
+
+rtxaml::UIElement CreatePosterContainerWithPlayButton(rtxaml::Controls::Image const& posterImage,
+                                                      rtrender::AdaptiveRenderContext const& renderContext,
+                                                      rtrender::AdaptiveRenderArgs const& renderArgs)
+{
+    rtxaml::Controls::RelativePanel posterRelativePanel{};
+
+    if (posterImage != nullptr)
+    {
+        // TODO: do I need to cast relativePanel to Panel?
+        XamlHelpers::AppendXamlElementToPanel(posterImage, posterRelativePanel);
+
+        // TODO: not sure why this is needed?
+        // ComPtr<IImage> localPosterImage{posterImage};
+        // localPosterImage.As(&posterImageAsFrameworkElement);
+    }
+    AddPlayIcon(posterRelativePanel, renderContext, renderArgs);
+
+    // TODO: do I need to cast here?
+    return posterRelativePanel;
+}
+
+std::tuple<winrt::Windows::Foundation::Uri, winrt::hstring> GetMediaSource(rtrender::AdaptiveHostConfig const& hostConfig,
+                                                                           rtom::AdaptiveMedia const& adaptiveMedia)
+{
+    winrt::Windows::Foundation::Uri mediaSourceUrl{nullptr};
+    winrt::hstring mimeType{};
+
+    winrt::hstring supportedMimeTypes[] = {L"video/mp4", L"audio/mp4", L"audio/aac", L"audio/mpeg"};
+
+    auto sources = adaptiveMedia.Sources();
+
+    rtom::AdaptiveMediaSource selectedSource{nullptr};
+    for (auto source : sources)
+    {
+        winrt::hstring currentMimeType = source.MimeType();
+
+        // TODO: is this right to get the size of sizeof(supportedMimeTypes)/sizeof(supportedMimeTypes[0]) needed here?
+        for (uint32_t i = 0; i < std::size(supportedMimeTypes); i++)
+        {
+            if (currentMimeType == supportedMimeTypes[i])
+            {
+                selectedSource = source;
+                // TODO: do we nee to break out of the outer loop as well? Original code doesn't seem to do it for some reason....
+                break;
+            }
+        }
+    }
+    if (selectedSource != nullptr)
+    {
+        /*HString url;
+        THROW_IF_FAILED(selectedSource->get_Url(url.GetAddressOf()));*/
+        auto url = selectedSource.Url();
+
+        // ComPtr<IUriRuntimeClass> sourceUrl;
+        // GetUrlFromString(hostConfig, url.Get(), sourceUrl.GetAddressOf());
+
+        auto sourceUrl = GetUrlFromString(hostConfig, url);
+
+        mediaSourceUrl = sourceUrl;
+        mimeType = selectedSource.MimeType();
+    }
+
+    return {mediaSourceUrl, mimeType};
 }
 
 void GetMediaSource(_In_ IAdaptiveHostConfig* hostConfig,
@@ -303,6 +511,103 @@ HRESULT HandleMediaResourceResolverCompleted(_In_ IAsyncOperation<IRandomAccessS
     return S_OK;
 }
 
+void HandleMediaResourceResolverCompleted(
+    winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::Streams::IRandomAccessStream> const& operation,
+    winrt::Windows::Foundation::AsyncStatus status, // TODO: do we need to make enum const&?
+    rtxaml::Controls::MediaElement const& mediaElement,
+    winrt::hstring const& mimeType)
+{
+    if (status == winrt::Windows::Foundation::AsyncStatus::Completed)
+    {
+        // Get the random access stream
+        auto randomAccessStream = operation.GetResults();
+
+        if (randomAccessStream != nullptr)
+        {
+            mediaElement.SetSource(randomAccessStream, mimeType);
+        }
+    }
+}
+
+void HandleMediaClick(rtrender::AdaptiveRenderContext const& renderContext,
+                      rtom::AdaptiveMedia const& adaptiveMedia,
+                      rtxaml::Controls::MediaElement const& mediaElement,
+                      rtxaml::UIElement const& posterContainer,
+                      winrt::Windows::Foundation::Uri const& mediaSourceUrl,
+                      winrt::hstring const& mimeType,
+                      rtrender::AdaptiveMediaEventInvoker const& mediaInvoker)
+{
+    if (mediaElement != nullptr)
+    {
+        // TODO: what is the need for local var creation?
+        // ComPtr<IMediaElement> localMediaElement{mediaElement};
+        posterContainer.Visibility(rtxaml::Visibility::Collapsed);
+
+        mediaElement.Visibility(rtxaml::Visibility::Visible);
+
+        auto resourceResolvers = renderContext.ResourceResolvers();
+
+        rtrender::IAdaptiveCardResourceResolver resourceResolver{nullptr};
+        if (resourceResolvers != nullptr)
+        {
+            auto schemeName = mediaSourceUrl.SchemeName();
+            resourceResolver = resourceResolvers.Get(schemeName);
+        }
+
+        if (resourceResolver = nullptr)
+        {
+            mediaElement.Source(mediaSourceUrl);
+        }
+        else
+        {
+            auto args =
+                winrt::make<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveCardGetResourceStreamArgs>(mediaSourceUrl);
+
+            auto getResourceStreamOperation = resourceResolver.GetResourceStreamAsync(args);
+
+            winrt::hstring lambdaMimeType{mimeType};
+
+            getResourceStreamOperation.Completed(
+                [mediaElement, lambdaMimeType](winrt::Windows::Foundation::IAsyncOperation<winrt::Windows::Storage::Streams::IRandomAccessStream> operation,
+                                               winrt::Windows::Foundation::AsyncStatus status) -> void
+                {
+                    // Take ownership of the passed in HSTRING
+                    /* HString localMimeType;
+                     localMimeType.Attach(lambdaMimeType);*/
+
+                    // TODO: not sure why this is done?
+                    winrt::hstring localMimeType{};
+                    localMimeType = lambdaMimeType;
+
+                    return HandleMediaResourceResolverCompleted(operation, status, mediaElement, lambdaMimeType);
+                });
+        }
+
+        // TODO: what's the point of a token, if it's not saved anywhere?
+        //EventRegistrationToken mediaOpenedToken;
+        //THROW_IF_FAILED(
+        mediaElement.MediaOpened(
+            // TODO: is it correct to capture by value here?
+            [=](winrt::Windows::Foundation::IInspectable const& /*sender*/, rtxaml::RoutedEventArgs const& /*args*/) -> void
+            {
+                bool audioOnly = mediaElement.IsAudioOnly();
+                auto posterSource = mediaElement.PosterSource();
+
+                if (audioOnly && posterSource == nullptr)
+                {
+                    // If this is audio only and there's no poster, set the height so
+                    // that the controls are visible.
+                    mediaElement.Height(c_audioHeight);
+                }
+                mediaElement.Play();
+            });
+    }
+    else
+    {
+        mediaInvoker.SendMediaClickedEvent(adaptiveMedia);
+    }
+}
+
 HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
                          _In_ IAdaptiveMedia* adaptiveMedia,
                          _In_ IMediaElement* mediaElement,
@@ -341,7 +646,8 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
         else
         {
             // Create the arguments to pass to the resolver
-            auto args = winrt::make<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveCardGetResourceStreamArgs>(to_winrt(mediaSourceUrl))
+            auto args = winrt::make<winrt::AdaptiveCards::Rendering::WinUI3::implementation::AdaptiveCardGetResourceStreamArgs>(
+                            to_winrt(mediaSourceUrl))
                             .as<ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveCardGetResourceStreamArgs>();
 
             // Call the resolver to get the media stream
@@ -355,7 +661,8 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
 
             RETURN_IF_FAILED(getResourceStreamOperation->put_Completed(
                 Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>(
-                    [localMediaElement, lambdaMimeType](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
+                    [localMediaElement, lambdaMimeType](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
+                    {
                         // Take ownership of the passed in HSTRING
                         HString localMimeType;
                         localMimeType.Attach(lambdaMimeType);
@@ -367,25 +674,28 @@ HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
 
         EventRegistrationToken mediaOpenedToken;
         THROW_IF_FAILED(
-            mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
-                                              boolean audioOnly;
-                                              RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
-
-                                              ComPtr<IImageSource> posterSource;
-                                              RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
-
-                                              if (audioOnly && posterSource == nullptr)
+            mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>(
+                                              [=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                                               {
-                                                  // If this is audio only and there's no poster, set the height so that
-                                                  // the controls are visible.
-                                                  ComPtr<IFrameworkElement> mediaAsFrameworkElement;
-                                                  RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
-                                                  RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
-                                              }
+                                                  boolean audioOnly;
+                                                  RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
 
-                                              RETURN_IF_FAILED(localMediaElement->Play());
-                                              return S_OK;
-                                          }).Get(),
+                                                  ComPtr<IImageSource> posterSource;
+                                                  RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
+
+                                                  if (audioOnly && posterSource == nullptr)
+                                                  {
+                                                      // If this is audio only and there's no poster, set the height so
+                                                      // that the controls are visible.
+                                                      ComPtr<IFrameworkElement> mediaAsFrameworkElement;
+                                                      RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
+                                                      RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
+                                                  }
+
+                                                  RETURN_IF_FAILED(localMediaElement->Play());
+                                                  return S_OK;
+                                              })
+                                              .Get(),
                                           &mediaOpenedToken));
     }
     else
