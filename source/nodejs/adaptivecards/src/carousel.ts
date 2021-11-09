@@ -1,7 +1,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { ActionType, CardElement, Container, ContainerBase, SerializationContext, ShowCardAction, ToggleVisibilityAction } from "./card-elements";
-import { NumProperty, property, PropertyBag, Versions } from "./serialization";
+import * as Enums from "./enums";
+import { NumProperty, property, PropertyBag, SerializableObjectSchema, Versions } from "./serialization";
 import { GlobalRegistry, ElementSingletonBehavior } from "./registry";
 import { TypeErrorType, ValidationEvent } from "./enums";
 import { Strings } from "./strings";
@@ -14,7 +15,14 @@ import "swiper/css/navigation";
 
 export class CarouselPage extends Container {
     //#region Schema
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
 
+        // `style`, `bleed`, `isVisible` are not supported in CarouselPage
+        schema.remove(Container.styleProperty);
+        schema.remove(Container.bleedProperty);
+        schema.remove(Container.isVisibleProperty);
+    }
     //#endregion
 
     protected internalRender(): HTMLElement | undefined {
@@ -49,8 +57,16 @@ export class CarouselPage extends Container {
     }
 }
 
-export class Carousel extends ContainerBase {
+export class Carousel extends Container {
     //#region Schema
+    protected populateSchema(schema: SerializableObjectSchema) {
+        super.populateSchema(schema);
+
+        // `style`, `bleed`, `isVisible` are not supported in Carousel
+        schema.remove(Container.styleProperty);
+        schema.remove(Container.bleedProperty);
+        schema.remove(Container.isVisibleProperty);
+    }
 
     static readonly timerProperty = new NumProperty(Versions.v1_6, "timer", undefined);
     @property(Carousel.timerProperty)
@@ -194,6 +210,18 @@ export class Carousel extends ContainerBase {
         const swiperWrapper: HTMLElement = document.createElement("div");
         swiperWrapper.className = this.hostConfig.makeCssClassName("swiper-wrapper", "ac-carousel-card-container");
         swiperWrapper.style.display = "flex";
+
+        switch (this.getEffectiveVerticalContentAlignment()) {
+            case Enums.VerticalAlignment.Top:
+                swiperWrapper.style.alignItems = 'flex-start';
+                break;
+            case Enums.VerticalAlignment.Bottom:
+                swiperWrapper.style.alignItems = 'flex-end';
+                break;
+            default:
+                swiperWrapper.style.alignItems = 'center';
+                break;
+        }
 
         if (GlobalSettings.useAdvancedCardBottomTruncation) {
             // Forces the container to be at least as tall as its content.
