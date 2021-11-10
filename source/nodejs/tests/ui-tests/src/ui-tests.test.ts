@@ -15,13 +15,11 @@ describe("Mock function", function() {
     const delayForCarouselArrows: number = 1000;
 
     beforeAll(async() => {
-        jest.setTimeout(600000);
-
         driver = new Webdriver.Builder().withCapabilities(Webdriver.Capabilities.edge()).build();
         await driver.get("http://127.0.0.1:8080/");
 
         testUtils = new TestUtils.TestUtils(driver);
-    });
+    }, 600000);
 
     afterAll(async() => {
         if (driver) {
@@ -44,7 +42,7 @@ describe("Mock function", function() {
 
         const commentRetrievedValue: string = await testUtils.getInputFor("comment");
         Assert.strictEqual("A comment", commentRetrievedValue);
-    }));
+    }), 600000);
 
     test("Test TextInput get focus on invalid submit", (async() => {
         await testUtils.goToTestCase("v1.3/Input.Text.ErrorMessage");
@@ -57,7 +55,7 @@ describe("Mock function", function() {
         const activeElementId: string = await driver.switchTo().activeElement().getAttribute("id");
 
         Assert.strictEqual(firstInputId, activeElementId);
-    }));
+    }), 600000);
 
     test("Test actions are rendered and active below carousel", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.HostConfig");
@@ -68,13 +66,13 @@ describe("Mock function", function() {
 
         const url: string = await testUtils.getInputFor("url");
         Assert.strictEqual("https://adaptivecards.io", url);
-    }));
+    }), 600000);
 
     test("Test page limit is honoured", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.HostConfig");
 
         await testUtils.assertElementWithIdDoesNotExist("page10");
-    }));
+    }), 600000);
 
     test("Unsupported elements are not rendered", (async() => {
         await testUtils.goToTestCase("v1.6/Carousel.ForbiddenElements");
