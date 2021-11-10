@@ -82,4 +82,18 @@ export class TestUtils {
         const elementList = await this.driver.findElements(Webdriver.By.id(id));
         Assert.strictEqual(0, elementList.length);
     }
+
+    async getElementWithId(id: string): Promise<Webdriver.WebElement> {
+        return this.driver.findElement(Webdriver.By.id(id));
+    }
+
+    async getCssPropertyValueForElement(element: Webdriver.WebElement, cssProperty: string): Promise<string> {
+        return element.getCssValue(cssProperty);
+    }
+
+    async getCssPropertyValueForElementWithId(id: string, cssProperty: string): Promise<string> {
+        const element: Webdriver.WebElement = await this.getElementWithId(id);
+
+        return this.getCssPropertyValueForElement(element, cssProperty);
+    }
 }
