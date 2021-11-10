@@ -15,6 +15,8 @@ describe("Mock function", function() {
     const delayForCarouselArrows: number = 1000;
 
     beforeAll(async() => {
+        jest.setTimeout(600000);
+
         driver = new Webdriver.Builder().withCapabilities(Webdriver.Capabilities.edge()).build();
         await driver.get("http://127.0.0.1:8080/");
 
