@@ -9,9 +9,9 @@ import { Strings } from "./strings";
 import { Swiper, A11y, Autoplay, History, Keyboard, Navigation, Pagination, Scrollbar, SwiperOptions } from "swiper";
 import * as Utils from "./utils";
 import { GlobalSettings } from "./shared";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+
+// Note: to function correctly, consumers need to have CSS from swiper/css, swiper/css/pagination, and
+// swiper/css/navigation
 
 export class CarouselPage extends Container {
     //#region Schema

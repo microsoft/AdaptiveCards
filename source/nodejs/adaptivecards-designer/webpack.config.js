@@ -1,9 +1,13 @@
 const path = require("path");
+const fs = require("fs")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ConcatPlugin = require('webpack-concat-files-plugin');
 const Dotenv = require('dotenv-webpack');
+
+let adaptiveCardsPackageCss = fs.readFileSync('node_modules/adaptivecards/dist/adaptivecards.css',
+                                              { encoding: 'utf8' });
 
 module.exports = (env, argv) => {
 	const mode = argv.mode || 'development';
@@ -82,7 +86,7 @@ module.exports = (env, argv) => {
 						dest: 'dist/adaptivecards-designer.css',
 						src: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
 					}
-				],
+				]
 			}),
 			new CopyWebpackPlugin({
 				patterns: [{
@@ -95,7 +99,11 @@ module.exports = (env, argv) => {
 				},
 				{
 					from: 'src/containers/**/*.css',
-					to: 'containers/[name][ext]'
+					to: 'containers/[name][ext]',
+                    transform(content, absoluteFrom) {
+                        // TODO: #6710 - use sass to have a more structured solution here
+                        return adaptiveCardsPackageCss + '\n' + content.toString('utf8');
+                    }
 				},
 				{
 					from: 'src/containers/**/*.png',

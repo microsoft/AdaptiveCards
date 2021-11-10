@@ -1,13 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ConcatPlugin = require('webpack-concat-files-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
-    const mode = argv.mode || 'development';
-    const devMode = mode === 'development';
+	const mode = argv.mode || 'development';
+	const devMode = mode === 'development';
 
-    console.info('running webpack with mode:', mode);
+	console.info('running webpack with mode:', mode);
 
 	return {
 		mode: mode,
@@ -30,32 +30,40 @@ module.exports = (env, argv) => {
 		},
 		module: {
 			rules: [{
-					test: /\.ts$/,
-					loader: "ts-loader",
-					exclude: /(node_modules|__tests__)/
-				},
-				{
-					test: /\.css$/,
-					use: [
-						'style-loader',
-						MiniCssExtractPlugin.loader,
-						'css-loader',
-						//'typings-for-css-modules-loader?modules&namedExport&camelCase'
-					]
-				}
+				test: /\.ts$/,
+				loader: "ts-loader",
+				exclude: /(node_modules|__tests__)/
+			},
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					'css-loader'
+				]
+			}
 			]
 		},
 		plugins: [
+			new ConcatPlugin({
+				bundles: [
+					{
+						dest: 'lib/adaptivecards.css',
+						src: [
+							'node_modules/swiper/swiper.min.css',
+							'node_modules/swiper/modules/pagination/pagination.min.css',
+							'node_modules/swiper/modules/navigation/navigation.min.css',
+							'src/adaptivecards.css'
+						]
+					}
+				],
+			}),
 			new CopyWebpackPlugin(
 				{
 					patterns: [
 						{
-							from: 'src/adaptivecards.css',
-							to: '../lib/[name][ext]'
-						},
-						{
-							from: 'src/adaptivecards.css',
-							to: '../dist/[name][ext]'
+							from: 'lib/adaptivecards.css',
+							to: '../dist/adaptivecards.css',
+							noErrorOnMissing: true // doesn't exist when object constructed. don't error.
 						}
 					]
 				}
