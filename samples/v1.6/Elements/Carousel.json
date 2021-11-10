@@ -2,12 +2,14 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.6",
+    "rtl": true,
 	"body": {
 		"type": "Carousel",
-		"timer": 5000,
+        "rtl": true,
 		"pages": [
 			{
 				"type": "CarouselPage",
+                "rtl": true,
 				"id": "firstCarouselPage",
 				"selectAction": {
 					"type": "Action.OpenUrl",

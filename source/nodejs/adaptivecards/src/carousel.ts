@@ -28,7 +28,8 @@ export class CarouselPage extends Container {
     protected internalRender(): HTMLElement | undefined {
         const swiperSlide: HTMLElement = document.createElement("div");
         swiperSlide.className = this.hostConfig.makeCssClassName("swiper-slide");
-
+        // `isRtl()` will set the correct value of rtl by reading the value from the parents
+        this.rtl = this.isRtl();
         const renderedElement = super.internalRender();
         Utils.appendChild(swiperSlide, renderedElement);
         return swiperSlide;
@@ -270,23 +271,25 @@ export class Carousel extends Container {
 
         swiperContainer.appendChild(swiperWrapper as HTMLElement);
 
+        swiperContainer.tabIndex = 0;
+
         containerForAdorners.appendChild(swiperContainer);
 
         this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
 
-        cardLevelContainer.addEventListener("focusin", (event) => {
-            if (!this._isSwiperInitialized) {
-                this._isSwiperInitialized = true;
-                this._swiper?.destroy();
-                this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
-            }
-        });
+        cardLevelContainer.addEventListener("keydown", (event) => {
+            // we don't need to check which key was pressed, we only need to reinit swiper once, then remove this event listener
+           let activeIndex = this._swiper?.activeIndex
+           this.initializeCarouselControl(swiperContainer, nextElementDiv, prevElementDiv, pagination);
+           if (activeIndex) { 
+               this._swiper?.slideTo(activeIndex);
+           }
+        }, {once : true});
 
         return this._renderedPages.length > 0 ? cardLevelContainer : undefined;
     }
 
     private _swiper?: Swiper;
-    private _isSwiperInitialized = false;
 
     private initializeCarouselControl(swiperContainer: HTMLElement, nextElement: HTMLElement, prevElement: HTMLElement, paginationElement: HTMLElement): void {
         const swiperOptions: SwiperOptions = {

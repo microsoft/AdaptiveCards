@@ -2,10 +2,6 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.6",
-	"display": {
-	  "type": "carousel",
-	  "timer": 100
-	},
 	"body": {
 		"type": "Carousel",
 		"timer": 5000,

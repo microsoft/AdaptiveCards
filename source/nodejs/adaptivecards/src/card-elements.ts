@@ -4272,8 +4272,8 @@ export abstract class SubmitActionBase extends Action {
     }
 
     get currentCarouselPageId(): string | undefined {
-        const root = this.getRootObject() as Container;
-        if (root.getItemCount() === 1 && root.getItemAt(0).getJsonTypeName() === "Carousel") {
+        const root = this.getRootObject() as AdaptiveCard;
+        if (root?.hasCarousel()) {
             const carouselElement = root.getItemAt(0) as Carousel;
             return carouselElement.currentPageId;
         }
@@ -6660,6 +6660,11 @@ export abstract class ContainerWithActions extends Container {
 
         if (element) {
             let renderedActions = this._actionCollection.render(this.hostConfig.actions.actionsOrientation, false);
+            // we can't set rtl at the card level if the card has carousel, setting the rtl explicitly at the action container takes 
+            // care of card level rtl for actions
+            if (this.rtl !== undefined && renderedActions) {
+                renderedActions.dir = this.rtl ? "rtl" : "ltr";
+            }
 
             if (renderedActions) {
                 Utils.appendChild(
@@ -7103,6 +7108,13 @@ export class AdaptiveCard extends ContainerWithActions {
             renderedElement.style.removeProperty("minHeight");
         }
 
+        // if rtl is set to dir at the parent view of carousel, carousel's view will get disappeared
+        if (this.hasCarousel()){
+            if (this.rtl && renderedElement) {
+                renderedElement.dir = "ltl";
+            }
+        }
+
         return renderedElement;
     }
 
@@ -7151,6 +7163,10 @@ export class AdaptiveCard extends ContainerWithActions {
 
     getJsonTypeName(): string {
         return "AdaptiveCard";
+    }
+
+    hasCarousel(): boolean {
+        return (this.getItemCount() === 1 && this.getItemAt(0).getJsonTypeName() === "Carousel");
     }
 
     internalValidateProperties(context: ValidationResults) {
