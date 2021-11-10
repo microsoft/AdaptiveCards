@@ -23,9 +23,9 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
     }
     CATCH_RETURN();*/
 
-    rtxaml::UIElement Render(rtom::IAdaptiveCardElement const& cardElement,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveFactSetRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                      rtrender::AdaptiveRenderContext const& renderContext,
+                                                      rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -204,9 +204,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 
             /*ComPtr<IFrameworkElement> factSetAsFrameworkElement;
             RETURN_IF_FAILED(xamlGrid.As(&factSetAsFrameworkElement));*/
-            ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                         L"Adaptive.FactSet",
-                                                                         xamlGrid);
+            ::AdaptiveCards::Rendering::WinUI3::XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.FactSet", xamlGrid);
 
             return xamlGrid;
         }

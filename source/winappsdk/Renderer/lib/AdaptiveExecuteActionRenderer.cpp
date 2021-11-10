@@ -11,22 +11,17 @@ using namespace Microsoft::WRL;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    /*HRESULT AdaptiveExecuteActionRenderer::RuntimeClassInitialize() noexcept
-    try
-    {
-        return S_OK;
-    }
-    CATCH_RETURN();*/
-
-    rtxaml::UIElement Render(rtom::IAdaptiveActionElement const& action,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveExecuteActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
+                                                            rtrender::AdaptiveRenderContext const& renderContext,
+                                                            rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
             /*RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(action, renderArgs));
             return ActionHelpers::BuildAction(action, renderContext, renderArgs, false, result);*/
+            // TODO: do we need to check for errors here? or catch -> nullptr should be enough
             renderContext.LinkSubmitActionToCard(action, renderArgs);
+            return ::AdaptiveCards::Rendering::WinUI3::ActionHelpers::BuildAction(action, renderContext, renderArgs, false);
         }
         catch (winrt::hresult_error const& ex)
         {

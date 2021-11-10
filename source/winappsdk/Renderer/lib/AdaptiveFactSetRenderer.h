@@ -2,16 +2,18 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveFactRenderer.g.h"
+#include "AdaptiveFactSetRenderer.g.h"
 
 // TODO: Do we need this import here?
 #include "FactSet.h"
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    struct AdaptiveFactRenderer : AdaptiveFactRendererT<AdaptiveFactRenderer>
+
+    // TODO: have FactRenderer in .idl but no implementation for it, is that expected?
+    struct AdaptiveFactSetRenderer : AdaptiveFactSetRendererT<AdaptiveFactSetRenderer>
     {
-        AdaptiveFactRenderer() = default;
+        AdaptiveFactSetRenderer() = default;
 
         Windows::UI::Xaml::UIElement Render(AdaptiveCards::ObjectModel::WinUI3::IAdaptiveCardElement const& cardElement,
                                             AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
@@ -20,7 +22,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 }
 namespace winrt::AdaptiveCards::Rendering::WinUI3::factory_implementation
 {
-    struct AdaptiveFactRenderer : AdaptiveFactRendererT<AdaptiveFactRenderer, implementation::AdaptiveFactRenderer>
+    struct AdaptiveFactSetRenderer : AdaptiveFactSetRendererT<AdaptiveFactSetRenderer, implementation::AdaptiveFactSetRenderer>
     {
     };
 }

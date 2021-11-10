@@ -17,9 +17,9 @@ using namespace ABI::Windows::UI::Xaml::Input;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    rtxaml::UIElement Render(rtom::IAdaptiveCardElement const& cardElement,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveNumberInputRenderer::Render(rtom::IAdaptiveCardElement const& cardElement,
+                                                          rtrender::AdaptiveRenderContext const& renderContext,
+                                                          rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {
@@ -139,7 +139,7 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
             // TODO: is this the right way to do it?
             // TODO: we can't use make self here, because we define NumberInputValue in idl, however it inherits from interface defined in idl I assume?
             // TODO: do we need private IDL for these scenarios?
-            //auto input = winrt::make_self<rtrender::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
+            // auto input = winrt::make_self<rtrender::NumberInputValue>(adaptiveNumberInput, textBox, validationBorder);
 
             rtrender::NumberInputValue input{adaptiveNumberInput, textBox, validationBorder};
 

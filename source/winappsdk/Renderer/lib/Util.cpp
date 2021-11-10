@@ -366,6 +366,32 @@ try
 }
 CATCH_RETURN();
 
+rtxaml::Documents::TextHighlighter GetHighlighter(rtom::IAdaptiveTextElement const& adaptiveTextElement,
+                                                  rtrender::AdaptiveRenderContext const& renderContext,
+                                                  rtrender::AdaptiveRenderArgs const& renderArgs)
+{
+    rtxaml::Documents::TextHighlighter textHighlighter{};
+
+    auto hostConfig = renderContext.HostConfig();
+
+    /* auto adaptiveForegroundColorRef = adaptiveTextElement.Color();*/
+
+    // TODO: do we need to do it? Won't it default to 'Default' by default?
+    // TODO: should I create a helper to extract a value from refs? GetValueFromRef(... const& ref, ... defaultValue); ?
+    rtom::ForegroundColor adaptiveForegroundColor = GetValueFromRef(adaptiveTextElement.Color(), rtom::ForegroundColor::Default);
+    bool isSubtle = GetValueFromRef(adaptiveTextElement.IsSubtle(), false);
+
+    auto containerStyle = renderArgs.ContainerStyle();
+
+    auto backgroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, true);
+    auto foregroundColor = GetColorFromAdaptiveColor(hostConfig, adaptiveForegroundColor, containerStyle, isSubtle, false);
+
+    textHighlighter.Background(::AdaptiveCards::Rendering::WinUI3::XamlHelpers::GetSolidColorBrush(backgroundColor));
+    textHighlighter.Foreground(::AdaptiveCards::Rendering::WinUI3::XamlHelpers::GetSolidColorBrush(foregroundColor));
+
+    return textHighlighter;
+}
+
 HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderContext* renderContext,
                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
@@ -412,9 +438,6 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTe
     localTextHighlighter.CopyTo(textHighlighter);
     return S_OK;
 }
-
-namespace rtrender = winrt::AdaptiveCards::Rendering::WinUI3;
-namespace rtom = winrt::AdaptiveCards::ObjectModel::WinUI3;
 
 uint32_t GetSpacingSizeFromSpacing(rtrender::AdaptiveHostConfig const& hostConfig, rtom::Spacing const& spacing)
 {
@@ -1441,7 +1464,7 @@ rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& tex
         rtom::AdaptiveTextRun textRun;
 
         // TODO: is this the right way to do it? Or do we need to .Value()?
-        textRun.Color(textElement.Color().Value());
+        textRun.Color(textElement.Color());
         textRun.FontType(textElement.FontType());
         textRun.IsSubtle(textElement.IsSubtle());
         textRun.Language(textElement.Language());

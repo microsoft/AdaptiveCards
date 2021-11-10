@@ -359,6 +359,11 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTe
                        _In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveRenderArgs* renderArgs,
                        _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept;
 
+winrt::Windows::UI::Xaml::Documents::TextHighlighter
+GetHighlighter(winrt::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement const& adaptiveTextElement,
+               winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderContext const& renderContext,
+               winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveRenderArgs const& renderArgs);
+
 // HRESULT GetFontDataFromFontType(_In_ ABI::AdaptiveCards::Rendering::WinUI3::IAdaptiveHostConfig* hostConfig,
 //                                ABI::AdaptiveCards::ObjectModel::WinUI3::FontType fontType,
 //                                ABI::AdaptiveCards::ObjectModel::WinUI3::TextSize desiredSize,
@@ -528,6 +533,17 @@ rtom::IAdaptiveTextElement CopyTextElement(rtom::IAdaptiveTextElement const& tex
 template<typename T> inline T EnumBitwiseOR(T a, T b)
 {
     return static_cast<T>(static_cast<int>(a) | static_cast<int>(b));
+}
+
+// TODO: Helper to extract value from a ref. if () will handle ref = nullptr as well.
+template<typename T>
+inline T GetValueFromRef(winrt::Windows::Foundation::IReference<T> const& ref, T defaultValue)
+{
+    if (ref != nullptr)
+    {
+        return ref.Value();
+    }
+    return defaultValue;
 }
 
 namespace AdaptiveCards::Rendering::WinUI3

@@ -12,9 +12,9 @@ using namespace Microsoft::WRL;
 
 namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
 {
-    rtxaml::UIElement Render(rtom::IAdaptiveActionElement const& action,
-                             rtrender::AdaptiveRenderContext const& renderContext,
-                             rtrender::AdaptiveRenderArgs const& renderArgs)
+    rtxaml::UIElement AdaptiveOpenUrlActionRenderer::Render(rtom::IAdaptiveActionElement const& action,
+                                                            rtrender::AdaptiveRenderContext const& renderContext,
+                                                            rtrender::AdaptiveRenderArgs const& renderArgs)
     {
         try
         {

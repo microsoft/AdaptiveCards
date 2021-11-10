@@ -63,7 +63,7 @@ uint32_t AddSingleTextInline(rtom::IAdaptiveTextElement const& adaptiveTextEleme
                              rtrender::AdaptiveRenderArgs const& renderArgs,
                              winrt::hstring const& stringToParse,
                              // TODO: should it be const TextRunStyleParameters& ?
-                             TextRunStyleParameters const& styleParameters,
+                             const TextRunStyleParameters& styleParameters,
                              winrt::Windows::Foundation::Collections::IVector<rtxaml::Documents::Inline> const& inlines);
 
 HRESULT AddSingleTextInline(_In_ ABI::AdaptiveCards::ObjectModel::WinUI3::IAdaptiveTextElement* adaptiveTextElement,
