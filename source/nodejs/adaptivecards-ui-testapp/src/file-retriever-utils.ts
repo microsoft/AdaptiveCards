@@ -8,7 +8,8 @@ const v14TestCases: string[] = [];
 const v15TestCases: string[] = [];
 const v16TestCases: string[] = [
     'Elements/Carousel', 'Elements/Carousel.ScenarioCards',
-    'Tests/Carousel.HostConfig', 'Tests/Carousel.Properties.json'
+    'Elements/Carousel.ScenarioCards.Timer', 'Tests/Carousel.HostConfig',
+    'Tests/Carousel.ForbiddenElements', 'Tests/Carousel.ForbiddenActions'
 ];
 
 function fixTestCases(list: string[], versionNumber: string) {
