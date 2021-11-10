@@ -48,11 +48,13 @@ namespace winrt::AdaptiveCards::Rendering::WinUI3::implementation
                 renderContext.AddWarning(rtom::WarningStatusCode::InteractivityNotSupported,
                                          L"Media was present in card, but interactivity is not supported");
 
-                if (posterImage != nullptr)
-                {
-                    /* RETURN_IF_FAILED(posterImage.CopyTo(mediaControl));*/
-                    return posterImage;
-                }
+                //if (posterImage != nullptr)
+                //{
+                //    /* RETURN_IF_FAILED(posterImage.CopyTo(mediaControl));*/
+                //    return posterImage;
+                //}
+                // TODO: we gotta return something here, so even if it's null we do return it, right?
+                return posterImage;
 
                 // return S_OK;
             }
