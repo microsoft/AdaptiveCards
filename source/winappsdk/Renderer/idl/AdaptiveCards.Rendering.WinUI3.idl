@@ -524,6 +524,11 @@ namespace AdaptiveCards
                                                  AdaptiveRenderArgs renderArgs);
             };
 
+			[default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
+            {
+                AdaptiveTableRenderer();
+            };
+
             [default_interface] runtimeclass AdaptiveTextBlockRenderer : IAdaptiveElementRenderer
             {
                 AdaptiveTextBlockRenderer();
@@ -604,40 +609,36 @@ namespace AdaptiveCards
                 AdaptiveMediaRenderer();
             };
 
-            [default_interface] runtimeclass AdaptiveActionSetRenderer : IAdaptiveElementRenderer
+            [default_interface] runtimeclass AdaptiveActionSetRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveActionSetRenderer();
             };
 
-            [default_interface] runtimeclass AdaptiveOpenUrlActionRenderer : IAdaptiveElementRenderer
+            [default_interface] runtimeclass AdaptiveOpenUrlActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveOpenUrlActionRenderer();
             };
 
-            [default_interface] runtimeclass AdaptiveShowCardActionRenderer : IAdaptiveElementRenderer
+            [default_interface] runtimeclass AdaptiveShowCardActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveShowCardActionRenderer();
             };
 
-            [default_interface] runtimeclass AdaptiveSubmitActionRenderer : IAdaptiveElementRenderer
+            [default_interface] runtimeclass AdaptiveSubmitActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveSubmitActionRenderer();
             };
 
-            [default_interface] runtimeclass AdaptiveExecuteActionRenderer : IAdaptiveElementRenderer
+            [default_interface] runtimeclass AdaptiveExecuteActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveExecuteActionRenderer();
             };
 
-            [default_interface] runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveElementRenderer
+            [default_interface] runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveActionRenderer
             {
                 AdaptiveToggleVisibilityActionRenderer();
             };
 
-            [default_interface] runtimeclass AdaptiveTableRenderer : IAdaptiveElementRenderer
-            {
-                AdaptiveTableRenderer();
-            };
             runtimeclass TileControl : Windows.UI.Xaml.Controls.ContentControl
             {
                 TileControl();

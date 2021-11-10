@@ -14,9 +14,9 @@ namespace AdaptiveCards::Rendering::WinUI3::ActionHelpers
                         bool isOverflowActionButton,
                         _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionControl);
 
-    rtxaml::UIElement BuildAction(rtom::IAdaptiveActionElement adaptiveActionElement,
-                                  rtrender::AdaptiveRenderContext* renderContext,
-                                  rtrender::AdaptiveRenderArgs* renderArgs,
+    rtxaml::UIElement BuildAction(rtom::IAdaptiveActionElement const& adaptiveActionElement,
+                                  rtrender::AdaptiveRenderContext const& renderContext,
+                                  rtrender::AdaptiveRenderArgs const& renderArgs,
                                   bool isOverflowActionButton);
 
     winrt::Windows::UI::Xaml::Thickness GetButtonMargin(winrt::AdaptiveCards::Rendering::WinUI3::AdaptiveActionsConfig const& actionsConfig);
