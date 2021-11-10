@@ -409,6 +409,7 @@ namespace AdaptiveCards.ObjectModel.Uwp
         UInt32 MinHeight;
         AdaptiveRefresh Refresh;
         AdaptiveAuthentication Authentication;
+        Windows.Foundation.IReference<Boolean> Rtl;
 
         Windows.Data.Json.JsonObject ToJson();
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();

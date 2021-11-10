@@ -35,7 +35,11 @@ namespace AdaptiveCards::Rendering::Uwp
         m_resourceResolvers = resourceResolvers;
         m_overrideDictionary = overrideDictionary;
         m_actionSentimentDefaultDictionary = defaultActionSentimentStyles;
-
+        
+        ComPtr<IAdaptiveCard> originatingCard;
+        RETURN_IF_FAILED(renderResult->get_OriginatingCard(&originatingCard));
+        RETURN_IF_FAILED(originatingCard->get_Rtl(&m_rtl));
+ 
         ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
         RETURN_IF_FAILED(strongRenderResult.AsWeak(&m_weakRenderResult));
 

@@ -339,7 +339,6 @@ export class CardDesignerSurface {
                 if (verb) {
                     message += ` verb: "${verb}"`;
                 }
-		
                 const carouselPageId = (<Adaptive.ExecuteAction>action).currentCarouselPageId;
                 if (carouselPageId) {
                     message += `\ncarousel page id: "${carouselPageId}"`;
@@ -349,7 +348,7 @@ export class CardDesignerSurface {
                 if (url) {
                     message += `\nurl: "${url}"`;
                 }
-                
+
                 const data = (<Adaptive.SubmitActionBase>action).data;
                 if (data) {
                     message += `\nSubmitted data: ${JSON.stringify(data, undefined, 4)}`;
@@ -364,6 +363,11 @@ export class CardDesignerSurface {
         if (this.fixedHeightCard) {
             renderedCard.style.height = "100%";
 
+            // truncate the content if the host container is fixed height
+            if (this.isPreviewMode)
+            {
+                renderedCard.style.overflow = "hidden";
+            }
         }
         this._cardHost.appendChild(renderedCard);
     }
